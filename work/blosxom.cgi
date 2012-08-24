@@ -19,7 +19,7 @@ $blog_description = "Yet another Blosxom weblog.";
 $blog_language = "en";
 
 # Where are this blog's entries kept?
-$datadir = "/Library/WebServer/Documents/blosxom";
+$datadir = "source";
 
 # What's my preferred base URL for this blog (leave blank for automatic)?
 $url = "";
@@ -44,7 +44,7 @@ $show_future_entries = 0;
 # --- Plugins (Optional) -----
 
 # Where are my plugins kept?
-$plugin_dir = "";
+$plugin_dir = "plugin";
 
 # Where should my modules keep their state information?
 $plugin_state_dir = "$plugin_dir/state";
@@ -52,21 +52,18 @@ $plugin_state_dir = "$plugin_dir/state";
 # --- Static Rendering -----
 
 # Where are this blog's static files to be created?
-$static_dir = "/Library/WebServer/Documents/blog";
-
-# What's my administrative password (you must set this for static rendering)?
-$static_password = "";
+$static_dir = ".";
 
 # What flavours should I generate statically?
 @static_flavours = qw/html rss/;
 
 # Should I statically generate individual entries?
 # 0 = no, 1 = yes
-$static_entries = 0;
+$static_entries = 1;
 
 # --------------------------------
 
-use vars qw! $version $blog_title $blog_description $blog_language $datadir $url %template $template $depth $num_entries $file_extension $default_flavour $static_or_dynamic $plugin_dir $plugin_state_dir @plugins %plugins $static_dir $static_password @static_flavours $static_entries $path_info $path_info_yr $path_info_mo $path_info_da $path_info_mo_num $flavour $static_or_dynamic %month2num @num2month $interpolate $entries $output $header $show_future_entries %files %indexes %others !;
+use vars qw! $version $blog_title $blog_description $blog_language $datadir $url %template $template $depth $num_entries $file_extension $default_flavour $static_or_dynamic $plugin_dir $plugin_state_dir @plugins %plugins $static_dir @static_flavours $static_entries $path_info $path_info_yr $path_info_mo $path_info_da $path_info_mo_num $flavour $static_or_dynamic %month2num @num2month $interpolate $entries $output $header $show_future_entries %files %indexes %others !;
 
 use strict;
 use FileHandle;
@@ -96,8 +93,8 @@ $depth and $depth += ($datadir =~ tr[/][]) - 1;
 # Global variable to be used in head/foot.{flavour} templates
 $path_info = '';
 
-$static_or_dynamic = (!$ENV{GATEWAY_INTERFACE} and param('-password') and $static_password and param('-password') eq $static_password) ? 'static' : 'dynamic';
-$static_or_dynamic eq 'dynamic' and param(-name=>'-quiet', -value=>1);
+# Always static
+$static_or_dynamic = 'static';
 
 # Path Info Magic
 # Take a gander at HTTP's PATH_INFO for optional blog name, archive yr/mo/day
@@ -224,8 +221,9 @@ my ($files, $indexes, $others) = &$entries();
 # Plugins: Filter
 foreach my $plugin ( @plugins ) { $plugins{$plugin} > 0 and $plugin->can('filter') and $entries = $plugin->filter(\%files, \%others) }
 
-# Static
-if (!$ENV{GATEWAY_INTERFACE} and param('-password') and $static_password and param('-password') eq $static_password) {
+# Always Static
+
+{
 
   param('-quiet') or print "Blosxom is generating static index pages...\n";
 
@@ -254,16 +252,6 @@ if (!$ENV{GATEWAY_INTERFACE} and param('-password') and $static_password and par
       }
     }
   }
-}
-
-# Dynamic
-else {
-  my $content_type = (&$template($path_info,'content_type',$flavour));
-  $content_type =~ s!\n.*!!s;
-
-  $header = {-type=>$content_type};
-
-  print generate('dynamic', $path_info, "$path_info_yr/$path_info_mo_num/$path_info_da", $flavour, $content_type);
 }
 
 # Plugins: End
@@ -405,9 +393,6 @@ sub generate {
 
   } # End skip
 
-  # Finally, add the header, if any and running dynamically
-  $static_or_dynamic eq 'dynamic' and $header and $output = header($header) . $output;
-  
   $output;
 }
 
