@@ -1,4 +1,7 @@
-#!/usr/bin/perl
+#!perl
+
+# Rael Dornfest's Blosxom modified by Jeffrey Kegler
+# Original credits follow:
 
 # Blosxom
 # Author: Rael Dornfest <rael@oreilly.com>
