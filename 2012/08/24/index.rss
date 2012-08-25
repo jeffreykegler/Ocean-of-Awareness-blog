@@ -28,15 +28,12 @@ and Blosxom's implementation of it.
 This DSL is kept very simple.
 The intent is that the reader will build
 on it.
-Having features is not so important as
-allowing the user to see how features can be
-added.
 &lt;h3&gt;A calculator&lt;/h3&gt;
 This DSL is a calculator.
-Calculators make familiar example,
-and, after all, any tool you build this
-DSL will probably find it useful to allow the
-user to arithmetic.</description>
+Calculators are a familiar example.
+And, after all, whatever tool you build this
+DSL into, it will probably find be useful to have
+a calculator as part of it.</description>
   </item>
   </channel>
 </rss>
