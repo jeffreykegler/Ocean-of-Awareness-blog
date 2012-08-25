@@ -10,9 +10,9 @@
     <language>en</language>
 
   <item>
-    <title>Domain-Specific Languages made simple</title>
+    <title>&lt;h2&gt;Domain-Specific Languages made simple&lt;/h2&gt;</title>
     <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog/2012/08/24#dsl</link>
-    <description>&lt;h2&gt;Writing your own language&lt;/h2&gt;
+    <description>&lt;h3&gt;Writing your own language&lt;/h3&gt;
 &lt;p&gt;Creating your own languages has been A Big Deal(tm).
 What if you could create a simple language in hours or minutes?
 But there has been a serious obstacle to this up to now.
@@ -31,7 +31,7 @@ on it.
 Having features is not so important as
 allowing the user to see how features can be
 added.
-&lt;h2&gt;A calculator&lt;/h2&gt;
+&lt;h3&gt;A calculator&lt;/h3&gt;
 This DSL is a calculator.
 Calculators make familiar example,
 and, after all, any tool you build this

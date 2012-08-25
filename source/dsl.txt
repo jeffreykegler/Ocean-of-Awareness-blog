@@ -1,5 +1,5 @@
-Domain-Specific Languages made simple
-<h2>Writing your own language</h2>
+<h2>Domain-Specific Languages made simple</h2>
+<h3>Writing your own language</h3>
 <p>Creating your own languages has been A Big Deal(tm).
 What if you could create a simple language in hours or minutes?
 But there has been a serious obstacle to this up to now.
@@ -18,7 +18,7 @@ on it.
 Having features is not so important as
 allowing the user to see how features can be
 added.
-<h2>A calculator</h2>
+<h3>A calculator</h3>
 This DSL is a calculator.
 Calculators make familiar example,
 and, after all, any tool you build this
