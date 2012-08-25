@@ -1,0 +1,25 @@
+package analytics;
+
+sub start { 
+  return 1;
+}
+
+sub foot {
+  my ($pkg, $dir, $footref, $date) = @_;
+
+  $$footref = <<'END_OF_SCRIPT' . $$footref;
+<script src="javascripts/scale.fix.js"></script>
+              <script type="text/javascript">
+            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+          </script>
+          <script type="text/javascript">
+            try {
+              var pageTracker = _gat._getTracker("UA-33430331-1");
+            pageTracker._trackPageview();
+            } catch(err) {}
+          </script>
+END_OF_SCRIPT
+}
+
+1;
