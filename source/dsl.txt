@@ -1,0 +1,3 @@
+Domain-Specific Languages made simple
+<p>Creating your own languages has been A Big Deal(tm).
+What if you could create a simple language in hours or minutes?

@@ -10,6 +10,18 @@
 
 package blosxom;
 
+use 5.010;
+use strict;
+use FileHandle;
+use File::Find;
+use File::Spec;
+use File::stat;
+use Time::localtime;
+use CGI qw/:standard :netscape/;
+
+use vars
+    qw! $version $blog_title $blog_description $blog_language $datadir $url %template $template $depth $num_entries $file_extension $default_flavour $static_or_dynamic $plugin_dir $plugin_state_dir @plugins %plugins $static_dir @static_flavours $static_entries $path_info $path_info_yr $path_info_mo $path_info_da $path_info_mo_num $flavour $static_or_dynamic %month2num @num2month $interpolate $entries $output $header $show_future_entries %files %indexes %others !;
+
 # --- Configurable variables -----
 
 # What's this blog's title?
@@ -22,7 +34,7 @@ $blog_description = "Yet another Blosxom weblog.";
 $blog_language = "en";
 
 # Where are this blog's entries kept?
-$datadir = "source";
+$datadir = File::Spec->catdir( File::Spec->curdir(), 'source' );
 
 # What's my preferred base URL for this blog (leave blank for automatic)?
 $url = "";
@@ -55,7 +67,7 @@ $plugin_state_dir = "$plugin_dir/state";
 # --- Static Rendering -----
 
 # Where are this blog's static files to be created?
-$static_dir = ".";
+$static_dir = File::Spec->curdir();
 
 # What flavours should I generate statically?
 @static_flavours = qw/html rss/;
@@ -65,16 +77,6 @@ $static_dir = ".";
 $static_entries = 1;
 
 # --------------------------------
-
-use vars
-    qw! $version $blog_title $blog_description $blog_language $datadir $url %template $template $depth $num_entries $file_extension $default_flavour $static_or_dynamic $plugin_dir $plugin_state_dir @plugins %plugins $static_dir @static_flavours $static_entries $path_info $path_info_yr $path_info_mo $path_info_da $path_info_mo_num $flavour $static_or_dynamic %month2num @num2month $interpolate $entries $output $header $show_future_entries %files %indexes %others !;
-
-use strict;
-use FileHandle;
-use File::Find;
-use File::stat;
-use Time::localtime;
-use CGI qw/:standard :netscape/;
 
 $version = "2.0";
 
@@ -210,7 +212,8 @@ sub load_template {
 $entries = sub {
     my ( %files, %indexes, %others );
     find(
-        sub {
+	{ no_chdir => 1, 
+	  wanted => sub {
             my $d;
             my $curr_depth = $File::Find::dir =~ tr[/][];
             return if $depth and $curr_depth > $depth;
@@ -221,7 +224,9 @@ $entries = sub {
                 =~ m!^$datadir/(?:(.*)/)?(.+)\.$file_extension$!
 
                 # not an index, .file, and is readable
-                and $2 ne 'index' and $2 !~ /^\./ and ( -r $File::Find::name )
+                and $2 ne 'index'
+		and $2 !~ /^\./
+		and ( -r $File::Find::name )
                 )
             {
 
@@ -258,6 +263,8 @@ $entries = sub {
                     stat($File::Find::name)->mtime;
             } ## end else [ if ( $File::Find::name =~ ...)]
         },
+	},
+
         $datadir
     );
 

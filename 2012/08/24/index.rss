@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<!-- name="generator" content="blosxom/2.0" -->
+<!DOCTYPE rss PUBLIC "-//Netscape Communications//DTD RSS 0.91//EN" "http://my.netscape.com/publish/formats/rss-0.91.dtd">
+
+<rss version="0.91">
+  <channel>
+    <title>My Weblog   </title>
+    <link>http://localhost</link>
+    <description>Yet another Blosxom weblog.</description>
+    <language>en</language>
+
+  <item>
+    <title>Domain-Specific Languages made simple</title>
+    <link>http://localhost/2012/08/24#dsl</link>
+    <description>&lt;p&gt;Creating your own languages has been A Big Deal(tm).
+What if you could create a simple language in hours or minutes?</description>
+  </item>
+  </channel>
+</rss>
