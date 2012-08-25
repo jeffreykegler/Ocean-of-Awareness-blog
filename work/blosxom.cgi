@@ -59,7 +59,7 @@ $show_future_entries = 0;
 # --- Plugins (Optional) -----
 
 # Where are my plugins kept?
-$plugin_dir = "plugin";
+$plugin_dir = "plugins";
 
 # Where should my modules keep their state information?
 $plugin_state_dir = "$plugin_dir/state";
@@ -74,7 +74,7 @@ $static_dir = File::Spec->curdir();
 
 # Should I statically generate individual entries?
 # 0 = no, 1 = yes
-$static_entries = 1;
+$static_entries = 0;
 
 # --------------------------------
 
