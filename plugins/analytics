@@ -1,13 +1,14 @@
 package analytics;
 
-sub start { 
-  return 1;
+use 5.010;
+use strict;
+use warnings;
+
+sub start {
+    return 1;
 }
 
-sub foot {
-  my ($pkg, $dir, $footref, $date) = @_;
-
-  $$footref = <<'END_OF_SCRIPT' . $$footref;
+my $analytics_script = <<'END_OF_SCRIPT';
 <script src="javascripts/scale.fix.js"></script>
               <script type="text/javascript">
             var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
@@ -20,6 +21,12 @@ sub foot {
             } catch(err) {}
           </script>
 END_OF_SCRIPT
-}
+
+sub foot {
+    my ( $pkg, $dir, $footref, $date ) = @_;
+    $$footref
+        =~ s{ [<] [/] body \s* [>]}{$analytics_script . "</body>\n"}exms;
+    1;
+} ## end sub foot
 
 1;
