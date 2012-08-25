@@ -12,8 +12,31 @@
   <item>
     <title>Domain-Specific Languages made simple</title>
     <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog/2012/08/24#dsl</link>
-    <description>&lt;p&gt;Creating your own languages has been A Big Deal(tm).
-What if you could create a simple language in hours or minutes?</description>
+    <description>&lt;h2&gt;Writing your own language&lt;/h2&gt;
+&lt;p&gt;Creating your own languages has been A Big Deal(tm).
+What if you could create a simple language in hours or minutes?
+But there has been a serious obstacle to this up to now.
+No practical parser &quot;just parsed&quot; BNF.
+With Marpa, that restriction is lifted.
+&lt;p&gt;
+In this post, I will describe
+a small, sample Marpa domain-specific language (DSL).
+In designing it I am inspired by Mark Dominus's
+description of the
+&quot;Worse is Better&quot; philosophy,
+and Blosxom's implementation of it.
+This DSL is kept very simple.
+The intent is that the reader will build
+on it.
+Having features is not so important as
+allowing the user to see how features can be
+added.
+&lt;h2&gt;A calculator&lt;/h2&gt;
+This DSL is a calculator.
+Calculators make familiar example,
+and, after all, any tool you build this
+DSL will probably find it useful to allow the
+user to arithmetic.</description>
   </item>
   </channel>
 </rss>
