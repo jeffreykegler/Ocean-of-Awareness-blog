@@ -25,10 +25,10 @@ use vars
 # --- Configurable variables -----
 
 # What's this blog's title?
-$blog_title = "My Weblog";
+$blog_title = "Ocean of Awareness";
 
 # What's this blog's description (for outgoing RSS feed)?
-$blog_description = "Yet another Blosxom weblog.";
+$blog_description = "Ocean of Awareness.";
 
 # What's this blog's primary language (for outgoing RSS feed)?
 $blog_language = "en";
@@ -37,7 +37,7 @@ $blog_language = "en";
 $datadir = File::Spec->catdir( File::Spec->curdir(), 'source' );
 
 # What's my preferred base URL for this blog (leave blank for automatic)?
-$url = "";
+$url = 'http://jeffreykegler.github.com/Ocean-of-Awareness-blog/';
 
 # Should I stick only to the datadir for items or travel down the
 # directory hierarchy looking for items?  If so, to what depth?
@@ -45,7 +45,7 @@ $url = "";
 $depth = 0;
 
 # How many entries should I show on the home page?
-$num_entries = 40;
+$num_entries = 10;
 
 # What file extension signifies a blosxom entry?
 $file_extension = "txt";
