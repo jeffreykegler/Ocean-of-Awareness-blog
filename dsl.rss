@@ -4,14 +4,14 @@
 
 <rss version="0.91">
   <channel>
-    <title>My Weblog   </title>
-    <link>http://localhost</link>
-    <description>Yet another Blosxom weblog.</description>
+    <title>Ocean of Awareness   </title>
+    <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog</link>
+    <description>Ocean of Awareness.</description>
     <language>en</language>
 
   <item>
     <title>Domain-Specific Languages made simple</title>
-    <link>http://localhost/2012/08/24#dsl</link>
+    <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog/2012/08/24#dsl</link>
     <description>&lt;p&gt;Creating your own languages has been A Big Deal(tm).
 What if you could create a simple language in hours or minutes?</description>
   </item>
