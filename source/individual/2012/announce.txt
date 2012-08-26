@@ -1,0 +1,30 @@
+A new home for the Ocean of Awareness blog
+The folks at <a href="blogs.perl.org">blogs.perl.org</a>
+has provided
+my Ocean of Awareness blog
+a wonderful home for some time.
+But the call of static blogging is becoming impossible to resist.
+A <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/">
+github based site</a>
+will, most likely, soon
+become the new home
+of the Ocean of Awareness blog.
+<p>
+One consideration still up in the air is comments on the blog.
+For some bloggers, the loss of comments has been one of the
+attractions of static blogging,
+but comments have been valuable to me.
+I've heard of Disqus being used for comments on static blogs,
+and I'm looking into that.
+<p>
+For those who want to comment
+in the meantime,
+if the post is Marpa-related,
+<a href="https://groups.google.com/forum/?hl=en&fromgroups#%21forum/marpa-parser">
+the Marpa mailing list</a>
+is a good place to comment.
+Also,
+I will continue to dual-post for some time,
+and have not yet frozen comments on the versions of the
+post at
+<a href="blogs.perl.org">blogs.perl.org</a>.

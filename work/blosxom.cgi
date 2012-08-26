@@ -59,7 +59,7 @@ $static_dir = File::Spec->curdir();
 
 # Should I statically generate individual entries?
 # 0 = no, 1 = yes
-$static_entries = 0;
+$static_entries = 1;
 
 # --------------------------------
 
@@ -558,7 +558,7 @@ package blosxom;
 __DATA__
 html content_type text/html
 html head <html><head><link rel="alternate" type="type="application/rss+xml" title="RSS" href="$url/index.rss" /><title>$blog_title $path_info_da $path_info_mo $path_info_yr</title></head><body><center><font size="+3">$blog_title</font><br />$path_info_da $path_info_mo $path_info_yr</center><p />
-html story <p><a name="$fn"><b>$title</b></a><br />$body<br /><br />posted at: $ti | path: <a href="$url$path">$path</a> | <a href="$url/$yr/$mo_num/$da#$fn">permanent link to this entry</a></p>\n
+html story <p><a name="$fn"><b>$title</b></a><br />$body<br /><br />posted at: $ti | path: <a href="$url$path">$path</a> | <a href="$url/$yr/$mo_num/$da#$fn">direct link to this entry</a></p>\n
 html date <h3>$dw, $da $mo $yr</h3>\n
 html foot <p /><center><a href="http://www.blosxom.com/"><img src="http://www.blosxom.com/images/pb_blosxom.gif" border="0" /></a></body></html>
 rss content_type text/xml
