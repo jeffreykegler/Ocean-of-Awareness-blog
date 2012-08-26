@@ -13,7 +13,6 @@ sub story {
       my $individual_path = $path . '/' . $fn . '.html';
       $individual_path =~ s{ \A [/]* }{}xms;
       *blosxom::individual_path = \$individual_path;
-      say 'individual_path: ', $blosxom::individual_path ;
     1;
 } ## end sub foot
 
