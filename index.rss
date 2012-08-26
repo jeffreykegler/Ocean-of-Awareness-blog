@@ -10,8 +10,18 @@
     <language>en</language>
 
   <item>
+    <title>A new home for the Ocean of Awareness blog</title>
+    <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog/2012/08/25#announce</link>
+    <description>&lt;a href=&quot;blogs.perl.org&quot;&gt;blogs.perl.org&lt;/a&gt;
+has been a wonderful home for my
+Ocean of Awareness blog.
+But the call of static blogging is becoming impossible to resist.
+This may become the new home
+of the Ocean of Awareness blog.</description>
+  </item>
+  <item>
     <title>DRAFT: Domain-Specific Languages made simple</title>
-    <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog/2012/08/24#dsl</link>
+    <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog/2012/08/25#dsl</link>
     <description>&lt;h3&gt;Writing your own language&lt;/h3&gt;
 &lt;p&gt;Creating your own languages has been A Big Deal(tm).
 What if you could create a simple language in hours or minutes?
