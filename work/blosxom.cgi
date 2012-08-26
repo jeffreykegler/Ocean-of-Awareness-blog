@@ -102,30 +102,29 @@ $path_info = '';
 
 $static_or_dynamic = 'static';
 
-# Path Info Magic
-# Take a gander at HTTP's PATH_INFO for optional blog name, archive yr/mo/day
-my @path_info = split m{/}, path_info() || param('path'); 
-shift @path_info;
+# Path Info Magic deleted
+# my @path_info = split m{/}, path_info() || param('path'); 
+# shift @path_info;
 
-while ($path_info[0] and $path_info[0] =~ /^[a-zA-Z].*$/ and $path_info[0] !~ /(.*)\.(.*)/) { $path_info .= '/' . shift @path_info; }
+# while ($path_info[0] and $path_info[0] =~ /^[a-zA-Z].*$/ and $path_info[0] !~ /(.*)\.(.*)/) { $path_info .= '/' . shift @path_info; }
 
 # Flavour specified by ?flav={flav} or index.{flav}
 $flavour = '';
 
-if ( $path_info[$#path_info] =~ /(.+)\.(.+)$/ ) {
-  $flavour = $2;
-  $1 ne 'index' and $path_info .= "/$1.$2";
-  pop @path_info;
-} else {
-  $flavour = param('flav') || $default_flavour;
-}
+# if ( $path_info[$#path_info] =~ /(.+)\.(.+)$/ ) {
+  # $flavour = $2;
+  # $1 ne 'index' and $path_info .= "/$1.$2";
+  # pop @path_info;
+# } else {
+  # $flavour = param('flav') || $default_flavour;
+# }
 
 # Strip spurious slashes
-$path_info =~ s!(^/*)|(/*$)!!g;
+# $path_info =~ s!(^/*)|(/*$)!!g;
 
 # Date fiddling
-($path_info_yr,$path_info_mo,$path_info_da) = @path_info;
-$path_info_mo_num = $path_info_mo ? ( $path_info_mo =~ /\d{2}/ ? $path_info_mo:  ($month2num{ucfirst(lc $path_info_mo)} || undef) ) : undef;
+# ($path_info_yr,$path_info_mo,$path_info_da) = @path_info;
+# $path_info_mo_num = $path_info_mo ? ( $path_info_mo =~ /\d{2}/ ? $path_info_mo:  ($month2num{ucfirst(lc $path_info_mo)} || undef) ) : undef;
 
 # Define standard template subroutine, plugin-overridable at Plugins: Template
 $template = 
