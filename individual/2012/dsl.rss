@@ -209,15 +209,5 @@ while Marpa::XS is in a stable, bug-fix only release.
 On the other hand Marpa::R2 is somewhat faster here,
 and its reporting of parse-time problems is cleaner.</description>
   </item>
-  <item>
-    <title>A new home for the Ocean of Awareness blog</title>
-    <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog/2012/08/26#announce</link>
-    <description>&lt;a href=&quot;blogs.perl.org&quot;&gt;blogs.perl.org&lt;/a&gt;
-has been a wonderful home for my
-Ocean of Awareness blog.
-But the call of static blogging is becoming impossible to resist.
-This may become the new home
-of the Ocean of Awareness blog.</description>
-  </item>
   </channel>
 </rss>

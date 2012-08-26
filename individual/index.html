@@ -1,43 +1,4 @@
-<html>
-<head>
-<link rel="alternate" type="type="application/rss+xml" title="RSS" href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/index.rss" />
-<title>Ocean of Awareness   </title>
-<style type="text/css">
-   strong {font-weight: 700;}
-</style>
-</head>
-<body>
-<div id="header"
-  style="color:white;background-color:#38B0C0;padding:1em;clear:left;text-align:center;">
-<h1>Ocean of Awareness</h1>
-  
-</div>
-  <div id="menu" style="margin:0;padding:1em;width:100px;float:left;">
-  <h2>Jeffrey Kegler's blog</h2>
-  <p>About Marpa, his new parsing algorithm,
-    and other topics of interest</p>
-  </div>
-  <div id="content" style="margin-left:190px;border-left:2px solid #38B0C0;padding:1em;">
-<h3>Sat, 25 Aug 2012</h3>
-<br />
-<center><a name="announce"> <h2>A new home for the Ocean of Awareness blog</h2> </a>
-</center>
-<a href="blogs.perl.org">blogs.perl.org</a>
-has been a wonderful home for my
-Ocean of Awareness blog.
-But the call of static blogging is becoming impossible to resist.
-This may become the new home
-of the Ocean of Awareness blog.
-<br />
-<p>posted at: 17:22 |
-path: <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog"></a> |
-<a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/2012/08/25#announce">permanent link to this entry</a>
-</p>
-<div style="margin:0;height:20px;font-size:xx-large;color:#38B0C0;padding:1px;text-align:center;">
-&bull;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-&bull;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-&bull;
-</div>
+<html><head><link rel="alternate" type="type="application/rss+xml" title="RSS" href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/index.rss" /><title>Ocean of Awareness   </title></head><body><center><font size="+3">Ocean of Awareness</font><br />  </center><p /><h3>Sun, 26 Aug 2012</h3>
 <br />
 <center><a name="dsl"> <h2>DRAFT: Domain-Specific Languages made simple</h2> </a>
 </center>
@@ -112,8 +73,39 @@ my $grammar = Marpa::R2::Grammar->new(
     }
 );
 $grammar->precompute;
+</div>
 
-# Order matters !!
+<h2>The Semantics</h2>
+<p>The semantics for this calculator are somewhat interesting,
+but this post is about how to get <strong>your</strong> interesting
+semantics out easily and quickly in the of form a powerful
+language specifically designed for it.
+This interested in the semantics of my little caculator
+can look at
+the Github git.
+</p>
+<div style="white-space:pre;overflow:auto;font-family:monospace;margin:0;padding:1em 0 1em 2.8em;">
+</div>
+
+<div style="white-space:pre;overflow:auto;font-family:monospace;margin:0;padding:1em 0 1em 2.8em;">
+    my $rec = Marpa::R2::Recognizer->new( { grammar => $grammar } );
+</div>
+
+<h2>The lexer</h2>
+<p>So far I have not created a lexer to go with Marpa,
+for several reasons.
+One of the most important is that it would not add
+value -- Perl regex engine is a fine lexer,
+and one that is easy to customize.
+This second show a way of doing lexing with the
+Perl regex engine.
+<p>The calculator's is table-driven.
+The table is quite simple -- it's an array of 
+of two element arrays.
+In the inner arrays, the first element is the same name,
+as specified in the grammar,
+and the second is a regex which matches it.
+<div style="white-space:pre;overflow:auto;font-family:monospace;margin:0;padding:1em 0 1em 2.8em;">
 my @terminals = (
     [ q{'reduce'}, qr/reduce\b/xms ],
     [ 'NUM',  qr/\d+/xms ],
@@ -129,31 +121,26 @@ my @terminals = (
     [ q{')'}, qr/[)]/xms ],
     [ q{','}, qr/[,]/xms ],
 );
-
-our $DEBUG = 1;
-
-my %binop_closure = (
-    '*' => sub { $_[0] * $_[1] },
-    '/' => sub { $_[0] / $_[1] },
-    '+' => sub { $_[0] + $_[1] },
-    '-' => sub { $_[0] - $_[1] },
-    '^' => sub { $_[0] ** $_[1] },
-);
-
 </div>
-<h2>The Semantics</h2>
-<p>The semantics for this calculator are somewhat interesting,
-but this post is about <strong>your</strong> interesting
-semantics, not mine.
-So I'll move on.
 <p>
+The reader will note that I am one of those who specify <tt>xms</tt> for every
+regex.
+It is not important in this application, but order matters if you have
+terminals where one can be the prefix of another, for example,
+<tt>==</tt> and <tt>=</tt>.
+Note that the symbol names preserve the surrounding single quotes.
+This is convenient for processing, bu it also makes diagnostic message involving
+those symbols more comprehensible.
+Finally, note that the <tt>reduce</tt> operator is required to end on a word boundary.
+<p>
+The next code fragment is the tokenizing engine.
+This looks daunting until you see that 12 lines of the intermost loop are
+code for a very specific and comprehensive error message.
+One of Marpa's greatest improvements over previous
+parsers is that, when a parse fails,
+Marpa can tell why in considerable detail.
+It makes sense to take advantage of that ability.
 <div style="white-space:pre;overflow:auto;font-family:monospace;margin:0;padding:1em 0 1em 2.8em;">
-
-sub calculate {
-    my ($string) = @_;
-    my $rec = Marpa::R2::Recognizer->new( { grammar => $grammar } );
-
-    %symbol_table = ();
 
     my $length = length $string;
     pos $string = 0;
@@ -186,6 +173,12 @@ sub calculate {
             q{", position }, pos $string;
     } ## end TOKEN: while ( pos $string < $length )
 
+</div>
+
+<h2>Evaluating the parse</h2>
+<p>
+<div style="white-space:pre;overflow:auto;font-family:monospace;margin:0;padding:1em 0 1em 2.8em;">
+
     $rec->end_input;
 
     my $value_ref = $rec->value;
@@ -196,31 +189,8 @@ sub calculate {
     }
     return ${$value_ref};
 
-} ## end sub calculate
-
-sub report_calculation {
-    my ($string) = @_;
-    my $output = qq{Input: "$string"\n};
-    my $result = calculate($string);
-    $result = join q{,}, @{$result} if ref $result eq 'ARRAY';
-    $output .= "  Parse: $result\n";
-    for my $symbol (sort keys %symbol_table) {
-        $output .= qq{"$symbol" = "} . $symbol_table{$symbol} . qq{"\n};
-    }
-    return $output;
-}
-
-if (@ARGV) {
-    my $result = calculate(join ';', grep { /\S/ } @ARGV);
-    $result = join q{,}, @{$result} if ref $result eq 'ARRAY';
-    say "Result is ", $result;
-    for my $symbol (sort keys %symbol_table) {
-        say qq{"$symbol" = "} . $symbol_table{$symbol} . qq{"};
-    }
-    exit 0;
-}
-
 </div>
+
 <h2>Alernatives</h2>
 <p>This calculator uses
 Marpa::R2.
@@ -229,20 +199,35 @@ while Marpa::XS is in a stable, bug-fix only release.
 On the other hand Marpa::R2 is somewhat faster here,
 and its reporting of parse-time problems is cleaner.
 <br />
-<p>posted at: 06:25 |
-path: <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog"></a> |
-<a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/2012/08/25#dsl">permanent link to this entry</a>
+<p>posted at: 09:20 |
+path: <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012">/individual/2012</a> |
+<a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/2012/08/26#dsl">direct link to this entry</a>
 </p>
 <div style="margin:0;height:20px;font-size:xx-large;color:#38B0C0;padding:1px;text-align:center;">
 &bull;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 &bull;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 &bull;
 </div>
+<br />
+<center><a name="announce"> <h2>A new home for the Ocean of Awareness blog</h2> </a>
+</center>
+<a href="blogs.perl.org">blogs.perl.org</a>
+has been a wonderful home for my
+Ocean of Awareness blog.
+But the call of static blogging is becoming impossible to resist.
+This may become the new home
+of the Ocean of Awareness blog.
+<br />
+<p>posted at: 09:20 |
+path: <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012">/individual/2012</a> |
+<a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/2012/08/26#announce">direct link to this entry</a>
+</p>
+<div style="margin:0;height:20px;font-size:xx-large;color:#38B0C0;padding:1px;text-align:center;">
+&bull;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&bull;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&bull;
 </div>
-</div>
-<div id="footer" style="color:white;background-color:#38B0C0;clear:left;padding:1em;">
-</div>
-<script src="javascripts/scale.fix.js"></script>
+<p /><center><a href="http://www.blosxom.com/"><img src="http://www.blosxom.com/images/pb_blosxom.gif" border="0" /></a><script src="javascripts/scale.fix.js"></script>
               <script type="text/javascript">
             var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
             document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));

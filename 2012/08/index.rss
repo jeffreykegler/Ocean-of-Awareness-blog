@@ -10,18 +10,8 @@
     <language>en</language>
 
   <item>
-    <title>A new home for the Ocean of Awareness blog</title>
-    <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog/2012/08/25#announce</link>
-    <description>&lt;a href=&quot;blogs.perl.org&quot;&gt;blogs.perl.org&lt;/a&gt;
-has been a wonderful home for my
-Ocean of Awareness blog.
-But the call of static blogging is becoming impossible to resist.
-This may become the new home
-of the Ocean of Awareness blog.</description>
-  </item>
-  <item>
     <title>DRAFT: Domain-Specific Languages made simple</title>
-    <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog/2012/08/25#dsl</link>
+    <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog/2012/08/26#dsl</link>
     <description>&lt;h2&gt;Writing your own language&lt;/h2&gt;
 &lt;p&gt;Creating your own languages has been A Big Deal(tm).
 What if you could create a simple language in hours or minutes?
@@ -93,8 +83,39 @@ my $grammar = Marpa::R2::Grammar-&gt;new(
     }
 );
 $grammar-&gt;precompute;
+&lt;/div&gt;
 
-# Order matters !!
+&lt;h2&gt;The Semantics&lt;/h2&gt;
+&lt;p&gt;The semantics for this calculator are somewhat interesting,
+but this post is about how to get &lt;strong&gt;your&lt;/strong&gt; interesting
+semantics out easily and quickly in the of form a powerful
+language specifically designed for it.
+This interested in the semantics of my little caculator
+can look at
+the Github git.
+&lt;/p&gt;
+&lt;div style=&quot;white-space:pre;overflow:auto;font-family:monospace;margin:0;padding:1em 0 1em 2.8em;&quot;&gt;
+&lt;/div&gt;
+
+&lt;div style=&quot;white-space:pre;overflow:auto;font-family:monospace;margin:0;padding:1em 0 1em 2.8em;&quot;&gt;
+    my $rec = Marpa::R2::Recognizer-&gt;new( { grammar =&gt; $grammar } );
+&lt;/div&gt;
+
+&lt;h2&gt;The lexer&lt;/h2&gt;
+&lt;p&gt;So far I have not created a lexer to go with Marpa,
+for several reasons.
+One of the most important is that it would not add
+value -- Perl regex engine is a fine lexer,
+and one that is easy to customize.
+This second show a way of doing lexing with the
+Perl regex engine.
+&lt;p&gt;The calculator's is table-driven.
+The table is quite simple -- it's an array of 
+of two element arrays.
+In the inner arrays, the first element is the same name,
+as specified in the grammar,
+and the second is a regex which matches it.
+&lt;div style=&quot;white-space:pre;overflow:auto;font-family:monospace;margin:0;padding:1em 0 1em 2.8em;&quot;&gt;
 my @terminals = (
     [ q{'reduce'}, qr/reduce\b/xms ],
     [ 'NUM',  qr/\d+/xms ],
@@ -110,31 +131,26 @@ my @terminals = (
     [ q{')'}, qr/[)]/xms ],
     [ q{','}, qr/[,]/xms ],
 );
-
-our $DEBUG = 1;
-
-my %binop_closure = (
-    '*' =&gt; sub { $_[0] * $_[1] },
-    '/' =&gt; sub { $_[0] / $_[1] },
-    '+' =&gt; sub { $_[0] + $_[1] },
-    '-' =&gt; sub { $_[0] - $_[1] },
-    '^' =&gt; sub { $_[0] ** $_[1] },
-);
-
 &lt;/div&gt;
-&lt;h2&gt;The Semantics&lt;/h2&gt;
-&lt;p&gt;The semantics for this calculator are somewhat interesting,
-but this post is about &lt;strong&gt;your&lt;/strong&gt; interesting
-semantics, not mine.
-So I'll move on.
 &lt;p&gt;
+The reader will note that I am one of those who specify &lt;tt&gt;xms&lt;/tt&gt; for every
+regex.
+It is not important in this application, but order matters if you have
+terminals where one can be the prefix of another, for example,
+&lt;tt&gt;==&lt;/tt&gt; and &lt;tt&gt;=&lt;/tt&gt;.
+Note that the symbol names preserve the surrounding single quotes.
+This is convenient for processing, bu it also makes diagnostic message involving
+those symbols more comprehensible.
+Finally, note that the &lt;tt&gt;reduce&lt;/tt&gt; operator is required to end on a word boundary.
+&lt;p&gt;
+The next code fragment is the tokenizing engine.
+This looks daunting until you see that 12 lines of the intermost loop are
+code for a very specific and comprehensive error message.
+One of Marpa's greatest improvements over previous
+parsers is that, when a parse fails,
+Marpa can tell why in considerable detail.
+It makes sense to take advantage of that ability.
 &lt;div style=&quot;white-space:pre;overflow:auto;font-family:monospace;margin:0;padding:1em 0 1em 2.8em;&quot;&gt;
-
-sub calculate {
-    my ($string) = @_;
-    my $rec = Marpa::R2::Recognizer-&gt;new( { grammar =&gt; $grammar } );
-
-    %symbol_table = ();
 
     my $length = length $string;
     pos $string = 0;
@@ -167,6 +183,12 @@ sub calculate {
             q{&quot;, position }, pos $string;
     } ## end TOKEN: while ( pos $string &lt; $length )
 
+&lt;/div&gt;
+
+&lt;h2&gt;Evaluating the parse&lt;/h2&gt;
+&lt;p&gt;
+&lt;div style=&quot;white-space:pre;overflow:auto;font-family:monospace;margin:0;padding:1em 0 1em 2.8em;&quot;&gt;
+
     $rec-&gt;end_input;
 
     my $value_ref = $rec-&gt;value;
@@ -177,31 +199,8 @@ sub calculate {
     }
     return ${$value_ref};
 
-} ## end sub calculate
-
-sub report_calculation {
-    my ($string) = @_;
-    my $output = qq{Input: &quot;$string&quot;\n};
-    my $result = calculate($string);
-    $result = join q{,}, @{$result} if ref $result eq 'ARRAY';
-    $output .= &quot;  Parse: $result\n&quot;;
-    for my $symbol (sort keys %symbol_table) {
-        $output .= qq{&quot;$symbol&quot; = &quot;} . $symbol_table{$symbol} . qq{&quot;\n};
-    }
-    return $output;
-}
-
-if (@ARGV) {
-    my $result = calculate(join ';', grep { /\S/ } @ARGV);
-    $result = join q{,}, @{$result} if ref $result eq 'ARRAY';
-    say &quot;Result is &quot;, $result;
-    for my $symbol (sort keys %symbol_table) {
-        say qq{&quot;$symbol&quot; = &quot;} . $symbol_table{$symbol} . qq{&quot;};
-    }
-    exit 0;
-}
-
 &lt;/div&gt;
+
 &lt;h2&gt;Alernatives&lt;/h2&gt;
 &lt;p&gt;This calculator uses
 Marpa::R2.
@@ -209,6 +208,16 @@ Marpa::R2 is beta,
 while Marpa::XS is in a stable, bug-fix only release.
 On the other hand Marpa::R2 is somewhat faster here,
 and its reporting of parse-time problems is cleaner.</description>
+  </item>
+  <item>
+    <title>A new home for the Ocean of Awareness blog</title>
+    <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog/2012/08/26#announce</link>
+    <description>&lt;a href=&quot;blogs.perl.org&quot;&gt;blogs.perl.org&lt;/a&gt;
+has been a wonderful home for my
+Ocean of Awareness blog.
+But the call of static blogging is becoming impossible to resist.
+This may become the new home
+of the Ocean of Awareness blog.</description>
   </item>
   </channel>
 </rss>
