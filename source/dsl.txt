@@ -1,5 +1,5 @@
 DRAFT: Domain-Specific Languages made simple
-<h3>Writing your own language</h3>
+<h2>Writing your own language</h2>
 <p>Creating your own languages has been A Big Deal(tm).
 What if you could create a simple language in hours or minutes?
 But there has been a serious obstacle to this up to now.
@@ -15,9 +15,183 @@ and Blosxom's implementation of it.
 This DSL is kept very simple.
 The intent is that the reader will build
 on it.
-<h3>A calculator</h3>
+<h2>A calculator</h2>
+<p>
 This DSL is a calculator.
 Calculators are a familiar example.
 And, after all, whatever tool you build this
 DSL into, it will probably be useful
 to have a calculator as part of it.
+What follows contains only the parts of the code
+relevant to the discussion.
+The full code is a Github gist.
+<p>
+<h2>The grammar</h2>
+<p>Marpa allows you to build the grammar in a clean, sensible structure,
+with a separate grammar, tokenize and semantics.
+If you're used to doing parsing with regexes or recursive descent,
+you expect to see them mixed together and this cleaner approach make
+may you uneasy --
+not without reason, since in the past the tools that used
+it were painful to use and often would not deliver.
+<p>Here's the grammar for our calculator.
+<div style="white-space:pre;overflow:auto;font-family:monospace;margin:0;padding:1em 0 1em 2.8em;">
+
+require './OP2.pm';    ## no critic (Modules::RequireBarewordIncludes)
+
+my $rules = Marpa::Demo::OP2::parse_rules(
+    <<'END_OF_GRAMMAR'
+reduce_op ::= '+' | '-' | '/' | '*'
+script ::= e
+script ::= script ';' e => do_arg2
+e ::=
+     NUM
+   | VAR => do_is_var
+   | :group '(' e ')' => do_arg1
+  || '-' e => do_negate
+  || :right e '^' e => do_binop
+  || e '*' e => do_binop
+   | e '/' e => do_binop
+  || e '+' e => do_binop
+   | e '-' e => do_binop
+  || e ',' e => do_array
+  || reduce_op 'reduce' e => do_reduce
+  || VAR '=' e => do_set_var
+END_OF_GRAMMAR
+);
+
+</div>
+<div style="white-space:pre;overflow:auto;font-family:monospace;margin:0;padding:1em 0 1em 2.8em;">
+my $grammar = Marpa::R2::Grammar->new(
+    {   start          => 'script',
+        actions        => __PACKAGE__,
+        default_action => 'add_brackets',
+        rules          => $rules,
+    }
+);
+$grammar->precompute;
+</div>
+
+<h2>The Semantics</h2>
+<p>The semantics for this calculator are somewhat interesting,
+but this post is about how to get <strong>your</strong> interesting
+semantics out easily and quickly in the of form a powerful
+language specifically designed for it.
+This interested in the semantics of my little caculator
+can look at
+the Github git.
+</p>
+<div style="white-space:pre;overflow:auto;font-family:monospace;margin:0;padding:1em 0 1em 2.8em;">
+</div>
+
+<div style="white-space:pre;overflow:auto;font-family:monospace;margin:0;padding:1em 0 1em 2.8em;">
+    my $rec = Marpa::R2::Recognizer->new( { grammar => $grammar } );
+</div>
+
+<h2>The lexer</h2>
+<p>So far I have not created a lexer to go with Marpa,
+for several reasons.
+One of the most important is that it would not add
+value -- Perl regex engine is a fine lexer,
+and one that is easy to customize.
+This second show a way of doing lexing with the
+Perl regex engine.
+<p>The calculator's is table-driven.
+The table is quite simple -- it's an array of 
+of two element arrays.
+In the inner arrays, the first element is the same name,
+as specified in the grammar,
+and the second is a regex which matches it.
+<div style="white-space:pre;overflow:auto;font-family:monospace;margin:0;padding:1em 0 1em 2.8em;">
+my @terminals = (
+    [ q{'reduce'}, qr/reduce\b/xms ],
+    [ 'NUM',  qr/\d+/xms ],
+    [ 'VAR',  qr/\w+/xms ],
+    [ q{'='}, qr/[=]/xms ],
+    [ q{';'}, qr/[;]/xms ],
+    [ q{'*'}, qr/[*]/xms ],
+    [ q{'/'}, qr/[\/]/xms ],
+    [ q{'+'}, qr/[+]/xms ],
+    [ q{'-'}, qr/[-]/xms ],
+    [ q{'^'}, qr/[\^]/xms ],
+    [ q{'('}, qr/[(]/xms ],
+    [ q{')'}, qr/[)]/xms ],
+    [ q{','}, qr/[,]/xms ],
+);
+</div>
+<p>
+The reader will note that I am one of those who specify <tt>xms</tt> for every
+regex.
+It is not important in this application, but order matters if you have
+terminals where one can be the prefix of another, for example,
+<tt>==</tt> and <tt>=</tt>.
+Note that the symbol names preserve the surrounding single quotes.
+This is convenient for processing, bu it also makes diagnostic message involving
+those symbols more comprehensible.
+Finally, note that the <tt>reduce</tt> operator is required to end on a word boundary.
+<p>
+The next code fragment is the tokenizing engine.
+This looks daunting until you see that 12 lines of the intermost loop are
+code for a very specific and comprehensive error message.
+One of Marpa's greatest improvements over previous
+parsers is that, when a parse fails,
+Marpa can tell why in considerable detail.
+It makes sense to take advantage of that ability.
+<div style="white-space:pre;overflow:auto;font-family:monospace;margin:0;padding:1em 0 1em 2.8em;">
+
+    my $length = length $string;
+    pos $string = 0;
+    TOKEN: while ( pos $string < $length ) {
+
+        # skip whitespace
+        next TOKEN if $string =~ m/\G\s+/gcxms;
+
+        # read other tokens
+        TOKEN_TYPE: for my $t (@terminals) {
+            next TOKEN_TYPE if not $string =~ m/\G($t->[1])/gcxms;
+            if ( not defined $rec->read( $t->[0], $1 ) ) {
+                say $rec->show_progress() or die "say failed: $ERRNO";
+                my $problem_position = ( pos $string ) - length $1;
+                my $before_start     = $problem_position - 40;
+                $before_start = 0 if $before_start < 0;
+                my $before_length = $problem_position - $before_start;
+                die "Problem near position $problem_position\n",
+                    q{Problem is here: "},
+                    ( substr $string, $before_start, $before_length + 40 ),
+                    qq{"\n},
+                    ( q{ } x ( $before_length + 18 ) ), qq{^\n},
+                    q{Token rejected, "}, $t->[0], qq{", "$1"},
+                    ;
+            } ## end if ( not defined $rec->read( $t->[0], $1 ) )
+            next TOKEN;
+        } ## end TOKEN_TYPE: for my $t (@terminals)
+
+        die q{No token at "}, ( substr $string, pos $string, 40 ),
+            q{", position }, pos $string;
+    } ## end TOKEN: while ( pos $string < $length )
+
+</div>
+
+<h2>Evaluating the parse</h2>
+<p>
+<div style="white-space:pre;overflow:auto;font-family:monospace;margin:0;padding:1em 0 1em 2.8em;">
+
+    $rec->end_input;
+
+    my $value_ref = $rec->value;
+
+    if ( !defined $value_ref ) {
+        say $rec->show_progress() or die "say failed: $ERRNO";
+        die 'Parse failed';
+    }
+    return ${$value_ref};
+
+</div>
+
+<h2>Alernatives</h2>
+<p>This calculator uses
+Marpa::R2.
+Marpa::R2 is beta,
+while Marpa::XS is in a stable, bug-fix only release.
+On the other hand Marpa::R2 is somewhat faster here,
+and its reporting of parse-time problems is cleaner.

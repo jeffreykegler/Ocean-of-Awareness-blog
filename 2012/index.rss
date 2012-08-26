@@ -22,7 +22,7 @@ of the Ocean of Awareness blog.</description>
   <item>
     <title>DRAFT: Domain-Specific Languages made simple</title>
     <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog/2012/08/25#dsl</link>
-    <description>&lt;h3&gt;Writing your own language&lt;/h3&gt;
+    <description>&lt;h2&gt;Writing your own language&lt;/h2&gt;
 &lt;p&gt;Creating your own languages has been A Big Deal(tm).
 What if you could create a simple language in hours or minutes?
 But there has been a serious obstacle to this up to now.
@@ -38,12 +38,177 @@ and Blosxom's implementation of it.
 This DSL is kept very simple.
 The intent is that the reader will build
 on it.
-&lt;h3&gt;A calculator&lt;/h3&gt;
+&lt;h2&gt;A calculator&lt;/h2&gt;
+&lt;p&gt;
 This DSL is a calculator.
 Calculators are a familiar example.
 And, after all, whatever tool you build this
 DSL into, it will probably be useful
-to have a calculator as part of it.</description>
+to have a calculator as part of it.
+What follows contains only the parts of the code
+relevant to the discussion.
+The full code is a Github gist.
+&lt;p&gt;
+&lt;h2&gt;The grammar&lt;/h2&gt;
+&lt;p&gt;Marpa allows you to build the grammar in a clean, sensible structure,
+with a separate grammar, tokenize and semantics.
+If you're used to doing parsing with regexes or recursive descent,
+you expect to see them mixed together and this cleaner approach make
+may you uneasy --
+not without reason, since in the past the tools that used
+it were painful to use and often would not deliver.
+&lt;p&gt;Here's the grammar for our calculator.
+&lt;div style=&quot;white-space:pre;overflow:auto;font-family:monospace;margin:0;padding:1em 0 1em 2.8em;&quot;&gt;
+
+require './OP2.pm';    ## no critic (Modules::RequireBarewordIncludes)
+
+my $rules = Marpa::Demo::OP2::parse_rules(
+    &lt;&lt;'END_OF_GRAMMAR'
+reduce_op ::= '+' | '-' | '/' | '*'
+script ::= e
+script ::= script ';' e =&gt; do_arg2
+e ::=
+     NUM
+   | VAR =&gt; do_is_var
+   | :group '(' e ')' =&gt; do_arg1
+  || '-' e =&gt; do_negate
+  || :right e '^' e =&gt; do_binop
+  || e '*' e =&gt; do_binop
+   | e '/' e =&gt; do_binop
+  || e '+' e =&gt; do_binop
+   | e '-' e =&gt; do_binop
+  || e ',' e =&gt; do_array
+  || reduce_op 'reduce' e =&gt; do_reduce
+  || VAR '=' e =&gt; do_set_var
+END_OF_GRAMMAR
+);
+
+&lt;/div&gt;
+&lt;div style=&quot;white-space:pre;overflow:auto;font-family:monospace;margin:0;padding:1em 0 1em 2.8em;&quot;&gt;
+my $grammar = Marpa::R2::Grammar-&gt;new(
+    {   start          =&gt; 'script',
+        actions        =&gt; __PACKAGE__,
+        default_action =&gt; 'add_brackets',
+        rules          =&gt; $rules,
+    }
+);
+$grammar-&gt;precompute;
+
+# Order matters !!
+my @terminals = (
+    [ q{'reduce'}, qr/reduce\b/xms ],
+    [ 'NUM',  qr/\d+/xms ],
+    [ 'VAR',  qr/\w+/xms ],
+    [ q{'='}, qr/[=]/xms ],
+    [ q{';'}, qr/[;]/xms ],
+    [ q{'*'}, qr/[*]/xms ],
+    [ q{'/'}, qr/[\/]/xms ],
+    [ q{'+'}, qr/[+]/xms ],
+    [ q{'-'}, qr/[-]/xms ],
+    [ q{'^'}, qr/[\^]/xms ],
+    [ q{'('}, qr/[(]/xms ],
+    [ q{')'}, qr/[)]/xms ],
+    [ q{','}, qr/[,]/xms ],
+);
+
+our $DEBUG = 1;
+
+my %binop_closure = (
+    '*' =&gt; sub { $_[0] * $_[1] },
+    '/' =&gt; sub { $_[0] / $_[1] },
+    '+' =&gt; sub { $_[0] + $_[1] },
+    '-' =&gt; sub { $_[0] - $_[1] },
+    '^' =&gt; sub { $_[0] ** $_[1] },
+);
+
+&lt;/div&gt;
+&lt;h2&gt;The Semantics&lt;/h2&gt;
+&lt;p&gt;The semantics for this calculator are somewhat interesting,
+but this post is about &lt;strong&gt;your&lt;/strong&gt; interesting
+semantics, not mine.
+So I'll move on.
+&lt;p&gt;
+&lt;div style=&quot;white-space:pre;overflow:auto;font-family:monospace;margin:0;padding:1em 0 1em 2.8em;&quot;&gt;
+
+sub calculate {
+    my ($string) = @_;
+    my $rec = Marpa::R2::Recognizer-&gt;new( { grammar =&gt; $grammar } );
+
+    %symbol_table = ();
+
+    my $length = length $string;
+    pos $string = 0;
+    TOKEN: while ( pos $string &lt; $length ) {
+
+        # skip whitespace
+        next TOKEN if $string =~ m/\G\s+/gcxms;
+
+        # read other tokens
+        TOKEN_TYPE: for my $t (@terminals) {
+            next TOKEN_TYPE if not $string =~ m/\G($t-&gt;[1])/gcxms;
+            if ( not defined $rec-&gt;read( $t-&gt;[0], $1 ) ) {
+                say $rec-&gt;show_progress() or die &quot;say failed: $ERRNO&quot;;
+                my $problem_position = ( pos $string ) - length $1;
+                my $before_start     = $problem_position - 40;
+                $before_start = 0 if $before_start &lt; 0;
+                my $before_length = $problem_position - $before_start;
+                die &quot;Problem near position $problem_position\n&quot;,
+                    q{Problem is here: &quot;},
+                    ( substr $string, $before_start, $before_length + 40 ),
+                    qq{&quot;\n},
+                    ( q{ } x ( $before_length + 18 ) ), qq{^\n},
+                    q{Token rejected, &quot;}, $t-&gt;[0], qq{&quot;, &quot;$1&quot;},
+                    ;
+            } ## end if ( not defined $rec-&gt;read( $t-&gt;[0], $1 ) )
+            next TOKEN;
+        } ## end TOKEN_TYPE: for my $t (@terminals)
+
+        die q{No token at &quot;}, ( substr $string, pos $string, 40 ),
+            q{&quot;, position }, pos $string;
+    } ## end TOKEN: while ( pos $string &lt; $length )
+
+    $rec-&gt;end_input;
+
+    my $value_ref = $rec-&gt;value;
+
+    if ( !defined $value_ref ) {
+        say $rec-&gt;show_progress() or die &quot;say failed: $ERRNO&quot;;
+        die 'Parse failed';
+    }
+    return ${$value_ref};
+
+} ## end sub calculate
+
+sub report_calculation {
+    my ($string) = @_;
+    my $output = qq{Input: &quot;$string&quot;\n};
+    my $result = calculate($string);
+    $result = join q{,}, @{$result} if ref $result eq 'ARRAY';
+    $output .= &quot;  Parse: $result\n&quot;;
+    for my $symbol (sort keys %symbol_table) {
+        $output .= qq{&quot;$symbol&quot; = &quot;} . $symbol_table{$symbol} . qq{&quot;\n};
+    }
+    return $output;
+}
+
+if (@ARGV) {
+    my $result = calculate(join ';', grep { /\S/ } @ARGV);
+    $result = join q{,}, @{$result} if ref $result eq 'ARRAY';
+    say &quot;Result is &quot;, $result;
+    for my $symbol (sort keys %symbol_table) {
+        say qq{&quot;$symbol&quot; = &quot;} . $symbol_table{$symbol} . qq{&quot;};
+    }
+    exit 0;
+}
+
+&lt;/div&gt;
+&lt;h2&gt;Alernatives&lt;/h2&gt;
+&lt;p&gt;This calculator uses
+Marpa::R2.
+Marpa::R2 is beta,
+while Marpa::XS is in a stable, bug-fix only release.
+On the other hand Marpa::R2 is somewhat faster here,
+and its reporting of parse-time problems is cleaner.</description>
   </item>
   </channel>
 </rss>
