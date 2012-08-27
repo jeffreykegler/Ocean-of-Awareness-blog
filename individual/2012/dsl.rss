@@ -10,24 +10,28 @@
     <language>en</language>
 
   <item>
-    <title>DRAFT: Domain-Specific Languages made simple</title>
+    <title>Domain-Specific Languages made simple</title>
     <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog/2012/08/26#dsl</link>
     <description>&lt;h2&gt;Writing your own language&lt;/h2&gt;
-&lt;p&gt;Creating your own languages has been A Big Deal(tm).
+&lt;p&gt;Creating your own languages has been A Big Deal (tm).
 What if you could create a simple language in hours or minutes?
-But there has been a serious obstacle to this up to now.
+There's been a serious obstacle to this up to now.
 No practical parser &quot;just parsed&quot; BNF.
 With Marpa, that restriction is lifted.
 &lt;p&gt;
 In this post, I will describe
 a small, sample Marpa domain-specific language (DSL).
-In designing it I am inspired by Mark Dominus's
-description of the
-&quot;Worse is Better&quot; philosophy,
-and Blosxom's implementation of it.
-This DSL is kept very simple.
-The intent is that the reader will build
-on it.
+In designing it I am inspired by
+&lt;a href=&quot;http://blog.plover.com/oops/blosxom-sux.html&quot;&gt;
+Mark Dominus's description&lt;/a&gt;
+of the
+&lt;a href=&quot;http://en.wikipedia.org/wiki/Worse_is_better&quot;&gt;
+&quot;Worse is Better&quot; philosophy&lt;/a&gt;,
+and it implementation in the form of
+&lt;a href=&quot;http://en.wikipedia.org/wiki/Blosxom&quot;&gt;
+Blosxom&lt;/a&gt;.
+This DSL is feature-poor,
+but short, simple and extensible.
 &lt;h2&gt;A calculator&lt;/h2&gt;
 &lt;p&gt;
 This DSL is a calculator.
@@ -36,22 +40,27 @@ And, after all, whatever tool you build this
 DSL into, it will probably be useful
 to have a calculator as part of it.
 What follows contains only the parts of the code
-relevant to the discussion.
-The full code is a Github gist.
+relevant to the discussion,
+not necessarily in lexical order.
+If you find the following interesting,
+you'll almost certainly want the full code,
+which is available as
+a Github gist.
 &lt;p&gt;
 &lt;h2&gt;The grammar&lt;/h2&gt;
-&lt;p&gt;Marpa allows you to build the grammar in a clean, sensible structure,
+&lt;p&gt;Marpa allows you to build your DSL in as a clean, sensible
+structure,
 with a separate grammar, tokenize and semantics.
 If you're used to doing parsing with regexes or recursive descent,
-you expect to see them mixed together and this cleaner approach make
-may you uneasy --
-not without reason, since in the past the tools that used
-it were painful to use and often would not deliver.
+you expect to see things mixed together,
+and much as you might like modularity in other contexts,
+this cleaner approach may make you uneasy.
+And not without reason, since in the past the tools that used
+it were painful to use and,
+for cleanly written practical grammars,
+often rewarded the programmer's efforts by failing to deliver.
 &lt;p&gt;Here's the grammar for our calculator.
 &lt;div style=&quot;white-space:pre;overflow:auto;font-family:monospace;margin:0;padding:1em 0 1em 2.8em;&quot;&gt;
-
-require './OP2.pm';    ## no critic (Modules::RequireBarewordIncludes)
-
 my $rules = Marpa::Demo::OP2::parse_rules(
     &lt;&lt;'END_OF_GRAMMAR'
 reduce_op ::= '+' | '-' | '/' | '*'
@@ -74,6 +83,40 @@ END_OF_GRAMMAR
 );
 
 &lt;/div&gt;
+&lt;p&gt;The grammar is written in another DSL, &lt;tt&gt;Marpa::Demo::OP2&lt;/tt&gt;,
+which is bundled into the same file.
+Together, the two quite useable DSL's require 600 lines,
+self-testing included.
+The calculator grammar is written in OP2,
+and OP2's grammar is defined directly in Marpa::R2.
+&lt;p&gt;
+I'm using OP2 in this post, as it presents the &lt;strong&gt;idea&lt;/strong&gt;
+of a grammar more clearly.
+Marpa::R2's lower level syntax, while more dependable, flexible and efficient,
+is more cluttered.
+OP2 itself is interesting as an extension and generalization of
+precedence parsing,
+as I described in
+a previous post.
+Here's its syntax:
+&lt;center&gt;
+&lt;table width=80%&gt;
+&lt;tr&gt;&lt;td&gt;&lt;tt&gt;::=&lt;/tt&gt;&lt;td&gt;A BNF rule in LHS &lt;tt&gt;::=&lt;/tt&gt; RHS form&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;tt&gt;|&lt;/tt&gt;&lt;td&gt;Separates alternative RHS's at the &lt;strong&gt;same&lt;/strong&gt; precedence level&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;tt&gt;||&lt;/tt&gt;&lt;td&gt;Separates alternative RHS's at the &lt;strong&gt;different&lt;/strong&gt; precedence levels.
+  The tighter (&quot;higher&quot;) precedence alternative is first, the
+  tighter (&quot;lower&quot;) precedence alternative is second.
+  &lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;tt&gt;=&amp;gt;&lt;/tt&gt;&lt;td&gt;&lt;tt&gt;&lt;tt&gt;rule =&amp;gt; semantics&lt;/tt&gt;, where &lt;tt&gt;semantics&lt;/tt&gt;
+is a Perl closure.
+&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;tt&gt;:left&lt;/tt&gt;&lt;td&gt;The alternative is left-associative (the default)&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;tt&gt;:right&lt;/tt&gt;&lt;td&gt;The alternative is right-associative&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;tt&gt;:group&lt;/tt&gt;&amp;nbsp;&amp;nbsp&lt;td&gt;The alternative is grouping-associative -- that is, its
+operator(s), regardless of their own precedence,
+group expressions of the loosest precedence&lt;/tr&gt;
+&lt;/table&gt;
+&lt;/center&gt;
 &lt;div style=&quot;white-space:pre;overflow:auto;font-family:monospace;margin:0;padding:1em 0 1em 2.8em;&quot;&gt;
 my $grammar = Marpa::R2::Grammar-&gt;new(
     {   start          =&gt; 'script',
