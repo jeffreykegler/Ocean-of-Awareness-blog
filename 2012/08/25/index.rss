@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<!-- name="generator" content="blosxom/2.0" -->
+<!DOCTYPE rss PUBLIC "-//Netscape Communications//DTD RSS 0.91//EN" "http://my.netscape.com/publish/formats/rss-0.91.dtd">
+
+<rss version="0.91">
+  <channel>
+    <title>Ocean of Awareness   </title>
+    <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog</link>
+    <description>Ocean of Awareness.</description>
+    <language>en</language>
+
+  <item>
+    <title>A new home for the Ocean of Awareness blog</title>
+    <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog/2012/08/25#announce</link>
+    <description>&lt;a href=&quot;blogs.perl.org&quot;&gt;blogs.perl.org&lt;/a&gt;
+has been a wonderful home for my
+Ocean of Awareness blog.
+But the call of static blogging is becoming impossible to resist.
+This may become the new home
+of the Ocean of Awareness blog.</description>
+  </item>
+  </channel>
+</rss>
