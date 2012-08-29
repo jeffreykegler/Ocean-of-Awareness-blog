@@ -40,7 +40,7 @@ Mark Dominus's description</a>
 of the
 <a href="http://en.wikipedia.org/wiki/Worse_is_better">
 "Worse is Better" philosophy</a>,
-and it implementation in the form of
+and its implementation in the form of
 <a href="http://en.wikipedia.org/wiki/Blosxom">
 Blosxom</a>.
 This DSL is feature-poor,
@@ -63,7 +63,7 @@ a Github gist.
 <h2>The grammar</h2>
 <p>Marpa allows you to build your DSL in as a clean, sensible
 structure,
-with a separate grammar, tokenize and semantics.
+with a separate grammar, tokenizer and semantics.
 If you're used to doing parsing with regexes or recursive descent,
 you expect to see things mixed together,
 and much as you might like modularity in other contexts,
@@ -96,6 +96,11 @@ END_OF_GRAMMAR
 );
 
 </div>
+<p>This is a simple language, but it's already a bit advance over,
+say, shell arithmetic.
+And the <tt>reduce</tt> operator is even a bit fancy.
+Tt's a second-order binary operator.
+whose left operand is another operator.
 <p>The grammar is written in another DSL, <tt>Marpa::Demo::OP2</tt>,
 which is bundled into the same file.
 Together, the two quite useable DSL's require 600 lines,
@@ -112,24 +117,21 @@ precedence parsing,
 as I described in
 a previous post.
 Here's its syntax:
-<center>
-<table width=80%>
-<tr><td><tt>::=</tt><td>A BNF rule in LHS <tt>::=</tt> RHS form</tr>
-<tr><td><tt>|</tt><td>Separates alternative RHS's at the <strong>same</strong> precedence level</tr>
-<tr><td><tt>||</tt><td>Separates alternative RHS's at the <strong>different</strong> precedence levels.
+<dl>
+<dt><strong><tt>::=</tt></strong><dd>A BNF rule in LHS <tt>::=</tt> RHS form
+<dt><strong><tt>'abc'</tt></strong><dd>A literal token.
+<dt><strong><tt>|</tt></strong><dd>Separates alternative RHS's at the <strong>same</strong> precedence level
+<dt><strong><tt>||</tt></strong><dd>Separates alternative RHS's at the <strong>different</strong> precedence levels.
   The tighter ("higher") precedence alternative is first, the
   tighter ("lower") precedence alternative is second.
-  </tr>
-<tr><td><tt>=&gt;</tt><td><tt><tt>rule =&gt; semantics</tt>, where <tt>semantics</tt>
+<dt><strong><tt>=&gt;</tt></strong><dd><tt>rule =&gt; semantics</tt>, where <tt>semantics</tt>
 is a Perl closure.
-</tr>
-<tr><td><tt>:left</tt><td>The alternative is left-associative (the default)</tr>
-<tr><td><tt>:right</tt><td>The alternative is right-associative</tr>
-<tr><td><tt>:group</tt>&nbsp;&nbsp<td>The alternative is grouping-associative -- that is, its
+<dt><strong><tt>:left</tt></strong><dd>The alternative is left-associative (the default)
+<dt><strong><tt>:right</tt></strong><dd>The alternative is right-associative
+<dt><strong><tt>:group</tt></strong><dd>The alternative is grouping-associative -- that is, its
 operator(s), regardless of their own precedence,
-group expressions of the loosest precedence</tr>
-</table>
-</center>
+group expressions of the loosest precedence
+</dl>
 <div style="white-space:pre;overflow:auto;font-family:monospace;margin:0;padding:1em 0 1em 2.8em;">
 my $grammar = Marpa::R2::Grammar->new(
     {   start          => 'script',
@@ -256,14 +258,34 @@ It makes sense to take advantage of that ability.
     return ${$value_ref};
 
 </div>
+<p>[ Talk about <code>show_progress</code> ].
 
+<h2>OP2</h2>
 <h2>Alernatives</h2>
+<h3>Marpa::R2 verus Marpa::XS</h3>
 <p>This calculator uses
 Marpa::R2.
 Marpa::R2 is beta,
 while Marpa::XS is in a stable, bug-fix only release.
 On the other hand Marpa::R2 is somewhat faster here,
 and its reporting of parse-time problems is cleaner.
+<h3>Specifying the grammar</h3>
+The grammar of the calculator is specified in OP2,
+which is a clear and elegant way to do it.
+But OP2 is an experimental DSL created just for this
+one use.
+<p>
+A much more robust way to 
+specifiy grammars is directly in Marpa::R2,
+which is what OP2 itself does.
+A compromise between elegance and stability would be
+to use OP2 (or a derivate) to generate the rules
+(or some of them).
+The OP2-generated rules can be used
+either as is, or edited to taste.
+When you are happy with them,
+Data::Dumper can turn the OP2-generated rules
+into code which you can incorporate into your DSL program.
 <br />
 <p>posted at: 09:20 |
 path: <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012">/individual/2012</a> |
