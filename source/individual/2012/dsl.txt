@@ -1,6 +1,6 @@
 Domain-Specific Languages made simpler
 <h2>Writing your own language</h2>
-<p>Creating your own languages has been A Big Deal (tm).
+<p>Creating your own language has been A Big Deal (tm).
 What if you could create a simple language in hours or minutes?
 There's been a serious obstacle up to now.
 No practical parser "just parsed" BNF.
@@ -52,10 +52,11 @@ If you're used to doing parsing with regexes or recursive descent,
 you expect to see things mixed together,
 and much as you might like modularity in other contexts,
 this cleaner approach may make you uneasy.
-And not without reason, since in the past the tools that
-took this approach
+And not without reason.
+Traditionally, parsing tools that
+took a modular approach
 were painful to use and,
-for cleanly written practical grammars,
+for practical grammars,
 often rewarded the extra effort
 they required by failing to work.
 <p>Here's the grammar for our calculator.
@@ -87,7 +88,7 @@ END_OF_GRAMMAR
 );
 </div>
 
-<p>This is a simple language, but it's already a big advance over,
+<p>This is a simple language, but it's already an advance over,
 <a href="http://blog.plover.com/prog/bash-expr.html">
 say, shell arithmetic</a>.
 And the <tt>reduce</tt> operator is even a bit
@@ -121,7 +122,7 @@ Here's its syntax:
 <dt><strong><tt>|</tt></strong><dd>Separates alternative RHS's at the <strong>same</strong> precedence level
 <dt><strong><tt>||</tt></strong><dd>Separates alternative RHS's at the <strong>different</strong> precedence levels.
   The tighter ("higher") precedence alternative is first, the
-  tighter ("lower") precedence alternative is second.
+  looser ("lower") precedence alternative is second.
 <dt><strong><tt>=&gt;</tt></strong><dd><tt>rule =&gt; semantics</tt>, where <tt>semantics</tt>
 is a Perl closure.
 <dt><strong><tt>:left</tt></strong><dd>The alternative is left-associative (the default)
@@ -152,16 +153,19 @@ the semantics can be found
 Marpa</a>
 does a lot of precomputation to its grammars.
 Once a grammar is fully defined,
-and before it a recognizer can be created from it,
+and before a recognizer can be created from it,
 the <tt>precompute()</tt> method must be called.
 <h2>The semantics</h2>
-<p>The semantics for this calculator are somewhat interesting,
-but this post is about how to get <strong>your</strong> interesting
-semantics out easily and quickly in the of form a powerful
-language specifically designed for it.
-This interested in the semantics of my little caculator
+<p>
+This interested in the semantics of this calculator
 can look at
-the Github git.
+<a href="https://gist.github.com/3521836">
+the Github gist</a>.
+The semantics for this calculator are somewhat interesting.
+But this post is about how to get <strong>your</strong> interesting
+semantics out easily and quickly,
+in the form of a powerful
+language specifically designed for them.
 <h2>The lexer</h2>
 <h3>The token table</h3>
 <p>The calculator's lexer is table-driven.
@@ -190,12 +194,20 @@ my @terminals = (
 </div>
 
 <p>
-The reader will note that I am one of those who specify <tt>xms</tt> for every
-regex.
-It is not important in this application, but order matters if you have
-terminals where one can be the prefix of another, for example,
+Order in the above table matters when you have
+terminals, one of which can prefix another.
+An example would be the operators
 <tt>==</tt> and <tt>=</tt>.
-Note that the symbol names preserve the surrounding single quotes.
+There is no such pair here,
+however,
+so that
+in this application,
+the order makes no difference.
+<p>
+As you can see,
+I am one of those who specify <tt>xms</tt> for every
+regex.
+The symbol names preserve the surrounding single quotes.
 This is convenient for processing,
 and it also makes diagnostic messages involving
 those symbols more comprehensible.
@@ -231,18 +243,20 @@ Marpa</a>
 recognizer
 with the <tt>new()</tt> constructor,
 and feeds it tokens with the <tt>read()</tt> method.
-In it, I use Perl's progressive matching capabilities:
+In this token engine,
+I use Perl's progressive matching capabilities:
 the
 <tt>g</tt> and
 <tt>c</tt> modifiers, the
 <tt>\G</tt> assertion and the
 <tt>pos</tt> function.
 When writing a token engine,
-there is, as the expression goes, more than one way to it,
+there is, as the expression goes, more than one way
+to do it,
 many of them somewhat easier than this approach.
-But progressive matching is powerful, efficient
-very flexible
-and has the advantage that
+But progressive matching is powerful, efficient,
+very flexible,
+and it has the advantage that
 it leaves the original string intact.
 <p>
 Those who go on to look at the
@@ -250,7 +264,7 @@ Those who go on to look at the
 code in the gist</a>
 may find
 <tt>die_on_read_problem()</tt>,
-the DSL's function for handline <tt>read()</tt> errors,
+the DSL's function for handling <tt>read()</tt> errors,
 helpful.
 It produces a very specific and comprehensive error message.
 One of
@@ -276,7 +290,7 @@ It makes sense to take full advantage of that ability.
     return ${$value_ref};
 
 </div>
-<p>Evaluation of the parse is done with calling the <tt>value()</tt> method.
+<p>Evaluation of the parse is done with the <tt>value()</tt> method.
 This can return all the parse results of an ambiguous parse.
 We want only one parse here,
 so we call <tt>value()</tt> only once.
