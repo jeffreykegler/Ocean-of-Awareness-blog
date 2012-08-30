@@ -308,7 +308,7 @@ then incorporate into your DSL program.
 <h3>Error messages</h3>
 It is hard to compare
 messages from these DSL's,
-unfamiliar programs whose design breaks new ground,
+unfamiliar programs which explore new ground,
 against, for example,
 the comprehensibility of a C compiler's
 error messages.
