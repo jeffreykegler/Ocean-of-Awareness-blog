@@ -36,51 +36,54 @@ a Github gist.
 <!-- TODO: Make hot -->
 <p>
 <h2>The grammar</h2>
-<p>Marpa allows you to build your DSL in as a clean, sensible
+<p>Marpa allows you to build your DSL as a clean modular
 structure,
 with a separate grammar, tokenizer and semantics.
 If you're used to doing parsing with regexes or recursive descent,
 you expect to see things mixed together,
 and much as you might like modularity in other contexts,
 this cleaner approach may make you uneasy.
-And not without reason, since in the past the tools that used
-it were painful to use and,
+And not without reason, since in the past the tools that
+took this approach
+were painful to use and,
 for cleanly written practical grammars,
-often rewarded the effort by failing to work.
+often rewarded the extra effort
+they required by failing to work.
 <p>Here's the grammar for our calculator.
-<div style="white-space:pre;overflow:auto;font-family:monospace;margin:0;padding:1em 0 1em 2.8em;">
 
+<div style="white-space:pre;overflow:auto;font-family:monospace;margin:0;padding:1em 0 1em 2.8em;">
 my $rules = Marpa::Demo::OP2::parse_rules(
     <<'END_OF_GRAMMAR'
 reduce_op ::=
-    '+' => do_arg0
-  | '-' => do_arg0
-  | '/' => do_arg0
-  | '*' => do_arg0
-script ::= e => do_arg0
-script ::= script ';' e => do_arg2
+    '+'                   => do_arg0
+  | '-'                   => do_arg0
+  | '/'                   => do_arg0
+  | '*'                   => do_arg0
+script ::= e              => do_arg0
+script ::= script ';' e   => do_arg2
 e ::=
-     NUM => do_arg0
-   | VAR => do_is_var
-   | :group '(' e ')' => do_arg1
-  || '-' e => do_negate
-  || :right e '^' e => do_binop
-  || e '*' e => do_binop
-   | e '/' e => do_binop
-  || e '+' e => do_binop
-   | e '-' e => do_binop
-  || e ',' e => do_array
+     NUM                  => do_arg0
+   | VAR                  => do_is_var
+   | :group '(' e ')'     => do_arg1
+  || '-' e                => do_negate
+  || :right e '^' e       => do_binop
+  || e '*' e              => do_binop
+   | e '/' e              => do_binop
+  || e '+' e              => do_binop
+   | e '-' e              => do_binop
+  || e ',' e              => do_array
   || reduce_op 'reduce' e => do_reduce
-  || VAR '=' e => do_set_var
+  || VAR '=' e            => do_set_var
 END_OF_GRAMMAR
 );
-
 </div>
+
 <p>This is a simple language, but it's already a big advance over,
 <a href="http://blog.plover.com/prog/bash-expr.html">
 say, shell arithmetic</a>.
-And the <tt>reduce</tt> operator is even a bit fancy.
-It's a second-order binary operator.
+And the <tt>reduce</tt> operator is even a bit
+of fanciness.
+It's a second-order binary operator,
 whose left operand is another operator.
 <p>The grammar is written in another DSL, <tt>Marpa::Demo::OP2</tt>,
 which is bundled into the same file.
@@ -114,8 +117,8 @@ is a Perl closure.
 operator(s), regardless of their own precedence,
 group expressions of the loosest precedence
 </dl>
-<div style="white-space:pre;overflow:auto;font-family:monospace;margin:0;padding:1em 0 1em 2.8em;">
 
+<div style="white-space:pre;overflow:auto;font-family:monospace;margin:0;padding:1em 0 1em 2.8em;">
 my $grammar = Marpa::R2::Grammar->new(
     {   start          => 'script',
         actions        => __PACKAGE__,
@@ -123,9 +126,18 @@ my $grammar = Marpa::R2::Grammar->new(
     }
 );
 $grammar->precompute;
-
 </div>
 
+<p>The code just above creates a new grammar from the OP2-generated rules.
+The only other information needed to fully define
+the grammar is the name of the start symbol
+("<tt>script</tt>") and the name of the package where
+the semantics can be found
+(the current one, <tt>__PACKAGE__</tt>).
+<p>Marpa does a lot of precomputation to its grammars.
+Once a grammar is fully defined,
+and before it a recognizer can be created from it,
+the <tt>precompute()</tt> method must be called.
 <h2>The Semantics</h2>
 <p>The semantics for this calculator are somewhat interesting,
 but this post is about how to get <strong>your</strong> interesting
@@ -139,14 +151,8 @@ the Github git.
 </div>
 
 <h2>The lexer</h2>
-<p>So far I have not created a lexer to go with Marpa,
-for several reasons.
-One of the most important is that it would not add
-value -- Perl regex engine is a fine lexer,
-and one that is easy to customize.
-This section shows a way of doing lexing with the
-Perl regex engine.
-<p>The calculator's is table-driven.
+<h3>The token table</h3>
+<p>The calculator's lexer is table-driven.
 The table is quite simple -- it's an array
 of two element arrays.
 In the inner arrays, the first element is the symbol name,
@@ -182,17 +188,9 @@ This is convenient for processing,
 and it also makes diagnostic messages involving
 those symbols more comprehensible.
 Finally, note that the <tt>reduce</tt> operator is required to end on a word boundary.
-<p>
-The next code fragment is the tokenizing engine.
-The error handling routine for the read call is not shown,
-but it's worth pointing out that it contains code that
-produces a very specific and comprehensive error message.
-One of Marpa's greatest improvements over previous
-parsers is that, when a parse fails,
-Marpa can tell why in considerable detail.
-It makes sense to take advantage of that ability.
-<div style="white-space:pre;overflow:auto;font-family:monospace;margin:0;padding:1em 0 1em 2.8em;">
+<h3>The tokenizing engine</h3>
 
+<div style="white-space:pre;overflow:auto;font-family:monospace;margin:0;padding:1em 0 1em 2.8em;">
     my $rec = Marpa::R2::Recognizer->new( { grammar => $grammar } );
 
     my $length = length $string;
@@ -214,8 +212,34 @@ It makes sense to take advantage of that ability.
         die q{No token at "}, ( substr $string, pos $string, 40 ),
             q{", position }, pos $string;
     } ## end TOKEN: while ( pos $string < $length )
-
 </div>
+<p>The calculator's token engine creates a Marpa recognizer
+with the <tt>new()</tt> constructor,
+and feeds it tokens with the <tt>read()</tt> method.
+In it, I use Perl's progressive matching capabilities:
+the
+<tt>g</tt> and
+<tt>c</tt> modifiers, the
+<tt>\G</tt> assertion and the
+<tt>pos</tt> function.
+When writing a token engine,
+there is, as the expression goes, more than one way to it,
+many of them somewhat easier than this approach.
+But progressive matching is powerful, efficient
+very flexible
+and has the advantage that
+it leaves the original string intact.
+<p>
+Those who go on to look at the code in the gist
+may find
+<tt>die_on_read_problem()</tt>,
+the DSL's function for handline <tt>read()</tt> errors,
+helpful.
+It produces a very specific and comprehensive error message.
+One of Marpa's greatest improvements over previous
+parsers is that, when a parse fails,
+Marpa can explain why in considerable detail.
+It makes sense to take full advantage of that ability.
 
 <h2>Evaluating the parse</h2>
 <p>
