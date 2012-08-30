@@ -157,11 +157,11 @@ and before a recognizer can be created from it,
 the <tt>precompute()</tt> method must be called.
 <h2>The semantics</h2>
 <p>
-This interested in the semantics of this calculator
+Those curious about the semantics of this calculator
 can look at
 <a href="https://gist.github.com/3521836">
 the Github gist</a>.
-The semantics for this calculator are somewhat interesting.
+They are somewhat interesting.
 But this post is about how to get <strong>your</strong> interesting
 semantics out easily and quickly,
 in the form of a powerful
