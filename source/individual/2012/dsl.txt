@@ -254,18 +254,30 @@ It makes sense to take full advantage of that ability.
     return ${$value_ref};
 
 </div>
-<p>Evaluation of the parse is done by calling the <tt>value</tt> method.
-This can return all the parse results of an ambiguous parse,
-but we want only parse here so we call <tt>value()</tt> only once.
+<p>Evaluation of the parse is done with calling the <tt>value()</tt> method.
+This can return all the parse results of an ambiguous parse.
+We want only one parse here,
+so we call <tt>value()</tt> only once.
 <tt>value()</tt> returns a reference to the value of the parse,
 and a Perl <tt>undef</tt> if the parse failed.
-The error check is worth noticing.
-One of Marpa's strengths is that it is fully aware of what
-it was looking for at all times, and can report than on
-failure.
-The <tt>show_progress()</tt> method returns that information.
+The error handling is worth noticing.
+One of Marpa's strengths is that it is fully aware of which rules
+are being tried at any point,
+and of how far into those rules recognition has progressed.
+The <tt>show_progress()</tt> method reports that information.
 
 <h2>OP2</h2>
+<p>
+This ends our description of the calculator code.
+In
+the Github gist
+a second DSL immediately follows the
+calculator DSL.
+This second DSL is OP2,
+which is used to define the grammar for the calculator.
+OP2 is more complicated than the calculator,
+but its design is similar,
+and it can be used as a second DSL example.
 <h2>Alernatives</h2>
 <h3>Marpa::R2 verus Marpa::XS</h3>
 <p>This calculator uses
@@ -281,8 +293,8 @@ But OP2 is an experimental DSL created just for this
 one use.
 <p>
 A much more robust way to 
-specify grammars is directly in Marpa::R2,
-which is what OP2 itself does.
+specify grammars is to do it directly in Marpa::R2.
+OP2's grammar is specified directly in Marpa::R2.
 A compromise between elegance and stability would be
 to use OP2 (or a derivative)
 to generate the rules (or some of them).
@@ -291,29 +303,33 @@ as is, or edited to taste.
 When you are happy with them,
 Data::Dumper can turn the OP2-generated rules
 into code,
-which you can incorporate into your DSL program.
+which you can
+then incorporate into your DSL program.
 <h3>Error messages</h3>
+It is hard to compare
+messages from these DSL's,
+unfamiliar programs whose design breaks new ground,
+against, for example,
+the comprehensibility of a C compiler's
+error messages.
+With the C compiler, I have the advantage of
+over 40 years of Pavlovian training in guessing what
+they really mean.
 I believe that this DSL's error messages
 are already, on average, up to the level of a production languages.
-It's hard to be objective, because it involves comparing
-one's sense of the messages from an unfamiliar program which breaks
-new ground against,
-for example,
-one's sense of a C language's
-error messages after 40 years of Pavlovian training in guessing they
-really are likely to mean.
-But certainly one reason I am bold to assert that this quick and dirty DSL 
-is up to the standard of production parsers is that that standard,
-frankly, is extremely low.
-This, I hasten to add, is not because of lack of effort or diligence
-by the implementers, but because the underly parsing technology simply
-does not provide enough information to support
+My main reason for this bold assertion is that
+production parsers has set the bar,
+frankly, extremely low.
+I hasten to add, that this is often not because of lack of care or effort
+by the implementers.
+The traditional parsing technologies simply
+do not provide enough information to support
 accurate and helpful error reporting.
 <p>
-Certainly, much more could be done with error message handling
-in this DSL, and in expanding it, you would want to do it.
+Much more could be done in error message handling
+than is done by this DSL.
 I find better error messages are often worth a high priority,
 even in programs intended for personal use.
-One reason for this in the Marpa context is that Marpa's
-situational awareness makes much easier to write usefully
-accurate error messages than it has been.
+Marpa's situational awareness
+makes much easier to write usefully
+accurate error messages than has been the case.
