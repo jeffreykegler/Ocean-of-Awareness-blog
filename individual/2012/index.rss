@@ -110,12 +110,11 @@ It's a second-order binary operator,
 whose left operand is another operator.
 &lt;p&gt;The grammar is written in another DSL, &lt;tt&gt;Marpa::Demo::OP2&lt;/tt&gt;,
 which is bundled into the same file.
+(OP2's grammar is defined directly in
+&lt;a href=&quot;https://metacpan.org/release/Marpa-R2&quot;&gt;
+Marpa::R2&lt;/a&gt;.)
 Together, these two quite useable DSL's require 600 lines,
 self-testing included.
-The calculator grammar is written in OP2,
-and OP2's grammar is defined directly in
-&lt;a href=&quot;https://metacpan.org/release/Marpa-R2&quot;&gt;
-Marpa::R2&lt;/a&gt;.
 &lt;p&gt;
 I'm using OP2 in this post, as it presents the &lt;strong&gt;idea&lt;/strong&gt;
 of a grammar more clearly.
@@ -354,7 +353,7 @@ which is a clear and elegant way to do it.
 But OP2 is an experimental DSL created just for this
 one use.
 &lt;p&gt;
-A much more robust way to 
+A more robust way to 
 specify grammars is to do it directly in
 &lt;a href=&quot;https://metacpan.org/release/Marpa-R2&quot;&gt;
 Marpa::R2&lt;/a&gt;.
@@ -382,6 +381,7 @@ error messages.
 With the C compiler, I have the advantage of
 over 40 years of Pavlovian training in guessing what
 they really mean.
+&lt;p&gt;
 I believe that this DSL's error messages
 are already, on average, up to the level
 of typical production languages.
@@ -396,7 +396,7 @@ do not provide enough information to support
 accurate and helpful error reporting.
 &lt;p&gt;
 Much more could be done in error message handling
-than is done by this DSL.
+than is done by this calculator DSL.
 &lt;a href=&quot;http://www.jeffreykegler.com/marpa&quot;&gt;
 Marpa&lt;/a&gt;'s
 situational awareness

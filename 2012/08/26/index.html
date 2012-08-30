@@ -123,12 +123,11 @@ It's a second-order binary operator,
 whose left operand is another operator.
 <p>The grammar is written in another DSL, <tt>Marpa::Demo::OP2</tt>,
 which is bundled into the same file.
+(OP2's grammar is defined directly in
+<a href="https://metacpan.org/release/Marpa-R2">
+Marpa::R2</a>.)
 Together, these two quite useable DSL's require 600 lines,
 self-testing included.
-The calculator grammar is written in OP2,
-and OP2's grammar is defined directly in
-<a href="https://metacpan.org/release/Marpa-R2">
-Marpa::R2</a>.
 <p>
 I'm using OP2 in this post, as it presents the <strong>idea</strong>
 of a grammar more clearly.
@@ -367,7 +366,7 @@ which is a clear and elegant way to do it.
 But OP2 is an experimental DSL created just for this
 one use.
 <p>
-A much more robust way to 
+A more robust way to 
 specify grammars is to do it directly in
 <a href="https://metacpan.org/release/Marpa-R2">
 Marpa::R2</a>.
@@ -395,6 +394,7 @@ error messages.
 With the C compiler, I have the advantage of
 over 40 years of Pavlovian training in guessing what
 they really mean.
+<p>
 I believe that this DSL's error messages
 are already, on average, up to the level
 of typical production languages.
@@ -409,7 +409,7 @@ do not provide enough information to support
 accurate and helpful error reporting.
 <p>
 Much more could be done in error message handling
-than is done by this DSL.
+than is done by this calculator DSL.
 <a href="http://www.jeffreykegler.com/marpa">
 Marpa</a>'s
 situational awareness
@@ -485,7 +485,7 @@ Also,
 I will continue to dual-post for some time,
 and have not yet frozen comments on the versions of the
 post at
-<a href="blogs.perl.org">blogs.perl.org</a>.
+<a href="http://blogs.perl.org/users/jeffrey_kegler/">blogs.perl.org</a>.
 </div>
               <script type="text/javascript">
             var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
