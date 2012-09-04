@@ -227,12 +227,6 @@ $entries =
                         ) < stat($File::Find::name)->mtime
                         )
                         and $indexes{$1} = 1
-                        and $d = join( '/',
-                        ( nice_date( $files{$File::Find::name} ) )[ 5, 2, 3 ]
-                        )
-
-                        and $indexes{$d} =
-                            $d
                         and $static_entries
                         and $indexes{ ( $1 ? "$1/" : '' )
                             . "$2.$file_extension" } =
