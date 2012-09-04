@@ -21,6 +21,102 @@
   <p><a href="http://www.jeffreykegler.com/marpa">The Marpa website</p>
   </div>
   <div id="content" style="margin-left:190px;border-left:2px solid #38B0C0;padding:25px;">
+<h3>Mon, 03 Sep 2012</h3>
+<br />
+<center><a name="r2_is_beta"> <h2>Marpa::R2 is beta</h2> </a>
+</center>
+<a href="https://metacpan.org/release/Marpa-R2">Marpa::R2</a>
+is now beta.
+Marpa is a new parsing algorithm,
+based on decades of prior art.
+It is a practical and efficient solution
+targeted at all parsing problems that are too
+complex for regular expressions.
+<p>
+The
+<a href="https://metacpan.org/release/Marpa-R2">Marpa::R2</a>
+module is the most recent Marpa module.
+Marpa is also available as the
+<a href="https://metacpan.org/release/Marpa-XS">
+Marpa::XS</a>
+module,
+which is stable and bug-fix only.
+Both Marpa modules:
+<ol>
+<li><p>Parse everything you can write in BNF.
+<li><p>
+Parse all
+classes of grammar in practical use today in linear time.
+<li><p>Parse all BNF grammars
+in times considered theoretically optimal.
+For unambiguous grammars, Marpa is never worse than
+O(n<sup>2</sup>).
+For ambiguous grammars, Marpa is never worse than
+O(n<sup>3</sup>).
+Marpa never goes exponential.
+<li><p>
+Are fully aware, at every point in the parse, of
+all the rules they are parsing,
+how far into them they have proceeded,
+and of what tokens they expect next.
+Especially with Marpa::R2,
+this information is available
+to the application
+conveniently and efficiently.
+<li><p>
+Do not need to be handwritten.
+Marpa is available as a open-source library.
+It is written in C,
+and the C library can be used
+<a href="http://jeffreykegler.github.com/Marpa/libmarpa.html">
+directly</a>
+or via
+<a href="https://metacpan.org/release/Marpa-R2">
+a Perl interface</a>.
+<li><p>
+For general BNF parsing,
+do not require
+the user to craft
+a lookahead or backtracking strategy -- Marpa
+does not use lookahead and never backtracks.
+<li><p>
+Come
+with the traditional theoretical apparatus of
+proofs based on prior literature.
+</ol>
+<p>
+<a href="https://metacpan.org/release/Marpa-R2">Marpa::R2</a>
+is a major rewrite of the Marpa internals.
+The most visible of these changes:
+<ol>
+<li><p>Marpa::R2 is faster.
+<li><p>Marpa::R2 is easier to install.
+In particular the dependency on Glib has been removed.
+Marpa::R2 now has no non-core CPAN dependencies.
+<li><p>Marpa::R2's internal symbols are now invisible
+to the user, even when tracing and debugging.
+<li><p>
+<a href="http://jeffreykegler.github.com/Marpa/libmarpa">
+Libmarpa, the C library which is at the core of Marpa</a>,
+is now documented
+and separately installable.
+(Libmarpa remains alpha at this point.)
+<li><p>Another new documented interface,
+<a href="https://metacpan.org/module/Marpa::R2::Advanced::Thin">
+Marpa::R2::Thin</a>,
+is a "thin" interface to Libmarpa from Perl.
+(Marpa::R2::Thin remains alpha at this point.)
+</ol>
+<br />
+<p>posted at: 17:16 |
+path: <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012">/individual/2012</a> |
+<a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/r2_is_beta.html">direct link to this entry</a>
+</p>
+<div style="color:#38B0C0;padding:1px;text-align:center;">
+&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&sect;
+</div>
 <h3>Sun, 26 Aug 2012</h3>
 <br />
 <center><a name="dsl"> <h2>Domain-Specific Languages made simpler</h2> </a>
