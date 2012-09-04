@@ -1,0 +1,51 @@
+Marpa::R2 is beta
+The most recent indexed release of Marpa::R2 is beta.
+Marpa is a new parsing algorithm,
+based on decades of prior work.
+It is a practical and efficient solution
+targeted at all parsing problems that are too
+complex for regular expressions.
+<p>
+The Marpa::R2 module is the most recent Marpa module.
+Marpa is also available as the Marpa::XS module,
+which is stable and bug-fix only.
+The Marpa algorithm, and both
+Marpa modules:
+<ol>
+<li><p>Parse everything you can write in BNF.
+<li><p>Parse in times considered theoretically optimal.
+For unambiguous grammars, Marpa is never worse than O(n²).
+For ambiguous grammars, Marpa is never worse than O(n³).
+Marpa never goes exponential.
+<li><p>
+Parse all
+classes of grammar in practical use today in linear time.
+<li><p>
+Are fully aware, at every point in the parse, of
+all the rules they are parsing,
+how far into them they has proceeded,
+and of what tokens they expects next.
+This information is available
+to the application
+conveniently and efficiently.
+<li><p>
+Do not need to be handwritten.
+Marpa is available as a open-source library.
+It is written in C,
+and the C library can be used
+<a href="http://jeffreykegler.github.com/Marpa/libmarpa.html">
+directly</a>
+or via
+<a href="https://metacpan.org/release/Marpa-R2">
+a Perl interface</a>.
+<li><p>
+For general BNF parsing,
+do not require
+the user to craft
+a lookahead or backtracking strategy -- Marpa
+does not use lookahead and never backtracks.
+<li><p>
+Come
+with the traditional theoretical apparatus of
+proofs based on prior literature.
+</ol>
