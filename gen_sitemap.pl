@@ -7,7 +7,7 @@ use File::Find;
 
 print <<'END_OF_TEXT';
 <?xml version="1.0" encoding="utf-8"?>
-<urlset xmlns="http://www.google.com/schemas/sitemap/0.84">
+<urlset xmlns="http://www.google.com/schemas/sitemap/0.9">
   <url>
     <loc>http://jeffreykegler.github.com/Ocean-of-Awareness-blog/</loc>
     <changefreq>daily</changefreq>
@@ -15,8 +15,20 @@ print <<'END_OF_TEXT';
   </url>
 END_OF_TEXT
 
-sub wanted { my $name = $File::Find::name; $name =~ m/[.]html\z/xms and say $File::Find::name };
-File::Find::find(\&wanted, './individual');
+my $root = 'http://jeffreykegler.github.com/Ocean-of-Awareness-blog/';
+our @filelist = ();
+sub wanted { my $name = $File::Find::name; $name =~ m/[.]html\z/xms and push @filelist, $File::Find::name };
+File::Find::find(\&wanted, 'individual');
+
+for my $file (@filelist) {
+   say '  <url>';
+   say '    <loc>', ($root . $file), '</loc>';
+   my $git_stamp = qx{git log "--pretty=format:%ci" -n 1 $file};
+   $git_stamp =~ s/[ ]/T/xms;
+   $git_stamp =~ s/[ ]//gxms;
+   say '    <lastmod>', $git_stamp, '</lastmod>';
+   say '  </url>';
+}
 
 #   <url>
 #     <loc>http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/r2_is_beta.html</loc>

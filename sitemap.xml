@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<urlset xmlns="http://www.google.com/schemas/sitemap/0.9">
+  <url>
+    <loc>http://jeffreykegler.github.com/Ocean-of-Awareness-blog/</loc>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/index.html</loc>
+    <lastmod>2012-09-04T06:35:36-0700</lastmod>
+  </url>
+  <url>
+    <loc>http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/announce.html</loc>
+    <lastmod>2012-09-04T06:35:36-0700</lastmod>
+  </url>
+  <url>
+    <loc>http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/dsl.html</loc>
+    <lastmod>2012-09-04T06:35:36-0700</lastmod>
+  </url>
+  <url>
+    <loc>http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/index.html</loc>
+    <lastmod>2012-09-04T06:35:36-0700</lastmod>
+  </url>
+  <url>
+    <loc>http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/r2_is_beta.html</loc>
+    <lastmod>2012-09-04T06:35:36-0700</lastmod>
+  </url>
+</urlset>
