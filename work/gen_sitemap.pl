@@ -13,6 +13,11 @@ print <<'END_OF_TEXT';
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
+  <url>
+    <loc>http://jeffreykegler.github.com/Ocean-of-Awareness-blog/metapages/chronological.html</loc>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+  </url>
 END_OF_TEXT
 
 my $root = 'http://jeffreykegler.github.com/Ocean-of-Awareness-blog/';
