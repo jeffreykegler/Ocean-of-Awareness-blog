@@ -1,0 +1,363 @@
+<?xml version="1.0"?>
+<!-- name="generator" content="blosxom/2.0" -->
+<!DOCTYPE rss PUBLIC "-//Netscape Communications//DTD RSS 0.91//EN" "http://my.netscape.com/publish/formats/rss-0.91.dtd">
+
+<rss version="0.91">
+  <channel>
+    <title>Ocean of Awareness   </title>
+    <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog</link>
+    <description>Ocean of Awareness.</description>
+    <language>en</language>
+
+  <item>
+    <title>Parsing with Ruby Slippers</title>
+    <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog/2010/06/19#parsing-with-ruby-slippers</link>
+    <description>&lt;h2&gt;PPI, perly.y and Marpa&lt;/h2&gt;
+
+&lt;p&gt;Recently I've been combining the two main approaches to
+parsing Perl. 
+One of these is the
+&lt;a href=&quot;http://search.cpan.org/dist/PPI/&quot;&gt;PPI&lt;/a&gt;
+module.
+The other is the parser in the actual
+Perl distribution.
+This is usually what is meant when
+someone speaks simply of
+&quot;the Perl parser&quot;.
+That
+can be confusing
+in this context,
+so I will call the parser in the distribution,
+the Traditional Perl Parser (TPP).
+
+&lt;p&gt;I used the grammar in the TPP
+(it's in
+&lt;a href=&quot;http://cpansearch.perl.org/src/JESSE/perl-5.12.1/perly.y&quot;&gt;perly.y&lt;/a&gt;).
+But I threw out TPP's lexer
+(&lt;a href=&quot;http://cpansearch.perl.org/src/JESSE/perl-5.12.1/toke.c&quot;&gt;toke.c&lt;/a&gt;).
+I replaced
+&lt;a href=&quot;http://cpansearch.perl.org/src/JESSE/perl-5.12.1/toke.c&quot;&gt;toke.c&lt;/a&gt;
+with
+&lt;a href=&quot;http://search.cpan.org/dist/PPI/lib/PPI/Tokenizer.pm&quot;&gt;PPI::Tokenizer&lt;/a&gt;,
+rewrote TPP's bison grammar to use
+&lt;a href=&quot;http://search.cpan.org/dist/Marpa/&quot;&gt;Marpa&lt;/a&gt;
+and put the two together.
+
+&lt;p&gt;To my surprise, mating the
+&lt;a href=&quot;http://search.cpan.org/dist/PPI/lib/PPI/Tokenizer.pm&quot;&gt;PPI::Tokenizer&lt;/a&gt;
+and 
+&lt;a href=&quot;http://cpansearch.perl.org/src/JESSE/perl-5.12.1/perly.y&quot;&gt;perly.y&lt;/a&gt;
+has proved almost easy.
+&lt;a href=&quot;http://search.cpan.org/dist/PPI/&quot;&gt;PPI&lt;/a&gt;
+preserves whitespace and the TPP does not,
+so I had to throw whitespace away.
+&lt;a href=&quot;http://search.cpan.org/dist/PPI/&quot;&gt;PPI&lt;/a&gt;
+combines some tokens that TPP separates.
+(Notably
+&lt;a href=&quot;http://search.cpan.org/dist/PPI/&quot;&gt;PPI&lt;/a&gt;
+often combines sigils with other things.
+The TPP never does.)
+Also, there was the slightly more complicated issue of the ghostly semicolons,
+which I'll deal with in a bit.
+
+&lt;p&gt;I've gotten this combination working
+on the Perl subset that
+&lt;a href=&quot;http://search.cpan.org/dist/Data-Dumper/&quot;&gt;Data::Dumper&lt;/a&gt;
+produces as output,
+and it passes an appropriately selected dozen of
+&lt;a href=&quot;http://search.cpan.org/dist/Data-Dumper/&quot;&gt;Data::Dumper&lt;/a&gt;'s
+own test cases.
+&lt;a href=&quot;http://search.cpan.org/dist/Data-Dumper/&quot;&gt;Data::Dumper&lt;/a&gt;
+uses only part of Perl's semantics,
+and that allows me to avoid
+most of Perl's semantics.
+Not that the semantics in
+&lt;a href=&quot;http://search.cpan.org/dist/Data-Dumper/&quot;&gt;Data::Dumper&lt;/a&gt;'s
+output are trivial.
+They include a lot
+of the logic of Perl expressions,
+and the test cases get into some very serious nested dereferencing of lvalues.
+
+&lt;p&gt;I don't ever intend to reimplement all (or even most)
+of Perl's &lt;b&gt;semantics&lt;/b&gt;.
+Tricky lvalue indirections or not,
+what I've done is a toy
+in comparison with the Perl semantics,
+and it will stay that way.
+But I do think it possible to use
+&lt;a href=&quot;http://search.cpan.org/dist/Marpa/&quot;&gt;Marpa&lt;/a&gt;
+to reimplement
+most of Perl's &lt;b&gt;grammar&lt;/b&gt;.
+An application could then plug its own semantics into it.
+
+&lt;p&gt;I've adhered to the structure of
+&lt;a href=&quot;http://cpansearch.perl.org/src/JESSE/perl-5.12.1/perly.y&quot;&gt;perly.y&lt;/a&gt;'s
+grammar.
+My intent is that this adaptation of
+&lt;a href=&quot;http://cpansearch.perl.org/src/JESSE/perl-5.12.1/perly.y&quot;&gt;perly.y&lt;/a&gt;'s
+grammar to
+&lt;a href=&quot;http://search.cpan.org/dist/Marpa/&quot;&gt;Marpa&lt;/a&gt;
+will work for cases much broader than
+&lt;a href=&quot;http://search.cpan.org/dist/Data-Dumper/&quot;&gt;Data::Dumper&lt;/a&gt;
+output.
+As this project progresses,
+I expect to be forced to confront a lot of interesting issues in
+Perl's grammar.
+
+&lt;h2&gt;The Case of the Ghostly Semicolons&lt;/h2&gt;
+
+&lt;p&gt;
+But for the moment, let's get back to interfacing
+the
+&lt;a href=&quot;http://search.cpan.org/dist/PPI/&quot;&gt;PPI&lt;/a&gt;
+lexer to &lt;a href=&quot;http://cpansearch.perl.org/src/JESSE/perl-5.12.1/perly.y&quot;&gt;perly.y&lt;/a&gt;'s grammar,
+and what turned out to be relatively simple issues.
+For reasons which probably have to do with the limits of its underlying LALR algorithm,
+&lt;a href=&quot;http://cpansearch.perl.org/src/JESSE/perl-5.12.1/perly.y&quot;&gt;perly.y&lt;/a&gt;
+wants all expressions inside hash
+brackets to end in semicolons.
+That is, instead of 
+&lt;pre&gt;
+&lt;tt&gt;$p-&gt;{ func() }&lt;/tt&gt;
+&lt;/pre&gt;
+&lt;a href=&quot;http://cpansearch.perl.org/src/JESSE/perl-5.12.1/perly.y&quot;&gt;perly.y&lt;/a&gt; needs to see
+&lt;pre&gt;
+&lt;tt&gt;$p-&gt;{ func(); }&lt;/tt&gt;
+&lt;/pre&gt;
+In actual Perl code that semicolon causes a syntax error.
+But
+&lt;a href=&quot;http://cpansearch.perl.org/src/JESSE/perl-5.12.1/perly.y&quot;&gt;perly.y&lt;/a&gt;
+not only allows the semicolon --
+&lt;a href=&quot;http://cpansearch.perl.org/src/JESSE/perl-5.12.1/perly.y&quot;&gt;perly.y&lt;/a&gt;
+requires it.
+These semicolons are only allowed to exist
+as momentary &quot;ghosts&quot; inside the TPP,
+where they flit from
+&lt;a href=&quot;http://cpansearch.perl.org/src/JESSE/perl-5.12.1/toke.c&quot;&gt;toke.c&lt;/a&gt;
+to
+&lt;a href=&quot;http://cpansearch.perl.org/src/JESSE/perl-5.12.1/perly.y&quot;&gt;perly.y&lt;/a&gt;.
+
+When exactly are ghost semicolons required?
+Beats me.
+The
+&lt;a href=&quot;http://cpansearch.perl.org/src/JESSE/perl-5.12.1/toke.c&quot;&gt;toke.c&lt;/a&gt;
+code for
+handling curly braces is as convoluted as anything I've ever seen,
+and I don't know of any documentation for it -- certainly the
+comments do no more than hint at what's going on.
+
+&lt;p&gt;Now, you'd think to mate
+&lt;a href=&quot;http://search.cpan.org/dist/PPI/lib/PPI/&quot;&gt;PPI&lt;/a&gt;,
+and
+&lt;a href=&quot;http://cpansearch.perl.org/src/JESSE/perl-5.12.1/perly.y&quot;&gt;perly.y&lt;/a&gt;
+I would need to figure out exactly when to insert &quot;ghost&quot; semicolons and when not.
+I'd have to then implement this, ending up
+with something that looks a lot like (shudder)
+&lt;a href=&quot;http://cpansearch.perl.org/src/JESSE/perl-5.12.1/toke.c&quot;&gt;toke.c&lt;/a&gt;
+rewritten in Perl.
+But I don't have to do any of this.
+You see, I've got Ruby Slippers.
+
+&lt;h2&gt;Stepping Out with the Ruby Slippers&lt;/h2&gt;
+
+As most readers will recall, the
+&lt;a href=&quot;http://en.wikipedia.org/wiki/Ruby_slippers&quot;&gt;
+Ruby Slippers
+&lt;/a&gt;
+are Dorothy's shoes
+in the movie &lt;i&gt;Wizard of Oz&lt;/i&gt;, and they grant wishes.
+In particular, Dorothy wants to get back to Kansas,
+and she discovers that,
+so long as she keeps the Ruby Slippers away from wicked witches,
+all she has to do is wish she
+is back in Kansas and she is there.
+
+&lt;p&gt;&lt;a href=&quot;http://search.cpan.org/dist/Marpa/&quot;&gt;Marpa&lt;/a&gt;'s
+parse engine has the very nice property that at every
+point Marpa knows
+exactly what parses are possible,
+and it knows this information in a form
+that it can share with the lexer.
+This ability is a by-product of my rewrite of the Earley parse engine,
+and has been useful beyond my expectations.
+Here's how I deal with the ghostly semicolons.
+
+&lt;p&gt;&lt;b&gt;Step 1&lt;/b&gt;:
+&lt;a href=&quot;http://search.cpan.org/dist/Marpa/&quot;&gt;Marpa&lt;/a&gt;
+has an &quot;interactive&quot; parse mode --
+interactive in the sense that the parser and lexer interact.
+What I do is just take the closing curly brace as I get it from
+&lt;a href=&quot;http://search.cpan.org/dist/PPI/lib/PPI/Tokenizer.pm&quot;&gt;PPI::Tokenizer&lt;/a&gt;
+and pass it on to the
+&lt;a href=&quot;http://search.cpan.org/dist/Marpa/&quot;&gt;Marpa&lt;/a&gt;
+implementation of the &lt;a href=&quot;http://cpansearch.perl.org/src/JESSE/perl-5.12.1/perly.y&quot;&gt;perly.y&lt;/a&gt; grammar.
+In cases where an &quot;un-semi-coloned&quot; closing curly is acceptable, 
+that's the end of the story.
+
+&lt;p&gt;&lt;b&gt;Step 2&lt;/b&gt;:
+But what if
+&lt;a href=&quot;http://search.cpan.org/dist/Marpa/&quot;&gt;Marpa
+&lt;/a&gt;/&lt;a href=&quot;http://cpansearch.perl.org/src/JESSE/perl-5.12.1/perly.y&quot;&gt;perly.y
+&lt;/a&gt;
+needs the semi-colon?
+In interactive mode, when the parser is not happy with an
+input, it stops, marking the point in the token stream
+where it failed.
+&lt;a href=&quot;http://search.cpan.org/dist/Marpa/&quot;&gt;Marpa&lt;/a&gt;
+also makes available a list of tokens 
+which &lt;b&gt;are&lt;/b&gt; acceptable.
+
+&lt;p&gt;&lt;b&gt;Step 3&lt;/b&gt;:
+Here's where
+&lt;a href=&quot;http://search.cpan.org/dist/Marpa/&quot;&gt;Marpa&lt;/a&gt;'s
+version of Ruby Slippers comes in.
+All the application/tokenizer has to do is
+pick a token which the parser &lt;b&gt;does&lt;/b&gt; want,
+dummy up the input so that the wanted token is the next token,
+and restart the parse.
+Poof, you're in Kansas.
+
+&lt;p&gt;The Ruby Slippers method is quite remarkable.
+In many practical cases, there is only one acceptable token.
+In those cases, the
+&lt;a href=&quot;http://search.cpan.org/dist/Marpa/&quot;&gt;Marpa&lt;/a&gt;
+parser tells the lexer exactly
+how to make a grammar work as it goes along,
+on a case by case basis.
+
+&lt;p&gt;Issues with Ruby Slippers parsing can arise.
+Sometimes there is
+more than one acceptable token.
+In those cases,
+you rank your choices,
+use lookahead,
+look at
+&lt;a href=&quot;http://search.cpan.org/dist/Marpa/&quot;&gt;Marpa&lt;/a&gt;'s
+ambiguous parsing capabilities, etc., etc.
+Also, in some situations it may be important that all illegal parses
+fail -- liberal acceptance of input is not always what is wanted.
+You might need to be fascist,
+rejecting everything which is not in exactly correct format.
+Fascists need to be careful with their Ruby Slippers.
+
+&lt;h2&gt;The Ruby Slippers Strike Again&lt;/h2&gt;
+
+&lt;p&gt;A more complex example of Ruby Slippers parsing
+(and a pretty nifty one if I say so myself)
+is in
+&lt;a href=&quot;http://search.cpan.org/dist/Marpa-HTML/&quot;&gt;Marpa::HTML&lt;/a&gt;.
+This is
+&lt;a href=&quot;http://search.cpan.org/dist/Marpa/&quot;&gt;Marpa&lt;/a&gt;
+adapted to parse HTML is a very liberal way.
+You can feed any file to
+&lt;a href=&quot;http://search.cpan.org/dist/Marpa-HTML/&quot;&gt;Marpa::HTML&lt;/a&gt;
+and get an HTML parse for it.
+If the file is pathological HTML, or not HTML at all,
+the HTML parse will be pathological,
+but there &lt;b&gt;will&lt;/b&gt; be an HTML parse.
+(This is not totally crazy.
+Most renderers accept any text whatsoever,
+doing their best to render it on the screen as HTML.)
+
+&lt;p&gt;As part of being very liberal,
+&lt;a href=&quot;http://search.cpan.org/dist/Marpa-HTML/&quot;&gt;Marpa::HTML&lt;/a&gt;
+supplies missing end tags, even end tags which are required
+under the standards.
+For traditional parsing methods,
+this is a devilishly complex problem.
+Try writing BNF that allows for missing end tags when possible.
+Actually, just try defining &quot;when possible&quot;.
+I think you'll see it's very, very hard.
+
+&lt;p&gt;But to solve this problem of end tags with
+&lt;a href=&quot;http://search.cpan.org/dist/Marpa/&quot;&gt;Marpa&lt;/a&gt;
+I don't need to
+work out BNF or even define that slippery phrase
+&quot;when possible&quot;.
+&lt;a href=&quot;http://search.cpan.org/dist/Marpa-HTML/&quot;&gt;Marpa::HTML&lt;/a&gt;
+supplies missing end tags using the Ruby Slippers method.
+
+&lt;p&gt;It's basically the same trick as before.
+&lt;a href=&quot;http://search.cpan.org/dist/Marpa-HTML/&quot;&gt;Marpa::HTML&lt;/a&gt;
+sets
+&lt;a href=&quot;http://search.cpan.org/dist/Marpa/&quot;&gt;Marpa&lt;/a&gt;
+to parse in interactive mode.
+Then it simply feeds the tags it has to
+&lt;a href=&quot;http://search.cpan.org/dist/Marpa/&quot;&gt;Marpa&lt;/a&gt;,
+as is,
+and waits for
+&lt;a href=&quot;http://search.cpan.org/dist/Marpa/&quot;&gt;Marpa&lt;/a&gt;
+to have a problem.
+
+When
+&lt;a href=&quot;http://search.cpan.org/dist/Marpa/&quot;&gt;Marpa&lt;/a&gt;
+can't use a token,
+&lt;a href=&quot;http://search.cpan.org/dist/Marpa/&quot;&gt;Marpa&lt;/a&gt;
+stops.
+&lt;a href=&quot;http://search.cpan.org/dist/Marpa/&quot;&gt;Marpa&lt;/a&gt;
+tells the tokenizer which token it could not use,
+and which tokens it &lt;b&gt;could&lt;/b&gt; use instead -- its list of &quot;expected&quot; tokens.
+
+&lt;p&gt;The
+&lt;a href=&quot;http://search.cpan.org/dist/Marpa-HTML/&quot;&gt;Marpa::HTML&lt;/a&gt;
+tokenizer looks in the expected tokens.
+Is there an end tag in there?
+If so, it dummies
+up a token for that end tag, sticks it in the input
+stream, and restarts.
+
+&lt;p&gt;Are there complications?
+If
+&lt;a href=&quot;http://search.cpan.org/dist/Marpa-HTML/&quot;&gt;Marpa::HTML&lt;/a&gt;
+were parsing strict HTML, there wouldn't be.
+For strict HTML,
+whenever there is a missing end tag,
+there will be only
+one missing end tag.
+In the strict HTML case,
+the &lt;a href=&quot;http://search.cpan.org/dist/Marpa/&quot;&gt;Marpa&lt;/a&gt;
+parser can always tell the
+&lt;a href=&quot;http://search.cpan.org/dist/Marpa-HTML/&quot;&gt;Marpa::HTML&lt;/a&gt;
+exactly the right fix for any missing end tag.
+
+&lt;p&gt;If you want to parse liberalized and defective HTML,
+which
+&lt;a href=&quot;http://search.cpan.org/dist/Marpa-HTML/&quot;&gt;Marpa::HTML&lt;/a&gt;
+does,
+things are more complex.
+In some cases the
+&lt;a href=&quot;http://search.cpan.org/dist/Marpa/&quot;&gt;Marpa&lt;/a&gt;
+parser suggests more than one 
+way to dummy up the input --
+more than one pair of Ruby Slippers, so to speak.
+In these cases
+&lt;a href=&quot;http://search.cpan.org/dist/Marpa-HTML/&quot;&gt;Marpa::HTML&lt;/a&gt;
+has to decide &quot;which shoes to wear.&quot;
+&lt;a href=&quot;http://search.cpan.org/dist/Marpa-HTML/&quot;&gt;Marpa::HTML&lt;/a&gt;
+uses a handful of simple
+rules and heuristics.
+The rules provide the right answer where there is one.
+If it comes down to guessing at the intent,
+the heuristics make good suggestions.
+
+&lt;h2&gt;Thanks&lt;/h2&gt;
+
+&lt;p&gt;On this project,
+obvious thanks are due to Larry Wall
+and the other authors for
+&lt;a href=&quot;http://cpansearch.perl.org/src/JESSE/perl-5.12.1/perly.y&quot;&gt;perly.y&lt;/a&gt;
+and
+&lt;a href=&quot;http://cpansearch.perl.org/src/JESSE/perl-5.12.1/toke.c&quot;&gt;toke.c&lt;/a&gt;.
+as well as to Adam Kennedy for
+&lt;a href=&quot;http://search.cpan.org/dist/PPI/&quot;&gt;PPI&lt;/a&gt;.
+Not so obvious might be my debt to Randal Schwartz, whose
+&lt;a href=&quot;http://www.stonehenge.com/merlyn/LinuxMag/col29.html&quot;&gt;
+Oct 2001
+Linux Magazine column&lt;/a&gt;
+suggested the idea of using
+&lt;a href=&quot;http://search.cpan.org/dist/Data-Dumper/&quot;&gt;Data::Dumper&lt;/a&gt;
+output (and its test cases) to create
+an initial subset for a Perl parser.</description>
+  </item>
+  </channel>
+</rss>

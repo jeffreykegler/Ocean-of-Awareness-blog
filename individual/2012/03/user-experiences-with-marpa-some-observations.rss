@@ -1,0 +1,109 @@
+<?xml version="1.0"?>
+<!-- name="generator" content="blosxom/2.0" -->
+<!DOCTYPE rss PUBLIC "-//Netscape Communications//DTD RSS 0.91//EN" "http://my.netscape.com/publish/formats/rss-0.91.dtd">
+
+<rss version="0.91">
+  <channel>
+    <title>Ocean of Awareness   </title>
+    <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog</link>
+    <description>Ocean of Awareness.</description>
+    <language>en</language>
+
+  <item>
+    <title>User experiences with Marpa: some observations</title>
+    <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog/2012/03/01#user-experiences-with-marpa-some-observations</link>
+    <description>&lt;p&gt;
+When it comes to
+user experiences with Marpa,
+I confess to being a highly biased source.
+I hope the following observations
+will be useful nonetheless.
+(Marpa, for those new to this blog,
+is a new, powerful and fast parser and parsing algorithm.
+To learn more,
+check out &lt;a href=&quot;http://www.jeffreykegler.com/marpa&quot;&gt;its web page&lt;/a&gt;.)
+&lt;/p&gt;
+&lt;h2&gt;Marpa does the job&lt;/h2&gt;
+&lt;p&gt;
+If you've read user's accounts of work with BNF grammars over
+the years
+(I have studied many),
+you know they follow a familiar pattern.
+The user has some BNF.
+He then tries tool X (for X substitute
+yacc, bison, PEG, recursive descent, etc.)
+and finds that it almost works.
+Almost, but not quite.
+The rest of the account describes the user
+beating up his grammar in an effort to make
+it fit the tool.
+Perhaps 50% of the time, he reports that his effort
+was wasted.
+&lt;/p&gt;
+&lt;p&gt;
+The accounts from Marpa users are different,
+because the problem the users of other tools spend
+most of their time describing,
+and spent most of their time solving,
+does not exist with Marpa.
+Once they have their grammar worked out,
+Marpa parses it.
+As a practical
+matter, this difference is a big deal.
+A methodology that, half the time,
+takes you to a dead end,
+is one that practitioners will avoid.
+&lt;/p&gt;
+&lt;p&gt;
+The reason that regular expressions became so dominant,
+I am convinced,
+is that they did the job.
+If you can write your problem as a regular expression
+(here I speak of regular expressions, not regexes)
+you are guaranteed two things.
+First that your regular expression engine *WILL* handle it.
+Second, that it will do so in acceptable time.
+Regular expressions did the job.
+With Marpa, BNF does the job.
+&lt;/p&gt;
+&lt;h2&gt;BNF as a lost art&lt;/h2&gt;
+
+&lt;p&gt;
+An obstacle to learning Marpa seems to be
+that writing BNF is something of a lost art.
+BNF is not difficult.
+By my accounting,
+BNF is actually simpler than regular expressions.
+BNF involves one idea: concatenation.
+Regular expressions involve all of concatenation,
+sequence and alternation.
+Even if you don't agree with my way of calculating
+difficulty,
+I think you'll agree that
+BNF is vastly simpler than Perl regexes.
+&lt;p&gt;
+&lt;/p&gt;
+When I learned programming (around 1970),
+BNF was much better known than regular expressions.
+BNF had been established for years
+as the way of specifying languages.
+Regular expressions,
+on the other hand,
+did not come in prominence
+before Thompson's
+&lt;a href=&quot;http://en.wikipedia.org/wiki/Ed_%28text_editor%29&quot;&gt;ed editor&lt;/a&gt;.
+The first PDP11 assembler version of that came out in 1971,
+the year I was taking the introduction to Computer Science
+with Alan Perlis.
+Prof. Perlis
+spent a lot of time on BNF
+and
+&lt;a href=&quot;http://en.wikipedia.org/wiki/Markov_algorithm&quot;&gt;
+Markov machines&lt;/a&gt;.
+I cannot recall that he mentioned regular expressions.
+Since then, at least
+in the US, BNF and Markov machines seem to have been consigned to
+nearly the same degree of oblivion.</description>
+  </item>
+  </channel>
+</rss>

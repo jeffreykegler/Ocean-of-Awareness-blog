@@ -1,0 +1,1844 @@
+<html>
+<head>
+<link rel="alternate" title="Ocean of Awareness RSS" type="application/rss+xml" title="RSS" href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/index.rss" />
+<title>Ocean of Awareness   </title>
+<style type="text/css">
+   strong {font-weight: 700;}
+</style>
+</head>
+<body>
+<div id="header"
+  style="color:white;background-color:#38B0C0;padding:1em;clear:left;text-align:center;">
+<h1>Ocean of Awareness</h1>
+  
+</div>
+  <div id="menu" style="margin:0;padding:10px;width:150px;float:left;">
+  <h2>Jeffrey Kegler's blog</h2>
+  <p>About Marpa, his new parsing algorithm,
+    and other topics of interest</p>
+  <h3>Resources</h3>
+  <p><a href="http://www.jeffreykegler.com/">Jeffrey Kegler's website</p>
+  <p><a href="http://www.jeffreykegler.com/marpa">The Marpa website</p>
+  </div>
+  <div id="content" style="margin-left:190px;border-left:2px solid #38B0C0;padding:25px;">
+<h3>Mon, 26 Dec 2011</h3>
+<br />
+<center><a name="a-new-web-site-for-marpa"> <h2>A new web site for Marpa</h2> </a>
+</center>
+<p>
+I have created an
+<a href="http://www.jeffreykegler.com/marpa">official web site
+for Marpa</a>.
+Marpa is attracting new users,
+to the point where I thought it might be useful to have a site to act as
+a central directory.
+The official web site won't have much in the way of new content.
+With new content,
+I plan to continue to do
+what I've been doing -- post it to this blog.
+</p>
+<p>
+I've started the site with an annotated list of the
+most important Marpa-related posts in this blog.
+I hope this will help people newly interested in
+Marpa figure out where they want to start.
+Those who've been following this blog for a while
+might also want to check the list to see if they've
+missed anything worthwhile.
+</p>
+<br />
+<p>posted at: 17:35 |
+path: <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2011/12">/individual/2011/12</a> |
+<a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2011/12/a-new-web-site-for-marpa.html">direct link to this entry</a>
+</p>
+<div style="color:#38B0C0;padding:1px;text-align:center;">
+&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&sect;
+</div>
+<h3>Tue, 20 Dec 2011</h3>
+<br />
+<center><a name="marpaxs-is-now-1000000"> <h2>Marpa::XS is now 1.000000</h2> </a>
+</center>
+<p>
+<a href="https://metacpan.org/release/Marpa-XS">
+Marpa::XS is now
+1.000000</a>.
+Marpa::XS is the current lead implementation of Marpa,
+an algorithm that I hope will become
+standard for
+those parsing problems which are too
+complex for regular expressions.
+Apparently quite a number of people have put
+the beta to use.
+Feedback has been positive -- often extremely so.
+</p>
+<h1>What is Marpa?</h1>
+<p>
+Marpa is a general BNF parser --
+it parses anything you can write in BNF, no exceptions.
+Left-recursion, right-recursion, ambiguity and
+even infinite ambiguity, you name it, Marpa parses it.
+If the grammar is of
+<a href="#LINEAR">a class in practical use</a>,
+Marpa parses it in linear time -- O(n).
+</p>
+<p>
+Marpa's
+parse-time error detection is a breakthrough.
+When previous parsers failed, they often offered very
+little clue as to why.
+Marpa knows exactly what input it expects and why.
+Marpa is always fully aware of exactly where it is in the parse,
+in terms of the rules of the grammar,
+and it can share that information with the application.
+So good is Marpa at 
+error detection,
+once considered a desperate last resort,
+that error detection can be used as
+<a href="http://blogs.perl.org/users/jeffrey_kegler/2010/06/parsing-with-ruby-slippers.html">
+a parsing technique in itself</a>.
+
+</p>
+<p>
+While Marpa is intended to computer with production parsers,
+it does have special advantages for developers and experimenters.
+Marpa is highly tolerant of difficult grammars --
+it parses all of them,
+and in times which are <a href="#OPTIMAL">considered optimal</a>.
+</p>
+<h1>New with this release</h1>
+<p>
+For Marpa::XS 1.000000,
+only the version number and the README file were changed
+from the previous, beta, release.
+</p>
+<h1>What is next with Marpa?</h1>
+<p>
+Marpa::XS is aimed at users who want a stable platform for applications.
+To ensure the stability of Marpa::XS,
+active development of Marpa is moving into a new fork: Marpa::R2.
+This will isolate Marpa::XS users from the accidental changes
+and bugs that can be the side effect of active development.
+</p>
+<p>
+
+Initially, changes to Marpa::XS will be restricted to
+bug fixes and those justified from a maintainability standpoint.
+The feature set will be kept stable.
+(As it stands, Marpa::XS is much more fully featured
+than competing parsers.)
+If I enhance the features of Marpa::XS,
+the new features will be back-ported from Marpa's active development forks,
+and I will preserve backward compatibility.
+<h1>Limitations</h1>
+<p>
+Marpa::XS is, as the name suggests, XS only --
+installation requires access to a C compiler,
+and to many of the <a href="#GNU">GNU utilities and libraries as well</a>.
+Marpa::XS has been tested on a wide variety of POSIX systems.
+In theory Marpa::XS is NOT restricted to POSIX systems --
+all the tools it uses have Windows versions, for example.
+However, Marpa::XS has not,
+to my knowledge,
+been installed on a non-POSIX system.
+</p>
+<p>
+</p><h2>Notes</h2>
+<ol>
+<li><a name="LINEAR">"in linear time": </a>
+To be specific, Marpa parses any LR-regular grammar in linear time -- O(n).
+LR-regular is a vast class of grammars that includes LALR,
+LR(k) for all k,
+and LL(k) for all k.
+This means that Marpa parses,
+in linear time,
+every class of grammar parsed by yacc,
+recursive descent and regular expressions.
+</li>
+<li><a name="OPTIMAL">"considered optimal": </a>
+
+The phrase "considered optimal" elides some
+irrelevant bits of theory.
+I would be mildly surprised
+if it turns out that there is an
+O(n) algorithm for general BNF parsing,
+but nobody has proved that such a thing cannot exist.
+And there is an algorithm which, in theory,
+beats Marpa's O(n**3) worst case.
+The Valiant algorithm parses general BNF
+and is O(n**2.373...) or better.
+But Valiant's algorithm is only faster for huge problems,
+and for those it
+needs a machine with many terabytes of main memory
+to deliver on its speed claims.
+So it won't be competing with Marpa any time soon.
+<li><a name="GNU">"GNU utilities and libraries": </a>
+These dependences can be an inconvenience, I admit, but
+the alternative is installing
+my attempt to portably re-create
+all the things the GNU people have developed.
+I think that it is clear that the GNU software is the easier
+and more reliable alternative.
+</p>
+<p>
+If you browse the package, you may see that it uses TeX as well.
+TeX is ONLY needed is you are working on libmarpa,
+the highly mathematical, low-level core library that provides
+the parse engine.
+To do this, you'd need to have studied a lot of the mathematics
+of parsing -- and you'd understand why I feel forced to do the
+documentation in TeX.
+All the non-mathematical parts are either in Perl, or in C code
+which can be read and changed on systems which do not have TeX
+installed.
+</p>
+<p>
+</p>
+</li>
+</p>
+
+                            
+                        </div><!-- .entry-body -->
+                        
+                        <div class="entry-meta-2 pkg">
+                            <ul>
+                                <li><a href="#comments">11 comments</a></li>
+                                <!-- <li><a href="http://blogs.perl.org/users/jeffrey_kegler/2011/12/marpaxs-is-now-1000000.html">0 votes</a></li> -->
+                            </ul>
+                        </div>
+                    </div><!-- #entry-2593 -->
+                    
+
+
+
+
+	<div class="entry-tags">
+    <h4>Tagged as<span class="delimiter">:</span></h4>
+    <span><a href=
+"javascript:void(0)" onclick="location.href='http://blogs.perl.org/mt/mt-search.fcgi?blog_id=63&amp;tag=Marpa%20Earley%20parsing%20parser&amp;limit=20';return false;" rel="tag">Marpa Earley parsing parser</a></span>
+     </div>
+
+
+<div id="comments" class="comments">
+
+
+    
+    
+        
+    <h2 class="comments-header">11 Comments</h2>
+    
+    <div id="comments-content" class="comments-content" style="clear: left;">
+        
+        <div id="comment-108163" class="comment">
+    <div class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+                <span class="byline">
+                    <a class="commenter-profile" href="http://savage.net.au/"><img alt="Author Profile Page" src="http://blogs.perl.org/mt/mt-static/images/comment/mt_logo.png" width="16" height="16" /></a>
+
+                    <span class="vcard author"><a title="http://savage.net.au/" href="http://savage.net.au/">Ron Savage</a></span>
+
+                    | <a href="http://blogs.perl.org/users/jeffrey_kegler/2011/12/marpaxs-is-now-1000000.html#comment-108163"><abbr class="published" title="2011-12-21T11:31:26-08:00">December 21, 2011 11:31 AM</abbr></a>
+
+                    | <a title="Reply" href="javascript:void(0);" onclick="mtReplyCommentOnClick(108163, 'Ron Savage')">Reply</a>
+
+                </span>
+            </div>
+        </div>
+        <div class="comment-content">
+            <p>Hi Jeffrey</p>
+
+<p>While I think of it - has anyone coded a parser for Graphviz's <br />
+<a href="http://www.graphviz.org/content/dot-language">DOT</a> language?</p>
+
+<p>And, would it be that hard?<br />
+</p>
+        </div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-108215" class="comment">
+    <div class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+                <span class="byline">
+                    <a class="commenter-profile" href="http://id-perl.blogspot.com/"><img alt="Author Profile Page" src="http://blogs.perl.org/mt/mt-static/images/comment/mt_logo.png" width="16" height="16" /></a>
+
+                    <span class="vcard author"><a title="http://id-perl.blogspot.com/" href="http://id-perl.blogspot.com/">Steven Haryanto</a></span>
+
+                    | <a href="http://blogs.perl.org/users/jeffrey_kegler/2011/12/marpaxs-is-now-1000000.html#comment-108215"><abbr class="published" title="2011-12-21T20:00:03-08:00">December 21, 2011  8:00 PM</abbr></a>
+
+                    | <a title="Reply" href="javascript:void(0);" onclick="mtReplyCommentOnClick(108215, 'Steven Haryanto')">Reply</a>
+
+                </span>
+            </div>
+        </div>
+        <div class="comment-content">
+            <p>Seconded. I'm longing for more examples aside from the HTML parser. Preferably simpler ones, included under examples/ or demo/ in the distribution. Compare, for one, with Regexp::Grammar's distribution: </p>
+
+<p><a href="http://cpansearch.perl.org/src/DCONWAY/Regexp-Grammars-1.014/demo/">http://cpansearch.perl.org/src/DCONWAY/Regexp-Grammars-1.014/demo/</a></p>
+
+<p>The examples help *a lot* for casual parser writers.<br />
+</p>
+        </div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-108220" class="comment comment-reply entry-author-comment">
+    <div class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+                <span class="byline">
+                    <a class="commenter-profile" href="http://www.jeffreykegler.com"><img alt="Author Profile Page" src="http://blogs.perl.org/mt/mt-static/images/comment/mt_logo.png" width="16" height="16" /></a>
+
+                    <span class="vcard author"><a title="http://www.jeffreykegler.com" href="http://www.jeffreykegler.com">Jeffrey Kegler</a></span> replied to <a href="http://blogs.perl.org/users/jeffrey_kegler/2011/12/marpaxs-is-now-1000000.html#comment-108163">comment from Ron Savage</a>
+
+                    | <a href="http://blogs.perl.org/users/jeffrey_kegler/2011/12/marpaxs-is-now-1000000.html#comment-108220"><abbr class="published" title="2011-12-21T20:22:04-08:00">December 21, 2011  8:22 PM</abbr></a>
+
+                    | <a title="Reply" href="javascript:void(0);" onclick="mtReplyCommentOnClick(108220, 'Jeffrey Kegler')">Reply</a>
+
+                </span>
+            </div>
+        </div>
+        <div class="comment-content">
+            <p>@Ron:  This is the first I've heard of Graphviz's DOT, but based on a quick look, my guess is parsing the DOT language with Marpa::XS would be quite straightforward.  The DOT language seems well-documented:  There is BNF for the grammar and a description of how to do the lexing.  The grammar looks like something Marpa should have no problem with.
+<p>As for the lexing, there are DOT modules on CPAN, which at 1st glance seem to do lexing.  Hopefully, those could be leveraged to provide a lexer to a Marpa-powered parser.</p></p>
+        </div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-108225" class="comment comment-reply entry-author-comment">
+    <div class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+                <span class="byline">
+                    <a class="commenter-profile" href="http://www.jeffreykegler.com"><img alt="Author Profile Page" src="http://blogs.perl.org/mt/mt-static/images/comment/mt_logo.png" width="16" height="16" /></a>
+
+                    <span class="vcard author"><a title="http://www.jeffreykegler.com" href="http://www.jeffreykegler.com">Jeffrey Kegler</a></span> replied to <a href="http://blogs.perl.org/users/jeffrey_kegler/2011/12/marpaxs-is-now-1000000.html#comment-108215">comment from Steven Haryanto</a>
+
+                    | <a href="http://blogs.perl.org/users/jeffrey_kegler/2011/12/marpaxs-is-now-1000000.html#comment-108225"><abbr class="published" title="2011-12-21T20:53:29-08:00">December 21, 2011  8:53 PM</abbr></a>
+
+                    | <a title="Reply" href="javascript:void(0);" onclick="mtReplyCommentOnClick(108225, 'Jeffrey Kegler')">Reply</a>
+
+                </span>
+            </div>
+        </div>
+        <div class="comment-content">
+            <p>@Steven: One thing I did before taking Marpa::XS 1.000000 was to remove all the deprecated techniques out of the tests in the t directory (except in the deprecated*.t tests).  All the other test files are safe to use as examples.  Most suitable for that purpose are perhaps ah_numeric.t, counter.t, equation.t, minus.t, pascal.t, randal.t, timeflies.t and wall.t.  The .t files are cluttered, because I usually test not just output, but diagnostics (a practice I highly recommend, by the way.)
+<p>Marpa was a very long (4+ full time years) and complex project, and until it was stable, I could not be sure that any demos I did would still run -- unless of course I included them in the test suite.  This is perhaps not exactly what you wanted, but I hope it helps.</p></p>
+        </div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-108245" class="comment comment-reply">
+    <div class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+                <span class="byline">
+                    <a class="commenter-profile" href="http://id-perl.blogspot.com/"><img alt="Author Profile Page" src="http://blogs.perl.org/mt/mt-static/images/comment/mt_logo.png" width="16" height="16" /></a>
+
+                    <span class="vcard author"><a title="http://id-perl.blogspot.com/" href="http://id-perl.blogspot.com/">Steven Haryanto</a></span> replied to <a href="http://blogs.perl.org/users/jeffrey_kegler/2011/12/marpaxs-is-now-1000000.html#comment-108225">comment from Jeffrey Kegler</a>
+
+                    | <a href="http://blogs.perl.org/users/jeffrey_kegler/2011/12/marpaxs-is-now-1000000.html#comment-108245"><abbr class="published" title="2011-12-21T22:09:10-08:00">December 21, 2011 10:09 PM</abbr></a>
+
+                    | <a title="Reply" href="javascript:void(0);" onclick="mtReplyCommentOnClick(108245, 'Steven Haryanto')">Reply</a>
+
+                </span>
+            </div>
+        </div>
+        <div class="comment-content">
+            <p>Ah, the test files of course. It's a start, thanks! :)<br />
+</p>
+        </div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-108272" class="comment">
+    <div class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+                <span class="byline">
+                    <a class="commenter-profile" href="http://ali.as/"><img alt="Author Profile Page" src="http://blogs.perl.org/mt/mt-static/images/comment/mt_logo.png" width="16" height="16" /></a>
+
+                    <span class="vcard author"><a title="http://ali.as/" href="http://ali.as/">Adam Kennedy</a></span>
+
+                    | <a href="http://blogs.perl.org/users/jeffrey_kegler/2011/12/marpaxs-is-now-1000000.html#comment-108272"><abbr class="published" title="2011-12-21T23:07:46-08:00">December 21, 2011 11:07 PM</abbr></a>
+
+                    | <a title="Reply" href="javascript:void(0);" onclick="mtReplyCommentOnClick(108272, 'Adam Kennedy')">Reply</a>
+
+                </span>
+            </div>
+        </div>
+        <div class="comment-content">
+            <p>The big problem with using Marpa::XS is that anything useful I build on top of it will inherit the same platform limitations, and so will everything that uses my things as well, and so on recursively.</p>
+
+<p>That's quite a big problem, and the reason why high quality modules like SVN::Core are never really adopted.</p>
+
+<p>I would suggest that whatever is needed to get it working on all platforms, it is very very much worth trying.</p>
+
+<p>Windows for example does already have dmake, and gnu make, and gcc, and other utilities. But some of the stuff around the edges aren't available and my be worth some evil hackery in order to get it working.</p>
+        </div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-108452" class="comment comment-reply entry-author-comment">
+    <div class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+                <span class="byline">
+                    <a class="commenter-profile" href="http://www.jeffreykegler.com"><img alt="Author Profile Page" src="http://blogs.perl.org/mt/mt-static/images/comment/mt_logo.png" width="16" height="16" /></a>
+
+                    <span class="vcard author"><a title="http://www.jeffreykegler.com" href="http://www.jeffreykegler.com">Jeffrey Kegler</a></span> replied to <a href="http://blogs.perl.org/users/jeffrey_kegler/2011/12/marpaxs-is-now-1000000.html#comment-108272">comment from Adam Kennedy</a>
+
+                    | <a href="http://blogs.perl.org/users/jeffrey_kegler/2011/12/marpaxs-is-now-1000000.html#comment-108452"><abbr class="published" title="2011-12-22T09:05:12-08:00">December 22, 2011  9:05 AM</abbr></a>
+
+                    | <a title="Reply" href="javascript:void(0);" onclick="mtReplyCommentOnClick(108452, 'Jeffrey Kegler')">Reply</a>
+
+                </span>
+            </div>
+        </div>
+        <div class="comment-content">
+            <p>@Adam: Dunno what you mean by "stuff around the edges".  Throughout my work on Marpa::XS, I made sure to avoid POSIX dependencies.  And with anything I used, I ALWAYS checked to see that it was available on Windows.  But I don't have access to a Windows machine, so I was not able to test.<br />
+<p>There's only two non-core Perl dependencies, Glib and ExtUtils::PkgConfig, and they run on Windows.  gcc is NOT required -- The C code for Marpa::XS is C89, and compiles clean with "-ansi -pedantic".  File handling is done only during build, and uses File::Spec, etc., etc.  My hope and expectation is that no "evil hackery" is needed to get Marpa::XS onto Windows.</p></p>
+        </div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-108539" class="comment entry-author-comment">
+    <div class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+                <span class="byline">
+                    <a class="commenter-profile" href="http://www.jeffreykegler.com"><img alt="Author Profile Page" src="http://blogs.perl.org/mt/mt-static/images/comment/mt_logo.png" width="16" height="16" /></a>
+
+                    <span class="vcard author"><a title="http://www.jeffreykegler.com" href="http://www.jeffreykegler.com">Jeffrey Kegler</a></span>
+
+                    | <a href="http://blogs.perl.org/users/jeffrey_kegler/2011/12/marpaxs-is-now-1000000.html#comment-108539"><abbr class="published" title="2011-12-22T19:15:56-08:00">December 22, 2011  7:15 PM</abbr></a>
+
+                    | <a title="Reply" href="javascript:void(0);" onclick="mtReplyCommentOnClick(108539, 'Jeffrey Kegler')">Reply</a>
+
+                </span>
+            </div>
+        </div>
+        <div class="comment-content">
+            <p>@Steven: Also, some very nice examples are starting to appear on the net already, like <a href="http://blogs.perl.org/users/wolfgang_kinkeldei/2011/12/trying-marpa-to-parse-css.html#comments">this<br />
+very nice-looking CSS parser by Wolfgang Kinkeldei</a>.</p>
+        </div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-110357" class="comment">
+    <div class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+                <span class="byline">
+                    <a class="commenter-profile" href="http://ali.as/"><img alt="Author Profile Page" src="http://blogs.perl.org/mt/mt-static/images/comment/mt_logo.png" width="16" height="16" /></a>
+
+                    <span class="vcard author"><a title="http://ali.as/" href="http://ali.as/">Adam Kennedy</a></span>
+
+                    | <a href="http://blogs.perl.org/users/jeffrey_kegler/2011/12/marpaxs-is-now-1000000.html#comment-110357"><abbr class="published" title="2011-12-29T04:09:41-08:00">December 29, 2011  4:09 AM</abbr></a>
+
+                    | <a title="Reply" href="javascript:void(0);" onclick="mtReplyCommentOnClick(110357, 'Adam Kennedy')">Reply</a>
+
+                </span>
+            </div>
+        </div>
+        <div class="comment-content">
+            <p>If it is supposed to work on Windows, then something isn't quite right.</p>
+
+<p>I think the initial problem is you haven't listed ExtUtils::PkgConfig as a dependency (needs to be a configure_requires one)</p>
+        </div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-110412" class="comment comment-reply entry-author-comment">
+    <div class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+                <span class="byline">
+                    <a class="commenter-profile" href="http://www.jeffreykegler.com"><img alt="Author Profile Page" src="http://blogs.perl.org/mt/mt-static/images/comment/mt_logo.png" width="16" height="16" /></a>
+
+                    <span class="vcard author"><a title="http://www.jeffreykegler.com" href="http://www.jeffreykegler.com">Jeffrey Kegler</a></span> replied to <a href="http://blogs.perl.org/users/jeffrey_kegler/2011/12/marpaxs-is-now-1000000.html#comment-110357">comment from Adam Kennedy</a>
+
+                    | <a href="http://blogs.perl.org/users/jeffrey_kegler/2011/12/marpaxs-is-now-1000000.html#comment-110412"><abbr class="published" title="2011-12-29T09:58:29-08:00">December 29, 2011  9:58 AM</abbr></a>
+
+                    | <a title="Reply" href="javascript:void(0);" onclick="mtReplyCommentOnClick(110412, 'Jeffrey Kegler')">Reply</a>
+
+                </span>
+            </div>
+        </div>
+        <div class="comment-content">
+            <p>@adam: Mysterious.  I went in to make the fix, and found that ExtUtils::PkgConfig already *IS* one of the configure_requires prereqs.  It shows in the <a href="http://cpansearch.perl.org/src/JKEGL/Marpa-XS-1.002000/META.json">META.json</a>.</p>
+        </div>
+    </div>
+</div>
+        
+    
+        
+        <div id="comment-110695" class="comment comment-reply entry-author-comment">
+    <div class="inner">
+        <div class="comment-header">
+            <div class="asset-meta">
+                <span class="byline">
+                    <a class="commenter-profile" href="http://www.jeffreykegler.com"><img alt="Author Profile Page" src="http://blogs.perl.org/mt/mt-static/images/comment/mt_logo.png" width="16" height="16" /></a>
+
+                    <span class="vcard author"><a title="http://www.jeffreykegler.com" href="http://www.jeffreykegler.com">Jeffrey Kegler</a></span> replied to <a href="http://blogs.perl.org/users/jeffrey_kegler/2011/12/marpaxs-is-now-1000000.html#comment-108245">comment from Steven Haryanto</a>
+
+                    | <a href="http://blogs.perl.org/users/jeffrey_kegler/2011/12/marpaxs-is-now-1000000.html#comment-110695"><abbr class="published" title="2011-12-30T20:51:51-08:00">December 30, 2011  8:51 PM</abbr></a>
+
+                    | <a title="Reply" href="javascript:void(0);" onclick="mtReplyCommentOnClick(110695, 'Jeffrey Kegler')">Reply</a>
+
+                </span>
+            </div>
+        </div>
+        <div class="comment-content">
+            <p>@Steven: I have added a section to the Marpa web page which has <a href="http://www.jeffreykegler.com/marpa#TOC-Examples">examples of Marpa parsers written by others</a>.  Frankly, I find the Marpa parsers that others write often look more elegant than my own efforts.</p>
+        </div>
+    </div>
+</div>
+        
+    </div>
+        
+    
+    
+
+    
+    
+    <div class="comments-open" id="comments-open">
+        <h2 class="comments-open-header">Leave a comment</h2>
+        <div class="comments-open-content">
+
+        
+            <div id="comment-greeting"></div>
+
+            <form method="post" action="http://blogs.perl.org/mt/mt-comments.fcgi" name="comments_form" id="comments-form" onsubmit="return mtCommentOnSubmit(this)">
+                <input type="hidden" name="static" value="1" />
+                <input type="hidden" name="entry_id" value="2593" />
+                <input type="hidden" name="__lang" value="en" />
+                <input type="hidden" name="parent_id" value="" id="comment-parent-id" />
+                <input type="hidden" name="armor" value="1" />
+                <input type="hidden" name="preview" value="" />
+                <input type="hidden" name="sid" value="" />
+                <div id="comments-open-data">
+                    <div id="comment-form-name">
+                        <label for="comment-author">Name</label>
+                        <input id="comment-author" name="author" size="30" value="" onfocus="mtCommentFormOnFocus()" />
+                    </div>
+                    <div id="comment-form-email">
+                        <label for="comment-email">Email Address</label>
+                        <input id="comment-email" name="email" size="30" value="" onfocus="mtCommentFormOnFocus()" />
+                    </div>
+                    <div id="comment-form-url">
+                        <label for="comment-url">URL</label>
+                        <input id="comment-url" name="url" size="30" value="" onfocus="mtCommentFormOnFocus()" />
+                    </div>
+                    <div id="comment-form-remember-me">
+                        <input type="checkbox" id="comment-bake-cookie" name="bakecookie" onclick="mtRememberMeOnClick(this)" value="1" accesskey="r" />
+                        <label for="comment-bake-cookie">Remember personal info?</label>
+                    </div>
+                </div>
+                <div id="comment-form-reply" style="display:none">
+                    <input type="checkbox" id="comment-reply" name="comment_reply" value="" onclick="mtSetCommentParentID()" />
+                    <label for="comment-reply" id="comment-reply-label"></label>
+                </div>
+                <div id="comments-open-text">
+                    <label for="comment-text">Comments
+                    (You may use HTML tags for style)</label>
+                    <textarea id="comment-text" name="text" rows="15" cols="50" onfocus="mtCommentFormOnFocus()"></textarea>
+                </div>
+                <div id="comments-open-captcha"></div>
+                <div id="comments-open-footer">
+                    <input type="submit" accesskey="v" name="preview_button" id="comment-preview" value="Preview" onclick="this.form.preview.value='1';" />
+                    <input type="submit" accesskey="s" name="post" id="comment-submit" value="Submit" />
+                </div>
+            </form>
+
+
+        </div>
+    </div>
+    <script type="text/javascript">
+    <!--
+    mtAttachEvent("load", mtEntryOnLoad);
+    mtAttachEvent("unload", mtEntryOnUnload);
+    //-->
+    </script>
+    
+
+
+</div>
+
+
+
+</div><!-- #content-main -->
+            
+            <div id="content-aux">
+            
+                
+                <div class="module-aux pkg" id="module-aux-about-author-181">
+                <div class="module-inner">
+                    <h3>About Jeffrey Kegler</h3>
+                    <p><img class="authorpic" src="http://blogs.perl.org/mt/mt-static/support/assets_c/2011/08/Jeffrey_Kegler_BEACH1-thumb-72x72-574.jpg"" alt="user-pic" />
+	            I blog about Marpa, my parsing algorithm, and other things of interest to techies.</p>
+                    <div class="more-link"><a href="http://blogs.perl.org/mt/mt-cp.fcgi?__mode=view&amp;id=181">More info &raquo;</a></div>
+                </div>
+                </div><!-- #module-aux-about-author -->
+
+
+
+
+                
+            
+            
+            <div class="module-aux pkg" id="module-aux-search">
+                <div class="module-inner">
+                    
+                    
+                    <h3>Search this blog</h3>
+                    
+                    
+					
+                    <div id="search-form-aux">
+                        <form method="get" action="http://blogs.perl.org/mt/mt-search.fcgi">
+                    
+                            <input type="hidden" name="IncludeBlogs" value="63" />
+                    
+                            <input type="hidden" name="limit" value="20" />
+                            <label for="search">Search</label>
+                            <input id="local-search" class="query" name="search" value="" />
+                            <input class="submit" type="submit" value="Go" />
+                        </form>
+                    </div><!-- #search-form-aux -->
+                </div>
+                </div><!-- #module-aux-search -->
+                    
+
+            
+            
+                
+                
+                
+                
+            
+
+            </div><!-- #content-aux -->
+
+
+
+        </div><!-- #content-inner -->
+        </div><!-- #content -->
+
+        <div id="footer">
+        <div id="footer-inner" class="pkg">
+            <ul id="footer-nav">
+                <li class="first"><a href="http://github.com/blogs-perl-org/blogs.perl.org/issues">Feedback welcome</a></li>
+                <li>Hosted by <a href="http://dave.org.uk">Dave Cross</a> of <a href="http://mag-sol.com/">Magnum Solutions</a> and <a href="http://aaroncrane.co.uk/">Aaron Crane</a> of <a href="http://cutbot.net/">Cutbot</a></li>
+            </ul>
+            
+            <div class="powered-by"><a href="http://www.movabletype.com/" target="_blank">Powered by Movable Type</a></div>
+        </div><!-- #footer-inner -->
+        </div><!-- #footer -->
+            
+        </div><!-- #content-inner -->
+        </div><!-- #content -->
+        
+    </div><!-- #container-inner -->
+    </div><!-- #container -->
+<br />
+<p>posted at: 21:34 |
+path: <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2011/12">/individual/2011/12</a> |
+<a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2011/12/marpaxs-is-now-1000000.html">direct link to this entry</a>
+</p>
+<div style="color:#38B0C0;padding:1px;text-align:center;">
+&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&sect;
+</div>
+<h3>Wed, 14 Dec 2011</h3>
+<br />
+<center><a name="how-to-parse-html-part-3"> <h2>How to parse HTML, part 3</h2> </a>
+</center>
+<p>
+When a solution has the same shape
+as the problem,
+it is a very good thing,
+and not just because it looks pretty.
+In
+<a href="#PREVIOUS">previous posts</a>,
+I have described
+<a href="https://metacpan.org/module/Marpa::HTML">Marpa::HTML</a>,
+a Marpa-based, "Ruby Slippers"
+approach to parsing liberal
+and defective HTML.
+A major advantage
+of
+<a href="https://metacpan.org/module/Marpa::HTML">Marpa::HTML</a>
+is that it looks like
+the problem it solves.
+</p>
+<h2>HTML parsing: the problem</h2>
+<ol>
+<li>
+The problem of parsing an HTML document
+is essentially
+the problem of finding
+the hierarchy of its HTML elements.
+Conceptually,
+HTML elements are delimited by start and end tags.
+<li>
+The HTML standards specify that certain of the
+start and end tags can be omitted.
+
+<li>
+In liberal and defective HTML,
+any HTML tag might be missing.
+<li>
+In liberal and defective HTML,
+unknown and spurious tags
+may be present in the physical input.
+</ol>
+<h2>HTML parsing: the solution</h2>
+<ol>
+<li>
+The parse engine uses an over-strict grammar,
+one which requires all HTML start and end tags.
+<li>
+When the parse engine runs into a token it cannot accept,
+if there is exactly one start or end tag which it
+could accept at that point,
+the parser uses "the Ruby Slippers".
+It invents a virtual token representing the desired
+tag, and feeds it to the parse engine.
+<li>
+If there is more than one virtual token is possible,
+<a href="https://metacpan.org/module/Marpa::HTML">Marpa::HTML</a>
+chooses a token to pass on to the parse engine.
+In the current
+implementation,
+this is done using rules of thumb.
+
+<li>
+If no virtual token is possible,
+the physical token is treated as "cruft".
+The grammar allows cruft to be a part of the contents
+of any HTML element,
+and the application can decide what to do
+with it.
+</ol>
+<p>
+This outline of the solution
+follows the structure of the problem point for point.
+In turn, the code follows this outline.
+It may seem
+that I just stated the painfully obvious,
+but in fact the design of
+the parsers in use today typically
+does NOT reflect the structure of their target languages
+in any straightforward way.
+In particular, the more a parser is
+considered "production quality",
+the less likely its code will bear any resemblance to
+the problem it is solving.
+</p>
+<h2>Toward hackable parsers</h2>
+<p>
+A lot could be said about the
+aesthetics and philosophy of this.
+In this post,
+let me cut straight to the bottom line.
+</p>
+<p>
+First and least important,
+it is usually easier to code a solution which looks like the problem.
+I say "least important,"
+because this perspective views the problem as static,
+and if the problem is static you can code it up
+and forget it.
+It does not matter too much whether
+the coding effort is fast,
+if it only has to be done once.
+But what if the problem keeps changing?
+</p>
+<p>
+You might say that most parsing is of the static type,
+and that's true.
+But that is
+because previous technology has left little
+choice in the matter.
+I believe that,
+if programmers had the option of hacking production-quality
+parsers, they'd be doing it all the time.
+</p>
+
+<p>
+In the past,
+hacking production quality parsers has been,
+for practical purposes, impossible.
+Look at those existing utilities which do work with, for
+example, C, HTML or Perl.
+These usually do NOT even attempt to leverage the production parser
+for these languages.
+Instead these tools use a new parser,
+one created from scratch.
+One consequence is that
+they must tolerate a considerable amount
+of approximation in the parsing.
+</p>
+<p>
+Why don't programmers take the production parsers for a language
+as the basis for tools working with that language?
+If you look at those production parsers,
+you'll see why.
+They reflect the structure of the languages so little,
+and are so complex,
+that they simply are unusable as a starting point
+for tools.
+<p>
+</p>
+A Marpa-powered "Ruby Slippers" approach to HTML,
+like the one implemented in 
+<a href="https://metacpan.org/module/Marpa::HTML">Marpa::HTML</a>
+but with its HTML interpretation layer rewritten in C,
+would be very competitive as a production HTML parser.
+Not the least of its advantages would be that it would make
+an excellent basis for HTML utilities.
+<p>
+<h2>Notes</h2>
+<ol>
+<li><p><a name="PREVIOUS">"previous posts"</a>:
+The previous posts in this series were
+"<a href="http://blogs.perl.org/users/jeffrey_kegler/2011/11/how-to-parse-html.html">How
+to parse HTML</a>"
+and 
+"<a href="http://blogs.perl.org/users/jeffrey_kegler/2011/12/how-to-parse-html-part-2.html">How
+to parse HTML, part 2</a>".
+</p>
+</li>
+</ol>
+<br />
+<p>posted at: 17:44 |
+path: <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2011/12">/individual/2011/12</a> |
+<a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2011/12/how-to-parse-html-part-3.html">direct link to this entry</a>
+</p>
+<div style="color:#38B0C0;padding:1px;text-align:center;">
+&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&sect;
+</div>
+<h3>Sun, 11 Dec 2011</h3>
+<br />
+<center><a name="marpaxs-release-candidate-now-available"> <h2>Marpa::XS release candidate now available</h2> </a>
+</center>
+<p>
+I am very happy to announce that
+<a href="https://metacpan.org/release/JKEGL/Marpa-XS-0.026000/">
+the latest release of Marpa::XS</a>
+is a release candidate</a> for the first full release,
+Marpa::XS 1.000000.
+Most user's experience with the previous beta releases
+seems to have been trouble-free.
+The one significant issue that was identified
+was a failure to properly evaluate null symbols under
+<a href="#JIROTKA">
+an unusual combination of circumstances</a>.
+This problem
+(a one line error in the C rewrite of the parse engine)
+is fixed in this release.
+Unusual as the issue is,
+when it does occur it results in a parse failure,
+so that
+I recommend that all users of Marpa::XS upgrade to
+<a href="https://metacpan.org/release/JKEGL/Marpa-XS-0.026000/">
+the latest release</a>.
+</p>
+<p>
+Marpa::XS is being kept stable.
+Bug fixes, even of minor and cosmetic bugs,
+will be made, as 
+will changes that improve maintainability.
+But no new features will be added.
+Interface changes will be especially avoided.
+
+</p>
+<h2>What is Marpa?</h2>
+<p>Marpa is an advance over recursive descent
+and yacc.
+I hope the Marpa algorithm
+will become the standard parser for
+problems too
+big for regular expressions.
+</p><ul>
+<li>Marpa parses,
+<a href="#LINEAR">
+in linear time</a>,
+those
+classes of grammar that are currently in practical use.
+</li>
+<li>The importance of parse-time debugging is often underestimated.
+Marpa's parse-time error detection breaks new ground -- Marpa is
+fully aware of exactly where in the parse it is at all times,
+and of exactly what input it expects and why.
+This means parse-time error detection, once a desperate last
+resort, now can be used as
+<a href="http://blogs.perl.org/users/jeffrey_kegler/2010/06/parsing-with-ruby-slippers.html">
+a parsing technique in itself</a>.
+
+</li>
+<li>Marpa is a general BNF parser -- that means if you feed it anything
+written in BNF, it "just parses" it.
+This includes grammars which are left-recursive, right-recursive and
+ambiguous -- even infinitely ambiguous.
+</li>
+
+<li>Marpa never goes exponential -- worst case, even for highly ambiguous
+grammars, is O(n**3), which is
+<a href="#OPTIMAL">considered optimal</a>.
+</li>
+</ul>
+<h2>New with this release</h2>
+<p>
+Since the beta release,
+several bugs have been fixed,
+The most important one was a failure to properly evaluate
+null symbols
+<a href="#JIROTKA">under certain unusual circumstances</a>.
+This problem, identified and described by
+Tom&aacute;&#353; Jirotka,
+is fixed in
+<a href="https://metacpan.org/release/JKEGL/Marpa-XS-0.026000/">
+this latest release</a>.
+</p>
+
+<p>
+In some previous Marpa::XS releases, the
+documentation, while part of the distribution,
+did not install automatically.
+As of this release, that problem is fixed.
+The documentation now
+installs, as it should,
+along with the rest of Marpa::XS.
+</p>
+<p>
+No interface has been deprecated since
+Marpa::XS went beta -- the interface has remained stable.
+But many interfaces deprecated BEFORE Marpa
+went beta were used in the test suite.
+To make the test suite more useful for readers,
+I eliminated deprecated practices
+except in code whose purpose it is
+to test that deprecated practice.
+Where tests continue to use a deprecated practice,
+comments explicitly point this out.
+</p>
+<h2>What is next with Marpa?</h2>
+<p>
+Based on the feedback,
+I have confidence that Marpa::XS have been extensively
+used and found reliable.
+With the fixes for this release,
+I expect that Marpa::XS can be taken out
+of beta and into a full 1.000000 release shortly.
+</p>
+Development of new features for
+Marpa continues, but in another distribution:
+<a href="http://search.cpan.org/dist/Marpa-R2/">Marpa::R2</a>.
+This isolates Marpa::XS users from the accidental changes
+and bugs that can be the side effect of active development.
+<br />
+<p>posted at: 21:17 |
+path: <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2011/12">/individual/2011/12</a> |
+<a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2011/12/marpaxs-release-candidate-now-available.html">direct link to this entry</a>
+</p>
+<div style="color:#38B0C0;padding:1px;text-align:center;">
+&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&sect;
+</div>
+<h3>Wed, 07 Dec 2011</h3>
+<br />
+<center><a name="how-to-parse-html-part-2"> <h2>How to parse HTML, part 2</h2> </a>
+</center>
+<p>
+This is the second of a series of posts that details
+a Marpa-based, "Ruby Slippers"
+approach to parsing liberal
+and defective HTML.
+This post assumes you have 
+read
+<a href="http://blogs.perl.org/users/jeffrey_kegler/2011/11/how-to-parse-html.html">
+the first post</a>.
+</p>
+<h2>First, reduce the HTML to a token stream</h2>
+<p>
+Most computer languages can be viewed
+as a token stream.
+HTML is not an exception.
+HTML tokens can be blocks of text;
+comments and various other SGML entities;
+HTML element start tags;
+and HTML element end tags.
+The HTML token stream is unusual in that
+some of its tokens can
+be quite complex internally.
+</p>
+In parsing computer languages,
+it is a frequent practice to divide the
+work between a tokenizer ("lexer")
+and a <a href="#HIGH-LEVEL">high-level parser</a>.
+The lexer takes the raw input
+and turns it into a token stream.
+Tokenizing HTML is a difficult job,
+and one for which there is an excellent CPAN module:
+<a href="https://metacpan.org/module/HTML::Parser">HTML::Parser</a>.
+<a href="https://metacpan.org/module/Marpa::HTML">Marpa::HTML</a>
+
+relies on
+<a href="https://metacpan.org/module/HTML::Parser">HTML::Parser</a>
+to do its tokenization.
+<p>
+</p>
+<a href="https://metacpan.org/module/Marpa::HTML">Marpa::HTML</a>
+determines the large scale structure of the HTML document --
+what I will call in this post, "high-level" parsing.
+The result of high-level parsing can be
+seen as a hierarchical structure.
+The goal of high-level parsing is
+to build a hierarchy which reflects
+the structure of the document.
+Conventionally, this hierarchy is visualized
+as an upside-down tree,
+one where the "leaves" are the tokens,
+and where the "root" node represents the
+document as a whole.
+<br />
+<p>posted at: 11:10 |
+path: <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2011/12">/individual/2011/12</a> |
+<a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2011/12/how-to-parse-html-part-2.html">direct link to this entry</a>
+</p>
+<div style="color:#38B0C0;padding:1px;text-align:center;">
+&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&sect;
+</div>
+<h3>Wed, 30 Nov 2011</h3>
+<br />
+<center><a name="how-to-parse-html"> <h2>How to Parse HTML</h2> </a>
+</center>
+<p>
+This is the first of a series of posts that will detail
+a Marpa-based "Ruby Slippers"
+approach to parsing liberal
+and defective HTML.
+As an example, let's look at a
+few lines
+taken more or less at random
+from the middle
+of the <a href="http://www.perl.org/">perl.org
+landing page</a>.
+That page is exactly 400 lines long.
+Here is line 200 and some lines
+lines to either side of it.
+<pre>
+<code class="prettyprint">
+&lt;/td&gt;
+&lt;td&gt;
+&lt;div class="module"&gt;
+&lt;a href="http://www.perlfoundation.org/"&gt;
+&lt;img alt=""
+    src="http://mc-cdn.pimg.net/images/icons/onion.vee5cb98.png"
+    width="45" height="45" /&gt;
+&lt;/a&gt;
+
+&lt;h4&gt;
+&lt;a href="http://www.perlfoundation.org/"&gt;The Perl Foundation&lt;/a&gt;
+&lt;/h4&gt;
+&lt;p&gt;
+The Perl Foundation is dedicated to the advancement
+of the Perl programming language through open discussion,
+collaboration, design, and code.
+</code>
+</pre>
+<p>
+For readability, I've rearranged
+the whitespace, but otherwise the above is untouched.
+My more-or-less-random extract is part of a table, and captures the
+end tag of one cell and the beginning of another.
+</p>
+<p>
+
+<a href="https://metacpan.org/module/Marpa::HTML">Marpa::HTML</a>
+has no trouble fixing this up,
+but neither does the
+rendering engine
+in Firefox.
+If you cut and paste the above display into a file,
+and look at it in your favorite web browser,
+the result will probably be quite reasonable.
+So why am I saying
+that Marpa-based
+HTML parsing is a step forward?
+</p>
+<h2>What's the Big Deal?</h2>
+<p>
+<a href="https://metacpan.org/module/Marpa::HTML">Marpa::HTML</a>
+as it sits is a flexible and useable tool,
+but what makes it different is best appreciated if you think in
+terms of
+writing, maintaining or
+<a href="#FORKING">forking Marpa::HTML</a>.
+The rendering engine in your favorite browser
+is a monolith of mission-specific code,
+and in most cases maintaining it is
+the job of a team.
+<a href="https://metacpan.org/module/Marpa::HTML">Marpa::HTML</a>
+was written in a couple
+of geek-weeks.
+It is reasonable to expect that even
+if a change amounted nearly to
+a total rewrite,
+it could done in
+a similar amount of time.
+</p>
+<p>
+
+Why is
+<a href="https://metacpan.org/module/Marpa::HTML">Marpa::HTML</a>
+that much easier to code?
+Well, admittedly,
+<a href="https://metacpan.org/module/Marpa::HTML">Marpa::HTML</a>
+does not do rendering, which
+makes life easier.
+<a href="https://metacpan.org/module/Marpa::HTML">Marpa::HTML</a>
+just parses
+HTML, without trying to figure out how to arrange it
+on a display.
+</p>
+<p>
+More to our purpose,
+<a href="https://metacpan.org/module/Marpa::HTML">Marpa::HTML</a>
+divides
+HTML parsing into two layers:
+an HTML specific layer;
+and
+<a href="https://metacpan.org/module/Marpa::XS">
+
+a general parsing layer</a>.
+Most of the complexity goes into the general parsing
+layer, which is in carefully optimized C,
+and which contains no HTML-specific code.
+The HTML-specific layer is
+small and coded in Perl.
+<p>
+When I started writing 
+Marpa::HTML,
+<a href="https://metacpan.org/module/Marpa::XS">
+my general parsing layer was already written,
+tested and ready to go</a>.
+I only
+needed to write an HTML-specific layer.
+Marpa::HTML was my first serious exercise of
+the Ruby Slippers,
+and my surprise at how easy it was
+to use inspired the name.
+</p>
+<p>
+The advantages to breaking up
+an HTML parser
+into an HTML-specific layer
+and a parse engine
+can be compared to the advantages that were accrued
+by breaking up the original monolithic
+web browsers into a user interface and a rendering engine.
+The interface of
+modern browsers can be changed
+without hacking the rendering engine.
+The Marpa-powered approach to parsing
+HTML allows the programmer to completely change
+his approach to HTML without
+touching the parse engine.
+</p>
+As you read this series of posts,
+I hope the following will be food for the imagination:
+<ul>
+<li>
+<a href="https://metacpan.org/module/Marpa::HTML">Marpa::HTML</a>
+could be the basis
+of a utility.
+Two I have already written are
+
+<a href="https://metacpan.org/module/html_fmt">html_fmt</a>
+and
+<a href="https://metacpan.org/module/html_score">html_score</a>.
+<li>A Marpa-powered tool
+could take a customized approach to dealing with defects in HTML.
+<li>A Marpa-powered tool
+could take a configurable approach to dealing with defects in HTML.
+<li>A Marpa-powered tool could provide an XS-powered engine to speed up HTML::Tree.
+<li>A Marpa-powered tool could understand embedded content,
+such as
+the HTML-within-HTML used in the displays
+in this blog post.
+<li>
+A Marpa-powered tool could imitate your favorite renderer.
+<li>
+A Marpa-powered tool could configurably imitate the properties
+of many renderers.
+<li>
+A Marpa-powered tool could prototype the HTML renderer
+of your dreams.
+<li>
+With its HTML-specific layer
+recoded in C,
+a fork could be the easier-to-maintain
+HTML renderer of your dreams.
+
+</ul>
+<h2>The Example</h2>
+<p>
+I will finish this post, by taking a first look at
+what
+<a href="https://metacpan.org/module/Marpa::HTML">Marpa::HTML</a>
+does.
+For that,
+it is convenient to use
+<a href="https://metacpan.org/module/html_fmt">html_fmt</a>,
+my Marpa-powered HTML "pretty-printer".
+<a href="https://metacpan.org/module/html_fmt">html_fmt</a>
+takes any file fed to it,
+interprets it as HTML,
+and prints a "prettified" version to the standard output.
+It's a good tool for studying HTML interpretation.
+Here is what it did with our example:
+</p>
+<pre>
+<code class="prettyprint">
+&lt;!-- Following start tag is replacement for a missing one --&gt;
+
+&lt;html&gt;
+  &lt;!-- Following start tag is replacement for a missing one --&gt;
+  &lt;head&gt;
+  &lt;/head&gt;
+  &lt;!-- Preceding end tag is replacement for a missing one --&gt;
+  &lt;!-- Following start tag is replacement for a missing one --&gt;
+
+  &lt;body&gt;
+    &lt;!-- Following start tag is replacement for a missing one --&gt;
+    &lt;table&gt;
+      &lt;!-- Following start tag is replacement for a missing one --&gt;
+      &lt;tbody&gt;
+        &lt;!-- Following start tag is replacement for a missing one --&gt;
+
+        &lt;tr&gt;
+          &lt;!-- Next line is cruft --&gt;
+          &lt;/td&gt;
+          &lt;td&gt;
+            &lt;div class="module"&gt;
+              &lt;a href="http://www.perlfoundation.org/"&gt;
+
+                &lt;img alt=""
+    src="http://mc-cdn.pimg.net/images/icons/onion.vee5cb98.png"
+    width="45" height="45" /&gt;
+              &lt;/a&gt;
+              &lt;h4&gt;
+                &lt;a href="http://www.perlfoundation.org/"&gt;
+                  The Perl Foundation
+                &lt;/a&gt;
+              &lt;/h4&gt;
+
+              &lt;p&gt;
+                The Perl Foundation is dedicated to the advancement
+                of the Perl programming language through open discussion,
+                collaboration, design, and code.
+              &lt;/p&gt;
+              &lt;!-- Preceding end tag is replacement for a missing one --&gt;
+            &lt;/div&gt;
+            &lt;!-- Preceding end tag is replacement for a missing one --&gt;
+          &lt;/td&gt;
+
+          &lt;!-- Preceding end tag is replacement for a missing one --&gt;
+        &lt;/tr&gt;
+        &lt;!-- Preceding end tag is replacement for a missing one --&gt;
+      &lt;/tbody&gt;
+      &lt;!-- Preceding end tag is replacement for a missing one --&gt;
+    &lt;/table&gt;
+
+    &lt;!-- Preceding end tag is replacement for a missing one --&gt;
+  &lt;/body&gt;
+  &lt;!-- Preceding end tag is replacement for a missing one --&gt;
+&lt;/html&gt;
+&lt;!-- Preceding end tag is replacement for a missing one --&gt;
+</code>
+</pre>
+<p>
+Whenever
+
+<a href="https://metacpan.org/module/html_fmt">html_fmt</a>
+adds a tag or spots a spurious tag ("cruft") it adds a
+comment to that effect.
+As you can see from the above,
+<a href="https://metacpan.org/module/html_fmt">html_fmt</a>
+sees that the extract is a
+table fragment and builds a table around it.
+An interesting exercise is to take both the example
+and the 
+<a href="https://metacpan.org/module/html_fmt">html_fmt</a>
+output and look at them in your favorite browser,
+comparing
+<a href="https://metacpan.org/module/html_fmt">html_fmt</a>'s
+reconstruction from the HTML fragment with your browser's.
+</p>
+<p>
+In posts to come,
+I'll go into detail about the Ruby Slippers,
+Marpa-powered,
+approach to HTML parsing.
+</p>
+<h2>Notes</h2>
+
+<ol>
+<li><p><a name="FORKING">"forking"</a>:
+To be sure,
+I consider
+<a href="https://metacpan.org/module/Marpa::HTML">Marpa::HTML</a>
+a fine tool,
+and use it often in my own work.
+And it is possible that I will enhance
+<a href="https://metacpan.org/module/Marpa::HTML">Marpa::HTML</a>.
+But a parser like
+<a href="https://metacpan.org/module/Marpa::XS">Marpa</a>
+is a tool.
+Inventing a new hammer does not
+evince
+a desire to single-handedly build
+every house in the world.
+</li>
+</ol>
+<br />
+<p>posted at: 09:12 |
+path: <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2011/11">/individual/2011/11</a> |
+<a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2011/11/how-to-parse-html.html">direct link to this entry</a>
+</p>
+<div style="color:#38B0C0;padding:1px;text-align:center;">
+&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&sect;
+</div>
+<h3>Sun, 27 Nov 2011</h3>
+<br />
+<center><a name="marpa-and-the-ruby-slippers"> <h2>Marpa and the Ruby Slippers</h2> </a>
+</center>
+<p>In
+<a href="http://blogs.perl.org/users/jeffrey_kegler/2011/11/what-is-the-marpa-algorithm.html">a previous post</a>,
+I listed the four ideas
+that are essential to
+<a href="https://metacpan.org/release/Marpa-XS">Marpa</a>.
+This post delves into
+one of them: Ruby Slippers parsing.
+In Ruby Slippers parsing, the parser imagines
+("wishes")
+that the language it is parsing
+is easier
+to parse than it actually is.
+The part of the application that handles input
+(the "lexer")
+manipulates the input
+to make the parser's
+"wishes" come true.
+</p>
+<p>
+As an example,
+take liberal HTML.
+"Liberal HTML" is HTML as it is found "in the wild",
+with missing and spurious tags.
+I've written a
+<a href="https://metacpan.org/module/Marpa::HTML">Marpa-powered liberal HTML parser</a>
+which uses the Ruby Slippers as its primary
+technique.
+The grammar behind
+<a href="https://metacpan.org/module/Marpa::HTML">Marpa::HTML</a>
+assumes a fantasy world,
+one where no element ever occurs out of place,
+and where all HTML elements have both start and end tags.
+</p>
+<p>
+
+With Marpa as the parse engine, it is easy for
+the lexer to make wishes come
+true.
+All the lexer needs to do is wait until the parser is not happy
+with the input.
+When the parser sees the actual input as a problem,
+the lexer asks the parser what it would like to see instead.
+Marpa always knows exactly what it is looking for,
+so that it is no problem for the lexer
+to invent an input that makes the parser happy.
+</p>
+<h2>The Obstacles</h2>
+<p>
+This technique sounds a bit magical, which
+is why I named it "the Ruby Slippers".
+But the idea is simple enough,
+and the need for it great enough,
+that it has occurred to others over the
+now 50 year history of parsing techniques.
+In fact,
+the
+<a href="http://blogs.perl.org/users/jeffrey_kegler/2011/09/perl-and-parsing-9-use-and-the-ruby-slippers.html">
+Perl lexer invents input</a>
+to simplify the Perl language into something
+that its LALR-based parse engine can handle.
+<a href="http://blogs.perl.org/users/jeffrey_kegler/2011/11/what-is-the-marpa-algorithm.html#comments">Commenters on a previous post</a>
+have mentioned other instances.
+I suspect
+that instances
+where the Ruby Slippers were used
+can be found going back to the 60's.
+</p>
+<p>
+But previous use of the Ruby Slippers was difficult,
+and had to be rudimentary and infrequent.
+The parsers in standard use did not provide
+enough feedback.
+Recursive descent takes a worm's eye point of view of the
+parse -- it knows only where it is trying to burrow at that
+particular time.
+</p>
+
+<p>
+When it came to feedback,
+LALR-based parsers were particularly bad --
+they were based on
+a very abstract state machine.
+The Perl lexer,
+for its use of the Ruby Slippers,
+didn't even try looking at the LALR state --
+instead the Perl lexer
+duplicated the LALR parser's work
+for the section of the parse that was of interest.
+If the Perl lexer tried to make frequent use of the Ruby Slippers
+it would raise a question:
+Why bother with the LALR parser at all?
+</p>
+<h2>The Solution</h2>
+<p>
+To really empower the Ruby Slippers, a parser needs to 
+do two things.
+First, the parser must know what it wants.
+Second, the parser must know this in time to help guide the input.
+</p>
+<p>
+Earley's algorithm met the first requirement from the beginning.
+Earley's algorithm works by creating "Earley sets".
+The original Earley sets were lists of rule applications,
+one list for every token in the input.
+A rule application was in the Earley set if and only if it
+was a real
+<a href="#POSSIBILITY">possibility</a>.
+</p>
+<p>
+The second requirement was not met in the original Earley's
+algorithm.
+For the second requirement to be met,
+all work on an Earley set at a parse position
+must be finished before
+the tokens that start at that position
+are read.
+Pre-Marpa, Earley parse engines
+intermixed work on a location's Earley set,
+with reading the input for that location.
+That meant that the information to guide Ruby Slippers parsing
+did not
+became available until just AFTER it was needed.
+</p>
+<p>
+
+In creating Marpa,
+I needed
+to combine other researcher's improvements to Earley's into a single
+algorithm.
+Merging their parse engines into a new one
+forced me to write my own, new, parse engine.
+In the course of this,
+I saw that Earley's Algorithm could be rearranged
+so that,
+at every location in the parse,
+each list of possible rule applications was finished before
+the input
+starting at that location was read.
+<p>
+</p>
+To make this happen,
+Marpa divides the single loop of previous Earley parse engines
+into two loops,
+and reverses their order.
+In other words,
+Marpa's parse engine turns the original Earley parse engine 
+inside-out and upside-down.
+The result is provably equivalent to the original,
+and just as fast.
+<br />
+<p>posted at: 15:48 |
+path: <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2011/11">/individual/2011/11</a> |
+<a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2011/11/marpa-and-the-ruby-slippers.html">direct link to this entry</a>
+</p>
+<div style="color:#38B0C0;padding:1px;text-align:center;">
+&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&sect;
+</div>
+<h3>Mon, 21 Nov 2011</h3>
+<br />
+<center><a name="which-marpa-distribution-to-use"> <h2>Which Marpa distribution to use?</h2> </a>
+</center>
+<p>
+Which distribution of Marpa should you use?
+<a href="https://metacpan.org/release/Marpa-XS">Marpa::XS</a>
+or
+<a href="https://metacpan.org/release/Marpa-PP">Marpa::PP</a>
+or the "bare name" Marpa?
+Use
+<a href="https://metacpan.org/release/Marpa-XS">Marpa::XS</a>
+if you can,
+<a href="https://metacpan.org/release/Marpa-PP">Marpa::PP</a>
+otherwise.
+The "bare name" Marpa is a legacy distribution,
+and should be avoided by new users
+and in new implementations.
+<h2>Marpa::XS</h2>
+<a href="https://metacpan.org/release/Marpa-XS">Marpa::XS</a>
+
+incorporates all of my C language speedups.
+As well as the fastest of the Marpa distributions,
+it is also the only one in beta --
+in particular, I will be at pains to keep the interface stable.
+<a href="https://metacpan.org/release/Marpa-XS">Marpa::XS</a>
+is best both for the casually curious,
+and for those intending to use
+the Marpa algorithm in their applications.
+Note that since
+<a href="https://metacpan.org/release/Marpa-XS">Marpa::XS</a>
+remains beta, caution is still advised.
+<br />
+<p>posted at: 20:52 |
+path: <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2011/11">/individual/2011/11</a> |
+<a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2011/11/which-marpa-distribution-to-use.html">direct link to this entry</a>
+</p>
+<div style="color:#38B0C0;padding:1px;text-align:center;">
+&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&sect;
+</div>
+<h3>Fri, 18 Nov 2011</h3>
+<br />
+<center><a name="what-is-the-marpa-algorithm"> <h2>What is the Marpa algorithm?</h2> </a>
+</center>
+<p>
+I have referred to
+"the Marpa algorithm"
+many times.
+What is that?
+The
+<a href="https://metacpan.org/release/Marpa-XS">implementation</a>
+involves many details,
+but the Marpa algorithm itself is basically four ideas.
+Of these only the most recent is mine.
+The other three come
+from papers
+spanning over 40 years.
+</p>
+<h2>Idea 1: Parse by determining which rules can be applied where</h2>
+<p>
+The first idea is to track the progress of the a parse by determining,
+for each token, which rules can be applied and where.
+Sounds pretty obvious.
+Not-so-obvious is how
+to do this efficiently.
+</p>
+<p>
+In fact,
+most parsing these days uses
+some sort of shortcut.
+Regexes and LALR (yacc, etc.) require the grammar to take a restricted form,
+so that they can convert the rules into a state machine.
+Recursive descent, rather than list the possibilities, dives into
+them one by one.
+It, too, only works well with grammars of a certain kind.
+</p>
+<p>
+<a href="EARLEY1970">In 1970</a>,
+Jay Earley described an parsing algorithm that
+went from left to right,
+and worked by determining which rules applied where.
+Earley's was reasonably fast,
+but the severe limits of 1970's hardware pushed less powerful
+parsing algorithms to the forefront,
+where they remain.
+Jay Earley soon left the computer field to become a
+psychotherapist.
+His ideas remain the basis of much of general BNF parsing.
+Marpa is an Earley's parser.
+
+</p>
+<h2>Idea 2: Right-recursion is left-recursion in the mirror</h2>
+<p>
+Earley's original algorithm could handle anything you could write
+in BNF: ambiguous, infinitely ambiguous, left-recursive, right-recursive, you name it.
+And Earley's was very good at left-recursion -- blazingly fast.
+With right-recursion, however, Earley's original algorithm went quadratic.
+For many applications, quadratic time is unacceptable.
+</p>
+<p>
+Right-recursion is just left-recursion seen backwards.
+<a href="LEO1991">In 1991</a>,
+Joop Leo figured out how
+to take efficient advantage of this.
+Leo modified Earley's to identify potential right-recursions
+and parse them "in the mirror", as if they were left-recursions.
+</p>
+<p>
+With this improvement, Earley's algorithm was now linear for
+the LR-regular grammars, a vast class which includes every other
+class of grammar in practical use, then and now.
+Startlingly, 
+Leo's result went 20 years with few implementations.
+Marpa is its first implementation in a general-purpose utility.
+</p>
+<h2>Idea 3: Don't dance around the issue of nullables</h2>
+<p>
+
+A pesky problem with Earley's algorithm remained: nullable symbols.
+A symbol
+is a nullable symbol
+if it represents something that might be omitted,
+Examples are the three <kbd>expression</kbd>'s
+in C language <code class="prettyprint">for</code> statements:
+any or all of these may be omitted.
+To be considered practical,
+a parsing algorithm must work well with grammars
+that contain nullables.
+</p>
+<p>
+Earley's original 1970 algorithm actually had a bug in its handling
+of nullables.
+There was an easy fix, but it made the algorithm slower.
+Since efficiency was already seen as the reason to prefer other
+parsers, this was a big deal.
+</p>
+<p>
+<a href="AH2002">In 2002</a>,
+Aycock & Horspool stopped the dancing around the nullable issue.
+They rewrote Earley's parse engine, targeting nullables.
+The result was an improvement in other respects.
+Marpa's parse engine is not that of Aycock & Horspool.
+But Marpa's strategy for handling nullables comes directly from their work.
+And the design of Marpa's parse engine is heavily influenced by
+that described in Aycock & Horspool 2002.
+</p>
+
+<h2>Idea 4: Use the Ruby Slippers</h2>
+<p>
+For Marpa to get the benefits of both Leo and Aycock&Horspool,
+I needed to combine their
+quite different
+parse engines.
+In the process, I realized that behind Earley's original algorithm
+lay a promise,
+never-fulfilled.
+If your parser knows which rules are applicable where,
+then it should, in principle,
+allow you to use this information
+to guide the parsing process.
+</p>
+<p>
+What was needed was a parse engine which was careful to do
+all the other processing BEFORE
+it looked at the input.
+The Marpa parse engine does this ---
+at each parse location, examining the input
+is the last thing Marpa does.
+By examining the input last,
+Marpa makes the information
+from the other processing available for determining
+what that input should be.
+</p>
+<p>
+To see how this can be useful,
+take the example of liberal HTML ---
+HTML in which tags might be missing.
+With Marpa,
+it is possible to parse liberal HTML with an unrealistically simple
+grammar.
+An HTML parser can use
+a reference grammar which assumes that start and end tags are always
+present, even when not required by the standard.
+When the input does not conform to this grammar's unrealistic
+expectations,
+and it very often will not,
+the application can ask the parser what it DOES expect
+according to that grammar.
+If it's a missing end tag, the application can invent it and
+pass it on to the parser.
+The parse then continues, quite happily.
+</p>
+<p>
+I call this technique, where the grammar demands
+a perfect world and the application changes the input
+to match the grammar's expectations,
+Ruby Slippers parsing.
+I've
+<a href="https://metacpan.org/release/Marpa-HTML">implemented an HTML parser</a>
+which uses the Ruby Slippers.
+I use
+
+<a href="https://metacpan.org/release/Marpa-HTML">
+Marpa::HTML</a>
+myself a good deal.
+It is fast and flexible and IMHO the best way to parse liberal HTML.
+</p>
+<h2>Summary</h2>
+Four ideas are essential to the
+<a href="https://metacpan.org/release/Marpa-XS">Marpa</a>
+algorithm:
+<ul>
+<li>Marpa is an Earley's parser,
+in that it works by creating lists of possibilities at each token.
+<li>Marpa handles right-recursion using Joop Leo's method.
+This makes it O(n) for every class of grammar in practical use today.
+<li>Marpa handles nullables using the ideas of Aycock&Horspool 2002.
+As a side effect, this
+opens the way to further improvements in the Earley parse engine.
+
+<li>The Marpa algorithm allows the application to be fully aware,
+at all times,
+of what is going on in the parse.
+Obviously, this benefits error-handling.
+More importantly,
+it opens the road to powerful new parsing strategies.
+</ul>
+<h2>Notes</h2>
+<ol>
+<li><a name="EARLEY1970">"Earley 1970": </a>
+Earley, Jay,
+"An efficient context-free parsing algorithm",
+Communications of the Association for Computing Machinery, 13:2:94-102, 1970.
+</li>
+<li><a name="LEO1991">"Leo 1991": </a>
+Leo, Joop M.I.M.,
+"A General Context-Free Parsing Algorithm Running in Linear Time on Every LR(k) Grammar Without Using Lookahead",
+Theoretical Computer Science, Vol. 82, No. 1, 1991, pp 165-176.
+</li>
+<li><a name="AH2002">"Aycock&Horspool 2002": </a>
+
+Aycock, John and
+Horspool, R. Nigel,
+"Practical Earley Parsing",
+The Computer Journal, Vol. 45, No. 6, 2002, pp. 620-630.
+<a href="http://www.cs.uvic.ca/~nigelh/Publications/PracticalEarleyParsing.pdf">
+Available online</a>.
+</li>
+</ol>
+<br />
+<p>posted at: 18:09 |
+path: <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2011/11">/individual/2011/11</a> |
+<a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2011/11/what-is-the-marpa-algorithm.html">direct link to this entry</a>
+</p>
+<div style="color:#38B0C0;padding:1px;text-align:center;">
+&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&sect;
+</div>
+<h3>Mon, 07 Nov 2011</h3>
+<br />
+<center><a name="marpa-v-perl-regexes-some-numbers"> <h2>Marpa v. Perl regexes: some numbers</h2> </a>
+</center>
+<p>
+In this post, I pit Marpa against the Perl regex engine.
+The example I will use is unanchored searching for balanced parentheses.
+I have claimed that many problems now tackled with regexes are better
+solved with a more powerful parser, like Marpa.
+I believe the numbers in this post back up that claim.
+</p>
+<p>
+To be very clear,
+I am NOT claiming that Marpa should or can replace
+regexes in general.
+For each character,
+all an <a href="#RE">RE</a>
+(regular expression) engine needs to do
+is to compute a transition from
+one "state" to another state based on that character --
+essentially a simple lookup.
+It's the sort of thing a modern C compiler should optimize
+into a series of machine instructions that
+you can count
+on the fingers of one hand.
+</p>
+Marpa is much more powerful than an regular expression engine,
+and to deliver this power
+Marpa makes a list of all the possibilities
+for each
+<a href="#TOKEN">token</a>.
+Tricks are used to compress these per-token lists,
+and Marpa's code to process them is heavily
+optimized.
+But even so,
+Marpa's processing requires more than a handful of
+machine instructions.
+<br />
+<p>posted at: 17:21 |
+path: <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2011/11">/individual/2011/11</a> |
+<a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2011/11/marpa-v-perl-regexes-some-numbers.html">direct link to this entry</a>
+</p>
+<div style="color:#38B0C0;padding:1px;text-align:center;">
+&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&sect;
+</div>
+</div>
+</div>
+<div id="footer" style="border-top:thick solid #38B0C0;clear:left;padding:1em;">
+<p>This is Ocean of Awareness's
+  new home.  This blog has been hosted at
+  <a href="http://blogs.perl.org/users/jeffrey_kegler/">blogs.perl.org</a>
+  but I have succumbed to the lure of static blogging.
+  I have not yet decided how to deal with comments at this new blog location.
+If the post is Marpa-related,
+<a href="https://groups.google.com/forum/?hl=en&fromgroups#%21forum/marpa-parser">
+the Marpa mailing list</a>
+is a good place to comment.
+Also,
+I will continue to dual-post for some time,
+and have not yet frozen comments on the versions of the
+post at
+<a href="http://blogs.perl.org/users/jeffrey_kegler/">blogs.perl.org</a>.
+</div>
+              <script type="text/javascript">
+            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+          </script>
+          <script type="text/javascript">
+            try {
+              var pageTracker = _gat._getTracker("UA-33430331-1");
+            pageTracker._trackPageview();
+            } catch(err) {}
+          </script>
+</body>
+</html>

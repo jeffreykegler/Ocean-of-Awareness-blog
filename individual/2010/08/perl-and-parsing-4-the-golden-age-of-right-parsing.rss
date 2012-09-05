@@ -1,0 +1,118 @@
+<?xml version="1.0"?>
+<!-- name="generator" content="blosxom/2.0" -->
+<!DOCTYPE rss PUBLIC "-//Netscape Communications//DTD RSS 0.91//EN" "http://my.netscape.com/publish/formats/rss-0.91.dtd">
+
+<rss version="0.91">
+  <channel>
+    <title>Ocean of Awareness   </title>
+    <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog</link>
+    <description>Ocean of Awareness.</description>
+    <language>en</language>
+
+  <item>
+    <title>Perl and Parsing 4: The Golden Age of Right Parsing</title>
+    <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog/2010/08/21#perl-and-parsing-4-the-golden-age-of-right-parsing</link>
+    <description>&lt;p&gt;Like political views,
+parsers are often divided into left and right.
+Also like political views,
+the left-right classification is more
+hindrance than help in some cases.
+Earley's algorithm (my main interest) is one
+algorithm that does not fall into either category.
+
+&lt;p&gt;In this post I want to start to
+talk about those parsers which &lt;b&gt;can&lt;/b&gt; be neatly
+classed as left or right.
+First off, to say a parser is a left or right parser
+does &lt;b&gt;not&lt;/b&gt; describe
+the direction in which the parser works.
+The working direction of any parser
+is always left-to-right,
+except in the very rare cases that it is stated otherwise.
+Every treatment of parsing theory I've seen follows this
+convention.
+Right-to-left parsing is useful sometimes in practice,
+but the theory of right-to-left parsing
+is simply a mirror image of the theory
+for left-to-right parsing.
+
+&lt;p&gt;Left (or top-down) parsers, drill down the left side of 
+a parse.
+This may seem like a myopic approach.
+Frankly, it &lt;b&gt;is&lt;/b&gt; a myopic approach.
+But it is one which is very far from dead --
+left parsers are actually gaining in popularity.
+
+&lt;p&gt;In fact, I'd say among those actually implementing
+parsers, top-down is by far &lt;b&gt;the&lt;/b&gt; dominant trend.
+Why that is, I hope to explain in another post,
+one in which I come back to top-down parsers.
+In this one I want to talk about the Golden Age
+of the Right Parsers.
+
+&lt;p&gt; Right (or bottom-up) parsers are less myopic.
+Instead of simply drilling down the left hand edge of a parse tree,
+right parsers reach out to the right and produce a rightmost derivation.
+
+&lt;p&gt;How do they do this, while still working left-to-right?
+Right parsers do this by running the derivation backwards,
+or &quot;bottom-up&quot;.
+Hence the name.
+
+&lt;p&gt;Looking for the rightmost derivation makes right
+parsers more powerful.  They handle more grammars,
+are better at error checking, etc., etc.
+Since they work bottom-up,
+they're more complicated to write than left parsers.
+Left parsers came first,
+and it took a while to figure out how to write
+an efficient right parser.
+
+&lt;p&gt;(A warning for those who haven't noticed.
+This is not going to be one of those histories
+with lots of carefully qualified statements.
+It's going to be more Winston Churchill than Fernand Braudel.)
+
+&lt;p&gt;The lineage of the Yacc algorithm starts with a 1965 paper by Knuth,
+which discovered the LR algorithm.
+The LR algorithm contained the basic ideas behind bottom-up parsing,
+but did not immediately revolutionize parsing.
+LR(0) -- LR with no lookahead -- was fast, but parsed very few grammars.
+LR(1) -- LR with 1 character of lookahead -- parsed enough grammars to be
+practical, but the tables LR(1) required were too large for the computers of
+the time.
+In 1969 Frank DeRemer discovered you could combine the two algorithms
+into something called LALR.  LALR parsed almost all the LR(1) grammars,
+but its tables weren't much larger than those for LR(0).
+With LALR, the theoretical groundwork for right parsing was laid.
+
+&lt;p&gt;The Golden Age of Right Parsing begins in 1975, with the Yacc parser
+generator.
+Yacc didn't just put LALR parsing on the map,
+it reshaped the geography of parsing
+so that parsing looked like LALR.
+LALR parsing dominated parsing theory for decades.
+At the nadir, some introductory textbooks on parsing theory were
+100% focused on LALR.
+For them, and any student whose view was limited to their pages,
+LALR parsing &lt;b&gt;was&lt;/b&gt; parsing.
+
+&lt;p&gt;The Golden Age of Right Parsing was the
+time when our idea of what a programming language should look like
+was being formed.
+LALR wound up being a controlling force behind that idea.
+Perl came out in the middle of the Golden Age of Right Parsing.
+Perl's grammar is very much both a product of,
+and a reaction to,
+that Golden Age and the LALR algorithm.
+
+&lt;p&gt;In a previous post, I've already given a small example of how LALR shapes Perl:
+the following useless but syntactically reasonable statement
+&lt;pre&gt;&lt;code class=&quot;prettyprint&quot;&gt;{42;{1,2,3;4}}
+&lt;/code&gt;&lt;/pre&gt; 
+is in fact a syntax error in Perl 5.
+But the influence of LALR on Perl runs much deeper than that.
+I hope in future blog posts to attempt to describe that influence.</description>
+  </item>
+  </channel>
+</rss>

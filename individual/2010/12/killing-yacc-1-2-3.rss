@@ -1,0 +1,139 @@
+<?xml version="1.0"?>
+<!-- name="generator" content="blosxom/2.0" -->
+<!DOCTYPE rss PUBLIC "-//Netscape Communications//DTD RSS 0.91//EN" "http://my.netscape.com/publish/formats/rss-0.91.dtd">
+
+<rss version="0.91">
+  <channel>
+    <title>Ocean of Awareness   </title>
+    <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog</link>
+    <description>Ocean of Awareness.</description>
+    <language>en</language>
+
+  <item>
+    <title>Killing Yacc: 1, 2 &amp; 3</title>
+    <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog/2010/12/15#killing-yacc-1-2-3</link>
+    <description>&lt;h2&gt;The Good, the Bad and The Ugly&lt;/h2&gt;
+&lt;p&gt;&lt;img alt=&quot;Angeleyescleef.jpg&quot; src=&quot;http://blogs.perl.org/users/jeffrey_kegler/Angeleyescleef.jpg&quot; width=&quot;410&quot; height=&quot;243&quot; class=&quot;mt-image-right&quot; style=&quot;float: right; margin: 0 0 20px 20px;&quot; /&gt;The recent discussions about yacc made me
+feel a bit like Lee Van Cleef in an old
+spaghetti Western.
+Cast alongside Clint Eastwood, Van Cleef watched
+with great concern as one attempt after another
+was made on Eastwood's life.
+Van Cleef didn't mind Eastwood getting killed --
+he just wanted to be the one to do it.
+
+&lt;p&gt;As some of you will have recognized, I am talking about
+a very interesting discussion started by
+&lt;a href=&quot;http://arxiv.org/abs/1010.5023&quot;&gt;
+a paper
+by Might and Darais
+entitled &quot;Yacc is Dead&quot;&lt;/a&gt;.
+
+I am finding it very much worth reading as an example
+of clear and precise mathematical writing.
+With respect to the parser itself,
+my opinion is that
+&lt;a href=&quot;http://research.swtch.com/2010/12/yacc-is-not-dead.html&quot;&gt;
+Russ Cox's extremely well-informed
+blog post, &quot;Yacc is not Dead&quot;,&lt;/a&gt;
+is an accurate assessment.
+
+&lt;p&gt;Might, Darais and Cox all devote considerable attention to
+exactly what it will take to send yacc on to its Final
+Reward.
+I see six requirements:
+Three from Might &amp; Darais, one suggested by
+Cox, and two that I have added.
+The rest of this post will be about three of these requirements,
+all of which focus on parsing speed.
+
+&lt;h2&gt;Requirement 1: Handle Arbitrary Context-Free Grammars in O(n**3)&lt;/h2&gt;
+
+&lt;p&gt;For a parser to be convenient, it should take anything you can write in BNF
+and parse it.
+And it should do this in &quot;reasonable&quot; time.
+This enables a programmer to work on a grammar that does not fit a
+restricted theoretical framework (LL, LR, LALR, etc.).
+The programmer then has the choice:
+she can tighten the grammar up to make it faster,
+or she can decide that, for her application,
+worse-than-linear speed is acceptable.
+
+&lt;p&gt;This requirement is one of those in the Might-Darais paper, but Russ Cox
+adds a further requirement:
+&quot;Reasonable time&quot; means O(n**3).
+Might and Darais do not categorize their algorithm's speed for arbitrary context-free
+grammars, but Cox says that it is exponential (O(e**n)).
+
+&lt;p&gt;Cox's tightening of this requirement makes sense.
+Depending on the application, exponential time can make a grammar unuseable
+in practice.
+Several algorithms are known which parse arbitrary context-free grammars in
+O(n**3).
+&lt;a href=&quot;http://search.cpan.org/dist/Marpa/&quot;&gt;
+Marpa&lt;/a&gt;
+is one of these.
+(Marpa, for those new to this blog, is a parsing algorithm I've been working on.
+It is based on Earley's algorithm, and includes several major enhancements to
+it from the academic literature.)
+
+&lt;h2&gt;Requirement 2: Handle &quot;Average&quot; Grammars in Linear Time&lt;/h2&gt;
+&lt;p&gt;When it needs to parse long inputs, an algorithm has to run in linear (O(n)) time.
+&quot;Average&quot; grammars -- grammars for languages where the inputs are expected to be long --
+should parse in linear time.
+For example, in production programming, the code files can become quite large.
+Perhaps HTML files should not be huge, but they often are.
+And it is quite reasonable to expect XML files to be arbitrarily long.
+For all of these, and for any language expected to fit into the same kinds
+of production environment, linear-time parsing is a must.
+This requirement is based on the second requirement in the Might-Darais paper.
+Might and Darais only say that such parsing should be &quot;efficient&quot;.
+Russ Cox is more specific: he requires that the time be linear.
+
+
+&lt;p&gt;Marpa's behavior for &quot;average&quot; grammars is excellent, for any reasonable
+definition of &quot;average&quot;.
+Marpa parses all LR-regular grammars in linear time.
+LR-regular is a huge class of grammars, and it includes the LR(k) grammars
+for all values of k.
+In practical terms, this means that, if a grammar is parseable by recursive descent,
+by yacc, or by a regular expression, then it is parsed by Marpa in linear time.
+
+&lt;h2&gt;Requirement 3: A Sound Theoretical Basis&lt;/h2&gt;
+&lt;p&gt;This third requirement is Russ Cox's, and it is a real insight on his part.
+A sound theoretical basis is more important than it may seem.
+Over the years I have seen many new parsing algorithms introduced, only to
+disappear.
+The algorithms which drop from sight 
+are those whose speed claims are based on speculation
+and/or initial tests, but not on theory.
+
+&lt;p&gt;You might think that
+testing can replace theory, but typically it can't.
+The only real way to test
+that a new algorithm is efficient enough for production is to use it in
+production.
+Few production compiler writers are going to risk the use of a new algorithm
+before there is solid theory to back their leap of faith.
+
+&lt;p&gt;The Might-Darais paper is
+beautifully written mathematics.
+But, as Russ Cox notes,
+nowhere does it characterize its speed claims in mathematical terms.
+We know that the Might-Darais algorithm will parse some grammars very quickly.
+We know that, for others, it will be painfully slow.
+Which ones will be which?
+
+&lt;p&gt;Marpa does well in
+backing up its speed claims.
+Marpa is an Earley parser.
+In his 40-year old paper,
+Jay Earley proved that his algorithm parses
+arbitrary context-free grammars in O(n**3) time.
+Marpa incorporates Joop Leo's 1991 modification of the Earley parser.
+In that paper, Leo proves that his algorithm
+parses LR-regular grammars in linear time.
+When it comes to speed claims, Marpa is doing things by the book.</description>
+  </item>
+  </channel>
+</rss>

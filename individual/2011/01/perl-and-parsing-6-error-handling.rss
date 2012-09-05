@@ -1,0 +1,179 @@
+<?xml version="1.0"?>
+<!-- name="generator" content="blosxom/2.0" -->
+<!DOCTYPE rss PUBLIC "-//Netscape Communications//DTD RSS 0.91//EN" "http://my.netscape.com/publish/formats/rss-0.91.dtd">
+
+<rss version="0.91">
+  <channel>
+    <title>Ocean of Awareness   </title>
+    <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog</link>
+    <description>Ocean of Awareness.</description>
+    <language>en</language>
+
+  <item>
+    <title>Perl and Parsing 6: Error Handling </title>
+    <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog/2011/01/09#perl-and-parsing-6-error-handling</link>
+    <description>&lt;h2&gt;Is the Perl interpreter psychic?&lt;/h2&gt;
+&lt;p&gt;An important consequence of the choice of parsing algorithm
+is the
+&lt;a href=&quot;#NOTE1&quot;&gt;handling of parse-time errors&lt;/a&gt;.
+It's often overlooked.
+Perl's use of LALR based parsing puts severe limits on its
+ability to locate errors,
+limits which the Perl interpreter is sometimes able to overcome.
+Consider the following erroneous piece of code.
+&lt;pre&gt;
+&lt;code class=&quot;prettyprint&quot;&gt;
+my $lyric =
+'Sloopy wears a red dress, yeah
+As old as the hills
+but when sloopy wears that red dress, yeah
+you know it gives me the chills
+Sloopy when I see you walking, 
+walking down the street
+I say don't worry sloopy, girl
+You belong to me';
+print &quot;$lyric\n&quot;;
+&lt;/code&gt;
+&lt;/pre&gt;
+&lt;p&gt;Some of you may have spotted this as the lost third verse of the
+October 1965 US #1 hit, &quot;Hang on Sloopy&quot;.
+Others may notice that the single quote in &quot;don't&quot;
+is going to make things come out pear-shaped.
+On this latter point,
+the Perl interpreter's performance is uncanny, if a bit noisy:
+&lt;p&gt;&lt;pre&gt;
+&lt;code class=&quot;prettyprint&quot;&gt;
+Bareword found where operator expected at bomb.pl line 8, near &quot;I say don't&quot;
+  (Might be a runaway multi-line '' string starting on line 2)
+        (Do you need to predeclare I?)
+syntax error at bomb.pl line 8, near &quot;I say don't worry &quot;
+Bad name after me' at bomb.pl line 9.
+&lt;/code&gt;
+&lt;/pre&gt;
+
+&lt;p&gt;I just said that Perl's LALR-based parsing made error detection difficult.
+So how do I explain the above, where the error detection is not merely good,
+it almost seems psychic?
+&lt;h2&gt;Behind the Smoke and Mirrors&lt;/h2&gt;
+&lt;p&gt;A closer look will show how Perl pulls off this bit of apparent
+mind-reading.
+If you look at &lt;var&gt;toke.c&lt;/var&gt;, you'll see the trick.
+Globals in the tokenizer track the beginning and ending of the 
+most recent multi-line object.
+Anytime a multi-line object ends just before an error,
+the Perl interpreter fingers it.
+It's a bit like police lieutenant Arthur Tragg in the old Perry Mason
+series, who on discovering a murder victim, always arrested the next
+person he saw -- usually Mason's client.
+It's a good guess and,
+unlike the indefatigable Arthur Tragg,
+who persisted despite turning out to be wrong week after week,
+it works for the Perl interpreter most of the time.
+&lt;p&gt;But not always.
+Let's rearrange this example, so that the string is OK,
+and we're depending on the LALR parser to locate an error.
+&lt;p&gt;&lt;pre&gt;
+&lt;code class=&quot;prettyprint&quot;&gt;
+my $lyric =
+'Sloopy wears a red dress, yeah
+As old as the hills
+but when sloopy wears that red dress, yeah
+you know it gives me the chills
+Sloopy when I see you walking, 
+walking down the street
+I say don\'t worry sloopy, girl
+You belong to me'~!@$%^&amp;*()_+;
+print &quot;$lyric\n&quot;;
+&lt;/code&gt;
+&lt;/pre&gt;
+&lt;p&gt;&lt;pre&gt;
+&lt;code class=&quot;prettyprint&quot;&gt;
+Bareword found where operator expected at bomb2.pl line 9, near &quot;)_&quot;
+        (Missing operator before _?)
+syntax error at bomb2.pl line 9, near &quot;You belong to me'~&quot;
+  (Might be a runaway multi-line '' string starting on line 2)
+Execution of bomb2.pl aborted due to compilation errors.
+
+&lt;/code&gt;
+&lt;/pre&gt;
+&lt;p&gt;This example clearly illustrates the limits of LALR parsing.
+A multi-line string just
+ended, and the tokenizer duly drops the dime,
+but there's no way to make the charge stick.
+The multi-line string is fine,
+and the problem is somewhere in the special characters after it.
+
+&lt;p&gt;
+But where?
+Now that we are no longer dazzled by the psychic abilities of the tokenizer,
+let's carefully define what we mean by the actual error location.
+The error location is the first character which makes a valid parse impossible.
+Put another way, if a parser reads a character, and that character renders
+it impossible that any subsequent reading of characters
+will produce a valid parse, then the location
+of that character is the error location.
+
+&lt;p&gt;Where is the error location in this example?
+I think it may be at the '%' sign,
+but I frankly don't know.
+More to the point, neither does the Perl interpreter,
+though it throws out guesses all over the map.
+
+&lt;h2&gt;The Immediate Error Detection Property&lt;/h2&gt;
+&lt;p&gt;The error-locating ability of parsing algorithms divides them into
+two types.
+&quot;Immediate error detection&quot; is what you'd like to see in a parser --
+the moment the parser encounters a character which makes a valid parse
+impossible, it knows it.
+Other parsers, and LALR is prominent among them, need to grind on,
+reading more characters.
+Only later do they realize something has gone wrong.
+
+&lt;p&gt;When recursive descent is full LL(1) it has the immediate error detection
+property.
+(In simplified terms, recursive descent is full LL(1) when it is
+smart about lookahead for
+empty rules.)
+Recursive descent implementations which are not full LL(1) do not
+have the immediate error detection property.
+This is the case with most actual implementations of
+recursive descent.
+On the other hand,
+recursive descent's major attraction is that it is hack-friendly,
+so that a recursive descent implementation which is less than full LL(1)
+in theory might well
+do immediate error detection when it counts.
+
+&lt;p&gt;Earley's algorithm has the immediate error detection property.
+My implementation of it in
+&lt;a href=&quot;http://search.cpan.org/dist/Marpa/&quot;&gt;Marpa&lt;/a&gt;
+has the
+immediate error detection property and then some.
+When it is about to read a token,
+&lt;a href=&quot;http://search.cpan.org/dist/Marpa/&quot;&gt;Marpa&lt;/a&gt;
+knows, and can inform the lexer,
+exactly which input symbols
+will result in a viable parse.
+This allows &lt;a
+href=&quot;http://blogs.perl.org/users/jeffrey_kegler/2010/06/parsing-with-ruby-slippers.html&quot;&gt;
+
+some very nice tricks&lt;/a&gt;.
+&lt;p&gt;&lt;a name=&quot;#NOTE1&quot;&gt;&lt;b&gt;Note 1&lt;/b&gt;&lt;/a&gt;:
+For the readers of my last post on &lt;var&gt;yacc&lt;/var&gt;,
+the discussion of error reporting here changes the subject:
+That post dealt with the reporting of errors by a parser generator while the parser is
+being generated: generation-time error reporting.
+This post changes the topic to the reporting of errors in its input by a parser:
+parse-time error reporting.
+My next post in the
+&lt;var&gt;yacc&lt;/var&gt;
+series will discuss
+&lt;var&gt;yacc&lt;/var&gt;'s
+parse-time error reporting.
+&lt;p&gt;For a hand-written parser, of course, there is no such thing as generation-time,
+and therefore generation-time error reporting is a non-issue.
+Parse-time error reporting is an issue for all parsers,
+whether generated or hand-written.</description>
+  </item>
+  </channel>
+</rss>

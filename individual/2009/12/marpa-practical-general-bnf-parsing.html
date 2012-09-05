@@ -1,0 +1,117 @@
+<html>
+<head>
+<link rel="alternate" title="Ocean of Awareness RSS" type="application/rss+xml" title="RSS" href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/index.rss" />
+<title>Ocean of Awareness   </title>
+<style type="text/css">
+   strong {font-weight: 700;}
+</style>
+</head>
+<body>
+<div id="header"
+  style="color:white;background-color:#38B0C0;padding:1em;clear:left;text-align:center;">
+<h1>Ocean of Awareness</h1>
+  
+</div>
+  <div id="menu" style="margin:0;padding:10px;width:150px;float:left;">
+  <h2>Jeffrey Kegler's blog</h2>
+  <p>About Marpa, his new parsing algorithm,
+    and other topics of interest</p>
+  <h3>Resources</h3>
+  <p><a href="http://www.jeffreykegler.com/">Jeffrey Kegler's website</p>
+  <p><a href="http://www.jeffreykegler.com/marpa">The Marpa website</p>
+  </div>
+  <div id="content" style="margin-left:190px;border-left:2px solid #38B0C0;padding:25px;">
+<h3>Thu, 31 Dec 2009</h3>
+<br />
+<center><a name="marpa-practical-general-bnf-parsing"> <h2>Marpa: Practical General BNF Parsing</h2> </a>
+</center>
+<p>With a regular expression engine, there
+are expectations.
+You feed a regular expression to the RE engine, it parses with it.
+That simple.
+
+<p>A general BNF parser is one which fulfills the same
+expectation for BNF.
+Write your language in BNF, you got a parser.
+But it hasn't been that simple.
+
+<p>The guys who write the textbooks have pushed
+general BNF parsing for years.
+Improvements in these algorithms have pushed
+the speeds down to linear or close to it
+for the kinds of language in practical use.
+
+<p>But the general parsing algorithms have languished
+on the textbook pages.
+And I did find it wasn't quite
+as easy as the academics suggested.
+There were some obstacles that they didn't forsee.
+But bottom line, they were right.
+General BNF parsing is practical.
+
+<p><a href="http://search.cpan.org/dist/Marpa/">Marpa</a> is a practical
+(if at this point alpha)
+general BNF parser
+generator.
+I have used Marpa to write a practical parser
+for a non-trivial task -- HTML parsing.
+That HTML parser is <a href="http://search.cpan.org/~jkegl/Marpa-0.002000/lib/Marpa/UrHTML/Doc/UrHTML.pod">Marpa::UrHTML</a>,
+and I now use
+Marpa::UrHTML
+in tasks I do routinely.
+
+<p>Over the next weeks, I will do phased releases of <a href="http://search.cpan.org/dist/Marpa/">Marpa</a>.
+The HTML parser, <a href="http://search.cpan.org/~jkegl/Marpa-0.002000/lib/Marpa/UrHTML/Doc/UrHTML.pod">Marpa::UrHTML, 
+is documented</a> and ready to use in the first release.
+Over the next few weeks,
+I will document Marpa,
+the parse engine itself.
+
+<p>Right now the Marpa parse engine is "pure Perl", and speeds
+are on the order of PPI.
+This is acceptable for many applications,
+but Marpa can do better.
+<a href="http://search.cpan.org/dist/Marpa/">Marpa</a> has as its parse engine a mathematical algorithm
+that lends itself to conversion to C.
+Further down the road, I'll write a Marpa C library,
+and an XS wrapper.
+<br />
+<p>posted at: 15:29 |
+path: <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2009/12">/individual/2009/12</a> |
+<a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2009/12/marpa-practical-general-bnf-parsing.html">direct link to this entry</a>
+</p>
+<div style="color:#38B0C0;padding:1px;text-align:center;">
+&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&sect;
+</div>
+</div>
+</div>
+<div id="footer" style="border-top:thick solid #38B0C0;clear:left;padding:1em;">
+<p>This is Ocean of Awareness's
+  new home.  This blog has been hosted at
+  <a href="http://blogs.perl.org/users/jeffrey_kegler/">blogs.perl.org</a>
+  but I have succumbed to the lure of static blogging.
+  I have not yet decided how to deal with comments at this new blog location.
+If the post is Marpa-related,
+<a href="https://groups.google.com/forum/?hl=en&fromgroups#%21forum/marpa-parser">
+the Marpa mailing list</a>
+is a good place to comment.
+Also,
+I will continue to dual-post for some time,
+and have not yet frozen comments on the versions of the
+post at
+<a href="http://blogs.perl.org/users/jeffrey_kegler/">blogs.perl.org</a>.
+</div>
+              <script type="text/javascript">
+            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+          </script>
+          <script type="text/javascript">
+            try {
+              var pageTracker = _gat._getTracker("UA-33430331-1");
+            pageTracker._trackPageview();
+            } catch(err) {}
+          </script>
+</body>
+</html>

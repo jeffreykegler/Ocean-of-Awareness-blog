@@ -1,0 +1,166 @@
+<?xml version="1.0"?>
+<!-- name="generator" content="blosxom/2.0" -->
+<!DOCTYPE rss PUBLIC "-//Netscape Communications//DTD RSS 0.91//EN" "http://my.netscape.com/publish/formats/rss-0.91.dtd">
+
+<rss version="0.91">
+  <channel>
+    <title>Ocean of Awareness   </title>
+    <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog</link>
+    <description>Ocean of Awareness.</description>
+    <language>en</language>
+
+  <item>
+    <title>Marpa and the Ruby Slippers</title>
+    <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog/2011/11/27#marpa-and-the-ruby-slippers</link>
+    <description>&lt;p&gt;In
+&lt;a href=&quot;http://blogs.perl.org/users/jeffrey_kegler/2011/11/what-is-the-marpa-algorithm.html&quot;&gt;a previous post&lt;/a&gt;,
+I listed the four ideas
+that are essential to
+&lt;a href=&quot;https://metacpan.org/release/Marpa-XS&quot;&gt;Marpa&lt;/a&gt;.
+This post delves into
+one of them: Ruby Slippers parsing.
+In Ruby Slippers parsing, the parser imagines
+(&quot;wishes&quot;)
+that the language it is parsing
+is easier
+to parse than it actually is.
+The part of the application that handles input
+(the &quot;lexer&quot;)
+manipulates the input
+to make the parser's
+&quot;wishes&quot; come true.
+&lt;/p&gt;
+&lt;p&gt;
+As an example,
+take liberal HTML.
+&quot;Liberal HTML&quot; is HTML as it is found &quot;in the wild&quot;,
+with missing and spurious tags.
+I've written a
+&lt;a href=&quot;https://metacpan.org/module/Marpa::HTML&quot;&gt;Marpa-powered liberal HTML parser&lt;/a&gt;
+which uses the Ruby Slippers as its primary
+technique.
+The grammar behind
+&lt;a href=&quot;https://metacpan.org/module/Marpa::HTML&quot;&gt;Marpa::HTML&lt;/a&gt;
+assumes a fantasy world,
+one where no element ever occurs out of place,
+and where all HTML elements have both start and end tags.
+&lt;/p&gt;
+&lt;p&gt;
+
+With Marpa as the parse engine, it is easy for
+the lexer to make wishes come
+true.
+All the lexer needs to do is wait until the parser is not happy
+with the input.
+When the parser sees the actual input as a problem,
+the lexer asks the parser what it would like to see instead.
+Marpa always knows exactly what it is looking for,
+so that it is no problem for the lexer
+to invent an input that makes the parser happy.
+&lt;/p&gt;
+&lt;h2&gt;The Obstacles&lt;/h2&gt;
+&lt;p&gt;
+This technique sounds a bit magical, which
+is why I named it &quot;the Ruby Slippers&quot;.
+But the idea is simple enough,
+and the need for it great enough,
+that it has occurred to others over the
+now 50 year history of parsing techniques.
+In fact,
+the
+&lt;a href=&quot;http://blogs.perl.org/users/jeffrey_kegler/2011/09/perl-and-parsing-9-use-and-the-ruby-slippers.html&quot;&gt;
+Perl lexer invents input&lt;/a&gt;
+to simplify the Perl language into something
+that its LALR-based parse engine can handle.
+&lt;a href=&quot;http://blogs.perl.org/users/jeffrey_kegler/2011/11/what-is-the-marpa-algorithm.html#comments&quot;&gt;Commenters on a previous post&lt;/a&gt;
+have mentioned other instances.
+I suspect
+that instances
+where the Ruby Slippers were used
+can be found going back to the 60's.
+&lt;/p&gt;
+&lt;p&gt;
+But previous use of the Ruby Slippers was difficult,
+and had to be rudimentary and infrequent.
+The parsers in standard use did not provide
+enough feedback.
+Recursive descent takes a worm's eye point of view of the
+parse -- it knows only where it is trying to burrow at that
+particular time.
+&lt;/p&gt;
+
+&lt;p&gt;
+When it came to feedback,
+LALR-based parsers were particularly bad --
+they were based on
+a very abstract state machine.
+The Perl lexer,
+for its use of the Ruby Slippers,
+didn't even try looking at the LALR state --
+instead the Perl lexer
+duplicated the LALR parser's work
+for the section of the parse that was of interest.
+If the Perl lexer tried to make frequent use of the Ruby Slippers
+it would raise a question:
+Why bother with the LALR parser at all?
+&lt;/p&gt;
+&lt;h2&gt;The Solution&lt;/h2&gt;
+&lt;p&gt;
+To really empower the Ruby Slippers, a parser needs to 
+do two things.
+First, the parser must know what it wants.
+Second, the parser must know this in time to help guide the input.
+&lt;/p&gt;
+&lt;p&gt;
+Earley's algorithm met the first requirement from the beginning.
+Earley's algorithm works by creating &quot;Earley sets&quot;.
+The original Earley sets were lists of rule applications,
+one list for every token in the input.
+A rule application was in the Earley set if and only if it
+was a real
+&lt;a href=&quot;#POSSIBILITY&quot;&gt;possibility&lt;/a&gt;.
+&lt;/p&gt;
+&lt;p&gt;
+The second requirement was not met in the original Earley's
+algorithm.
+For the second requirement to be met,
+all work on an Earley set at a parse position
+must be finished before
+the tokens that start at that position
+are read.
+Pre-Marpa, Earley parse engines
+intermixed work on a location's Earley set,
+with reading the input for that location.
+That meant that the information to guide Ruby Slippers parsing
+did not
+became available until just AFTER it was needed.
+&lt;/p&gt;
+&lt;p&gt;
+
+In creating Marpa,
+I needed
+to combine other researcher's improvements to Earley's into a single
+algorithm.
+Merging their parse engines into a new one
+forced me to write my own, new, parse engine.
+In the course of this,
+I saw that Earley's Algorithm could be rearranged
+so that,
+at every location in the parse,
+each list of possible rule applications was finished before
+the input
+starting at that location was read.
+&lt;p&gt;
+&lt;/p&gt;
+To make this happen,
+Marpa divides the single loop of previous Earley parse engines
+into two loops,
+and reverses their order.
+In other words,
+Marpa's parse engine turns the original Earley parse engine 
+inside-out and upside-down.
+The result is provably equivalent to the original,
+and just as fast.</description>
+  </item>
+  </channel>
+</rss>

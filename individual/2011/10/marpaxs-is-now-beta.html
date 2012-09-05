@@ -1,0 +1,139 @@
+<html>
+<head>
+<link rel="alternate" title="Ocean of Awareness RSS" type="application/rss+xml" title="RSS" href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/index.rss" />
+<title>Ocean of Awareness   </title>
+<style type="text/css">
+   strong {font-weight: 700;}
+</style>
+</head>
+<body>
+<div id="header"
+  style="color:white;background-color:#38B0C0;padding:1em;clear:left;text-align:center;">
+<h1>Ocean of Awareness</h1>
+  
+</div>
+  <div id="menu" style="margin:0;padding:10px;width:150px;float:left;">
+  <h2>Jeffrey Kegler's blog</h2>
+  <p>About Marpa, his new parsing algorithm,
+    and other topics of interest</p>
+  <h3>Resources</h3>
+  <p><a href="http://www.jeffreykegler.com/">Jeffrey Kegler's website</p>
+  <p><a href="http://www.jeffreykegler.com/marpa">The Marpa website</p>
+  </div>
+  <div id="content" style="margin-left:190px;border-left:2px solid #38B0C0;padding:25px;">
+<h3>Sun, 23 Oct 2011</h3>
+<br />
+<center><a name="marpaxs-is-now-beta"> <h2>Marpa::XS is now beta</h2> </a>
+</center>
+<p>
+I am very happy to announce that
+<a href="http://search.cpan.org/~jkegl/Marpa-XS-0.018000/">
+Marpa::XS is now beta</a>.
+Marpa::XS will kept stable.
+Changes to its interface will be especially avoided.
+</p>
+<h1>What is Marpa?</h1>
+<p>Marpa is an advance over recursive descent
+and yacc.
+I hope the Marpa algorithm
+will become the standard parser for
+problems too
+big for regular expressions.
+</p><ul>
+<li>Marpa parses,
+<a href="#LINEAR">
+in linear time</a>,
+those
+classes of grammar that are currently in practical use.
+</li>
+<li>The importance of parse-time debugging is often underestimated.
+Marpa's parse-time error detection breaks new ground -- Marpa is
+fully aware of exactly where in the parse it is at all times,
+and of exactly what input it expects and why.
+This means parse-time error detection, once a desperate last
+resort, now can be used as
+<a href="http://blogs.perl.org/users/jeffrey_kegler/2010/06/parsing-with-ruby-slippers.html">
+
+a parsing technique in itself</a>.
+
+</li>
+<li>Marpa is a general BNF parser -- that means if you feed it anything
+written in BNF, it "just parses" it.
+This includes grammars which are left-recursive, right-recursive and
+ambiguous -- even infinitely ambiguous.
+</li>
+<li>Marpa never goes exponential -- worst case, even for highly ambiguous
+grammars, is O(n**3), which is
+<a href="#OPTIMAL">considered optimal</a>.
+</li>
+</ul>
+<h1>New with this release</h1>
+<p>
+Marpa::XS 0.018000 contains two new
+ranking methods.
+These ranking methods allow applications to control
+the order of parse trees within
+an ambiguous parse.
+The two new ranking methods are the <code class="prettyprint">rule</code>
+ranking method and
+the <code class="prettyprint">high_rule_only</code> ranking method.
+In both methods, integer ranks are assigned to rules,
+and alternative parsings are ordered on a top-down, left-to-right basis.
+When it comes to comparing choices by rule rank, ties are allowed --
+in fact, they are common.
+By default, all the alternatives at every choice point
+tie with each other.
+When they are tied in rank,
+the order of choices is arbitrary.
+
+</p>
+In the <code class="prettyprint">rule</code> ranking method, all the parse trees are
+kept, and visited in order.
+In the <code class="prettyprint">high_rule_only</code> ranking method,
+only the highest ranked alternatives are kept,
+and they are visited in arbitrary order.
+Because of ties, more than one of the alternatives at a choice point
+can be "highest".
+A full description of the new ranking methods
+is <a href="http://search.cpan.org/perldoc?Marpa::XS::Semantics::Order">
+in Marpa::XS's documentation</a>.
+<br />
+<p>posted at: 19:45 |
+path: <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2011/10">/individual/2011/10</a> |
+<a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2011/10/marpaxs-is-now-beta.html">direct link to this entry</a>
+</p>
+<div style="color:#38B0C0;padding:1px;text-align:center;">
+&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&sect;
+</div>
+</div>
+</div>
+<div id="footer" style="border-top:thick solid #38B0C0;clear:left;padding:1em;">
+<p>This is Ocean of Awareness's
+  new home.  This blog has been hosted at
+  <a href="http://blogs.perl.org/users/jeffrey_kegler/">blogs.perl.org</a>
+  but I have succumbed to the lure of static blogging.
+  I have not yet decided how to deal with comments at this new blog location.
+If the post is Marpa-related,
+<a href="https://groups.google.com/forum/?hl=en&fromgroups#%21forum/marpa-parser">
+the Marpa mailing list</a>
+is a good place to comment.
+Also,
+I will continue to dual-post for some time,
+and have not yet frozen comments on the versions of the
+post at
+<a href="http://blogs.perl.org/users/jeffrey_kegler/">blogs.perl.org</a>.
+</div>
+              <script type="text/javascript">
+            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+          </script>
+          <script type="text/javascript">
+            try {
+              var pageTracker = _gat._getTracker("UA-33430331-1");
+            pageTracker._trackPageview();
+            } catch(err) {}
+          </script>
+</body>
+</html>

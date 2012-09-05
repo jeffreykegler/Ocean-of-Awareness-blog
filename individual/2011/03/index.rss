@@ -1,0 +1,305 @@
+<?xml version="1.0"?>
+<!-- name="generator" content="blosxom/2.0" -->
+<!DOCTYPE rss PUBLIC "-//Netscape Communications//DTD RSS 0.91//EN" "http://my.netscape.com/publish/formats/rss-0.91.dtd">
+
+<rss version="0.91">
+  <channel>
+    <title>Ocean of Awareness   </title>
+    <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog</link>
+    <description>Ocean of Awareness.</description>
+    <language>en</language>
+
+  <item>
+    <title>Perl and Parsing 8: The Where and Why of Rejection</title>
+    <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog/2011/03/24#perl-and-parsing-8-the-where-and-why-of-rejection</link>
+    <description>&lt;h1&gt;Why Perl is Just Not That Into Your Syntax&lt;/h1&gt;
+&lt;p&gt;
+&lt;a href=&quot;http://blogs.perl.org/users/jeffrey_kegler/2011/01/perl-and-parsing-6-error-handling.html&quot;&gt;
+In a previous post&lt;/a&gt;,
+I noted that Perl often cannot precisely
+locate syntax errors in its scripts.
+Still less can it identify the exact problem.
+In this post, I will demonstrate an experimental
+utility which does
+pinpoint Perl syntax errors,
+&lt;a href=&quot;#NOTE1&quot;&gt;precisely indicating where and what the problem is&lt;/a&gt;.
+&lt;p&gt;Here's my example
+&lt;a href=&quot;http://blogs.perl.org/users/jeffrey_kegler/2011/01/perl-and-parsing-6-error-handling.html&quot;&gt;
+from the previous post&lt;/a&gt;.
+&lt;pre&gt;
+&lt;code class=&quot;prettyprint&quot;&gt;
+my $lyric =
+'Sloopy wears a red dress, yeah
+As old as the hills
+but when sloopy wears that red dress, yeah
+you know it gives me the chills
+Sloopy when I see you walking, 
+walking down the street
+I say don\'t worry sloopy, girl
+You belong to me'~!@$%^&amp;*()_+;
+print &quot;$lyric\n&quot;;
+
+&lt;/code&gt;
+&lt;/pre&gt;
+&lt;p&gt;And here is Perl's output for the error:
+&lt;pre&gt;
+&lt;code class=&quot;prettyprint&quot;&gt;
+Bareword found where operator expected at bomb2.pl line 9, near &quot;)_&quot;
+        (Missing operator before _?)
+syntax error at bomb2.pl line 9, near &quot;You belong to me'~&quot;
+  (Might be a runaway multi-line '' string starting on line 2)
+Execution of bomb2.pl aborted due to compilation errors.
+&lt;/code&gt;
+&lt;/pre&gt;
+As I said
+&lt;a href=&quot;http://blogs.perl.org/users/jeffrey_kegler/2011/01/perl-and-parsing-6-error-handling.html&quot;&gt;
+in that previous post&lt;/a&gt;,
+&lt;var&gt;perl&lt;/var&gt;
+clearly has very
+little idea where things went wrong -- it's guessing.
+&lt;h1&gt;Pinpointing the Error&lt;/h1&gt;
+
+At this point, let me give away the ending.
+The point of failure is the very first special symbol: the tilde.
+When I ran my fingers from left to right across the top of my keyboard,
+I was hoping to produce a more complicated example.
+But perhaps it is just as well I did not.
+&lt;p&gt;
+Here,
+&lt;a href=&quot;#NOTE2&quot;&gt;
+from my experimental Marpa-based utility&lt;/a&gt;,
+is what
+Perl is looking for when it encounters the tilde:
+The dot in the rules indicates how far the parse has already progressed.
+&lt;pre&gt;
+line -&gt; label sideff . SEMI
+sideff -&gt; expr . IF expr
+sideff -&gt; expr . UNLESS expr
+sideff -&gt; expr . WHILE expr
+sideff -&gt; expr . UNTIL iexpr
+sideff -&gt; expr . FOR expr
+sideff -&gt; expr . WHEN expr
+or_expr -&gt; or_expr . OROP and_expr
+or_expr -&gt; or_expr . DOROP and_expr
+and_expr -&gt; and_expr . ANDOP argexpr
+argexpr -&gt; argexpr . COMMA
+argexpr -&gt; argexpr . COMMA term
+term_listop -&gt; term_cond . ASSIGNOP term_listop
+term_assign -&gt; term_cond . ASSIGNOP term_assign
+term_cond -&gt; term_dotdot . QUESTION term_cond COLON term_cond
+term_dotdot -&gt; term_oror . DOTDOT term_oror
+term_oror -&gt; term_oror . OROR term_andand
+term_oror -&gt; term_oror . DORDOR term_andand
+term_andand -&gt; term_andand . ANDAND term_bitorop
+term_bitorop -&gt; term_bitorop . BITOROP term_bitandop
+term_bitandop -&gt; term_bitandop . BITANDOP term_eqop
+term_eqop -&gt; term_relop . EQOP term_relop
+term_relop -&gt; term_uniop . RELOP term_uniop
+term_shiftop -&gt; term_shiftop . SHIFTOP term_addop
+term_addop -&gt; term_addop . ADDOP term_mulop
+term_mulop -&gt; term_mulop . MULOP term_matchop
+term_matchop -&gt; term_matchop . MATCHOP term_uminus
+term_powop -&gt; term_increment . POWOP term_powop
+term_increment -&gt; term_arrow . POSTINC
+term_increment -&gt; term_arrow . POSTDEC
+term_arrow -&gt; term_arrow . ARROW method LPAREN listexprcom RPAREN
+term_arrow -&gt; term_arrow . ARROW method
+subscripted -&gt; term_hi . ARROW LSQUARE expr RSQUARE
+subscripted -&gt; term_hi . ARROW LCURLY expr SEMI RCURLY
+subscripted -&gt; term_hi . ARROW LPAREN RPAREN
+subscripted -&gt; term_hi . ARROW LPAREN expr RPAREN
+&lt;/pre&gt;
+&lt;p&gt;The names of the symbols are based on those in &lt;var&gt;perly.y&lt;/var&gt;.
+Operators are not shown symbolically, but are indicated with the name
+in caps: &quot;POSTINC&quot; instead of &quot;++&quot;.
+&lt;a href=&quot;#NOTE2&quot;&gt;Terms are suffixed with their precedence&lt;/a&gt;:
+&quot;term_assignop&quot; is the symbol
+for terms with the same precedence as the assignment operator.
+&quot;term_hi&quot; is the symbol for terms at the highest precedence level.
+&lt;p&gt;
+A tilde, when it is a single-character Perl operator,
+is always a prefix unary operator.
+Tildes also form part of several multi-character operators,
+but that is not the case here.
+Here is what Perl is looking for
+when it encounters the tilde:
+&lt;ul&gt;
+
+&lt;li&gt;A semicolon that would end the statement.  (Statements
+are called &lt;var&gt;line&lt;/var&gt;'s internally by &lt;var&gt;perly.y&lt;/var&gt;.)
+&lt;li&gt;The postfix conditonal keywords.
+&lt;li&gt;A lot of binary operators.
+&lt;li&gt;A couple of postfix unary operators.
+These, if found, will produce
+a compile-time complaint about incrementing a constant.
+&lt;/ul&gt;
+&lt;p&gt;
+No prefix unary operator is in the above list,
+and the parse fails here.
+&lt;h1&gt;About the Utility Used in This Post&lt;/h1&gt;
+&lt;p&gt;Finding the exact point of failure and the exact
+reasons would seem like something that you'd want in a parser.
+But in fact, production languages have tended to be like Perl --
+they try to indicate the general area of a syntax problem
+and to make a good guess as to its nature.
+But they leave it to the programmer to figure out exactly where they failed
+and why.
+&lt;p&gt;Marpa, then, is unusual, in that for any grammar you can write in BNF,
+and any input, it will either produce a parse, or a precise characterization
+of the failure.
+Marpa::XS::Perl
+is still experimental and under development.
+As I tackle tasks (like preparing this post, for example)
+I add the necessary capabilities.
+An example of what my utility cannot yet do is deal with
+floating point constants.
+(They're not hard, I just haven't encountered them yet in a test case.)
+&lt;p&gt;My original intent with Marpa::XS::Perl was to use it for snippets,
+and for academic and toy examples,
+and it cannot yet deal with production Perl
+code.
+My purpose so far
+has been to demonstrate that Marpa could be the basis
+of a practical Perl parsing utility.
+&lt;h1&gt;Notes&lt;/h1&gt;
+
+&lt;p&gt;&lt;a name=&quot;NOTE1&quot;&gt;&lt;b&gt;Note 1&lt;/b&gt;&lt;/a&gt;:
+Of course, in one sense, the exact nature of the problem depends
+on what the person writing the script intended, and on this
+my utility has not a clue.
+In this post, &quot;finding the exact problem&quot; means finding the exact
+location of a parse failure, and finding exactly what &lt;var&gt;perl&lt;/var&gt;
+was looking for when
+&lt;var&gt;perl&lt;/var&gt; did not find what
+&lt;var&gt;perl&lt;/var&gt; wanted to find.
+&lt;p&gt;
+In determining the &quot;exact location of parse failure&quot;,
+I also avoid mind-reading.
+I use a definition taken from the parsing literature:
+In a rejected token stream,
+the point of failure is the first token
+which made a successful parse impossible.
+In other words, if you encounter a token which cannot possibly
+be part of a successful parse, given the input you've already
+read, that token is the point of failure.
+Looking at it from the opposite point of view,
+if you can find some additonal
+input that makes the parse succeed,
+you have not yet found a point of failure.
+&lt;p&gt;&lt;a name=&quot;NOTE2&quot;&gt;&lt;b&gt;Note 2&lt;/b&gt;&lt;/a&gt;:
+To be precise, the output in this post was automatically generated
+by my utility, then edited for readability.
+Specifically, the edits removed
+those lines which were for rules with the dot
+at the end,
+and removed rule numbers and token
+numbers from the beginnings of the lines.
+Since
+rules with the dot at the end are completed, they do not
+generate any expectations for future tokens,
+and are irrelevant here.
+Similarly, in this context
+the internal rule numbers and location numbers would be clutter.
+While I made these readability edits by hand, they were rote
+and could easily have been automated.
+&lt;p&gt;&lt;a name=&quot;NOTE3&quot;&gt;&lt;b&gt;Note 3&lt;/b&gt;&lt;/a&gt;:
+Unlike in textbook BNF,
+the BNF in &lt;var&gt;perly.y&lt;/var&gt; does not have a separate symbol for terms
+of each precedence.  
+The BNF in
+&lt;var&gt;perly.y&lt;/var&gt; is wildly ambiguous,
+unlike the Perl language.
+&lt;var&gt;perly.y&lt;/var&gt; uses a tie-breaking technique,
+in combination with the BNF,
+to assign precedence.
+While some use of this kind of tie-breaking is standard in &lt;var&gt;yacc&lt;/var&gt;,
+for the Perl parser, Larry used it far more boldly than had been the practice before.
+Or for that matter, has been since.
+This is very important aspect of Perl parsing, one on which I've been planning to post.</description>
+  </item>
+  <item>
+    <title>Progress on Marpa::XS</title>
+    <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog/2011/03/17#progress-on-marpaxs</link>
+    <description>&lt;h1&gt;A Faster Marpa&lt;/h1&gt;
+&lt;p&gt;I've been converting Marpa from Pure Perl to C.
+For those who don't know,
+&lt;a href=&quot;http://search.cpan.org/dist/Marpa/&quot;&gt;Marpa&lt;/a&gt;
+is a parser generator
+which parses any grammar you can write in BNF.
+If the grammar is
+&lt;a href=&quot;#NOTE1&quot;&gt;one of those which can be parsed
+by yacc,
+by recursive descent or as a regular expression&lt;/a&gt;,
+Marpa parses it
+&lt;a href=&quot;#NOTE2&quot;&gt;in linear time&lt;/a&gt;.
+&lt;p&gt;Marpa's core algorithm does no system calls.
+It is almost 100% pointer twiddling.
+There is no floating point, and very little integer arithmetic.
+It's as if it was made to order to show C in its very best light.
+&lt;p&gt;I expected converting the Perl implementation
+to C to improve speed by two orders of magnitude,
+and first results are close -- the speedup for the code
+converted to C is 95 to 1.
+The code converted to C remains wrappered in Perl.
+The Perl wrapper handles the I/O,
+the user interface, and roughly the last third of the core algorithm.
+This last part of the core algorithm I have yet to rewrite in C.
+&lt;p&gt;The speedup for an actual application depends
+on how much Perl &quot;wrappering&quot; the application layers on top of the Marpa parse engine.
+But every test in the test suite is several times faster
+for XS than for Pure Perl.
+Ultimately, I will make Marpa's core algorithm available
+as &lt;var&gt;libmarpa&lt;/var&gt;, a C library with a documented interface.
+If you write a wrapper for &lt;var&gt;libmarpa&lt;/var&gt; in C,
+you will be able to get the full speedup, which I expect
+with a few more tweaks to be better than 100 to 1.
+&lt;h1&gt;Looking Onward: An &quot;Official&quot; Alpha Release&lt;/h1&gt;
+&lt;p&gt;At this moment,
+Marpa::XS is available in developer's releases only.
+I prefer that most users look at
+&lt;a href=&quot;http://search.cpan.org/dist/Marpa/&quot;&gt;Marpa&lt;/a&gt; instead.
+&lt;a href=&quot;http://search.cpan.org/dist/Marpa/&quot;&gt;Marpa&lt;/a&gt; is Pure Perl.
+It is also alpha,
+but it is stable at this point.
+&lt;p&gt;But with this very measurable speedup,
+Marpa::XS now offers added value over
+&lt;a href=&quot;http://search.cpan.org/dist/Marpa/&quot;&gt;Marpa&lt;/a&gt;,
+and I am turning to work on
+an &quot;official alpha&quot; release of Marpa::XS.
+Such a release would still not be suitable for use in production
+situations, and its interface would be subject to change.
+&lt;h1&gt;Notes&lt;/h1&gt;
+&lt;p&gt;&lt;a name=&quot;NOTE1&quot;&gt;Note 1&lt;/a&gt;:
+Technically, the grammars that Marpa parses in linear time are the
+LR-regular grammars.
+These include the LR(k) grammars and the LL(k) grammars, for all k.
+&lt;p&gt;&lt;a name=&quot;NOTE2&quot;&gt;Note 2&lt;/a&gt;:
+The claim of O(n) time complexity is for the underlying algorithm.
+Actual implementations tend to pick those data structures
+which are fastest in practice, instead of on paper.
+Pure Perl implementations, of course,
+must rely on the internal implementation
+of Perl's native data structures.
+&lt;p&gt;The relationship between theoretical time complexity
+and actual implemented speed in our field is like that
+between quantum mechanics and Newtonian mechanics in physics.
+There are effects back and forth, and a realm
+where each clearly rules.
+There are also specialists in each,
+who tend to avoid looking at the scales
+where one set of rules ceases to apply
+and the other kicks in.
+&lt;p&gt;The relationship between
+theoretical time complexity and actual implemented speed interests
+me.
+In Marpa's XS implementation, I have control of the data
+structures, and I am using the implementation to work out
+in detail
+the proofs of time complexity for Earley's algorithm
+and Leo's modification of it.
+In the course of this I hope to make a full accounting of
+any differences
+between theoretical and implemented time complexity.</description>
+  </item>
+  </channel>
+</rss>

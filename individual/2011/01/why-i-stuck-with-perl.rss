@@ -1,0 +1,147 @@
+<?xml version="1.0"?>
+<!-- name="generator" content="blosxom/2.0" -->
+<!DOCTYPE rss PUBLIC "-//Netscape Communications//DTD RSS 0.91//EN" "http://my.netscape.com/publish/formats/rss-0.91.dtd">
+
+<rss version="0.91">
+  <channel>
+    <title>Ocean of Awareness   </title>
+    <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog</link>
+    <description>Ocean of Awareness.</description>
+    <language>en</language>
+
+  <item>
+    <title>Why I Stuck With Perl</title>
+    <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog/2011/01/22#why-i-stuck-with-perl</link>
+    <description>&lt;p&gt;I've just read
+&lt;a href=&quot;http://everythingsysadmin.com/2011/01/python-is-better-than-perl6.html&quot;&gt;
+a very thoughtful
+description&lt;/a&gt;
+of why one Perl
+programmer switched to Python.
+In this blog post, I'll explain why I did not.
+
+&lt;p&gt;When I started on the
+&lt;a href=&quot;http://search.cpan.org/dist/Marpa/&quot;&gt;Marpa&lt;/a&gt;
+project, Perl was
+not an automatic choice.
+In fact it looked like it might
+be the wrong one.
+There was as much buzz for Python then
+as now.
+Maybe more.
+I'd had my own
+experience with Python,
+and it was excellent.
+I'd used Python to create a threaded mail client for
+testing purposes.
+I found Python to be easy to learn, fun to use,
+and an effective way to accomplish my task.
+
+&lt;p&gt;Perl had another problem.
+An important audience for
+&lt;a href=&quot;http://search.cpan.org/dist/Marpa/&quot;&gt;Marpa&lt;/a&gt;,
+&lt;a href=&quot;#NOTE1&quot;&gt;my new parser&lt;/a&gt;, 
+is academia.
+Academics certainly use Perl.
+My experience is that they even respect it in a certain sense.
+But Perl does not fit neatly into the minimalist
+paradigms which still rule academia.
+If you speak Perl to academics, you are not talking
+their language.
+That means you run a great
+risk that nobody will listen.
+
+&lt;p&gt;I read and studied a lot about the relative merits
+and demerits
+of various scripting languages.
+Others have covered, and continue to cover, that ground
+very well.
+Let me go straight to explaining why I stuck.
+Perl has CPAN.  And CPAN ...  well, let me tell you a story.
+
+&lt;h1&gt;An Incident on CPAN&lt;/h1&gt;
+&lt;p&gt;Recently, my development version of Marpa::XS showed a lot of failures
+from the cpantesters.
+This happened immediately after a mild brag in this blog,
+about my impressive success rate in writing portable C code.
+It was like one of those Greek myths,
+where one of the Gods in Olympus decides a big-talking mortal needs to be taken down a peg.
+
+
+&lt;p&gt;I did not receive any lightning bolts, but I sure got a variety of test
+failures.
+With considerable effort,
+I was able to eliminate
+all but one of these on my own.
+The remaining failure happened only on the tests run by Andreas Koenig.
+Not that I expected Andreas's setup was at fault --
+it was more likely that all the other setups were being liberal where
+Andreas was being strict.
+Which is what turned out to be the case.
+
+&lt;p&gt;So I emailed Andreas.
+Frankly, I did not have high expectations.
+Andreas is doing a lot of important things.
+My guess was that
+discovering why new C code on the unstable development version
+of a new module does not execute in his test setup
+might take quite a while to percolate to the top of his &quot;to do&quot; list.
+
+&lt;p&gt;I was therefore very surprised when the answer rocketed back.
+My development version of Marpa::XS failed only with the development
+versions of Module::Build later than a certain version number.
+Andreas, it turns out,
+is set up to do regression analysis, and the regression analysis
+pointed straight to the combination.
+
+&lt;p&gt;For those of you who don't know, regression analysis essentially sets up
+an equation combining various factors (in this case, module versions, Perl versions,
+hardware, OS, etc.) with an outcome (in this case, success or failure).
+It can be used to see which factors correlate with which outcomes --
+in this case, which combinations of modules, hardware, etc. are correlated
+with failures.
+
+&lt;p&gt;It's a very cool technique.
+(I tried to get my clients to use it in my consulting practice,
+but there was just too much pushback on the math.)
+Andreas's regression tools pointed straight to the problem.
+It began to happen when Module::Build switched to non-lazy
+loading of dynamic code.
+
+&lt;p&gt;Here's what my bug was.  I had declared a C function, call it
+&lt;var&gt;xyz()&lt;/var&gt;.
+But I had never defined &lt;var&gt;xyz()&lt;/var&gt; -- there was no code for it.
+But I also never called
+&lt;var&gt;xyz()&lt;/var&gt; anywhere.
+With lazy dynamic loading, that meant no attempt to load
+&lt;var&gt;xyz()&lt;/var&gt; was ever made.
+So with lazy loading, my bug was harmless.
+
+
+&lt;p&gt;In the name of thorough testing, Module::Build was switching to
+non-lazy loading.  This meant that, call or no call, my executable
+looked for
+&lt;var&gt;xyz()&lt;/var&gt; and, when it did not find it, abended.
+
+&lt;p&gt;In his email to me,
+David Golden left it an open question whether testing with
+lazy or non-lazy loading is best.
+I'll leave the final resolution of that to his capable judgement.
+For Marpa, I think Module::Build's new behavior is the best,
+and I've changed my test setup to always be non-lazy.
+In the future, any never-called never-defined function like
+&lt;var&gt;xyz()&lt;/var&gt; will abend in my test setup.
+
+&lt;h1&gt;Summary&lt;/h1&gt;
+&lt;p&gt;My quest is to make Marpa's C-enabled version
+widely portable.
+To this end, CPAN not only offers
+me free widespread testing, but even fast, polite, high-quality help with
+debugging.
+Would I get that if I were programming in a language other than Perl?
+&lt;p&gt;&lt;a name=&quot;NOTE1&quot;&gt;&lt;b&gt;Note 1:&lt;/b&gt;&lt;/a&gt;
+&lt;a href=&quot;http://search.cpan.org/dist/Marpa/&quot;&gt;Marpa&lt;/a&gt;  parses any grammar that you can write in BNF,
+and parses all grammars parseable by yacc or recursive descent in linear time.</description>
+  </item>
+  </channel>
+</rss>

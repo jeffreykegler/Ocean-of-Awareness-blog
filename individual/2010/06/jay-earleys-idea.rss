@@ -1,0 +1,63 @@
+<?xml version="1.0"?>
+<!-- name="generator" content="blosxom/2.0" -->
+<!DOCTYPE rss PUBLIC "-//Netscape Communications//DTD RSS 0.91//EN" "http://my.netscape.com/publish/formats/rss-0.91.dtd">
+
+<rss version="0.91">
+  <channel>
+    <title>Ocean of Awareness   </title>
+    <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog</link>
+    <description>Ocean of Awareness.</description>
+    <language>en</language>
+
+  <item>
+    <title>Jay Earley's Idea</title>
+    <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog/2010/06/21#jay-earleys-idea</link>
+    <description>&lt;h2&gt;Truth == Simplicity?&lt;/h2&gt;
+
+&lt;p&gt;In other posts,
+I talked about improvements to Jay Earley's parsing algorithm
+-- some from Joop Leo, some from Aycock and Horspool,
+&lt;a href=&quot;http://search.cpan.org/dist/Marpa/&quot;&gt;some of mine
+&lt;/a&gt;.
+Here I'd like to talk about Jay Earley's original algorithm.
+A common belief of great scientists is that,
+if an idea is basic and true,
+it is in essence also simple,
+and therefore it must have a simple explanation.
+&lt;/p&gt;
+&lt;p&gt;
+Finding the simple explanation might be far from simple.
+But a simple explanation there ought to be.
+I like to look for those simple explanations.
+Writing my mathematical novel, &lt;i&gt;The God Proof&lt;/i&gt;,
+confirmed
+me in this habit.
+Whenever I am studying something,
+and it seems important and true,
+I look for the simple explanation.
+&lt;/p&gt;
+
+&lt;h2&gt;Dotted Rules&lt;/h2&gt;
+
+&lt;p&gt;
+The idea behind Earley's algorithm is that you can
+parse by building a table of rules
+and where you are in those rules.
+&quot;Where&quot; means two things: location in the rule relative to the rule's
+symbols,
+and location relative to the parse's input stream.
+&lt;/p&gt;
+&lt;p&gt;
+Let's look at an example of a rule in a context-free grammar.
+Here's the rule for assignment in perl's
+&lt;a href=&quot;http://cpansearch.perl.org/src/JESSE/perl-5.12.1/perly.y&quot;&gt;perly.y
+&lt;/a&gt;:
+&lt;pre&gt;&lt;code class=&quot;prettyprint&quot;&gt;
+    termbinop =&gt; term ASSIGNOP term
+&lt;/code&gt;&lt;/pre&gt;
+In parsing this rule, we can be at the beginning, before all of the symbols.
+We can also be immediately after any of the three symbols.
+That's a total of four possible locations.</description>
+  </item>
+  </channel>
+</rss>

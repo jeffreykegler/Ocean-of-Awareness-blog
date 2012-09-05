@@ -1,0 +1,169 @@
+<html>
+<head>
+<link rel="alternate" title="Ocean of Awareness RSS" type="application/rss+xml" title="RSS" href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/index.rss" />
+<title>Ocean of Awareness   </title>
+<style type="text/css">
+   strong {font-weight: 700;}
+</style>
+</head>
+<body>
+<div id="header"
+  style="color:white;background-color:#38B0C0;padding:1em;clear:left;text-align:center;">
+<h1>Ocean of Awareness</h1>
+  
+</div>
+  <div id="menu" style="margin:0;padding:10px;width:150px;float:left;">
+  <h2>Jeffrey Kegler's blog</h2>
+  <p>About Marpa, his new parsing algorithm,
+    and other topics of interest</p>
+  <h3>Resources</h3>
+  <p><a href="http://www.jeffreykegler.com/">Jeffrey Kegler's website</p>
+  <p><a href="http://www.jeffreykegler.com/marpa">The Marpa website</p>
+  </div>
+  <div id="content" style="margin-left:190px;border-left:2px solid #38B0C0;padding:25px;">
+<h3>Fri, 13 Jan 2012</h3>
+<br />
+<center><a name="developing-parsers-incrementally-with-marpa"> <h2>Developing parsers incrementally with Marpa</h2> </a>
+</center>
+<p>
+<a href="https://metacpan.org/module/Marpa::XS">Marpa::XS</a>
+is a general context-free parser.
+What does that mean?
+For a grammar writer, it means that he doesn't
+need to worry that the next rule he adds to the grammar
+is the one that makes it hit the invisible wall that
+most other parser generators set up.
+If you can write it in BNF, Marpa will parse it.
+Which makes
+<a href="https://metacpan.org/module/Marpa::XS">Marpa::XS</a>
+good at incremental development.
+</p>
+<p>
+As you develop your Marpa grammar,
+you can track the tradeoffs you are making
+between features and efficiency.
+Chances are,
+if your grammar is unambiguous or lightly ambiguous,
+there are no tradeoffs --
+you're getting everything you want in linear time.
+Marpa is linear for every class of grammar currently in
+practical use.
+</p>
+<p>
+Marpa is also linear with many ambiguous grammars
+and, in the worst case,
+Marpa's time complexity
+is what is accepted as optimal in practice.
+Whatever the time complexity that you're seeing with Marpa,
+it's probably as good or better than you're going to get
+from another parser generator.
+</p>
+<h2>One way to start the semantics</h2>
+<p>
+
+As you build your grammar out, of course,
+you'll need a semantics.
+I often start my Marpa semantics with a single routine,
+something like:
+<code class="prettyprint"><pre>
+sub My_Actions::do_what_I_mean {
+
+    # The first argument is the per-parse variable.
+    # At this stage, just throw it away
+    shift;
+
+    # Throw away any undef's
+    my @children = grep { defined } @_;
+
+    # Return what's left
+    return scalar @children > 1 ? \@children : shift @children;
+}
+</pre></code>
+</p>
+<p>
+When defining the grammar,
+I set <code class="prettyprint">do_what_I_mean</code>
+as the default action:
+<code class="prettyprint"><pre>
+    default_action => 'My_Actions::do_what_I_mean',
+</pre></code>
+</p>
+<p>
+This one function is enough to get me started
+working out the semantics of my parse tree.
+At every node of the parse tree,
+it throws away all the undefined child values.
+If no child value remains, an <code class="prettyprint">undef</code>
+
+is returned.
+If only one child value remains, it is the result.
+If more than one child value remains,
+a reference to an array of them is returned.
+The result, when handed to Data::Dumper,
+is a reasonable representation of your parse tree.
+</p>
+<p>
+The "per-parse variable" is also thrown away.
+By default, this is an empty hash which can be
+used as a kind of global scratchpad in the parse.
+This will be useful, for example,
+if your language has a symbol table.
+</p>
+<p>
+The <code class="prettyprint">do_what_I_mean</code> function produces
+a first cut at a parse tree,
+which I can hack away at.
+For example, if I'm writing a calculator, I can change the actions
+rule by rule to perform the calculations.
+</p>
+<p>
+Your <code class="prettyprint">do_what_I_mean</code> function might vary,
+depending on your application.
+You might find it is better to keep all the undefineds, for example.
+Also, once your grammar is complete,
+you should check to see if you can do without a <code class="prettyprint">default_action</code>.
+If you can, eliminating it is an efficiency gain.
+This efficiency gain will be even bigger in Marpa::R2,
+Marpa's next release.
+
+</p>
+<br />
+<p>posted at: 08:58 |
+path: <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/01">/individual/2012/01</a> |
+<a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/01/developing-parsers-incrementally-with-marpa.html">direct link to this entry</a>
+</p>
+<div style="color:#38B0C0;padding:1px;text-align:center;">
+&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&sect;
+</div>
+</div>
+</div>
+<div id="footer" style="border-top:thick solid #38B0C0;clear:left;padding:1em;">
+<p>This is Ocean of Awareness's
+  new home.  This blog has been hosted at
+  <a href="http://blogs.perl.org/users/jeffrey_kegler/">blogs.perl.org</a>
+  but I have succumbed to the lure of static blogging.
+  I have not yet decided how to deal with comments at this new blog location.
+If the post is Marpa-related,
+<a href="https://groups.google.com/forum/?hl=en&fromgroups#%21forum/marpa-parser">
+the Marpa mailing list</a>
+is a good place to comment.
+Also,
+I will continue to dual-post for some time,
+and have not yet frozen comments on the versions of the
+post at
+<a href="http://blogs.perl.org/users/jeffrey_kegler/">blogs.perl.org</a>.
+</div>
+              <script type="text/javascript">
+            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+          </script>
+          <script type="text/javascript">
+            try {
+              var pageTracker = _gat._getTracker("UA-33430331-1");
+            pageTracker._trackPageview();
+            } catch(err) {}
+          </script>
+</body>
+</html>

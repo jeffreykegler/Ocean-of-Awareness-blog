@@ -1,0 +1,139 @@
+<?xml version="1.0"?>
+<!-- name="generator" content="blosxom/2.0" -->
+<!DOCTYPE rss PUBLIC "-//Netscape Communications//DTD RSS 0.91//EN" "http://my.netscape.com/publish/formats/rss-0.91.dtd">
+
+<rss version="0.91">
+  <channel>
+    <title>Ocean of Awareness   </title>
+    <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog</link>
+    <description>Ocean of Awareness.</description>
+    <language>en</language>
+
+  <item>
+    <title>Partial parsing and error reporting</title>
+    <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog/2012/07/22#partial-parsing-and-error-reporting</link>
+    <description>&lt;blockquote&gt;
+&quot;One of the secrets to mathematical problem solving is that one needs to place a high value on partial progress,
+as being a crucial stepping stone to fully solving the problem.&quot;
+-- &lt;a href=&quot;https://plus.google.com/u/0/114134834346472219368/posts/Xdm8eiPLWZp&quot;&gt;
+Terence Tao&lt;/a&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;Once an error is found,
+a traditional parser is
+pretty much lost.
+This is true for even
+state of the art compilers and interpreters.
+One small typo results
+in many screens of useless
+diagnostics.
+If you're an old hand,
+you scroll back over these,
+knowing that, for the better quality compilers,
+the first few lines often have something to
+do with the real problem.
+With Marpa, we can do better than this.
+&lt;/p&gt;
+&lt;p&gt;
+Robust error reporting
+is equivalent to the problem of finding code interspersed
+among arbitary text.
+For example,
+consider this mixture of text and Perl fragments.
+&lt;code class=&quot;prettyprint&quot;&gt;&lt;pre&gt;
+Note: line:column figures include preceding whitepace
+The next line is a perl fragment
+{42;{1,2,3;4}}
+Code block from 3:5 to 3:13
+Code block from 2:33 to 3:14
+The next line is a perl fragment
+{42;{1,2,3,4}}
+Hash from 7:5 to 7:13
+Code block from 7:5 to 7:13
+Code block from 6:33 to 7:14
+The next line is a perl fragment
+{42;{;1,2,3;4}}
+Code block from 12:5 to 12:14
+Code block from 11:33 to 12:15
+The next line is a perl fragment
+{42;+{1,2,3,4}}
+Hash from 16:6 to 16:14
+Code block from 15:33 to 16:15
+&lt;/pre&gt;&lt;/code&gt;
+I have written the prototype of a utility
+(&lt;code class=&quot;prettyprint&quot;&gt;ucurly.pl&lt;/code&gt;)
+that finds Perl fragments
+scattered among other material,
+and parses them.
+To test the accuracy of the parse,
+I have it look for one of Perl's parsing ambiguities ---
+anonymous hash constructors that could also be code blocks.
+For the example above,
+&lt;code class=&quot;prettyprint&quot;&gt;ucurly.pl&lt;/code&gt; finds what there is to be found:
+
+&lt;code class=&quot;prettyprint&quot;&gt;&lt;pre&gt;
+Perl fragment: {42;{1,2,3;4}}
+Code block at 3:5 3:13 {1,2,3;4}
+Code block at 2:33 3:14 {42;{1,2,3;4}}
+Perl fragment: {42;{1,2,3,4}}
+Ambiguous Hash at 7:5 7:13 {1,2,3,4}
+Ambiguous Code block at 7:5 7:13 {1,2,3,4}
+Code block at 6:33 7:14 {42;{1,2,3,4}}
+Perl fragment: {42;{;1,2,3;4}}
+Code block at 12:5 12:14 {;1,2,3;4}
+Code block at 11:33 12:15 {42;{;1,2,3;4}}
+Perl fragment: {42;+{1,2,3,4}}
+Hash at 16:6 16:14 {1,2,3,4}
+Code block at 15:33 16:15 {42;+{1,2,3,4}}
+perl tokens = 62; all tokens=267; 23.22%
+&lt;/pre&gt;&lt;/code&gt;
+&lt;p&gt;
+My Marpa-based Perl parser,
+as it currently stands,
+is a partial Perl parser.
+On select problems, it is 100%.
+For example,
+it understands all of the output from Data::Dumper.
+And it scored perfectly in the example in this blog post.
+It will parse perhaps 90% of a typical, complex Perl program.
+&lt;/p&gt;
+&lt;p&gt;
+At this point in the Marpa-based Perl parser's evolution,
+rather than add Perl syntax,
+I decided to use it to investigate partial parsing.
+Some readers will have observed that &quot;90% coverage&quot;
+is a synonym with &quot;useless&quot; in current parsing practice.
+That's because traditional parsing algorithms are close to binary.
+Traditional parsers only understand input if it is correct or nearly so.
+&lt;/p&gt;
+&lt;p&gt;
+When partial parsing is possible,
+things are more interesting.
+For example, I turned
+&lt;code class=&quot;prettyprint&quot;&gt;ucurly.pl&lt;/code&gt;,
+my ambiguity-finding utility,
+loose on
+&lt;a href=&quot;http://api.metacpan.org/source/MARKSTOS/CGI.pm-3.59/lib/CGI.pm&quot;&gt;
+CGI.pm&lt;/a&gt;,
+a complex bit of Perl code by anyone's standard.
+My utility failed to parse a lot of correct Perl code
+in CGI.pm,
+producing a lot of false negatives.
+But this did not prevent it from singling out
+line 461:
+&lt;code class=&quot;prettyprint&quot;&gt;&lt;pre&gt;
+
+      @result = map {ref $_ ? $_ : $self-&gt;_decode_utf8($_) } @result;
+&lt;/pre&gt;&lt;/code&gt;
+This line is ambiguous -- the first argument to map
+could be either an anonymous hash constructor,
+or a code block.
+My guess, and I believe, the Perl's parser's guess,
+is that it's a code block.
+But it'd be nice to have a utility that spots these,
+so that all doubt can be removed:
+&lt;code class=&quot;prettyprint&quot;&gt;&lt;pre&gt;
+      @result = map { ; ref $_ ? $_ : $self-&gt;_decode_utf8($_) } @result;
+&lt;/pre&gt;&lt;/code&gt;</description>
+  </item>
+  </channel>
+</rss>

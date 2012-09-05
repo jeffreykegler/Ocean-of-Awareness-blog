@@ -1,0 +1,290 @@
+<?xml version="1.0"?>
+<!-- name="generator" content="blosxom/2.0" -->
+<!DOCTYPE rss PUBLIC "-//Netscape Communications//DTD RSS 0.91//EN" "http://my.netscape.com/publish/formats/rss-0.91.dtd">
+
+<rss version="0.91">
+  <channel>
+    <title>Ocean of Awareness   </title>
+    <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog</link>
+    <description>Ocean of Awareness.</description>
+    <language>en</language>
+
+  <item>
+    <title>Marpa and OO</title>
+    <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog/2012/01/21#marpa-and-oo</link>
+    <description>&lt;p&gt;
+Both
+&lt;a href=&quot;http://www.perlmonks.org/?node_id=900763&quot;&gt;publicly&lt;/a&gt;
+and privately I hear from folks who
+tell me that
+&lt;a href=&quot;https://metacpan.org/release/Marpa-XS&quot;&gt;Marpa&lt;/a&gt;
+is an OO
+superclass waiting to happen.
+I can see their point.
+If there ever was a case for code reuse,
+the Marpa algorithm is one.
+On the other hand,
+any non-trivial use of
+Marpa requires additional semantics,
+so that the Marpa classes
+walk, swim and quack
+very much like abstract type classes.
+&lt;/p&gt;
+&lt;p&gt;
+Furthermore, the additional semantics
+that Marpa needs comes in pieces -- semantic actions.
+And even though these pieces
+often share little code
+with each other,
+they interact heavily
+as part of a specific
+structure.
+This means that their semantics are tightly coupled,
+both to each other and to Marpa.
+In short, Marpa's semantic actions look a lot
+like the methods of a subclass.
+&lt;/p&gt;
+&lt;p&gt;
+Not that there aren't issues.
+In particular,
+if Marpa were a superclass,
+its subclasses wouldn't know which methods they
+needed to implement
+until after the grammar was fully specified --
+in other words until deep into runtime.
+But if you're into OO, there are no problems,
+just interesting challenges.
+&lt;/p&gt;
+&lt;p&gt;
+A top priority with me is to empower those
+who have ideas for alternative Marpa interfaces,
+whether object-oriented or not.
+Currently,
+
+&lt;a href=&quot;https://metacpan.org/release/Marpa-XS&gt;Marpa::XS&quot;&gt;Marpa::XS&lt;/a&gt;
+is divided into two layers.
+The core algorithm is in a C library (libmarpa).
+The interface code is the upper layer.
+Written in Perl,
+this upper layer calls libmarpa.
+But in
+&lt;a href=&quot;https://metacpan.org/release/Marpa-XS&gt;Marpa::XS&quot;&gt;Marpa::XS&lt;/a&gt;,
+libmarpa's interface was not documented,
+and frankly the
+&lt;a href=&quot;https://metacpan.org/release/Marpa-XS&gt;Marpa::XS&quot;&gt;Marpa::XS&lt;/a&gt;
+version of libmarpa was
+so hackish that it needed to
+be rewritten
+before it could be effectively
+and clearly documented.
+In the development version of Marpa,
+&lt;a href=&quot;http://search.cpan.org/dist/Marpa-R2/&quot;&gt;Marpa::R2&lt;/a&gt;,
+this rewrite
+has been completed,
+and the libmarpa documentation is now underway.
+&lt;/p&gt;
+&lt;p&gt;
+With a documented libmarpa interface,
+authors of new Marpa interfaces can totally bypass
+the current
+&lt;a href=&quot;https://metacpan.org/release/Marpa-XS&gt;Marpa::XS&quot;&gt;Marpa::XS&lt;/a&gt;
+interface.
+And in terms of speed, they'll start the race
+with an advantage --
+&lt;a href=&quot;http://search.cpan.org/dist/Marpa-R2/&quot;&gt;Marpa::R2&lt;/a&gt;
+
+is 20% faster
+than
+&lt;a href=&quot;https://metacpan.org/release/Marpa-XS&gt;Marpa::XS&quot;&gt;Marpa::XS&lt;/a&gt;.
+&lt;/p&gt;
+&lt;p&gt;
+But why wait for
+&lt;a href=&quot;http://search.cpan.org/dist/Marpa-R2/&quot;&gt;Marpa::R2&lt;/a&gt;
+to try out your ideas?
+At the cost of a modest overhead,
+a new OO interface can be layered on top of
+&lt;a href=&quot;https://metacpan.org/release/Marpa-XS&gt;Marpa::XS&quot;&gt;Marpa::XS&lt;/a&gt;.
+The new interface can simply define a default action
+to
+&lt;a href=&quot;https://metacpan.org/release/Marpa-XS&gt;Marpa::XS&quot;&gt;Marpa::XS&lt;/a&gt;,
+one that implements
+your wrapper's semantics.
+Supplying an OO context to Marpa's semantic actions
+is easy.
+All
+&lt;a href=&quot;https://metacpan.org/release/Marpa-XS&gt;Marpa::XS&quot;&gt;Marpa::XS&lt;/a&gt;'s
+actions receive as their first
+argument a &quot;per-parse variable&quot;.
+The per-parse variable can be initialized
+to anything the upper layer wants.
+A wrapper object could pass itself to Marpa's
+semantic actions as their per-parse variable.
+&lt;a href=&quot;https://metacpan.org/release/Marpa-XS&gt;Marpa::XS&quot;&gt;Marpa::XS&lt;/a&gt;'s
+semantic actions can then easily use
+the wrapper object to call one of the wrapper's
+methods,
+passing it the semantic action's other arguments.
+
+&lt;/p&gt;</description>
+  </item>
+  <item>
+    <title>Developing parsers incrementally with Marpa</title>
+    <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog/2012/01/13#developing-parsers-incrementally-with-marpa</link>
+    <description>&lt;p&gt;
+&lt;a href=&quot;https://metacpan.org/module/Marpa::XS&quot;&gt;Marpa::XS&lt;/a&gt;
+is a general context-free parser.
+What does that mean?
+For a grammar writer, it means that he doesn't
+need to worry that the next rule he adds to the grammar
+is the one that makes it hit the invisible wall that
+most other parser generators set up.
+If you can write it in BNF, Marpa will parse it.
+Which makes
+&lt;a href=&quot;https://metacpan.org/module/Marpa::XS&quot;&gt;Marpa::XS&lt;/a&gt;
+good at incremental development.
+&lt;/p&gt;
+&lt;p&gt;
+As you develop your Marpa grammar,
+you can track the tradeoffs you are making
+between features and efficiency.
+Chances are,
+if your grammar is unambiguous or lightly ambiguous,
+there are no tradeoffs --
+you're getting everything you want in linear time.
+Marpa is linear for every class of grammar currently in
+practical use.
+&lt;/p&gt;
+&lt;p&gt;
+Marpa is also linear with many ambiguous grammars
+and, in the worst case,
+Marpa's time complexity
+is what is accepted as optimal in practice.
+Whatever the time complexity that you're seeing with Marpa,
+it's probably as good or better than you're going to get
+from another parser generator.
+&lt;/p&gt;
+&lt;h2&gt;One way to start the semantics&lt;/h2&gt;
+&lt;p&gt;
+
+As you build your grammar out, of course,
+you'll need a semantics.
+I often start my Marpa semantics with a single routine,
+something like:
+&lt;code class=&quot;prettyprint&quot;&gt;&lt;pre&gt;
+sub My_Actions::do_what_I_mean {
+
+    # The first argument is the per-parse variable.
+    # At this stage, just throw it away
+    shift;
+
+    # Throw away any undef's
+    my @children = grep { defined } @_;
+
+    # Return what's left
+    return scalar @children &gt; 1 ? \@children : shift @children;
+}
+&lt;/pre&gt;&lt;/code&gt;
+&lt;/p&gt;
+&lt;p&gt;
+When defining the grammar,
+I set &lt;code class=&quot;prettyprint&quot;&gt;do_what_I_mean&lt;/code&gt;
+as the default action:
+&lt;code class=&quot;prettyprint&quot;&gt;&lt;pre&gt;
+    default_action =&gt; 'My_Actions::do_what_I_mean',
+&lt;/pre&gt;&lt;/code&gt;
+&lt;/p&gt;
+&lt;p&gt;
+This one function is enough to get me started
+working out the semantics of my parse tree.
+At every node of the parse tree,
+it throws away all the undefined child values.
+If no child value remains, an &lt;code class=&quot;prettyprint&quot;&gt;undef&lt;/code&gt;
+
+is returned.
+If only one child value remains, it is the result.
+If more than one child value remains,
+a reference to an array of them is returned.
+The result, when handed to Data::Dumper,
+is a reasonable representation of your parse tree.
+&lt;/p&gt;
+&lt;p&gt;
+The &quot;per-parse variable&quot; is also thrown away.
+By default, this is an empty hash which can be
+used as a kind of global scratchpad in the parse.
+This will be useful, for example,
+if your language has a symbol table.
+&lt;/p&gt;
+&lt;p&gt;
+The &lt;code class=&quot;prettyprint&quot;&gt;do_what_I_mean&lt;/code&gt; function produces
+a first cut at a parse tree,
+which I can hack away at.
+For example, if I'm writing a calculator, I can change the actions
+rule by rule to perform the calculations.
+&lt;/p&gt;
+&lt;p&gt;
+Your &lt;code class=&quot;prettyprint&quot;&gt;do_what_I_mean&lt;/code&gt; function might vary,
+depending on your application.
+You might find it is better to keep all the undefineds, for example.
+Also, once your grammar is complete,
+you should check to see if you can do without a &lt;code class=&quot;prettyprint&quot;&gt;default_action&lt;/code&gt;.
+If you can, eliminating it is an efficiency gain.
+This efficiency gain will be even bigger in Marpa::R2,
+Marpa's next release.
+
+&lt;/p&gt;</description>
+  </item>
+  <item>
+    <title>What!  No Lexer?</title>
+    <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog/2012/01/05#what-no-lexer</link>
+    <description>&lt;p&gt;
+To those who have noted that
+&lt;a href=&quot;https://metacpan.org/module/Marpa::XS&quot;&gt;
+Marpa::XS&lt;/a&gt;
+does not come with a lexer,
+I'd respond that,
+in a very real sense it does --
+Perl.
+Perl5 is a powerful lexical analyzer.
+&lt;/p&gt;
+&lt;p&gt;
+If you're trying to figure out how to write your first Marpa
+parser,
+I'd recommend a close look at 
+&lt;a href=&quot;http://blogs.perl.org/users/wolfgang_kinkeldei/2011/12/trying-marpa-to-parse-css.html&quot;&gt;
+Wolfgang Kinkeldei's recent posting about his
+Marpa-powered CSS parser&lt;/a&gt;.
+Wolfgang lays his parser out in a very elegant fashion,
+and I find his code makes an excellent template.
+&lt;/p&gt;
+Especially nice-looking is Wolfgang's lexer.
+Wolfgang follows one of the two
+main strategies for lexical analysis in 
+Perl:
+he consumes the input using substitution
+(&lt;code class=&quot;prettyprint&quot;&gt;s/ ... / ... /&lt;/code&gt;) commands.
+&lt;p&gt;
+
+&lt;/p&gt;
+The other strategy is to use the Perl regex search position
+to track the progress of the lexical analysis.
+In the search-position strategy,
+your cases consist of a lot of 
+match commands using the &lt;code class=&quot;prettyprint&quot;&gt;\G&lt;/code&gt; anchor
+and the &lt;code class=&quot;prettyprint&quot;&gt;gc&lt;/code&gt; modifier:
+&lt;code class=&quot;prettyprint&quot;&gt;m/\G ... /gc&lt;/code&gt;.
+An excellent tutorial on this
+kind of lexing,
+albeit in a non-Marpa context,
+can be found in
+&lt;a href=&quot;#DOMINUS&quot;&gt;Mark Jason Dominus's book,
+&lt;cite&gt;Higher Order Perl&lt;/cite&gt;&lt;/a&gt;.
+Mark's coverage of lexing is in
+Chapter 8, &quot;Parsing&quot;, on pages 359-375.
+Mark's book can be read
+&lt;a href=&quot;http://hop.perl.plover.com/book/&quot;&gt;
+on-line&lt;/a&gt;.
+I highly recommend Mark's book
+and own a paper copy.</description>
+  </item>
+  </channel>
+</rss>

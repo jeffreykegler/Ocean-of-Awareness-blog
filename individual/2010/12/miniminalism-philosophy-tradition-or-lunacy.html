@@ -1,0 +1,178 @@
+<html>
+<head>
+<link rel="alternate" title="Ocean of Awareness RSS" type="application/rss+xml" title="RSS" href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/index.rss" />
+<title>Ocean of Awareness   </title>
+<style type="text/css">
+   strong {font-weight: 700;}
+</style>
+</head>
+<body>
+<div id="header"
+  style="color:white;background-color:#38B0C0;padding:1em;clear:left;text-align:center;">
+<h1>Ocean of Awareness</h1>
+  
+</div>
+  <div id="menu" style="margin:0;padding:10px;width:150px;float:left;">
+  <h2>Jeffrey Kegler's blog</h2>
+  <p>About Marpa, his new parsing algorithm,
+    and other topics of interest</p>
+  <h3>Resources</h3>
+  <p><a href="http://www.jeffreykegler.com/">Jeffrey Kegler's website</p>
+  <p><a href="http://www.jeffreykegler.com/marpa">The Marpa website</p>
+  </div>
+  <div id="content" style="margin-left:190px;border-left:2px solid #38B0C0;padding:25px;">
+<h3>Sat, 04 Dec 2010</h3>
+<br />
+<center><a name="miniminalism-philosophy-tradition-or-lunacy"> <h2>Miniminalism: Philosophy, Tradition or Lunacy?</h2> </a>
+</center>
+<p>Thanks to cpantesters I'm doing something that amazes me --
+as I write C, it is taken and tested for me on all sorts
+of different systems.
+This is a stern test of my ability to write
+portable C code,
+and, in general I'm quite pleased with how I've done.
+So far only one mistake
+can clearly be laid
+at my door.
+
+<p>That mistake doesn't put me in a good light --
+mistakes seldom do.
+But we learn more from mistakes than from successes.
+In this case, the mistake exposes a habit of mine that
+programmers of the modern school will find a bit lunatic.
+And perhaps it will give me a good way to point out how
+that lunacy shaped your training as well,
+no matter how recent it was.
+
+<p>The cpantesters do wonderful things, but they can't be
+all things to all people.
+In their feedback to C programmers who cause segment violations,
+they make the oracle at Delphi look like the neighborhood gossip.
+What the C programmer who lets his pointers stray
+sees is almost nothing -- the <var>prove</var> utility will
+report every test after the segment violation as
+a failure, without further explanation.
+It's not even explicitly stated that the problem is
+a segment violation, but I've learned to suspect that
+is what is happening
+whenever <var>prove</var> gives me the silent treatment.
+
+<p>I could always contact the cpantester
+and ask him for a stack trace,
+or even send him additional tests to run.
+But he's a volunteer and my C programming mishaps
+will not necessarily be his highest priority.
+He may be especially disinclined to give the issue a priority
+if he suspects that I have not done my homework.
+It behooved me to
+try to solve the problem on my own first.
+
+<p>I got lucky.
+Rereading my recent changes,
+I noted where doing a fairly
+complex calculation might save 4 bytes in a memory
+allocation.
+Problem was, I'd seen this the first time and
+decided I could save 5 bytes.  Oops.
+
+<p>On most systems,
+<var>malloc()</var> was rounding up the
+allocation.
+But on a strict few, I was given exactly the allocation I asked
+for and made to pay the price of my folly.
+
+<p>I replaced the calculation with a simpler one.
+Cpantesters reports for my fix are in and they run 100% clean.
+The simpler calculation for the <var>malloc()</var> buffer
+allocates, worst case, 4 bytes too many.
+From the optimization standpoint, it may even be better
+because it saves a few CPU cycles.
+Not that either way
+it makes a difference that could be measured.
+
+
+<p>At this point,
+a number of my readers will have decided that I'm a lunatic.
+Why was I going out of my way to save 4 lousy bytes?
+Without directly addressing the charge of lunacy,
+I would draw the candid reader's attention
+to my training.
+Nobody is drilling young programmers
+on the importance of saving 4 bytes any more,
+but the spirit of minimalism that inspired my misjudgement
+is more than alive today.
+It's dominant.
+
+<p>I started programming in 1970, remote
+time-sharing on a PDP-8.
+As a user, I had available a virtual PDP-8 in its
+minimal configuration.
+That was 4096 12-bit words: 6K in modern terms.
+When you work in a memory that small, you sweat the details.
+
+<p>Though I didn't think so at the time,
+in giving me those 6K virtual bytes, the
+operating system was being generous.
+The typical configuration of a PDP-8 for the educational
+market was 36K bytes of memory, both physical and virtual.
+This was expected to serve around 20 time-shared users.
+
+<p>It was the
+generation that learned to program on this kind of hardware
+which created
+the concepts of programming language, development environment and operating system
+which are dominant today.
+As often as not they created not just our current concepts,
+but the actual technology we are using.
+
+<p>Perhaps one example will inspire the reader to think of others.
+LISP remains influential.
+Its spirit was the flame that kindled a long series
+of single-paradigm languages.
+But given the size of the machines available in 1958, how many
+paradigms could a language have implemented?
+When we study and emulate LISP,
+we are studying and emulating deep ideas.
+To an equal extent, however, when we study and emulate
+LISP, we are studying the art
+of saving every byte as if it were our last.
+<br />
+<p>posted at: 23:30 |
+path: <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2010/12">/individual/2010/12</a> |
+<a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2010/12/miniminalism-philosophy-tradition-or-lunacy.html">direct link to this entry</a>
+</p>
+<div style="color:#38B0C0;padding:1px;text-align:center;">
+&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&sect;
+</div>
+</div>
+</div>
+<div id="footer" style="border-top:thick solid #38B0C0;clear:left;padding:1em;">
+<p>This is Ocean of Awareness's
+  new home.  This blog has been hosted at
+  <a href="http://blogs.perl.org/users/jeffrey_kegler/">blogs.perl.org</a>
+  but I have succumbed to the lure of static blogging.
+  I have not yet decided how to deal with comments at this new blog location.
+If the post is Marpa-related,
+<a href="https://groups.google.com/forum/?hl=en&fromgroups#%21forum/marpa-parser">
+the Marpa mailing list</a>
+is a good place to comment.
+Also,
+I will continue to dual-post for some time,
+and have not yet frozen comments on the versions of the
+post at
+<a href="http://blogs.perl.org/users/jeffrey_kegler/">blogs.perl.org</a>.
+</div>
+              <script type="text/javascript">
+            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+          </script>
+          <script type="text/javascript">
+            try {
+              var pageTracker = _gat._getTracker("UA-33430331-1");
+            pageTracker._trackPageview();
+            } catch(err) {}
+          </script>
+</body>
+</html>

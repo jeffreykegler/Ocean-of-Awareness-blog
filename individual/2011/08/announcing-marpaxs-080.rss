@@ -1,0 +1,125 @@
+<?xml version="1.0"?>
+<!-- name="generator" content="blosxom/2.0" -->
+<!DOCTYPE rss PUBLIC "-//Netscape Communications//DTD RSS 0.91//EN" "http://my.netscape.com/publish/formats/rss-0.91.dtd">
+
+<rss version="0.91">
+  <channel>
+    <title>Ocean of Awareness   </title>
+    <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog</link>
+    <description>Ocean of Awareness.</description>
+    <language>en</language>
+
+  <item>
+    <title>Announcing Marpa::XS 0.8.0</title>
+    <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog/2011/08/03#announcing-marpaxs-080</link>
+    <description>&lt;p&gt;
+I have just released
+&lt;a href=&quot;http://search.cpan.org/dist/Marpa-XS/&quot;&gt;Marpa::XS 0.008000&lt;/a&gt;.
+With this release the core Marpa algorithm has been converted to C,
+vastly speeding it up.
+Marpa::XS is still alpha, but the additional development needed
+at this point is a matter of packaging
+(&lt;a href=&quot;#NOTE1&quot;&gt;See Note 1&lt;/a&gt;).
+&lt;/p&gt;
+&lt;p&gt;It is my hope that Marpa
+will become the standard parsing algorithm for problems too
+big for regular expressions.
+&lt;ul&gt;
+&lt;li&gt;Marpa parses all
+classes of grammar that are currently in practical use
+in linear time.
+(&lt;a href=&quot;#NOTE2&quot;&gt;See Note 2&lt;/a&gt;).
+&lt;li&gt;Marpa is a general BNF parser -- that means if you feed it anything
+written in BNF, it &quot;just parses&quot; it.
+This includes grammars which are left-recursive, right-recursive and
+ambiguous -- even infinitely ambiguous.
+&lt;li&gt;Marpa never goes exponential -- worst case, even for highly ambiguous
+grammars, is O(n**3), which is considered optimal
+(&lt;a href=&quot;#NOTE3&quot;&gt;See Note 3&lt;/a&gt;).
+&lt;/ul&gt;
+
+&lt;h1&gt;Limitations and Comparisons&lt;/h1&gt;
+&lt;p&gt;The foremost limitation of Marpa is, of course,
+that it is alpha.
+Development is well advanced, but the interface remains
+subject to change.
+&lt;p&gt;There are several parsing tasks 
+where current technology will be superior
+even to a stable, production Marpa.
+For problems which work well as regexes (compact and with no backtracking),
+Marpa will never replace a good regular expression engine.
+On the other hand, Marpa may well be the answer to a lot of problems
+which are forced to fit into the regular expression paradigm
+for lack of anything better.
+Hand-written recursive descent could compete with Marpa, but
+not having to write your own parser is a huge advantage.
+&lt;p&gt;I've made no secret that I consider yacc and LALR theoretical milestones
+and industry traditions which are best honored in the breach.
+I've pointed out LALR's horrendous error-handling properties
+elsewhere
+(&lt;a href=&quot;#NOTE4&quot;&gt;See Note 4&lt;/a&gt;).
+LALR does offer some apparent speed advantages,
+but in the context of practical applications these are
+more apparent than real.
+&lt;h2&gt;Notes&lt;/h2&gt;
+&lt;p&gt;&lt;a name=&quot;PACKAGING&quot;&gt;Note 1: &lt;/a&gt;
+Inside the code are
+many relics of the development process,
+and these need
+to be cleaned up.
+The user documentation is finished,
+but the internals documentation needs a lot
+of work.
+&lt;p&gt;
+Some additional C code may be written to help in the
+evaluation phase but, while this code could produce
+some significant additional efficiencies, I don't consider it part of the
+core Marpa development project for two reasons.
+First, evaluation is to a large degree a matter of calling higher-level
+and application code.
+&lt;p&gt;Second, the core Marpa algorithm was new
+and extremely difficult mathematics --
+built on top of a large body of prior work to be sure,
+but new nonetheless.
+With the evaluation code, my original thinking involves making
+making choices of what to use in existing mathematics --
+evaluation consists of problems
+like tree traversal, where there is lots
+of prior work to consult.
+&lt;/p&gt;&lt;p&gt;&lt;a name=&quot;NOTE2&quot;&gt;Note 2: &lt;/a&gt;
+
+To be specific, Marpa parses any LR-regular grammar in linear time -- O(n).
+LR-regular is a vast class of grammars that includes LALR,
+LR(k) for all k,
+and LL(k) for all k.
+This means that Marpa parses,
+in linear time,
+every grammar parsed by yacc,
+recursive descent and regular expressions.
+&lt;/p&gt;&lt;p&gt;&lt;a name=&quot;NOTE3&quot;&gt;Note 3: &lt;/a&gt;
+The phrase &quot;considered optimal&quot; elides some
+irrelevant bits of theory.
+It would be a bit of a
+surprise if it is possible to
+do general BNF parsing
+in O(n), but nobody has proved that it can't be done.
+The Valiant algorithm parses general BNF
+and is O(n**2.376...) or better.
+But Valiant's algorithm is only faster for huge problems,
+and for those it
+needs a machine with many terabytes of main memory
+to deliver on its speed claims.
+So it won't be competing with Marpa any time soon.
+&lt;/p&gt;&lt;p&gt;&lt;a name=&quot;NOTE4&quot;&gt;Note 4: &lt;/a&gt;
+My series on yacc ran in four blog posts:
+&lt;a href=&quot;http://blogs.perl.org/users/jeffrey_kegler/2010/12/killing-yacc-1-2-3.html&quot;&gt;Killing Yacc&lt;/a&gt;,
+&lt;a href=&quot;http://blogs.perl.org/users/jeffrey_kegler/2010/12/why-the-bovicidal-rage-killing-yacc-4.html&quot;&gt;
+Why the Bovicidal Rage?&lt;/a&gt;,
+&lt;a href=&quot;http://blogs.perl.org/users/jeffrey_kegler/2011/04/bovicide-5-parse-time-error-reporting.html&quot;&gt;
+Bovicide 5: Parse-time Error Reporting&lt;/a&gt;,
+and
+&lt;a href=&quot;http://blogs.perl.org/users/jeffrey_kegler/2011/05/bovicide-6-the-final-requirement.html&quot;&gt;
+Bovicide 6: The Final Requirement&lt;/a&gt;</description>
+  </item>
+  </channel>
+</rss>

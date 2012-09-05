@@ -565,6 +565,290 @@ path: <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individua
 &sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 &sect;
 </div>
+<h3>Wed, 22 Aug 2012</h3>
+<br />
+<center><a name="precedence-parsing-made-simpler"> <h2>Precedence parsing made simpler</h2> </a>
+</center>
+<p>This post describes a new approach to precedence parsing,
+one that makes it simpler and
+more flexible.
+Many programmers find precedence
+is an intuitive way to
+look at problems.
+The traditional rules of arithmetic
+are a familiar example:
+<tt><pre>
+E ::= ( E )
+E ::= n
+E ::= E * E
+E ::= E + E
+</pre></tt>
+<p>
+Here, as in the rest of this post,
+the rules are ranked from tightest ("highest") precedence
+to loosest ("lowest").
+The order in the above display indicates that multiplication
+takes precedence over addition, and parentheses take precedence
+over everything else.
+<h2>The old way and the new way</h2>
+<p>The traditional way to deal with precedence
+centers on symbols.
+The symbols are divided sharply in two:
+those that define structure
+and those that carry information.
+The structural symbols (often called "operators")
+are assigned associativities and precedence.
+To help guide the parse,
+symbols may be further classified as infix, prefix,
+circumfix, etc.
+<p>
+Many rules, even those which intuitively seem part of
+the precedence order,
+do not fit into this symbol-oriented view of precedence.
+Implied operators are ruled out,
+as is any rule with two non-terminals in a row.
+Rules with an arity of 3 or above, when not also impossible,
+are a challenge.
+<p>The approach of this post is 100% rule-based.
+There is no attempt to identify operators or structural
+symbols,
+and no attempt to assign properties to them.
+This rule-based approach allows
+the convenient expression and
+efficient implementation of
+implied operators,
+of rules of arity 3 or higher,
+and of rules with any pattern of terminals or non-terminals.
+<h2>Simpler</h2>
+<p>
+Before getting into new features,
+it is probably best to show the new approach as applied
+to a grammar that
+can be parsed with the traditional methods.
+My notation is mostly standard or transparent,
+but here are details:
+<tt><pre>
+    ::=       separates the lhs of a rule from its rhs alternatives
+    |         separates alteratives at the same precedence level
+    ||        separates alteratives at different precedence levels
+    :group    indicates 'grouping' associativity
+    :left     indicates left associativity (the default)
+    :right    indicates right associativity
+</pre></tt>
+<p>
+Here is the grammar:
+<tt><pre>
+e ::=
+     NUM
+   | VAR
+   | :group '(' e ')'
+  || '-' e
+  || :right e '^' e
+  || e '*' e
+   | e '/' e
+  || e '+' e
+   | e '-' e
+  || VAR '=' e
+</pre></tt>
+<p>
+The above fully states the
+precedence and associativity for the grammar's rules.
+(As a reminder, the precedence follows the order of the rules,
+from tightest to loosest.)
+This is significantly simpler than what is required
+to set up a traditional precedence parser.
+On the other hand,
+intuitively, it looks like all the required
+information is there.
+And, in fact, this is the source from which
+Marpa::Demo::OP1 creates the grammar for a calculator.
+The code is
+<a href="https://gist.github.com/3427294">
+a Github gist</a>.
+<p>In real life, users of a calculator grammar,
+like the above,
+will be interested
+in a numeric result.
+However, in this post we are not interested in double-checking
+Perl's ability to do basic arithmetic,
+so instead we capture
+the syntactic structure that the calculator creates.
+Here are sample outputs, with square brackets
+added to show the parse.
+<tt><pre>
+Input: "4 * 3 + 42 / 1"
+  Parse: [[4*3]+[42/1]]
+Input: "4 * 3 / (a = b = 5) + 42 - 1"
+  Parse: [[[[4*3]/[([a=[b=5]])]]+42]-1]
+Input: "4 * 3 /  5 - - - 3 + 42 - 1"
+  Parse: [[[[[4*3]/5]-[-[-3]]]+42]-1]
+Input: "- a - b"
+  Parse: [[-a]-b]
+Input: "1 * 2 + 3 * 4 ^ 2 ^ 2 ^ 2 * 42 + 1"
+  Parse: [[[1*2]+[[3*[4^[2^[2^2]]]]*42]]+1]
+</pre></tt>
+<h2>More flexible</h2>
+<p>
+In the next grammar, I'll introduce an implied operator.
+An implied operator is prominent among the features
+that traditional precedence parsers
+simply could not handle.
+In the grammar that follows,
+a missing operator will indicate multiplication,
+just as in algebra.
+<p>
+Traditional precedence parsers also
+were stymied by
+rules with an arity of 3 or more.
+For Marpa::Demo::OP1, these are no problem at all.
+I'll introduce two ternary operations,
+and a quaternary operation.
+(New in the notation below is the "<tt>=> xyz</tt>",
+which specifies a non-default semantics,
+in this case "<tt>xyz()</tt>".)
+<p>
+<tt><pre>
+e ::=
+     NUM
+   | VAR
+   | :group '(' e ')'
+  || '-' e
+  || :right e '^' e
+  || e '*' e
+   | e e                                          => implied_multiply
+   | e '/' e
+  || e '+' e
+   | e '-' e
+  || VAR '=' e
+  || :right e '?' e ':' e                         => spaced
+   | :right e '??' e ':' e ':' e                  => spaced
+  || 'payment' 'on' e 'over' e 'years' 'at' e '%' => spaced
+</pre></tt>
+<p>The code for this second example is also
+<a href="https://gist.github.com/3427312">
+a Github gist</a>.
+And here is the output.
+(To make it easy to spot them,
+implied multiplications are shown with an "<code class="prettyprint">x</code>"
+instead of a "<code class="prettyprint">*</code>".)
+<tt><pre>
+Input: "4 3 42 + 1"
+  Parse: [[[4 x 3] x 42]+1]
+Input: "e = m c^2"
+  Parse: [e=[m x [c^2]]]
+Input: "4 * 3 5 (6 7) 8 9 10"
+  Parse: [[[[[[4*3] x 5] x [([6 x 7])]] x 8] x 9] x 10]
+Input: "1 ? 42 : 2 ?? 3 : 4 : 5 ? 6 : 7"
+  Parse: [1 ? 42 : [2 ?? 3 : 4 : [5 ? 6 : 7]]]
+Input: "payment on 1000 + 1000 over months/12 years at 5 + 1 %"
+  Parse: [payment on [1000+1000] over [months/12] years at [5+1] %]
+</pre></tt
+<h2>How rule-based precedence works
+<br />
+<p>posted at: 09:58 |
+path: <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/08">/individual/2012/08</a> |
+<a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/08/precedence-parsing-made-simpler.html">direct link to this entry</a>
+</p>
+<div style="color:#38B0C0;padding:1px;text-align:center;">
+&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&sect;
+</div>
+<h3>Sun, 12 Aug 2012</h3>
+<br />
+<center><a name="the-solved-problem-that-isnt-is"> <h2>The solved problem that isn't, is</h2> </a>
+</center>
+<p>In the title of
+<a href="http://tratt.net/laurie/tech_articles/articles/parsing_the_solved_problem_that_isnt">
+an excellent blog post</a>,
+Laurence Tratt calls parsing,
+"the solved problem that isn't".
+I thought this
+phrase captured the current situation
+in parsing theory and practice very nicely.
+In stating that parsing is not a solved problem,
+Tratt realized he was taking on a consensus.
+But the consensus is fading --
+for example, neither side in the interchange
+between
+<a href="http://arxiv.org/abs/1010.5023">
+Might/Darais</a>
+and
+<a href="http://research.swtch.com/yaccalive">
+Russ Cox</a>
+expresses complete
+contentment with the state of the art.
+<p>
+What would be a real solution to the parsing problem?
+I wish to suggest that
+<a href="http://www.jeffreykegler.com/marpa">Marpa</a>
+is that solution.
+I say that based on a list of features.
+Marpa is the first parser to have all of these features,
+and I claim they are enough to justify the assertion
+that, with Marpa,
+parsing is no longer an unsolved problem.
+Specifically,
+<ol>
+<li><p>Marpa parses everything you can write in BNF.
+<li><p>Marpa parses in times considered theoretically optimal.
+For unambiguous grammars, Marpa is never worse than O(n²).
+For ambiguous grammars, Marpa is never worse than O(n³).
+Marpa never goes exponential.
+<li><p>
+Marpa parses all
+classes of grammar in practical use today in linear time, O(n).
+Marpa is linear for all LR-regular grammars.
+The LR-regular grammars include regular expressions,
+LL(k) for all k,
+and LR(k) for all k.
+<li><p>A serious practical issue has been parse-time error detection.
+Marpa breaks new ground here.
+Marpa is fully aware, at every point in the parse, of
+all the rules it is parsing,
+how far into them it has proceeded,
+and of what tokens it expects next.
+This information is available
+to the application
+conveniently and efficiently.
+<li><p>
+Marpa parsers do not need to be handwritten.
+Marpa is available as a open-source library.
+It is written in C,
+and the C library can be used
+<a href="http://jeffreykegler.github.com/Marpa/libmarpa.html">
+directly</a>
+or via
+<a href="https://metacpan.org/release/Marpa-R2">
+a Perl interface</a>.
+<li><p>
+For general BNF parsing,
+the user does not need to craft
+a lookahead or backtracking strategy -- Marpa
+does not use lookahead and never backtracks.
+<li><p>
+Marpa's complexity and correctness claims come
+with the traditional theoretical apparatus of
+proofs based on prior literature.
+</ol>
+<p>
+In his post,
+Tratt focuses his discontent on the problem of "language composition" -- the
+problem of combining two grammars into one.
+Tratt knew that an efficient and practical general BNF parser, like Marpa,
+would make language composition easy.
+But he was not aware that any such parser existed.
+Language composition is a topic to which I hope to return.
+<br />
+<p>posted at: 20:07 |
+path: <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/08">/individual/2012/08</a> |
+<a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/08/the-solved-problem-that-isnt-is.html">direct link to this entry</a>
+</p>
+<div style="color:#38B0C0;padding:1px;text-align:center;">
+&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&sect;
+</div>
 </div>
 </div>
 <div id="footer" style="border-top:thick solid #38B0C0;clear:left;padding:1em;">

@@ -1,0 +1,135 @@
+<?xml version="1.0"?>
+<!-- name="generator" content="blosxom/2.0" -->
+<!DOCTYPE rss PUBLIC "-//Netscape Communications//DTD RSS 0.91//EN" "http://my.netscape.com/publish/formats/rss-0.91.dtd">
+
+<rss version="0.91">
+  <channel>
+    <title>Ocean of Awareness   </title>
+    <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog</link>
+    <description>Ocean of Awareness.</description>
+    <language>en</language>
+
+  <item>
+    <title>Perl and Parsing 9: &quot;Use&quot; and the Ruby Slippers</title>
+    <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog/2011/09/19#perl-and-parsing-9-use-and-the-ruby-slippers</link>
+    <description>&lt;p&gt;
+In this post, I talk about how
+Perl 5 parses its
+&lt;code class=&quot;prettyprint&quot;&gt;use&lt;/code&gt; statement.
+The &lt;code class=&quot;prettyprint&quot;&gt;use&lt;/code&gt; statement
+is implemented with
+what I have named
+&lt;a href=&quot;http://blogs.perl.org/users/jeffrey_kegler/2010/06/parsing-with-ruby-slippers.html&quot;&gt;
+&quot;Ruby Slippers&quot; parsing&lt;/a&gt;.
+The idea is that you parse with a convenient grammar,
+but one which is too simple to actually describe the language
+you are parsing.
+For example, if you are parsing HTML, the grammar might assume
+all start tags have end tags.
+&lt;/p&gt;
+&lt;p&gt;
+Whenever the simplified grammar has trouble parsing,
+the lexer fixes the situation by pretending the input
+is what the parser wants to see.
+The parser is like Dorothy in
+the &lt;em&gt;Wizard of Oz&lt;/em&gt;, who really would
+like to be back in Kansas.
+The lexer is like the good witch,
+Glenda, who assures Dorothy that,
+because of her Ruby Slippers,
+Dorothy really can be wherever she wants to be.
+&lt;/p&gt;
+
+&lt;p&gt;
+Few &quot;new&quot; programming ideas are so new
+that they have no
+precedent in previous practice.
+Perl 5 put the Ruby Slippers technique
+to work well before I described and named it.
+Its code captures the two essential elements of
+Ruby Slippers parsing.
+&lt;/p&gt;
+&lt;h2&gt;The Syntax of the &lt;code class=&quot;prettyprint&quot;&gt;use&lt;/code&gt; Statement&lt;/h2&gt;
+&lt;p&gt;
+As a reminder, the 
+&lt;code class=&quot;prettyprint&quot;&gt;use&lt;/code&gt; statement comes in several forms.
+Most of them are &lt;a href=&quot;#MODULE&quot;&gt;module&lt;/a&gt;
+requests --
+that is, they request the loading of a module.
+In the long form of the module request, a version number
+is specified as well.  The version number is usually
+interpreted as the minimum acceptable version of
+that module.
+&lt;pre&gt;
+
+use Module VERSION
+&lt;/pre&gt;
+For example,
+&lt;code class=&quot;prettyprint&quot;&gt;
+&lt;pre&gt;
+use List::Util 1.21;
+&lt;/pre&gt;
+&lt;/code&gt;</description>
+  </item>
+  <item>
+    <title>Announcing Marpa::XS 0.010000</title>
+    <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog/2011/09/12#announcing-marpaxs-0010000</link>
+    <description>&lt;p&gt;
+Some time ago I released
+&lt;a href=&quot;http://search.cpan.org/~jkegl/Marpa-XS-0.010000/&quot;&gt;
+Marpa::XS 0.010000&lt;/a&gt;.
+The core Marpa algorithm had already been converted to C,
+speeding it up considerably.
+Marpa::XS 0.010000 cleans up a lot of code left over from development,
+further speeding things up.
+&lt;/p&gt;
+&lt;h1&gt;What is Marpa?&lt;/h1&gt;
+&lt;p&gt;Marpa is an advance over recursive descent
+and yacc.
+I hope the Marpa algorithm
+will become the standard parser for
+problems too
+big for regular expressions.
+&lt;/p&gt;&lt;ul&gt;
+&lt;li&gt;Marpa parses, in linear time,  all
+classes of grammar that are currently in practical use.
+(&lt;a href=&quot;#NOTE1&quot;&gt;See Note 1&lt;/a&gt;).
+&lt;/li&gt;
+&lt;li&gt;The importance of parse-time debugging is often underestimated.
+Marpa's parse-time error detection breaks new ground -- Marpa is
+fully aware of exactly where in the parse it is at all times,
+and of exactly what input it expects and why.
+This means parse-time error detection, once a desperate last
+resort, now can be used as
+&lt;a href=&quot;http://blogs.perl.org/users/jeffrey_kegler/2010/06/parsing-with-ruby-slippers.html&quot;&gt;
+a parsing technique in itself&lt;/a&gt;.
+
+&lt;/li&gt;
+&lt;li&gt;Marpa is a general BNF parser -- that means if you feed it anything
+written in BNF, it &quot;just parses&quot; it.
+This includes grammars which are left-recursive, right-recursive and
+ambiguous -- even infinitely ambiguous.
+&lt;/li&gt;
+&lt;li&gt;Marpa never goes exponential -- worst case, even for highly ambiguous
+grammars, is O(n**3), which is considered optimal
+(&lt;a href=&quot;#NOTE2&quot;&gt;See Note 2&lt;/a&gt;).
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1&gt;What is Next with Marpa?&lt;/h1&gt;
+I had planned to skip this announcement and wait to announce
+Marpa::XS 0.012000.
+I expected
+the release of Marpa::XS 0.012000
+to be just days away.
+And I did produce
+&lt;a href=&quot;http://search.cpan.org/~jkegl/Marpa-XS-0.013_003/&quot;&gt;
+its release candidate&lt;/a&gt;
+almost immediately.
+But in the meantime cpantesters was hit with a prolonged outage,
+which continues as of this writing.
+I've always waited for a few days of cpantesters results on
+the release candidate before cutting an official release
+and I hope cpantesters will be back online soon.</description>
+  </item>
+  </channel>
+</rss>

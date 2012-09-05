@@ -1,0 +1,119 @@
+<html>
+<head>
+<link rel="alternate" title="Ocean of Awareness RSS" type="application/rss+xml" title="RSS" href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/index.rss" />
+<title>Ocean of Awareness   </title>
+<style type="text/css">
+   strong {font-weight: 700;}
+</style>
+</head>
+<body>
+<div id="header"
+  style="color:white;background-color:#38B0C0;padding:1em;clear:left;text-align:center;">
+<h1>Ocean of Awareness</h1>
+  
+</div>
+  <div id="menu" style="margin:0;padding:10px;width:150px;float:left;">
+  <h2>Jeffrey Kegler's blog</h2>
+  <p>About Marpa, his new parsing algorithm,
+    and other topics of interest</p>
+  <h3>Resources</h3>
+  <p><a href="http://www.jeffreykegler.com/">Jeffrey Kegler's website</p>
+  <p><a href="http://www.jeffreykegler.com/marpa">The Marpa website</p>
+  </div>
+  <div id="content" style="margin-left:190px;border-left:2px solid #38B0C0;padding:25px;">
+<h3>Wed, 07 Dec 2011</h3>
+<br />
+<center><a name="how-to-parse-html-part-2"> <h2>How to parse HTML, part 2</h2> </a>
+</center>
+<p>
+This is the second of a series of posts that details
+a Marpa-based, "Ruby Slippers"
+approach to parsing liberal
+and defective HTML.
+This post assumes you have 
+read
+<a href="http://blogs.perl.org/users/jeffrey_kegler/2011/11/how-to-parse-html.html">
+the first post</a>.
+</p>
+<h2>First, reduce the HTML to a token stream</h2>
+<p>
+Most computer languages can be viewed
+as a token stream.
+HTML is not an exception.
+HTML tokens can be blocks of text;
+comments and various other SGML entities;
+HTML element start tags;
+and HTML element end tags.
+The HTML token stream is unusual in that
+some of its tokens can
+be quite complex internally.
+</p>
+In parsing computer languages,
+it is a frequent practice to divide the
+work between a tokenizer ("lexer")
+and a <a href="#HIGH-LEVEL">high-level parser</a>.
+The lexer takes the raw input
+and turns it into a token stream.
+Tokenizing HTML is a difficult job,
+and one for which there is an excellent CPAN module:
+<a href="https://metacpan.org/module/HTML::Parser">HTML::Parser</a>.
+<a href="https://metacpan.org/module/Marpa::HTML">Marpa::HTML</a>
+
+relies on
+<a href="https://metacpan.org/module/HTML::Parser">HTML::Parser</a>
+to do its tokenization.
+<p>
+</p>
+<a href="https://metacpan.org/module/Marpa::HTML">Marpa::HTML</a>
+determines the large scale structure of the HTML document --
+what I will call in this post, "high-level" parsing.
+The result of high-level parsing can be
+seen as a hierarchical structure.
+The goal of high-level parsing is
+to build a hierarchy which reflects
+the structure of the document.
+Conventionally, this hierarchy is visualized
+as an upside-down tree,
+one where the "leaves" are the tokens,
+and where the "root" node represents the
+document as a whole.
+<br />
+<p>posted at: 11:10 |
+path: <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2011/12">/individual/2011/12</a> |
+<a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2011/12/how-to-parse-html-part-2.html">direct link to this entry</a>
+</p>
+<div style="color:#38B0C0;padding:1px;text-align:center;">
+&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&sect;
+</div>
+</div>
+</div>
+<div id="footer" style="border-top:thick solid #38B0C0;clear:left;padding:1em;">
+<p>This is Ocean of Awareness's
+  new home.  This blog has been hosted at
+  <a href="http://blogs.perl.org/users/jeffrey_kegler/">blogs.perl.org</a>
+  but I have succumbed to the lure of static blogging.
+  I have not yet decided how to deal with comments at this new blog location.
+If the post is Marpa-related,
+<a href="https://groups.google.com/forum/?hl=en&fromgroups#%21forum/marpa-parser">
+the Marpa mailing list</a>
+is a good place to comment.
+Also,
+I will continue to dual-post for some time,
+and have not yet frozen comments on the versions of the
+post at
+<a href="http://blogs.perl.org/users/jeffrey_kegler/">blogs.perl.org</a>.
+</div>
+              <script type="text/javascript">
+            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+          </script>
+          <script type="text/javascript">
+            try {
+              var pageTracker = _gat._getTracker("UA-33430331-1");
+            pageTracker._trackPageview();
+            } catch(err) {}
+          </script>
+</body>
+</html>

@@ -1,0 +1,116 @@
+<html>
+<head>
+<link rel="alternate" title="Ocean of Awareness RSS" type="application/rss+xml" title="RSS" href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/index.rss" />
+<title>Ocean of Awareness   </title>
+<style type="text/css">
+   strong {font-weight: 700;}
+</style>
+</head>
+<body>
+<div id="header"
+  style="color:white;background-color:#38B0C0;padding:1em;clear:left;text-align:center;">
+<h1>Ocean of Awareness</h1>
+  
+</div>
+  <div id="menu" style="margin:0;padding:10px;width:150px;float:left;">
+  <h2>Jeffrey Kegler's blog</h2>
+  <p>About Marpa, his new parsing algorithm,
+    and other topics of interest</p>
+  <h3>Resources</h3>
+  <p><a href="http://www.jeffreykegler.com/">Jeffrey Kegler's website</p>
+  <p><a href="http://www.jeffreykegler.com/marpa">The Marpa website</p>
+  </div>
+  <div id="content" style="margin-left:190px;border-left:2px solid #38B0C0;padding:25px;">
+<h3>Thu, 05 Jan 2012</h3>
+<br />
+<center><a name="what-no-lexer"> <h2>What!  No Lexer?</h2> </a>
+</center>
+<p>
+To those who have noted that
+<a href="https://metacpan.org/module/Marpa::XS">
+Marpa::XS</a>
+does not come with a lexer,
+I'd respond that,
+in a very real sense it does --
+Perl.
+Perl5 is a powerful lexical analyzer.
+</p>
+<p>
+If you're trying to figure out how to write your first Marpa
+parser,
+I'd recommend a close look at 
+<a href="http://blogs.perl.org/users/wolfgang_kinkeldei/2011/12/trying-marpa-to-parse-css.html">
+Wolfgang Kinkeldei's recent posting about his
+Marpa-powered CSS parser</a>.
+Wolfgang lays his parser out in a very elegant fashion,
+and I find his code makes an excellent template.
+</p>
+Especially nice-looking is Wolfgang's lexer.
+Wolfgang follows one of the two
+main strategies for lexical analysis in 
+Perl:
+he consumes the input using substitution
+(<code class="prettyprint">s/ ... / ... /</code>) commands.
+<p>
+
+</p>
+The other strategy is to use the Perl regex search position
+to track the progress of the lexical analysis.
+In the search-position strategy,
+your cases consist of a lot of 
+match commands using the <code class="prettyprint">\G</code> anchor
+and the <code class="prettyprint">gc</code> modifier:
+<code class="prettyprint">m/\G ... /gc</code>.
+An excellent tutorial on this
+kind of lexing,
+albeit in a non-Marpa context,
+can be found in
+<a href="#DOMINUS">Mark Jason Dominus's book,
+<cite>Higher Order Perl</cite></a>.
+Mark's coverage of lexing is in
+Chapter 8, "Parsing", on pages 359-375.
+Mark's book can be read
+<a href="http://hop.perl.plover.com/book/">
+on-line</a>.
+I highly recommend Mark's book
+and own a paper copy.
+<br />
+<p>posted at: 18:31 |
+path: <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/01">/individual/2012/01</a> |
+<a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/01/what-no-lexer.html">direct link to this entry</a>
+</p>
+<div style="color:#38B0C0;padding:1px;text-align:center;">
+&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&sect;
+</div>
+</div>
+</div>
+<div id="footer" style="border-top:thick solid #38B0C0;clear:left;padding:1em;">
+<p>This is Ocean of Awareness's
+  new home.  This blog has been hosted at
+  <a href="http://blogs.perl.org/users/jeffrey_kegler/">blogs.perl.org</a>
+  but I have succumbed to the lure of static blogging.
+  I have not yet decided how to deal with comments at this new blog location.
+If the post is Marpa-related,
+<a href="https://groups.google.com/forum/?hl=en&fromgroups#%21forum/marpa-parser">
+the Marpa mailing list</a>
+is a good place to comment.
+Also,
+I will continue to dual-post for some time,
+and have not yet frozen comments on the versions of the
+post at
+<a href="http://blogs.perl.org/users/jeffrey_kegler/">blogs.perl.org</a>.
+</div>
+              <script type="text/javascript">
+            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+          </script>
+          <script type="text/javascript">
+            try {
+              var pageTracker = _gat._getTracker("UA-33430331-1");
+            pageTracker._trackPageview();
+            } catch(err) {}
+          </script>
+</body>
+</html>

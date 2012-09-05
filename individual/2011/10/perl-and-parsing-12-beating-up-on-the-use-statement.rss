@@ -1,0 +1,63 @@
+<?xml version="1.0"?>
+<!-- name="generator" content="blosxom/2.0" -->
+<!DOCTYPE rss PUBLIC "-//Netscape Communications//DTD RSS 0.91//EN" "http://my.netscape.com/publish/formats/rss-0.91.dtd">
+
+<rss version="0.91">
+  <channel>
+    <title>Ocean of Awareness   </title>
+    <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog</link>
+    <description>Ocean of Awareness.</description>
+    <language>en</language>
+
+  <item>
+    <title>Perl and Parsing 12: Beating up on the &quot;use&quot; statement</title>
+    <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog/2011/10/30#perl-and-parsing-12-beating-up-on-the-use-statement</link>
+    <description>&lt;p&gt;
+If you have been following the Perl blogosphere recently,
+you may have noticed that it has been a bad few weeks
+for Perl's &lt;code class=&quot;prettyprint&quot;&gt;use&lt;/code&gt; statement.
+I have been
+&lt;a href=&quot;http://blogs.perl.org/users/jeffrey_kegler/2011/10/perl-and-parsing-10-use-the-easier-way.html&quot;&gt;
+picking it apart&lt;/a&gt;
+in this series,
+and chromatic, on his blog,
+&lt;a href=&quot;http://www.modernperlbooks.com/mt/2011/10/what-perl-5s-use-really-does.html&quot;&gt;
+recently pointed out a documentation issue&lt;/a&gt;.
+Unlike chromatic, who focuses on user concerns,
+I use Perl as a way to implement and to illustrate parsing.
+Though, to be sure,
+one of the points I try to make
+is that the choice of parsing strategy
+is ultimately very much a user concern.
+&lt;/p&gt;
+&lt;p&gt;
+I find
+Perl's &lt;code class=&quot;prettyprint&quot;&gt;use&lt;/code&gt; statement
+especially interesting because it is a good example of
+a natural syntax that you would like to be easy to parse,
+but which proves problematic with current parsing technology.
+With a general BNF parser, like Marpa, 
+Perl's &lt;code class=&quot;prettyprint&quot;&gt;use&lt;/code&gt; statement is easy to parse.
+But the &lt;code class=&quot;prettyprint&quot;&gt;use&lt;/code&gt; statement strains
+Perl's parser LALR parse engine to the limits.
+Indeed, as I will show next, even a bit beyond.
+
+&lt;/p&gt;
+&lt;h2&gt;Reversed use statements&lt;/h2&gt;
+&lt;p&gt;
+Consider this statement
+&lt;pre&gt;&lt;code class=&quot;prettyprint&quot;&gt;use 2 Fatal;&lt;/code&gt;
+&lt;/pre&gt;
+Perl accepts this without error or warning, and interprets it as
+a request of at least version 2 of the &lt;code class=&quot;prettyprint&quot;&gt;Fatal&lt;/code&gt;
+module.
+But there's a problem.
+If you missed it,
+look carefully -- module name and version are reversed
+from the documented order.
+As documented, the statement should be
+&lt;pre&gt;&lt;code class=&quot;prettyprint&quot;&gt;use Fatal 2;&lt;/code&gt;
+&lt;/pre&gt;</description>
+  </item>
+  </channel>
+</rss>

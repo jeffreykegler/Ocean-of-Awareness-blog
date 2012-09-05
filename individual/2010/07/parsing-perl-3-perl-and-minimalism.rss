@@ -1,0 +1,163 @@
+<?xml version="1.0"?>
+<!-- name="generator" content="blosxom/2.0" -->
+<!DOCTYPE rss PUBLIC "-//Netscape Communications//DTD RSS 0.91//EN" "http://my.netscape.com/publish/formats/rss-0.91.dtd">
+
+<rss version="0.91">
+  <channel>
+    <title>Ocean of Awareness   </title>
+    <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog</link>
+    <description>Ocean of Awareness.</description>
+    <language>en</language>
+
+  <item>
+    <title>Parsing Perl 3: Perl and Minimalism</title>
+    <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog/2010/07/06#parsing-perl-3-perl-and-minimalism</link>
+    <description>&lt;img src=&quot;http://upload.wikimedia.org/wikipedia/commons/thumb/2/23/One_Ring_inscription.svg/500px-One_Ring_inscription.svg.png&quot;&gt;
+&lt;blockquote&gt;
+One ring to rule them all, one ring to find them,&lt;br&gt;
+One ring to bring them all and in the darkness bind them.
+&lt;/blockquote&gt;
+&lt;h2&gt;One Idea to Rule Them All&lt;/h2&gt;
+
+&lt;p&gt;Ever since the 50's,
+the fashion in language design
+has been minimalism.
+Languages were designed around paradigms,
+and paradigms were judged on elegance.
+If your choice of paradigm was lists, the result was LISP.
+If you decided on strings, you invented SNOBOL.
+Arrays, you wound up with APL.
+If your reasoning led you to logic, you ended up with Prolog.
+If you thought that descriptions of algorithms
+must be the basis of programming,
+then your fate was Algol.
+
+&lt;p&gt;If assembly language
+stayed at the core of your world view,
+what you created would be an imperative lanugage
+and might look like any of C, BASIC or FORTRAN.
+If stacks were your thing,
+you created a language that looked like Forth.
+And who knows if
+the belief in objects as the one paradigm
+will ever again see Orodruin and
+feel the heat of the flames
+in which it was forged.
+
+&lt;p&gt;
+Some of these languages were totalitarian -- they insisted everything
+be shoehorned into their central concept.
+I recall some very unpleasant struggles with early dialects of
+SNOBOL, LISP and Prolog.
+Imperative languages tended to be more elastic.
+But, while the strictness of adherence varies,
+almost
+every language invented over the past 50 years
+bears the clear stamp of minimalism.
+
+&lt;p&gt;
+Minimalism is not without its triumphs.
+Scientists, acting in the spirit of minimalism,
+ruthlessly brushed aside long-held ideas
+when they could not prove their worth,
+and much of 20th century science is a result of this.
+In our field,
+the 
+Unix operating system
+is a very successful example of the application of minimalist
+principles.
+
+&lt;h2&gt;Minimalism and its Discontents&lt;/h2&gt;
+
+&lt;p&gt;But, over time, it has become clear that the less strictly
+a language adheres to its central paradigm,
+the more useful it is.
+For the totalitarian languages, success came more
+in the form of influence on other systems
+than in direct application.
+People discussed pure LISP, APL and Prolog.
+They used C, BASIC and FORTRAN.
+
+&lt;p&gt;Unfortunately, principles tend to guide thinking,
+and not vice versa.
+Established principles become established
+precisely because, first and foremost,
+they make sure they have the last word
+when it comes to judging their own value.
+When our principles fail us, our first reaction,
+typically, is &lt;b&gt;not&lt;/b&gt; to abandon those principles.
+
+&lt;p&gt;Even today,
+minimalism remains the dominant ideology in computer language design.
+When dissatisfaction with minimalism emerges,
+it tends to take the form of &quot;more minimalism&quot;.
+The early history of programming languages is to a large
+extent
+a record of attempts
+to use minimalism
+to solve the problems of minimalism.
+
+&lt;h2&gt;The Principle of Plenitude&lt;/h2&gt;
+
+&lt;blockquote&gt;
+[ Orthogonality is ]
+&quot;all very well if you're trying to define a position in a space.
+But that's not how people think.
+It's not how natural languages work.
+Natural languages are not orthogonal, they're diagonal.
+They give you hypotenuses.&quot;
+-- Larry Wall, from a &lt;a href=&quot;http://www.drdobbs.com/184410483&quot;&gt;Dr. Dobbs interview&lt;/a&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;On December 18, 1987, I was waiting for the 
+release of Perl 1.0 to comp.sources.misc.
+I downloaded it and started programming.
+It was a paid project, one which I had bid fixed price.
+I had planned to use mixed shell and C for this
+project.
+But among those in the know,
+the advance buzz for Perl 1.0 was good.
+Larry Wall was not the name he is now,
+but he already had
+a very solid rep from rn and patch.
+I decided to take a chance,
+and the result was profitable.
+
+&lt;p&gt;To my knowledge,
+Perl was the first language to actively embrace plenitude.
+Bourne shell tightly followed a &quot;shell command&quot; paradigm,
+Anyone who tries to use Bourne shell as a general-purpose language
+(and many do)
+has experienced what it is to fight line-by-line
+against a paradigm.
+AWK easily could have been the first non-minimalist language.
+But while AWK followed its script-editor paradigm
+loosely, it never actually broke away from it.
+
+&lt;p&gt;
+Perl borrowed liberally from Bourne shell and AWK, but
+above all it embraced plenitude.
+If there is one sure sign that minimalism
+is at work
+in a language design,
+it is when those controlling the evolution of a language
+refuse to add a useful feature solely on ideological grounds --
+because the new feature does not fit a core design concept.
+From day zero,
+Perl has given cool new hacks the priority over ideology.
+I'd hesitate to call either AWK and or Bourne shell &quot;minimalist&quot;,
+but even over their evolutions,
+the heavy hand of minimalism
+has ruled.
+
+&lt;p&gt;This is part of a series which explores
+the technical details of Perl parsing.
+Since this post is devoted to matters of history and philosophy,
+it might seem to be a digression.
+It is not.
+Working code is never just code.
+As we will see,
+perly.y is one of the better examples of that fact.</description>
+  </item>
+  </channel>
+</rss>

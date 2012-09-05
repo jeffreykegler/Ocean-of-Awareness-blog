@@ -1,0 +1,106 @@
+<?xml version="1.0"?>
+<!-- name="generator" content="blosxom/2.0" -->
+<!DOCTYPE rss PUBLIC "-//Netscape Communications//DTD RSS 0.91//EN" "http://my.netscape.com/publish/formats/rss-0.91.dtd">
+
+<rss version="0.91">
+  <channel>
+    <title>Ocean of Awareness   </title>
+    <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog</link>
+    <description>Ocean of Awareness.</description>
+    <language>en</language>
+
+  <item>
+    <title>Perl &amp; Parsing: A Metapost</title>
+    <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog/2010/10/07#perl-parsing-a-metapost</link>
+    <description>&lt;p&gt;
+&lt;a href=http://blogs.perl.org/users/jeffrey_kegler/2010/09/perl-and-parsing-6-rewind.html&quot;&gt;
+This series of blog posts on
+&quot;Perl and Parsing&quot;&lt;/a&gt;,
+which is evolving
+into a mini-history of parsing theory,
+started as an offshoot of
+&lt;a href=&quot;http://search.cpan.org/dist/Marpa/&quot;&gt;
+my own
+attempt at a contribution to parsing&lt;/a&gt;.
+I wanted to do a couple of blog posts
+aimed at those trying to
+decide whether it was better 
+to take a chance with my
+new parser
+(&lt;a href=&quot;http://search.cpan.org/dist/Marpa/&quot;&gt;Marpa&lt;/a&gt;),
+or to stick with the terrors of the known.
+There's a large literature on parsing,
+but much of it is difficult or dryasdust,
+and I thought I could contribute a helpful overview.
+&quot;An informed consumer is our best customer&quot; and all that.
+
+&lt;p&gt;Like other offshoots of the Marpa project before it,
+while the &quot;Perl &amp; Parsing&quot; was originally intended to draw
+attention to
+&lt;a href=&quot;http://search.cpan.org/dist/Marpa/&quot;&gt;Marpa&lt;/a&gt;,
+it's been better at drawing attention to itself.
+I've received some positive comments,
+and some helpful criticism.
+I'm grateful for both,
+and I plan to continue the series.
+
+&lt;p&gt;The history is not being told in order.
+This is &lt;b&gt;not&lt;/b&gt; because I am
+attempting to ape &quot;Pulp Fiction&quot;.
+It's because the series was originally planned as
+perhaps two or three blog posts and has grown in
+scope.
+I'm stuck now with telling the tale using flashbacks and fast-forwards,
+but I'll make the process as easy
+as possible.
+
+&lt;p&gt;
+Parsing is an extremely important topic.
+It's technical no doubt --
+math and technology play an important role
+in the rise and fall of parsing algorithms.
+But so does personality and history.
+
+&lt;p&gt;
+In much of what we programmers do,
+we are following fashion
+(though it does sound more professional when
+we call it &quot;best practices&quot;).
+In fields like parsing and search algorithms,
+even the top minds have to guess.
+Most everybody else is not even guessing --
+they are simply
+playing follow the leader.
+Not that that's a bad idea.
+Pick leaders like Torvalds, Ritchie, Wall,
+Stallman and Thompson,
+and &quot;follow the leader&quot;
+becomes a pretty good
+heuristic.
+
+&lt;p&gt;
+Since personalities are important here,
+so is the history.
+Historians can divided into two types --
+the Braudel's and the Churchill's.
+Fernand Braudel insisted on accumulation of detail,
+and avoided broad sweeping statements, especially those
+of the kind that are hard to back up with facts.
+Winston Churchill thought the important thing was
+the broad sense,
+and that historians should awaken the reader to what really mattered,
+not deaden him
+with forgettable detail.
+
+&lt;p&gt;
+In general, the quiet diligence of a Braudel contributes more
+than the flashy grandeur of a Churchill.
+But the history of parsing
+has been in the hands of the Braudel's.
+A Churchill would liven things up.
+In this series I will take Winston's road,
+although I hope I will avoid Winston's
+detours through the odd fib.</description>
+  </item>
+  </channel>
+</rss>

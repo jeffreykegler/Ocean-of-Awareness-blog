@@ -1,0 +1,272 @@
+<html>
+<head>
+<link rel="alternate" title="Ocean of Awareness RSS" type="application/rss+xml" title="RSS" href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/index.rss" />
+<title>Ocean of Awareness   </title>
+<style type="text/css">
+   strong {font-weight: 700;}
+</style>
+</head>
+<body>
+<div id="header"
+  style="color:white;background-color:#38B0C0;padding:1em;clear:left;text-align:center;">
+<h1>Ocean of Awareness</h1>
+  
+</div>
+  <div id="menu" style="margin:0;padding:10px;width:150px;float:left;">
+  <h2>Jeffrey Kegler's blog</h2>
+  <p>About Marpa, his new parsing algorithm,
+    and other topics of interest</p>
+  <h3>Resources</h3>
+  <p><a href="http://www.jeffreykegler.com/">Jeffrey Kegler's website</p>
+  <p><a href="http://www.jeffreykegler.com/marpa">The Marpa website</p>
+  </div>
+  <div id="content" style="margin-left:190px;border-left:2px solid #38B0C0;padding:25px;">
+<h3>Fri, 18 Nov 2011</h3>
+<br />
+<center><a name="what-is-the-marpa-algorithm"> <h2>What is the Marpa algorithm?</h2> </a>
+</center>
+<p>
+I have referred to
+"the Marpa algorithm"
+many times.
+What is that?
+The
+<a href="https://metacpan.org/release/Marpa-XS">implementation</a>
+involves many details,
+but the Marpa algorithm itself is basically four ideas.
+Of these only the most recent is mine.
+The other three come
+from papers
+spanning over 40 years.
+</p>
+<h2>Idea 1: Parse by determining which rules can be applied where</h2>
+<p>
+The first idea is to track the progress of the a parse by determining,
+for each token, which rules can be applied and where.
+Sounds pretty obvious.
+Not-so-obvious is how
+to do this efficiently.
+</p>
+<p>
+In fact,
+most parsing these days uses
+some sort of shortcut.
+Regexes and LALR (yacc, etc.) require the grammar to take a restricted form,
+so that they can convert the rules into a state machine.
+Recursive descent, rather than list the possibilities, dives into
+them one by one.
+It, too, only works well with grammars of a certain kind.
+</p>
+<p>
+<a href="EARLEY1970">In 1970</a>,
+Jay Earley described an parsing algorithm that
+went from left to right,
+and worked by determining which rules applied where.
+Earley's was reasonably fast,
+but the severe limits of 1970's hardware pushed less powerful
+parsing algorithms to the forefront,
+where they remain.
+Jay Earley soon left the computer field to become a
+psychotherapist.
+His ideas remain the basis of much of general BNF parsing.
+Marpa is an Earley's parser.
+
+</p>
+<h2>Idea 2: Right-recursion is left-recursion in the mirror</h2>
+<p>
+Earley's original algorithm could handle anything you could write
+in BNF: ambiguous, infinitely ambiguous, left-recursive, right-recursive, you name it.
+And Earley's was very good at left-recursion -- blazingly fast.
+With right-recursion, however, Earley's original algorithm went quadratic.
+For many applications, quadratic time is unacceptable.
+</p>
+<p>
+Right-recursion is just left-recursion seen backwards.
+<a href="LEO1991">In 1991</a>,
+Joop Leo figured out how
+to take efficient advantage of this.
+Leo modified Earley's to identify potential right-recursions
+and parse them "in the mirror", as if they were left-recursions.
+</p>
+<p>
+With this improvement, Earley's algorithm was now linear for
+the LR-regular grammars, a vast class which includes every other
+class of grammar in practical use, then and now.
+Startlingly, 
+Leo's result went 20 years with few implementations.
+Marpa is its first implementation in a general-purpose utility.
+</p>
+<h2>Idea 3: Don't dance around the issue of nullables</h2>
+<p>
+
+A pesky problem with Earley's algorithm remained: nullable symbols.
+A symbol
+is a nullable symbol
+if it represents something that might be omitted,
+Examples are the three <kbd>expression</kbd>'s
+in C language <code class="prettyprint">for</code> statements:
+any or all of these may be omitted.
+To be considered practical,
+a parsing algorithm must work well with grammars
+that contain nullables.
+</p>
+<p>
+Earley's original 1970 algorithm actually had a bug in its handling
+of nullables.
+There was an easy fix, but it made the algorithm slower.
+Since efficiency was already seen as the reason to prefer other
+parsers, this was a big deal.
+</p>
+<p>
+<a href="AH2002">In 2002</a>,
+Aycock & Horspool stopped the dancing around the nullable issue.
+They rewrote Earley's parse engine, targeting nullables.
+The result was an improvement in other respects.
+Marpa's parse engine is not that of Aycock & Horspool.
+But Marpa's strategy for handling nullables comes directly from their work.
+And the design of Marpa's parse engine is heavily influenced by
+that described in Aycock & Horspool 2002.
+</p>
+
+<h2>Idea 4: Use the Ruby Slippers</h2>
+<p>
+For Marpa to get the benefits of both Leo and Aycock&Horspool,
+I needed to combine their
+quite different
+parse engines.
+In the process, I realized that behind Earley's original algorithm
+lay a promise,
+never-fulfilled.
+If your parser knows which rules are applicable where,
+then it should, in principle,
+allow you to use this information
+to guide the parsing process.
+</p>
+<p>
+What was needed was a parse engine which was careful to do
+all the other processing BEFORE
+it looked at the input.
+The Marpa parse engine does this ---
+at each parse location, examining the input
+is the last thing Marpa does.
+By examining the input last,
+Marpa makes the information
+from the other processing available for determining
+what that input should be.
+</p>
+<p>
+To see how this can be useful,
+take the example of liberal HTML ---
+HTML in which tags might be missing.
+With Marpa,
+it is possible to parse liberal HTML with an unrealistically simple
+grammar.
+An HTML parser can use
+a reference grammar which assumes that start and end tags are always
+present, even when not required by the standard.
+When the input does not conform to this grammar's unrealistic
+expectations,
+and it very often will not,
+the application can ask the parser what it DOES expect
+according to that grammar.
+If it's a missing end tag, the application can invent it and
+pass it on to the parser.
+The parse then continues, quite happily.
+</p>
+<p>
+I call this technique, where the grammar demands
+a perfect world and the application changes the input
+to match the grammar's expectations,
+Ruby Slippers parsing.
+I've
+<a href="https://metacpan.org/release/Marpa-HTML">implemented an HTML parser</a>
+which uses the Ruby Slippers.
+I use
+
+<a href="https://metacpan.org/release/Marpa-HTML">
+Marpa::HTML</a>
+myself a good deal.
+It is fast and flexible and IMHO the best way to parse liberal HTML.
+</p>
+<h2>Summary</h2>
+Four ideas are essential to the
+<a href="https://metacpan.org/release/Marpa-XS">Marpa</a>
+algorithm:
+<ul>
+<li>Marpa is an Earley's parser,
+in that it works by creating lists of possibilities at each token.
+<li>Marpa handles right-recursion using Joop Leo's method.
+This makes it O(n) for every class of grammar in practical use today.
+<li>Marpa handles nullables using the ideas of Aycock&Horspool 2002.
+As a side effect, this
+opens the way to further improvements in the Earley parse engine.
+
+<li>The Marpa algorithm allows the application to be fully aware,
+at all times,
+of what is going on in the parse.
+Obviously, this benefits error-handling.
+More importantly,
+it opens the road to powerful new parsing strategies.
+</ul>
+<h2>Notes</h2>
+<ol>
+<li><a name="EARLEY1970">"Earley 1970": </a>
+Earley, Jay,
+"An efficient context-free parsing algorithm",
+Communications of the Association for Computing Machinery, 13:2:94-102, 1970.
+</li>
+<li><a name="LEO1991">"Leo 1991": </a>
+Leo, Joop M.I.M.,
+"A General Context-Free Parsing Algorithm Running in Linear Time on Every LR(k) Grammar Without Using Lookahead",
+Theoretical Computer Science, Vol. 82, No. 1, 1991, pp 165-176.
+</li>
+<li><a name="AH2002">"Aycock&Horspool 2002": </a>
+
+Aycock, John and
+Horspool, R. Nigel,
+"Practical Earley Parsing",
+The Computer Journal, Vol. 45, No. 6, 2002, pp. 620-630.
+<a href="http://www.cs.uvic.ca/~nigelh/Publications/PracticalEarleyParsing.pdf">
+Available online</a>.
+</li>
+</ol>
+<br />
+<p>posted at: 18:09 |
+path: <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2011/11">/individual/2011/11</a> |
+<a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2011/11/what-is-the-marpa-algorithm.html">direct link to this entry</a>
+</p>
+<div style="color:#38B0C0;padding:1px;text-align:center;">
+&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&sect;
+</div>
+</div>
+</div>
+<div id="footer" style="border-top:thick solid #38B0C0;clear:left;padding:1em;">
+<p>This is Ocean of Awareness's
+  new home.  This blog has been hosted at
+  <a href="http://blogs.perl.org/users/jeffrey_kegler/">blogs.perl.org</a>
+  but I have succumbed to the lure of static blogging.
+  I have not yet decided how to deal with comments at this new blog location.
+If the post is Marpa-related,
+<a href="https://groups.google.com/forum/?hl=en&fromgroups#%21forum/marpa-parser">
+the Marpa mailing list</a>
+is a good place to comment.
+Also,
+I will continue to dual-post for some time,
+and have not yet frozen comments on the versions of the
+post at
+<a href="http://blogs.perl.org/users/jeffrey_kegler/">blogs.perl.org</a>.
+</div>
+              <script type="text/javascript">
+            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+          </script>
+          <script type="text/javascript">
+            try {
+              var pageTracker = _gat._getTracker("UA-33430331-1");
+            pageTracker._trackPageview();
+            } catch(err) {}
+          </script>
+</body>
+</html>

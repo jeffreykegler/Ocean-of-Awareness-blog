@@ -1,0 +1,1429 @@
+<html>
+<head>
+<link rel="alternate" title="Ocean of Awareness RSS" type="application/rss+xml" title="RSS" href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/index.rss" />
+<title>Ocean of Awareness   </title>
+<style type="text/css">
+   strong {font-weight: 700;}
+</style>
+</head>
+<body>
+<div id="header"
+  style="color:white;background-color:#38B0C0;padding:1em;clear:left;text-align:center;">
+<h1>Ocean of Awareness</h1>
+  
+</div>
+  <div id="menu" style="margin:0;padding:10px;width:150px;float:left;">
+  <h2>Jeffrey Kegler's blog</h2>
+  <p>About Marpa, his new parsing algorithm,
+    and other topics of interest</p>
+  <h3>Resources</h3>
+  <p><a href="http://www.jeffreykegler.com/">Jeffrey Kegler's website</p>
+  <p><a href="http://www.jeffreykegler.com/marpa">The Marpa website</p>
+  </div>
+  <div id="content" style="margin-left:190px;border-left:2px solid #38B0C0;padding:25px;">
+<h3>Sun, 26 Dec 2010</h3>
+<br />
+<center><a name="why-the-bovicidal-rage-killing-yacc-4"> <h2> Why the Bovicidal Rage? (Killing Yacc: 4)</h2> </a>
+</center>
+<p>
+<a href="http://www.flickr.com/photos/publicenergy/3299967437/in/set-72157614350778728/"><img alt="3299967437_6bae3ce6a8_z.jpg" src="http://blogs.perl.org/users/jeffrey_kegler/3299967437_6bae3ce6a8_z.jpg" width="640" height="426" class="mt-image-none" style="" /></a>
+<kbd>yacc</kbd>
+was a
+major breakthrough.
+For the first time, automatic generation of
+of efficient, production-quality parsers was possible
+for languages of practical interest.
+Yacc-generated parsers had reasonable memory footprints.
+They ran in linear time.
+
+<p><a href="#NOTE1">But error reporting was overlooked.</a>
+Then as now, the focus in analyzing algorithms was on power
+-- what kinds of grammar an algorithm can parse --
+and on resource consumption.
+This leaves out something big.
+
+<p>Our frameworks for analyzing things affect what we believe.
+We find it hard to recognize a problem if our
+framework makes us unable to  articulate it.
+Complaints about <var>yacc</var> tended to be kept to oneself.
+But while <var>yacc</var>'s
+overt reputation flourished,
+programmers were undergoing an almost Pavlovian
+conditioning against it --
+a conditioning through pain.
+
+<p>With <var>yacc</var>, you no longer need to write
+your own parser.
+If you put your grammar into a form that <var>yacc</var> will accept,
+
+<var>yacc</var> writes your parser for you.
+But over the years, people noticed -- it usually takes longer
+to put a grammar into a form that <var>yacc</var> will accept
+than it does to write a recursive descent parser from scratch.
+This is almost always true when someone was using <var>yacc</var>
+for the first time.
+<a href="#NOTE2">
+But it is usually true for <var>yacc</var>
+experts as well.</a>
+
+<p>Certain tools do have a high initial cost.
+They make this acceptable with a payoff over
+the lifetime of the software.
+But in this respect also,
+
+<var>yacc</var> does worse than hand-written recursive descent --
+much worse.
+
+<p>The structure of a recursive descent parser reflects the structure
+of the language being parsed.
+Small changes in the language tend to require only small changes in the parser.
+Major changes usually affect only that part of the grammar actually changed.
+And how the recursive descent parser must change, and why,
+is usually obvious even to a programmer
+who does not make a specialty of parsing.
+
+<p>
+For a <var>yacc</var> grammar, the change process
+is not incremental -- each iteration is almost like
+starting from scratch.
+<var>yacc</var> parsers work using LALR automata.
+Small changes in the grammar often cause big changes to the LALR states.
+Tracing the logic behind these changes is a challenge
+even to those
+familiar with the underlying math --
+one which they usually find not worth the time and effort.
+This is one reason that those experienced with <var>yacc</var> find it nearly
+as hard to use as beginners did -- for real-world problems,
+understanding the LALR states is simply too hard for anyone.
+Experts, like non-experts, are forced to fix <var>yacc</var>
+
+grammars using trial and error.
+
+<p><var>yacc</var>'s demands
+follow the nearly incomprehensible logic of the LALR
+automaton.
+Adapting a grammar to <var>yacc</var> is a
+struggle, during which you
+watch your grammar become less and less a
+reflection of what you were originally trying to do.
+One of the most difficult tasks
+in programming, it is almost one of the most unsatisifying
+and unrewarding.
+
+<h2>The Fourth Requirement for Replacing <var>yacc</var>:
+Easy Diagnosis of Grammar Problems</h2>
+
+<p>The easiest way to deal with grammar problems is to arrange for them
+not to happen.
+You can do this if you have a notation for the grammar which is
+<ol>
+<li>A natural and intuitive way to express the grammar, and which
+<li>Makes it literally impossible to specify a problem grammar.
+</ol>
+
+<p>The notation for
+<a href="#NOTE3">regular expressions</a>
+has these two properties,
+and that is a major reason for the enduring popularity
+of regular expressions.
+Once you get used to its limits,
+regular expression notation becomes a natural way to
+describe languages.
+And regular expression notation
+makes it impossible to specify
+anything that is <b>not</b> a regular expression.
+
+<p>More powerful parsing algorithms have these same two properties
+when they accept all context-free grammars (as
+<a href="http://search.cpan.org/dist/Marpa/">Marpa</a>
+does).
+The context-free grammars are those you can write in BNF, and vice versa.
+BNF is  (again, modulo some getting-used-to) a natural and intuitive way
+to express a language, and you don't have to worry about specifying a language
+which is harder than context-free -- the BNF notation makes that impossible.
+
+<p><var>yacc</var> uses BNF as its notation
+for expressing grammars, but the most natural way to express a practical
+grammar in BNF is almost never an LALR grammar.
+No natural or intutive notation is known
+that describes only LALR grammars, even after 40 years of
+considerable interest in them.
+I have to doubt that such a notation ever will be found.
+
+<h2>Notes</h2>
+
+<p><a name="NOTE1">Note 1: </a>
+It has definitely been the tradition to
+understate the importance of error reporting,
+or even to ignore it entirely.
+But I should point out
+that I have not consulted Knuth's and DeRemer's original papers,
+which are behind paywalls.
+Also, things seem to be getting better, particularly with the arrival
+of the
+<a href="http://www.few.vu.nl/~dick/PT2Ed.html">
+very important textbook by Grune and Jacobs</a>,
+which does devote significant attention to the error
+reporting properties of the various algorithms.
+
+<p><a name="NOTE2">Note 2: </a>
+Perhaps because reporting that you found it impossible to
+use one of the standard
+tools in our field
+was more likely to produce conclusions
+about your competence than about the tool,
+the tradition among <var>yacc</var> users was to suffer in silence.
+One good 1995 account of trials with <var>yacc</var> is
+<a href="http://groups.google.com/group/comp.compilers/msg/a5d260aa50c05685?hl=en&dmode=source">
+this contribution to comp.compilers</a>.
+And there is one person who I
+believe has an intuitive understanding of LALR: Larry Wall.
+Certainly I doubt there is anyone alive whose practical knowledge
+of LALR is better than Larry's.
+That makes it very significant that
+Perl 6 does not use
+
+<var>yacc</var> or any other LALR based parser.
+
+<p><a name="NOTE3">Note 3: </a>
+Here I am talking about pure regular expressions.
+Perl regexes are much more powerful than regular expressions,
+and the power comes with tradeoffs:
+The notation is no longer
+as simple or intuitive.
+<br />
+<p>posted at: 08:02 |
+path: <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2010/12">/individual/2010/12</a> |
+<a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2010/12/why-the-bovicidal-rage-killing-yacc-4.html">direct link to this entry</a>
+</p>
+<div style="color:#38B0C0;padding:1px;text-align:center;">
+&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&sect;
+</div>
+<h3>Wed, 15 Dec 2010</h3>
+<br />
+<center><a name="killing-yacc-1-2-3"> <h2>Killing Yacc: 1, 2 & 3</h2> </a>
+</center>
+<h2>The Good, the Bad and The Ugly</h2>
+<p><img alt="Angeleyescleef.jpg" src="http://blogs.perl.org/users/jeffrey_kegler/Angeleyescleef.jpg" width="410" height="243" class="mt-image-right" style="float: right; margin: 0 0 20px 20px;" />The recent discussions about yacc made me
+feel a bit like Lee Van Cleef in an old
+spaghetti Western.
+Cast alongside Clint Eastwood, Van Cleef watched
+with great concern as one attempt after another
+was made on Eastwood's life.
+Van Cleef didn't mind Eastwood getting killed --
+he just wanted to be the one to do it.
+
+<p>As some of you will have recognized, I am talking about
+a very interesting discussion started by
+<a href="http://arxiv.org/abs/1010.5023">
+a paper
+by Might and Darais
+entitled "Yacc is Dead"</a>.
+
+I am finding it very much worth reading as an example
+of clear and precise mathematical writing.
+With respect to the parser itself,
+my opinion is that
+<a href="http://research.swtch.com/2010/12/yacc-is-not-dead.html">
+Russ Cox's extremely well-informed
+blog post, "Yacc is not Dead",</a>
+is an accurate assessment.
+
+<p>Might, Darais and Cox all devote considerable attention to
+exactly what it will take to send yacc on to its Final
+Reward.
+I see six requirements:
+Three from Might & Darais, one suggested by
+Cox, and two that I have added.
+The rest of this post will be about three of these requirements,
+all of which focus on parsing speed.
+
+<h2>Requirement 1: Handle Arbitrary Context-Free Grammars in O(n**3)</h2>
+
+<p>For a parser to be convenient, it should take anything you can write in BNF
+and parse it.
+And it should do this in "reasonable" time.
+This enables a programmer to work on a grammar that does not fit a
+restricted theoretical framework (LL, LR, LALR, etc.).
+The programmer then has the choice:
+she can tighten the grammar up to make it faster,
+or she can decide that, for her application,
+worse-than-linear speed is acceptable.
+
+<p>This requirement is one of those in the Might-Darais paper, but Russ Cox
+adds a further requirement:
+"Reasonable time" means O(n**3).
+Might and Darais do not categorize their algorithm's speed for arbitrary context-free
+grammars, but Cox says that it is exponential (O(e**n)).
+
+<p>Cox's tightening of this requirement makes sense.
+Depending on the application, exponential time can make a grammar unuseable
+in practice.
+Several algorithms are known which parse arbitrary context-free grammars in
+O(n**3).
+<a href="http://search.cpan.org/dist/Marpa/">
+Marpa</a>
+is one of these.
+(Marpa, for those new to this blog, is a parsing algorithm I've been working on.
+It is based on Earley's algorithm, and includes several major enhancements to
+it from the academic literature.)
+
+<h2>Requirement 2: Handle "Average" Grammars in Linear Time</h2>
+<p>When it needs to parse long inputs, an algorithm has to run in linear (O(n)) time.
+"Average" grammars -- grammars for languages where the inputs are expected to be long --
+should parse in linear time.
+For example, in production programming, the code files can become quite large.
+Perhaps HTML files should not be huge, but they often are.
+And it is quite reasonable to expect XML files to be arbitrarily long.
+For all of these, and for any language expected to fit into the same kinds
+of production environment, linear-time parsing is a must.
+This requirement is based on the second requirement in the Might-Darais paper.
+Might and Darais only say that such parsing should be "efficient".
+Russ Cox is more specific: he requires that the time be linear.
+
+
+<p>Marpa's behavior for "average" grammars is excellent, for any reasonable
+definition of "average".
+Marpa parses all LR-regular grammars in linear time.
+LR-regular is a huge class of grammars, and it includes the LR(k) grammars
+for all values of k.
+In practical terms, this means that, if a grammar is parseable by recursive descent,
+by yacc, or by a regular expression, then it is parsed by Marpa in linear time.
+
+<h2>Requirement 3: A Sound Theoretical Basis</h2>
+<p>This third requirement is Russ Cox's, and it is a real insight on his part.
+A sound theoretical basis is more important than it may seem.
+Over the years I have seen many new parsing algorithms introduced, only to
+disappear.
+The algorithms which drop from sight 
+are those whose speed claims are based on speculation
+and/or initial tests, but not on theory.
+
+<p>You might think that
+testing can replace theory, but typically it can't.
+The only real way to test
+that a new algorithm is efficient enough for production is to use it in
+production.
+Few production compiler writers are going to risk the use of a new algorithm
+before there is solid theory to back their leap of faith.
+
+<p>The Might-Darais paper is
+beautifully written mathematics.
+But, as Russ Cox notes,
+nowhere does it characterize its speed claims in mathematical terms.
+We know that the Might-Darais algorithm will parse some grammars very quickly.
+We know that, for others, it will be painfully slow.
+Which ones will be which?
+
+<p>Marpa does well in
+backing up its speed claims.
+Marpa is an Earley parser.
+In his 40-year old paper,
+Jay Earley proved that his algorithm parses
+arbitrary context-free grammars in O(n**3) time.
+Marpa incorporates Joop Leo's 1991 modification of the Earley parser.
+In that paper, Leo proves that his algorithm
+parses LR-regular grammars in linear time.
+When it comes to speed claims, Marpa is doing things by the book.
+<br />
+<p>posted at: 10:59 |
+path: <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2010/12">/individual/2010/12</a> |
+<a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2010/12/killing-yacc-1-2-3.html">direct link to this entry</a>
+</p>
+<div style="color:#38B0C0;padding:1px;text-align:center;">
+&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&sect;
+</div>
+<h3>Sat, 04 Dec 2010</h3>
+<br />
+<center><a name="miniminalism-philosophy-tradition-or-lunacy"> <h2>Miniminalism: Philosophy, Tradition or Lunacy?</h2> </a>
+</center>
+<p>Thanks to cpantesters I'm doing something that amazes me --
+as I write C, it is taken and tested for me on all sorts
+of different systems.
+This is a stern test of my ability to write
+portable C code,
+and, in general I'm quite pleased with how I've done.
+So far only one mistake
+can clearly be laid
+at my door.
+
+<p>That mistake doesn't put me in a good light --
+mistakes seldom do.
+But we learn more from mistakes than from successes.
+In this case, the mistake exposes a habit of mine that
+programmers of the modern school will find a bit lunatic.
+And perhaps it will give me a good way to point out how
+that lunacy shaped your training as well,
+no matter how recent it was.
+
+<p>The cpantesters do wonderful things, but they can't be
+all things to all people.
+In their feedback to C programmers who cause segment violations,
+they make the oracle at Delphi look like the neighborhood gossip.
+What the C programmer who lets his pointers stray
+sees is almost nothing -- the <var>prove</var> utility will
+report every test after the segment violation as
+a failure, without further explanation.
+It's not even explicitly stated that the problem is
+a segment violation, but I've learned to suspect that
+is what is happening
+whenever <var>prove</var> gives me the silent treatment.
+
+<p>I could always contact the cpantester
+and ask him for a stack trace,
+or even send him additional tests to run.
+But he's a volunteer and my C programming mishaps
+will not necessarily be his highest priority.
+He may be especially disinclined to give the issue a priority
+if he suspects that I have not done my homework.
+It behooved me to
+try to solve the problem on my own first.
+
+<p>I got lucky.
+Rereading my recent changes,
+I noted where doing a fairly
+complex calculation might save 4 bytes in a memory
+allocation.
+Problem was, I'd seen this the first time and
+decided I could save 5 bytes.  Oops.
+
+<p>On most systems,
+<var>malloc()</var> was rounding up the
+allocation.
+But on a strict few, I was given exactly the allocation I asked
+for and made to pay the price of my folly.
+
+<p>I replaced the calculation with a simpler one.
+Cpantesters reports for my fix are in and they run 100% clean.
+The simpler calculation for the <var>malloc()</var> buffer
+allocates, worst case, 4 bytes too many.
+From the optimization standpoint, it may even be better
+because it saves a few CPU cycles.
+Not that either way
+it makes a difference that could be measured.
+
+
+<p>At this point,
+a number of my readers will have decided that I'm a lunatic.
+Why was I going out of my way to save 4 lousy bytes?
+Without directly addressing the charge of lunacy,
+I would draw the candid reader's attention
+to my training.
+Nobody is drilling young programmers
+on the importance of saving 4 bytes any more,
+but the spirit of minimalism that inspired my misjudgement
+is more than alive today.
+It's dominant.
+
+<p>I started programming in 1970, remote
+time-sharing on a PDP-8.
+As a user, I had available a virtual PDP-8 in its
+minimal configuration.
+That was 4096 12-bit words: 6K in modern terms.
+When you work in a memory that small, you sweat the details.
+
+<p>Though I didn't think so at the time,
+in giving me those 6K virtual bytes, the
+operating system was being generous.
+The typical configuration of a PDP-8 for the educational
+market was 36K bytes of memory, both physical and virtual.
+This was expected to serve around 20 time-shared users.
+
+<p>It was the
+generation that learned to program on this kind of hardware
+which created
+the concepts of programming language, development environment and operating system
+which are dominant today.
+As often as not they created not just our current concepts,
+but the actual technology we are using.
+
+<p>Perhaps one example will inspire the reader to think of others.
+LISP remains influential.
+Its spirit was the flame that kindled a long series
+of single-paradigm languages.
+But given the size of the machines available in 1958, how many
+paradigms could a language have implemented?
+When we study and emulate LISP,
+we are studying and emulating deep ideas.
+To an equal extent, however, when we study and emulate
+LISP, we are studying the art
+of saving every byte as if it were our last.
+<br />
+<p>posted at: 23:30 |
+path: <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2010/12">/individual/2010/12</a> |
+<a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2010/12/miniminalism-philosophy-tradition-or-lunacy.html">direct link to this entry</a>
+</p>
+<div style="color:#38B0C0;padding:1px;text-align:center;">
+&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&sect;
+</div>
+<h3>Wed, 17 Nov 2010</h3>
+<br />
+<center><a name="better-than-literate"> <h2>Better than Literate!</h2> </a>
+</center>
+<p>I'm converting Marpa
+to XS and have started to use Cweb.
+Cweb is
+the C version of the "literate programming" system pioneered
+by Don Knuth.
+I'm pleasantly surprised by it.
+Cweb adds fun to the programming experience
+and is helping in more ways than the phrase
+"literate programming" would suggest.
+
+<p>
+One very important feature of Cweb
+is something that would seem to be a nuisance,
+or at best an implementation detail.
+The <file>.w</file> file
+which contains the Cweb is now the "source".
+The
+<file>.c</file> and
+<file>.h</file> files are now "built files".
+I am no longer working with the C language
+"translation units".
+("Translation unit"
+is standards-committee-speak for
+the text which is
+directly input into the C compiler.
+The term is used in attempt to distance the standard from
+file conventions.)
+
+<p>
+Moving one step back from the "translation unit"
+separates the presentation of the code
+from the issues of linkage and scope.
+Over the years,
+I'd gotten used to
+organizing my code
+around the visibility rules for the compiler and
+the linker.
+With Cweb,
+I can
+lay out C code
+in the same way that I think about it.
+It surprises me how liberating this is.
+
+<p>Suppose we are adding an element to a C structure.
+Typically required might be:
+<ol>
+<li>A <var>typedef</var> for a type
+that is particularly complex.
+
+<li>The entries in the <var>struct</var>.
+<li>Initialization of these entries.
+<li>"Destruction" of those entries: freeing any memory or other resources
+they use.
+<li>Definition of the function bodies for mutators, accessors, etc.
+<li>Public prototypes for some of the functions.
+<li>Private prototypes for other functions.
+</ol>
+Often, each of these would be put at a different location.
+But all these bits of code are written and debugged together.
+If you ever want to change the data structures,
+all these bits of code would have to be tracked down again.
+True, skill at picking good names
+and at performing searches on
+the source can make this sort of thing tractable.
+But it is also true that some of the programming skills
+we've developed over the years could 
+aptly be called symptoms.
+
+<p>Here is some C logic which, while very small, nonetheless has 6 of the 7 
+components listed above.
+In Cweb I was able to put them all together.  Here's the bottom of one page of my "woven" Cweb code:
+<img alt="callback1.png" src="http://blogs.perl.org/users/jeffrey_kegler/callback1.png" width="723" height="169" class="mt-image-none" style="" />
+<p>... and here is the top of the next:
+<img alt="callback2.png" src="http://blogs.perl.org/users/jeffrey_kegler/callback2.png" 
+width="723" height="623" class="mt-image-none" style="" />
+<p>For some readers, these samples may adequately illustrate my point.
+For those curious about the code, I'll close with a few
+explanations.  The code, as I said, is for the XS version of Marpa.
+For those not familiar, <a href="http://search.cpan.org/~jkegl/Marpa-0.200000/">Marpa</a>
+is a general BNF parser generator -- it parses from any grammar that you can write in BNF.
+If the grammar is of any of the kinds currently in practical use
+(yacc, LR(k), LALR, LL, recursive descent, etc.), this parsing is in linear
+time.
+
+<p>Marpa uses Perl callbacks, and so the XS version must be able to call back
+to Perl closures.
+So where is all the Perl logic in my example?
+
+<p>For the XS conversion, I'm separating the code into three layers:
+
+<ol>
+<li>
+<var>libmarpa</var>
+is a "pure C" library, which implements the core
+of the Marpa algorithm.
+<var>libmarpa</var>
+is agnostic about whether it is called from Perl,
+from another high level language, and even from other C code.
+<li>There's a "glue" layer to tie the Perl code to <var>libmarpa</var>.
+This is in Perl's XS language.
+XS can be thought of as a C dialect.
+Special preprocessing converts XS into C code,
+which is then compiled.
+<li>Finally, there's a "pure Perl" wrapper.  User interface
+issues are handled at this level.
+</ol>
+
+<p>I am only using Cweb for <var>libmarpa</var>.
+(Cweb only understands C language.)
+
+<p>Since <var>libmarpa</var> has
+no Perl-specific logic, its role in dealing with Perl callbacks is very simple.
+<var>libmarpa</var> needs code to store the callback (which from its point
+of view is just a C function pointer),
+and some other code to perform the callback.
+C does not have closures, so to implement a poor man's version
+of these, the callback is allowed an argment,
+which can be examined and set.
+It comes out to a couple of dozen lines of code,
+the majority of which are declarations and data definitions.
+
+<p>One thing is missing from the example -- "destructor" logic.
+The pointers in the example do not "own" the things that they point to,
+so there is no need to deallocate anything.
+When allocation and deallocation are separate, it is easy to forget
+whether you omitted deallocation logic because it was unnecessary,
+or because you forgot.
+Using Cweb, I always put allocation and deallocation together.
+Perhaps that's not enough to make memory leaks a thing of the past,
+but it certainly makes life easier.
+<br />
+<p>posted at: 16:40 |
+path: <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2010/11">/individual/2010/11</a> |
+<a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2010/11/better-than-literate.html">direct link to this entry</a>
+</p>
+<div style="color:#38B0C0;padding:1px;text-align:center;">
+&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&sect;
+</div>
+<h3>Tue, 02 Nov 2010</h3>
+<br />
+<center><a name="marpas-sudden-portability-adventure"> <h2>Marpa's Sudden Portability Adventure</h2> </a>
+</center>
+<p>I've made bold claims for the portability of
+<a href="http://search.cpan.org/~jkegl/Marpa-0.200000/">Marpa</a>.
+[
+Marpa is a general BNF parser generator -- it parses from any grammar that you can write in BNF.
+If the grammar is of one of the kinds currently in practical use
+(yacc, LR(k), LALR, LL, recursive descent, etc.), this parsing is in linear
+time. ]
+
+<p>The boldness of my claims evinced
+no ambition to test them under fire.
+But, when my main development box (a 2-year Dell laptop running Ubuntu)
+suddenly died,
+my only other choice for a development platform was a MacBook G4 running
+Mac OS Tiger.
+So test my portability claims is what I had to do.
+
+<p>Not that my brags about portability had been without foundation.
+I upload development versions for cpantesters regularly.
+(By the way, to all of you at cpantesters: a big "thank you".)
+As far as the configuration, build and runtime environments went,
+I had a lot of reason to be confident.
+
+<p>The problem is that
+I am now working on the XS version of Marpa.
+When I was working on
+the Pure Perl version of
+<a href="http://search.cpan.org/~jkegl/Marpa-0.200000/">Marpa</a>,
+my maintenance and development environments were not separate from
+the configuration, build and runtime environments.
+Development was also in Pure Perl,
+with no additional tools required.
+But for the XS version of Marpa,
+maintenance and development require GNU autotools,
+as well as Don Knuth's TeX and Cweb.
+
+<p>Let me emphasize that you can, now and in the future,
+configure, build and run Marpa::XS on boxes without GNU autotools
+or TeX.
+It's just that
+you can't properly work on or patch the source code
+without them.
+Also, it is worth emphasizing that, in the open source spirit,
+Marpa::XS ships with all the files necessary for maintainance
+and development.
+So you always have the "source" in the fullest sense,
+and all the tools you need to develop are available free
+with source.
+But part of making Marpa::XS as portable as possible is ensuring that
+it will configure, build and run happily
+in environments which don't have all
+the development tools it requires.
+
+<p>Which brings me back to my crisis.
+I could be confident about configuring, building and running my development
+version of Marpa::XS on a wide variety of platforms.
+The cpantesters had proved this for me.
+Less certain was whether my
+development environment could be recreated.
+
+<p>The sudden switch involved a sudden change of chips (Intel to PPC),
+and operating systems
+(the latest Ubuntu to a Mac OS that is two major releases out of date).
+More dramatic changes are possible (both are POSIX systems),
+but for a port suddenly forced on me, this was more than
+change enough, thank you.
+
+<p>I hoped everything I needed was on MacPorts.
+That was assuming that vintage 2005 systems, running
+a Mac OS version two major
+releases obsolete,
+were a priority with the helpful folks at MacPorts.
+
+<p>In the event, I was back developing with 24 hours.
+The only change I had to make to my codebase was to three lines
+in Build.PL, which specified module versions.
+Most of the 24 hours was taken up with compiles.
+The Macbook G4 was never considered a fire-breather,
+even back in 2005 when it was new.
+<br />
+<p>posted at: 19:24 |
+path: <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2010/11">/individual/2010/11</a> |
+<a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2010/11/marpas-sudden-portability-adventure.html">direct link to this entry</a>
+</p>
+<div style="color:#38B0C0;padding:1px;text-align:center;">
+&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&sect;
+</div>
+<h3>Mon, 11 Oct 2010</h3>
+<br />
+<center><a name="announcing-marpa-0200000"> <h2>Announcing Marpa 0.200000</h2> </a>
+</center>
+<p><a href="http://search.cpan.org/~jkegl/Marpa-0.200000/">Marpa</a>
+is now at 0.200000.
+Following a standard rhetoric of version numbers, this indicates
+that it's an official release and a major step forward,
+but still alpha.
+Marpa is a general BNF parser generator -- it parses from any grammar that
+you can write in BNF.
+It's based on Earley's algorithm, but incorporates recent advances,
+so that it runs in linear time for all those grammars parseable by yacc
+or recursive descent.
+
+<p>The big news with Marpa 0.200000 is Marpa's 3rd generation evaluator.
+The previous version of Marpa had two evaluators
+-- one fast, but only
+good for producing a single parse result,
+the other capable of dealing with ambiguous grammars, but slower.
+The 3rd generation has a single evaluator which combines the best
+of both.
+Not the least advantage of this change
+is that it simplifies the documentation
+and the interface.
+
+<p>Marpa remains alpha and its interface may change.
+But I use Marpa in my own work -- it's the basis 
+of
+<a href="http://search.cpan.org/dist/Marpa-HTML/">
+some rather handly HTML utilities</a>,
+if I do say so myself.
+But I would not at this point consider Marpa for anything
+mission-critical or "production".
+
+<p>An obsolete predecessor of Marpa, Parse::Marpa, is still on CPAN.
+I plan to remove Parse::Marpa from CPAN shortly.
+Anyone for whom that is a problem, please let me know.
+Remember, the heroes of old will feast forever in Valhalla,
+and Parse::Marpa will live eternally in
+<a href="http://backpan.perl.org/">backpan</a>.
+
+<p>As for the future:
+The major barrier between Marpa and world conquest is speed.
+I am busily converting Marpa to XS.
+<br />
+<p>posted at: 19:09 |
+path: <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2010/10">/individual/2010/10</a> |
+<a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2010/10/announcing-marpa-0200000.html">direct link to this entry</a>
+</p>
+<div style="color:#38B0C0;padding:1px;text-align:center;">
+&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&sect;
+</div>
+<h3>Thu, 07 Oct 2010</h3>
+<br />
+<center><a name="perl-parsing-a-metapost"> <h2>Perl & Parsing: A Metapost</h2> </a>
+</center>
+<p>
+<a href=http://blogs.perl.org/users/jeffrey_kegler/2010/09/perl-and-parsing-6-rewind.html">
+This series of blog posts on
+"Perl and Parsing"</a>,
+which is evolving
+into a mini-history of parsing theory,
+started as an offshoot of
+<a href="http://search.cpan.org/dist/Marpa/">
+my own
+attempt at a contribution to parsing</a>.
+I wanted to do a couple of blog posts
+aimed at those trying to
+decide whether it was better 
+to take a chance with my
+new parser
+(<a href="http://search.cpan.org/dist/Marpa/">Marpa</a>),
+or to stick with the terrors of the known.
+There's a large literature on parsing,
+but much of it is difficult or dryasdust,
+and I thought I could contribute a helpful overview.
+"An informed consumer is our best customer" and all that.
+
+<p>Like other offshoots of the Marpa project before it,
+while the "Perl & Parsing" was originally intended to draw
+attention to
+<a href="http://search.cpan.org/dist/Marpa/">Marpa</a>,
+it's been better at drawing attention to itself.
+I've received some positive comments,
+and some helpful criticism.
+I'm grateful for both,
+and I plan to continue the series.
+
+<p>The history is not being told in order.
+This is <b>not</b> because I am
+attempting to ape "Pulp Fiction".
+It's because the series was originally planned as
+perhaps two or three blog posts and has grown in
+scope.
+I'm stuck now with telling the tale using flashbacks and fast-forwards,
+but I'll make the process as easy
+as possible.
+
+<p>
+Parsing is an extremely important topic.
+It's technical no doubt --
+math and technology play an important role
+in the rise and fall of parsing algorithms.
+But so does personality and history.
+
+<p>
+In much of what we programmers do,
+we are following fashion
+(though it does sound more professional when
+we call it "best practices").
+In fields like parsing and search algorithms,
+even the top minds have to guess.
+Most everybody else is not even guessing --
+they are simply
+playing follow the leader.
+Not that that's a bad idea.
+Pick leaders like Torvalds, Ritchie, Wall,
+Stallman and Thompson,
+and "follow the leader"
+becomes a pretty good
+heuristic.
+
+<p>
+Since personalities are important here,
+so is the history.
+Historians can divided into two types --
+the Braudel's and the Churchill's.
+Fernand Braudel insisted on accumulation of detail,
+and avoided broad sweeping statements, especially those
+of the kind that are hard to back up with facts.
+Winston Churchill thought the important thing was
+the broad sense,
+and that historians should awaken the reader to what really mattered,
+not deaden him
+with forgettable detail.
+
+<p>
+In general, the quiet diligence of a Braudel contributes more
+than the flashy grandeur of a Churchill.
+But the history of parsing
+has been in the hands of the Braudel's.
+A Churchill would liven things up.
+In this series I will take Winston's road,
+although I hope I will avoid Winston's
+detours through the odd fib.
+<br />
+<p>posted at: 18:08 |
+path: <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2010/10">/individual/2010/10</a> |
+<a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2010/10/perl-parsing-a-metapost.html">direct link to this entry</a>
+</p>
+<div style="color:#38B0C0;padding:1px;text-align:center;">
+&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&sect;
+</div>
+<h3>Wed, 22 Sep 2010</h3>
+<br />
+<center><a name="perl-and-parsing-6-rewind"> <h2>Perl and Parsing 5: Rewind</h2> </a>
+</center>
+<h2>The Rise and Fall and Rise of the Left</h2>
+
+<p>
+On 28 February 2006, the Golden Age of Right Parsing ended.
+The End of the Age was like a rewind of the Beginning.
+The Golden Age of Right Parsing began when a right parser
+replaced the hand-written recursive descent parser in
+the C compiler.
+It ended,
+almost three decades later,
+when the world's most visible C compiler replaced
+its right parser with a
+hand-written recursive descent implementation.
+
+<p>
+Right parsing was taken out of mathematical notation
+on the pages of academic journals
+and put on the map in 1978.
+That's when Steven Johnson rewrote Dennis Ritchie's C compiler to make it
+easier to understand and modify.
+This "Portable C compiler" used yacc,
+a new tool that Johnson had written
+based on some papers by Don Knuth and Frank DeRemer.
+Knuth had invented LR parsing,
+and DeRemer described a wrinkle on it that he called LALR.
+It was said that LALR would actually make right parsing practical.
+The folks at Bell Labs decided to give it a go.
+
+<p>
+The result was one of the most influential implementation decisions
+in the history of programming.
+In a previous post, I described how LALR parsing rode on the backs
+of yacc and the Portable C Compiler
+into total dominance over parsing mindshare.
+LALR came to define production-quality parsing.
+
+<p>
+In 1978, there had been two C compilers, both at AT&T's Bell Labs --
+Ritchie's original, and Johnson's Portable C Compiler, which was about
+to replace it.
+Neither was a commercial product -- AT&T was a regulated monopoly,
+banned from selling hardware or software.
+
+<p>
+By 2006, C was the most important systems programming language
+in a world which had become far more dependent on computer systems.
+There were now many C compilers,
+several of them of great commercial importance.
+Arguably, one of these was the
+most visible production-quality C compiler.
+This no longer came from AT&T.
+The leader among C compilers in 2006 was GCC,
+the GNU foundation's flagship accomplishment.
+
+<p>
+GCC can be said to have clearly taken this lead
+by 1994, when BSD UNIX had switched
+from the Portable C Compiler to GCC.
+This was a revolution of another kind,
+but as far as the parsing algorithm went,
+it was "Hail to the new boss... same as the old boss".
+GCC parsing was firmly in the LALR tradition.
+
+<p>
+But
+on 28 February 2006,
+the nearly 3 decades of LALR dominance were over.
+That's the date of
+<a href="http://gcc.gnu.org/gcc-4.1/changes.html">
+the change log for GCC 4.1</a>.
+It's a long document, and the relevant entry is deep
+inside it.
+It's one of the shorter change descriptions.
+
+<p>
+In fact, it's exactly this one sentence:
+<blockquote>
+The old Bison-based C and Objective-C parser has been replaced by
+a new, faster hand-written recursive descent parser.
+</blockquote>
+For me,
+that's a little like reading
+page 62,518 of the Federal Register
+and spotting a one-line notice:
+<blockquote>
+Effective immediately, Manhattan belongs to the Indians.
+</blockquote>
+
+
+<h2>The Once and Future Parser</h2>
+
+<p>
+Hand-written recursive descent
+was the origin and remains the soul of left parsing.
+In fact,
+hand-written recursive descent
+was the first real parsing algorithm.
+Recursive descent is a very natural method
+if you're a modern programmer.
+Basically, for every left-hand-side symbol in your grammar,
+you write a subroutine to parse it.
+If the rule has right hand side symbols,
+you call the subroutines for them, in order.
+When all the recursive calls come back to the top,
+that's your parse.
+
+<p>
+Would that parsing were really that simple.
+But a real beauty of recursive descent
+(perhaps the ultimate secret behind its comeback)
+is that it is an idea
+that allows easy elaboration.
+For example, suppose I say (as happens typically to be the case)
+that some symbols are on the left hand side
+of more than one rule of the grammar.
+A competent modern programmer
+will quickly think up hacks
+that let him determine which rule to use.
+Someone clever is likely to reinvent lookahead,
+even if he'd never heard of recursive descent before.
+If you're a programmer brought up on recursive subroutines,
+the logic of recursive descent makes sense to you.
+
+<p>
+"Folk parsers" --
+parsers written by programmers
+with little patience for theory and
+a "just do it" philosophy -- almost
+always end up as variations on recursive descent.
+Those of you with contempt for parsing theory
+may take as one of your best arguments
+the current re-emergence of hand-written recursive
+descent as the method of choice for serious production-quality parsing.
+It's like we theorists might as well have spent the last 50 years surfing.
+
+<p>
+I use the term "Folk parsing".
+It is quite descriptive, but it's also misleading.
+The appeal of recursive descent
+is not just to working programmers.
+Recursive descent has
+always had 
+a following among academics.
+
+<p>
+And recursive descent did not emerge from the primal mists.
+It had an inventor, Ned Irons, who
+was one of my teachers at Yale.
+Ned wrote a paper
+which was
+"[t]he first to describe a full parser.
+It is essentially a full backtracking recursive descent
+left-corner parser" [1].
+I take its publication date (1961) as the date
+of the invention of both recursive descent and parsing.
+
+<h2>"You see, in the old days ..."</h2>
+
+<p>
+Some previous papers had described hacks
+for parsing arithmetic expressions.
+These seem to have been primarily motivated by
+the need to parse FORTRAN assignment statements.
+
+<p>
+FORTRAN in those days
+was not much more than a glorified macro language.
+FORTRAN III was parsed line by line, the way you parse
+configuration files now.
+Except you probably use much more sophisticated techniques
+to parse your config files.
+Many of the simpler techniques,
+things modern programmers take for granted,
+weren't known in 1961.
+
+<p>
+It can be hard to take ourselves back to those days
+in the history of programming.
+Concepts we consider obvious
+were then either partly formed, unknown, or completely unsuspected.
+In 1961,
+BNF had just been invented and
+LISP and IPL were the only languages with stacks.
+Only LISP (1958) had them as a built-in feature.
+FORTRAN III had a feature called subroutines,
+but there were no stacks.
+A FORTRAN III subroutine puts its return value
+into a fixed, global location.
+Recursive subroutine calls were not allowed.
+
+<p>
+From a parsing point of view,
+FORTRAN does seem to have had
+the most complex language feature
+of the time.
+The
+right hand side of FORTRAN's assignment statements
+allowed arithmetic expressions.
+These were relatively full-featured
+arithmetic expressions.
+
+<p>
+All this was taking place within the limits of an 80 column punched card.
+(Actually, 72 columns if you were prudent and had sequence numbers on the cards.
+Otherwise there's hell to pay if you drop the deck.)
+Parsing those expressions was FORTRAN's claim to fame,
+one which the inventors weren't about to let you overlook.
+The language was named after it.
+FORTRAN is a block acronym for "Formula Translating".
+
+<p>
+This "formula translating" was accomplished with methods
+we'd now consider
+<a href="http://en.wikipedia.org/wiki/Operator-precedence_parser#Alternatives_to_Dijkstra.27s_Algorithm">
+gruesome hacks</a>.
+True operator-precedence parsing does not seem to have been invented
+until shortly after Ned invented recursive descent.
+
+<p>
+Not only do users of
+modern languages take the availability of recursion
+and the use of a stack
+as a given,
+they expect their languages to have a fully recursive grammar.
+Statements contain blocks.
+Blocks contain statements.
+
+<p>
+A recursive language seems
+to presuppose a real parsing algorithm.
+Brute force and trickery might have been
+enough to parse an arithmetic
+expression that fit into 72 columns.
+(80 if you like to live dangerously.)
+But you can't parse a modern
+recursive language if you don't use recursion.
+
+<p>
+So recursive descent, the first real parsing algorithm,
+needed to be invented first,
+before the first recursive language,
+right?
+You'd think so.
+But, as we'll see in my next post in this series,
+that ain't the way it happened.
+
+<p>[1]
+<a href="ftp://ftp.cs.vu.nl/pub/dick/PTAPG_2nd_Edition/index.html">
+Grune & Jacobs, Parsing Techniques: A Practical Guide - Second Edition</a>.
+The history in this post takes as its authority their annotated bibliography,
+<a href="ftp://ftp.cs.vu.nl/pub/dick/PTAPG_2nd_Edition/CompleteList.pdf">
+which is online<a>.
+<br />
+<p>posted at: 23:45 |
+path: <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2010/09">/individual/2010/09</a> |
+<a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2010/09/perl-and-parsing-6-rewind.html">direct link to this entry</a>
+</p>
+<div style="color:#38B0C0;padding:1px;text-align:center;">
+&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&sect;
+</div>
+<h3>Sat, 21 Aug 2010</h3>
+<br />
+<center><a name="perl-and-parsing-4-the-golden-age-of-right-parsing"> <h2>Perl and Parsing 4: The Golden Age of Right Parsing</h2> </a>
+</center>
+<p>Like political views,
+parsers are often divided into left and right.
+Also like political views,
+the left-right classification is more
+hindrance than help in some cases.
+Earley's algorithm (my main interest) is one
+algorithm that does not fall into either category.
+
+<p>In this post I want to start to
+talk about those parsers which <b>can</b> be neatly
+classed as left or right.
+First off, to say a parser is a left or right parser
+does <b>not</b> describe
+the direction in which the parser works.
+The working direction of any parser
+is always left-to-right,
+except in the very rare cases that it is stated otherwise.
+Every treatment of parsing theory I've seen follows this
+convention.
+Right-to-left parsing is useful sometimes in practice,
+but the theory of right-to-left parsing
+is simply a mirror image of the theory
+for left-to-right parsing.
+
+<p>Left (or top-down) parsers, drill down the left side of 
+a parse.
+This may seem like a myopic approach.
+Frankly, it <b>is</b> a myopic approach.
+But it is one which is very far from dead --
+left parsers are actually gaining in popularity.
+
+<p>In fact, I'd say among those actually implementing
+parsers, top-down is by far <b>the</b> dominant trend.
+Why that is, I hope to explain in another post,
+one in which I come back to top-down parsers.
+In this one I want to talk about the Golden Age
+of the Right Parsers.
+
+<p> Right (or bottom-up) parsers are less myopic.
+Instead of simply drilling down the left hand edge of a parse tree,
+right parsers reach out to the right and produce a rightmost derivation.
+
+<p>How do they do this, while still working left-to-right?
+Right parsers do this by running the derivation backwards,
+or "bottom-up".
+Hence the name.
+
+<p>Looking for the rightmost derivation makes right
+parsers more powerful.  They handle more grammars,
+are better at error checking, etc., etc.
+Since they work bottom-up,
+they're more complicated to write than left parsers.
+Left parsers came first,
+and it took a while to figure out how to write
+an efficient right parser.
+
+<p>(A warning for those who haven't noticed.
+This is not going to be one of those histories
+with lots of carefully qualified statements.
+It's going to be more Winston Churchill than Fernand Braudel.)
+
+<p>The lineage of the Yacc algorithm starts with a 1965 paper by Knuth,
+which discovered the LR algorithm.
+The LR algorithm contained the basic ideas behind bottom-up parsing,
+but did not immediately revolutionize parsing.
+LR(0) -- LR with no lookahead -- was fast, but parsed very few grammars.
+LR(1) -- LR with 1 character of lookahead -- parsed enough grammars to be
+practical, but the tables LR(1) required were too large for the computers of
+the time.
+In 1969 Frank DeRemer discovered you could combine the two algorithms
+into something called LALR.  LALR parsed almost all the LR(1) grammars,
+but its tables weren't much larger than those for LR(0).
+With LALR, the theoretical groundwork for right parsing was laid.
+
+<p>The Golden Age of Right Parsing begins in 1975, with the Yacc parser
+generator.
+Yacc didn't just put LALR parsing on the map,
+it reshaped the geography of parsing
+so that parsing looked like LALR.
+LALR parsing dominated parsing theory for decades.
+At the nadir, some introductory textbooks on parsing theory were
+100% focused on LALR.
+For them, and any student whose view was limited to their pages,
+LALR parsing <b>was</b> parsing.
+
+<p>The Golden Age of Right Parsing was the
+time when our idea of what a programming language should look like
+was being formed.
+LALR wound up being a controlling force behind that idea.
+Perl came out in the middle of the Golden Age of Right Parsing.
+Perl's grammar is very much both a product of,
+and a reaction to,
+that Golden Age and the LALR algorithm.
+
+<p>In a previous post, I've already given a small example of how LALR shapes Perl:
+the following useless but syntactically reasonable statement
+<pre><code class="prettyprint">{42;{1,2,3;4}}
+</code></pre> 
+is in fact a syntax error in Perl 5.
+But the influence of LALR on Perl runs much deeper than that.
+I hope in future blog posts to attempt to describe that influence.
+<br />
+<p>posted at: 21:29 |
+path: <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2010/08">/individual/2010/08</a> |
+<a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2010/08/perl-and-parsing-4-the-golden-age-of-right-parsing.html">direct link to this entry</a>
+</p>
+<div style="color:#38B0C0;padding:1px;text-align:center;">
+&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&sect;
+</div>
+<h3>Tue, 06 Jul 2010</h3>
+<br />
+<center><a name="parsing-perl-3-perl-and-minimalism"> <h2>Parsing Perl 3: Perl and Minimalism</h2> </a>
+</center>
+<img src="http://upload.wikimedia.org/wikipedia/commons/thumb/2/23/One_Ring_inscription.svg/500px-One_Ring_inscription.svg.png">
+<blockquote>
+One ring to rule them all, one ring to find them,<br>
+One ring to bring them all and in the darkness bind them.
+</blockquote>
+<h2>One Idea to Rule Them All</h2>
+
+<p>Ever since the 50's,
+the fashion in language design
+has been minimalism.
+Languages were designed around paradigms,
+and paradigms were judged on elegance.
+If your choice of paradigm was lists, the result was LISP.
+If you decided on strings, you invented SNOBOL.
+Arrays, you wound up with APL.
+If your reasoning led you to logic, you ended up with Prolog.
+If you thought that descriptions of algorithms
+must be the basis of programming,
+then your fate was Algol.
+
+<p>If assembly language
+stayed at the core of your world view,
+what you created would be an imperative lanugage
+and might look like any of C, BASIC or FORTRAN.
+If stacks were your thing,
+you created a language that looked like Forth.
+And who knows if
+the belief in objects as the one paradigm
+will ever again see Orodruin and
+feel the heat of the flames
+in which it was forged.
+
+<p>
+Some of these languages were totalitarian -- they insisted everything
+be shoehorned into their central concept.
+I recall some very unpleasant struggles with early dialects of
+SNOBOL, LISP and Prolog.
+Imperative languages tended to be more elastic.
+But, while the strictness of adherence varies,
+almost
+every language invented over the past 50 years
+bears the clear stamp of minimalism.
+
+<p>
+Minimalism is not without its triumphs.
+Scientists, acting in the spirit of minimalism,
+ruthlessly brushed aside long-held ideas
+when they could not prove their worth,
+and much of 20th century science is a result of this.
+In our field,
+the 
+Unix operating system
+is a very successful example of the application of minimalist
+principles.
+
+<h2>Minimalism and its Discontents</h2>
+
+<p>But, over time, it has become clear that the less strictly
+a language adheres to its central paradigm,
+the more useful it is.
+For the totalitarian languages, success came more
+in the form of influence on other systems
+than in direct application.
+People discussed pure LISP, APL and Prolog.
+They used C, BASIC and FORTRAN.
+
+<p>Unfortunately, principles tend to guide thinking,
+and not vice versa.
+Established principles become established
+precisely because, first and foremost,
+they make sure they have the last word
+when it comes to judging their own value.
+When our principles fail us, our first reaction,
+typically, is <b>not</b> to abandon those principles.
+
+<p>Even today,
+minimalism remains the dominant ideology in computer language design.
+When dissatisfaction with minimalism emerges,
+it tends to take the form of "more minimalism".
+The early history of programming languages is to a large
+extent
+a record of attempts
+to use minimalism
+to solve the problems of minimalism.
+
+<h2>The Principle of Plenitude</h2>
+
+<blockquote>
+[ Orthogonality is ]
+"all very well if you're trying to define a position in a space.
+But that's not how people think.
+It's not how natural languages work.
+Natural languages are not orthogonal, they're diagonal.
+They give you hypotenuses."
+-- Larry Wall, from a <a href="http://www.drdobbs.com/184410483">Dr. Dobbs interview</a>
+</blockquote>
+
+<p>On December 18, 1987, I was waiting for the 
+release of Perl 1.0 to comp.sources.misc.
+I downloaded it and started programming.
+It was a paid project, one which I had bid fixed price.
+I had planned to use mixed shell and C for this
+project.
+But among those in the know,
+the advance buzz for Perl 1.0 was good.
+Larry Wall was not the name he is now,
+but he already had
+a very solid rep from rn and patch.
+I decided to take a chance,
+and the result was profitable.
+
+<p>To my knowledge,
+Perl was the first language to actively embrace plenitude.
+Bourne shell tightly followed a "shell command" paradigm,
+Anyone who tries to use Bourne shell as a general-purpose language
+(and many do)
+has experienced what it is to fight line-by-line
+against a paradigm.
+AWK easily could have been the first non-minimalist language.
+But while AWK followed its script-editor paradigm
+loosely, it never actually broke away from it.
+
+<p>
+Perl borrowed liberally from Bourne shell and AWK, but
+above all it embraced plenitude.
+If there is one sure sign that minimalism
+is at work
+in a language design,
+it is when those controlling the evolution of a language
+refuse to add a useful feature solely on ideological grounds --
+because the new feature does not fit a core design concept.
+From day zero,
+Perl has given cool new hacks the priority over ideology.
+I'd hesitate to call either AWK and or Bourne shell "minimalist",
+but even over their evolutions,
+the heavy hand of minimalism
+has ruled.
+
+<p>This is part of a series which explores
+the technical details of Perl parsing.
+Since this post is devoted to matters of history and philosophy,
+it might seem to be a digression.
+It is not.
+Working code is never just code.
+As we will see,
+perly.y is one of the better examples of that fact.
+<br />
+<p>posted at: 11:56 |
+path: <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2010/07">/individual/2010/07</a> |
+<a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2010/07/parsing-perl-3-perl-and-minimalism.html">direct link to this entry</a>
+</p>
+<div style="color:#38B0C0;padding:1px;text-align:center;">
+&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&sect;
+</div>
+</div>
+</div>
+<div id="footer" style="border-top:thick solid #38B0C0;clear:left;padding:1em;">
+<p>This is Ocean of Awareness's
+  new home.  This blog has been hosted at
+  <a href="http://blogs.perl.org/users/jeffrey_kegler/">blogs.perl.org</a>
+  but I have succumbed to the lure of static blogging.
+  I have not yet decided how to deal with comments at this new blog location.
+If the post is Marpa-related,
+<a href="https://groups.google.com/forum/?hl=en&fromgroups#%21forum/marpa-parser">
+the Marpa mailing list</a>
+is a good place to comment.
+Also,
+I will continue to dual-post for some time,
+and have not yet frozen comments on the versions of the
+post at
+<a href="http://blogs.perl.org/users/jeffrey_kegler/">blogs.perl.org</a>.
+</div>
+              <script type="text/javascript">
+            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+          </script>
+          <script type="text/javascript">
+            try {
+              var pageTracker = _gat._getTracker("UA-33430331-1");
+            pageTracker._trackPageview();
+            } catch(err) {}
+          </script>
+</body>
+</html>

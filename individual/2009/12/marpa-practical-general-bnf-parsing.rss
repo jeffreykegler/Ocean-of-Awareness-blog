@@ -1,0 +1,67 @@
+<?xml version="1.0"?>
+<!-- name="generator" content="blosxom/2.0" -->
+<!DOCTYPE rss PUBLIC "-//Netscape Communications//DTD RSS 0.91//EN" "http://my.netscape.com/publish/formats/rss-0.91.dtd">
+
+<rss version="0.91">
+  <channel>
+    <title>Ocean of Awareness   </title>
+    <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog</link>
+    <description>Ocean of Awareness.</description>
+    <language>en</language>
+
+  <item>
+    <title>Marpa: Practical General BNF Parsing</title>
+    <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog/2009/12/31#marpa-practical-general-bnf-parsing</link>
+    <description>&lt;p&gt;With a regular expression engine, there
+are expectations.
+You feed a regular expression to the RE engine, it parses with it.
+That simple.
+
+&lt;p&gt;A general BNF parser is one which fulfills the same
+expectation for BNF.
+Write your language in BNF, you got a parser.
+But it hasn't been that simple.
+
+&lt;p&gt;The guys who write the textbooks have pushed
+general BNF parsing for years.
+Improvements in these algorithms have pushed
+the speeds down to linear or close to it
+for the kinds of language in practical use.
+
+&lt;p&gt;But the general parsing algorithms have languished
+on the textbook pages.
+And I did find it wasn't quite
+as easy as the academics suggested.
+There were some obstacles that they didn't forsee.
+But bottom line, they were right.
+General BNF parsing is practical.
+
+&lt;p&gt;&lt;a href=&quot;http://search.cpan.org/dist/Marpa/&quot;&gt;Marpa&lt;/a&gt; is a practical
+(if at this point alpha)
+general BNF parser
+generator.
+I have used Marpa to write a practical parser
+for a non-trivial task -- HTML parsing.
+That HTML parser is &lt;a href=&quot;http://search.cpan.org/~jkegl/Marpa-0.002000/lib/Marpa/UrHTML/Doc/UrHTML.pod&quot;&gt;Marpa::UrHTML&lt;/a&gt;,
+and I now use
+Marpa::UrHTML
+in tasks I do routinely.
+
+&lt;p&gt;Over the next weeks, I will do phased releases of &lt;a href=&quot;http://search.cpan.org/dist/Marpa/&quot;&gt;Marpa&lt;/a&gt;.
+The HTML parser, &lt;a href=&quot;http://search.cpan.org/~jkegl/Marpa-0.002000/lib/Marpa/UrHTML/Doc/UrHTML.pod&quot;&gt;Marpa::UrHTML, 
+is documented&lt;/a&gt; and ready to use in the first release.
+Over the next few weeks,
+I will document Marpa,
+the parse engine itself.
+
+&lt;p&gt;Right now the Marpa parse engine is &quot;pure Perl&quot;, and speeds
+are on the order of PPI.
+This is acceptable for many applications,
+but Marpa can do better.
+&lt;a href=&quot;http://search.cpan.org/dist/Marpa/&quot;&gt;Marpa&lt;/a&gt; has as its parse engine a mathematical algorithm
+that lends itself to conversion to C.
+Further down the road, I'll write a Marpa C library,
+and an XS wrapper.</description>
+  </item>
+  </channel>
+</rss>

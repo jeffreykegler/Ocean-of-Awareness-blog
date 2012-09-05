@@ -1,0 +1,175 @@
+<html>
+<head>
+<link rel="alternate" title="Ocean of Awareness RSS" type="application/rss+xml" title="RSS" href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/index.rss" />
+<title>Ocean of Awareness   </title>
+<style type="text/css">
+   strong {font-weight: 700;}
+</style>
+</head>
+<body>
+<div id="header"
+  style="color:white;background-color:#38B0C0;padding:1em;clear:left;text-align:center;">
+<h1>Ocean of Awareness</h1>
+  
+</div>
+  <div id="menu" style="margin:0;padding:10px;width:150px;float:left;">
+  <h2>Jeffrey Kegler's blog</h2>
+  <p>About Marpa, his new parsing algorithm,
+    and other topics of interest</p>
+  <h3>Resources</h3>
+  <p><a href="http://www.jeffreykegler.com/">Jeffrey Kegler's website</p>
+  <p><a href="http://www.jeffreykegler.com/marpa">The Marpa website</p>
+  </div>
+  <div id="content" style="margin-left:190px;border-left:2px solid #38B0C0;padding:25px;">
+<h3>Wed, 03 Aug 2011</h3>
+<br />
+<center><a name="announcing-marpaxs-080"> <h2>Announcing Marpa::XS 0.8.0</h2> </a>
+</center>
+<p>
+I have just released
+<a href="http://search.cpan.org/dist/Marpa-XS/">Marpa::XS 0.008000</a>.
+With this release the core Marpa algorithm has been converted to C,
+vastly speeding it up.
+Marpa::XS is still alpha, but the additional development needed
+at this point is a matter of packaging
+(<a href="#NOTE1">See Note 1</a>).
+</p>
+<p>It is my hope that Marpa
+will become the standard parsing algorithm for problems too
+big for regular expressions.
+<ul>
+<li>Marpa parses all
+classes of grammar that are currently in practical use
+in linear time.
+(<a href="#NOTE2">See Note 2</a>).
+<li>Marpa is a general BNF parser -- that means if you feed it anything
+written in BNF, it "just parses" it.
+This includes grammars which are left-recursive, right-recursive and
+ambiguous -- even infinitely ambiguous.
+<li>Marpa never goes exponential -- worst case, even for highly ambiguous
+grammars, is O(n**3), which is considered optimal
+(<a href="#NOTE3">See Note 3</a>).
+</ul>
+
+<h1>Limitations and Comparisons</h1>
+<p>The foremost limitation of Marpa is, of course,
+that it is alpha.
+Development is well advanced, but the interface remains
+subject to change.
+<p>There are several parsing tasks 
+where current technology will be superior
+even to a stable, production Marpa.
+For problems which work well as regexes (compact and with no backtracking),
+Marpa will never replace a good regular expression engine.
+On the other hand, Marpa may well be the answer to a lot of problems
+which are forced to fit into the regular expression paradigm
+for lack of anything better.
+Hand-written recursive descent could compete with Marpa, but
+not having to write your own parser is a huge advantage.
+<p>I've made no secret that I consider yacc and LALR theoretical milestones
+and industry traditions which are best honored in the breach.
+I've pointed out LALR's horrendous error-handling properties
+elsewhere
+(<a href="#NOTE4">See Note 4</a>).
+LALR does offer some apparent speed advantages,
+but in the context of practical applications these are
+more apparent than real.
+<h2>Notes</h2>
+<p><a name="PACKAGING">Note 1: </a>
+Inside the code are
+many relics of the development process,
+and these need
+to be cleaned up.
+The user documentation is finished,
+but the internals documentation needs a lot
+of work.
+<p>
+Some additional C code may be written to help in the
+evaluation phase but, while this code could produce
+some significant additional efficiencies, I don't consider it part of the
+core Marpa development project for two reasons.
+First, evaluation is to a large degree a matter of calling higher-level
+and application code.
+<p>Second, the core Marpa algorithm was new
+and extremely difficult mathematics --
+built on top of a large body of prior work to be sure,
+but new nonetheless.
+With the evaluation code, my original thinking involves making
+making choices of what to use in existing mathematics --
+evaluation consists of problems
+like tree traversal, where there is lots
+of prior work to consult.
+</p><p><a name="NOTE2">Note 2: </a>
+
+To be specific, Marpa parses any LR-regular grammar in linear time -- O(n).
+LR-regular is a vast class of grammars that includes LALR,
+LR(k) for all k,
+and LL(k) for all k.
+This means that Marpa parses,
+in linear time,
+every grammar parsed by yacc,
+recursive descent and regular expressions.
+</p><p><a name="NOTE3">Note 3: </a>
+The phrase "considered optimal" elides some
+irrelevant bits of theory.
+It would be a bit of a
+surprise if it is possible to
+do general BNF parsing
+in O(n), but nobody has proved that it can't be done.
+The Valiant algorithm parses general BNF
+and is O(n**2.376...) or better.
+But Valiant's algorithm is only faster for huge problems,
+and for those it
+needs a machine with many terabytes of main memory
+to deliver on its speed claims.
+So it won't be competing with Marpa any time soon.
+</p><p><a name="NOTE4">Note 4: </a>
+My series on yacc ran in four blog posts:
+<a href="http://blogs.perl.org/users/jeffrey_kegler/2010/12/killing-yacc-1-2-3.html">Killing Yacc</a>,
+<a href="http://blogs.perl.org/users/jeffrey_kegler/2010/12/why-the-bovicidal-rage-killing-yacc-4.html">
+Why the Bovicidal Rage?</a>,
+<a href="http://blogs.perl.org/users/jeffrey_kegler/2011/04/bovicide-5-parse-time-error-reporting.html">
+Bovicide 5: Parse-time Error Reporting</a>,
+and
+<a href="http://blogs.perl.org/users/jeffrey_kegler/2011/05/bovicide-6-the-final-requirement.html">
+Bovicide 6: The Final Requirement</a>
+<br />
+<p>posted at: 08:47 |
+path: <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2011/08">/individual/2011/08</a> |
+<a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2011/08/announcing-marpaxs-080.html">direct link to this entry</a>
+</p>
+<div style="color:#38B0C0;padding:1px;text-align:center;">
+&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&sect;
+</div>
+</div>
+</div>
+<div id="footer" style="border-top:thick solid #38B0C0;clear:left;padding:1em;">
+<p>This is Ocean of Awareness's
+  new home.  This blog has been hosted at
+  <a href="http://blogs.perl.org/users/jeffrey_kegler/">blogs.perl.org</a>
+  but I have succumbed to the lure of static blogging.
+  I have not yet decided how to deal with comments at this new blog location.
+If the post is Marpa-related,
+<a href="https://groups.google.com/forum/?hl=en&fromgroups#%21forum/marpa-parser">
+the Marpa mailing list</a>
+is a good place to comment.
+Also,
+I will continue to dual-post for some time,
+and have not yet frozen comments on the versions of the
+post at
+<a href="http://blogs.perl.org/users/jeffrey_kegler/">blogs.perl.org</a>.
+</div>
+              <script type="text/javascript">
+            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+          </script>
+          <script type="text/javascript">
+            try {
+              var pageTracker = _gat._getTracker("UA-33430331-1");
+            pageTracker._trackPageview();
+            } catch(err) {}
+          </script>
+</body>
+</html>

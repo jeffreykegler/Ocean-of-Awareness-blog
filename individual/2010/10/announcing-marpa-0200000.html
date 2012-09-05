@@ -1,0 +1,108 @@
+<html>
+<head>
+<link rel="alternate" title="Ocean of Awareness RSS" type="application/rss+xml" title="RSS" href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/index.rss" />
+<title>Ocean of Awareness   </title>
+<style type="text/css">
+   strong {font-weight: 700;}
+</style>
+</head>
+<body>
+<div id="header"
+  style="color:white;background-color:#38B0C0;padding:1em;clear:left;text-align:center;">
+<h1>Ocean of Awareness</h1>
+  
+</div>
+  <div id="menu" style="margin:0;padding:10px;width:150px;float:left;">
+  <h2>Jeffrey Kegler's blog</h2>
+  <p>About Marpa, his new parsing algorithm,
+    and other topics of interest</p>
+  <h3>Resources</h3>
+  <p><a href="http://www.jeffreykegler.com/">Jeffrey Kegler's website</p>
+  <p><a href="http://www.jeffreykegler.com/marpa">The Marpa website</p>
+  </div>
+  <div id="content" style="margin-left:190px;border-left:2px solid #38B0C0;padding:25px;">
+<h3>Mon, 11 Oct 2010</h3>
+<br />
+<center><a name="announcing-marpa-0200000"> <h2>Announcing Marpa 0.200000</h2> </a>
+</center>
+<p><a href="http://search.cpan.org/~jkegl/Marpa-0.200000/">Marpa</a>
+is now at 0.200000.
+Following a standard rhetoric of version numbers, this indicates
+that it's an official release and a major step forward,
+but still alpha.
+Marpa is a general BNF parser generator -- it parses from any grammar that
+you can write in BNF.
+It's based on Earley's algorithm, but incorporates recent advances,
+so that it runs in linear time for all those grammars parseable by yacc
+or recursive descent.
+
+<p>The big news with Marpa 0.200000 is Marpa's 3rd generation evaluator.
+The previous version of Marpa had two evaluators
+-- one fast, but only
+good for producing a single parse result,
+the other capable of dealing with ambiguous grammars, but slower.
+The 3rd generation has a single evaluator which combines the best
+of both.
+Not the least advantage of this change
+is that it simplifies the documentation
+and the interface.
+
+<p>Marpa remains alpha and its interface may change.
+But I use Marpa in my own work -- it's the basis 
+of
+<a href="http://search.cpan.org/dist/Marpa-HTML/">
+some rather handly HTML utilities</a>,
+if I do say so myself.
+But I would not at this point consider Marpa for anything
+mission-critical or "production".
+
+<p>An obsolete predecessor of Marpa, Parse::Marpa, is still on CPAN.
+I plan to remove Parse::Marpa from CPAN shortly.
+Anyone for whom that is a problem, please let me know.
+Remember, the heroes of old will feast forever in Valhalla,
+and Parse::Marpa will live eternally in
+<a href="http://backpan.perl.org/">backpan</a>.
+
+<p>As for the future:
+The major barrier between Marpa and world conquest is speed.
+I am busily converting Marpa to XS.
+<br />
+<p>posted at: 19:09 |
+path: <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2010/10">/individual/2010/10</a> |
+<a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2010/10/announcing-marpa-0200000.html">direct link to this entry</a>
+</p>
+<div style="color:#38B0C0;padding:1px;text-align:center;">
+&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&sect;
+</div>
+</div>
+</div>
+<div id="footer" style="border-top:thick solid #38B0C0;clear:left;padding:1em;">
+<p>This is Ocean of Awareness's
+  new home.  This blog has been hosted at
+  <a href="http://blogs.perl.org/users/jeffrey_kegler/">blogs.perl.org</a>
+  but I have succumbed to the lure of static blogging.
+  I have not yet decided how to deal with comments at this new blog location.
+If the post is Marpa-related,
+<a href="https://groups.google.com/forum/?hl=en&fromgroups#%21forum/marpa-parser">
+the Marpa mailing list</a>
+is a good place to comment.
+Also,
+I will continue to dual-post for some time,
+and have not yet frozen comments on the versions of the
+post at
+<a href="http://blogs.perl.org/users/jeffrey_kegler/">blogs.perl.org</a>.
+</div>
+              <script type="text/javascript">
+            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+          </script>
+          <script type="text/javascript">
+            try {
+              var pageTracker = _gat._getTracker("UA-33430331-1");
+            pageTracker._trackPageview();
+            } catch(err) {}
+          </script>
+</body>
+</html>

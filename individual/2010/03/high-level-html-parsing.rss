@@ -1,0 +1,68 @@
+<?xml version="1.0"?>
+<!-- name="generator" content="blosxom/2.0" -->
+<!DOCTYPE rss PUBLIC "-//Netscape Communications//DTD RSS 0.91//EN" "http://my.netscape.com/publish/formats/rss-0.91.dtd">
+
+<rss version="0.91">
+  <channel>
+    <title>Ocean of Awareness   </title>
+    <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog</link>
+    <description>Ocean of Awareness.</description>
+    <language>en</language>
+
+  <item>
+    <title>High-level HTML Parsing</title>
+    <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog/2010/03/28#high-level-html-parsing</link>
+    <description>&lt;p&gt;
+&lt;a href=&quot;http://search.cpan.org/dist/Marpa-HTML&quot;&gt;Marpa::HTML&lt;/a&gt;
+is a high-level HTML parser, built on top of
+the very high-quality
+&lt;a href=&quot;http://search.cpan.org/dist/HTML-Parser&quot;&gt;HTML::Parser&lt;/a&gt;
+module.
+Why bother with high-level parsing,
+especially if it means layering one parser on top of another?
+
+&lt;p&gt;Here is
+&lt;a href=&quot;http://search.cpan.org/dist/HTML-Parser/Parser.pm#EXAMPLES&quot;&gt;
+an example,
+taken
+from the main document for HTML::Parser&lt;/a&gt;.
+The example prints out the title of an HTML document.
+To do this, 
+&lt;a href=&quot;http://search.cpan.org/dist/HTML-Parser&quot;&gt;HTML::Parser&lt;/a&gt;
+uses handlers which set up other handlers.
+One handler finds the start tag,
+then sets up two other handlers.
+(I won't reproduce
+that example here --
+&lt;a href=&quot;http://search.cpan.org/dist/HTML-Parser/Parser.pm#EXAMPLES&quot;&gt;
+it's on CPAN.&lt;/a&gt;
+)
+
+&lt;p&gt;Here's the
+&lt;a href=&quot;http://search.cpan.org/dist/Marpa-HTML&quot;&gt;Marpa::HTML&lt;/a&gt;
+code for printing the title.
+It avoids the awkward state-driven switching of handlers.
+
+&lt;pre&gt;
+&lt;code class=&quot;prettyprint&quot;&gt;
+say html(
+    \$string_containging_html,
+    {   'title' =&gt; sub { return Marpa::HTML::contents() },
+        ':TOP'  =&gt; sub { return ( join q{}, @{ Marpa::HTML::values() } ) }
+    }
+);
+&lt;/code&gt;
+&lt;/pre&gt;
+
+The code is fairly transparent.
+&lt;code class=&quot;prettyprint&quot;&gt;html&lt;/code&gt; is a static method.
+Here it takes two arguments: a string with the html to be parsed, and
+a hash specifying two handlers.
+One handler returns the contents of title elements.
+Another, top-level, handler takes all the values found below it,
+joins them together, and returns them.
+(&lt;a href=&quot;http://search.cpan.org/dist/Marpa-HTML&quot;&gt;Full
+documentation is on CPAN&lt;/a&gt;.)</description>
+  </item>
+  </channel>
+</rss>

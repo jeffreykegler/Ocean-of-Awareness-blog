@@ -1,0 +1,125 @@
+<?xml version="1.0"?>
+<!-- name="generator" content="blosxom/2.0" -->
+<!DOCTYPE rss PUBLIC "-//Netscape Communications//DTD RSS 0.91//EN" "http://my.netscape.com/publish/formats/rss-0.91.dtd">
+
+<rss version="0.91">
+  <channel>
+    <title>Ocean of Awareness   </title>
+    <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog</link>
+    <description>Ocean of Awareness.</description>
+    <language>en</language>
+
+  <item>
+    <title>What's new with Marpa</title>
+    <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog/2012/02/25#whats-new-with-marpa</link>
+    <description>Here's the Marpa &quot;news&quot; from the past few weeks.
+(Marpa is a new, powerful and fast parser and parsing algorithm.
+To learn more,
+check out &lt;a href=&quot;http://www.jeffreykegler.com/marpa&quot;&gt;its web page&lt;/a&gt;.)
+&lt;h2&gt;Revision to the Theory paper&lt;/h2&gt;
+&lt;p&gt;
+Most of my effort over the past weeks
+has gone into a paper
+on the math behind Marpa.
+I have just uploaded
+&lt;a href=&quot;http://github.com/downloads/jeffreykegler/Marpa-theory/recce.pdf&quot;&gt;
+a revised version&lt;/a&gt;.
+I've fixed several typos, including a few nasty ones,
+for which I apologize.
+I've also improved the typography
+and smoothed out
+the presentation in many places.
+The basic structure and results of the paper
+are unchanged.
+The paper contains pseudocode,
+a correctness proof,
+and proofs of my complexity claims.
+&lt;/p&gt;
+&lt;h2&gt;Deleting old releases&lt;/h2&gt;
+&lt;p&gt;
+I plan to remove official releases
+of the various Marpa distributions
+(Marpa, Marpa::XS, Marpa::PP)
+that are more than one or two versions old.
+My guess is that this will release
+some disk space, and inconvenience nobody.
+&lt;/p&gt;
+&lt;h2&gt;Updating the distributions&lt;/h2&gt;
+
+Marpa::XS and Marpa::PP will be updated to make
+them compatible with a new release of Carp.
+Carp changed the format of one
+of its error messages,
+and since I test diagnostics,
+the change causes my test suite to fail.
+Testing diagnostics has paid off for me,
+but I am updating my tests to be less fussy
+about the exact format of Carp's feedback.
+I do NOT plan to update the bare name Marpa,
+which is an older,
+deprecated and legacy release.</description>
+  </item>
+  <item>
+    <title>A Marpa paper</title>
+    <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog/2012/02/14#a-marpa-paper</link>
+    <description>&lt;p&gt;
+I have just uploaded
+&lt;a href=&quot;http://github.com/downloads/jeffreykegler/Marpa-theory/recce.pdf&quot;&gt;
+a late stage draft
+of a Theory of Computation paper on Marpa&lt;/a&gt; to github.
+The paper contains pseudocode,
+a correctness proof,
+and proofs of my complexity claims.
+(Marpa, for those unfamiliar,
+is a new, powerful and fast parser and parsing algorithm.
+To learn more,
+check out &lt;a href=&quot;http://www.jeffreykegler.com/marpa&quot;&gt;its web page&lt;/a&gt;.)
+&lt;/p&gt;
+&lt;p&gt;
+Progress in software follows two avenues --
+implementation (aka &quot;running code&quot;)
+and theory.
+With Marpa, it was my intention to pursue both.
+This is not the usual practice,
+but it's a natural choice in Marpa's case,
+because the two feed each other.
+It would have been simply
+impossible to write the code for Marpa
+without a theory of WHY the code worked,
+what kind of speed I expected in which cases,
+and WHY the code I was writing would be able to deliver
+that kind of speed.
+&lt;/p&gt;
+&lt;p&gt;
+But if the example of Marpa and general parsing
+shows the need for theory,
+it also dramatically shows the need for running code.
+In writing Marpa I built on a lot of excellent work by others,
+work which has been largely,
+and in some cases completely,
+confined to the pages
+of the journals and textbooks.
+&lt;/p&gt;
+&lt;p&gt;
+Unfortunately,
+even among its kind,
+my Marpa paper is not an easy read.
+It's a large and complex algorithm,
+and its writeup
+is large and complex.
+Nor is it self-contained --
+you need to be familiar with Jay Earley's algorithm,
+and parts of the paper will be very hard to follow
+if you've never looked at the work
+done by Joop Leo
+and by Aycock and Horspool.
+One hint:
+Even the experts read these papers
+by skipping from section to section,
+starting with the easy ones.
+In particular, they often leave the proofs
+for last or never.
+&lt;/p&gt;</description>
+  </item>
+  </channel>
+</rss>

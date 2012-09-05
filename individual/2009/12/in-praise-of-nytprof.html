@@ -1,0 +1,74 @@
+<html>
+<head>
+<link rel="alternate" title="Ocean of Awareness RSS" type="application/rss+xml" title="RSS" href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/index.rss" />
+<title>Ocean of Awareness   </title>
+<style type="text/css">
+   strong {font-weight: 700;}
+</style>
+</head>
+<body>
+<div id="header"
+  style="color:white;background-color:#38B0C0;padding:1em;clear:left;text-align:center;">
+<h1>Ocean of Awareness</h1>
+  
+</div>
+  <div id="menu" style="margin:0;padding:10px;width:150px;float:left;">
+  <h2>Jeffrey Kegler's blog</h2>
+  <p>About Marpa, his new parsing algorithm,
+    and other topics of interest</p>
+  <h3>Resources</h3>
+  <p><a href="http://www.jeffreykegler.com/">Jeffrey Kegler's website</p>
+  <p><a href="http://www.jeffreykegler.com/marpa">The Marpa website</p>
+  </div>
+  <div id="content" style="margin-left:190px;border-left:2px solid #38B0C0;padding:25px;">
+<h3>Thu, 17 Dec 2009</h3>
+<br />
+<center><a name="in-praise-of-nytprof"> <h2>In Praise of NYTProf</h2> </a>
+</center>
+<p>I'd like to add my praise to the heap of it already piled onto <a href="http://search.cpan.org/dist/Devel-NYTProf/">NYTProf</a>.  This is a Perl profiler available on CPAN, with a very attractive HTML interface.</p>
+
+<p>If you wait for your next efficiency issue before using NYTProf, you're making a mistake.  For me optimizing is no longer NYTProf's primary purpose.  NYTProf is a powerful debugging tool. The count of the number of times each line was executed yields marvelous insights quickly.  Consider an example: a script to process a file.  It is acting strangely.  You don't know where to begin.  Your test file is 1000 lines long.  You notice certain lines in the per-line logic are not being executed 1000 times.  Hmmm.</p>
+
+<p>Simply checking for lines which are not executed <strong>at all</strong> is a surprisingly powerful technique.  The HTML format allows you to skim the code, looking for these.  This is particularly useful when the question is not localized or some matter of detail, but whether your overall logic makes sense, and whether your code actually implements the logic/algorithm you intended.</p>
+
+<p>Adam Kaplan, Tim Bunce and Steve Peters, thank you.</p>
+<br />
+<p>posted at: 19:17 |
+path: <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2009/12">/individual/2009/12</a> |
+<a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2009/12/in-praise-of-nytprof.html">direct link to this entry</a>
+</p>
+<div style="color:#38B0C0;padding:1px;text-align:center;">
+&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&sect;
+</div>
+</div>
+</div>
+<div id="footer" style="border-top:thick solid #38B0C0;clear:left;padding:1em;">
+<p>This is Ocean of Awareness's
+  new home.  This blog has been hosted at
+  <a href="http://blogs.perl.org/users/jeffrey_kegler/">blogs.perl.org</a>
+  but I have succumbed to the lure of static blogging.
+  I have not yet decided how to deal with comments at this new blog location.
+If the post is Marpa-related,
+<a href="https://groups.google.com/forum/?hl=en&fromgroups#%21forum/marpa-parser">
+the Marpa mailing list</a>
+is a good place to comment.
+Also,
+I will continue to dual-post for some time,
+and have not yet frozen comments on the versions of the
+post at
+<a href="http://blogs.perl.org/users/jeffrey_kegler/">blogs.perl.org</a>.
+</div>
+              <script type="text/javascript">
+            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+          </script>
+          <script type="text/javascript">
+            try {
+              var pageTracker = _gat._getTracker("UA-33430331-1");
+            pageTracker._trackPageview();
+            } catch(err) {}
+          </script>
+</body>
+</html>

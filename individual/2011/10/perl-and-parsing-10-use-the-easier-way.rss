@@ -1,0 +1,417 @@
+<?xml version="1.0"?>
+<!-- name="generator" content="blosxom/2.0" -->
+<!DOCTYPE rss PUBLIC "-//Netscape Communications//DTD RSS 0.91//EN" "http://my.netscape.com/publish/formats/rss-0.91.dtd">
+
+<rss version="0.91">
+  <channel>
+    <title>Ocean of Awareness   </title>
+    <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog</link>
+    <description>Ocean of Awareness.</description>
+    <language>en</language>
+
+  <item>
+    <title>Perl and Parsing 10: &quot;Use&quot; the Easier Way</title>
+    <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog/2011/10/06#perl-and-parsing-10-use-the-easier-way</link>
+    <description>&lt;p&gt;
+In
+&lt;a href=&quot;http://blogs.perl.org/users/jeffrey_kegler/2011/09/perl-and-parsing-9-use-and-the-ruby-slippers.html&quot;&gt;
+the previous post in this series&lt;/a&gt;,
+I described the way
+the &lt;a href=&quot;#TPP&quot;&gt;Traditional Perl Parser&lt;/a&gt; (TPP) parses Perl's
+&lt;code class=&quot;prettyprint&quot;&gt;use&lt;/code&gt; statement.
+This post will describe an IMHO attractive alternative approach,
+using my own &lt;a href=&quot;http://search.cpan.org/dist/Marpa-XS/&quot;&gt;
+Marpa::XS&lt;/a&gt;.
+Marpa::XS has a prototype Perl parser as part of its test suite.
+&lt;/p&gt;
+&lt;h2&gt;The TPP Way&lt;/h2&gt;
+
+&lt;p&gt;
+If
+&lt;a href=&quot;http://blogs.perl.org/users/jeffrey_kegler/2011/09/perl-and-parsing-9-use-and-the-ruby-slippers.html&quot;&gt;
+that previous post&lt;/a&gt;
+is not fresh in your mind, it may be useful
+at this point to look back at it.
+Summarizing, the TPP uses
+&lt;a href=&quot;http://blogs.perl.org/users/jeffrey_kegler/2010/06/parsing-with-ruby-slippers.html&quot;&gt;
+the &quot;Ruby Slippers&quot; method&lt;/a&gt;:
+It first simplifies the grammar so that, while convenient for the
+parser, the grammar falls short of describing the actual language.
+The lexer then fakes the input to the parser
+so that the parser's &quot;wishful thinking&quot; comes true.
+&lt;/p&gt;
+&lt;p&gt;
+In the TPP, the parser requires all
+&lt;code class=&quot;prettyprint&quot;&gt;use&lt;/code&gt; statements
+take this form:
+&lt;code class=&quot;prettyprint&quot;&gt;&lt;pre&gt;
+use_statement ::= USE WORD WORD LIST
+
+&lt;/pre&gt;&lt;/code&gt;
+Here the &lt;code class=&quot;prettyprint&quot;&gt;WORD&lt;/code&gt;'s may be either versions or
+&lt;a href=&quot;#PRAGMA&quot;&gt;names of modules&lt;/a&gt; -- the semantics
+looks at the internal representations to sort this out once
+the parsing is finished.
+&lt;/p&gt;
+&lt;h2&gt;The Marpa::Perl Way&lt;/h2&gt;
+&lt;p&gt;Marpa is a lot better than
+TPP's LALR parse engine at the Ruby Slippers thing.
+Marpa will tell its lexers exactly what it wants at every point, whereas
+the TPP's lexer can expect no help from the LALR parse engine
+and is forced to do its own parsing of
+&lt;code class=&quot;prettyprint&quot;&gt;use&lt;/code&gt; statement.
+But in Marpa::Perl, I decided NOT to use the Ruby Slippers
+to parse Perl's &lt;code class=&quot;prettyprint&quot;&gt;use&lt;/code&gt; statement.
+Marpa is good at the Ruby Slippers, but it also allows even better and easier
+ways to tackle this problem.
+
+&lt;/p&gt;
+&lt;p&gt;
+Marpa can parse far more grammars than the TPP's parse engine.
+Marpa can even parse ambigious grammars.
+The &lt;code class=&quot;prettyprint&quot;&gt;use&lt;/code&gt; statement
+comes in three forms, and it is easy to create a rule for
+each one.
+&lt;code class=&quot;prettyprint&quot;&gt;&lt;pre&gt;
+use_statement ::= USE NAME VERSION LIST
+use_statement ::= USE VERSION
+use_statement ::= USE NAME LIST
+&lt;/pre&gt;&lt;/code&gt;
+&lt;/p&gt;
+This is a very natural way to describe 
+the &lt;code class=&quot;prettyprint&quot;&gt;use&lt;/code&gt; statement --
+so natural that in fact, it's almost exactly
+the way the Perl documentation
+DOES describe it.
+The one difference is that
+the Perl documentation lists separate forms for
+&lt;code class=&quot;prettyprint&quot;&gt;use&lt;/code&gt; statements
+with and
+without &lt;code class=&quot;prettyprint&quot;&gt;LIST&lt;/code&gt;'s of arguments.
+This is useful for clarity, but
+
+&lt;code class=&quot;prettyprint&quot;&gt;LIST&lt;/code&gt;'s can be empty.
+Separate rules in the parser's BNF
+dedicated to module requests
+without the &lt;code class=&quot;prettyprint&quot;&gt;LIST&lt;/code&gt;'s would create
+a useless and inefficient ambiguity.
+&lt;p&gt;
+The three rules above demonstrate ambiguity of a helpful kind.
+Consider
+&lt;code class=&quot;prettyprint&quot;&gt;&lt;pre&gt;
+use Fatal 5;
+&lt;/pre&gt;&lt;/code&gt;
+The TPP parses this as a request to use
+the (so far non-existent) version 5 or higher of the
+&lt;code class=&quot;prettyprint&quot;&gt;Fatal&lt;/code&gt;.
+According to both TPP's and Marpa::Perl's BNF,
+however, it could also be parsed as a request to
+Fatal to wrap a Perl subroutine named &lt;code class=&quot;prettyprint&quot;&gt;5&lt;/code&gt;.
+In fact, that's exactly how the TPP will interpret
+&lt;code class=&quot;prettyprint&quot;&gt;&lt;pre&gt;
+use Fatal +5;
+&lt;/pre&gt;&lt;/code&gt;
+
+&lt;/p&gt;
+Marpa::Perl solves the ambiquity by using Marpa's new
+ranking method, which allows every rule to have an
+integer rank.
+Marpa::Perl ranks the rules in the order I listed them
+above,
+from highest to lowest.
+The long form (both name and version)
+of the module request ranks highest, meaning that Marpa::Perl
+parses
+a &lt;code class=&quot;prettyprint&quot;&gt;use&lt;/code&gt; statement that way
+whenever possible.
+When a 
+&lt;code class=&quot;prettyprint&quot;&gt;use&lt;/code&gt; statement cannot
+possibly be the long form of a module request,
+Marpa::Perl tries to parse it as a perl version request.
+&lt;a href=&quot;#LAST_RESORT&quot;&gt;As a last resort&lt;/a&gt;,
+Marpa::Perl interprets a
+&lt;code class=&quot;prettyprint&quot;&gt;use&lt;/code&gt; statement
+as the short form (name only)
+of a module request.
+&lt;p&gt;
+By using this rule ranking,
+Marpa::Perl's lexer can avoid the issue of determining what is a
+version number and what is a name.
+Marpa allows tokens to be
+ambiguous.
+Marpa::Perl's lexer can tell the parser that
+&lt;code class=&quot;prettyprint&quot;&gt;v5.0&lt;/code&gt; is BOTH a name and a version,
+and let the parser sort things out.
+LALR is, to say the least,
+not tolerant of
+ambiguities, so
+the TPP's lexer must tackle the issue
+of identifying versions head-on.
+
+&lt;/p&gt;
+&lt;h2&gt;Summarizing ...&lt;/h2&gt;
+&lt;p&gt;
+When it comes to parsing Perl's
+&lt;code class=&quot;prettyprint&quot;&gt;use&lt;/code&gt; statement,
+I believe I have shown that Marpa can do it more easily.
+Parsing the
+&lt;code class=&quot;prettyprint&quot;&gt;use&lt;/code&gt; statement
+in Marpa required the three BNF rules shown,
+plus arranging to have the lexer recognize that numbers
+and v-strings can be either a version or a name,
+which is done with
+&lt;a href=&quot;#MARPA_CODE&quot;&gt;
+a simple loop over a fixed list&lt;/a&gt;.
+Look at
+the corresponding code in
+&lt;a href=&quot;https://metacpan.org/source/FLORA/perl-5.14.2/toke.c&quot;&gt;toke.c's tokenize_use()
+&lt;/a&gt; and
+
+&lt;a href=&quot;https://metacpan.org/source/FLORA/perl-5.14.2/op.c&quot;&gt;op.c's
+Perl_utilize()&lt;/a&gt;,
+and you'll see some of the most difficult logic
+that you're likely to find anywhere.
+&lt;/p&gt;
+&lt;p&gt;
+Perhaps more significant is what Marpa::Perl could do that the TPP
+does not and could not do.
+Imagine, for example, that you've written a module to make available
+the regular expression logic as implemented in the classic
+&lt;a href=&quot;http://en.wikipedia.org/wiki/Version_8_Unix&quot;&gt;
+AT&amp;T UNIX version 8&lt;/a&gt;,
+affectionately remembered as v8 UNIX.
+Imagine further that you decide, unhappily, to name this module,
+&lt;kbd&gt;v8.pm&lt;/kbd&gt;.
+In that case you can simply forget about loading it with TPP's
+&lt;code class=&quot;prettyprint&quot;&gt;use&lt;/code&gt; statement,
+which will insist that &lt;code class=&quot;prettyprint&quot;&gt;v8&lt;/code&gt; is a version number,
+even in a case like this:
+
+&lt;code class=&quot;prettyprint&quot;&gt;&lt;pre&gt;
+use v8 0 qw(re);
+&lt;/pre&gt;&lt;/code&gt;
+The 
+&lt;code class=&quot;prettyprint&quot;&gt;use&lt;/code&gt; statement
+just shown can only have one parse.
+A human being can quickly determine what that one parse must be.
+Why have we come to believe this is too much
+to expect of our parsing algorithms?
+&lt;/p&gt;
+
+&lt;h2&gt;Notes&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;&lt;a name=&quot;TPP&quot;&gt;&quot;Traditional Perl Parser&quot;: &lt;/a&gt;
+In this series, I call the Perl interpreter's parser,
+the one whose implementation centers on the files
+&lt;kbd&gt;toke.c&lt;/kbd&gt; and &lt;kbd&gt;perly.y&lt;/kbd&gt;,
+the Traditional Perl Parser, or TPP.
+Most others just call it the Perl parser, but in this
+series I discuss its alternatives (&lt;kbd&gt;Marpa::Perl&lt;/kbd&gt;
+
+and &lt;kbd&gt;PPI&lt;/kbd&gt;) a lot.
+This little bit of special terminology
+saves confusion.
+&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;a name=&quot;PRAGMA&quot;&gt;&quot;names of modules&quot;: &lt;/a&gt;
+Actually, these can also be pragma names, a fact that,
+for brevity's sake,
+I will not mention again.
+&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;a name=&quot;LAST_RESORT&quot;&gt;&quot;last resort&quot;: &lt;/a&gt;
+Actually, the TPP accepts some undocumented syntaxes.
+This gets into strange territory.
+The TPP parses
+&lt;code class=&quot;prettyprint&quot;&gt;&lt;pre&gt;
+use v2 Fatal;
+&lt;/pre&gt;&lt;/code&gt;
+as a request to use version 2.0 or higher
+of the &lt;code class=&quot;prettyprint&quot;&gt;Fatal&lt;/code&gt; module.
+You could take the point of view that the TPP should reject statements
+like this
+as syntax errors,
+in which case TPP's behavior is a bug.
+For the purposes of this blog post, I ignore this issue.
+
+&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;a name=&quot;MARPA_CODE&quot;&gt;&quot;a simple loop over a fixed list&quot;: &lt;/a&gt;
+For the code see
+&lt;a href=&quot;https://metacpan.org/source/JKEGL/Marpa-XS-0.013_004/pperl/Marpa/Perl.pm&quot;&gt;
+pperl/Marpa/Perl.pm
+in the latest developer's version of Marpa::XS
+&lt;/a&gt;.
+The code discussed begins at line 1200.
+&lt;/p&gt;&lt;/li&gt;
+&lt;ol&gt;
+                            
+                        &lt;/div&gt;&lt;!-- .entry-body --&gt;
+                        
+                        &lt;div class=&quot;entry-meta-2 pkg&quot;&gt;
+                            &lt;ul&gt;
+                                &lt;li&gt;&lt;a href=&quot;#comments&quot;&gt;0 comments&lt;/a&gt;&lt;/li&gt;
+                                &lt;!-- &lt;li&gt;&lt;a href=&quot;http://blogs.perl.org/users/jeffrey_kegler/2011/10/perl-and-parsing-10-use-the-easier-way.html&quot;&gt;0 votes&lt;/a&gt;&lt;/li&gt; --&gt;
+                            &lt;/ul&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;&lt;!-- #entry-2259 --&gt;
+                    
+
+
+
+
+	&lt;div class=&quot;entry-tags&quot;&gt;
+    &lt;h4&gt;Tagged as&lt;span class=&quot;delimiter&quot;&gt;:&lt;/span&gt;&lt;/h4&gt;
+    &lt;span&gt;&lt;a href=
+&quot;javascript:void(0)&quot; onclick=&quot;location.href='http://blogs.perl.org/mt/mt-search.fcgi?blog_id=63&amp;amp;tag=Marpa%20Earley%20parsing%20parser&amp;amp;limit=20';return false;&quot; rel=&quot;tag&quot;&gt;Marpa Earley parsing parser&lt;/a&gt;&lt;/span&gt;
+     &lt;/div&gt;
+
+
+&lt;div id=&quot;comments&quot; class=&quot;comments&quot;&gt;
+
+
+    
+    
+    
+
+    
+    
+    &lt;div class=&quot;comments-open&quot; id=&quot;comments-open&quot;&gt;
+        &lt;h2 class=&quot;comments-open-header&quot;&gt;Leave a comment&lt;/h2&gt;
+        &lt;div class=&quot;comments-open-content&quot;&gt;
+
+        
+            &lt;div id=&quot;comment-greeting&quot;&gt;&lt;/div&gt;
+
+            &lt;form method=&quot;post&quot; action=&quot;http://blogs.perl.org/mt/mt-comments.fcgi&quot; name=&quot;comments_form&quot; id=&quot;comments-form&quot; onsubmit=&quot;return mtCommentOnSubmit(this)&quot;&gt;
+                &lt;input type=&quot;hidden&quot; name=&quot;static&quot; value=&quot;1&quot; /&gt;
+                &lt;input type=&quot;hidden&quot; name=&quot;entry_id&quot; value=&quot;2259&quot; /&gt;
+                &lt;input type=&quot;hidden&quot; name=&quot;__lang&quot; value=&quot;en&quot; /&gt;
+                &lt;input type=&quot;hidden&quot; name=&quot;parent_id&quot; value=&quot;&quot; id=&quot;comment-parent-id&quot; /&gt;
+                &lt;input type=&quot;hidden&quot; name=&quot;armor&quot; value=&quot;1&quot; /&gt;
+                &lt;input type=&quot;hidden&quot; name=&quot;preview&quot; value=&quot;&quot; /&gt;
+                &lt;input type=&quot;hidden&quot; name=&quot;sid&quot; value=&quot;&quot; /&gt;
+                &lt;div id=&quot;comments-open-data&quot;&gt;
+                    &lt;div id=&quot;comment-form-name&quot;&gt;
+                        &lt;label for=&quot;comment-author&quot;&gt;Name&lt;/label&gt;
+                        &lt;input id=&quot;comment-author&quot; name=&quot;author&quot; size=&quot;30&quot; value=&quot;&quot; onfocus=&quot;mtCommentFormOnFocus()&quot; /&gt;
+                    &lt;/div&gt;
+                    &lt;div id=&quot;comment-form-email&quot;&gt;
+                        &lt;label for=&quot;comment-email&quot;&gt;Email Address&lt;/label&gt;
+                        &lt;input id=&quot;comment-email&quot; name=&quot;email&quot; size=&quot;30&quot; value=&quot;&quot; onfocus=&quot;mtCommentFormOnFocus()&quot; /&gt;
+                    &lt;/div&gt;
+                    &lt;div id=&quot;comment-form-url&quot;&gt;
+                        &lt;label for=&quot;comment-url&quot;&gt;URL&lt;/label&gt;
+                        &lt;input id=&quot;comment-url&quot; name=&quot;url&quot; size=&quot;30&quot; value=&quot;&quot; onfocus=&quot;mtCommentFormOnFocus()&quot; /&gt;
+                    &lt;/div&gt;
+                    &lt;div id=&quot;comment-form-remember-me&quot;&gt;
+                        &lt;input type=&quot;checkbox&quot; id=&quot;comment-bake-cookie&quot; name=&quot;bakecookie&quot; onclick=&quot;mtRememberMeOnClick(this)&quot; value=&quot;1&quot; accesskey=&quot;r&quot; /&gt;
+                        &lt;label for=&quot;comment-bake-cookie&quot;&gt;Remember personal info?&lt;/label&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+                &lt;div id=&quot;comment-form-reply&quot; style=&quot;display:none&quot;&gt;
+                    &lt;input type=&quot;checkbox&quot; id=&quot;comment-reply&quot; name=&quot;comment_reply&quot; value=&quot;&quot; onclick=&quot;mtSetCommentParentID()&quot; /&gt;
+                    &lt;label for=&quot;comment-reply&quot; id=&quot;comment-reply-label&quot;&gt;&lt;/label&gt;
+                &lt;/div&gt;
+                &lt;div id=&quot;comments-open-text&quot;&gt;
+                    &lt;label for=&quot;comment-text&quot;&gt;Comments
+                    (You may use HTML tags for style)&lt;/label&gt;
+                    &lt;textarea id=&quot;comment-text&quot; name=&quot;text&quot; rows=&quot;15&quot; cols=&quot;50&quot; onfocus=&quot;mtCommentFormOnFocus()&quot;&gt;&lt;/textarea&gt;
+                &lt;/div&gt;
+                &lt;div id=&quot;comments-open-captcha&quot;&gt;&lt;/div&gt;
+                &lt;div id=&quot;comments-open-footer&quot;&gt;
+                    &lt;input type=&quot;submit&quot; accesskey=&quot;v&quot; name=&quot;preview_button&quot; id=&quot;comment-preview&quot; value=&quot;Preview&quot; onclick=&quot;this.form.preview.value='1';&quot; /&gt;
+                    &lt;input type=&quot;submit&quot; accesskey=&quot;s&quot; name=&quot;post&quot; id=&quot;comment-submit&quot; value=&quot;Submit&quot; /&gt;
+                &lt;/div&gt;
+            &lt;/form&gt;
+
+
+        &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;script type=&quot;text/javascript&quot;&gt;
+    &lt;!--
+    mtAttachEvent(&quot;load&quot;, mtEntryOnLoad);
+    mtAttachEvent(&quot;unload&quot;, mtEntryOnUnload);
+    //--&gt;
+    &lt;/script&gt;
+    
+
+
+&lt;/div&gt;
+
+
+
+&lt;/div&gt;&lt;!-- #content-main --&gt;
+            
+            &lt;div id=&quot;content-aux&quot;&gt;
+            
+                
+                &lt;div class=&quot;module-aux pkg&quot; id=&quot;module-aux-about-author-181&quot;&gt;
+                &lt;div class=&quot;module-inner&quot;&gt;
+                    &lt;h3&gt;About Jeffrey Kegler&lt;/h3&gt;
+                    &lt;p&gt;&lt;img class=&quot;authorpic&quot; src=&quot;http://blogs.perl.org/mt/mt-static/support/assets_c/2011/08/Jeffrey_Kegler_BEACH1-thumb-72x72-574.jpg&quot;&quot; alt=&quot;user-pic&quot; /&gt;
+	            I blog about Marpa, my parsing algorithm, and other things of interest to techies.&lt;/p&gt;
+                    &lt;div class=&quot;more-link&quot;&gt;&lt;a href=&quot;http://blogs.perl.org/mt/mt-cp.fcgi?__mode=view&amp;amp;id=181&quot;&gt;More info &amp;raquo;&lt;/a&gt;&lt;/div&gt;
+                &lt;/div&gt;
+                &lt;/div&gt;&lt;!-- #module-aux-about-author --&gt;
+
+
+
+
+                
+            
+            
+            &lt;div class=&quot;module-aux pkg&quot; id=&quot;module-aux-search&quot;&gt;
+                &lt;div class=&quot;module-inner&quot;&gt;
+                    
+                    
+                    &lt;h3&gt;Search this blog&lt;/h3&gt;
+                    
+                    
+					
+                    &lt;div id=&quot;search-form-aux&quot;&gt;
+                        &lt;form method=&quot;get&quot; action=&quot;http://blogs.perl.org/mt/mt-search.fcgi&quot;&gt;
+                    
+                            &lt;input type=&quot;hidden&quot; name=&quot;IncludeBlogs&quot; value=&quot;63&quot; /&gt;
+                    
+                            &lt;input type=&quot;hidden&quot; name=&quot;limit&quot; value=&quot;20&quot; /&gt;
+                            &lt;label for=&quot;search&quot;&gt;Search&lt;/label&gt;
+                            &lt;input id=&quot;local-search&quot; class=&quot;query&quot; name=&quot;search&quot; value=&quot;&quot; /&gt;
+                            &lt;input class=&quot;submit&quot; type=&quot;submit&quot; value=&quot;Go&quot; /&gt;
+                        &lt;/form&gt;
+                    &lt;/div&gt;&lt;!-- #search-form-aux --&gt;
+                &lt;/div&gt;
+                &lt;/div&gt;&lt;!-- #module-aux-search --&gt;
+                    
+
+            
+            
+                
+                
+                
+                
+            
+
+            &lt;/div&gt;&lt;!-- #content-aux --&gt;
+
+
+
+        &lt;/div&gt;&lt;!-- #content-inner --&gt;
+        &lt;/div&gt;&lt;!-- #content --&gt;
+
+        &lt;div id=&quot;footer&quot;&gt;
+        &lt;div id=&quot;footer-inner&quot; class=&quot;pkg&quot;&gt;
+            &lt;ul id=&quot;footer-nav&quot;&gt;
+                &lt;li class=&quot;first&quot;&gt;&lt;a href=&quot;http://github.com/blogs-perl-org/blogs.perl.org/issues&quot;&gt;Feedback welcome&lt;/a&gt;&lt;/li&gt;
+                &lt;li&gt;Hosted by &lt;a href=&quot;http://dave.org.uk&quot;&gt;Dave Cross&lt;/a&gt; of &lt;a href=&quot;http://mag-sol.com/&quot;&gt;Magnum Solutions&lt;/a&gt; and &lt;a href=&quot;http://aaroncrane.co.uk/&quot;&gt;Aaron Crane&lt;/a&gt; of &lt;a href=&quot;http://cutbot.net/&quot;&gt;Cutbot&lt;/a&gt;&lt;/li&gt;
+            &lt;/ul&gt;
+            
+            &lt;div class=&quot;powered-by&quot;&gt;&lt;a href=&quot;http://www.movabletype.com/&quot; target=&quot;_blank&quot;&gt;Powered by Movable Type&lt;/a&gt;&lt;/div&gt;
+        &lt;/div&gt;&lt;!-- #footer-inner --&gt;
+        &lt;/div&gt;&lt;!-- #footer --&gt;
+            
+        &lt;/div&gt;&lt;!-- #content-inner --&gt;
+        &lt;/div&gt;&lt;!-- #content --&gt;
+        
+    &lt;/div&gt;&lt;!-- #container-inner --&gt;
+    &lt;/div&gt;&lt;!-- #container --&gt;</description>
+  </item>
+  </channel>
+</rss>

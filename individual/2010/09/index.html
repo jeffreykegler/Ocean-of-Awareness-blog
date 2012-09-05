@@ -1,0 +1,319 @@
+<html>
+<head>
+<link rel="alternate" title="Ocean of Awareness RSS" type="application/rss+xml" title="RSS" href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/index.rss" />
+<title>Ocean of Awareness   </title>
+<style type="text/css">
+   strong {font-weight: 700;}
+</style>
+</head>
+<body>
+<div id="header"
+  style="color:white;background-color:#38B0C0;padding:1em;clear:left;text-align:center;">
+<h1>Ocean of Awareness</h1>
+  
+</div>
+  <div id="menu" style="margin:0;padding:10px;width:150px;float:left;">
+  <h2>Jeffrey Kegler's blog</h2>
+  <p>About Marpa, his new parsing algorithm,
+    and other topics of interest</p>
+  <h3>Resources</h3>
+  <p><a href="http://www.jeffreykegler.com/">Jeffrey Kegler's website</p>
+  <p><a href="http://www.jeffreykegler.com/marpa">The Marpa website</p>
+  </div>
+  <div id="content" style="margin-left:190px;border-left:2px solid #38B0C0;padding:25px;">
+<h3>Wed, 22 Sep 2010</h3>
+<br />
+<center><a name="perl-and-parsing-6-rewind"> <h2>Perl and Parsing 5: Rewind</h2> </a>
+</center>
+<h2>The Rise and Fall and Rise of the Left</h2>
+
+<p>
+On 28 February 2006, the Golden Age of Right Parsing ended.
+The End of the Age was like a rewind of the Beginning.
+The Golden Age of Right Parsing began when a right parser
+replaced the hand-written recursive descent parser in
+the C compiler.
+It ended,
+almost three decades later,
+when the world's most visible C compiler replaced
+its right parser with a
+hand-written recursive descent implementation.
+
+<p>
+Right parsing was taken out of mathematical notation
+on the pages of academic journals
+and put on the map in 1978.
+That's when Steven Johnson rewrote Dennis Ritchie's C compiler to make it
+easier to understand and modify.
+This "Portable C compiler" used yacc,
+a new tool that Johnson had written
+based on some papers by Don Knuth and Frank DeRemer.
+Knuth had invented LR parsing,
+and DeRemer described a wrinkle on it that he called LALR.
+It was said that LALR would actually make right parsing practical.
+The folks at Bell Labs decided to give it a go.
+
+<p>
+The result was one of the most influential implementation decisions
+in the history of programming.
+In a previous post, I described how LALR parsing rode on the backs
+of yacc and the Portable C Compiler
+into total dominance over parsing mindshare.
+LALR came to define production-quality parsing.
+
+<p>
+In 1978, there had been two C compilers, both at AT&T's Bell Labs --
+Ritchie's original, and Johnson's Portable C Compiler, which was about
+to replace it.
+Neither was a commercial product -- AT&T was a regulated monopoly,
+banned from selling hardware or software.
+
+<p>
+By 2006, C was the most important systems programming language
+in a world which had become far more dependent on computer systems.
+There were now many C compilers,
+several of them of great commercial importance.
+Arguably, one of these was the
+most visible production-quality C compiler.
+This no longer came from AT&T.
+The leader among C compilers in 2006 was GCC,
+the GNU foundation's flagship accomplishment.
+
+<p>
+GCC can be said to have clearly taken this lead
+by 1994, when BSD UNIX had switched
+from the Portable C Compiler to GCC.
+This was a revolution of another kind,
+but as far as the parsing algorithm went,
+it was "Hail to the new boss... same as the old boss".
+GCC parsing was firmly in the LALR tradition.
+
+<p>
+But
+on 28 February 2006,
+the nearly 3 decades of LALR dominance were over.
+That's the date of
+<a href="http://gcc.gnu.org/gcc-4.1/changes.html">
+the change log for GCC 4.1</a>.
+It's a long document, and the relevant entry is deep
+inside it.
+It's one of the shorter change descriptions.
+
+<p>
+In fact, it's exactly this one sentence:
+<blockquote>
+The old Bison-based C and Objective-C parser has been replaced by
+a new, faster hand-written recursive descent parser.
+</blockquote>
+For me,
+that's a little like reading
+page 62,518 of the Federal Register
+and spotting a one-line notice:
+<blockquote>
+Effective immediately, Manhattan belongs to the Indians.
+</blockquote>
+
+
+<h2>The Once and Future Parser</h2>
+
+<p>
+Hand-written recursive descent
+was the origin and remains the soul of left parsing.
+In fact,
+hand-written recursive descent
+was the first real parsing algorithm.
+Recursive descent is a very natural method
+if you're a modern programmer.
+Basically, for every left-hand-side symbol in your grammar,
+you write a subroutine to parse it.
+If the rule has right hand side symbols,
+you call the subroutines for them, in order.
+When all the recursive calls come back to the top,
+that's your parse.
+
+<p>
+Would that parsing were really that simple.
+But a real beauty of recursive descent
+(perhaps the ultimate secret behind its comeback)
+is that it is an idea
+that allows easy elaboration.
+For example, suppose I say (as happens typically to be the case)
+that some symbols are on the left hand side
+of more than one rule of the grammar.
+A competent modern programmer
+will quickly think up hacks
+that let him determine which rule to use.
+Someone clever is likely to reinvent lookahead,
+even if he'd never heard of recursive descent before.
+If you're a programmer brought up on recursive subroutines,
+the logic of recursive descent makes sense to you.
+
+<p>
+"Folk parsers" --
+parsers written by programmers
+with little patience for theory and
+a "just do it" philosophy -- almost
+always end up as variations on recursive descent.
+Those of you with contempt for parsing theory
+may take as one of your best arguments
+the current re-emergence of hand-written recursive
+descent as the method of choice for serious production-quality parsing.
+It's like we theorists might as well have spent the last 50 years surfing.
+
+<p>
+I use the term "Folk parsing".
+It is quite descriptive, but it's also misleading.
+The appeal of recursive descent
+is not just to working programmers.
+Recursive descent has
+always had 
+a following among academics.
+
+<p>
+And recursive descent did not emerge from the primal mists.
+It had an inventor, Ned Irons, who
+was one of my teachers at Yale.
+Ned wrote a paper
+which was
+"[t]he first to describe a full parser.
+It is essentially a full backtracking recursive descent
+left-corner parser" [1].
+I take its publication date (1961) as the date
+of the invention of both recursive descent and parsing.
+
+<h2>"You see, in the old days ..."</h2>
+
+<p>
+Some previous papers had described hacks
+for parsing arithmetic expressions.
+These seem to have been primarily motivated by
+the need to parse FORTRAN assignment statements.
+
+<p>
+FORTRAN in those days
+was not much more than a glorified macro language.
+FORTRAN III was parsed line by line, the way you parse
+configuration files now.
+Except you probably use much more sophisticated techniques
+to parse your config files.
+Many of the simpler techniques,
+things modern programmers take for granted,
+weren't known in 1961.
+
+<p>
+It can be hard to take ourselves back to those days
+in the history of programming.
+Concepts we consider obvious
+were then either partly formed, unknown, or completely unsuspected.
+In 1961,
+BNF had just been invented and
+LISP and IPL were the only languages with stacks.
+Only LISP (1958) had them as a built-in feature.
+FORTRAN III had a feature called subroutines,
+but there were no stacks.
+A FORTRAN III subroutine puts its return value
+into a fixed, global location.
+Recursive subroutine calls were not allowed.
+
+<p>
+From a parsing point of view,
+FORTRAN does seem to have had
+the most complex language feature
+of the time.
+The
+right hand side of FORTRAN's assignment statements
+allowed arithmetic expressions.
+These were relatively full-featured
+arithmetic expressions.
+
+<p>
+All this was taking place within the limits of an 80 column punched card.
+(Actually, 72 columns if you were prudent and had sequence numbers on the cards.
+Otherwise there's hell to pay if you drop the deck.)
+Parsing those expressions was FORTRAN's claim to fame,
+one which the inventors weren't about to let you overlook.
+The language was named after it.
+FORTRAN is a block acronym for "Formula Translating".
+
+<p>
+This "formula translating" was accomplished with methods
+we'd now consider
+<a href="http://en.wikipedia.org/wiki/Operator-precedence_parser#Alternatives_to_Dijkstra.27s_Algorithm">
+gruesome hacks</a>.
+True operator-precedence parsing does not seem to have been invented
+until shortly after Ned invented recursive descent.
+
+<p>
+Not only do users of
+modern languages take the availability of recursion
+and the use of a stack
+as a given,
+they expect their languages to have a fully recursive grammar.
+Statements contain blocks.
+Blocks contain statements.
+
+<p>
+A recursive language seems
+to presuppose a real parsing algorithm.
+Brute force and trickery might have been
+enough to parse an arithmetic
+expression that fit into 72 columns.
+(80 if you like to live dangerously.)
+But you can't parse a modern
+recursive language if you don't use recursion.
+
+<p>
+So recursive descent, the first real parsing algorithm,
+needed to be invented first,
+before the first recursive language,
+right?
+You'd think so.
+But, as we'll see in my next post in this series,
+that ain't the way it happened.
+
+<p>[1]
+<a href="ftp://ftp.cs.vu.nl/pub/dick/PTAPG_2nd_Edition/index.html">
+Grune & Jacobs, Parsing Techniques: A Practical Guide - Second Edition</a>.
+The history in this post takes as its authority their annotated bibliography,
+<a href="ftp://ftp.cs.vu.nl/pub/dick/PTAPG_2nd_Edition/CompleteList.pdf">
+which is online<a>.
+<br />
+<p>posted at: 23:45 |
+path: <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2010/09">/individual/2010/09</a> |
+<a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2010/09/perl-and-parsing-6-rewind.html">direct link to this entry</a>
+</p>
+<div style="color:#38B0C0;padding:1px;text-align:center;">
+&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&sect;
+</div>
+</div>
+</div>
+<div id="footer" style="border-top:thick solid #38B0C0;clear:left;padding:1em;">
+<p>This is Ocean of Awareness's
+  new home.  This blog has been hosted at
+  <a href="http://blogs.perl.org/users/jeffrey_kegler/">blogs.perl.org</a>
+  but I have succumbed to the lure of static blogging.
+  I have not yet decided how to deal with comments at this new blog location.
+If the post is Marpa-related,
+<a href="https://groups.google.com/forum/?hl=en&fromgroups#%21forum/marpa-parser">
+the Marpa mailing list</a>
+is a good place to comment.
+Also,
+I will continue to dual-post for some time,
+and have not yet frozen comments on the versions of the
+post at
+<a href="http://blogs.perl.org/users/jeffrey_kegler/">blogs.perl.org</a>.
+</div>
+              <script type="text/javascript">
+            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+          </script>
+          <script type="text/javascript">
+            try {
+              var pageTracker = _gat._getTracker("UA-33430331-1");
+            pageTracker._trackPageview();
+            } catch(err) {}
+          </script>
+</body>
+</html>

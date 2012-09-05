@@ -1,0 +1,229 @@
+<?xml version="1.0"?>
+<!-- name="generator" content="blosxom/2.0" -->
+<!DOCTYPE rss PUBLIC "-//Netscape Communications//DTD RSS 0.91//EN" "http://my.netscape.com/publish/formats/rss-0.91.dtd">
+
+<rss version="0.91">
+  <channel>
+    <title>Ocean of Awareness   </title>
+    <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog</link>
+    <description>Ocean of Awareness.</description>
+    <language>en</language>
+
+  <item>
+    <title>Better than Literate!</title>
+    <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog/2010/11/17#better-than-literate</link>
+    <description>&lt;p&gt;I'm converting Marpa
+to XS and have started to use Cweb.
+Cweb is
+the C version of the &quot;literate programming&quot; system pioneered
+by Don Knuth.
+I'm pleasantly surprised by it.
+Cweb adds fun to the programming experience
+and is helping in more ways than the phrase
+&quot;literate programming&quot; would suggest.
+
+&lt;p&gt;
+One very important feature of Cweb
+is something that would seem to be a nuisance,
+or at best an implementation detail.
+The &lt;file&gt;.w&lt;/file&gt; file
+which contains the Cweb is now the &quot;source&quot;.
+The
+&lt;file&gt;.c&lt;/file&gt; and
+&lt;file&gt;.h&lt;/file&gt; files are now &quot;built files&quot;.
+I am no longer working with the C language
+&quot;translation units&quot;.
+(&quot;Translation unit&quot;
+is standards-committee-speak for
+the text which is
+directly input into the C compiler.
+The term is used in attempt to distance the standard from
+file conventions.)
+
+&lt;p&gt;
+Moving one step back from the &quot;translation unit&quot;
+separates the presentation of the code
+from the issues of linkage and scope.
+Over the years,
+I'd gotten used to
+organizing my code
+around the visibility rules for the compiler and
+the linker.
+With Cweb,
+I can
+lay out C code
+in the same way that I think about it.
+It surprises me how liberating this is.
+
+&lt;p&gt;Suppose we are adding an element to a C structure.
+Typically required might be:
+&lt;ol&gt;
+&lt;li&gt;A &lt;var&gt;typedef&lt;/var&gt; for a type
+that is particularly complex.
+
+&lt;li&gt;The entries in the &lt;var&gt;struct&lt;/var&gt;.
+&lt;li&gt;Initialization of these entries.
+&lt;li&gt;&quot;Destruction&quot; of those entries: freeing any memory or other resources
+they use.
+&lt;li&gt;Definition of the function bodies for mutators, accessors, etc.
+&lt;li&gt;Public prototypes for some of the functions.
+&lt;li&gt;Private prototypes for other functions.
+&lt;/ol&gt;
+Often, each of these would be put at a different location.
+But all these bits of code are written and debugged together.
+If you ever want to change the data structures,
+all these bits of code would have to be tracked down again.
+True, skill at picking good names
+and at performing searches on
+the source can make this sort of thing tractable.
+But it is also true that some of the programming skills
+we've developed over the years could 
+aptly be called symptoms.
+
+&lt;p&gt;Here is some C logic which, while very small, nonetheless has 6 of the 7 
+components listed above.
+In Cweb I was able to put them all together.  Here's the bottom of one page of my &quot;woven&quot; Cweb code:
+&lt;img alt=&quot;callback1.png&quot; src=&quot;http://blogs.perl.org/users/jeffrey_kegler/callback1.png&quot; width=&quot;723&quot; height=&quot;169&quot; class=&quot;mt-image-none&quot; style=&quot;&quot; /&gt;
+&lt;p&gt;... and here is the top of the next:
+&lt;img alt=&quot;callback2.png&quot; src=&quot;http://blogs.perl.org/users/jeffrey_kegler/callback2.png&quot; 
+width=&quot;723&quot; height=&quot;623&quot; class=&quot;mt-image-none&quot; style=&quot;&quot; /&gt;
+&lt;p&gt;For some readers, these samples may adequately illustrate my point.
+For those curious about the code, I'll close with a few
+explanations.  The code, as I said, is for the XS version of Marpa.
+For those not familiar, &lt;a href=&quot;http://search.cpan.org/~jkegl/Marpa-0.200000/&quot;&gt;Marpa&lt;/a&gt;
+is a general BNF parser generator -- it parses from any grammar that you can write in BNF.
+If the grammar is of any of the kinds currently in practical use
+(yacc, LR(k), LALR, LL, recursive descent, etc.), this parsing is in linear
+time.
+
+&lt;p&gt;Marpa uses Perl callbacks, and so the XS version must be able to call back
+to Perl closures.
+So where is all the Perl logic in my example?
+
+&lt;p&gt;For the XS conversion, I'm separating the code into three layers:
+
+&lt;ol&gt;
+&lt;li&gt;
+&lt;var&gt;libmarpa&lt;/var&gt;
+is a &quot;pure C&quot; library, which implements the core
+of the Marpa algorithm.
+&lt;var&gt;libmarpa&lt;/var&gt;
+is agnostic about whether it is called from Perl,
+from another high level language, and even from other C code.
+&lt;li&gt;There's a &quot;glue&quot; layer to tie the Perl code to &lt;var&gt;libmarpa&lt;/var&gt;.
+This is in Perl's XS language.
+XS can be thought of as a C dialect.
+Special preprocessing converts XS into C code,
+which is then compiled.
+&lt;li&gt;Finally, there's a &quot;pure Perl&quot; wrapper.  User interface
+issues are handled at this level.
+&lt;/ol&gt;
+
+&lt;p&gt;I am only using Cweb for &lt;var&gt;libmarpa&lt;/var&gt;.
+(Cweb only understands C language.)
+
+&lt;p&gt;Since &lt;var&gt;libmarpa&lt;/var&gt; has
+no Perl-specific logic, its role in dealing with Perl callbacks is very simple.
+&lt;var&gt;libmarpa&lt;/var&gt; needs code to store the callback (which from its point
+of view is just a C function pointer),
+and some other code to perform the callback.
+C does not have closures, so to implement a poor man's version
+of these, the callback is allowed an argment,
+which can be examined and set.
+It comes out to a couple of dozen lines of code,
+the majority of which are declarations and data definitions.
+
+&lt;p&gt;One thing is missing from the example -- &quot;destructor&quot; logic.
+The pointers in the example do not &quot;own&quot; the things that they point to,
+so there is no need to deallocate anything.
+When allocation and deallocation are separate, it is easy to forget
+whether you omitted deallocation logic because it was unnecessary,
+or because you forgot.
+Using Cweb, I always put allocation and deallocation together.
+Perhaps that's not enough to make memory leaks a thing of the past,
+but it certainly makes life easier.</description>
+  </item>
+  <item>
+    <title>Marpa's Sudden Portability Adventure</title>
+    <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog/2010/11/02#marpas-sudden-portability-adventure</link>
+    <description>&lt;p&gt;I've made bold claims for the portability of
+&lt;a href=&quot;http://search.cpan.org/~jkegl/Marpa-0.200000/&quot;&gt;Marpa&lt;/a&gt;.
+[
+Marpa is a general BNF parser generator -- it parses from any grammar that you can write in BNF.
+If the grammar is of one of the kinds currently in practical use
+(yacc, LR(k), LALR, LL, recursive descent, etc.), this parsing is in linear
+time. ]
+
+&lt;p&gt;The boldness of my claims evinced
+no ambition to test them under fire.
+But, when my main development box (a 2-year Dell laptop running Ubuntu)
+suddenly died,
+my only other choice for a development platform was a MacBook G4 running
+Mac OS Tiger.
+So test my portability claims is what I had to do.
+
+&lt;p&gt;Not that my brags about portability had been without foundation.
+I upload development versions for cpantesters regularly.
+(By the way, to all of you at cpantesters: a big &quot;thank you&quot;.)
+As far as the configuration, build and runtime environments went,
+I had a lot of reason to be confident.
+
+&lt;p&gt;The problem is that
+I am now working on the XS version of Marpa.
+When I was working on
+the Pure Perl version of
+&lt;a href=&quot;http://search.cpan.org/~jkegl/Marpa-0.200000/&quot;&gt;Marpa&lt;/a&gt;,
+my maintenance and development environments were not separate from
+the configuration, build and runtime environments.
+Development was also in Pure Perl,
+with no additional tools required.
+But for the XS version of Marpa,
+maintenance and development require GNU autotools,
+as well as Don Knuth's TeX and Cweb.
+
+&lt;p&gt;Let me emphasize that you can, now and in the future,
+configure, build and run Marpa::XS on boxes without GNU autotools
+or TeX.
+It's just that
+you can't properly work on or patch the source code
+without them.
+Also, it is worth emphasizing that, in the open source spirit,
+Marpa::XS ships with all the files necessary for maintainance
+and development.
+So you always have the &quot;source&quot; in the fullest sense,
+and all the tools you need to develop are available free
+with source.
+But part of making Marpa::XS as portable as possible is ensuring that
+it will configure, build and run happily
+in environments which don't have all
+the development tools it requires.
+
+&lt;p&gt;Which brings me back to my crisis.
+I could be confident about configuring, building and running my development
+version of Marpa::XS on a wide variety of platforms.
+The cpantesters had proved this for me.
+Less certain was whether my
+development environment could be recreated.
+
+&lt;p&gt;The sudden switch involved a sudden change of chips (Intel to PPC),
+and operating systems
+(the latest Ubuntu to a Mac OS that is two major releases out of date).
+More dramatic changes are possible (both are POSIX systems),
+but for a port suddenly forced on me, this was more than
+change enough, thank you.
+
+&lt;p&gt;I hoped everything I needed was on MacPorts.
+That was assuming that vintage 2005 systems, running
+a Mac OS version two major
+releases obsolete,
+were a priority with the helpful folks at MacPorts.
+
+&lt;p&gt;In the event, I was back developing with 24 hours.
+The only change I had to make to my codebase was to three lines
+in Build.PL, which specified module versions.
+Most of the 24 hours was taken up with compiles.
+The Macbook G4 was never considered a fire-breather,
+even back in 2005 when it was new.</description>
+  </item>
+  </channel>
+</rss>

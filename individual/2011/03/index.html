@@ -1,0 +1,365 @@
+<html>
+<head>
+<link rel="alternate" title="Ocean of Awareness RSS" type="application/rss+xml" title="RSS" href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/index.rss" />
+<title>Ocean of Awareness   </title>
+<style type="text/css">
+   strong {font-weight: 700;}
+</style>
+</head>
+<body>
+<div id="header"
+  style="color:white;background-color:#38B0C0;padding:1em;clear:left;text-align:center;">
+<h1>Ocean of Awareness</h1>
+  
+</div>
+  <div id="menu" style="margin:0;padding:10px;width:150px;float:left;">
+  <h2>Jeffrey Kegler's blog</h2>
+  <p>About Marpa, his new parsing algorithm,
+    and other topics of interest</p>
+  <h3>Resources</h3>
+  <p><a href="http://www.jeffreykegler.com/">Jeffrey Kegler's website</p>
+  <p><a href="http://www.jeffreykegler.com/marpa">The Marpa website</p>
+  </div>
+  <div id="content" style="margin-left:190px;border-left:2px solid #38B0C0;padding:25px;">
+<h3>Thu, 24 Mar 2011</h3>
+<br />
+<center><a name="perl-and-parsing-8-the-where-and-why-of-rejection"> <h2>Perl and Parsing 8: The Where and Why of Rejection</h2> </a>
+</center>
+<h1>Why Perl is Just Not That Into Your Syntax</h1>
+<p>
+<a href="http://blogs.perl.org/users/jeffrey_kegler/2011/01/perl-and-parsing-6-error-handling.html">
+In a previous post</a>,
+I noted that Perl often cannot precisely
+locate syntax errors in its scripts.
+Still less can it identify the exact problem.
+In this post, I will demonstrate an experimental
+utility which does
+pinpoint Perl syntax errors,
+<a href="#NOTE1">precisely indicating where and what the problem is</a>.
+<p>Here's my example
+<a href="http://blogs.perl.org/users/jeffrey_kegler/2011/01/perl-and-parsing-6-error-handling.html">
+from the previous post</a>.
+<pre>
+<code class="prettyprint">
+my $lyric =
+'Sloopy wears a red dress, yeah
+As old as the hills
+but when sloopy wears that red dress, yeah
+you know it gives me the chills
+Sloopy when I see you walking, 
+walking down the street
+I say don\'t worry sloopy, girl
+You belong to me'~!@$%^&*()_+;
+print "$lyric\n";
+
+</code>
+</pre>
+<p>And here is Perl's output for the error:
+<pre>
+<code class="prettyprint">
+Bareword found where operator expected at bomb2.pl line 9, near ")_"
+        (Missing operator before _?)
+syntax error at bomb2.pl line 9, near "You belong to me'~"
+  (Might be a runaway multi-line '' string starting on line 2)
+Execution of bomb2.pl aborted due to compilation errors.
+</code>
+</pre>
+As I said
+<a href="http://blogs.perl.org/users/jeffrey_kegler/2011/01/perl-and-parsing-6-error-handling.html">
+in that previous post</a>,
+<var>perl</var>
+clearly has very
+little idea where things went wrong -- it's guessing.
+<h1>Pinpointing the Error</h1>
+
+At this point, let me give away the ending.
+The point of failure is the very first special symbol: the tilde.
+When I ran my fingers from left to right across the top of my keyboard,
+I was hoping to produce a more complicated example.
+But perhaps it is just as well I did not.
+<p>
+Here,
+<a href="#NOTE2">
+from my experimental Marpa-based utility</a>,
+is what
+Perl is looking for when it encounters the tilde:
+The dot in the rules indicates how far the parse has already progressed.
+<pre>
+line -> label sideff . SEMI
+sideff -> expr . IF expr
+sideff -> expr . UNLESS expr
+sideff -> expr . WHILE expr
+sideff -> expr . UNTIL iexpr
+sideff -> expr . FOR expr
+sideff -> expr . WHEN expr
+or_expr -> or_expr . OROP and_expr
+or_expr -> or_expr . DOROP and_expr
+and_expr -> and_expr . ANDOP argexpr
+argexpr -> argexpr . COMMA
+argexpr -> argexpr . COMMA term
+term_listop -> term_cond . ASSIGNOP term_listop
+term_assign -> term_cond . ASSIGNOP term_assign
+term_cond -> term_dotdot . QUESTION term_cond COLON term_cond
+term_dotdot -> term_oror . DOTDOT term_oror
+term_oror -> term_oror . OROR term_andand
+term_oror -> term_oror . DORDOR term_andand
+term_andand -> term_andand . ANDAND term_bitorop
+term_bitorop -> term_bitorop . BITOROP term_bitandop
+term_bitandop -> term_bitandop . BITANDOP term_eqop
+term_eqop -> term_relop . EQOP term_relop
+term_relop -> term_uniop . RELOP term_uniop
+term_shiftop -> term_shiftop . SHIFTOP term_addop
+term_addop -> term_addop . ADDOP term_mulop
+term_mulop -> term_mulop . MULOP term_matchop
+term_matchop -> term_matchop . MATCHOP term_uminus
+term_powop -> term_increment . POWOP term_powop
+term_increment -> term_arrow . POSTINC
+term_increment -> term_arrow . POSTDEC
+term_arrow -> term_arrow . ARROW method LPAREN listexprcom RPAREN
+term_arrow -> term_arrow . ARROW method
+subscripted -> term_hi . ARROW LSQUARE expr RSQUARE
+subscripted -> term_hi . ARROW LCURLY expr SEMI RCURLY
+subscripted -> term_hi . ARROW LPAREN RPAREN
+subscripted -> term_hi . ARROW LPAREN expr RPAREN
+</pre>
+<p>The names of the symbols are based on those in <var>perly.y</var>.
+Operators are not shown symbolically, but are indicated with the name
+in caps: "POSTINC" instead of "++".
+<a href="#NOTE2">Terms are suffixed with their precedence</a>:
+"term_assignop" is the symbol
+for terms with the same precedence as the assignment operator.
+"term_hi" is the symbol for terms at the highest precedence level.
+<p>
+A tilde, when it is a single-character Perl operator,
+is always a prefix unary operator.
+Tildes also form part of several multi-character operators,
+but that is not the case here.
+Here is what Perl is looking for
+when it encounters the tilde:
+<ul>
+
+<li>A semicolon that would end the statement.  (Statements
+are called <var>line</var>'s internally by <var>perly.y</var>.)
+<li>The postfix conditonal keywords.
+<li>A lot of binary operators.
+<li>A couple of postfix unary operators.
+These, if found, will produce
+a compile-time complaint about incrementing a constant.
+</ul>
+<p>
+No prefix unary operator is in the above list,
+and the parse fails here.
+<h1>About the Utility Used in This Post</h1>
+<p>Finding the exact point of failure and the exact
+reasons would seem like something that you'd want in a parser.
+But in fact, production languages have tended to be like Perl --
+they try to indicate the general area of a syntax problem
+and to make a good guess as to its nature.
+But they leave it to the programmer to figure out exactly where they failed
+and why.
+<p>Marpa, then, is unusual, in that for any grammar you can write in BNF,
+and any input, it will either produce a parse, or a precise characterization
+of the failure.
+Marpa::XS::Perl
+is still experimental and under development.
+As I tackle tasks (like preparing this post, for example)
+I add the necessary capabilities.
+An example of what my utility cannot yet do is deal with
+floating point constants.
+(They're not hard, I just haven't encountered them yet in a test case.)
+<p>My original intent with Marpa::XS::Perl was to use it for snippets,
+and for academic and toy examples,
+and it cannot yet deal with production Perl
+code.
+My purpose so far
+has been to demonstrate that Marpa could be the basis
+of a practical Perl parsing utility.
+<h1>Notes</h1>
+
+<p><a name="NOTE1"><b>Note 1</b></a>:
+Of course, in one sense, the exact nature of the problem depends
+on what the person writing the script intended, and on this
+my utility has not a clue.
+In this post, "finding the exact problem" means finding the exact
+location of a parse failure, and finding exactly what <var>perl</var>
+was looking for when
+<var>perl</var> did not find what
+<var>perl</var> wanted to find.
+<p>
+In determining the "exact location of parse failure",
+I also avoid mind-reading.
+I use a definition taken from the parsing literature:
+In a rejected token stream,
+the point of failure is the first token
+which made a successful parse impossible.
+In other words, if you encounter a token which cannot possibly
+be part of a successful parse, given the input you've already
+read, that token is the point of failure.
+Looking at it from the opposite point of view,
+if you can find some additonal
+input that makes the parse succeed,
+you have not yet found a point of failure.
+<p><a name="NOTE2"><b>Note 2</b></a>:
+To be precise, the output in this post was automatically generated
+by my utility, then edited for readability.
+Specifically, the edits removed
+those lines which were for rules with the dot
+at the end,
+and removed rule numbers and token
+numbers from the beginnings of the lines.
+Since
+rules with the dot at the end are completed, they do not
+generate any expectations for future tokens,
+and are irrelevant here.
+Similarly, in this context
+the internal rule numbers and location numbers would be clutter.
+While I made these readability edits by hand, they were rote
+and could easily have been automated.
+<p><a name="NOTE3"><b>Note 3</b></a>:
+Unlike in textbook BNF,
+the BNF in <var>perly.y</var> does not have a separate symbol for terms
+of each precedence.  
+The BNF in
+<var>perly.y</var> is wildly ambiguous,
+unlike the Perl language.
+<var>perly.y</var> uses a tie-breaking technique,
+in combination with the BNF,
+to assign precedence.
+While some use of this kind of tie-breaking is standard in <var>yacc</var>,
+for the Perl parser, Larry used it far more boldly than had been the practice before.
+Or for that matter, has been since.
+This is very important aspect of Perl parsing, one on which I've been planning to post.
+<br />
+<p>posted at: 10:21 |
+path: <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2011/03">/individual/2011/03</a> |
+<a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2011/03/perl-and-parsing-8-the-where-and-why-of-rejection.html">direct link to this entry</a>
+</p>
+<div style="color:#38B0C0;padding:1px;text-align:center;">
+&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&sect;
+</div>
+<h3>Thu, 17 Mar 2011</h3>
+<br />
+<center><a name="progress-on-marpaxs"> <h2>Progress on Marpa::XS</h2> </a>
+</center>
+<h1>A Faster Marpa</h1>
+<p>I've been converting Marpa from Pure Perl to C.
+For those who don't know,
+<a href="http://search.cpan.org/dist/Marpa/">Marpa</a>
+is a parser generator
+which parses any grammar you can write in BNF.
+If the grammar is
+<a href="#NOTE1">one of those which can be parsed
+by yacc,
+by recursive descent or as a regular expression</a>,
+Marpa parses it
+<a href="#NOTE2">in linear time</a>.
+<p>Marpa's core algorithm does no system calls.
+It is almost 100% pointer twiddling.
+There is no floating point, and very little integer arithmetic.
+It's as if it was made to order to show C in its very best light.
+<p>I expected converting the Perl implementation
+to C to improve speed by two orders of magnitude,
+and first results are close -- the speedup for the code
+converted to C is 95 to 1.
+The code converted to C remains wrappered in Perl.
+The Perl wrapper handles the I/O,
+the user interface, and roughly the last third of the core algorithm.
+This last part of the core algorithm I have yet to rewrite in C.
+<p>The speedup for an actual application depends
+on how much Perl "wrappering" the application layers on top of the Marpa parse engine.
+But every test in the test suite is several times faster
+for XS than for Pure Perl.
+Ultimately, I will make Marpa's core algorithm available
+as <var>libmarpa</var>, a C library with a documented interface.
+If you write a wrapper for <var>libmarpa</var> in C,
+you will be able to get the full speedup, which I expect
+with a few more tweaks to be better than 100 to 1.
+<h1>Looking Onward: An "Official" Alpha Release</h1>
+<p>At this moment,
+Marpa::XS is available in developer's releases only.
+I prefer that most users look at
+<a href="http://search.cpan.org/dist/Marpa/">Marpa</a> instead.
+<a href="http://search.cpan.org/dist/Marpa/">Marpa</a> is Pure Perl.
+It is also alpha,
+but it is stable at this point.
+<p>But with this very measurable speedup,
+Marpa::XS now offers added value over
+<a href="http://search.cpan.org/dist/Marpa/">Marpa</a>,
+and I am turning to work on
+an "official alpha" release of Marpa::XS.
+Such a release would still not be suitable for use in production
+situations, and its interface would be subject to change.
+<h1>Notes</h1>
+<p><a name="NOTE1">Note 1</a>:
+Technically, the grammars that Marpa parses in linear time are the
+LR-regular grammars.
+These include the LR(k) grammars and the LL(k) grammars, for all k.
+<p><a name="NOTE2">Note 2</a>:
+The claim of O(n) time complexity is for the underlying algorithm.
+Actual implementations tend to pick those data structures
+which are fastest in practice, instead of on paper.
+Pure Perl implementations, of course,
+must rely on the internal implementation
+of Perl's native data structures.
+<p>The relationship between theoretical time complexity
+and actual implemented speed in our field is like that
+between quantum mechanics and Newtonian mechanics in physics.
+There are effects back and forth, and a realm
+where each clearly rules.
+There are also specialists in each,
+who tend to avoid looking at the scales
+where one set of rules ceases to apply
+and the other kicks in.
+<p>The relationship between
+theoretical time complexity and actual implemented speed interests
+me.
+In Marpa's XS implementation, I have control of the data
+structures, and I am using the implementation to work out
+in detail
+the proofs of time complexity for Earley's algorithm
+and Leo's modification of it.
+In the course of this I hope to make a full accounting of
+any differences
+between theoretical and implemented time complexity.
+<br />
+<p>posted at: 20:00 |
+path: <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2011/03">/individual/2011/03</a> |
+<a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2011/03/progress-on-marpaxs.html">direct link to this entry</a>
+</p>
+<div style="color:#38B0C0;padding:1px;text-align:center;">
+&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&sect;
+</div>
+</div>
+</div>
+<div id="footer" style="border-top:thick solid #38B0C0;clear:left;padding:1em;">
+<p>This is Ocean of Awareness's
+  new home.  This blog has been hosted at
+  <a href="http://blogs.perl.org/users/jeffrey_kegler/">blogs.perl.org</a>
+  but I have succumbed to the lure of static blogging.
+  I have not yet decided how to deal with comments at this new blog location.
+If the post is Marpa-related,
+<a href="https://groups.google.com/forum/?hl=en&fromgroups#%21forum/marpa-parser">
+the Marpa mailing list</a>
+is a good place to comment.
+Also,
+I will continue to dual-post for some time,
+and have not yet frozen comments on the versions of the
+post at
+<a href="http://blogs.perl.org/users/jeffrey_kegler/">blogs.perl.org</a>.
+</div>
+              <script type="text/javascript">
+            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+          </script>
+          <script type="text/javascript">
+            try {
+              var pageTracker = _gat._getTracker("UA-33430331-1");
+            pageTracker._trackPageview();
+            } catch(err) {}
+          </script>
+</body>
+</html>

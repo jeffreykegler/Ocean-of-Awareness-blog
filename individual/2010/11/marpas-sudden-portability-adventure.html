@@ -1,0 +1,145 @@
+<html>
+<head>
+<link rel="alternate" title="Ocean of Awareness RSS" type="application/rss+xml" title="RSS" href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/index.rss" />
+<title>Ocean of Awareness   </title>
+<style type="text/css">
+   strong {font-weight: 700;}
+</style>
+</head>
+<body>
+<div id="header"
+  style="color:white;background-color:#38B0C0;padding:1em;clear:left;text-align:center;">
+<h1>Ocean of Awareness</h1>
+  
+</div>
+  <div id="menu" style="margin:0;padding:10px;width:150px;float:left;">
+  <h2>Jeffrey Kegler's blog</h2>
+  <p>About Marpa, his new parsing algorithm,
+    and other topics of interest</p>
+  <h3>Resources</h3>
+  <p><a href="http://www.jeffreykegler.com/">Jeffrey Kegler's website</p>
+  <p><a href="http://www.jeffreykegler.com/marpa">The Marpa website</p>
+  </div>
+  <div id="content" style="margin-left:190px;border-left:2px solid #38B0C0;padding:25px;">
+<h3>Tue, 02 Nov 2010</h3>
+<br />
+<center><a name="marpas-sudden-portability-adventure"> <h2>Marpa's Sudden Portability Adventure</h2> </a>
+</center>
+<p>I've made bold claims for the portability of
+<a href="http://search.cpan.org/~jkegl/Marpa-0.200000/">Marpa</a>.
+[
+Marpa is a general BNF parser generator -- it parses from any grammar that you can write in BNF.
+If the grammar is of one of the kinds currently in practical use
+(yacc, LR(k), LALR, LL, recursive descent, etc.), this parsing is in linear
+time. ]
+
+<p>The boldness of my claims evinced
+no ambition to test them under fire.
+But, when my main development box (a 2-year Dell laptop running Ubuntu)
+suddenly died,
+my only other choice for a development platform was a MacBook G4 running
+Mac OS Tiger.
+So test my portability claims is what I had to do.
+
+<p>Not that my brags about portability had been without foundation.
+I upload development versions for cpantesters regularly.
+(By the way, to all of you at cpantesters: a big "thank you".)
+As far as the configuration, build and runtime environments went,
+I had a lot of reason to be confident.
+
+<p>The problem is that
+I am now working on the XS version of Marpa.
+When I was working on
+the Pure Perl version of
+<a href="http://search.cpan.org/~jkegl/Marpa-0.200000/">Marpa</a>,
+my maintenance and development environments were not separate from
+the configuration, build and runtime environments.
+Development was also in Pure Perl,
+with no additional tools required.
+But for the XS version of Marpa,
+maintenance and development require GNU autotools,
+as well as Don Knuth's TeX and Cweb.
+
+<p>Let me emphasize that you can, now and in the future,
+configure, build and run Marpa::XS on boxes without GNU autotools
+or TeX.
+It's just that
+you can't properly work on or patch the source code
+without them.
+Also, it is worth emphasizing that, in the open source spirit,
+Marpa::XS ships with all the files necessary for maintainance
+and development.
+So you always have the "source" in the fullest sense,
+and all the tools you need to develop are available free
+with source.
+But part of making Marpa::XS as portable as possible is ensuring that
+it will configure, build and run happily
+in environments which don't have all
+the development tools it requires.
+
+<p>Which brings me back to my crisis.
+I could be confident about configuring, building and running my development
+version of Marpa::XS on a wide variety of platforms.
+The cpantesters had proved this for me.
+Less certain was whether my
+development environment could be recreated.
+
+<p>The sudden switch involved a sudden change of chips (Intel to PPC),
+and operating systems
+(the latest Ubuntu to a Mac OS that is two major releases out of date).
+More dramatic changes are possible (both are POSIX systems),
+but for a port suddenly forced on me, this was more than
+change enough, thank you.
+
+<p>I hoped everything I needed was on MacPorts.
+That was assuming that vintage 2005 systems, running
+a Mac OS version two major
+releases obsolete,
+were a priority with the helpful folks at MacPorts.
+
+<p>In the event, I was back developing with 24 hours.
+The only change I had to make to my codebase was to three lines
+in Build.PL, which specified module versions.
+Most of the 24 hours was taken up with compiles.
+The Macbook G4 was never considered a fire-breather,
+even back in 2005 when it was new.
+<br />
+<p>posted at: 19:24 |
+path: <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2010/11">/individual/2010/11</a> |
+<a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2010/11/marpas-sudden-portability-adventure.html">direct link to this entry</a>
+</p>
+<div style="color:#38B0C0;padding:1px;text-align:center;">
+&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&sect;
+</div>
+</div>
+</div>
+<div id="footer" style="border-top:thick solid #38B0C0;clear:left;padding:1em;">
+<p>This is Ocean of Awareness's
+  new home.  This blog has been hosted at
+  <a href="http://blogs.perl.org/users/jeffrey_kegler/">blogs.perl.org</a>
+  but I have succumbed to the lure of static blogging.
+  I have not yet decided how to deal with comments at this new blog location.
+If the post is Marpa-related,
+<a href="https://groups.google.com/forum/?hl=en&fromgroups#%21forum/marpa-parser">
+the Marpa mailing list</a>
+is a good place to comment.
+Also,
+I will continue to dual-post for some time,
+and have not yet frozen comments on the versions of the
+post at
+<a href="http://blogs.perl.org/users/jeffrey_kegler/">blogs.perl.org</a>.
+</div>
+              <script type="text/javascript">
+            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+          </script>
+          <script type="text/javascript">
+            try {
+              var pageTracker = _gat._getTracker("UA-33430331-1");
+            pageTracker._trackPageview();
+            } catch(err) {}
+          </script>
+</body>
+</html>

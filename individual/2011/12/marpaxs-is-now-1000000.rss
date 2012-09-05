@@ -1,0 +1,619 @@
+<?xml version="1.0"?>
+<!-- name="generator" content="blosxom/2.0" -->
+<!DOCTYPE rss PUBLIC "-//Netscape Communications//DTD RSS 0.91//EN" "http://my.netscape.com/publish/formats/rss-0.91.dtd">
+
+<rss version="0.91">
+  <channel>
+    <title>Ocean of Awareness   </title>
+    <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog</link>
+    <description>Ocean of Awareness.</description>
+    <language>en</language>
+
+  <item>
+    <title>Marpa::XS is now 1.000000</title>
+    <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog/2011/12/20#marpaxs-is-now-1000000</link>
+    <description>&lt;p&gt;
+&lt;a href=&quot;https://metacpan.org/release/Marpa-XS&quot;&gt;
+Marpa::XS is now
+1.000000&lt;/a&gt;.
+Marpa::XS is the current lead implementation of Marpa,
+an algorithm that I hope will become
+standard for
+those parsing problems which are too
+complex for regular expressions.
+Apparently quite a number of people have put
+the beta to use.
+Feedback has been positive -- often extremely so.
+&lt;/p&gt;
+&lt;h1&gt;What is Marpa?&lt;/h1&gt;
+&lt;p&gt;
+Marpa is a general BNF parser --
+it parses anything you can write in BNF, no exceptions.
+Left-recursion, right-recursion, ambiguity and
+even infinite ambiguity, you name it, Marpa parses it.
+If the grammar is of
+&lt;a href=&quot;#LINEAR&quot;&gt;a class in practical use&lt;/a&gt;,
+Marpa parses it in linear time -- O(n).
+&lt;/p&gt;
+&lt;p&gt;
+Marpa's
+parse-time error detection is a breakthrough.
+When previous parsers failed, they often offered very
+little clue as to why.
+Marpa knows exactly what input it expects and why.
+Marpa is always fully aware of exactly where it is in the parse,
+in terms of the rules of the grammar,
+and it can share that information with the application.
+So good is Marpa at 
+error detection,
+once considered a desperate last resort,
+that error detection can be used as
+&lt;a href=&quot;http://blogs.perl.org/users/jeffrey_kegler/2010/06/parsing-with-ruby-slippers.html&quot;&gt;
+a parsing technique in itself&lt;/a&gt;.
+
+&lt;/p&gt;
+&lt;p&gt;
+While Marpa is intended to computer with production parsers,
+it does have special advantages for developers and experimenters.
+Marpa is highly tolerant of difficult grammars --
+it parses all of them,
+and in times which are &lt;a href=&quot;#OPTIMAL&quot;&gt;considered optimal&lt;/a&gt;.
+&lt;/p&gt;
+&lt;h1&gt;New with this release&lt;/h1&gt;
+&lt;p&gt;
+For Marpa::XS 1.000000,
+only the version number and the README file were changed
+from the previous, beta, release.
+&lt;/p&gt;
+&lt;h1&gt;What is next with Marpa?&lt;/h1&gt;
+&lt;p&gt;
+Marpa::XS is aimed at users who want a stable platform for applications.
+To ensure the stability of Marpa::XS,
+active development of Marpa is moving into a new fork: Marpa::R2.
+This will isolate Marpa::XS users from the accidental changes
+and bugs that can be the side effect of active development.
+&lt;/p&gt;
+&lt;p&gt;
+
+Initially, changes to Marpa::XS will be restricted to
+bug fixes and those justified from a maintainability standpoint.
+The feature set will be kept stable.
+(As it stands, Marpa::XS is much more fully featured
+than competing parsers.)
+If I enhance the features of Marpa::XS,
+the new features will be back-ported from Marpa's active development forks,
+and I will preserve backward compatibility.
+&lt;h1&gt;Limitations&lt;/h1&gt;
+&lt;p&gt;
+Marpa::XS is, as the name suggests, XS only --
+installation requires access to a C compiler,
+and to many of the &lt;a href=&quot;#GNU&quot;&gt;GNU utilities and libraries as well&lt;/a&gt;.
+Marpa::XS has been tested on a wide variety of POSIX systems.
+In theory Marpa::XS is NOT restricted to POSIX systems --
+all the tools it uses have Windows versions, for example.
+However, Marpa::XS has not,
+to my knowledge,
+been installed on a non-POSIX system.
+&lt;/p&gt;
+&lt;p&gt;
+&lt;/p&gt;&lt;h2&gt;Notes&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;a name=&quot;LINEAR&quot;&gt;&quot;in linear time&quot;: &lt;/a&gt;
+To be specific, Marpa parses any LR-regular grammar in linear time -- O(n).
+LR-regular is a vast class of grammars that includes LALR,
+LR(k) for all k,
+and LL(k) for all k.
+This means that Marpa parses,
+in linear time,
+every class of grammar parsed by yacc,
+recursive descent and regular expressions.
+&lt;/li&gt;
+&lt;li&gt;&lt;a name=&quot;OPTIMAL&quot;&gt;&quot;considered optimal&quot;: &lt;/a&gt;
+
+The phrase &quot;considered optimal&quot; elides some
+irrelevant bits of theory.
+I would be mildly surprised
+if it turns out that there is an
+O(n) algorithm for general BNF parsing,
+but nobody has proved that such a thing cannot exist.
+And there is an algorithm which, in theory,
+beats Marpa's O(n**3) worst case.
+The Valiant algorithm parses general BNF
+and is O(n**2.373...) or better.
+But Valiant's algorithm is only faster for huge problems,
+and for those it
+needs a machine with many terabytes of main memory
+to deliver on its speed claims.
+So it won't be competing with Marpa any time soon.
+&lt;li&gt;&lt;a name=&quot;GNU&quot;&gt;&quot;GNU utilities and libraries&quot;: &lt;/a&gt;
+These dependences can be an inconvenience, I admit, but
+the alternative is installing
+my attempt to portably re-create
+all the things the GNU people have developed.
+I think that it is clear that the GNU software is the easier
+and more reliable alternative.
+&lt;/p&gt;
+&lt;p&gt;
+If you browse the package, you may see that it uses TeX as well.
+TeX is ONLY needed is you are working on libmarpa,
+the highly mathematical, low-level core library that provides
+the parse engine.
+To do this, you'd need to have studied a lot of the mathematics
+of parsing -- and you'd understand why I feel forced to do the
+documentation in TeX.
+All the non-mathematical parts are either in Perl, or in C code
+which can be read and changed on systems which do not have TeX
+installed.
+&lt;/p&gt;
+&lt;p&gt;
+&lt;/p&gt;
+&lt;/li&gt;
+&lt;/p&gt;
+
+                            
+                        &lt;/div&gt;&lt;!-- .entry-body --&gt;
+                        
+                        &lt;div class=&quot;entry-meta-2 pkg&quot;&gt;
+                            &lt;ul&gt;
+                                &lt;li&gt;&lt;a href=&quot;#comments&quot;&gt;11 comments&lt;/a&gt;&lt;/li&gt;
+                                &lt;!-- &lt;li&gt;&lt;a href=&quot;http://blogs.perl.org/users/jeffrey_kegler/2011/12/marpaxs-is-now-1000000.html&quot;&gt;0 votes&lt;/a&gt;&lt;/li&gt; --&gt;
+                            &lt;/ul&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;&lt;!-- #entry-2593 --&gt;
+                    
+
+
+
+
+	&lt;div class=&quot;entry-tags&quot;&gt;
+    &lt;h4&gt;Tagged as&lt;span class=&quot;delimiter&quot;&gt;:&lt;/span&gt;&lt;/h4&gt;
+    &lt;span&gt;&lt;a href=
+&quot;javascript:void(0)&quot; onclick=&quot;location.href='http://blogs.perl.org/mt/mt-search.fcgi?blog_id=63&amp;amp;tag=Marpa%20Earley%20parsing%20parser&amp;amp;limit=20';return false;&quot; rel=&quot;tag&quot;&gt;Marpa Earley parsing parser&lt;/a&gt;&lt;/span&gt;
+     &lt;/div&gt;
+
+
+&lt;div id=&quot;comments&quot; class=&quot;comments&quot;&gt;
+
+
+    
+    
+        
+    &lt;h2 class=&quot;comments-header&quot;&gt;11 Comments&lt;/h2&gt;
+    
+    &lt;div id=&quot;comments-content&quot; class=&quot;comments-content&quot; style=&quot;clear: left;&quot;&gt;
+        
+        &lt;div id=&quot;comment-108163&quot; class=&quot;comment&quot;&gt;
+    &lt;div class=&quot;inner&quot;&gt;
+        &lt;div class=&quot;comment-header&quot;&gt;
+            &lt;div class=&quot;asset-meta&quot;&gt;
+                &lt;span class=&quot;byline&quot;&gt;
+                    &lt;a class=&quot;commenter-profile&quot; href=&quot;http://savage.net.au/&quot;&gt;&lt;img alt=&quot;Author Profile Page&quot; src=&quot;http://blogs.perl.org/mt/mt-static/images/comment/mt_logo.png&quot; width=&quot;16&quot; height=&quot;16&quot; /&gt;&lt;/a&gt;
+
+                    &lt;span class=&quot;vcard author&quot;&gt;&lt;a title=&quot;http://savage.net.au/&quot; href=&quot;http://savage.net.au/&quot;&gt;Ron Savage&lt;/a&gt;&lt;/span&gt;
+
+                    | &lt;a href=&quot;http://blogs.perl.org/users/jeffrey_kegler/2011/12/marpaxs-is-now-1000000.html#comment-108163&quot;&gt;&lt;abbr class=&quot;published&quot; title=&quot;2011-12-21T11:31:26-08:00&quot;&gt;December 21, 2011 11:31 AM&lt;/abbr&gt;&lt;/a&gt;
+
+                    | &lt;a title=&quot;Reply&quot; href=&quot;javascript:void(0);&quot; onclick=&quot;mtReplyCommentOnClick(108163, 'Ron Savage')&quot;&gt;Reply&lt;/a&gt;
+
+                &lt;/span&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;comment-content&quot;&gt;
+            &lt;p&gt;Hi Jeffrey&lt;/p&gt;
+
+&lt;p&gt;While I think of it - has anyone coded a parser for Graphviz's &lt;br /&gt;
+&lt;a href=&quot;http://www.graphviz.org/content/dot-language&quot;&gt;DOT&lt;/a&gt; language?&lt;/p&gt;
+
+&lt;p&gt;And, would it be that hard?&lt;br /&gt;
+&lt;/p&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+        
+    
+        
+        &lt;div id=&quot;comment-108215&quot; class=&quot;comment&quot;&gt;
+    &lt;div class=&quot;inner&quot;&gt;
+        &lt;div class=&quot;comment-header&quot;&gt;
+            &lt;div class=&quot;asset-meta&quot;&gt;
+                &lt;span class=&quot;byline&quot;&gt;
+                    &lt;a class=&quot;commenter-profile&quot; href=&quot;http://id-perl.blogspot.com/&quot;&gt;&lt;img alt=&quot;Author Profile Page&quot; src=&quot;http://blogs.perl.org/mt/mt-static/images/comment/mt_logo.png&quot; width=&quot;16&quot; height=&quot;16&quot; /&gt;&lt;/a&gt;
+
+                    &lt;span class=&quot;vcard author&quot;&gt;&lt;a title=&quot;http://id-perl.blogspot.com/&quot; href=&quot;http://id-perl.blogspot.com/&quot;&gt;Steven Haryanto&lt;/a&gt;&lt;/span&gt;
+
+                    | &lt;a href=&quot;http://blogs.perl.org/users/jeffrey_kegler/2011/12/marpaxs-is-now-1000000.html#comment-108215&quot;&gt;&lt;abbr class=&quot;published&quot; title=&quot;2011-12-21T20:00:03-08:00&quot;&gt;December 21, 2011  8:00 PM&lt;/abbr&gt;&lt;/a&gt;
+
+                    | &lt;a title=&quot;Reply&quot; href=&quot;javascript:void(0);&quot; onclick=&quot;mtReplyCommentOnClick(108215, 'Steven Haryanto')&quot;&gt;Reply&lt;/a&gt;
+
+                &lt;/span&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;comment-content&quot;&gt;
+            &lt;p&gt;Seconded. I'm longing for more examples aside from the HTML parser. Preferably simpler ones, included under examples/ or demo/ in the distribution. Compare, for one, with Regexp::Grammar's distribution: &lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;http://cpansearch.perl.org/src/DCONWAY/Regexp-Grammars-1.014/demo/&quot;&gt;http://cpansearch.perl.org/src/DCONWAY/Regexp-Grammars-1.014/demo/&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;The examples help *a lot* for casual parser writers.&lt;br /&gt;
+&lt;/p&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+        
+    
+        
+        &lt;div id=&quot;comment-108220&quot; class=&quot;comment comment-reply entry-author-comment&quot;&gt;
+    &lt;div class=&quot;inner&quot;&gt;
+        &lt;div class=&quot;comment-header&quot;&gt;
+            &lt;div class=&quot;asset-meta&quot;&gt;
+                &lt;span class=&quot;byline&quot;&gt;
+                    &lt;a class=&quot;commenter-profile&quot; href=&quot;http://www.jeffreykegler.com&quot;&gt;&lt;img alt=&quot;Author Profile Page&quot; src=&quot;http://blogs.perl.org/mt/mt-static/images/comment/mt_logo.png&quot; width=&quot;16&quot; height=&quot;16&quot; /&gt;&lt;/a&gt;
+
+                    &lt;span class=&quot;vcard author&quot;&gt;&lt;a title=&quot;http://www.jeffreykegler.com&quot; href=&quot;http://www.jeffreykegler.com&quot;&gt;Jeffrey Kegler&lt;/a&gt;&lt;/span&gt; replied to &lt;a href=&quot;http://blogs.perl.org/users/jeffrey_kegler/2011/12/marpaxs-is-now-1000000.html#comment-108163&quot;&gt;comment from Ron Savage&lt;/a&gt;
+
+                    | &lt;a href=&quot;http://blogs.perl.org/users/jeffrey_kegler/2011/12/marpaxs-is-now-1000000.html#comment-108220&quot;&gt;&lt;abbr class=&quot;published&quot; title=&quot;2011-12-21T20:22:04-08:00&quot;&gt;December 21, 2011  8:22 PM&lt;/abbr&gt;&lt;/a&gt;
+
+                    | &lt;a title=&quot;Reply&quot; href=&quot;javascript:void(0);&quot; onclick=&quot;mtReplyCommentOnClick(108220, 'Jeffrey Kegler')&quot;&gt;Reply&lt;/a&gt;
+
+                &lt;/span&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;comment-content&quot;&gt;
+            &lt;p&gt;@Ron:  This is the first I've heard of Graphviz's DOT, but based on a quick look, my guess is parsing the DOT language with Marpa::XS would be quite straightforward.  The DOT language seems well-documented:  There is BNF for the grammar and a description of how to do the lexing.  The grammar looks like something Marpa should have no problem with.
+&lt;p&gt;As for the lexing, there are DOT modules on CPAN, which at 1st glance seem to do lexing.  Hopefully, those could be leveraged to provide a lexer to a Marpa-powered parser.&lt;/p&gt;&lt;/p&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+        
+    
+        
+        &lt;div id=&quot;comment-108225&quot; class=&quot;comment comment-reply entry-author-comment&quot;&gt;
+    &lt;div class=&quot;inner&quot;&gt;
+        &lt;div class=&quot;comment-header&quot;&gt;
+            &lt;div class=&quot;asset-meta&quot;&gt;
+                &lt;span class=&quot;byline&quot;&gt;
+                    &lt;a class=&quot;commenter-profile&quot; href=&quot;http://www.jeffreykegler.com&quot;&gt;&lt;img alt=&quot;Author Profile Page&quot; src=&quot;http://blogs.perl.org/mt/mt-static/images/comment/mt_logo.png&quot; width=&quot;16&quot; height=&quot;16&quot; /&gt;&lt;/a&gt;
+
+                    &lt;span class=&quot;vcard author&quot;&gt;&lt;a title=&quot;http://www.jeffreykegler.com&quot; href=&quot;http://www.jeffreykegler.com&quot;&gt;Jeffrey Kegler&lt;/a&gt;&lt;/span&gt; replied to &lt;a href=&quot;http://blogs.perl.org/users/jeffrey_kegler/2011/12/marpaxs-is-now-1000000.html#comment-108215&quot;&gt;comment from Steven Haryanto&lt;/a&gt;
+
+                    | &lt;a href=&quot;http://blogs.perl.org/users/jeffrey_kegler/2011/12/marpaxs-is-now-1000000.html#comment-108225&quot;&gt;&lt;abbr class=&quot;published&quot; title=&quot;2011-12-21T20:53:29-08:00&quot;&gt;December 21, 2011  8:53 PM&lt;/abbr&gt;&lt;/a&gt;
+
+                    | &lt;a title=&quot;Reply&quot; href=&quot;javascript:void(0);&quot; onclick=&quot;mtReplyCommentOnClick(108225, 'Jeffrey Kegler')&quot;&gt;Reply&lt;/a&gt;
+
+                &lt;/span&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;comment-content&quot;&gt;
+            &lt;p&gt;@Steven: One thing I did before taking Marpa::XS 1.000000 was to remove all the deprecated techniques out of the tests in the t directory (except in the deprecated*.t tests).  All the other test files are safe to use as examples.  Most suitable for that purpose are perhaps ah_numeric.t, counter.t, equation.t, minus.t, pascal.t, randal.t, timeflies.t and wall.t.  The .t files are cluttered, because I usually test not just output, but diagnostics (a practice I highly recommend, by the way.)
+&lt;p&gt;Marpa was a very long (4+ full time years) and complex project, and until it was stable, I could not be sure that any demos I did would still run -- unless of course I included them in the test suite.  This is perhaps not exactly what you wanted, but I hope it helps.&lt;/p&gt;&lt;/p&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+        
+    
+        
+        &lt;div id=&quot;comment-108245&quot; class=&quot;comment comment-reply&quot;&gt;
+    &lt;div class=&quot;inner&quot;&gt;
+        &lt;div class=&quot;comment-header&quot;&gt;
+            &lt;div class=&quot;asset-meta&quot;&gt;
+                &lt;span class=&quot;byline&quot;&gt;
+                    &lt;a class=&quot;commenter-profile&quot; href=&quot;http://id-perl.blogspot.com/&quot;&gt;&lt;img alt=&quot;Author Profile Page&quot; src=&quot;http://blogs.perl.org/mt/mt-static/images/comment/mt_logo.png&quot; width=&quot;16&quot; height=&quot;16&quot; /&gt;&lt;/a&gt;
+
+                    &lt;span class=&quot;vcard author&quot;&gt;&lt;a title=&quot;http://id-perl.blogspot.com/&quot; href=&quot;http://id-perl.blogspot.com/&quot;&gt;Steven Haryanto&lt;/a&gt;&lt;/span&gt; replied to &lt;a href=&quot;http://blogs.perl.org/users/jeffrey_kegler/2011/12/marpaxs-is-now-1000000.html#comment-108225&quot;&gt;comment from Jeffrey Kegler&lt;/a&gt;
+
+                    | &lt;a href=&quot;http://blogs.perl.org/users/jeffrey_kegler/2011/12/marpaxs-is-now-1000000.html#comment-108245&quot;&gt;&lt;abbr class=&quot;published&quot; title=&quot;2011-12-21T22:09:10-08:00&quot;&gt;December 21, 2011 10:09 PM&lt;/abbr&gt;&lt;/a&gt;
+
+                    | &lt;a title=&quot;Reply&quot; href=&quot;javascript:void(0);&quot; onclick=&quot;mtReplyCommentOnClick(108245, 'Steven Haryanto')&quot;&gt;Reply&lt;/a&gt;
+
+                &lt;/span&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;comment-content&quot;&gt;
+            &lt;p&gt;Ah, the test files of course. It's a start, thanks! :)&lt;br /&gt;
+&lt;/p&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+        
+    
+        
+        &lt;div id=&quot;comment-108272&quot; class=&quot;comment&quot;&gt;
+    &lt;div class=&quot;inner&quot;&gt;
+        &lt;div class=&quot;comment-header&quot;&gt;
+            &lt;div class=&quot;asset-meta&quot;&gt;
+                &lt;span class=&quot;byline&quot;&gt;
+                    &lt;a class=&quot;commenter-profile&quot; href=&quot;http://ali.as/&quot;&gt;&lt;img alt=&quot;Author Profile Page&quot; src=&quot;http://blogs.perl.org/mt/mt-static/images/comment/mt_logo.png&quot; width=&quot;16&quot; height=&quot;16&quot; /&gt;&lt;/a&gt;
+
+                    &lt;span class=&quot;vcard author&quot;&gt;&lt;a title=&quot;http://ali.as/&quot; href=&quot;http://ali.as/&quot;&gt;Adam Kennedy&lt;/a&gt;&lt;/span&gt;
+
+                    | &lt;a href=&quot;http://blogs.perl.org/users/jeffrey_kegler/2011/12/marpaxs-is-now-1000000.html#comment-108272&quot;&gt;&lt;abbr class=&quot;published&quot; title=&quot;2011-12-21T23:07:46-08:00&quot;&gt;December 21, 2011 11:07 PM&lt;/abbr&gt;&lt;/a&gt;
+
+                    | &lt;a title=&quot;Reply&quot; href=&quot;javascript:void(0);&quot; onclick=&quot;mtReplyCommentOnClick(108272, 'Adam Kennedy')&quot;&gt;Reply&lt;/a&gt;
+
+                &lt;/span&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;comment-content&quot;&gt;
+            &lt;p&gt;The big problem with using Marpa::XS is that anything useful I build on top of it will inherit the same platform limitations, and so will everything that uses my things as well, and so on recursively.&lt;/p&gt;
+
+&lt;p&gt;That's quite a big problem, and the reason why high quality modules like SVN::Core are never really adopted.&lt;/p&gt;
+
+&lt;p&gt;I would suggest that whatever is needed to get it working on all platforms, it is very very much worth trying.&lt;/p&gt;
+
+&lt;p&gt;Windows for example does already have dmake, and gnu make, and gcc, and other utilities. But some of the stuff around the edges aren't available and my be worth some evil hackery in order to get it working.&lt;/p&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+        
+    
+        
+        &lt;div id=&quot;comment-108452&quot; class=&quot;comment comment-reply entry-author-comment&quot;&gt;
+    &lt;div class=&quot;inner&quot;&gt;
+        &lt;div class=&quot;comment-header&quot;&gt;
+            &lt;div class=&quot;asset-meta&quot;&gt;
+                &lt;span class=&quot;byline&quot;&gt;
+                    &lt;a class=&quot;commenter-profile&quot; href=&quot;http://www.jeffreykegler.com&quot;&gt;&lt;img alt=&quot;Author Profile Page&quot; src=&quot;http://blogs.perl.org/mt/mt-static/images/comment/mt_logo.png&quot; width=&quot;16&quot; height=&quot;16&quot; /&gt;&lt;/a&gt;
+
+                    &lt;span class=&quot;vcard author&quot;&gt;&lt;a title=&quot;http://www.jeffreykegler.com&quot; href=&quot;http://www.jeffreykegler.com&quot;&gt;Jeffrey Kegler&lt;/a&gt;&lt;/span&gt; replied to &lt;a href=&quot;http://blogs.perl.org/users/jeffrey_kegler/2011/12/marpaxs-is-now-1000000.html#comment-108272&quot;&gt;comment from Adam Kennedy&lt;/a&gt;
+
+                    | &lt;a href=&quot;http://blogs.perl.org/users/jeffrey_kegler/2011/12/marpaxs-is-now-1000000.html#comment-108452&quot;&gt;&lt;abbr class=&quot;published&quot; title=&quot;2011-12-22T09:05:12-08:00&quot;&gt;December 22, 2011  9:05 AM&lt;/abbr&gt;&lt;/a&gt;
+
+                    | &lt;a title=&quot;Reply&quot; href=&quot;javascript:void(0);&quot; onclick=&quot;mtReplyCommentOnClick(108452, 'Jeffrey Kegler')&quot;&gt;Reply&lt;/a&gt;
+
+                &lt;/span&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;comment-content&quot;&gt;
+            &lt;p&gt;@Adam: Dunno what you mean by &quot;stuff around the edges&quot;.  Throughout my work on Marpa::XS, I made sure to avoid POSIX dependencies.  And with anything I used, I ALWAYS checked to see that it was available on Windows.  But I don't have access to a Windows machine, so I was not able to test.&lt;br /&gt;
+&lt;p&gt;There's only two non-core Perl dependencies, Glib and ExtUtils::PkgConfig, and they run on Windows.  gcc is NOT required -- The C code for Marpa::XS is C89, and compiles clean with &quot;-ansi -pedantic&quot;.  File handling is done only during build, and uses File::Spec, etc., etc.  My hope and expectation is that no &quot;evil hackery&quot; is needed to get Marpa::XS onto Windows.&lt;/p&gt;&lt;/p&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+        
+    
+        
+        &lt;div id=&quot;comment-108539&quot; class=&quot;comment entry-author-comment&quot;&gt;
+    &lt;div class=&quot;inner&quot;&gt;
+        &lt;div class=&quot;comment-header&quot;&gt;
+            &lt;div class=&quot;asset-meta&quot;&gt;
+                &lt;span class=&quot;byline&quot;&gt;
+                    &lt;a class=&quot;commenter-profile&quot; href=&quot;http://www.jeffreykegler.com&quot;&gt;&lt;img alt=&quot;Author Profile Page&quot; src=&quot;http://blogs.perl.org/mt/mt-static/images/comment/mt_logo.png&quot; width=&quot;16&quot; height=&quot;16&quot; /&gt;&lt;/a&gt;
+
+                    &lt;span class=&quot;vcard author&quot;&gt;&lt;a title=&quot;http://www.jeffreykegler.com&quot; href=&quot;http://www.jeffreykegler.com&quot;&gt;Jeffrey Kegler&lt;/a&gt;&lt;/span&gt;
+
+                    | &lt;a href=&quot;http://blogs.perl.org/users/jeffrey_kegler/2011/12/marpaxs-is-now-1000000.html#comment-108539&quot;&gt;&lt;abbr class=&quot;published&quot; title=&quot;2011-12-22T19:15:56-08:00&quot;&gt;December 22, 2011  7:15 PM&lt;/abbr&gt;&lt;/a&gt;
+
+                    | &lt;a title=&quot;Reply&quot; href=&quot;javascript:void(0);&quot; onclick=&quot;mtReplyCommentOnClick(108539, 'Jeffrey Kegler')&quot;&gt;Reply&lt;/a&gt;
+
+                &lt;/span&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;comment-content&quot;&gt;
+            &lt;p&gt;@Steven: Also, some very nice examples are starting to appear on the net already, like &lt;a href=&quot;http://blogs.perl.org/users/wolfgang_kinkeldei/2011/12/trying-marpa-to-parse-css.html#comments&quot;&gt;this&lt;br /&gt;
+very nice-looking CSS parser by Wolfgang Kinkeldei&lt;/a&gt;.&lt;/p&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+        
+    
+        
+        &lt;div id=&quot;comment-110357&quot; class=&quot;comment&quot;&gt;
+    &lt;div class=&quot;inner&quot;&gt;
+        &lt;div class=&quot;comment-header&quot;&gt;
+            &lt;div class=&quot;asset-meta&quot;&gt;
+                &lt;span class=&quot;byline&quot;&gt;
+                    &lt;a class=&quot;commenter-profile&quot; href=&quot;http://ali.as/&quot;&gt;&lt;img alt=&quot;Author Profile Page&quot; src=&quot;http://blogs.perl.org/mt/mt-static/images/comment/mt_logo.png&quot; width=&quot;16&quot; height=&quot;16&quot; /&gt;&lt;/a&gt;
+
+                    &lt;span class=&quot;vcard author&quot;&gt;&lt;a title=&quot;http://ali.as/&quot; href=&quot;http://ali.as/&quot;&gt;Adam Kennedy&lt;/a&gt;&lt;/span&gt;
+
+                    | &lt;a href=&quot;http://blogs.perl.org/users/jeffrey_kegler/2011/12/marpaxs-is-now-1000000.html#comment-110357&quot;&gt;&lt;abbr class=&quot;published&quot; title=&quot;2011-12-29T04:09:41-08:00&quot;&gt;December 29, 2011  4:09 AM&lt;/abbr&gt;&lt;/a&gt;
+
+                    | &lt;a title=&quot;Reply&quot; href=&quot;javascript:void(0);&quot; onclick=&quot;mtReplyCommentOnClick(110357, 'Adam Kennedy')&quot;&gt;Reply&lt;/a&gt;
+
+                &lt;/span&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;comment-content&quot;&gt;
+            &lt;p&gt;If it is supposed to work on Windows, then something isn't quite right.&lt;/p&gt;
+
+&lt;p&gt;I think the initial problem is you haven't listed ExtUtils::PkgConfig as a dependency (needs to be a configure_requires one)&lt;/p&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+        
+    
+        
+        &lt;div id=&quot;comment-110412&quot; class=&quot;comment comment-reply entry-author-comment&quot;&gt;
+    &lt;div class=&quot;inner&quot;&gt;
+        &lt;div class=&quot;comment-header&quot;&gt;
+            &lt;div class=&quot;asset-meta&quot;&gt;
+                &lt;span class=&quot;byline&quot;&gt;
+                    &lt;a class=&quot;commenter-profile&quot; href=&quot;http://www.jeffreykegler.com&quot;&gt;&lt;img alt=&quot;Author Profile Page&quot; src=&quot;http://blogs.perl.org/mt/mt-static/images/comment/mt_logo.png&quot; width=&quot;16&quot; height=&quot;16&quot; /&gt;&lt;/a&gt;
+
+                    &lt;span class=&quot;vcard author&quot;&gt;&lt;a title=&quot;http://www.jeffreykegler.com&quot; href=&quot;http://www.jeffreykegler.com&quot;&gt;Jeffrey Kegler&lt;/a&gt;&lt;/span&gt; replied to &lt;a href=&quot;http://blogs.perl.org/users/jeffrey_kegler/2011/12/marpaxs-is-now-1000000.html#comment-110357&quot;&gt;comment from Adam Kennedy&lt;/a&gt;
+
+                    | &lt;a href=&quot;http://blogs.perl.org/users/jeffrey_kegler/2011/12/marpaxs-is-now-1000000.html#comment-110412&quot;&gt;&lt;abbr class=&quot;published&quot; title=&quot;2011-12-29T09:58:29-08:00&quot;&gt;December 29, 2011  9:58 AM&lt;/abbr&gt;&lt;/a&gt;
+
+                    | &lt;a title=&quot;Reply&quot; href=&quot;javascript:void(0);&quot; onclick=&quot;mtReplyCommentOnClick(110412, 'Jeffrey Kegler')&quot;&gt;Reply&lt;/a&gt;
+
+                &lt;/span&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;comment-content&quot;&gt;
+            &lt;p&gt;@adam: Mysterious.  I went in to make the fix, and found that ExtUtils::PkgConfig already *IS* one of the configure_requires prereqs.  It shows in the &lt;a href=&quot;http://cpansearch.perl.org/src/JKEGL/Marpa-XS-1.002000/META.json&quot;&gt;META.json&lt;/a&gt;.&lt;/p&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+        
+    
+        
+        &lt;div id=&quot;comment-110695&quot; class=&quot;comment comment-reply entry-author-comment&quot;&gt;
+    &lt;div class=&quot;inner&quot;&gt;
+        &lt;div class=&quot;comment-header&quot;&gt;
+            &lt;div class=&quot;asset-meta&quot;&gt;
+                &lt;span class=&quot;byline&quot;&gt;
+                    &lt;a class=&quot;commenter-profile&quot; href=&quot;http://www.jeffreykegler.com&quot;&gt;&lt;img alt=&quot;Author Profile Page&quot; src=&quot;http://blogs.perl.org/mt/mt-static/images/comment/mt_logo.png&quot; width=&quot;16&quot; height=&quot;16&quot; /&gt;&lt;/a&gt;
+
+                    &lt;span class=&quot;vcard author&quot;&gt;&lt;a title=&quot;http://www.jeffreykegler.com&quot; href=&quot;http://www.jeffreykegler.com&quot;&gt;Jeffrey Kegler&lt;/a&gt;&lt;/span&gt; replied to &lt;a href=&quot;http://blogs.perl.org/users/jeffrey_kegler/2011/12/marpaxs-is-now-1000000.html#comment-108245&quot;&gt;comment from Steven Haryanto&lt;/a&gt;
+
+                    | &lt;a href=&quot;http://blogs.perl.org/users/jeffrey_kegler/2011/12/marpaxs-is-now-1000000.html#comment-110695&quot;&gt;&lt;abbr class=&quot;published&quot; title=&quot;2011-12-30T20:51:51-08:00&quot;&gt;December 30, 2011  8:51 PM&lt;/abbr&gt;&lt;/a&gt;
+
+                    | &lt;a title=&quot;Reply&quot; href=&quot;javascript:void(0);&quot; onclick=&quot;mtReplyCommentOnClick(110695, 'Jeffrey Kegler')&quot;&gt;Reply&lt;/a&gt;
+
+                &lt;/span&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;comment-content&quot;&gt;
+            &lt;p&gt;@Steven: I have added a section to the Marpa web page which has &lt;a href=&quot;http://www.jeffreykegler.com/marpa#TOC-Examples&quot;&gt;examples of Marpa parsers written by others&lt;/a&gt;.  Frankly, I find the Marpa parsers that others write often look more elegant than my own efforts.&lt;/p&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+        
+    &lt;/div&gt;
+        
+    
+    
+
+    
+    
+    &lt;div class=&quot;comments-open&quot; id=&quot;comments-open&quot;&gt;
+        &lt;h2 class=&quot;comments-open-header&quot;&gt;Leave a comment&lt;/h2&gt;
+        &lt;div class=&quot;comments-open-content&quot;&gt;
+
+        
+            &lt;div id=&quot;comment-greeting&quot;&gt;&lt;/div&gt;
+
+            &lt;form method=&quot;post&quot; action=&quot;http://blogs.perl.org/mt/mt-comments.fcgi&quot; name=&quot;comments_form&quot; id=&quot;comments-form&quot; onsubmit=&quot;return mtCommentOnSubmit(this)&quot;&gt;
+                &lt;input type=&quot;hidden&quot; name=&quot;static&quot; value=&quot;1&quot; /&gt;
+                &lt;input type=&quot;hidden&quot; name=&quot;entry_id&quot; value=&quot;2593&quot; /&gt;
+                &lt;input type=&quot;hidden&quot; name=&quot;__lang&quot; value=&quot;en&quot; /&gt;
+                &lt;input type=&quot;hidden&quot; name=&quot;parent_id&quot; value=&quot;&quot; id=&quot;comment-parent-id&quot; /&gt;
+                &lt;input type=&quot;hidden&quot; name=&quot;armor&quot; value=&quot;1&quot; /&gt;
+                &lt;input type=&quot;hidden&quot; name=&quot;preview&quot; value=&quot;&quot; /&gt;
+                &lt;input type=&quot;hidden&quot; name=&quot;sid&quot; value=&quot;&quot; /&gt;
+                &lt;div id=&quot;comments-open-data&quot;&gt;
+                    &lt;div id=&quot;comment-form-name&quot;&gt;
+                        &lt;label for=&quot;comment-author&quot;&gt;Name&lt;/label&gt;
+                        &lt;input id=&quot;comment-author&quot; name=&quot;author&quot; size=&quot;30&quot; value=&quot;&quot; onfocus=&quot;mtCommentFormOnFocus()&quot; /&gt;
+                    &lt;/div&gt;
+                    &lt;div id=&quot;comment-form-email&quot;&gt;
+                        &lt;label for=&quot;comment-email&quot;&gt;Email Address&lt;/label&gt;
+                        &lt;input id=&quot;comment-email&quot; name=&quot;email&quot; size=&quot;30&quot; value=&quot;&quot; onfocus=&quot;mtCommentFormOnFocus()&quot; /&gt;
+                    &lt;/div&gt;
+                    &lt;div id=&quot;comment-form-url&quot;&gt;
+                        &lt;label for=&quot;comment-url&quot;&gt;URL&lt;/label&gt;
+                        &lt;input id=&quot;comment-url&quot; name=&quot;url&quot; size=&quot;30&quot; value=&quot;&quot; onfocus=&quot;mtCommentFormOnFocus()&quot; /&gt;
+                    &lt;/div&gt;
+                    &lt;div id=&quot;comment-form-remember-me&quot;&gt;
+                        &lt;input type=&quot;checkbox&quot; id=&quot;comment-bake-cookie&quot; name=&quot;bakecookie&quot; onclick=&quot;mtRememberMeOnClick(this)&quot; value=&quot;1&quot; accesskey=&quot;r&quot; /&gt;
+                        &lt;label for=&quot;comment-bake-cookie&quot;&gt;Remember personal info?&lt;/label&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+                &lt;div id=&quot;comment-form-reply&quot; style=&quot;display:none&quot;&gt;
+                    &lt;input type=&quot;checkbox&quot; id=&quot;comment-reply&quot; name=&quot;comment_reply&quot; value=&quot;&quot; onclick=&quot;mtSetCommentParentID()&quot; /&gt;
+                    &lt;label for=&quot;comment-reply&quot; id=&quot;comment-reply-label&quot;&gt;&lt;/label&gt;
+                &lt;/div&gt;
+                &lt;div id=&quot;comments-open-text&quot;&gt;
+                    &lt;label for=&quot;comment-text&quot;&gt;Comments
+                    (You may use HTML tags for style)&lt;/label&gt;
+                    &lt;textarea id=&quot;comment-text&quot; name=&quot;text&quot; rows=&quot;15&quot; cols=&quot;50&quot; onfocus=&quot;mtCommentFormOnFocus()&quot;&gt;&lt;/textarea&gt;
+                &lt;/div&gt;
+                &lt;div id=&quot;comments-open-captcha&quot;&gt;&lt;/div&gt;
+                &lt;div id=&quot;comments-open-footer&quot;&gt;
+                    &lt;input type=&quot;submit&quot; accesskey=&quot;v&quot; name=&quot;preview_button&quot; id=&quot;comment-preview&quot; value=&quot;Preview&quot; onclick=&quot;this.form.preview.value='1';&quot; /&gt;
+                    &lt;input type=&quot;submit&quot; accesskey=&quot;s&quot; name=&quot;post&quot; id=&quot;comment-submit&quot; value=&quot;Submit&quot; /&gt;
+                &lt;/div&gt;
+            &lt;/form&gt;
+
+
+        &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;script type=&quot;text/javascript&quot;&gt;
+    &lt;!--
+    mtAttachEvent(&quot;load&quot;, mtEntryOnLoad);
+    mtAttachEvent(&quot;unload&quot;, mtEntryOnUnload);
+    //--&gt;
+    &lt;/script&gt;
+    
+
+
+&lt;/div&gt;
+
+
+
+&lt;/div&gt;&lt;!-- #content-main --&gt;
+            
+            &lt;div id=&quot;content-aux&quot;&gt;
+            
+                
+                &lt;div class=&quot;module-aux pkg&quot; id=&quot;module-aux-about-author-181&quot;&gt;
+                &lt;div class=&quot;module-inner&quot;&gt;
+                    &lt;h3&gt;About Jeffrey Kegler&lt;/h3&gt;
+                    &lt;p&gt;&lt;img class=&quot;authorpic&quot; src=&quot;http://blogs.perl.org/mt/mt-static/support/assets_c/2011/08/Jeffrey_Kegler_BEACH1-thumb-72x72-574.jpg&quot;&quot; alt=&quot;user-pic&quot; /&gt;
+	            I blog about Marpa, my parsing algorithm, and other things of interest to techies.&lt;/p&gt;
+                    &lt;div class=&quot;more-link&quot;&gt;&lt;a href=&quot;http://blogs.perl.org/mt/mt-cp.fcgi?__mode=view&amp;amp;id=181&quot;&gt;More info &amp;raquo;&lt;/a&gt;&lt;/div&gt;
+                &lt;/div&gt;
+                &lt;/div&gt;&lt;!-- #module-aux-about-author --&gt;
+
+
+
+
+                
+            
+            
+            &lt;div class=&quot;module-aux pkg&quot; id=&quot;module-aux-search&quot;&gt;
+                &lt;div class=&quot;module-inner&quot;&gt;
+                    
+                    
+                    &lt;h3&gt;Search this blog&lt;/h3&gt;
+                    
+                    
+					
+                    &lt;div id=&quot;search-form-aux&quot;&gt;
+                        &lt;form method=&quot;get&quot; action=&quot;http://blogs.perl.org/mt/mt-search.fcgi&quot;&gt;
+                    
+                            &lt;input type=&quot;hidden&quot; name=&quot;IncludeBlogs&quot; value=&quot;63&quot; /&gt;
+                    
+                            &lt;input type=&quot;hidden&quot; name=&quot;limit&quot; value=&quot;20&quot; /&gt;
+                            &lt;label for=&quot;search&quot;&gt;Search&lt;/label&gt;
+                            &lt;input id=&quot;local-search&quot; class=&quot;query&quot; name=&quot;search&quot; value=&quot;&quot; /&gt;
+                            &lt;input class=&quot;submit&quot; type=&quot;submit&quot; value=&quot;Go&quot; /&gt;
+                        &lt;/form&gt;
+                    &lt;/div&gt;&lt;!-- #search-form-aux --&gt;
+                &lt;/div&gt;
+                &lt;/div&gt;&lt;!-- #module-aux-search --&gt;
+                    
+
+            
+            
+                
+                
+                
+                
+            
+
+            &lt;/div&gt;&lt;!-- #content-aux --&gt;
+
+
+
+        &lt;/div&gt;&lt;!-- #content-inner --&gt;
+        &lt;/div&gt;&lt;!-- #content --&gt;
+
+        &lt;div id=&quot;footer&quot;&gt;
+        &lt;div id=&quot;footer-inner&quot; class=&quot;pkg&quot;&gt;
+            &lt;ul id=&quot;footer-nav&quot;&gt;
+                &lt;li class=&quot;first&quot;&gt;&lt;a href=&quot;http://github.com/blogs-perl-org/blogs.perl.org/issues&quot;&gt;Feedback welcome&lt;/a&gt;&lt;/li&gt;
+                &lt;li&gt;Hosted by &lt;a href=&quot;http://dave.org.uk&quot;&gt;Dave Cross&lt;/a&gt; of &lt;a href=&quot;http://mag-sol.com/&quot;&gt;Magnum Solutions&lt;/a&gt; and &lt;a href=&quot;http://aaroncrane.co.uk/&quot;&gt;Aaron Crane&lt;/a&gt; of &lt;a href=&quot;http://cutbot.net/&quot;&gt;Cutbot&lt;/a&gt;&lt;/li&gt;
+            &lt;/ul&gt;
+            
+            &lt;div class=&quot;powered-by&quot;&gt;&lt;a href=&quot;http://www.movabletype.com/&quot; target=&quot;_blank&quot;&gt;Powered by Movable Type&lt;/a&gt;&lt;/div&gt;
+        &lt;/div&gt;&lt;!-- #footer-inner --&gt;
+        &lt;/div&gt;&lt;!-- #footer --&gt;
+            
+        &lt;/div&gt;&lt;!-- #content-inner --&gt;
+        &lt;/div&gt;&lt;!-- #content --&gt;
+        
+    &lt;/div&gt;&lt;!-- #container-inner --&gt;
+    &lt;/div&gt;&lt;!-- #container --&gt;</description>
+  </item>
+  </channel>
+</rss>

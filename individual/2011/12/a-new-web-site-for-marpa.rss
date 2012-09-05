@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<!-- name="generator" content="blosxom/2.0" -->
+<!DOCTYPE rss PUBLIC "-//Netscape Communications//DTD RSS 0.91//EN" "http://my.netscape.com/publish/formats/rss-0.91.dtd">
+
+<rss version="0.91">
+  <channel>
+    <title>Ocean of Awareness   </title>
+    <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog</link>
+    <description>Ocean of Awareness.</description>
+    <language>en</language>
+
+  <item>
+    <title>A new web site for Marpa</title>
+    <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog/2011/12/26#a-new-web-site-for-marpa</link>
+    <description>&lt;p&gt;
+I have created an
+&lt;a href=&quot;http://www.jeffreykegler.com/marpa&quot;&gt;official web site
+for Marpa&lt;/a&gt;.
+Marpa is attracting new users,
+to the point where I thought it might be useful to have a site to act as
+a central directory.
+The official web site won't have much in the way of new content.
+With new content,
+I plan to continue to do
+what I've been doing -- post it to this blog.
+&lt;/p&gt;
+&lt;p&gt;
+I've started the site with an annotated list of the
+most important Marpa-related posts in this blog.
+I hope this will help people newly interested in
+Marpa figure out where they want to start.
+Those who've been following this blog for a while
+might also want to check the list to see if they've
+missed anything worthwhile.
+&lt;/p&gt;</description>
+  </item>
+  </channel>
+</rss>

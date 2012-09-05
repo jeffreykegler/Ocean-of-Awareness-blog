@@ -1,0 +1,189 @@
+<html>
+<head>
+<link rel="alternate" title="Ocean of Awareness RSS" type="application/rss+xml" title="RSS" href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/index.rss" />
+<title>Ocean of Awareness   </title>
+<style type="text/css">
+   strong {font-weight: 700;}
+</style>
+</head>
+<body>
+<div id="header"
+  style="color:white;background-color:#38B0C0;padding:1em;clear:left;text-align:center;">
+<h1>Ocean of Awareness</h1>
+  
+</div>
+  <div id="menu" style="margin:0;padding:10px;width:150px;float:left;">
+  <h2>Jeffrey Kegler's blog</h2>
+  <p>About Marpa, his new parsing algorithm,
+    and other topics of interest</p>
+  <h3>Resources</h3>
+  <p><a href="http://www.jeffreykegler.com/">Jeffrey Kegler's website</p>
+  <p><a href="http://www.jeffreykegler.com/marpa">The Marpa website</p>
+  </div>
+  <div id="content" style="margin-left:190px;border-left:2px solid #38B0C0;padding:25px;">
+<h3>Sun, 22 Jul 2012</h3>
+<br />
+<center><a name="partial-parsing-and-error-reporting"> <h2>Partial parsing and error reporting</h2> </a>
+</center>
+<blockquote>
+"One of the secrets to mathematical problem solving is that one needs to place a high value on partial progress,
+as being a crucial stepping stone to fully solving the problem."
+-- <a href="https://plus.google.com/u/0/114134834346472219368/posts/Xdm8eiPLWZp">
+Terence Tao</a>
+</blockquote>
+<p>Once an error is found,
+a traditional parser is
+pretty much lost.
+This is true for even
+state of the art compilers and interpreters.
+One small typo results
+in many screens of useless
+diagnostics.
+If you're an old hand,
+you scroll back over these,
+knowing that, for the better quality compilers,
+the first few lines often have something to
+do with the real problem.
+With Marpa, we can do better than this.
+</p>
+<p>
+Robust error reporting
+is equivalent to the problem of finding code interspersed
+among arbitary text.
+For example,
+consider this mixture of text and Perl fragments.
+<code class="prettyprint"><pre>
+Note: line:column figures include preceding whitepace
+The next line is a perl fragment
+{42;{1,2,3;4}}
+Code block from 3:5 to 3:13
+Code block from 2:33 to 3:14
+The next line is a perl fragment
+{42;{1,2,3,4}}
+Hash from 7:5 to 7:13
+Code block from 7:5 to 7:13
+Code block from 6:33 to 7:14
+The next line is a perl fragment
+{42;{;1,2,3;4}}
+Code block from 12:5 to 12:14
+Code block from 11:33 to 12:15
+The next line is a perl fragment
+{42;+{1,2,3,4}}
+Hash from 16:6 to 16:14
+Code block from 15:33 to 16:15
+</pre></code>
+I have written the prototype of a utility
+(<code class="prettyprint">ucurly.pl</code>)
+that finds Perl fragments
+scattered among other material,
+and parses them.
+To test the accuracy of the parse,
+I have it look for one of Perl's parsing ambiguities ---
+anonymous hash constructors that could also be code blocks.
+For the example above,
+<code class="prettyprint">ucurly.pl</code> finds what there is to be found:
+
+<code class="prettyprint"><pre>
+Perl fragment: {42;{1,2,3;4}}
+Code block at 3:5 3:13 {1,2,3;4}
+Code block at 2:33 3:14 {42;{1,2,3;4}}
+Perl fragment: {42;{1,2,3,4}}
+Ambiguous Hash at 7:5 7:13 {1,2,3,4}
+Ambiguous Code block at 7:5 7:13 {1,2,3,4}
+Code block at 6:33 7:14 {42;{1,2,3,4}}
+Perl fragment: {42;{;1,2,3;4}}
+Code block at 12:5 12:14 {;1,2,3;4}
+Code block at 11:33 12:15 {42;{;1,2,3;4}}
+Perl fragment: {42;+{1,2,3,4}}
+Hash at 16:6 16:14 {1,2,3,4}
+Code block at 15:33 16:15 {42;+{1,2,3,4}}
+perl tokens = 62; all tokens=267; 23.22%
+</pre></code>
+<p>
+My Marpa-based Perl parser,
+as it currently stands,
+is a partial Perl parser.
+On select problems, it is 100%.
+For example,
+it understands all of the output from Data::Dumper.
+And it scored perfectly in the example in this blog post.
+It will parse perhaps 90% of a typical, complex Perl program.
+</p>
+<p>
+At this point in the Marpa-based Perl parser's evolution,
+rather than add Perl syntax,
+I decided to use it to investigate partial parsing.
+Some readers will have observed that "90% coverage"
+is a synonym with "useless" in current parsing practice.
+That's because traditional parsing algorithms are close to binary.
+Traditional parsers only understand input if it is correct or nearly so.
+</p>
+<p>
+When partial parsing is possible,
+things are more interesting.
+For example, I turned
+<code class="prettyprint">ucurly.pl</code>,
+my ambiguity-finding utility,
+loose on
+<a href="http://api.metacpan.org/source/MARKSTOS/CGI.pm-3.59/lib/CGI.pm">
+CGI.pm</a>,
+a complex bit of Perl code by anyone's standard.
+My utility failed to parse a lot of correct Perl code
+in CGI.pm,
+producing a lot of false negatives.
+But this did not prevent it from singling out
+line 461:
+<code class="prettyprint"><pre>
+
+      @result = map {ref $_ ? $_ : $self->_decode_utf8($_) } @result;
+</pre></code>
+This line is ambiguous -- the first argument to map
+could be either an anonymous hash constructor,
+or a code block.
+My guess, and I believe, the Perl's parser's guess,
+is that it's a code block.
+But it'd be nice to have a utility that spots these,
+so that all doubt can be removed:
+<code class="prettyprint"><pre>
+      @result = map { ; ref $_ ? $_ : $self->_decode_utf8($_) } @result;
+</pre></code>
+<br />
+<p>posted at: 19:48 |
+path: <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/07">/individual/2012/07</a> |
+<a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/07/partial-parsing-and-error-reporting.html">direct link to this entry</a>
+</p>
+<div style="color:#38B0C0;padding:1px;text-align:center;">
+&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&sect;
+</div>
+</div>
+</div>
+<div id="footer" style="border-top:thick solid #38B0C0;clear:left;padding:1em;">
+<p>This is Ocean of Awareness's
+  new home.  This blog has been hosted at
+  <a href="http://blogs.perl.org/users/jeffrey_kegler/">blogs.perl.org</a>
+  but I have succumbed to the lure of static blogging.
+  I have not yet decided how to deal with comments at this new blog location.
+If the post is Marpa-related,
+<a href="https://groups.google.com/forum/?hl=en&fromgroups#%21forum/marpa-parser">
+the Marpa mailing list</a>
+is a good place to comment.
+Also,
+I will continue to dual-post for some time,
+and have not yet frozen comments on the versions of the
+post at
+<a href="http://blogs.perl.org/users/jeffrey_kegler/">blogs.perl.org</a>.
+</div>
+              <script type="text/javascript">
+            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+          </script>
+          <script type="text/javascript">
+            try {
+              var pageTracker = _gat._getTracker("UA-33430331-1");
+            pageTracker._trackPageview();
+            } catch(err) {}
+          </script>
+</body>
+</html>

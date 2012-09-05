@@ -1,0 +1,76 @@
+<?xml version="1.0"?>
+<!-- name="generator" content="blosxom/2.0" -->
+<!DOCTYPE rss PUBLIC "-//Netscape Communications//DTD RSS 0.91//EN" "http://my.netscape.com/publish/formats/rss-0.91.dtd">
+
+<rss version="0.91">
+  <channel>
+    <title>Ocean of Awareness   </title>
+    <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog</link>
+    <description>Ocean of Awareness.</description>
+    <language>en</language>
+
+  <item>
+    <title>Ringo Starr and Willy Sutton On Programming Languages</title>
+    <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog/2010/01/05#ringo-starr-and-willy-sutton-on-programming-languages</link>
+    <description>&lt;p&gt;&lt;a href=&quot;http://web2.airmail.net/gshultz/drumpage.html&quot;&gt;Ringo Starr&lt;/a&gt;: &lt;blockquote&gt;
+I didn't play drums to make money. I played drums because I loved
+them. [...] It was a conscious moment in my life when I said the rest
+of things were getting in the way. I didn't do it to be [be]come rich and
+famous, I did it because it was the love of my life.&lt;/blockquote&gt;
+
+&lt;p&gt;When asked why he robbed banks,
+Willy Sutton is purported to have
+said he did so because &quot;that is where the money is&quot;.
+&lt;a href=&quot;http://en.wikipedia.org/wiki/Willie_Sutton#An_urban_legend&quot;&gt;Mr Sutton set the
+record straight for his
+biographer&lt;/a&gt;:
+&lt;blockquote&gt;
+I never said it. [...]  Why did I
+rob banks? Because I enjoyed it. I loved it. I was more alive when I was
+inside a bank, robbing it, than at any other time in my life.&lt;/blockquote&gt;
+
+&lt;p&gt;Money moves job indexes.
+But where the following for a language is only cash-driven,
+that following may become as broad as the ocean,
+but it will never be more than a millimeter deep.
+And it will dry up the moment the cash disappears.
+
+&lt;p&gt;CPAN and Perlmonks would
+not exist if people did not love
+to write and use Perl.
+Do other languages have similar things?
+The extent to which they do is the best indicator
+of how much
+people love to write code in that language.
+
+&lt;p&gt;The funny thing about following what you love and ignoring
+the money -- it's at least as likely to make you money as focusing
+on money.  
+Mr. Starkey made a dime or two drumming.
+Mr. Sutton's record was more mixed, but this can be attributed
+entirely to the unusually heavy regulatory
+burden imposed on his calling.
+
+&lt;p&gt;What about companies with large investments in custom code?
+What about the interests of their shareholders?
+That's more than a fair question -- it's an important one.
+
+&lt;p&gt;But
+how much sense does it make to
+lock an investment into a technology,
+the first and last thought of whose practitioners
+is how much can they can squeeze you for?
+How much sense does it make to lock an investment
+into a technology that is avoided by those who
+do quality work, not for money, but for its own sake?
+
+&lt;p&gt;There are other languages which are very serious
+competitors to Perl.
+Python has its attractions.
+And there are people who both love what they do
+and very much know what they are doing who prefer Python.
+But the real balance of power between the Python and Perl
+will never show up in a job index.</description>
+  </item>
+  </channel>
+</rss>

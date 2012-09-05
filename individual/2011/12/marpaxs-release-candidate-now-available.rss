@@ -1,0 +1,132 @@
+<?xml version="1.0"?>
+<!-- name="generator" content="blosxom/2.0" -->
+<!DOCTYPE rss PUBLIC "-//Netscape Communications//DTD RSS 0.91//EN" "http://my.netscape.com/publish/formats/rss-0.91.dtd">
+
+<rss version="0.91">
+  <channel>
+    <title>Ocean of Awareness   </title>
+    <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog</link>
+    <description>Ocean of Awareness.</description>
+    <language>en</language>
+
+  <item>
+    <title>Marpa::XS release candidate now available</title>
+    <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog/2011/12/11#marpaxs-release-candidate-now-available</link>
+    <description>&lt;p&gt;
+I am very happy to announce that
+&lt;a href=&quot;https://metacpan.org/release/JKEGL/Marpa-XS-0.026000/&quot;&gt;
+the latest release of Marpa::XS&lt;/a&gt;
+is a release candidate&lt;/a&gt; for the first full release,
+Marpa::XS 1.000000.
+Most user's experience with the previous beta releases
+seems to have been trouble-free.
+The one significant issue that was identified
+was a failure to properly evaluate null symbols under
+&lt;a href=&quot;#JIROTKA&quot;&gt;
+an unusual combination of circumstances&lt;/a&gt;.
+This problem
+(a one line error in the C rewrite of the parse engine)
+is fixed in this release.
+Unusual as the issue is,
+when it does occur it results in a parse failure,
+so that
+I recommend that all users of Marpa::XS upgrade to
+&lt;a href=&quot;https://metacpan.org/release/JKEGL/Marpa-XS-0.026000/&quot;&gt;
+the latest release&lt;/a&gt;.
+&lt;/p&gt;
+&lt;p&gt;
+Marpa::XS is being kept stable.
+Bug fixes, even of minor and cosmetic bugs,
+will be made, as 
+will changes that improve maintainability.
+But no new features will be added.
+Interface changes will be especially avoided.
+
+&lt;/p&gt;
+&lt;h2&gt;What is Marpa?&lt;/h2&gt;
+&lt;p&gt;Marpa is an advance over recursive descent
+and yacc.
+I hope the Marpa algorithm
+will become the standard parser for
+problems too
+big for regular expressions.
+&lt;/p&gt;&lt;ul&gt;
+&lt;li&gt;Marpa parses,
+&lt;a href=&quot;#LINEAR&quot;&gt;
+in linear time&lt;/a&gt;,
+those
+classes of grammar that are currently in practical use.
+&lt;/li&gt;
+&lt;li&gt;The importance of parse-time debugging is often underestimated.
+Marpa's parse-time error detection breaks new ground -- Marpa is
+fully aware of exactly where in the parse it is at all times,
+and of exactly what input it expects and why.
+This means parse-time error detection, once a desperate last
+resort, now can be used as
+&lt;a href=&quot;http://blogs.perl.org/users/jeffrey_kegler/2010/06/parsing-with-ruby-slippers.html&quot;&gt;
+a parsing technique in itself&lt;/a&gt;.
+
+&lt;/li&gt;
+&lt;li&gt;Marpa is a general BNF parser -- that means if you feed it anything
+written in BNF, it &quot;just parses&quot; it.
+This includes grammars which are left-recursive, right-recursive and
+ambiguous -- even infinitely ambiguous.
+&lt;/li&gt;
+
+&lt;li&gt;Marpa never goes exponential -- worst case, even for highly ambiguous
+grammars, is O(n**3), which is
+&lt;a href=&quot;#OPTIMAL&quot;&gt;considered optimal&lt;/a&gt;.
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;New with this release&lt;/h2&gt;
+&lt;p&gt;
+Since the beta release,
+several bugs have been fixed,
+The most important one was a failure to properly evaluate
+null symbols
+&lt;a href=&quot;#JIROTKA&quot;&gt;under certain unusual circumstances&lt;/a&gt;.
+This problem, identified and described by
+Tom&amp;aacute;&amp;#353; Jirotka,
+is fixed in
+&lt;a href=&quot;https://metacpan.org/release/JKEGL/Marpa-XS-0.026000/&quot;&gt;
+this latest release&lt;/a&gt;.
+&lt;/p&gt;
+
+&lt;p&gt;
+In some previous Marpa::XS releases, the
+documentation, while part of the distribution,
+did not install automatically.
+As of this release, that problem is fixed.
+The documentation now
+installs, as it should,
+along with the rest of Marpa::XS.
+&lt;/p&gt;
+&lt;p&gt;
+No interface has been deprecated since
+Marpa::XS went beta -- the interface has remained stable.
+But many interfaces deprecated BEFORE Marpa
+went beta were used in the test suite.
+To make the test suite more useful for readers,
+I eliminated deprecated practices
+except in code whose purpose it is
+to test that deprecated practice.
+Where tests continue to use a deprecated practice,
+comments explicitly point this out.
+&lt;/p&gt;
+&lt;h2&gt;What is next with Marpa?&lt;/h2&gt;
+&lt;p&gt;
+Based on the feedback,
+I have confidence that Marpa::XS have been extensively
+used and found reliable.
+With the fixes for this release,
+I expect that Marpa::XS can be taken out
+of beta and into a full 1.000000 release shortly.
+&lt;/p&gt;
+Development of new features for
+Marpa continues, but in another distribution:
+&lt;a href=&quot;http://search.cpan.org/dist/Marpa-R2/&quot;&gt;Marpa::R2&lt;/a&gt;.
+This isolates Marpa::XS users from the accidental changes
+and bugs that can be the side effect of active development.</description>
+  </item>
+  </channel>
+</rss>

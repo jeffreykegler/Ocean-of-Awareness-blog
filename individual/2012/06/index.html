@@ -1,0 +1,483 @@
+<html>
+<head>
+<link rel="alternate" title="Ocean of Awareness RSS" type="application/rss+xml" title="RSS" href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/index.rss" />
+<title>Ocean of Awareness   </title>
+<style type="text/css">
+   strong {font-weight: 700;}
+</style>
+</head>
+<body>
+<div id="header"
+  style="color:white;background-color:#38B0C0;padding:1em;clear:left;text-align:center;">
+<h1>Ocean of Awareness</h1>
+  
+</div>
+  <div id="menu" style="margin:0;padding:10px;width:150px;float:left;">
+  <h2>Jeffrey Kegler's blog</h2>
+  <p>About Marpa, his new parsing algorithm,
+    and other topics of interest</p>
+  <h3>Resources</h3>
+  <p><a href="http://www.jeffreykegler.com/">Jeffrey Kegler's website</p>
+  <p><a href="http://www.jeffreykegler.com/marpa">The Marpa website</p>
+  </div>
+  <div id="content" style="margin-left:190px;border-left:2px solid #38B0C0;padding:25px;">
+<h3>Tue, 26 Jun 2012</h3>
+<br />
+<center><a name="the-useful-the-playful-the-easy-the-hard-and-the-beautiful"> <h2>The useful, the playful, the easy, the hard and the beautiful</h2> </a>
+</center>
+<h2>The useful</h2>
+
+<p>I am now using a useful new tool on CPAN,
+<a href="https://metacpan.org/module/MarpaX::Simple::Rules">
+Peter Stuifzand's MarpaX::Simple::Rules</a>.
+Marpa grammars are often best expressed like this:
+<pre>
+    pair ::= a a
+    pair ::= pair a
+    pair ::= a pair
+    pair ::= pair pair
+</pre>
+Peter's module allow you to do this,
+and all the examples in this blog post were
+run using it.
+
+<p>For those new to this blog
+<a href="http://www.jeffreykegler.com/marpa">
+Marpa is something new in parsing</a> --
+it parses anything you can write in BNF and,
+if your grammar is in one of the classes currently in practical use,
+parses  it in linear time.
+Marpa's parse engine is written in optimized C,
+so that Marpa's speed is competitive with parsers of far less power.
+Marpa's stable version is
+
+<a href="https://metacpan.org/module/Marpa::XS">
+Marpa::XS</a>. 
+
+<h2>The playful</h2>
+
+<p>The grammar allows every possible pairing of 2 adjacent symbols
+in a grammar.
+Which takes this post on a brief excursion into the playful.
+Combinatoric issues are often easily expressed as grammars,
+and Marpa makes it easy to count parses.
+Clearly there is only one way in which 2 symbols can be paired.
+And it's not too hard to see that 3 symbols can be
+paired in 2 ways.
+The counting rapidly gets difficult and error-prone,
+but I can convince myself with pencil and paper that
+4 symbols can be paired in 5 ways.
+At this point I let Marpa take over.
+The code is
+<a href="https://gist.github.com/2999014">
+online</a>,
+and this is the result:
+<pre>
+    1 2 5 14 42 132 429 1430 4862
+</pre>
+
+For further analysis, I do what any red-blooded mathematician
+would do: I type the series into a Google seach bar and hit
+return.
+These numbers are the
+<a href="http://en.wikipedia.org/wiki/Catalan_number">
+
+Catalan series</a>,
+one which pops up all over the place.
+Because my issue is set up as a pairing problem, I didn't
+obtain the first two numbers, but the standard Catalan series
+is this:
+<pre>
+    0 1 1 2 5 14 42 132 429 1430 4862 16796 58786 208012 742900 2674440
+</pre>
+Confirmation that the Catalan series is the right
+one can be found in <i>Concrete Mathmematics</i>,
+Graham, Knuth, and Patashnik,
+pp. 343-344,
+or
+<a href="http://en.wikipedia.org/wiki/Catalan_number#Applications_in_combinatorics">
+on Wikipedia</a>.
+<h2>The useful revisited</h2>
+
+<p>
+Playing with these series can be fun,
+but for my Marpa work they are more than useful,
+they are necessary.
+Marpa claims to accurately iterate all the parses
+of an ambiguous parse.
+But to claim this,
+I need to test it.
+
+
+<p>I can't do serious testing based on parse counts
+by hand.
+Because even if you can find the right answer
+with pencil and paper, that's not enough --
+you need to demonstrate conclusively that the
+right answer IS the right answer.
+Matching Marpa's answer is not enough --
+it might simply be a case of me and
+Marpa both counting wrong the same way.
+
+<p>For serious testing, I need
+to match the parse counts with a
+verified series.
+
+I can verify a series in two ways.
+I prefer the easy way --
+finding a case,
+like that of the Catalan numbers just described,
+where it's already well-known that my parse
+counts and the series should match.
+But I also do it the hard way when I have to.
+In what follows I'll show an example of each.
+
+<h2>The easy</h2>
+
+This next grammar allows every one of 10 symbols to be either 'a' or nulled.
+<pre>
+    S ::= A A A A A A A A A A
+    A ::= a
+    A ::= E
+    E ::= Null
+</pre>
+This is equivalent to the very
+well-known (and mercifully well-understood) problem of
+picking k items out of n.
+Here are the parse counts:
+<pre>
+    1 10 45 120 210 252 210 120 45 10 1
+</pre>
+These are the binomial coefficients for n=10.
+(Binomals are one of the many places this series pops up.)
+<p>
+
+A nice feature of Peter's MarpaX::Simple::Rules is that Peter's
+rules can be mixed with Marpa's "native" rules.
+This will be useful here, for generalizing from n=10 to
+0<=n<=12.
+<a href="https://gist.github.com/2999040">
+The code is online as a Github gist</a>.
+And the result,
+as the math-savvy among my 
+readers will be expecting,
+is
+<a href="http://en.wikipedia.org/wiki/Pascal%27s_triangle">
+Pascal's triangle</a>:
+<pre>
+1
+1 1
+1 2 1
+1 3 3 1
+1 4 6 4 1
+1 5 10 10 5 1
+1 6 15 20 15 6 1
+1 7 21 35 35 21 7 1
+1 8 28 56 70 56 28 8 1
+1 9 36 84 126 126 84 36 9 1
+1 10 45 120 210 252 210 120 45 10 1
+1 11 55 165 330 462 462 330 165 55 11 1
+1 12 66 220 495 792 924 792 495 220 66 12 1
+</pre>
+<h2>The hard</h2>
+<p>The previous two examples were good, but also quite
+"pure" mathematically -- there's symmetry all over the place.
+Real grammars tend to be a bit more "pear-shaped",
+and I wanted an example which,
+while combinatorially hard,
+reflected this.
+<p>Operators tend to be the most complex part of practical language
+grammars, so I focused on them.
+Their ambiguity is considerably tamed by using precedence, so I
+chose to ignore precedence.
+Few languages have a richer, and more potentially ambiguous,
+set of operators than Perl, so I chose the Perl operators.
+And the fastest way to generate operator ambiguity in Perl is with
+a series of minus signs.
+Things like:
+<pre>
+
+    $a--------$b
+</pre>
+Let me emphasize that this is not real Perl syntax -- it's a
+wildly ambiguous variant of Perl invented to make a good test case.
+<p>In Perl,
+minus signs can be part of 4 different operators:
+prefix decrement (--$a);
+postfix decrement ($a--);
+unary negation (-$a)
+and subtraction ($a-$b).
+Here's our grammar:
+<pre>
+    E ::= E Minus E
+    E ::= E Minus Minus
+    E ::= Minus Minus E
+    E ::= Minus E
+    E ::= Variable
+</pre>
+The code is
+<a href="https://gist.github.com/2999057">
+online</a>,
+and these, for minus sign counts from 1 to 12,
+are our parse counts:
+<pre>
+    1 1 3 4 8 12 21 33 55 88 144 232
+</pre>
+
+<p>
+This series is not one of the well-known ones,
+but it is known -- it is
+<a href="http://oeis.org/A052952">A052952
+</a>, a sort of rag-time Fibonacci variant.
+It has no name,
+and I like to call it the Wall series,
+as a tribute to Larry,
+and because it's based on his Perl operators.
+With this one I could not simply look it up
+by name and confirm that A05952
+is the series generated by the parse counts.
+But I was able to come up with
+<a href="http://perlmonks.org/?node_id=649892">
+my own proof.</a>
+<h2>The beautiful</h2>
+<p>The Pythagoreans
+believed that the world was created out of beauty
+and order;
+that mathematics was the basis of all things;
+and that each of these beliefs implied the other.
+Their beliefs gained special credibility
+when they showed that much of the power
+of music comes down to ratio.
+<p>Avowed Pythagoreans,
+who were probably never thick on the ground,
+are hard to find these days.
+But in another sense, Pythagoreanism dominates
+our world.
+That special reverence and belief in the power
+of science that characterizes us in the West --
+it comes from them.
+We claim
+many philosophies
+and religions,
+but in fact it seems that
+we cannot
+stop ourselves from thinking like Pythagoreans,
+and these other creeds are more our aspiration
+than our conviction.
+<p>So does the secret of a happy and virtuous life
+lie in contemplating the harmonies of mathematics?
+That is an idea that seems at once too hard
+and too easy to be true.
+But it is easy to appreciate these series
+for their beauty,
+and hard not to be struck by the way that,
+when you avoid order, order emerges.
+<br />
+<p>posted at: 16:02 |
+path: <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/06">/individual/2012/06</a> |
+<a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/06/the-useful-the-playful-the-easy-the-hard-and-the-beautiful.html">direct link to this entry</a>
+</p>
+<div style="color:#38B0C0;padding:1px;text-align:center;">
+&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&sect;
+</div>
+<h3>Wed, 20 Jun 2012</h3>
+<br />
+<center><a name="marpa-customizing-the-ruby-slippers"> <h2>Marpa & customizing the Ruby Slippers</h2> </a>
+</center>
+<p>The
+<a href="http://www.jeffreykegler.com/marpa">
+Marpa parser</a>
+introduced
+<a href="http://blogs.perl.org/users/jeffrey_kegler/2011/11/marpa-and-the-ruby-slippers.html">
+Ruby Slippers parsing</a>.
+But the Ruby Slippers were just part of a broader feature
+of Marpa -- its "situational awareness".
+With the
+<a href="https://metacpan.org/release/Marpa-R2">
+latest release of Marpa::R2</a>,
+applications now have
+<a href="https://metacpan.org/module/Marpa::R2::Progress#Access-to-the-raw-progress-report-information">
+efficient access to the broader awareness</a>.
+
+<p>For those new to this blog
+<a href="http://www.jeffreykegler.com/marpa">
+Marpa is something new in parsing</a> --
+it parses anything you can write in BNF and,
+if your grammar is in one of the classes currently in practical use,
+parses  it in linear time.
+Marpa::R2's parse engine is written in optimized C,
+so that Marpa::R2's speed is competitive with parsers of far less power.
+
+
+<p>
+Marpa knows at every point in the parse,
+which rules are possible,
+how far into those rules the parse has already gotten,
+and where those rules might start.
+This degree of situational awareness is unusual in a parser,
+and the more "production quality" the parser,
+the more unusual it is.
+This seems paradoxical.
+Situational awareness seems like a
+common sense thing to want in any parser,
+and certainly in one that you'd hope would be able to
+produce quality error messages.
+But the practice has been for parsers,
+as a way to achieve efficiency,
+to turn their grammar into an abstraction.
+This can be OK if all goes as planned, but if anything
+goes wrong it means these parsers don't really have a clue
+what it was.
+
+<p>In
+<a href="https://metacpan.org/release/Marpa-XS">
+stable distribution, Marpa::XS</a>,
+Marpa already made situational awareness available in
+a form that allowed Ruby Slippers parsing --
+at any point in the parse,
+it could return a list of expected tokens.
+A full description of the parse was also available in
+Marpa::XS's progress reports,
+which gave this information in text form.
+This was wonderful for tracing parsing issues,
+but it was not a convenient form for
+post-processing.
+
+<p>As of
+<a href="https://metacpan.org/release/Marpa-R2">
+its latest release</a>,
+Marpa::R2
+<a href="https://metacpan.org/module/Marpa::R2::Progress#Access-to-the-raw-progress-report-information">
+makes available the "raw" data
+behind the progress reports</a>.
+This is ideal for post-processing.
+My hope is that users will use this to
+invent their own advanced parsing tricks
+-- customized versions of the Ruby Slippers.
+
+<p>The road is open.
+<a href="https://metacpan.org/release/Marpa-R2">
+Marpa::R2</a>
+
+is fast, powerful and maneuverable.
+Floor it.
+<br />
+<p>posted at: 14:57 |
+path: <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/06">/individual/2012/06</a> |
+<a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/06/marpa-customizing-the-ruby-slippers.html">direct link to this entry</a>
+</p>
+<div style="color:#38B0C0;padding:1px;text-align:center;">
+&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&sect;
+</div>
+<h3>Tue, 12 Jun 2012</h3>
+<br />
+<center><a name="announcing-marpar2"> <h2>Announcing Marpa::R2</h2> </a>
+</center>
+<h2>What is Marpa?</h2>
+<p>I am very
+pleased to announce <a
+href="https://metacpan.org/release/JKEGL/Marpa-R2-2.006000/">Marpa::R2</a>
+-- "Release 2" of the Marpa parser.
+For those unfamiliar,
+<a href="http://www.jeffreykegler.com/marpa">the
+Marpa algorithm</a>
+is something new in parsing --
+it parses anything you can write in BNF and,
+if your grammar is in one of the classes currently in practical use,
+it parses  it in linear time.
+Marpa::R2's parse engine is written in optimized C,
+so that Marpa::R2's speed is competitive with parsers of far less power.
+</p>
+<p>
+An important feature of the Marpa
+algorithm is "situational awareness".
+Marpa knows at every point in the parse exactly how far it
+has progressed in each rule,
+and can share this information with the application.
+The advantages of this go beyond error detection --
+Marpa's situational awareness is accurate, graceful
+and fast enough to be used as a parsing technique in its own
+right --
+<a href="https://metacpan.org/module/Marpa::R2::Recognizer#RUBY-SLIPPERS-PARSING">
+Ruby Slippers parsing</a>.
+</p>
+<h2>Announcing Marpa::R2</h2>
+<p>
+<a href="https://metacpan.org/release/JKEGL/Marpa-R2-2.006000/">
+Marpa::R2 2.006000</a>
+is alpha,
+and its interface is not yet frozen.
+Those who want a stable version of Marpa should prefer
+<a href="https://metacpan.org/module/Marpa::XS">
+Marpa::XS</a>.
+But Marpa::R2 does pass the same test suite as Marpa::XS,
+and at least one module has already successfully converted to
+Marpa::R2.
+</p>
+<p>
+Marpa::R2 is heavily refactored internally.  I expect more
+benefits of this refactoring to come over the next weeks,
+in the form of new features.
+Here are the new features available
+in this first announced release of Marpa::R2:
+<ul><li> Marpa::R2 is faster than Marpa::XS.
+The most visible speedup comes
+from optimizing rules and tokens whose values do not matter, so
+that the actual speedup varies greatly by application, but it is
+often 20% or more.
+<li>Marpa::R2 no longer requires Glib.  Marpa::R2 now has no non-core
+Perl dependency.
+<li>Marpa::R2's internal grammar rewrites are now invisible to the user,
+even when tracing.
+</ul>
+<p>
+Users migrating from Marpa::XS should be aware that,
+while Marpa::R2's interface is similar to Marpa::XS's,
+it is not fully compatible.
+The <a href="https://metacpan.org/module/Marpa::R2::Changes">list
+of incompatible changes can be found in the Marpa::R2 documentation</a>.
+</p>
+<br />
+<p>posted at: 18:04 |
+path: <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/06">/individual/2012/06</a> |
+<a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/06/announcing-marpar2.html">direct link to this entry</a>
+</p>
+<div style="color:#38B0C0;padding:1px;text-align:center;">
+&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&sect;
+</div>
+</div>
+</div>
+<div id="footer" style="border-top:thick solid #38B0C0;clear:left;padding:1em;">
+<p>This is Ocean of Awareness's
+  new home.  This blog has been hosted at
+  <a href="http://blogs.perl.org/users/jeffrey_kegler/">blogs.perl.org</a>
+  but I have succumbed to the lure of static blogging.
+  I have not yet decided how to deal with comments at this new blog location.
+If the post is Marpa-related,
+<a href="https://groups.google.com/forum/?hl=en&fromgroups#%21forum/marpa-parser">
+the Marpa mailing list</a>
+is a good place to comment.
+Also,
+I will continue to dual-post for some time,
+and have not yet frozen comments on the versions of the
+post at
+<a href="http://blogs.perl.org/users/jeffrey_kegler/">blogs.perl.org</a>.
+</div>
+              <script type="text/javascript">
+            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+          </script>
+          <script type="text/javascript">
+            try {
+              var pageTracker = _gat._getTracker("UA-33430331-1");
+            pageTracker._trackPageview();
+            } catch(err) {}
+          </script>
+</body>
+</html>

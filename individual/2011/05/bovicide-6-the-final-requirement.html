@@ -1,0 +1,282 @@
+<html>
+<head>
+<link rel="alternate" title="Ocean of Awareness RSS" type="application/rss+xml" title="RSS" href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/index.rss" />
+<title>Ocean of Awareness   </title>
+<style type="text/css">
+   strong {font-weight: 700;}
+</style>
+</head>
+<body>
+<div id="header"
+  style="color:white;background-color:#38B0C0;padding:1em;clear:left;text-align:center;">
+<h1>Ocean of Awareness</h1>
+  
+</div>
+  <div id="menu" style="margin:0;padding:10px;width:150px;float:left;">
+  <h2>Jeffrey Kegler's blog</h2>
+  <p>About Marpa, his new parsing algorithm,
+    and other topics of interest</p>
+  <h3>Resources</h3>
+  <p><a href="http://www.jeffreykegler.com/">Jeffrey Kegler's website</p>
+  <p><a href="http://www.jeffreykegler.com/marpa">The Marpa website</p>
+  </div>
+  <div id="content" style="margin-left:190px;border-left:2px solid #38B0C0;padding:25px;">
+<h3>Fri, 13 May 2011</h3>
+<br />
+<center><a name="bovicide-6-the-final-requirement"> <h2>Bovicide 6: The Final Requirement</h2> </a>
+</center>
+<p><a href="http://meta.wikimedia.org/wiki/File:Yak.._howl_of_the_Winter.jpg">
+<img alt="half_yak.jpg" src="http://blogs.perl.org/users/jeffrey_kegler/winter_yak/half_yak.jpg" width="400" height="300" class="mt-image-right" style="float: right; margin: 0 0 20px 20px;" />
+</a>
+This post in one of
+<a href="#SERIES">a series</a>
+inspired by
+<a href="#DISCUSSION">a web discussion</a>
+about what
+it would take to replace <var>yacc</var>
+and its cousins as the industry standard
+for parser generators.
+My interest in the question grows out of
+<a href="#MARPA">Marpa</a>,
+my project to take the many improvements made
+over the decades to Earley's algorithm,
+and turn them into a practical parser generator.
+
+<h1>Requirement 6: Available as a Library</h1>
+
+<p>To be an adequate <var>yacc</var> replacement,
+an algorithm should be available as a library.
+In the Perl context,
+this means available as a module.
+I interpret this requirement loosely
+enough to regard the traditional implementations
+of LALR parsers,
+such as the <var>yacc</var> parser generator,
+as meeting this test.
+True, they usually
+generate the code for a custom parser,
+which then must be
+compiled as a separate step.
+But an LALR parser generator could be implemented
+as a library.
+</p>
+<p>
+The reason that 
+<var>yacc</var> and its relatives
+are traditionally not implemented
+as libraries is revealing:
+the chances of a practical grammar
+"just working" with
+<var>yacc</var>
+are pretty much zero.
+In practice you almost never go from writing a <var>yacc</var>
+
+grammar
+directly to a successful execution.
+In context, therefore,
+having to invoke
+the C compiler as a separate stage is
+<a href="#LEXER">only a small additional effort</a>.
+And it does open up a lot of extra options,
+such as  the
+use of alternative compilers, linkers
+and other tools;
+the full range of options to
+these tools;
+the opportunity to custom modify the C code; etc., etc.
+</p>
+<p>
+Marpa fulfills Requirement 6.
+It is implemented as a Perl
+module, and its grammar pre-processing and parsing has been translated
+into a C library (libmarpa), in which form it runs much faster.
+</p>
+<p>
+The major parsing technique that clearly <b>fails</b> this requirement
+is hand-written recursive descent.
+Hand-written recursive descent parsers are,
+by definition, not available in
+a library or any other ready-made form.
+A hand-written recursive descent parser is straightforward
+to write,
+so much so that writing one these days is often preferred
+to struggling with <var>yacc</var>.
+Nonetheless code it yourself is what you must do.
+</p>
+<h1>A Requirement I Dropped</h1>
+
+<p>In this list of requirements, I included the requirements
+in
+<a href="http://research.swtch.com/2010/12/yacc-is-not-dead.html">
+Russ Cox's post</a>
+and all but one from
+<a href="http://arxiv.org/abs/1010.5023">
+the Might-Darais paper</a>.
+Those I included I sometimes strengthened,
+and I added two more to the list,
+dealing with error detection.
+Error detection is important to include --
+I attribute
+the present turn against the LALR-based family of
+parser generators (which includes <var>yacc</var>)
+mainly to LALR's grotesquely bad error detection properties.
+<p>
+<p>What was the requirement I dropped?
+Might & Darais suggest that the ideal algorithm
+needs to fit on
+a single page --
+in effect that a high-quality general parser
+must be something you could whiteboard for your
+Google interview.
+To be sure,
+this would be a useful and charming property in any algorithm.
+Unsurprisingly, the Might-Darais algorithm has it.
+<p>I say "unsurprisingly", because when authors of parsers list
+requirements for the perfect parser, they have a tendency to
+shoot the arrow first, then set up the target near where
+the arrow landed.
+I could be accused of this.
+<p>For Marpa to have fit on single page would have been a wonderful
+thing.  Earley's original algorithm came close.
+But with each improvement to the Earley algorithm,
+while speed increased, so did the complexity of the logic.
+Marpa includes
+<a href="#IMPROVEMENTS">all the applicable improvements</a>
+
+in the literature.
+There was never any hope it would fit on a whiteboard,
+not even if you follow
+<a href="http://steve-yegge.blogspot.com/2008/03/get-that-job-at-google.html">Steve
+Yegge's suggestion and carry your own supply of fine-tip dry-erase markers</a>.
+<h1>Picasso and Angkor Wat</h1>
+In this later years, Picasso could create a world in a few brush strokes.
+While writing Marpa, there were moments when
+a problem which appeared complex
+dissolved into a simple truth.
+The nicest of these was when
+the largely incompatible algorithms
+of Joop Leo and Aycock-Horspool turned out to
+be a perfect fit at all the points where it mattered.
+Even so, there were not enough of these moments
+to reverse the trend.
+Nobody will ever call the Marpa algorithm simple.
+<p>But disappointment is what happens when you search
+for the wrong thing.
+The straightness of the Parthenon's lines is an illusion.
+Simple straight lines do not look straight.
+The builders of the Parthenon wanted every line to appear
+perfectly straight to the human eye, and as a result
+<a href="http://www.cartage.org.lb/en/themes/arts/architec/AncientArchitectural/GreekArchitecture/DesignandConstruction/DesignandConstruction.htm">there is
+not a prefectly straight line
+anywhere in the temple</a>.
+</p>
+<p>
+In South Asia,
+the great temple complexes glory in their complexity.
+And in its Frieze,
+the Parthenon did not even pretend to be simple.
+Their creators knew that
+beauty is beyond pattern.
+</p><h2>Notes</h2>
+<p><a name="SERIES">Note 1: </a>
+The previous posts in this series were
+
+<a href="http://blogs.perl.org/users/jeffrey_kegler/2010/12/killing-yacc-1-2-3.html">Killing Yacc</a>,
+<a href="http://blogs.perl.org/users/jeffrey_kegler/2011/04/bovicide-5-parse-time-error-reporting.html">
+Parse-time Error Reporting</a>, and
+<a href="http://blogs.perl.org/users/jeffrey_kegler/2010/12/why-the-bovicidal-rage-killing-yacc-4.html">
+Why the Bovicidal Rage?</a>,
+<p><a name="DISCUSSION">Note 2: </a>
+The discussion was started by
+<a href="http://arxiv.org/abs/1010.5023">
+Might and Darais's presentation of their algorithm</a>,
+titled "Yacc is Dead".
+Russ Cox responded to that paper with an extremely well-informed blog post,
+<a href="http://research.swtch.com/2010/12/yacc-is-not-dead.html">
+"Yacc is not Dead,</a>.
+
+<p><a name="MARPA">Note 3: </a>
+Marpa is available on CPAN in
+<a href="http://search.cpan.org/dist/Marpa/">Pure Perl</a>
+and
+<a href="http://search.cpan.org/dist/Marpa-XS/">XS</a>
+form.
+Marpa will parse anything you can write in BNF.
+If a grammar is one of the kinds in practical use,
+(such as <var>yacc</var>'s LALR or recursive descent's LL(1)),
+you can expect Marpa to parse it in linear time -- O(n).
+To be specific, Marpa parses any
+LR-regular grammar in O(n).
+<p><a name="LEXER">Note 4: </a>A <var>yacc</var>
+user must also create her own lexer.
+This was considered acceptable since there were tools
+specifically for creating <var>yacc</var>-compatible lexers,
+and since, in exchange for the trouble of writing a <var>yacc</var>
+
+parser, she expected a extremely efficient parser,
+one which often justified a hand-written lexer.
+<p><a name="IMPROVEMENTS">Note 5: </a>
+I did not include every improvement to Earley's proposed
+in the literature.
+In particular, Marpa does not use lookahead.
+Prior to Marpa,
+Grune and Jacobs had already concluded
+that the tradeoffs for lookahead in
+Earley's parsers were dubious.
+</p>
+<p>
+No amount of lookahead
+will make a parser faster
+than linear -- O(n).
+For the LR(k) grammars,
+that is, LR grammars with a lookahead of k,
+Marpa is already O(n) for all finite values of k.
+The same is true of the LL(k) grammars for all
+finite values of k.
+In fact,
+Marpa is O(n) for
+LR grammars with infinite lookahead,
+as long as the lookahead is a regular expression.
+The overhead from adding
+explicit lookahead to Marpa would be very real.
+The benefit would be hard to find.
+<br />
+<p>posted at: 17:22 |
+path: <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2011/05">/individual/2011/05</a> |
+<a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2011/05/bovicide-6-the-final-requirement.html">direct link to this entry</a>
+</p>
+<div style="color:#38B0C0;padding:1px;text-align:center;">
+&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&sect;
+</div>
+</div>
+</div>
+<div id="footer" style="border-top:thick solid #38B0C0;clear:left;padding:1em;">
+<p>This is Ocean of Awareness's
+  new home.  This blog has been hosted at
+  <a href="http://blogs.perl.org/users/jeffrey_kegler/">blogs.perl.org</a>
+  but I have succumbed to the lure of static blogging.
+  I have not yet decided how to deal with comments at this new blog location.
+If the post is Marpa-related,
+<a href="https://groups.google.com/forum/?hl=en&fromgroups#%21forum/marpa-parser">
+the Marpa mailing list</a>
+is a good place to comment.
+Also,
+I will continue to dual-post for some time,
+and have not yet frozen comments on the versions of the
+post at
+<a href="http://blogs.perl.org/users/jeffrey_kegler/">blogs.perl.org</a>.
+</div>
+              <script type="text/javascript">
+            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+          </script>
+          <script type="text/javascript">
+            try {
+              var pageTracker = _gat._getTracker("UA-33430331-1");
+            pageTracker._trackPageview();
+            } catch(err) {}
+          </script>
+</body>
+</html>

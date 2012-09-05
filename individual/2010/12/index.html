@@ -1,0 +1,494 @@
+<html>
+<head>
+<link rel="alternate" title="Ocean of Awareness RSS" type="application/rss+xml" title="RSS" href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/index.rss" />
+<title>Ocean of Awareness   </title>
+<style type="text/css">
+   strong {font-weight: 700;}
+</style>
+</head>
+<body>
+<div id="header"
+  style="color:white;background-color:#38B0C0;padding:1em;clear:left;text-align:center;">
+<h1>Ocean of Awareness</h1>
+  
+</div>
+  <div id="menu" style="margin:0;padding:10px;width:150px;float:left;">
+  <h2>Jeffrey Kegler's blog</h2>
+  <p>About Marpa, his new parsing algorithm,
+    and other topics of interest</p>
+  <h3>Resources</h3>
+  <p><a href="http://www.jeffreykegler.com/">Jeffrey Kegler's website</p>
+  <p><a href="http://www.jeffreykegler.com/marpa">The Marpa website</p>
+  </div>
+  <div id="content" style="margin-left:190px;border-left:2px solid #38B0C0;padding:25px;">
+<h3>Sun, 26 Dec 2010</h3>
+<br />
+<center><a name="why-the-bovicidal-rage-killing-yacc-4"> <h2> Why the Bovicidal Rage? (Killing Yacc: 4)</h2> </a>
+</center>
+<p>
+<a href="http://www.flickr.com/photos/publicenergy/3299967437/in/set-72157614350778728/"><img alt="3299967437_6bae3ce6a8_z.jpg" src="http://blogs.perl.org/users/jeffrey_kegler/3299967437_6bae3ce6a8_z.jpg" width="640" height="426" class="mt-image-none" style="" /></a>
+<kbd>yacc</kbd>
+was a
+major breakthrough.
+For the first time, automatic generation of
+of efficient, production-quality parsers was possible
+for languages of practical interest.
+Yacc-generated parsers had reasonable memory footprints.
+They ran in linear time.
+
+<p><a href="#NOTE1">But error reporting was overlooked.</a>
+Then as now, the focus in analyzing algorithms was on power
+-- what kinds of grammar an algorithm can parse --
+and on resource consumption.
+This leaves out something big.
+
+<p>Our frameworks for analyzing things affect what we believe.
+We find it hard to recognize a problem if our
+framework makes us unable to  articulate it.
+Complaints about <var>yacc</var> tended to be kept to oneself.
+But while <var>yacc</var>'s
+overt reputation flourished,
+programmers were undergoing an almost Pavlovian
+conditioning against it --
+a conditioning through pain.
+
+<p>With <var>yacc</var>, you no longer need to write
+your own parser.
+If you put your grammar into a form that <var>yacc</var> will accept,
+
+<var>yacc</var> writes your parser for you.
+But over the years, people noticed -- it usually takes longer
+to put a grammar into a form that <var>yacc</var> will accept
+than it does to write a recursive descent parser from scratch.
+This is almost always true when someone was using <var>yacc</var>
+for the first time.
+<a href="#NOTE2">
+But it is usually true for <var>yacc</var>
+experts as well.</a>
+
+<p>Certain tools do have a high initial cost.
+They make this acceptable with a payoff over
+the lifetime of the software.
+But in this respect also,
+
+<var>yacc</var> does worse than hand-written recursive descent --
+much worse.
+
+<p>The structure of a recursive descent parser reflects the structure
+of the language being parsed.
+Small changes in the language tend to require only small changes in the parser.
+Major changes usually affect only that part of the grammar actually changed.
+And how the recursive descent parser must change, and why,
+is usually obvious even to a programmer
+who does not make a specialty of parsing.
+
+<p>
+For a <var>yacc</var> grammar, the change process
+is not incremental -- each iteration is almost like
+starting from scratch.
+<var>yacc</var> parsers work using LALR automata.
+Small changes in the grammar often cause big changes to the LALR states.
+Tracing the logic behind these changes is a challenge
+even to those
+familiar with the underlying math --
+one which they usually find not worth the time and effort.
+This is one reason that those experienced with <var>yacc</var> find it nearly
+as hard to use as beginners did -- for real-world problems,
+understanding the LALR states is simply too hard for anyone.
+Experts, like non-experts, are forced to fix <var>yacc</var>
+
+grammars using trial and error.
+
+<p><var>yacc</var>'s demands
+follow the nearly incomprehensible logic of the LALR
+automaton.
+Adapting a grammar to <var>yacc</var> is a
+struggle, during which you
+watch your grammar become less and less a
+reflection of what you were originally trying to do.
+One of the most difficult tasks
+in programming, it is almost one of the most unsatisifying
+and unrewarding.
+
+<h2>The Fourth Requirement for Replacing <var>yacc</var>:
+Easy Diagnosis of Grammar Problems</h2>
+
+<p>The easiest way to deal with grammar problems is to arrange for them
+not to happen.
+You can do this if you have a notation for the grammar which is
+<ol>
+<li>A natural and intuitive way to express the grammar, and which
+<li>Makes it literally impossible to specify a problem grammar.
+</ol>
+
+<p>The notation for
+<a href="#NOTE3">regular expressions</a>
+has these two properties,
+and that is a major reason for the enduring popularity
+of regular expressions.
+Once you get used to its limits,
+regular expression notation becomes a natural way to
+describe languages.
+And regular expression notation
+makes it impossible to specify
+anything that is <b>not</b> a regular expression.
+
+<p>More powerful parsing algorithms have these same two properties
+when they accept all context-free grammars (as
+<a href="http://search.cpan.org/dist/Marpa/">Marpa</a>
+does).
+The context-free grammars are those you can write in BNF, and vice versa.
+BNF is  (again, modulo some getting-used-to) a natural and intuitive way
+to express a language, and you don't have to worry about specifying a language
+which is harder than context-free -- the BNF notation makes that impossible.
+
+<p><var>yacc</var> uses BNF as its notation
+for expressing grammars, but the most natural way to express a practical
+grammar in BNF is almost never an LALR grammar.
+No natural or intutive notation is known
+that describes only LALR grammars, even after 40 years of
+considerable interest in them.
+I have to doubt that such a notation ever will be found.
+
+<h2>Notes</h2>
+
+<p><a name="NOTE1">Note 1: </a>
+It has definitely been the tradition to
+understate the importance of error reporting,
+or even to ignore it entirely.
+But I should point out
+that I have not consulted Knuth's and DeRemer's original papers,
+which are behind paywalls.
+Also, things seem to be getting better, particularly with the arrival
+of the
+<a href="http://www.few.vu.nl/~dick/PT2Ed.html">
+very important textbook by Grune and Jacobs</a>,
+which does devote significant attention to the error
+reporting properties of the various algorithms.
+
+<p><a name="NOTE2">Note 2: </a>
+Perhaps because reporting that you found it impossible to
+use one of the standard
+tools in our field
+was more likely to produce conclusions
+about your competence than about the tool,
+the tradition among <var>yacc</var> users was to suffer in silence.
+One good 1995 account of trials with <var>yacc</var> is
+<a href="http://groups.google.com/group/comp.compilers/msg/a5d260aa50c05685?hl=en&dmode=source">
+this contribution to comp.compilers</a>.
+And there is one person who I
+believe has an intuitive understanding of LALR: Larry Wall.
+Certainly I doubt there is anyone alive whose practical knowledge
+of LALR is better than Larry's.
+That makes it very significant that
+Perl 6 does not use
+
+<var>yacc</var> or any other LALR based parser.
+
+<p><a name="NOTE3">Note 3: </a>
+Here I am talking about pure regular expressions.
+Perl regexes are much more powerful than regular expressions,
+and the power comes with tradeoffs:
+The notation is no longer
+as simple or intuitive.
+<br />
+<p>posted at: 08:02 |
+path: <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2010/12">/individual/2010/12</a> |
+<a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2010/12/why-the-bovicidal-rage-killing-yacc-4.html">direct link to this entry</a>
+</p>
+<div style="color:#38B0C0;padding:1px;text-align:center;">
+&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&sect;
+</div>
+<h3>Wed, 15 Dec 2010</h3>
+<br />
+<center><a name="killing-yacc-1-2-3"> <h2>Killing Yacc: 1, 2 & 3</h2> </a>
+</center>
+<h2>The Good, the Bad and The Ugly</h2>
+<p><img alt="Angeleyescleef.jpg" src="http://blogs.perl.org/users/jeffrey_kegler/Angeleyescleef.jpg" width="410" height="243" class="mt-image-right" style="float: right; margin: 0 0 20px 20px;" />The recent discussions about yacc made me
+feel a bit like Lee Van Cleef in an old
+spaghetti Western.
+Cast alongside Clint Eastwood, Van Cleef watched
+with great concern as one attempt after another
+was made on Eastwood's life.
+Van Cleef didn't mind Eastwood getting killed --
+he just wanted to be the one to do it.
+
+<p>As some of you will have recognized, I am talking about
+a very interesting discussion started by
+<a href="http://arxiv.org/abs/1010.5023">
+a paper
+by Might and Darais
+entitled "Yacc is Dead"</a>.
+
+I am finding it very much worth reading as an example
+of clear and precise mathematical writing.
+With respect to the parser itself,
+my opinion is that
+<a href="http://research.swtch.com/2010/12/yacc-is-not-dead.html">
+Russ Cox's extremely well-informed
+blog post, "Yacc is not Dead",</a>
+is an accurate assessment.
+
+<p>Might, Darais and Cox all devote considerable attention to
+exactly what it will take to send yacc on to its Final
+Reward.
+I see six requirements:
+Three from Might & Darais, one suggested by
+Cox, and two that I have added.
+The rest of this post will be about three of these requirements,
+all of which focus on parsing speed.
+
+<h2>Requirement 1: Handle Arbitrary Context-Free Grammars in O(n**3)</h2>
+
+<p>For a parser to be convenient, it should take anything you can write in BNF
+and parse it.
+And it should do this in "reasonable" time.
+This enables a programmer to work on a grammar that does not fit a
+restricted theoretical framework (LL, LR, LALR, etc.).
+The programmer then has the choice:
+she can tighten the grammar up to make it faster,
+or she can decide that, for her application,
+worse-than-linear speed is acceptable.
+
+<p>This requirement is one of those in the Might-Darais paper, but Russ Cox
+adds a further requirement:
+"Reasonable time" means O(n**3).
+Might and Darais do not categorize their algorithm's speed for arbitrary context-free
+grammars, but Cox says that it is exponential (O(e**n)).
+
+<p>Cox's tightening of this requirement makes sense.
+Depending on the application, exponential time can make a grammar unuseable
+in practice.
+Several algorithms are known which parse arbitrary context-free grammars in
+O(n**3).
+<a href="http://search.cpan.org/dist/Marpa/">
+Marpa</a>
+is one of these.
+(Marpa, for those new to this blog, is a parsing algorithm I've been working on.
+It is based on Earley's algorithm, and includes several major enhancements to
+it from the academic literature.)
+
+<h2>Requirement 2: Handle "Average" Grammars in Linear Time</h2>
+<p>When it needs to parse long inputs, an algorithm has to run in linear (O(n)) time.
+"Average" grammars -- grammars for languages where the inputs are expected to be long --
+should parse in linear time.
+For example, in production programming, the code files can become quite large.
+Perhaps HTML files should not be huge, but they often are.
+And it is quite reasonable to expect XML files to be arbitrarily long.
+For all of these, and for any language expected to fit into the same kinds
+of production environment, linear-time parsing is a must.
+This requirement is based on the second requirement in the Might-Darais paper.
+Might and Darais only say that such parsing should be "efficient".
+Russ Cox is more specific: he requires that the time be linear.
+
+
+<p>Marpa's behavior for "average" grammars is excellent, for any reasonable
+definition of "average".
+Marpa parses all LR-regular grammars in linear time.
+LR-regular is a huge class of grammars, and it includes the LR(k) grammars
+for all values of k.
+In practical terms, this means that, if a grammar is parseable by recursive descent,
+by yacc, or by a regular expression, then it is parsed by Marpa in linear time.
+
+<h2>Requirement 3: A Sound Theoretical Basis</h2>
+<p>This third requirement is Russ Cox's, and it is a real insight on his part.
+A sound theoretical basis is more important than it may seem.
+Over the years I have seen many new parsing algorithms introduced, only to
+disappear.
+The algorithms which drop from sight 
+are those whose speed claims are based on speculation
+and/or initial tests, but not on theory.
+
+<p>You might think that
+testing can replace theory, but typically it can't.
+The only real way to test
+that a new algorithm is efficient enough for production is to use it in
+production.
+Few production compiler writers are going to risk the use of a new algorithm
+before there is solid theory to back their leap of faith.
+
+<p>The Might-Darais paper is
+beautifully written mathematics.
+But, as Russ Cox notes,
+nowhere does it characterize its speed claims in mathematical terms.
+We know that the Might-Darais algorithm will parse some grammars very quickly.
+We know that, for others, it will be painfully slow.
+Which ones will be which?
+
+<p>Marpa does well in
+backing up its speed claims.
+Marpa is an Earley parser.
+In his 40-year old paper,
+Jay Earley proved that his algorithm parses
+arbitrary context-free grammars in O(n**3) time.
+Marpa incorporates Joop Leo's 1991 modification of the Earley parser.
+In that paper, Leo proves that his algorithm
+parses LR-regular grammars in linear time.
+When it comes to speed claims, Marpa is doing things by the book.
+<br />
+<p>posted at: 10:59 |
+path: <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2010/12">/individual/2010/12</a> |
+<a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2010/12/killing-yacc-1-2-3.html">direct link to this entry</a>
+</p>
+<div style="color:#38B0C0;padding:1px;text-align:center;">
+&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&sect;
+</div>
+<h3>Sat, 04 Dec 2010</h3>
+<br />
+<center><a name="miniminalism-philosophy-tradition-or-lunacy"> <h2>Miniminalism: Philosophy, Tradition or Lunacy?</h2> </a>
+</center>
+<p>Thanks to cpantesters I'm doing something that amazes me --
+as I write C, it is taken and tested for me on all sorts
+of different systems.
+This is a stern test of my ability to write
+portable C code,
+and, in general I'm quite pleased with how I've done.
+So far only one mistake
+can clearly be laid
+at my door.
+
+<p>That mistake doesn't put me in a good light --
+mistakes seldom do.
+But we learn more from mistakes than from successes.
+In this case, the mistake exposes a habit of mine that
+programmers of the modern school will find a bit lunatic.
+And perhaps it will give me a good way to point out how
+that lunacy shaped your training as well,
+no matter how recent it was.
+
+<p>The cpantesters do wonderful things, but they can't be
+all things to all people.
+In their feedback to C programmers who cause segment violations,
+they make the oracle at Delphi look like the neighborhood gossip.
+What the C programmer who lets his pointers stray
+sees is almost nothing -- the <var>prove</var> utility will
+report every test after the segment violation as
+a failure, without further explanation.
+It's not even explicitly stated that the problem is
+a segment violation, but I've learned to suspect that
+is what is happening
+whenever <var>prove</var> gives me the silent treatment.
+
+<p>I could always contact the cpantester
+and ask him for a stack trace,
+or even send him additional tests to run.
+But he's a volunteer and my C programming mishaps
+will not necessarily be his highest priority.
+He may be especially disinclined to give the issue a priority
+if he suspects that I have not done my homework.
+It behooved me to
+try to solve the problem on my own first.
+
+<p>I got lucky.
+Rereading my recent changes,
+I noted where doing a fairly
+complex calculation might save 4 bytes in a memory
+allocation.
+Problem was, I'd seen this the first time and
+decided I could save 5 bytes.  Oops.
+
+<p>On most systems,
+<var>malloc()</var> was rounding up the
+allocation.
+But on a strict few, I was given exactly the allocation I asked
+for and made to pay the price of my folly.
+
+<p>I replaced the calculation with a simpler one.
+Cpantesters reports for my fix are in and they run 100% clean.
+The simpler calculation for the <var>malloc()</var> buffer
+allocates, worst case, 4 bytes too many.
+From the optimization standpoint, it may even be better
+because it saves a few CPU cycles.
+Not that either way
+it makes a difference that could be measured.
+
+
+<p>At this point,
+a number of my readers will have decided that I'm a lunatic.
+Why was I going out of my way to save 4 lousy bytes?
+Without directly addressing the charge of lunacy,
+I would draw the candid reader's attention
+to my training.
+Nobody is drilling young programmers
+on the importance of saving 4 bytes any more,
+but the spirit of minimalism that inspired my misjudgement
+is more than alive today.
+It's dominant.
+
+<p>I started programming in 1970, remote
+time-sharing on a PDP-8.
+As a user, I had available a virtual PDP-8 in its
+minimal configuration.
+That was 4096 12-bit words: 6K in modern terms.
+When you work in a memory that small, you sweat the details.
+
+<p>Though I didn't think so at the time,
+in giving me those 6K virtual bytes, the
+operating system was being generous.
+The typical configuration of a PDP-8 for the educational
+market was 36K bytes of memory, both physical and virtual.
+This was expected to serve around 20 time-shared users.
+
+<p>It was the
+generation that learned to program on this kind of hardware
+which created
+the concepts of programming language, development environment and operating system
+which are dominant today.
+As often as not they created not just our current concepts,
+but the actual technology we are using.
+
+<p>Perhaps one example will inspire the reader to think of others.
+LISP remains influential.
+Its spirit was the flame that kindled a long series
+of single-paradigm languages.
+But given the size of the machines available in 1958, how many
+paradigms could a language have implemented?
+When we study and emulate LISP,
+we are studying and emulating deep ideas.
+To an equal extent, however, when we study and emulate
+LISP, we are studying the art
+of saving every byte as if it were our last.
+<br />
+<p>posted at: 23:30 |
+path: <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2010/12">/individual/2010/12</a> |
+<a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2010/12/miniminalism-philosophy-tradition-or-lunacy.html">direct link to this entry</a>
+</p>
+<div style="color:#38B0C0;padding:1px;text-align:center;">
+&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&sect;
+</div>
+</div>
+</div>
+<div id="footer" style="border-top:thick solid #38B0C0;clear:left;padding:1em;">
+<p>This is Ocean of Awareness's
+  new home.  This blog has been hosted at
+  <a href="http://blogs.perl.org/users/jeffrey_kegler/">blogs.perl.org</a>
+  but I have succumbed to the lure of static blogging.
+  I have not yet decided how to deal with comments at this new blog location.
+If the post is Marpa-related,
+<a href="https://groups.google.com/forum/?hl=en&fromgroups#%21forum/marpa-parser">
+the Marpa mailing list</a>
+is a good place to comment.
+Also,
+I will continue to dual-post for some time,
+and have not yet frozen comments on the versions of the
+post at
+<a href="http://blogs.perl.org/users/jeffrey_kegler/">blogs.perl.org</a>.
+</div>
+              <script type="text/javascript">
+            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+          </script>
+          <script type="text/javascript">
+            try {
+              var pageTracker = _gat._getTracker("UA-33430331-1");
+            pageTracker._trackPageview();
+            } catch(err) {}
+          </script>
+</body>
+</html>

@@ -1,0 +1,182 @@
+<html>
+<head>
+<link rel="alternate" title="Ocean of Awareness RSS" type="application/rss+xml" title="RSS" href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/index.rss" />
+<title>Ocean of Awareness   </title>
+<style type="text/css">
+   strong {font-weight: 700;}
+</style>
+</head>
+<body>
+<div id="header"
+  style="color:white;background-color:#38B0C0;padding:1em;clear:left;text-align:center;">
+<h1>Ocean of Awareness</h1>
+  
+</div>
+  <div id="menu" style="margin:0;padding:10px;width:150px;float:left;">
+  <h2>Jeffrey Kegler's blog</h2>
+  <p>About Marpa, his new parsing algorithm,
+    and other topics of interest</p>
+  <h3>Resources</h3>
+  <p><a href="http://www.jeffreykegler.com/">Jeffrey Kegler's website</p>
+  <p><a href="http://www.jeffreykegler.com/marpa">The Marpa website</p>
+  </div>
+  <div id="content" style="margin-left:190px;border-left:2px solid #38B0C0;padding:25px;">
+<h3>Sun, 11 Dec 2011</h3>
+<br />
+<center><a name="marpaxs-release-candidate-now-available"> <h2>Marpa::XS release candidate now available</h2> </a>
+</center>
+<p>
+I am very happy to announce that
+<a href="https://metacpan.org/release/JKEGL/Marpa-XS-0.026000/">
+the latest release of Marpa::XS</a>
+is a release candidate</a> for the first full release,
+Marpa::XS 1.000000.
+Most user's experience with the previous beta releases
+seems to have been trouble-free.
+The one significant issue that was identified
+was a failure to properly evaluate null symbols under
+<a href="#JIROTKA">
+an unusual combination of circumstances</a>.
+This problem
+(a one line error in the C rewrite of the parse engine)
+is fixed in this release.
+Unusual as the issue is,
+when it does occur it results in a parse failure,
+so that
+I recommend that all users of Marpa::XS upgrade to
+<a href="https://metacpan.org/release/JKEGL/Marpa-XS-0.026000/">
+the latest release</a>.
+</p>
+<p>
+Marpa::XS is being kept stable.
+Bug fixes, even of minor and cosmetic bugs,
+will be made, as 
+will changes that improve maintainability.
+But no new features will be added.
+Interface changes will be especially avoided.
+
+</p>
+<h2>What is Marpa?</h2>
+<p>Marpa is an advance over recursive descent
+and yacc.
+I hope the Marpa algorithm
+will become the standard parser for
+problems too
+big for regular expressions.
+</p><ul>
+<li>Marpa parses,
+<a href="#LINEAR">
+in linear time</a>,
+those
+classes of grammar that are currently in practical use.
+</li>
+<li>The importance of parse-time debugging is often underestimated.
+Marpa's parse-time error detection breaks new ground -- Marpa is
+fully aware of exactly where in the parse it is at all times,
+and of exactly what input it expects and why.
+This means parse-time error detection, once a desperate last
+resort, now can be used as
+<a href="http://blogs.perl.org/users/jeffrey_kegler/2010/06/parsing-with-ruby-slippers.html">
+a parsing technique in itself</a>.
+
+</li>
+<li>Marpa is a general BNF parser -- that means if you feed it anything
+written in BNF, it "just parses" it.
+This includes grammars which are left-recursive, right-recursive and
+ambiguous -- even infinitely ambiguous.
+</li>
+
+<li>Marpa never goes exponential -- worst case, even for highly ambiguous
+grammars, is O(n**3), which is
+<a href="#OPTIMAL">considered optimal</a>.
+</li>
+</ul>
+<h2>New with this release</h2>
+<p>
+Since the beta release,
+several bugs have been fixed,
+The most important one was a failure to properly evaluate
+null symbols
+<a href="#JIROTKA">under certain unusual circumstances</a>.
+This problem, identified and described by
+Tom&aacute;&#353; Jirotka,
+is fixed in
+<a href="https://metacpan.org/release/JKEGL/Marpa-XS-0.026000/">
+this latest release</a>.
+</p>
+
+<p>
+In some previous Marpa::XS releases, the
+documentation, while part of the distribution,
+did not install automatically.
+As of this release, that problem is fixed.
+The documentation now
+installs, as it should,
+along with the rest of Marpa::XS.
+</p>
+<p>
+No interface has been deprecated since
+Marpa::XS went beta -- the interface has remained stable.
+But many interfaces deprecated BEFORE Marpa
+went beta were used in the test suite.
+To make the test suite more useful for readers,
+I eliminated deprecated practices
+except in code whose purpose it is
+to test that deprecated practice.
+Where tests continue to use a deprecated practice,
+comments explicitly point this out.
+</p>
+<h2>What is next with Marpa?</h2>
+<p>
+Based on the feedback,
+I have confidence that Marpa::XS have been extensively
+used and found reliable.
+With the fixes for this release,
+I expect that Marpa::XS can be taken out
+of beta and into a full 1.000000 release shortly.
+</p>
+Development of new features for
+Marpa continues, but in another distribution:
+<a href="http://search.cpan.org/dist/Marpa-R2/">Marpa::R2</a>.
+This isolates Marpa::XS users from the accidental changes
+and bugs that can be the side effect of active development.
+<br />
+<p>posted at: 21:17 |
+path: <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2011/12">/individual/2011/12</a> |
+<a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2011/12/marpaxs-release-candidate-now-available.html">direct link to this entry</a>
+</p>
+<div style="color:#38B0C0;padding:1px;text-align:center;">
+&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&sect;
+</div>
+</div>
+</div>
+<div id="footer" style="border-top:thick solid #38B0C0;clear:left;padding:1em;">
+<p>This is Ocean of Awareness's
+  new home.  This blog has been hosted at
+  <a href="http://blogs.perl.org/users/jeffrey_kegler/">blogs.perl.org</a>
+  but I have succumbed to the lure of static blogging.
+  I have not yet decided how to deal with comments at this new blog location.
+If the post is Marpa-related,
+<a href="https://groups.google.com/forum/?hl=en&fromgroups#%21forum/marpa-parser">
+the Marpa mailing list</a>
+is a good place to comment.
+Also,
+I will continue to dual-post for some time,
+and have not yet frozen comments on the versions of the
+post at
+<a href="http://blogs.perl.org/users/jeffrey_kegler/">blogs.perl.org</a>.
+</div>
+              <script type="text/javascript">
+            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+          </script>
+          <script type="text/javascript">
+            try {
+              var pageTracker = _gat._getTracker("UA-33430331-1");
+            pageTracker._trackPageview();
+            } catch(err) {}
+          </script>
+</body>
+</html>

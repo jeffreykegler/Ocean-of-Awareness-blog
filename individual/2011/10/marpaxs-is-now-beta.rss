@@ -1,0 +1,89 @@
+<?xml version="1.0"?>
+<!-- name="generator" content="blosxom/2.0" -->
+<!DOCTYPE rss PUBLIC "-//Netscape Communications//DTD RSS 0.91//EN" "http://my.netscape.com/publish/formats/rss-0.91.dtd">
+
+<rss version="0.91">
+  <channel>
+    <title>Ocean of Awareness   </title>
+    <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog</link>
+    <description>Ocean of Awareness.</description>
+    <language>en</language>
+
+  <item>
+    <title>Marpa::XS is now beta</title>
+    <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog/2011/10/23#marpaxs-is-now-beta</link>
+    <description>&lt;p&gt;
+I am very happy to announce that
+&lt;a href=&quot;http://search.cpan.org/~jkegl/Marpa-XS-0.018000/&quot;&gt;
+Marpa::XS is now beta&lt;/a&gt;.
+Marpa::XS will kept stable.
+Changes to its interface will be especially avoided.
+&lt;/p&gt;
+&lt;h1&gt;What is Marpa?&lt;/h1&gt;
+&lt;p&gt;Marpa is an advance over recursive descent
+and yacc.
+I hope the Marpa algorithm
+will become the standard parser for
+problems too
+big for regular expressions.
+&lt;/p&gt;&lt;ul&gt;
+&lt;li&gt;Marpa parses,
+&lt;a href=&quot;#LINEAR&quot;&gt;
+in linear time&lt;/a&gt;,
+those
+classes of grammar that are currently in practical use.
+&lt;/li&gt;
+&lt;li&gt;The importance of parse-time debugging is often underestimated.
+Marpa's parse-time error detection breaks new ground -- Marpa is
+fully aware of exactly where in the parse it is at all times,
+and of exactly what input it expects and why.
+This means parse-time error detection, once a desperate last
+resort, now can be used as
+&lt;a href=&quot;http://blogs.perl.org/users/jeffrey_kegler/2010/06/parsing-with-ruby-slippers.html&quot;&gt;
+
+a parsing technique in itself&lt;/a&gt;.
+
+&lt;/li&gt;
+&lt;li&gt;Marpa is a general BNF parser -- that means if you feed it anything
+written in BNF, it &quot;just parses&quot; it.
+This includes grammars which are left-recursive, right-recursive and
+ambiguous -- even infinitely ambiguous.
+&lt;/li&gt;
+&lt;li&gt;Marpa never goes exponential -- worst case, even for highly ambiguous
+grammars, is O(n**3), which is
+&lt;a href=&quot;#OPTIMAL&quot;&gt;considered optimal&lt;/a&gt;.
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1&gt;New with this release&lt;/h1&gt;
+&lt;p&gt;
+Marpa::XS 0.018000 contains two new
+ranking methods.
+These ranking methods allow applications to control
+the order of parse trees within
+an ambiguous parse.
+The two new ranking methods are the &lt;code class=&quot;prettyprint&quot;&gt;rule&lt;/code&gt;
+ranking method and
+the &lt;code class=&quot;prettyprint&quot;&gt;high_rule_only&lt;/code&gt; ranking method.
+In both methods, integer ranks are assigned to rules,
+and alternative parsings are ordered on a top-down, left-to-right basis.
+When it comes to comparing choices by rule rank, ties are allowed --
+in fact, they are common.
+By default, all the alternatives at every choice point
+tie with each other.
+When they are tied in rank,
+the order of choices is arbitrary.
+
+&lt;/p&gt;
+In the &lt;code class=&quot;prettyprint&quot;&gt;rule&lt;/code&gt; ranking method, all the parse trees are
+kept, and visited in order.
+In the &lt;code class=&quot;prettyprint&quot;&gt;high_rule_only&lt;/code&gt; ranking method,
+only the highest ranked alternatives are kept,
+and they are visited in arbitrary order.
+Because of ties, more than one of the alternatives at a choice point
+can be &quot;highest&quot;.
+A full description of the new ranking methods
+is &lt;a href=&quot;http://search.cpan.org/perldoc?Marpa::XS::Semantics::Order&quot;&gt;
+in Marpa::XS's documentation&lt;/a&gt;.</description>
+  </item>
+  </channel>
+</rss>

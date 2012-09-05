@@ -1,0 +1,213 @@
+<html>
+<head>
+<link rel="alternate" title="Ocean of Awareness RSS" type="application/rss+xml" title="RSS" href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/index.rss" />
+<title>Ocean of Awareness   </title>
+<style type="text/css">
+   strong {font-weight: 700;}
+</style>
+</head>
+<body>
+<div id="header"
+  style="color:white;background-color:#38B0C0;padding:1em;clear:left;text-align:center;">
+<h1>Ocean of Awareness</h1>
+  
+</div>
+  <div id="menu" style="margin:0;padding:10px;width:150px;float:left;">
+  <h2>Jeffrey Kegler's blog</h2>
+  <p>About Marpa, his new parsing algorithm,
+    and other topics of interest</p>
+  <h3>Resources</h3>
+  <p><a href="http://www.jeffreykegler.com/">Jeffrey Kegler's website</p>
+  <p><a href="http://www.jeffreykegler.com/marpa">The Marpa website</p>
+  </div>
+  <div id="content" style="margin-left:190px;border-left:2px solid #38B0C0;padding:25px;">
+<h3>Tue, 06 Jul 2010</h3>
+<br />
+<center><a name="parsing-perl-3-perl-and-minimalism"> <h2>Parsing Perl 3: Perl and Minimalism</h2> </a>
+</center>
+<img src="http://upload.wikimedia.org/wikipedia/commons/thumb/2/23/One_Ring_inscription.svg/500px-One_Ring_inscription.svg.png">
+<blockquote>
+One ring to rule them all, one ring to find them,<br>
+One ring to bring them all and in the darkness bind them.
+</blockquote>
+<h2>One Idea to Rule Them All</h2>
+
+<p>Ever since the 50's,
+the fashion in language design
+has been minimalism.
+Languages were designed around paradigms,
+and paradigms were judged on elegance.
+If your choice of paradigm was lists, the result was LISP.
+If you decided on strings, you invented SNOBOL.
+Arrays, you wound up with APL.
+If your reasoning led you to logic, you ended up with Prolog.
+If you thought that descriptions of algorithms
+must be the basis of programming,
+then your fate was Algol.
+
+<p>If assembly language
+stayed at the core of your world view,
+what you created would be an imperative lanugage
+and might look like any of C, BASIC or FORTRAN.
+If stacks were your thing,
+you created a language that looked like Forth.
+And who knows if
+the belief in objects as the one paradigm
+will ever again see Orodruin and
+feel the heat of the flames
+in which it was forged.
+
+<p>
+Some of these languages were totalitarian -- they insisted everything
+be shoehorned into their central concept.
+I recall some very unpleasant struggles with early dialects of
+SNOBOL, LISP and Prolog.
+Imperative languages tended to be more elastic.
+But, while the strictness of adherence varies,
+almost
+every language invented over the past 50 years
+bears the clear stamp of minimalism.
+
+<p>
+Minimalism is not without its triumphs.
+Scientists, acting in the spirit of minimalism,
+ruthlessly brushed aside long-held ideas
+when they could not prove their worth,
+and much of 20th century science is a result of this.
+In our field,
+the 
+Unix operating system
+is a very successful example of the application of minimalist
+principles.
+
+<h2>Minimalism and its Discontents</h2>
+
+<p>But, over time, it has become clear that the less strictly
+a language adheres to its central paradigm,
+the more useful it is.
+For the totalitarian languages, success came more
+in the form of influence on other systems
+than in direct application.
+People discussed pure LISP, APL and Prolog.
+They used C, BASIC and FORTRAN.
+
+<p>Unfortunately, principles tend to guide thinking,
+and not vice versa.
+Established principles become established
+precisely because, first and foremost,
+they make sure they have the last word
+when it comes to judging their own value.
+When our principles fail us, our first reaction,
+typically, is <b>not</b> to abandon those principles.
+
+<p>Even today,
+minimalism remains the dominant ideology in computer language design.
+When dissatisfaction with minimalism emerges,
+it tends to take the form of "more minimalism".
+The early history of programming languages is to a large
+extent
+a record of attempts
+to use minimalism
+to solve the problems of minimalism.
+
+<h2>The Principle of Plenitude</h2>
+
+<blockquote>
+[ Orthogonality is ]
+"all very well if you're trying to define a position in a space.
+But that's not how people think.
+It's not how natural languages work.
+Natural languages are not orthogonal, they're diagonal.
+They give you hypotenuses."
+-- Larry Wall, from a <a href="http://www.drdobbs.com/184410483">Dr. Dobbs interview</a>
+</blockquote>
+
+<p>On December 18, 1987, I was waiting for the 
+release of Perl 1.0 to comp.sources.misc.
+I downloaded it and started programming.
+It was a paid project, one which I had bid fixed price.
+I had planned to use mixed shell and C for this
+project.
+But among those in the know,
+the advance buzz for Perl 1.0 was good.
+Larry Wall was not the name he is now,
+but he already had
+a very solid rep from rn and patch.
+I decided to take a chance,
+and the result was profitable.
+
+<p>To my knowledge,
+Perl was the first language to actively embrace plenitude.
+Bourne shell tightly followed a "shell command" paradigm,
+Anyone who tries to use Bourne shell as a general-purpose language
+(and many do)
+has experienced what it is to fight line-by-line
+against a paradigm.
+AWK easily could have been the first non-minimalist language.
+But while AWK followed its script-editor paradigm
+loosely, it never actually broke away from it.
+
+<p>
+Perl borrowed liberally from Bourne shell and AWK, but
+above all it embraced plenitude.
+If there is one sure sign that minimalism
+is at work
+in a language design,
+it is when those controlling the evolution of a language
+refuse to add a useful feature solely on ideological grounds --
+because the new feature does not fit a core design concept.
+From day zero,
+Perl has given cool new hacks the priority over ideology.
+I'd hesitate to call either AWK and or Bourne shell "minimalist",
+but even over their evolutions,
+the heavy hand of minimalism
+has ruled.
+
+<p>This is part of a series which explores
+the technical details of Perl parsing.
+Since this post is devoted to matters of history and philosophy,
+it might seem to be a digression.
+It is not.
+Working code is never just code.
+As we will see,
+perly.y is one of the better examples of that fact.
+<br />
+<p>posted at: 11:56 |
+path: <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2010/07">/individual/2010/07</a> |
+<a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2010/07/parsing-perl-3-perl-and-minimalism.html">direct link to this entry</a>
+</p>
+<div style="color:#38B0C0;padding:1px;text-align:center;">
+&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&sect;
+</div>
+</div>
+</div>
+<div id="footer" style="border-top:thick solid #38B0C0;clear:left;padding:1em;">
+<p>This is Ocean of Awareness's
+  new home.  This blog has been hosted at
+  <a href="http://blogs.perl.org/users/jeffrey_kegler/">blogs.perl.org</a>
+  but I have succumbed to the lure of static blogging.
+  I have not yet decided how to deal with comments at this new blog location.
+If the post is Marpa-related,
+<a href="https://groups.google.com/forum/?hl=en&fromgroups#%21forum/marpa-parser">
+the Marpa mailing list</a>
+is a good place to comment.
+Also,
+I will continue to dual-post for some time,
+and have not yet frozen comments on the versions of the
+post at
+<a href="http://blogs.perl.org/users/jeffrey_kegler/">blogs.perl.org</a>.
+</div>
+              <script type="text/javascript">
+            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+          </script>
+          <script type="text/javascript">
+            try {
+              var pageTracker = _gat._getTracker("UA-33430331-1");
+            pageTracker._trackPageview();
+            } catch(err) {}
+          </script>
+</body>
+</html>

@@ -1,0 +1,195 @@
+<html>
+<head>
+<link rel="alternate" title="Ocean of Awareness RSS" type="application/rss+xml" title="RSS" href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/index.rss" />
+<title>Ocean of Awareness   </title>
+<style type="text/css">
+   strong {font-weight: 700;}
+</style>
+</head>
+<body>
+<div id="header"
+  style="color:white;background-color:#38B0C0;padding:1em;clear:left;text-align:center;">
+<h1>Ocean of Awareness</h1>
+  
+</div>
+  <div id="menu" style="margin:0;padding:10px;width:150px;float:left;">
+  <h2>Jeffrey Kegler's blog</h2>
+  <p>About Marpa, his new parsing algorithm,
+    and other topics of interest</p>
+  <h3>Resources</h3>
+  <p><a href="http://www.jeffreykegler.com/">Jeffrey Kegler's website</p>
+  <p><a href="http://www.jeffreykegler.com/marpa">The Marpa website</p>
+  </div>
+  <div id="content" style="margin-left:190px;border-left:2px solid #38B0C0;padding:25px;">
+<h3>Mon, 19 Sep 2011</h3>
+<br />
+<center><a name="perl-and-parsing-9-use-and-the-ruby-slippers"> <h2>Perl and Parsing 9: "Use" and the Ruby Slippers</h2> </a>
+</center>
+<p>
+In this post, I talk about how
+Perl 5 parses its
+<code class="prettyprint">use</code> statement.
+The <code class="prettyprint">use</code> statement
+is implemented with
+what I have named
+<a href="http://blogs.perl.org/users/jeffrey_kegler/2010/06/parsing-with-ruby-slippers.html">
+"Ruby Slippers" parsing</a>.
+The idea is that you parse with a convenient grammar,
+but one which is too simple to actually describe the language
+you are parsing.
+For example, if you are parsing HTML, the grammar might assume
+all start tags have end tags.
+</p>
+<p>
+Whenever the simplified grammar has trouble parsing,
+the lexer fixes the situation by pretending the input
+is what the parser wants to see.
+The parser is like Dorothy in
+the <em>Wizard of Oz</em>, who really would
+like to be back in Kansas.
+The lexer is like the good witch,
+Glenda, who assures Dorothy that,
+because of her Ruby Slippers,
+Dorothy really can be wherever she wants to be.
+</p>
+
+<p>
+Few "new" programming ideas are so new
+that they have no
+precedent in previous practice.
+Perl 5 put the Ruby Slippers technique
+to work well before I described and named it.
+Its code captures the two essential elements of
+Ruby Slippers parsing.
+</p>
+<h2>The Syntax of the <code class="prettyprint">use</code> Statement</h2>
+<p>
+As a reminder, the 
+<code class="prettyprint">use</code> statement comes in several forms.
+Most of them are <a href="#MODULE">module</a>
+requests --
+that is, they request the loading of a module.
+In the long form of the module request, a version number
+is specified as well.  The version number is usually
+interpreted as the minimum acceptable version of
+that module.
+<pre>
+
+use Module VERSION
+</pre>
+For example,
+<code class="prettyprint">
+<pre>
+use List::Util 1.21;
+</pre>
+</code>
+<br />
+<p>posted at: 11:34 |
+path: <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2011/09">/individual/2011/09</a> |
+<a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2011/09/perl-and-parsing-9-use-and-the-ruby-slippers.html">direct link to this entry</a>
+</p>
+<div style="color:#38B0C0;padding:1px;text-align:center;">
+&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&sect;
+</div>
+<h3>Mon, 12 Sep 2011</h3>
+<br />
+<center><a name="announcing-marpaxs-0010000"> <h2>Announcing Marpa::XS 0.010000</h2> </a>
+</center>
+<p>
+Some time ago I released
+<a href="http://search.cpan.org/~jkegl/Marpa-XS-0.010000/">
+Marpa::XS 0.010000</a>.
+The core Marpa algorithm had already been converted to C,
+speeding it up considerably.
+Marpa::XS 0.010000 cleans up a lot of code left over from development,
+further speeding things up.
+</p>
+<h1>What is Marpa?</h1>
+<p>Marpa is an advance over recursive descent
+and yacc.
+I hope the Marpa algorithm
+will become the standard parser for
+problems too
+big for regular expressions.
+</p><ul>
+<li>Marpa parses, in linear time,  all
+classes of grammar that are currently in practical use.
+(<a href="#NOTE1">See Note 1</a>).
+</li>
+<li>The importance of parse-time debugging is often underestimated.
+Marpa's parse-time error detection breaks new ground -- Marpa is
+fully aware of exactly where in the parse it is at all times,
+and of exactly what input it expects and why.
+This means parse-time error detection, once a desperate last
+resort, now can be used as
+<a href="http://blogs.perl.org/users/jeffrey_kegler/2010/06/parsing-with-ruby-slippers.html">
+a parsing technique in itself</a>.
+
+</li>
+<li>Marpa is a general BNF parser -- that means if you feed it anything
+written in BNF, it "just parses" it.
+This includes grammars which are left-recursive, right-recursive and
+ambiguous -- even infinitely ambiguous.
+</li>
+<li>Marpa never goes exponential -- worst case, even for highly ambiguous
+grammars, is O(n**3), which is considered optimal
+(<a href="#NOTE2">See Note 2</a>).
+</li>
+</ul>
+<h1>What is Next with Marpa?</h1>
+I had planned to skip this announcement and wait to announce
+Marpa::XS 0.012000.
+I expected
+the release of Marpa::XS 0.012000
+to be just days away.
+And I did produce
+<a href="http://search.cpan.org/~jkegl/Marpa-XS-0.013_003/">
+its release candidate</a>
+almost immediately.
+But in the meantime cpantesters was hit with a prolonged outage,
+which continues as of this writing.
+I've always waited for a few days of cpantesters results on
+the release candidate before cutting an official release
+and I hope cpantesters will be back online soon.
+<br />
+<p>posted at: 11:45 |
+path: <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2011/09">/individual/2011/09</a> |
+<a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2011/09/announcing-marpaxs-0010000.html">direct link to this entry</a>
+</p>
+<div style="color:#38B0C0;padding:1px;text-align:center;">
+&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&sect;
+</div>
+</div>
+</div>
+<div id="footer" style="border-top:thick solid #38B0C0;clear:left;padding:1em;">
+<p>This is Ocean of Awareness's
+  new home.  This blog has been hosted at
+  <a href="http://blogs.perl.org/users/jeffrey_kegler/">blogs.perl.org</a>
+  but I have succumbed to the lure of static blogging.
+  I have not yet decided how to deal with comments at this new blog location.
+If the post is Marpa-related,
+<a href="https://groups.google.com/forum/?hl=en&fromgroups#%21forum/marpa-parser">
+the Marpa mailing list</a>
+is a good place to comment.
+Also,
+I will continue to dual-post for some time,
+and have not yet frozen comments on the versions of the
+post at
+<a href="http://blogs.perl.org/users/jeffrey_kegler/">blogs.perl.org</a>.
+</div>
+              <script type="text/javascript">
+            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+          </script>
+          <script type="text/javascript">
+            try {
+              var pageTracker = _gat._getTracker("UA-33430331-1");
+            pageTracker._trackPageview();
+            } catch(err) {}
+          </script>
+</body>
+</html>

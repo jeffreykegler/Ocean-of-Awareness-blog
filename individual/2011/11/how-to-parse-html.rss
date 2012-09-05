@@ -1,0 +1,306 @@
+<?xml version="1.0"?>
+<!-- name="generator" content="blosxom/2.0" -->
+<!DOCTYPE rss PUBLIC "-//Netscape Communications//DTD RSS 0.91//EN" "http://my.netscape.com/publish/formats/rss-0.91.dtd">
+
+<rss version="0.91">
+  <channel>
+    <title>Ocean of Awareness   </title>
+    <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog</link>
+    <description>Ocean of Awareness.</description>
+    <language>en</language>
+
+  <item>
+    <title>How to Parse HTML</title>
+    <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog/2011/11/30#how-to-parse-html</link>
+    <description>&lt;p&gt;
+This is the first of a series of posts that will detail
+a Marpa-based &quot;Ruby Slippers&quot;
+approach to parsing liberal
+and defective HTML.
+As an example, let's look at a
+few lines
+taken more or less at random
+from the middle
+of the &lt;a href=&quot;http://www.perl.org/&quot;&gt;perl.org
+landing page&lt;/a&gt;.
+That page is exactly 400 lines long.
+Here is line 200 and some lines
+lines to either side of it.
+&lt;pre&gt;
+&lt;code class=&quot;prettyprint&quot;&gt;
+&amp;lt;/td&amp;gt;
+&amp;lt;td&amp;gt;
+&amp;lt;div class=&quot;module&quot;&amp;gt;
+&amp;lt;a href=&quot;http://www.perlfoundation.org/&quot;&amp;gt;
+&amp;lt;img alt=&quot;&quot;
+    src=&quot;http://mc-cdn.pimg.net/images/icons/onion.vee5cb98.png&quot;
+    width=&quot;45&quot; height=&quot;45&quot; /&amp;gt;
+&amp;lt;/a&amp;gt;
+
+&amp;lt;h4&amp;gt;
+&amp;lt;a href=&quot;http://www.perlfoundation.org/&quot;&amp;gt;The Perl Foundation&amp;lt;/a&amp;gt;
+&amp;lt;/h4&amp;gt;
+&amp;lt;p&amp;gt;
+The Perl Foundation is dedicated to the advancement
+of the Perl programming language through open discussion,
+collaboration, design, and code.
+&lt;/code&gt;
+&lt;/pre&gt;
+&lt;p&gt;
+For readability, I've rearranged
+the whitespace, but otherwise the above is untouched.
+My more-or-less-random extract is part of a table, and captures the
+end tag of one cell and the beginning of another.
+&lt;/p&gt;
+&lt;p&gt;
+
+&lt;a href=&quot;https://metacpan.org/module/Marpa::HTML&quot;&gt;Marpa::HTML&lt;/a&gt;
+has no trouble fixing this up,
+but neither does the
+rendering engine
+in Firefox.
+If you cut and paste the above display into a file,
+and look at it in your favorite web browser,
+the result will probably be quite reasonable.
+So why am I saying
+that Marpa-based
+HTML parsing is a step forward?
+&lt;/p&gt;
+&lt;h2&gt;What's the Big Deal?&lt;/h2&gt;
+&lt;p&gt;
+&lt;a href=&quot;https://metacpan.org/module/Marpa::HTML&quot;&gt;Marpa::HTML&lt;/a&gt;
+as it sits is a flexible and useable tool,
+but what makes it different is best appreciated if you think in
+terms of
+writing, maintaining or
+&lt;a href=&quot;#FORKING&quot;&gt;forking Marpa::HTML&lt;/a&gt;.
+The rendering engine in your favorite browser
+is a monolith of mission-specific code,
+and in most cases maintaining it is
+the job of a team.
+&lt;a href=&quot;https://metacpan.org/module/Marpa::HTML&quot;&gt;Marpa::HTML&lt;/a&gt;
+was written in a couple
+of geek-weeks.
+It is reasonable to expect that even
+if a change amounted nearly to
+a total rewrite,
+it could done in
+a similar amount of time.
+&lt;/p&gt;
+&lt;p&gt;
+
+Why is
+&lt;a href=&quot;https://metacpan.org/module/Marpa::HTML&quot;&gt;Marpa::HTML&lt;/a&gt;
+that much easier to code?
+Well, admittedly,
+&lt;a href=&quot;https://metacpan.org/module/Marpa::HTML&quot;&gt;Marpa::HTML&lt;/a&gt;
+does not do rendering, which
+makes life easier.
+&lt;a href=&quot;https://metacpan.org/module/Marpa::HTML&quot;&gt;Marpa::HTML&lt;/a&gt;
+just parses
+HTML, without trying to figure out how to arrange it
+on a display.
+&lt;/p&gt;
+&lt;p&gt;
+More to our purpose,
+&lt;a href=&quot;https://metacpan.org/module/Marpa::HTML&quot;&gt;Marpa::HTML&lt;/a&gt;
+divides
+HTML parsing into two layers:
+an HTML specific layer;
+and
+&lt;a href=&quot;https://metacpan.org/module/Marpa::XS&quot;&gt;
+
+a general parsing layer&lt;/a&gt;.
+Most of the complexity goes into the general parsing
+layer, which is in carefully optimized C,
+and which contains no HTML-specific code.
+The HTML-specific layer is
+small and coded in Perl.
+&lt;p&gt;
+When I started writing 
+Marpa::HTML,
+&lt;a href=&quot;https://metacpan.org/module/Marpa::XS&quot;&gt;
+my general parsing layer was already written,
+tested and ready to go&lt;/a&gt;.
+I only
+needed to write an HTML-specific layer.
+Marpa::HTML was my first serious exercise of
+the Ruby Slippers,
+and my surprise at how easy it was
+to use inspired the name.
+&lt;/p&gt;
+&lt;p&gt;
+The advantages to breaking up
+an HTML parser
+into an HTML-specific layer
+and a parse engine
+can be compared to the advantages that were accrued
+by breaking up the original monolithic
+web browsers into a user interface and a rendering engine.
+The interface of
+modern browsers can be changed
+without hacking the rendering engine.
+The Marpa-powered approach to parsing
+HTML allows the programmer to completely change
+his approach to HTML without
+touching the parse engine.
+&lt;/p&gt;
+As you read this series of posts,
+I hope the following will be food for the imagination:
+&lt;ul&gt;
+&lt;li&gt;
+&lt;a href=&quot;https://metacpan.org/module/Marpa::HTML&quot;&gt;Marpa::HTML&lt;/a&gt;
+could be the basis
+of a utility.
+Two I have already written are
+
+&lt;a href=&quot;https://metacpan.org/module/html_fmt&quot;&gt;html_fmt&lt;/a&gt;
+and
+&lt;a href=&quot;https://metacpan.org/module/html_score&quot;&gt;html_score&lt;/a&gt;.
+&lt;li&gt;A Marpa-powered tool
+could take a customized approach to dealing with defects in HTML.
+&lt;li&gt;A Marpa-powered tool
+could take a configurable approach to dealing with defects in HTML.
+&lt;li&gt;A Marpa-powered tool could provide an XS-powered engine to speed up HTML::Tree.
+&lt;li&gt;A Marpa-powered tool could understand embedded content,
+such as
+the HTML-within-HTML used in the displays
+in this blog post.
+&lt;li&gt;
+A Marpa-powered tool could imitate your favorite renderer.
+&lt;li&gt;
+A Marpa-powered tool could configurably imitate the properties
+of many renderers.
+&lt;li&gt;
+A Marpa-powered tool could prototype the HTML renderer
+of your dreams.
+&lt;li&gt;
+With its HTML-specific layer
+recoded in C,
+a fork could be the easier-to-maintain
+HTML renderer of your dreams.
+
+&lt;/ul&gt;
+&lt;h2&gt;The Example&lt;/h2&gt;
+&lt;p&gt;
+I will finish this post, by taking a first look at
+what
+&lt;a href=&quot;https://metacpan.org/module/Marpa::HTML&quot;&gt;Marpa::HTML&lt;/a&gt;
+does.
+For that,
+it is convenient to use
+&lt;a href=&quot;https://metacpan.org/module/html_fmt&quot;&gt;html_fmt&lt;/a&gt;,
+my Marpa-powered HTML &quot;pretty-printer&quot;.
+&lt;a href=&quot;https://metacpan.org/module/html_fmt&quot;&gt;html_fmt&lt;/a&gt;
+takes any file fed to it,
+interprets it as HTML,
+and prints a &quot;prettified&quot; version to the standard output.
+It's a good tool for studying HTML interpretation.
+Here is what it did with our example:
+&lt;/p&gt;
+&lt;pre&gt;
+&lt;code class=&quot;prettyprint&quot;&gt;
+&amp;lt;!-- Following start tag is replacement for a missing one --&amp;gt;
+
+&amp;lt;html&amp;gt;
+  &amp;lt;!-- Following start tag is replacement for a missing one --&amp;gt;
+  &amp;lt;head&amp;gt;
+  &amp;lt;/head&amp;gt;
+  &amp;lt;!-- Preceding end tag is replacement for a missing one --&amp;gt;
+  &amp;lt;!-- Following start tag is replacement for a missing one --&amp;gt;
+
+  &amp;lt;body&amp;gt;
+    &amp;lt;!-- Following start tag is replacement for a missing one --&amp;gt;
+    &amp;lt;table&amp;gt;
+      &amp;lt;!-- Following start tag is replacement for a missing one --&amp;gt;
+      &amp;lt;tbody&amp;gt;
+        &amp;lt;!-- Following start tag is replacement for a missing one --&amp;gt;
+
+        &amp;lt;tr&amp;gt;
+          &amp;lt;!-- Next line is cruft --&amp;gt;
+          &amp;lt;/td&amp;gt;
+          &amp;lt;td&amp;gt;
+            &amp;lt;div class=&quot;module&quot;&amp;gt;
+              &amp;lt;a href=&quot;http://www.perlfoundation.org/&quot;&amp;gt;
+
+                &amp;lt;img alt=&quot;&quot;
+    src=&quot;http://mc-cdn.pimg.net/images/icons/onion.vee5cb98.png&quot;
+    width=&quot;45&quot; height=&quot;45&quot; /&amp;gt;
+              &amp;lt;/a&amp;gt;
+              &amp;lt;h4&amp;gt;
+                &amp;lt;a href=&quot;http://www.perlfoundation.org/&quot;&amp;gt;
+                  The Perl Foundation
+                &amp;lt;/a&amp;gt;
+              &amp;lt;/h4&amp;gt;
+
+              &amp;lt;p&amp;gt;
+                The Perl Foundation is dedicated to the advancement
+                of the Perl programming language through open discussion,
+                collaboration, design, and code.
+              &amp;lt;/p&amp;gt;
+              &amp;lt;!-- Preceding end tag is replacement for a missing one --&amp;gt;
+            &amp;lt;/div&amp;gt;
+            &amp;lt;!-- Preceding end tag is replacement for a missing one --&amp;gt;
+          &amp;lt;/td&amp;gt;
+
+          &amp;lt;!-- Preceding end tag is replacement for a missing one --&amp;gt;
+        &amp;lt;/tr&amp;gt;
+        &amp;lt;!-- Preceding end tag is replacement for a missing one --&amp;gt;
+      &amp;lt;/tbody&amp;gt;
+      &amp;lt;!-- Preceding end tag is replacement for a missing one --&amp;gt;
+    &amp;lt;/table&amp;gt;
+
+    &amp;lt;!-- Preceding end tag is replacement for a missing one --&amp;gt;
+  &amp;lt;/body&amp;gt;
+  &amp;lt;!-- Preceding end tag is replacement for a missing one --&amp;gt;
+&amp;lt;/html&amp;gt;
+&amp;lt;!-- Preceding end tag is replacement for a missing one --&amp;gt;
+&lt;/code&gt;
+&lt;/pre&gt;
+&lt;p&gt;
+Whenever
+
+&lt;a href=&quot;https://metacpan.org/module/html_fmt&quot;&gt;html_fmt&lt;/a&gt;
+adds a tag or spots a spurious tag (&quot;cruft&quot;) it adds a
+comment to that effect.
+As you can see from the above,
+&lt;a href=&quot;https://metacpan.org/module/html_fmt&quot;&gt;html_fmt&lt;/a&gt;
+sees that the extract is a
+table fragment and builds a table around it.
+An interesting exercise is to take both the example
+and the 
+&lt;a href=&quot;https://metacpan.org/module/html_fmt&quot;&gt;html_fmt&lt;/a&gt;
+output and look at them in your favorite browser,
+comparing
+&lt;a href=&quot;https://metacpan.org/module/html_fmt&quot;&gt;html_fmt&lt;/a&gt;'s
+reconstruction from the HTML fragment with your browser's.
+&lt;/p&gt;
+&lt;p&gt;
+In posts to come,
+I'll go into detail about the Ruby Slippers,
+Marpa-powered,
+approach to HTML parsing.
+&lt;/p&gt;
+&lt;h2&gt;Notes&lt;/h2&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;&lt;a name=&quot;FORKING&quot;&gt;&quot;forking&quot;&lt;/a&gt;:
+To be sure,
+I consider
+&lt;a href=&quot;https://metacpan.org/module/Marpa::HTML&quot;&gt;Marpa::HTML&lt;/a&gt;
+a fine tool,
+and use it often in my own work.
+And it is possible that I will enhance
+&lt;a href=&quot;https://metacpan.org/module/Marpa::HTML&quot;&gt;Marpa::HTML&lt;/a&gt;.
+But a parser like
+&lt;a href=&quot;https://metacpan.org/module/Marpa::XS&quot;&gt;Marpa&lt;/a&gt;
+is a tool.
+Inventing a new hammer does not
+evince
+a desire to single-handedly build
+every house in the world.
+&lt;/li&gt;
+&lt;/ol&gt;</description>
+  </item>
+  </channel>
+</rss>

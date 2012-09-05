@@ -1,0 +1,66 @@
+<?xml version="1.0"?>
+<!-- name="generator" content="blosxom/2.0" -->
+<!DOCTYPE rss PUBLIC "-//Netscape Communications//DTD RSS 0.91//EN" "http://my.netscape.com/publish/formats/rss-0.91.dtd">
+
+<rss version="0.91">
+  <channel>
+    <title>Ocean of Awareness   </title>
+    <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog</link>
+    <description>Ocean of Awareness.</description>
+    <language>en</language>
+
+  <item>
+    <title>What!  No Lexer?</title>
+    <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog/2012/01/05#what-no-lexer</link>
+    <description>&lt;p&gt;
+To those who have noted that
+&lt;a href=&quot;https://metacpan.org/module/Marpa::XS&quot;&gt;
+Marpa::XS&lt;/a&gt;
+does not come with a lexer,
+I'd respond that,
+in a very real sense it does --
+Perl.
+Perl5 is a powerful lexical analyzer.
+&lt;/p&gt;
+&lt;p&gt;
+If you're trying to figure out how to write your first Marpa
+parser,
+I'd recommend a close look at 
+&lt;a href=&quot;http://blogs.perl.org/users/wolfgang_kinkeldei/2011/12/trying-marpa-to-parse-css.html&quot;&gt;
+Wolfgang Kinkeldei's recent posting about his
+Marpa-powered CSS parser&lt;/a&gt;.
+Wolfgang lays his parser out in a very elegant fashion,
+and I find his code makes an excellent template.
+&lt;/p&gt;
+Especially nice-looking is Wolfgang's lexer.
+Wolfgang follows one of the two
+main strategies for lexical analysis in 
+Perl:
+he consumes the input using substitution
+(&lt;code class=&quot;prettyprint&quot;&gt;s/ ... / ... /&lt;/code&gt;) commands.
+&lt;p&gt;
+
+&lt;/p&gt;
+The other strategy is to use the Perl regex search position
+to track the progress of the lexical analysis.
+In the search-position strategy,
+your cases consist of a lot of 
+match commands using the &lt;code class=&quot;prettyprint&quot;&gt;\G&lt;/code&gt; anchor
+and the &lt;code class=&quot;prettyprint&quot;&gt;gc&lt;/code&gt; modifier:
+&lt;code class=&quot;prettyprint&quot;&gt;m/\G ... /gc&lt;/code&gt;.
+An excellent tutorial on this
+kind of lexing,
+albeit in a non-Marpa context,
+can be found in
+&lt;a href=&quot;#DOMINUS&quot;&gt;Mark Jason Dominus's book,
+&lt;cite&gt;Higher Order Perl&lt;/cite&gt;&lt;/a&gt;.
+Mark's coverage of lexing is in
+Chapter 8, &quot;Parsing&quot;, on pages 359-375.
+Mark's book can be read
+&lt;a href=&quot;http://hop.perl.plover.com/book/&quot;&gt;
+on-line&lt;/a&gt;.
+I highly recommend Mark's book
+and own a paper copy.</description>
+  </item>
+  </channel>
+</rss>

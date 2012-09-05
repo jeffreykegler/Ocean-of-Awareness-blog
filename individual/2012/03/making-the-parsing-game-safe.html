@@ -1,0 +1,104 @@
+<html>
+<head>
+<link rel="alternate" title="Ocean of Awareness RSS" type="application/rss+xml" title="RSS" href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/index.rss" />
+<title>Ocean of Awareness   </title>
+<style type="text/css">
+   strong {font-weight: 700;}
+</style>
+</head>
+<body>
+<div id="header"
+  style="color:white;background-color:#38B0C0;padding:1em;clear:left;text-align:center;">
+<h1>Ocean of Awareness</h1>
+  
+</div>
+  <div id="menu" style="margin:0;padding:10px;width:150px;float:left;">
+  <h2>Jeffrey Kegler's blog</h2>
+  <p>About Marpa, his new parsing algorithm,
+    and other topics of interest</p>
+  <h3>Resources</h3>
+  <p><a href="http://www.jeffreykegler.com/">Jeffrey Kegler's website</p>
+  <p><a href="http://www.jeffreykegler.com/marpa">The Marpa website</p>
+  </div>
+  <div id="content" style="margin-left:190px;border-left:2px solid #38B0C0;padding:25px;">
+<h3>Sat, 10 Mar 2012</h3>
+<br />
+<center><a name="making-the-parsing-game-safe"> <h2>Making the parsing game safe</h2> </a>
+</center>
+<p>
+In previous posts,
+I've talked about
+<a href="http://www.jeffreykegler.com/marpa">Marpa</a>
+as an alternative to other parsers.
+In this one,
+I want to talk
+about Marpa as an alternative
+for problems where
+<a href="#RE">parsing has been avoided</a>.
+</p>
+<p>
+Because parsing HAS been avoided in the past.
+And for good reason.
+If you were drawn by the allure of domain-specific languages,
+or yielded to the siren call of language-oriented programming,
+you plunged headlong toward two pitfalls:
+<ul>
+<li>Your parser might not parse your grammar.
+Which you might discover at any point in incremental development.
+Or when a vital maintenance change came along.
+</li>
+<li>
+Your input might not parse,
+and your parse engine might leave you
+with no easy way to find out
+what the problem is.
+Maybe your input was wrong,
+maybe your grammar was wrong,
+or maybe you've simply
+hit the limits of that parse engine.
+When it came to debugging, taking a language-based
+approach was a bit like deciding to write your problem up in
+<a href="http://en.wikipedia.org/wiki/P%E2%80%B2%E2%80%B2">P''</a>.
+
+</li>
+</ul>
+<br />
+<p>posted at: 19:49 |
+path: <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/03">/individual/2012/03</a> |
+<a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/03/making-the-parsing-game-safe.html">direct link to this entry</a>
+</p>
+<div style="color:#38B0C0;padding:1px;text-align:center;">
+&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&sect;
+</div>
+</div>
+</div>
+<div id="footer" style="border-top:thick solid #38B0C0;clear:left;padding:1em;">
+<p>This is Ocean of Awareness's
+  new home.  This blog has been hosted at
+  <a href="http://blogs.perl.org/users/jeffrey_kegler/">blogs.perl.org</a>
+  but I have succumbed to the lure of static blogging.
+  I have not yet decided how to deal with comments at this new blog location.
+If the post is Marpa-related,
+<a href="https://groups.google.com/forum/?hl=en&fromgroups#%21forum/marpa-parser">
+the Marpa mailing list</a>
+is a good place to comment.
+Also,
+I will continue to dual-post for some time,
+and have not yet frozen comments on the versions of the
+post at
+<a href="http://blogs.perl.org/users/jeffrey_kegler/">blogs.perl.org</a>.
+</div>
+              <script type="text/javascript">
+            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+          </script>
+          <script type="text/javascript">
+            try {
+              var pageTracker = _gat._getTracker("UA-33430331-1");
+            pageTracker._trackPageview();
+            } catch(err) {}
+          </script>
+</body>
+</html>

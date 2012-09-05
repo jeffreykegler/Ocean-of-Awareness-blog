@@ -1,0 +1,706 @@
+<html>
+<head>
+<link rel="alternate" title="Ocean of Awareness RSS" type="application/rss+xml" title="RSS" href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/index.rss" />
+<title>Ocean of Awareness   </title>
+<style type="text/css">
+   strong {font-weight: 700;}
+</style>
+</head>
+<body>
+<div id="header"
+  style="color:white;background-color:#38B0C0;padding:1em;clear:left;text-align:center;">
+<h1>Ocean of Awareness</h1>
+  
+</div>
+  <div id="menu" style="margin:0;padding:10px;width:150px;float:left;">
+  <h2>Jeffrey Kegler's blog</h2>
+  <p>About Marpa, his new parsing algorithm,
+    and other topics of interest</p>
+  <h3>Resources</h3>
+  <p><a href="http://www.jeffreykegler.com/">Jeffrey Kegler's website</p>
+  <p><a href="http://www.jeffreykegler.com/marpa">The Marpa website</p>
+  </div>
+  <div id="content" style="margin-left:190px;border-left:2px solid #38B0C0;padding:25px;">
+<h3>Mon, 28 Jun 2010</h3>
+<br />
+<center><a name="parsing-perl-2-down-the-garden-path"> <h2>Parsing Perl 2: Down the Garden Path</h2> </a>
+</center>
+<h2>The Garden Path</h2>
+
+<p>In Perl 5.10, the following code is a syntax error:
+<pre><code class="prettyprint">{42;{1,2,3;4}}
+</code></pre>
+If you try it,
+what you'll see 
+is something like this:
+<pre><code class="prettyprint">syntax error at (eval 25) line 1, near ";4"
+syntax error at (eval 25) line 1, near "}}
+</code></pre>
+
+<p>TPP is based on an algorithm called LALR.
+(To avoid confusion when discussing various programs which parse Perl,
+I will call the one that comes with the Perl distribution
+the Tradition Perl Parser, or TPP.)
+If you look at 
+<kbd>perly.y</kbd>,
+you will find a real achievement
+in LALR parsing.
+and therefore in computer language parsing in general.
+But LALR has its limits and even in the TPP
+these show up every now and then.
+
+<p>Let's call our first example the Garden Path Code Block.
+What is happening here?
+Perl is being taken
+"down the garden path" between the inner set of
+curly braces.
+TPP starts out down the path and, based on what it sees,
+decides that it is parsing an anonymous hash.
+TPP commits to that choice and then trainwrecks on the semicolon.
+<a href="http://search.cpan.org/dist/PPI/">PPI</a>
+does no better.
+PPI recognizes the Garden Path Code Block, but it parses it
+as an anonymous hash, which is wrong.
+
+<p>I am prototyping a new Perl syntax analyzer using
+<a href="http://search.cpan.org/dist/Marpa/">Marpa</a>,
+my new parser.
+Marpa parses anything you can write in BNF, using ideas based on those
+by Jay Earley.
+Marpa::Perl is still a prototype,
+but it has no difficulty in
+recognizing the Garden Path Code Block as a code block.
+
+<p>LALR's problem is that it is based on a state machine.
+LALR's state machine ran at speeds and used memory
+in keeping with the computer technology of 1969, which is
+when LALR was invented.
+But the LALR state machine needs to make decisions based
+on limited context.
+When the LALR parser in
+<a href="http://cpansearch.perl.org/src/JESSE/perl-5.12.1/perly.y">perly.y</a>
+sees that semicolon, it is pretty much game over.
+
+<p>LALR has always been
+a tight squeeze
+for the grammars of practical programming languages.
+This is despite the fact that LALR has had decades to
+condition 
+language designers to accept its idea of what
+"practical" means in a programming language.
+
+<p>For Marpa, the Garden Path Code Block is not
+even a serious challenge.
+Marpa is based on Jay Earley's ideas.
+These were the subject of 
+<a href="http://blogs.perl.org/users/jeffrey_kegler/2010/06/jay-earleys-idea.html">my last post</a>. 
+Briefly, the core idea is to create a table of "Earley items".
+Earley items are short records indicating parsing progress,
+keyed to locations in the input.
+For an Earley-based parser, a "garden path" is dealt with by having
+Earley items record the multiple possibilities.
+This need to deal with alternative possibilities
+is not dissimilar to the one
+which motivates other parsers to use more expensive strategies,
+such as backtracking or parallel processing.
+
+<h2>What the Man Page Says</h2>
+
+Suppose we go all the way down the "garden path",
+and it still is not clear whether the curly braces
+enclose an anonymous hash or a code block?
+If we alter our example to replace the deadly semicolon
+with an insidious comma, this is what it looks like:
+<pre><code class="prettyprint">{42;{1,2,3,4}}
+</code></pre>
+And for Perl 5.10, this is the result:
+<pre><code class="prettyprint">{'1' => 2,'3' => 4}
+</code></pre>
+PPI seems to agree with Perl 5.10.
+
+<p>Marpa::Perl, on the other hand, sees that this code is ambiguous.
+It recognizes two parses.
+The first parse is the one Perl and PPI see: an anonymous hash.
+Marpa::Perl's second parse treats both sets of curlies as surrounding
+code blocks.
+In scalar context, the value which results from this second parse
+is the number 4.
+
+<p>In cases of desperation,
+we look at the documentation.
+It takes some searching to find it,
+but there is
+a very relevant discussion in
+a section of the perlref man page.
+<a href="http://perldoc.perl.org/perlref.html#Making-References">
+It is worth reading</a>.
+Of its several examples,
+this is the most interesting:
+<pre><code class="prettyprint">sub showem {       { @_ } }   # ambiguous (currently ok, but may change)
+</code></pre>
+Here Perl's rules of thumb result in the "<tt>{ @_ }</tt>"
+being parsed as a code block --
+the opposite of the behavior in our previous example.
+
+<p>The threat made in the comment --
+that TPP's current behavior may change --
+would be a hard thing to make good on.
+Assuming array context,
+the effect of having the
+<a href="http://perldoc.perl.org/perlref.html">perlref</a>
+example flip semantics
+would be to change
+the return value from an
+array into a hash ref.
+That kind of silent change is not the kind
+of thing I like to see in production code.
+
+<p>Most Perl programmers are probably not aware of this gotcha.
+Even well-informed programmers
+can easily write ambiguous code by accident,
+and will receive no warning of their mistake.
+Perhaps a good application for Marpa::Perl
+would be spotting ambiguities like these.
+
+<h2>How to Disambiguate</h2>
+
+<p>Once spotted, ambiguous curlies are easy to fix.
+A standard way to disambiguate
+an anonymous hash
+is to prefix the
+curly braces
+with a plus sign:
+
+<pre><code class="prettyprint">{42;+{1,2,3,4}}
+</code></pre>
+TPP, PPI and Marpa::Perl have no trouble
+recognizing that the inner curly brackets enclose an anonymous hash in
+the above.
+
+<p>A programmer can disambiguate code blocks by
+placing a semicolon as the first thing inside the curly brackets.
+<pre><code class="prettyprint">{42;{;1,2,3;4}}
+</code></pre>
+The inner curlies in the above are recognized
+as defining a code block by all three parsers:
+TPP, PPI and Marpa::Perl.
+<br />
+<p>posted at: 19:29 |
+path: <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2010/06">/individual/2010/06</a> |
+<a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2010/06/parsing-perl-2-down-the-garden-path.html">direct link to this entry</a>
+</p>
+<div style="color:#38B0C0;padding:1px;text-align:center;">
+&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&sect;
+</div>
+<h3>Mon, 21 Jun 2010</h3>
+<br />
+<center><a name="jay-earleys-idea"> <h2>Jay Earley's Idea</h2> </a>
+</center>
+<h2>Truth == Simplicity?</h2>
+
+<p>In other posts,
+I talked about improvements to Jay Earley's parsing algorithm
+-- some from Joop Leo, some from Aycock and Horspool,
+<a href="http://search.cpan.org/dist/Marpa/">some of mine
+</a>.
+Here I'd like to talk about Jay Earley's original algorithm.
+A common belief of great scientists is that,
+if an idea is basic and true,
+it is in essence also simple,
+and therefore it must have a simple explanation.
+</p>
+<p>
+Finding the simple explanation might be far from simple.
+But a simple explanation there ought to be.
+I like to look for those simple explanations.
+Writing my mathematical novel, <i>The God Proof</i>,
+confirmed
+me in this habit.
+Whenever I am studying something,
+and it seems important and true,
+I look for the simple explanation.
+</p>
+
+<h2>Dotted Rules</h2>
+
+<p>
+The idea behind Earley's algorithm is that you can
+parse by building a table of rules
+and where you are in those rules.
+"Where" means two things: location in the rule relative to the rule's
+symbols,
+and location relative to the parse's input stream.
+</p>
+<p>
+Let's look at an example of a rule in a context-free grammar.
+Here's the rule for assignment in perl's
+<a href="http://cpansearch.perl.org/src/JESSE/perl-5.12.1/perly.y">perly.y
+</a>:
+<pre><code class="prettyprint">
+    termbinop => term ASSIGNOP term
+</code></pre>
+In parsing this rule, we can be at the beginning, before all of the symbols.
+We can also be immediately after any of the three symbols.
+That's a total of four possible locations.
+<br />
+<p>posted at: 00:41 |
+path: <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2010/06">/individual/2010/06</a> |
+<a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2010/06/jay-earleys-idea.html">direct link to this entry</a>
+</p>
+<div style="color:#38B0C0;padding:1px;text-align:center;">
+&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&sect;
+</div>
+<h3>Sat, 19 Jun 2010</h3>
+<br />
+<center><a name="parsing-with-ruby-slippers"> <h2>Parsing with Ruby Slippers</h2> </a>
+</center>
+<h2>PPI, perly.y and Marpa</h2>
+
+<p>Recently I've been combining the two main approaches to
+parsing Perl. 
+One of these is the
+<a href="http://search.cpan.org/dist/PPI/">PPI</a>
+module.
+The other is the parser in the actual
+Perl distribution.
+This is usually what is meant when
+someone speaks simply of
+"the Perl parser".
+That
+can be confusing
+in this context,
+so I will call the parser in the distribution,
+the Traditional Perl Parser (TPP).
+
+<p>I used the grammar in the TPP
+(it's in
+<a href="http://cpansearch.perl.org/src/JESSE/perl-5.12.1/perly.y">perly.y</a>).
+But I threw out TPP's lexer
+(<a href="http://cpansearch.perl.org/src/JESSE/perl-5.12.1/toke.c">toke.c</a>).
+I replaced
+<a href="http://cpansearch.perl.org/src/JESSE/perl-5.12.1/toke.c">toke.c</a>
+with
+<a href="http://search.cpan.org/dist/PPI/lib/PPI/Tokenizer.pm">PPI::Tokenizer</a>,
+rewrote TPP's bison grammar to use
+<a href="http://search.cpan.org/dist/Marpa/">Marpa</a>
+and put the two together.
+
+<p>To my surprise, mating the
+<a href="http://search.cpan.org/dist/PPI/lib/PPI/Tokenizer.pm">PPI::Tokenizer</a>
+and 
+<a href="http://cpansearch.perl.org/src/JESSE/perl-5.12.1/perly.y">perly.y</a>
+has proved almost easy.
+<a href="http://search.cpan.org/dist/PPI/">PPI</a>
+preserves whitespace and the TPP does not,
+so I had to throw whitespace away.
+<a href="http://search.cpan.org/dist/PPI/">PPI</a>
+combines some tokens that TPP separates.
+(Notably
+<a href="http://search.cpan.org/dist/PPI/">PPI</a>
+often combines sigils with other things.
+The TPP never does.)
+Also, there was the slightly more complicated issue of the ghostly semicolons,
+which I'll deal with in a bit.
+
+<p>I've gotten this combination working
+on the Perl subset that
+<a href="http://search.cpan.org/dist/Data-Dumper/">Data::Dumper</a>
+produces as output,
+and it passes an appropriately selected dozen of
+<a href="http://search.cpan.org/dist/Data-Dumper/">Data::Dumper</a>'s
+own test cases.
+<a href="http://search.cpan.org/dist/Data-Dumper/">Data::Dumper</a>
+uses only part of Perl's semantics,
+and that allows me to avoid
+most of Perl's semantics.
+Not that the semantics in
+<a href="http://search.cpan.org/dist/Data-Dumper/">Data::Dumper</a>'s
+output are trivial.
+They include a lot
+of the logic of Perl expressions,
+and the test cases get into some very serious nested dereferencing of lvalues.
+
+<p>I don't ever intend to reimplement all (or even most)
+of Perl's <b>semantics</b>.
+Tricky lvalue indirections or not,
+what I've done is a toy
+in comparison with the Perl semantics,
+and it will stay that way.
+But I do think it possible to use
+<a href="http://search.cpan.org/dist/Marpa/">Marpa</a>
+to reimplement
+most of Perl's <b>grammar</b>.
+An application could then plug its own semantics into it.
+
+<p>I've adhered to the structure of
+<a href="http://cpansearch.perl.org/src/JESSE/perl-5.12.1/perly.y">perly.y</a>'s
+grammar.
+My intent is that this adaptation of
+<a href="http://cpansearch.perl.org/src/JESSE/perl-5.12.1/perly.y">perly.y</a>'s
+grammar to
+<a href="http://search.cpan.org/dist/Marpa/">Marpa</a>
+will work for cases much broader than
+<a href="http://search.cpan.org/dist/Data-Dumper/">Data::Dumper</a>
+output.
+As this project progresses,
+I expect to be forced to confront a lot of interesting issues in
+Perl's grammar.
+
+<h2>The Case of the Ghostly Semicolons</h2>
+
+<p>
+But for the moment, let's get back to interfacing
+the
+<a href="http://search.cpan.org/dist/PPI/">PPI</a>
+lexer to <a href="http://cpansearch.perl.org/src/JESSE/perl-5.12.1/perly.y">perly.y</a>'s grammar,
+and what turned out to be relatively simple issues.
+For reasons which probably have to do with the limits of its underlying LALR algorithm,
+<a href="http://cpansearch.perl.org/src/JESSE/perl-5.12.1/perly.y">perly.y</a>
+wants all expressions inside hash
+brackets to end in semicolons.
+That is, instead of 
+<pre>
+<tt>$p->{ func() }</tt>
+</pre>
+<a href="http://cpansearch.perl.org/src/JESSE/perl-5.12.1/perly.y">perly.y</a> needs to see
+<pre>
+<tt>$p->{ func(); }</tt>
+</pre>
+In actual Perl code that semicolon causes a syntax error.
+But
+<a href="http://cpansearch.perl.org/src/JESSE/perl-5.12.1/perly.y">perly.y</a>
+not only allows the semicolon --
+<a href="http://cpansearch.perl.org/src/JESSE/perl-5.12.1/perly.y">perly.y</a>
+requires it.
+These semicolons are only allowed to exist
+as momentary "ghosts" inside the TPP,
+where they flit from
+<a href="http://cpansearch.perl.org/src/JESSE/perl-5.12.1/toke.c">toke.c</a>
+to
+<a href="http://cpansearch.perl.org/src/JESSE/perl-5.12.1/perly.y">perly.y</a>.
+
+When exactly are ghost semicolons required?
+Beats me.
+The
+<a href="http://cpansearch.perl.org/src/JESSE/perl-5.12.1/toke.c">toke.c</a>
+code for
+handling curly braces is as convoluted as anything I've ever seen,
+and I don't know of any documentation for it -- certainly the
+comments do no more than hint at what's going on.
+
+<p>Now, you'd think to mate
+<a href="http://search.cpan.org/dist/PPI/lib/PPI/">PPI</a>,
+and
+<a href="http://cpansearch.perl.org/src/JESSE/perl-5.12.1/perly.y">perly.y</a>
+I would need to figure out exactly when to insert "ghost" semicolons and when not.
+I'd have to then implement this, ending up
+with something that looks a lot like (shudder)
+<a href="http://cpansearch.perl.org/src/JESSE/perl-5.12.1/toke.c">toke.c</a>
+rewritten in Perl.
+But I don't have to do any of this.
+You see, I've got Ruby Slippers.
+
+<h2>Stepping Out with the Ruby Slippers</h2>
+
+As most readers will recall, the
+<a href="http://en.wikipedia.org/wiki/Ruby_slippers">
+Ruby Slippers
+</a>
+are Dorothy's shoes
+in the movie <i>Wizard of Oz</i>, and they grant wishes.
+In particular, Dorothy wants to get back to Kansas,
+and she discovers that,
+so long as she keeps the Ruby Slippers away from wicked witches,
+all she has to do is wish she
+is back in Kansas and she is there.
+
+<p><a href="http://search.cpan.org/dist/Marpa/">Marpa</a>'s
+parse engine has the very nice property that at every
+point Marpa knows
+exactly what parses are possible,
+and it knows this information in a form
+that it can share with the lexer.
+This ability is a by-product of my rewrite of the Earley parse engine,
+and has been useful beyond my expectations.
+Here's how I deal with the ghostly semicolons.
+
+<p><b>Step 1</b>:
+<a href="http://search.cpan.org/dist/Marpa/">Marpa</a>
+has an "interactive" parse mode --
+interactive in the sense that the parser and lexer interact.
+What I do is just take the closing curly brace as I get it from
+<a href="http://search.cpan.org/dist/PPI/lib/PPI/Tokenizer.pm">PPI::Tokenizer</a>
+and pass it on to the
+<a href="http://search.cpan.org/dist/Marpa/">Marpa</a>
+implementation of the <a href="http://cpansearch.perl.org/src/JESSE/perl-5.12.1/perly.y">perly.y</a> grammar.
+In cases where an "un-semi-coloned" closing curly is acceptable, 
+that's the end of the story.
+
+<p><b>Step 2</b>:
+But what if
+<a href="http://search.cpan.org/dist/Marpa/">Marpa
+</a>/<a href="http://cpansearch.perl.org/src/JESSE/perl-5.12.1/perly.y">perly.y
+</a>
+needs the semi-colon?
+In interactive mode, when the parser is not happy with an
+input, it stops, marking the point in the token stream
+where it failed.
+<a href="http://search.cpan.org/dist/Marpa/">Marpa</a>
+also makes available a list of tokens 
+which <b>are</b> acceptable.
+
+<p><b>Step 3</b>:
+Here's where
+<a href="http://search.cpan.org/dist/Marpa/">Marpa</a>'s
+version of Ruby Slippers comes in.
+All the application/tokenizer has to do is
+pick a token which the parser <b>does</b> want,
+dummy up the input so that the wanted token is the next token,
+and restart the parse.
+Poof, you're in Kansas.
+
+<p>The Ruby Slippers method is quite remarkable.
+In many practical cases, there is only one acceptable token.
+In those cases, the
+<a href="http://search.cpan.org/dist/Marpa/">Marpa</a>
+parser tells the lexer exactly
+how to make a grammar work as it goes along,
+on a case by case basis.
+
+<p>Issues with Ruby Slippers parsing can arise.
+Sometimes there is
+more than one acceptable token.
+In those cases,
+you rank your choices,
+use lookahead,
+look at
+<a href="http://search.cpan.org/dist/Marpa/">Marpa</a>'s
+ambiguous parsing capabilities, etc., etc.
+Also, in some situations it may be important that all illegal parses
+fail -- liberal acceptance of input is not always what is wanted.
+You might need to be fascist,
+rejecting everything which is not in exactly correct format.
+Fascists need to be careful with their Ruby Slippers.
+
+<h2>The Ruby Slippers Strike Again</h2>
+
+<p>A more complex example of Ruby Slippers parsing
+(and a pretty nifty one if I say so myself)
+is in
+<a href="http://search.cpan.org/dist/Marpa-HTML/">Marpa::HTML</a>.
+This is
+<a href="http://search.cpan.org/dist/Marpa/">Marpa</a>
+adapted to parse HTML is a very liberal way.
+You can feed any file to
+<a href="http://search.cpan.org/dist/Marpa-HTML/">Marpa::HTML</a>
+and get an HTML parse for it.
+If the file is pathological HTML, or not HTML at all,
+the HTML parse will be pathological,
+but there <b>will</b> be an HTML parse.
+(This is not totally crazy.
+Most renderers accept any text whatsoever,
+doing their best to render it on the screen as HTML.)
+
+<p>As part of being very liberal,
+<a href="http://search.cpan.org/dist/Marpa-HTML/">Marpa::HTML</a>
+supplies missing end tags, even end tags which are required
+under the standards.
+For traditional parsing methods,
+this is a devilishly complex problem.
+Try writing BNF that allows for missing end tags when possible.
+Actually, just try defining "when possible".
+I think you'll see it's very, very hard.
+
+<p>But to solve this problem of end tags with
+<a href="http://search.cpan.org/dist/Marpa/">Marpa</a>
+I don't need to
+work out BNF or even define that slippery phrase
+"when possible".
+<a href="http://search.cpan.org/dist/Marpa-HTML/">Marpa::HTML</a>
+supplies missing end tags using the Ruby Slippers method.
+
+<p>It's basically the same trick as before.
+<a href="http://search.cpan.org/dist/Marpa-HTML/">Marpa::HTML</a>
+sets
+<a href="http://search.cpan.org/dist/Marpa/">Marpa</a>
+to parse in interactive mode.
+Then it simply feeds the tags it has to
+<a href="http://search.cpan.org/dist/Marpa/">Marpa</a>,
+as is,
+and waits for
+<a href="http://search.cpan.org/dist/Marpa/">Marpa</a>
+to have a problem.
+
+When
+<a href="http://search.cpan.org/dist/Marpa/">Marpa</a>
+can't use a token,
+<a href="http://search.cpan.org/dist/Marpa/">Marpa</a>
+stops.
+<a href="http://search.cpan.org/dist/Marpa/">Marpa</a>
+tells the tokenizer which token it could not use,
+and which tokens it <b>could</b> use instead -- its list of "expected" tokens.
+
+<p>The
+<a href="http://search.cpan.org/dist/Marpa-HTML/">Marpa::HTML</a>
+tokenizer looks in the expected tokens.
+Is there an end tag in there?
+If so, it dummies
+up a token for that end tag, sticks it in the input
+stream, and restarts.
+
+<p>Are there complications?
+If
+<a href="http://search.cpan.org/dist/Marpa-HTML/">Marpa::HTML</a>
+were parsing strict HTML, there wouldn't be.
+For strict HTML,
+whenever there is a missing end tag,
+there will be only
+one missing end tag.
+In the strict HTML case,
+the <a href="http://search.cpan.org/dist/Marpa/">Marpa</a>
+parser can always tell the
+<a href="http://search.cpan.org/dist/Marpa-HTML/">Marpa::HTML</a>
+exactly the right fix for any missing end tag.
+
+<p>If you want to parse liberalized and defective HTML,
+which
+<a href="http://search.cpan.org/dist/Marpa-HTML/">Marpa::HTML</a>
+does,
+things are more complex.
+In some cases the
+<a href="http://search.cpan.org/dist/Marpa/">Marpa</a>
+parser suggests more than one 
+way to dummy up the input --
+more than one pair of Ruby Slippers, so to speak.
+In these cases
+<a href="http://search.cpan.org/dist/Marpa-HTML/">Marpa::HTML</a>
+has to decide "which shoes to wear."
+<a href="http://search.cpan.org/dist/Marpa-HTML/">Marpa::HTML</a>
+uses a handful of simple
+rules and heuristics.
+The rules provide the right answer where there is one.
+If it comes down to guessing at the intent,
+the heuristics make good suggestions.
+
+<h2>Thanks</h2>
+
+<p>On this project,
+obvious thanks are due to Larry Wall
+and the other authors for
+<a href="http://cpansearch.perl.org/src/JESSE/perl-5.12.1/perly.y">perly.y</a>
+and
+<a href="http://cpansearch.perl.org/src/JESSE/perl-5.12.1/toke.c">toke.c</a>.
+as well as to Adam Kennedy for
+<a href="http://search.cpan.org/dist/PPI/">PPI</a>.
+Not so obvious might be my debt to Randal Schwartz, whose
+<a href="http://www.stonehenge.com/merlyn/LinuxMag/col29.html">
+Oct 2001
+Linux Magazine column</a>
+suggested the idea of using
+<a href="http://search.cpan.org/dist/Data-Dumper/">Data::Dumper</a>
+output (and its test cases) to create
+an initial subset for a Perl parser.
+<br />
+<p>posted at: 14:56 |
+path: <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2010/06">/individual/2010/06</a> |
+<a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2010/06/parsing-with-ruby-slippers.html">direct link to this entry</a>
+</p>
+<div style="color:#38B0C0;padding:1px;text-align:center;">
+&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&sect;
+</div>
+<h3>Sat, 05 Jun 2010</h3>
+<br />
+<center><a name="marpa-is-now-on-for-right-recursions"> <h2>Marpa is now O(n) for Right Recursions</h2> </a>
+</center>
+<p>There's news with the latest version of <a href="http://search.cpan.org/~jkegl/Marpa-0.102000/">Marpa (0.102000)</a>.
+<a href="http://search.cpan.org/~jkegl/Marpa-0.102000/">Marpa</a> now parses grammars with right-recursions in linear time (O(n)).
+(<a href="http://search.cpan.org/~jkegl/Marpa-0.102000/">Marpa</a> already
+handled left-recursion in linear time.)
+
+<p>This means that <a href="http://search.cpan.org/~jkegl/Marpa-0.102000/">Marpa</a> is now O(n) for all LR-regular grammars.
+LR-regular means LR with infinite lookahead using regular expressions.
+That a big class of grammars.  It obviously includes all the LR(k) grammars,
+and therefore everything parsed by Yapp, yacc, and bison.
+LR-regular grammars also include
+everything parseable by recursive descent, PEGs,
+and other LL(k) grammars.
+LR-regular definitely includes all regular expressions.
+
+<p><a href="http://search.cpan.org/~jkegl/Marpa-0.102000/">Marpa</a>'s O(n) behavior has another nice feature.
+When it does <b>not</b> parse in O(n) time, it still parses.
+Some parser generators always parse quickly, because when they
+can't parse quickly, they don't parse at all.
+<a href="http://search.cpan.org/~jkegl/Marpa-0.102000/">Marpa</a> will parse anything you can write in BNF,
+even highly ambiguous grammars,
+and the absolute worst case is cubic (O(n**3)).
+
+<p>In my last post, I explained that the previous release of
+<a href="http://search.cpan.org/~jkegl/Marpa-0.102000/">Marpa</a> could parse unusually 
+large classes of grammars in linear time,
+and that the right recursive cases where <a href="http://search.cpan.org/~jkegl/Marpa-0.102000/">Marpa</a> was not linear could
+usually be worked around.
+In fact, my experience had been that working around a right recursion was
+easy, so I'd never bothered looking hard at the issue.
+
+<p>Sometimes, writing a long explanation of why a limitation does
+not matter makes me think:
+Perhaps it does matter enough to take
+a second look.  And take a second look is what I did.
+
+<p>A 1991 article by Joop Leo had laid out a modification to Earley's
+algorithm (the basis of Marpa) which was O(n) for all LR-regular
+grammars.  Problem was, <a href="http://search.cpan.org/~jkegl/Marpa-0.102000/">Marpa</a> already incorporated other, major,
+enhancements to Earley's from another article, <a href="http://www.cs.uvic.ca/~nigelh/Publications/PracticalEarleyParsing.pdf">this one by Aycock
+and Horspool and dating to 2002</a>.
+Were the two modifications compatible?
+
+<p>They are.  And <a href="http://search.cpan.org/~jkegl/Marpa-0.102000/">Marpa 0.102000</a> is the result.  CPAN and the Perl
+community has it,
+and everybody else will have it
+when they borrow from us.
+<br />
+<p>posted at: 18:21 |
+path: <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2010/06">/individual/2010/06</a> |
+<a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2010/06/marpa-is-now-on-for-right-recursions.html">direct link to this entry</a>
+</p>
+<div style="color:#38B0C0;padding:1px;text-align:center;">
+&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&sect;
+</div>
+</div>
+</div>
+<div id="footer" style="border-top:thick solid #38B0C0;clear:left;padding:1em;">
+<p>This is Ocean of Awareness's
+  new home.  This blog has been hosted at
+  <a href="http://blogs.perl.org/users/jeffrey_kegler/">blogs.perl.org</a>
+  but I have succumbed to the lure of static blogging.
+  I have not yet decided how to deal with comments at this new blog location.
+If the post is Marpa-related,
+<a href="https://groups.google.com/forum/?hl=en&fromgroups#%21forum/marpa-parser">
+the Marpa mailing list</a>
+is a good place to comment.
+Also,
+I will continue to dual-post for some time,
+and have not yet frozen comments on the versions of the
+post at
+<a href="http://blogs.perl.org/users/jeffrey_kegler/">blogs.perl.org</a>.
+</div>
+              <script type="text/javascript">
+            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+          </script>
+          <script type="text/javascript">
+            try {
+              var pageTracker = _gat._getTracker("UA-33430331-1");
+            pageTracker._trackPageview();
+            } catch(err) {}
+          </script>
+</body>
+</html>

@@ -1,0 +1,63 @@
+<?xml version="1.0"?>
+<!-- name="generator" content="blosxom/2.0" -->
+<!DOCTYPE rss PUBLIC "-//Netscape Communications//DTD RSS 0.91//EN" "http://my.netscape.com/publish/formats/rss-0.91.dtd">
+
+<rss version="0.91">
+  <channel>
+    <title>Ocean of Awareness   </title>
+    <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog</link>
+    <description>Ocean of Awareness.</description>
+    <language>en</language>
+
+  <item>
+    <title>Marpa is now O(n) for Right Recursions</title>
+    <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog/2010/06/05#marpa-is-now-on-for-right-recursions</link>
+    <description>&lt;p&gt;There's news with the latest version of &lt;a href=&quot;http://search.cpan.org/~jkegl/Marpa-0.102000/&quot;&gt;Marpa (0.102000)&lt;/a&gt;.
+&lt;a href=&quot;http://search.cpan.org/~jkegl/Marpa-0.102000/&quot;&gt;Marpa&lt;/a&gt; now parses grammars with right-recursions in linear time (O(n)).
+(&lt;a href=&quot;http://search.cpan.org/~jkegl/Marpa-0.102000/&quot;&gt;Marpa&lt;/a&gt; already
+handled left-recursion in linear time.)
+
+&lt;p&gt;This means that &lt;a href=&quot;http://search.cpan.org/~jkegl/Marpa-0.102000/&quot;&gt;Marpa&lt;/a&gt; is now O(n) for all LR-regular grammars.
+LR-regular means LR with infinite lookahead using regular expressions.
+That a big class of grammars.  It obviously includes all the LR(k) grammars,
+and therefore everything parsed by Yapp, yacc, and bison.
+LR-regular grammars also include
+everything parseable by recursive descent, PEGs,
+and other LL(k) grammars.
+LR-regular definitely includes all regular expressions.
+
+&lt;p&gt;&lt;a href=&quot;http://search.cpan.org/~jkegl/Marpa-0.102000/&quot;&gt;Marpa&lt;/a&gt;'s O(n) behavior has another nice feature.
+When it does &lt;b&gt;not&lt;/b&gt; parse in O(n) time, it still parses.
+Some parser generators always parse quickly, because when they
+can't parse quickly, they don't parse at all.
+&lt;a href=&quot;http://search.cpan.org/~jkegl/Marpa-0.102000/&quot;&gt;Marpa&lt;/a&gt; will parse anything you can write in BNF,
+even highly ambiguous grammars,
+and the absolute worst case is cubic (O(n**3)).
+
+&lt;p&gt;In my last post, I explained that the previous release of
+&lt;a href=&quot;http://search.cpan.org/~jkegl/Marpa-0.102000/&quot;&gt;Marpa&lt;/a&gt; could parse unusually 
+large classes of grammars in linear time,
+and that the right recursive cases where &lt;a href=&quot;http://search.cpan.org/~jkegl/Marpa-0.102000/&quot;&gt;Marpa&lt;/a&gt; was not linear could
+usually be worked around.
+In fact, my experience had been that working around a right recursion was
+easy, so I'd never bothered looking hard at the issue.
+
+&lt;p&gt;Sometimes, writing a long explanation of why a limitation does
+not matter makes me think:
+Perhaps it does matter enough to take
+a second look.  And take a second look is what I did.
+
+&lt;p&gt;A 1991 article by Joop Leo had laid out a modification to Earley's
+algorithm (the basis of Marpa) which was O(n) for all LR-regular
+grammars.  Problem was, &lt;a href=&quot;http://search.cpan.org/~jkegl/Marpa-0.102000/&quot;&gt;Marpa&lt;/a&gt; already incorporated other, major,
+enhancements to Earley's from another article, &lt;a href=&quot;http://www.cs.uvic.ca/~nigelh/Publications/PracticalEarleyParsing.pdf&quot;&gt;this one by Aycock
+and Horspool and dating to 2002&lt;/a&gt;.
+Were the two modifications compatible?
+
+&lt;p&gt;They are.  And &lt;a href=&quot;http://search.cpan.org/~jkegl/Marpa-0.102000/&quot;&gt;Marpa 0.102000&lt;/a&gt; is the result.  CPAN and the Perl
+community has it,
+and everybody else will have it
+when they borrow from us.</description>
+  </item>
+  </channel>
+</rss>

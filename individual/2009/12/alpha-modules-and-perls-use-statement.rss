@@ -1,0 +1,75 @@
+<?xml version="1.0"?>
+<!-- name="generator" content="blosxom/2.0" -->
+<!DOCTYPE rss PUBLIC "-//Netscape Communications//DTD RSS 0.91//EN" "http://my.netscape.com/publish/formats/rss-0.91.dtd">
+
+<rss version="0.91">
+  <channel>
+    <title>Ocean of Awareness   </title>
+    <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog</link>
+    <description>Ocean of Awareness.</description>
+    <language>en</language>
+
+  <item>
+    <title>Alpha Modules and Perl's use Statement</title>
+    <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog/2009/12/21#alpha-modules-and-perls-use-statement</link>
+    <description>&lt;p&gt;I'm contemplating breaking a very well-established standard: Version arguments to Perl's &quot;use&quot; statement.  The module writer is free to change the semantics of these, but despite the endless eccentricities you find on CPAN in other things, they rarely (never?) do.
+&lt;/p&gt;
+&lt;p&gt;So I'm having guilt feelings.  Insecurities are coming out.  I'm getting second thoughts.  In this post I will handle these things the way many people do.  Preach.
+&lt;/p&gt;
+&lt;p&gt;Consider a default module &lt;kbd&gt;use&lt;/kbd&gt; like
+&lt;/p&gt;
+&lt;pre&gt;    &lt;code class=&quot;prettyprint&quot;&gt;use Marpa;&lt;/code&gt;
+&lt;/pre&gt;
+&lt;p&gt;The standard (and almost universal) semantics is to load whatever version is out there.  This works if you can assume that the modules you're using are well-behaved and upwardly compatible.
+Or if you have strict controls on the libraries in the environment in which
+you are running.
+But what if you are dealing with software 
+which is avowedly alpha?
+&lt;p&gt;Certainly allowing the user
+to say &quot;Just give me anything&quot; is
+very much in the Perl spirit.
+And it's necessary in some cases.
+Programs in a test suite should not be fussy about the version
+of the software that gets thrown at them.
+Crashing and burning because of new versions of software is their
+role in life.
+&lt;/p&gt;
+&lt;p&gt;But with alpha modules, it's a poor default.
+So I'm thinking of having my alpha modules accept
+only two forms of the &lt;kbd&gt;use&lt;/kbd&gt;
+statement, both with two arguments.
+&lt;/p&gt;
+&lt;pre&gt;    &lt;code class=&quot;prettyprint&quot;&gt;use Marpa 0.001_037;&lt;/code&gt;
+&lt;/pre&gt;
+&lt;p&gt;The numeric version of the two argument form means gives me version 
+0.001_037
+and version 
+0.001_037 &lt;strong&gt;only&lt;/strong&gt;.
+Upgrades result in an error message.
+&lt;/p&gt;
+&lt;pre&gt;         &lt;code class=&quot;prettyprint&quot;&gt;use Marpa 'alpha';&lt;/code&gt;
+&lt;/pre&gt;
+&lt;p&gt;The two argument form with the &lt;kbd&gt;alpha&lt;/kbd&gt; argument means give me anything alpha or later --
+in other words, anything at all.
+That's the equivalent of the &quot;wide open city&quot;
+default behavior.
+But here the user has asked for it explicitly.
+&lt;/p&gt;
+&lt;p&gt;What do I do with the one argument form?
+&lt;/p&gt;
+&lt;pre&gt;                 &lt;code class=&quot;prettyprint&quot;&gt;use Marpa;&lt;/code&gt;
+&lt;/pre&gt;
+&lt;p&gt;The one argument form gets you a multi-line error message
+which summarizes what
+I've just said.
+&lt;/p&gt;
+&lt;p&gt;
+This might make people think before including
+a dependency on my new, alpha, module.
+But is that a bad thing?
+Shouldn't alpha code turn off unsafe defaults?
+Perhaps other writers of alpha code should consider non-standard semantics
+for the &lt;kbd&gt;use&lt;/kbd&gt; statement.  It will help me with my guilt feelings.</description>
+  </item>
+  </channel>
+</rss>

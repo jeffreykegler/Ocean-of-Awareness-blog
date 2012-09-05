@@ -1,0 +1,189 @@
+<html>
+<head>
+<link rel="alternate" title="Ocean of Awareness RSS" type="application/rss+xml" title="RSS" href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/index.rss" />
+<title>Ocean of Awareness   </title>
+<style type="text/css">
+   strong {font-weight: 700;}
+</style>
+</head>
+<body>
+<div id="header"
+  style="color:white;background-color:#38B0C0;padding:1em;clear:left;text-align:center;">
+<h1>Ocean of Awareness</h1>
+  
+</div>
+  <div id="menu" style="margin:0;padding:10px;width:150px;float:left;">
+  <h2>Jeffrey Kegler's blog</h2>
+  <p>About Marpa, his new parsing algorithm,
+    and other topics of interest</p>
+  <h3>Resources</h3>
+  <p><a href="http://www.jeffreykegler.com/">Jeffrey Kegler's website</p>
+  <p><a href="http://www.jeffreykegler.com/marpa">The Marpa website</p>
+  </div>
+  <div id="content" style="margin-left:190px;border-left:2px solid #38B0C0;padding:25px;">
+<h3>Wed, 15 Dec 2010</h3>
+<br />
+<center><a name="killing-yacc-1-2-3"> <h2>Killing Yacc: 1, 2 & 3</h2> </a>
+</center>
+<h2>The Good, the Bad and The Ugly</h2>
+<p><img alt="Angeleyescleef.jpg" src="http://blogs.perl.org/users/jeffrey_kegler/Angeleyescleef.jpg" width="410" height="243" class="mt-image-right" style="float: right; margin: 0 0 20px 20px;" />The recent discussions about yacc made me
+feel a bit like Lee Van Cleef in an old
+spaghetti Western.
+Cast alongside Clint Eastwood, Van Cleef watched
+with great concern as one attempt after another
+was made on Eastwood's life.
+Van Cleef didn't mind Eastwood getting killed --
+he just wanted to be the one to do it.
+
+<p>As some of you will have recognized, I am talking about
+a very interesting discussion started by
+<a href="http://arxiv.org/abs/1010.5023">
+a paper
+by Might and Darais
+entitled "Yacc is Dead"</a>.
+
+I am finding it very much worth reading as an example
+of clear and precise mathematical writing.
+With respect to the parser itself,
+my opinion is that
+<a href="http://research.swtch.com/2010/12/yacc-is-not-dead.html">
+Russ Cox's extremely well-informed
+blog post, "Yacc is not Dead",</a>
+is an accurate assessment.
+
+<p>Might, Darais and Cox all devote considerable attention to
+exactly what it will take to send yacc on to its Final
+Reward.
+I see six requirements:
+Three from Might & Darais, one suggested by
+Cox, and two that I have added.
+The rest of this post will be about three of these requirements,
+all of which focus on parsing speed.
+
+<h2>Requirement 1: Handle Arbitrary Context-Free Grammars in O(n**3)</h2>
+
+<p>For a parser to be convenient, it should take anything you can write in BNF
+and parse it.
+And it should do this in "reasonable" time.
+This enables a programmer to work on a grammar that does not fit a
+restricted theoretical framework (LL, LR, LALR, etc.).
+The programmer then has the choice:
+she can tighten the grammar up to make it faster,
+or she can decide that, for her application,
+worse-than-linear speed is acceptable.
+
+<p>This requirement is one of those in the Might-Darais paper, but Russ Cox
+adds a further requirement:
+"Reasonable time" means O(n**3).
+Might and Darais do not categorize their algorithm's speed for arbitrary context-free
+grammars, but Cox says that it is exponential (O(e**n)).
+
+<p>Cox's tightening of this requirement makes sense.
+Depending on the application, exponential time can make a grammar unuseable
+in practice.
+Several algorithms are known which parse arbitrary context-free grammars in
+O(n**3).
+<a href="http://search.cpan.org/dist/Marpa/">
+Marpa</a>
+is one of these.
+(Marpa, for those new to this blog, is a parsing algorithm I've been working on.
+It is based on Earley's algorithm, and includes several major enhancements to
+it from the academic literature.)
+
+<h2>Requirement 2: Handle "Average" Grammars in Linear Time</h2>
+<p>When it needs to parse long inputs, an algorithm has to run in linear (O(n)) time.
+"Average" grammars -- grammars for languages where the inputs are expected to be long --
+should parse in linear time.
+For example, in production programming, the code files can become quite large.
+Perhaps HTML files should not be huge, but they often are.
+And it is quite reasonable to expect XML files to be arbitrarily long.
+For all of these, and for any language expected to fit into the same kinds
+of production environment, linear-time parsing is a must.
+This requirement is based on the second requirement in the Might-Darais paper.
+Might and Darais only say that such parsing should be "efficient".
+Russ Cox is more specific: he requires that the time be linear.
+
+
+<p>Marpa's behavior for "average" grammars is excellent, for any reasonable
+definition of "average".
+Marpa parses all LR-regular grammars in linear time.
+LR-regular is a huge class of grammars, and it includes the LR(k) grammars
+for all values of k.
+In practical terms, this means that, if a grammar is parseable by recursive descent,
+by yacc, or by a regular expression, then it is parsed by Marpa in linear time.
+
+<h2>Requirement 3: A Sound Theoretical Basis</h2>
+<p>This third requirement is Russ Cox's, and it is a real insight on his part.
+A sound theoretical basis is more important than it may seem.
+Over the years I have seen many new parsing algorithms introduced, only to
+disappear.
+The algorithms which drop from sight 
+are those whose speed claims are based on speculation
+and/or initial tests, but not on theory.
+
+<p>You might think that
+testing can replace theory, but typically it can't.
+The only real way to test
+that a new algorithm is efficient enough for production is to use it in
+production.
+Few production compiler writers are going to risk the use of a new algorithm
+before there is solid theory to back their leap of faith.
+
+<p>The Might-Darais paper is
+beautifully written mathematics.
+But, as Russ Cox notes,
+nowhere does it characterize its speed claims in mathematical terms.
+We know that the Might-Darais algorithm will parse some grammars very quickly.
+We know that, for others, it will be painfully slow.
+Which ones will be which?
+
+<p>Marpa does well in
+backing up its speed claims.
+Marpa is an Earley parser.
+In his 40-year old paper,
+Jay Earley proved that his algorithm parses
+arbitrary context-free grammars in O(n**3) time.
+Marpa incorporates Joop Leo's 1991 modification of the Earley parser.
+In that paper, Leo proves that his algorithm
+parses LR-regular grammars in linear time.
+When it comes to speed claims, Marpa is doing things by the book.
+<br />
+<p>posted at: 10:59 |
+path: <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2010/12">/individual/2010/12</a> |
+<a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2010/12/killing-yacc-1-2-3.html">direct link to this entry</a>
+</p>
+<div style="color:#38B0C0;padding:1px;text-align:center;">
+&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&sect;
+</div>
+</div>
+</div>
+<div id="footer" style="border-top:thick solid #38B0C0;clear:left;padding:1em;">
+<p>This is Ocean of Awareness's
+  new home.  This blog has been hosted at
+  <a href="http://blogs.perl.org/users/jeffrey_kegler/">blogs.perl.org</a>
+  but I have succumbed to the lure of static blogging.
+  I have not yet decided how to deal with comments at this new blog location.
+If the post is Marpa-related,
+<a href="https://groups.google.com/forum/?hl=en&fromgroups#%21forum/marpa-parser">
+the Marpa mailing list</a>
+is a good place to comment.
+Also,
+I will continue to dual-post for some time,
+and have not yet frozen comments on the versions of the
+post at
+<a href="http://blogs.perl.org/users/jeffrey_kegler/">blogs.perl.org</a>.
+</div>
+              <script type="text/javascript">
+            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+          </script>
+          <script type="text/javascript">
+            try {
+              var pageTracker = _gat._getTracker("UA-33430331-1");
+            pageTracker._trackPageview();
+            } catch(err) {}
+          </script>
+</body>
+</html>

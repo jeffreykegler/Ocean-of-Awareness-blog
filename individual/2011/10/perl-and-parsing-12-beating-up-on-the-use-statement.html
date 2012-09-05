@@ -1,0 +1,113 @@
+<html>
+<head>
+<link rel="alternate" title="Ocean of Awareness RSS" type="application/rss+xml" title="RSS" href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/index.rss" />
+<title>Ocean of Awareness   </title>
+<style type="text/css">
+   strong {font-weight: 700;}
+</style>
+</head>
+<body>
+<div id="header"
+  style="color:white;background-color:#38B0C0;padding:1em;clear:left;text-align:center;">
+<h1>Ocean of Awareness</h1>
+  
+</div>
+  <div id="menu" style="margin:0;padding:10px;width:150px;float:left;">
+  <h2>Jeffrey Kegler's blog</h2>
+  <p>About Marpa, his new parsing algorithm,
+    and other topics of interest</p>
+  <h3>Resources</h3>
+  <p><a href="http://www.jeffreykegler.com/">Jeffrey Kegler's website</p>
+  <p><a href="http://www.jeffreykegler.com/marpa">The Marpa website</p>
+  </div>
+  <div id="content" style="margin-left:190px;border-left:2px solid #38B0C0;padding:25px;">
+<h3>Sun, 30 Oct 2011</h3>
+<br />
+<center><a name="perl-and-parsing-12-beating-up-on-the-use-statement"> <h2>Perl and Parsing 12: Beating up on the "use" statement</h2> </a>
+</center>
+<p>
+If you have been following the Perl blogosphere recently,
+you may have noticed that it has been a bad few weeks
+for Perl's <code class="prettyprint">use</code> statement.
+I have been
+<a href="http://blogs.perl.org/users/jeffrey_kegler/2011/10/perl-and-parsing-10-use-the-easier-way.html">
+picking it apart</a>
+in this series,
+and chromatic, on his blog,
+<a href="http://www.modernperlbooks.com/mt/2011/10/what-perl-5s-use-really-does.html">
+recently pointed out a documentation issue</a>.
+Unlike chromatic, who focuses on user concerns,
+I use Perl as a way to implement and to illustrate parsing.
+Though, to be sure,
+one of the points I try to make
+is that the choice of parsing strategy
+is ultimately very much a user concern.
+</p>
+<p>
+I find
+Perl's <code class="prettyprint">use</code> statement
+especially interesting because it is a good example of
+a natural syntax that you would like to be easy to parse,
+but which proves problematic with current parsing technology.
+With a general BNF parser, like Marpa, 
+Perl's <code class="prettyprint">use</code> statement is easy to parse.
+But the <code class="prettyprint">use</code> statement strains
+Perl's parser LALR parse engine to the limits.
+Indeed, as I will show next, even a bit beyond.
+
+</p>
+<h2>Reversed use statements</h2>
+<p>
+Consider this statement
+<pre><code class="prettyprint">use 2 Fatal;</code>
+</pre>
+Perl accepts this without error or warning, and interprets it as
+a request of at least version 2 of the <code class="prettyprint">Fatal</code>
+module.
+But there's a problem.
+If you missed it,
+look carefully -- module name and version are reversed
+from the documented order.
+As documented, the statement should be
+<pre><code class="prettyprint">use Fatal 2;</code>
+</pre>
+<br />
+<p>posted at: 18:08 |
+path: <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2011/10">/individual/2011/10</a> |
+<a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2011/10/perl-and-parsing-12-beating-up-on-the-use-statement.html">direct link to this entry</a>
+</p>
+<div style="color:#38B0C0;padding:1px;text-align:center;">
+&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&sect;
+</div>
+</div>
+</div>
+<div id="footer" style="border-top:thick solid #38B0C0;clear:left;padding:1em;">
+<p>This is Ocean of Awareness's
+  new home.  This blog has been hosted at
+  <a href="http://blogs.perl.org/users/jeffrey_kegler/">blogs.perl.org</a>
+  but I have succumbed to the lure of static blogging.
+  I have not yet decided how to deal with comments at this new blog location.
+If the post is Marpa-related,
+<a href="https://groups.google.com/forum/?hl=en&fromgroups#%21forum/marpa-parser">
+the Marpa mailing list</a>
+is a good place to comment.
+Also,
+I will continue to dual-post for some time,
+and have not yet frozen comments on the versions of the
+post at
+<a href="http://blogs.perl.org/users/jeffrey_kegler/">blogs.perl.org</a>.
+</div>
+              <script type="text/javascript">
+            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+          </script>
+          <script type="text/javascript">
+            try {
+              var pageTracker = _gat._getTracker("UA-33430331-1");
+            pageTracker._trackPageview();
+            } catch(err) {}
+          </script>
+</body>
+</html>

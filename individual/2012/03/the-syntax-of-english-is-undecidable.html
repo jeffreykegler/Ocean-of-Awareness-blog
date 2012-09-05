@@ -1,0 +1,272 @@
+<html>
+<head>
+<link rel="alternate" title="Ocean of Awareness RSS" type="application/rss+xml" title="RSS" href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/index.rss" />
+<title>Ocean of Awareness   </title>
+<style type="text/css">
+   strong {font-weight: 700;}
+</style>
+</head>
+<body>
+<div id="header"
+  style="color:white;background-color:#38B0C0;padding:1em;clear:left;text-align:center;">
+<h1>Ocean of Awareness</h1>
+  
+</div>
+  <div id="menu" style="margin:0;padding:10px;width:150px;float:left;">
+  <h2>Jeffrey Kegler's blog</h2>
+  <p>About Marpa, his new parsing algorithm,
+    and other topics of interest</p>
+  <h3>Resources</h3>
+  <p><a href="http://www.jeffreykegler.com/">Jeffrey Kegler's website</p>
+  <p><a href="http://www.jeffreykegler.com/marpa">The Marpa website</p>
+  </div>
+  <div id="content" style="margin-left:190px;border-left:2px solid #38B0C0;padding:25px;">
+<h3>Thu, 29 Mar 2012</h3>
+<br />
+<center><a name="the-syntax-of-english-is-undecidable"> <h2>The syntax of English is undecidable</h2> </a>
+</center>
+<p>
+The question of parsing 
+English and other natural languages
+has come up
+in the course of my work on
+<a href="http://www.jeffreykegler.com/marpa">
+the Marpa parser</a>.
+<a href="http://www.jeffreykegler.com/#TOC-Perl-Parsing-is-Undecidable">
+As in the case of Perl</a>,
+I first posed the question of whether any
+algorithm running on a Turing machine can parse
+the target language.
+This post contains
+what I hope the reader will find to be
+a rigorous demonstration
+that the syntax of the English language is undecidable.
+<p>
+When I say &ldquo;undecidable&rdquo;,
+I mean that term in the strict sense.
+Undecidability is not vagueness or
+uncertainty -- undecidability is the certainty
+that a &ldquo;decision&rdquo; of the matter
+is not possible.
+I will give a specific example of
+an English-language sentence which is unsyntactic if and
+only if it is syntactic.
+<h2>The Demonstration</h2>
+
+<p>
+The sentence hinges on the distinction between sentences
+in the passive voice,
+and sentences which contain a copular verb
+(in this case, &ldquo;to be&rdquo;)
+and an adjectival complement.
+For example,
+<blockquote>(A) &ldquo;The door was opened&rdquo;</blockquote>
+is a passive voice sentence.
+In the sentence
+<blockquote>(B) &ldquo;The door was open&rdquo;,</blockquote>
+on the other hand, &ldquo;open&rdquo;
+is an adjectival complement,
+and &ldquo;was&rdquo; is a copular verb.
+(While the passive voice of English
+is the subject of considerable discussion,
+the terminology and analysis
+of this post
+follows Quirk et al.,
+
+<cite>A comprehensive grammar of the English language</cite>,
+pp. 159-171.
+and
+<a href="http://languagelog.ldc.upenn.edu/nll/?cat=54">Language
+Log</a>, and sticks to terrain which should not
+be controversial, even for non-specialists.)
+<p>Now consider the following sentence.
+<blockquote>(C) &ldquo;The window was closed.&rdquo;</blockquote>
+Is this a sentence with a predicate in the
+passive voice,
+or is &ldquo;was&rdquo; a copular verb
+with an adjectival complement?
+In standard dictionaries, you will find 
+&ldquo;closed&rdquo; is listed both
+as an adjective and as the past participle
+of the verb
+&ldquo;close&rdquo;, so that either could be
+the case.
+Further information would be needed to decide the syntax of (C).
+
+<p>
+Next I make two observations.
+The first observation is that a sentence can be syntactically
+correct, but not meaningful.
+The traditional example is
+<blockquote>(G) &ldquo;Green dreams sleep furiously&rdquo;.</blockquote>
+Another example is
+<blockquote>(H) &ldquo;The first even prime greater than two crossed the
+street symmetrically&rdquo;.</blockquote>
+Both these sentences allow easy syntactic analysis: each has a subject,
+and a predicate.
+Nouns, adjectives, adverbs and verbs can be readily
+identified and given fixed locations in a formal syntactic structure.
+But neither sentence has any meaning, except in a poetic or highly
+figurative sense.
+<p>
+The second observation is that, while we can have correct syntax
+without a semantics,
+we cannot have meaning without syntax.
+That is, sentences like
+<blockquote>(I) &ldquo;Airplane from to the and for of or pilot up&rdquo;,</blockquote>
+
+while they might contain words which could be selected
+and rearranged to be meaningful,
+do not mean anything.
+<p>
+We now return to the passive-versus-adjective decision,
+where we observed that
+<blockquote>(P) &ldquo;The window was closed&rdquo;</blockquote>
+could be an example of either a verb in the passive voice
+or of a copular verb with an adjectival complement.
+In the sentence
+<blockquote>(Q) &ldquo;The window was closed, but the door was open&rdquo;,</blockquote>
+the question is resolved by coordination.
+Since in (Q) &ldquo;open&rdquo; can only be an adjectival complement,
+the expectation is that &ldquo;closed&rdquo; will also be.
+Similarly, in the sentence
+
+<blockquote>(R) &ldquo;The window was closed, but the door was opened&rdquo;,</blockquote>
+coordination with 
+&ldquo;opened&rdquo; decides the matter in favor of the passive
+voice.
+In a sentence where the coordination is closer,
+and includes a by-phrase to show agency for both verbs,
+<blockquote>(S) &ldquo;The window was closed and the door opened by the same person&rdquo;,</blockquote>
+the presumption that both verbs are in the passive voice becomes
+a certainty.
+<p>
+We are now in a position to consider our undecidable sentence,
+<blockquote>(U) &ldquo;The window was closed and the door opened by the burglar after
+he discovered that the window was in fact
+a beautifully executed trompe d'oeil mural.&rdquo;</blockquote>
+
+The window is fake.
+It therefore could not have been
+closed by the burglar, which makes its syntax wrong.
+The verb &ldquo;was closed&rdquo;, before semantic feedback
+is taken in account, clearly is in the passive voice.
+After the semantic feedback to the syntax is considered, however, it is clear
+that 
+&ldquo;was closed&rdquo; cannot be in the passive voice,
+and that therefore (U) is unsyntactic.
+<p>But if a sentence does not have correct syntax,
+it cannot have a semantics.
+Since the only problem with the syntax of (U) was a result
+of the semantic feedback, if semantics is not considered (U)
+has correct syntax.
+So (U) is incorrect syntactically if and only if it has
+correct syntax.
+<p>
+We cannot decide (U) to have incorrect syntax, because in that
+case it becomes meaningless and the syntax becomes unobjectionable.
+But neither can we decide (U) to have correct syntax,
+because that makes (U) meaningful.
+When (U) is meaningful,
+it has incorrect syntax,
+because the passive voice cannot be correct
+given the meaning.
+<p>Our only choice is to say that the correctness of
+the syntax of (U) cannot be decided.
+It is not true
+that (U) has correct syntax,
+but neither is it true
+that (U) has incorrect syntax.
+This concludes the demonstration.
+<h2>A Thought Problem</h2>
+<p>
+To a reader unconvinced
+by the preceding demonstration,
+I would urge that,
+as a thought problem,
+she consider
+a computer program attempting to
+parse English.
+Such a program would have to know
+at least some semantics, and
+would have to feed this knowledge back
+to the parsing process.
+But the preceding demonstration shows that
+such a feedback loop, if completely effective,
+will encounter sentences like (U),
+where it cannot decide whether the syntax of 
+the sentence is correct or incorrect.
+I believe that,
+by reflecting on this thought problem,
+the candid reader will be able to convince herself
+that a human being
+parsing English sentences
+like (U)
+will have the same problems,
+and for similar reasons.
+<h2>About Syntax and Semantics</h2>
+<p>
+
+It needs to be emphasized that the diagonalization
+in this post's demonstration
+is not about semantic truth and has nothing to do
+with semantic paradox.
+This post is
+about the feedback from semantics into syntax,
+and the relationship between them.
+By way of contrast,
+consider these sentences:
+<blockquote>
+(X) &ldquo;Two plus two is five.&rdquo;<br>
+(Y) &ldquo;This sentence has incorrect syntax.&rdquo;<br>
+(Z) &ldquo;This sentence is false.&rdquo;
+</blockquote>
+(X) is false; (Y) attempts a contradiction but fails;
+and (Z) achieves a semantic contradiction.
+But in none of them is the semantics an issue for the
+syntax,
+and all three are correct syntactically.
+In each case,
+even when there are semantic issues,
+the feedback that the semantics provide the
+syntax is unproblematic.
+<br />
+<p>posted at: 00:03 |
+path: <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/03">/individual/2012/03</a> |
+<a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/03/the-syntax-of-english-is-undecidable.html">direct link to this entry</a>
+</p>
+<div style="color:#38B0C0;padding:1px;text-align:center;">
+&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&sect;
+</div>
+</div>
+</div>
+<div id="footer" style="border-top:thick solid #38B0C0;clear:left;padding:1em;">
+<p>This is Ocean of Awareness's
+  new home.  This blog has been hosted at
+  <a href="http://blogs.perl.org/users/jeffrey_kegler/">blogs.perl.org</a>
+  but I have succumbed to the lure of static blogging.
+  I have not yet decided how to deal with comments at this new blog location.
+If the post is Marpa-related,
+<a href="https://groups.google.com/forum/?hl=en&fromgroups#%21forum/marpa-parser">
+the Marpa mailing list</a>
+is a good place to comment.
+Also,
+I will continue to dual-post for some time,
+and have not yet frozen comments on the versions of the
+post at
+<a href="http://blogs.perl.org/users/jeffrey_kegler/">blogs.perl.org</a>.
+</div>
+              <script type="text/javascript">
+            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+          </script>
+          <script type="text/javascript">
+            try {
+              var pageTracker = _gat._getTracker("UA-33430331-1");
+            pageTracker._trackPageview();
+            } catch(err) {}
+          </script>
+</body>
+</html>

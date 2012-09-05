@@ -1,0 +1,344 @@
+<html>
+<head>
+<link rel="alternate" title="Ocean of Awareness RSS" type="application/rss+xml" title="RSS" href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/index.rss" />
+<title>Ocean of Awareness   </title>
+<style type="text/css">
+   strong {font-weight: 700;}
+</style>
+</head>
+<body>
+<div id="header"
+  style="color:white;background-color:#38B0C0;padding:1em;clear:left;text-align:center;">
+<h1>Ocean of Awareness</h1>
+  
+</div>
+  <div id="menu" style="margin:0;padding:10px;width:150px;float:left;">
+  <h2>Jeffrey Kegler's blog</h2>
+  <p>About Marpa, his new parsing algorithm,
+    and other topics of interest</p>
+  <h3>Resources</h3>
+  <p><a href="http://www.jeffreykegler.com/">Jeffrey Kegler's website</p>
+  <p><a href="http://www.jeffreykegler.com/marpa">The Marpa website</p>
+  </div>
+  <div id="content" style="margin-left:190px;border-left:2px solid #38B0C0;padding:25px;">
+<h3>Fri, 07 Oct 2011</h3>
+<br />
+<center><a name="perl-and-parsing-11-are-all-perl-programs-parseable"> <h2>Perl and Parsing 11: Are all Perl programs parseable?</h2> </a>
+</center>
+<p>
+Before going further in <a href="#SERIES">this series</a>,
+I want to touch on a question I have so far
+avoided:
+Are all Perl programs parseable?
+</p>
+<p>
+Most languages do not pose this question.
+It was Adam Kennedy, in creating PPI, who
+first ran up
+against it.
+Adam conjectured that in fact
+Perl parsing may be undecidable.
+While in the planning stages for Marpa,
+I found Adam's conjecture
+and
+<a href="http://www.jeffreykegler.com/Home/perl-and-undecidability">
+turned it into a formal proof</a>.
+</p>
+<p>
+Being the first to formalize this result, I took the
+initial heat over it, and now I get the credit.
+The dust has pretty much settled,
+and to my mild surprise, the result has proved of
+interest to the academic community.
+The initial revulsion at the idea of undecidable
+parsing has subsided,
+even to the extent that others now want to get into
+the act.
+<a href="http://en.wikipedia.org/wiki/Programming_language#Syntax">
+I read on Wikipedia that LISP parsing is also undecidable</a>.
+So all the cool kids seem to be doing it.
+</p>
+
+<p>
+Undecidability is actually something we are quite comfortable
+with -- all the general-purpose CPU chips we use have this
+property,
+and we put up with it as the price for their power.
+In the case of general-purpose CPU chips,
+the downside is real and occasionally serious.
+Some of the things our computers cannot do are reasonable
+things for us to want them to do.
+As one example,
+infinite loop detection can never be 100% accurate.
+As another, very serious issue,
+no program will ever be able to determine
+with 100% accuracy whether an arbitrary program 
+is or is not a virus.
+Virus detection must always involve a degree of guesswork.
+<p>
+The undecidability of
+Perl parsing differs from the usual situation in one major
+respect:
+In return for the additional power of Perl's parser,
+we seem to be giving up absolutely nothing.
+Nobody has ever been able to show a practical downside.
+</p>
+<p>
+True, as I have proved, there are Perl programs
+that no parser,
+including the perl interpreter itself,
+can parse.
+But all the examples that anyone,
+including me, has been able
+to come up are contrived cases.
+None of them are Perl programs that
+someone might care about as a practical matter.
+</p>
+<p>
+In future posts, I plan to discuss various strategies
+for parsing Perl.
+I will not mention the
+undecidability issue again,
+unless it has some relevance in context --
+something that will seldom happen.
+</p>
+<h2>Notes</h2>
+<ol>
+<li><p><a name="SERIES">"this series"</a>:
+Previous posts in this series have been
+
+<ul>
+<li><a href="http://blogs.perl.org/users/jeffrey_kegler/2010/06/parsing-with-ruby-slippers.html">
+Parsing with Ruby Slippers</a>
+<li><a href="http://blogs.perl.org/users/jeffrey_kegler/2010/06/parsing-perl-2-down-the-garden-path.html">
+Parsing Perl 2: Down the Garden Path</a>
+<li><a href="http://blogs.perl.org/users/jeffrey_kegler/2010/07/parsing-perl-3-perl-and-minimalism.html">
+Parsing Perl 3: Perl and Minimalism</a>
+<li><a href="http://blogs.perl.org/users/jeffrey_kegler/2010/08/perl-and-parsing-4-the-golden-age-of-right-parsing.html">
+Perl and Parsing 4: The Golden Age of Right Parsing</a>
+<li><a href="http://blogs.perl.org/users/jeffrey_kegler/2010/09/perl-and-parsing-6-rewind.html">
+Perl and Parsing 5: Rewind</a>
+<li><a href="http://blogs.perl.org/users/jeffrey_kegler/2011/01/perl-and-parsing-6-error-handling.html">
+
+Perl and Parsing 6: Error Handling</a>
+<li><a href="http://blogs.perl.org/users/jeffrey_kegler/2011/02/perl-and-parsing-7-do-list-operators-have-leftright-precedence.html">
+Perl and Parsing 7: Do List Operators have Left/Right Precedence?</a>
+<li><a href="http://blogs.perl.org/users/jeffrey_kegler/2011/03/perl-and-parsing-8-the-where-and-why-of-rejection.html">
+Perl and Parsing 8: The Where and Why of Rejection</a>
+<li><a href="http://blogs.perl.org/users/jeffrey_kegler/2011/09/perl-and-parsing-9-use-and-the-ruby-slippers.html">
+Perl and Parsing 9: "Use" and the Ruby Slippers</a>
+<li><a href="http://blogs.perl.org/users/jeffrey_kegler/2011/10/perl-and-parsing-10-use-the-easier-way.html">
+Perl and Parsing 10: "Use" the Easier Way</a>
+</ul>
+<ol>
+
+                            
+                        </div><!-- .entry-body -->
+                        
+                        <div class="entry-meta-2 pkg">
+                            <ul>
+                                <li><a href="#comments">0 comments</a></li>
+                                <!-- <li><a href="http://blogs.perl.org/users/jeffrey_kegler/2011/10/perl-and-parsing-11-are-all-perl-programs-parseable.html">0 votes</a></li> -->
+                            </ul>
+                        </div>
+                    </div><!-- #entry-2269 -->
+                    
+
+
+
+
+	<div class="entry-tags">
+    <h4>Tagged as<span class="delimiter">:</span></h4>
+    <span><a href=
+"javascript:void(0)" onclick="location.href='http://blogs.perl.org/mt/mt-search.fcgi?blog_id=63&amp;tag=Perl%20parsing%20Marpa%20Earley&amp;limit=20';return false;" rel="tag">Perl parsing Marpa Earley</a></span>
+     </div>
+
+
+<div id="comments" class="comments">
+
+
+    
+    
+    
+
+    
+    
+    <div class="comments-open" id="comments-open">
+        <h2 class="comments-open-header">Leave a comment</h2>
+        <div class="comments-open-content">
+
+        
+            <div id="comment-greeting"></div>
+
+            <form method="post" action="http://blogs.perl.org/mt/mt-comments.fcgi" name="comments_form" id="comments-form" onsubmit="return mtCommentOnSubmit(this)">
+                <input type="hidden" name="static" value="1" />
+                <input type="hidden" name="entry_id" value="2269" />
+                <input type="hidden" name="__lang" value="en" />
+                <input type="hidden" name="parent_id" value="" id="comment-parent-id" />
+                <input type="hidden" name="armor" value="1" />
+                <input type="hidden" name="preview" value="" />
+                <input type="hidden" name="sid" value="" />
+                <div id="comments-open-data">
+                    <div id="comment-form-name">
+                        <label for="comment-author">Name</label>
+                        <input id="comment-author" name="author" size="30" value="" onfocus="mtCommentFormOnFocus()" />
+                    </div>
+                    <div id="comment-form-email">
+                        <label for="comment-email">Email Address</label>
+                        <input id="comment-email" name="email" size="30" value="" onfocus="mtCommentFormOnFocus()" />
+                    </div>
+                    <div id="comment-form-url">
+                        <label for="comment-url">URL</label>
+                        <input id="comment-url" name="url" size="30" value="" onfocus="mtCommentFormOnFocus()" />
+                    </div>
+                    <div id="comment-form-remember-me">
+                        <input type="checkbox" id="comment-bake-cookie" name="bakecookie" onclick="mtRememberMeOnClick(this)" value="1" accesskey="r" />
+                        <label for="comment-bake-cookie">Remember personal info?</label>
+                    </div>
+                </div>
+                <div id="comment-form-reply" style="display:none">
+                    <input type="checkbox" id="comment-reply" name="comment_reply" value="" onclick="mtSetCommentParentID()" />
+                    <label for="comment-reply" id="comment-reply-label"></label>
+                </div>
+                <div id="comments-open-text">
+                    <label for="comment-text">Comments
+                    (You may use HTML tags for style)</label>
+                    <textarea id="comment-text" name="text" rows="15" cols="50" onfocus="mtCommentFormOnFocus()"></textarea>
+                </div>
+                <div id="comments-open-captcha"></div>
+                <div id="comments-open-footer">
+                    <input type="submit" accesskey="v" name="preview_button" id="comment-preview" value="Preview" onclick="this.form.preview.value='1';" />
+                    <input type="submit" accesskey="s" name="post" id="comment-submit" value="Submit" />
+                </div>
+            </form>
+
+
+        </div>
+    </div>
+    <script type="text/javascript">
+    <!--
+    mtAttachEvent("load", mtEntryOnLoad);
+    mtAttachEvent("unload", mtEntryOnUnload);
+    //-->
+    </script>
+    
+
+
+</div>
+
+
+
+</div><!-- #content-main -->
+            
+            <div id="content-aux">
+            
+                
+                <div class="module-aux pkg" id="module-aux-about-author-181">
+                <div class="module-inner">
+                    <h3>About Jeffrey Kegler</h3>
+                    <p><img class="authorpic" src="http://blogs.perl.org/mt/mt-static/support/assets_c/2011/08/Jeffrey_Kegler_BEACH1-thumb-72x72-574.jpg"" alt="user-pic" />
+	            I blog about Marpa, my parsing algorithm, and other things of interest to techies.</p>
+                    <div class="more-link"><a href="http://blogs.perl.org/mt/mt-cp.fcgi?__mode=view&amp;id=181">More info &raquo;</a></div>
+                </div>
+                </div><!-- #module-aux-about-author -->
+
+
+
+
+                
+            
+            
+            <div class="module-aux pkg" id="module-aux-search">
+                <div class="module-inner">
+                    
+                    
+                    <h3>Search this blog</h3>
+                    
+                    
+					
+                    <div id="search-form-aux">
+                        <form method="get" action="http://blogs.perl.org/mt/mt-search.fcgi">
+                    
+                            <input type="hidden" name="IncludeBlogs" value="63" />
+                    
+                            <input type="hidden" name="limit" value="20" />
+                            <label for="search">Search</label>
+                            <input id="local-search" class="query" name="search" value="" />
+                            <input class="submit" type="submit" value="Go" />
+                        </form>
+                    </div><!-- #search-form-aux -->
+                </div>
+                </div><!-- #module-aux-search -->
+                    
+
+            
+            
+                
+                
+                
+                
+            
+
+            </div><!-- #content-aux -->
+
+
+
+        </div><!-- #content-inner -->
+        </div><!-- #content -->
+
+        <div id="footer">
+        <div id="footer-inner" class="pkg">
+            <ul id="footer-nav">
+                <li class="first"><a href="http://github.com/blogs-perl-org/blogs.perl.org/issues">Feedback welcome</a></li>
+                <li>Hosted by <a href="http://dave.org.uk">Dave Cross</a> of <a href="http://mag-sol.com/">Magnum Solutions</a> and <a href="http://aaroncrane.co.uk/">Aaron Crane</a> of <a href="http://cutbot.net/">Cutbot</a></li>
+            </ul>
+            
+            <div class="powered-by"><a href="http://www.movabletype.com/" target="_blank">Powered by Movable Type</a></div>
+        </div><!-- #footer-inner -->
+        </div><!-- #footer -->
+            
+        </div><!-- #content-inner -->
+        </div><!-- #content -->
+        
+    </div><!-- #container-inner -->
+    </div><!-- #container -->
+<br />
+<p>posted at: 21:51 |
+path: <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2011/10">/individual/2011/10</a> |
+<a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2011/10/perl-and-parsing-11-are-all-perl-programs-parseable.html">direct link to this entry</a>
+</p>
+<div style="color:#38B0C0;padding:1px;text-align:center;">
+&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&sect;
+</div>
+</div>
+</div>
+<div id="footer" style="border-top:thick solid #38B0C0;clear:left;padding:1em;">
+<p>This is Ocean of Awareness's
+  new home.  This blog has been hosted at
+  <a href="http://blogs.perl.org/users/jeffrey_kegler/">blogs.perl.org</a>
+  but I have succumbed to the lure of static blogging.
+  I have not yet decided how to deal with comments at this new blog location.
+If the post is Marpa-related,
+<a href="https://groups.google.com/forum/?hl=en&fromgroups#%21forum/marpa-parser">
+the Marpa mailing list</a>
+is a good place to comment.
+Also,
+I will continue to dual-post for some time,
+and have not yet frozen comments on the versions of the
+post at
+<a href="http://blogs.perl.org/users/jeffrey_kegler/">blogs.perl.org</a>.
+</div>
+              <script type="text/javascript">
+            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+          </script>
+          <script type="text/javascript">
+            try {
+              var pageTracker = _gat._getTracker("UA-33430331-1");
+            pageTracker._trackPageview();
+            } catch(err) {}
+          </script>
+</body>
+</html>

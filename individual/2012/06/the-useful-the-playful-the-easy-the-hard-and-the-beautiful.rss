@@ -1,0 +1,264 @@
+<?xml version="1.0"?>
+<!-- name="generator" content="blosxom/2.0" -->
+<!DOCTYPE rss PUBLIC "-//Netscape Communications//DTD RSS 0.91//EN" "http://my.netscape.com/publish/formats/rss-0.91.dtd">
+
+<rss version="0.91">
+  <channel>
+    <title>Ocean of Awareness   </title>
+    <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog</link>
+    <description>Ocean of Awareness.</description>
+    <language>en</language>
+
+  <item>
+    <title>The useful, the playful, the easy, the hard and the beautiful</title>
+    <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog/2012/06/26#the-useful-the-playful-the-easy-the-hard-and-the-beautiful</link>
+    <description>&lt;h2&gt;The useful&lt;/h2&gt;
+
+&lt;p&gt;I am now using a useful new tool on CPAN,
+&lt;a href=&quot;https://metacpan.org/module/MarpaX::Simple::Rules&quot;&gt;
+Peter Stuifzand's MarpaX::Simple::Rules&lt;/a&gt;.
+Marpa grammars are often best expressed like this:
+&lt;pre&gt;
+    pair ::= a a
+    pair ::= pair a
+    pair ::= a pair
+    pair ::= pair pair
+&lt;/pre&gt;
+Peter's module allow you to do this,
+and all the examples in this blog post were
+run using it.
+
+&lt;p&gt;For those new to this blog
+&lt;a href=&quot;http://www.jeffreykegler.com/marpa&quot;&gt;
+Marpa is something new in parsing&lt;/a&gt; --
+it parses anything you can write in BNF and,
+if your grammar is in one of the classes currently in practical use,
+parses  it in linear time.
+Marpa's parse engine is written in optimized C,
+so that Marpa's speed is competitive with parsers of far less power.
+Marpa's stable version is
+
+&lt;a href=&quot;https://metacpan.org/module/Marpa::XS&quot;&gt;
+Marpa::XS&lt;/a&gt;. 
+
+&lt;h2&gt;The playful&lt;/h2&gt;
+
+&lt;p&gt;The grammar allows every possible pairing of 2 adjacent symbols
+in a grammar.
+Which takes this post on a brief excursion into the playful.
+Combinatoric issues are often easily expressed as grammars,
+and Marpa makes it easy to count parses.
+Clearly there is only one way in which 2 symbols can be paired.
+And it's not too hard to see that 3 symbols can be
+paired in 2 ways.
+The counting rapidly gets difficult and error-prone,
+but I can convince myself with pencil and paper that
+4 symbols can be paired in 5 ways.
+At this point I let Marpa take over.
+The code is
+&lt;a href=&quot;https://gist.github.com/2999014&quot;&gt;
+online&lt;/a&gt;,
+and this is the result:
+&lt;pre&gt;
+    1 2 5 14 42 132 429 1430 4862
+&lt;/pre&gt;
+
+For further analysis, I do what any red-blooded mathematician
+would do: I type the series into a Google seach bar and hit
+return.
+These numbers are the
+&lt;a href=&quot;http://en.wikipedia.org/wiki/Catalan_number&quot;&gt;
+
+Catalan series&lt;/a&gt;,
+one which pops up all over the place.
+Because my issue is set up as a pairing problem, I didn't
+obtain the first two numbers, but the standard Catalan series
+is this:
+&lt;pre&gt;
+    0 1 1 2 5 14 42 132 429 1430 4862 16796 58786 208012 742900 2674440
+&lt;/pre&gt;
+Confirmation that the Catalan series is the right
+one can be found in &lt;i&gt;Concrete Mathmematics&lt;/i&gt;,
+Graham, Knuth, and Patashnik,
+pp. 343-344,
+or
+&lt;a href=&quot;http://en.wikipedia.org/wiki/Catalan_number#Applications_in_combinatorics&quot;&gt;
+on Wikipedia&lt;/a&gt;.
+&lt;h2&gt;The useful revisited&lt;/h2&gt;
+
+&lt;p&gt;
+Playing with these series can be fun,
+but for my Marpa work they are more than useful,
+they are necessary.
+Marpa claims to accurately iterate all the parses
+of an ambiguous parse.
+But to claim this,
+I need to test it.
+
+
+&lt;p&gt;I can't do serious testing based on parse counts
+by hand.
+Because even if you can find the right answer
+with pencil and paper, that's not enough --
+you need to demonstrate conclusively that the
+right answer IS the right answer.
+Matching Marpa's answer is not enough --
+it might simply be a case of me and
+Marpa both counting wrong the same way.
+
+&lt;p&gt;For serious testing, I need
+to match the parse counts with a
+verified series.
+
+I can verify a series in two ways.
+I prefer the easy way --
+finding a case,
+like that of the Catalan numbers just described,
+where it's already well-known that my parse
+counts and the series should match.
+But I also do it the hard way when I have to.
+In what follows I'll show an example of each.
+
+&lt;h2&gt;The easy&lt;/h2&gt;
+
+This next grammar allows every one of 10 symbols to be either 'a' or nulled.
+&lt;pre&gt;
+    S ::= A A A A A A A A A A
+    A ::= a
+    A ::= E
+    E ::= Null
+&lt;/pre&gt;
+This is equivalent to the very
+well-known (and mercifully well-understood) problem of
+picking k items out of n.
+Here are the parse counts:
+&lt;pre&gt;
+    1 10 45 120 210 252 210 120 45 10 1
+&lt;/pre&gt;
+These are the binomial coefficients for n=10.
+(Binomals are one of the many places this series pops up.)
+&lt;p&gt;
+
+A nice feature of Peter's MarpaX::Simple::Rules is that Peter's
+rules can be mixed with Marpa's &quot;native&quot; rules.
+This will be useful here, for generalizing from n=10 to
+0&lt;=n&lt;=12.
+&lt;a href=&quot;https://gist.github.com/2999040&quot;&gt;
+The code is online as a Github gist&lt;/a&gt;.
+And the result,
+as the math-savvy among my 
+readers will be expecting,
+is
+&lt;a href=&quot;http://en.wikipedia.org/wiki/Pascal%27s_triangle&quot;&gt;
+Pascal's triangle&lt;/a&gt;:
+&lt;pre&gt;
+1
+1 1
+1 2 1
+1 3 3 1
+1 4 6 4 1
+1 5 10 10 5 1
+1 6 15 20 15 6 1
+1 7 21 35 35 21 7 1
+1 8 28 56 70 56 28 8 1
+1 9 36 84 126 126 84 36 9 1
+1 10 45 120 210 252 210 120 45 10 1
+1 11 55 165 330 462 462 330 165 55 11 1
+1 12 66 220 495 792 924 792 495 220 66 12 1
+&lt;/pre&gt;
+&lt;h2&gt;The hard&lt;/h2&gt;
+&lt;p&gt;The previous two examples were good, but also quite
+&quot;pure&quot; mathematically -- there's symmetry all over the place.
+Real grammars tend to be a bit more &quot;pear-shaped&quot;,
+and I wanted an example which,
+while combinatorially hard,
+reflected this.
+&lt;p&gt;Operators tend to be the most complex part of practical language
+grammars, so I focused on them.
+Their ambiguity is considerably tamed by using precedence, so I
+chose to ignore precedence.
+Few languages have a richer, and more potentially ambiguous,
+set of operators than Perl, so I chose the Perl operators.
+And the fastest way to generate operator ambiguity in Perl is with
+a series of minus signs.
+Things like:
+&lt;pre&gt;
+
+    $a--------$b
+&lt;/pre&gt;
+Let me emphasize that this is not real Perl syntax -- it's a
+wildly ambiguous variant of Perl invented to make a good test case.
+&lt;p&gt;In Perl,
+minus signs can be part of 4 different operators:
+prefix decrement (--$a);
+postfix decrement ($a--);
+unary negation (-$a)
+and subtraction ($a-$b).
+Here's our grammar:
+&lt;pre&gt;
+    E ::= E Minus E
+    E ::= E Minus Minus
+    E ::= Minus Minus E
+    E ::= Minus E
+    E ::= Variable
+&lt;/pre&gt;
+The code is
+&lt;a href=&quot;https://gist.github.com/2999057&quot;&gt;
+online&lt;/a&gt;,
+and these, for minus sign counts from 1 to 12,
+are our parse counts:
+&lt;pre&gt;
+    1 1 3 4 8 12 21 33 55 88 144 232
+&lt;/pre&gt;
+
+&lt;p&gt;
+This series is not one of the well-known ones,
+but it is known -- it is
+&lt;a href=&quot;http://oeis.org/A052952&quot;&gt;A052952
+&lt;/a&gt;, a sort of rag-time Fibonacci variant.
+It has no name,
+and I like to call it the Wall series,
+as a tribute to Larry,
+and because it's based on his Perl operators.
+With this one I could not simply look it up
+by name and confirm that A05952
+is the series generated by the parse counts.
+But I was able to come up with
+&lt;a href=&quot;http://perlmonks.org/?node_id=649892&quot;&gt;
+my own proof.&lt;/a&gt;
+&lt;h2&gt;The beautiful&lt;/h2&gt;
+&lt;p&gt;The Pythagoreans
+believed that the world was created out of beauty
+and order;
+that mathematics was the basis of all things;
+and that each of these beliefs implied the other.
+Their beliefs gained special credibility
+when they showed that much of the power
+of music comes down to ratio.
+&lt;p&gt;Avowed Pythagoreans,
+who were probably never thick on the ground,
+are hard to find these days.
+But in another sense, Pythagoreanism dominates
+our world.
+That special reverence and belief in the power
+of science that characterizes us in the West --
+it comes from them.
+We claim
+many philosophies
+and religions,
+but in fact it seems that
+we cannot
+stop ourselves from thinking like Pythagoreans,
+and these other creeds are more our aspiration
+than our conviction.
+&lt;p&gt;So does the secret of a happy and virtuous life
+lie in contemplating the harmonies of mathematics?
+That is an idea that seems at once too hard
+and too easy to be true.
+But it is easy to appreciate these series
+for their beauty,
+and hard not to be struck by the way that,
+when you avoid order, order emerges.</description>
+  </item>
+  </channel>
+</rss>

@@ -1,0 +1,148 @@
+<html>
+<head>
+<link rel="alternate" title="Ocean of Awareness RSS" type="application/rss+xml" title="RSS" href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/index.rss" />
+<title>Ocean of Awareness   </title>
+<style type="text/css">
+   strong {font-weight: 700;}
+</style>
+</head>
+<body>
+<div id="header"
+  style="color:white;background-color:#38B0C0;padding:1em;clear:left;text-align:center;">
+<h1>Ocean of Awareness</h1>
+  
+</div>
+  <div id="menu" style="margin:0;padding:10px;width:150px;float:left;">
+  <h2>Jeffrey Kegler's blog</h2>
+  <p>About Marpa, his new parsing algorithm,
+    and other topics of interest</p>
+  <h3>Resources</h3>
+  <p><a href="http://www.jeffreykegler.com/">Jeffrey Kegler's website</p>
+  <p><a href="http://www.jeffreykegler.com/marpa">The Marpa website</p>
+  </div>
+  <div id="content" style="margin-left:190px;border-left:2px solid #38B0C0;padding:25px;">
+<h3>Sun, 12 Aug 2012</h3>
+<br />
+<center><a name="the-solved-problem-that-isnt-is"> <h2>The solved problem that isn't, is</h2> </a>
+</center>
+<p>In the title of
+<a href="http://tratt.net/laurie/tech_articles/articles/parsing_the_solved_problem_that_isnt">
+an excellent blog post</a>,
+Laurence Tratt calls parsing,
+"the solved problem that isn't".
+I thought this
+phrase captured the current situation
+in parsing theory and practice very nicely.
+In stating that parsing is not a solved problem,
+Tratt realized he was taking on a consensus.
+But the consensus is fading --
+for example, neither side in the interchange
+between
+<a href="http://arxiv.org/abs/1010.5023">
+Might/Darais</a>
+and
+<a href="http://research.swtch.com/yaccalive">
+Russ Cox</a>
+expresses complete
+contentment with the state of the art.
+<p>
+What would be a real solution to the parsing problem?
+I wish to suggest that
+<a href="http://www.jeffreykegler.com/marpa">Marpa</a>
+is that solution.
+I say that based on a list of features.
+Marpa is the first parser to have all of these features,
+and I claim they are enough to justify the assertion
+that, with Marpa,
+parsing is no longer an unsolved problem.
+Specifically,
+<ol>
+<li><p>Marpa parses everything you can write in BNF.
+<li><p>Marpa parses in times considered theoretically optimal.
+For unambiguous grammars, Marpa is never worse than O(n²).
+For ambiguous grammars, Marpa is never worse than O(n³).
+Marpa never goes exponential.
+<li><p>
+Marpa parses all
+classes of grammar in practical use today in linear time, O(n).
+Marpa is linear for all LR-regular grammars.
+The LR-regular grammars include regular expressions,
+LL(k) for all k,
+and LR(k) for all k.
+<li><p>A serious practical issue has been parse-time error detection.
+Marpa breaks new ground here.
+Marpa is fully aware, at every point in the parse, of
+all the rules it is parsing,
+how far into them it has proceeded,
+and of what tokens it expects next.
+This information is available
+to the application
+conveniently and efficiently.
+<li><p>
+Marpa parsers do not need to be handwritten.
+Marpa is available as a open-source library.
+It is written in C,
+and the C library can be used
+<a href="http://jeffreykegler.github.com/Marpa/libmarpa.html">
+directly</a>
+or via
+<a href="https://metacpan.org/release/Marpa-R2">
+a Perl interface</a>.
+<li><p>
+For general BNF parsing,
+the user does not need to craft
+a lookahead or backtracking strategy -- Marpa
+does not use lookahead and never backtracks.
+<li><p>
+Marpa's complexity and correctness claims come
+with the traditional theoretical apparatus of
+proofs based on prior literature.
+</ol>
+<p>
+In his post,
+Tratt focuses his discontent on the problem of "language composition" -- the
+problem of combining two grammars into one.
+Tratt knew that an efficient and practical general BNF parser, like Marpa,
+would make language composition easy.
+But he was not aware that any such parser existed.
+Language composition is a topic to which I hope to return.
+<br />
+<p>posted at: 20:07 |
+path: <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/08">/individual/2012/08</a> |
+<a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/08/the-solved-problem-that-isnt-is.html">direct link to this entry</a>
+</p>
+<div style="color:#38B0C0;padding:1px;text-align:center;">
+&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&sect;
+</div>
+</div>
+</div>
+<div id="footer" style="border-top:thick solid #38B0C0;clear:left;padding:1em;">
+<p>This is Ocean of Awareness's
+  new home.  This blog has been hosted at
+  <a href="http://blogs.perl.org/users/jeffrey_kegler/">blogs.perl.org</a>
+  but I have succumbed to the lure of static blogging.
+  I have not yet decided how to deal with comments at this new blog location.
+If the post is Marpa-related,
+<a href="https://groups.google.com/forum/?hl=en&fromgroups#%21forum/marpa-parser">
+the Marpa mailing list</a>
+is a good place to comment.
+Also,
+I will continue to dual-post for some time,
+and have not yet frozen comments on the versions of the
+post at
+<a href="http://blogs.perl.org/users/jeffrey_kegler/">blogs.perl.org</a>.
+</div>
+              <script type="text/javascript">
+            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+          </script>
+          <script type="text/javascript">
+            try {
+              var pageTracker = _gat._getTracker("UA-33430331-1");
+            pageTracker._trackPageview();
+            } catch(err) {}
+          </script>
+</body>
+</html>

@@ -1,0 +1,94 @@
+<?xml version="1.0"?>
+<!-- name="generator" content="blosxom/2.0" -->
+<!DOCTYPE rss PUBLIC "-//Netscape Communications//DTD RSS 0.91//EN" "http://my.netscape.com/publish/formats/rss-0.91.dtd">
+
+<rss version="0.91">
+  <channel>
+    <title>Ocean of Awareness   </title>
+    <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog</link>
+    <description>Ocean of Awareness.</description>
+    <language>en</language>
+
+  <item>
+    <title>Marpa &amp; customizing the Ruby Slippers</title>
+    <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog/2012/06/20#marpa-customizing-the-ruby-slippers</link>
+    <description>&lt;p&gt;The
+&lt;a href=&quot;http://www.jeffreykegler.com/marpa&quot;&gt;
+Marpa parser&lt;/a&gt;
+introduced
+&lt;a href=&quot;http://blogs.perl.org/users/jeffrey_kegler/2011/11/marpa-and-the-ruby-slippers.html&quot;&gt;
+Ruby Slippers parsing&lt;/a&gt;.
+But the Ruby Slippers were just part of a broader feature
+of Marpa -- its &quot;situational awareness&quot;.
+With the
+&lt;a href=&quot;https://metacpan.org/release/Marpa-R2&quot;&gt;
+latest release of Marpa::R2&lt;/a&gt;,
+applications now have
+&lt;a href=&quot;https://metacpan.org/module/Marpa::R2::Progress#Access-to-the-raw-progress-report-information&quot;&gt;
+efficient access to the broader awareness&lt;/a&gt;.
+
+&lt;p&gt;For those new to this blog
+&lt;a href=&quot;http://www.jeffreykegler.com/marpa&quot;&gt;
+Marpa is something new in parsing&lt;/a&gt; --
+it parses anything you can write in BNF and,
+if your grammar is in one of the classes currently in practical use,
+parses  it in linear time.
+Marpa::R2's parse engine is written in optimized C,
+so that Marpa::R2's speed is competitive with parsers of far less power.
+
+
+&lt;p&gt;
+Marpa knows at every point in the parse,
+which rules are possible,
+how far into those rules the parse has already gotten,
+and where those rules might start.
+This degree of situational awareness is unusual in a parser,
+and the more &quot;production quality&quot; the parser,
+the more unusual it is.
+This seems paradoxical.
+Situational awareness seems like a
+common sense thing to want in any parser,
+and certainly in one that you'd hope would be able to
+produce quality error messages.
+But the practice has been for parsers,
+as a way to achieve efficiency,
+to turn their grammar into an abstraction.
+This can be OK if all goes as planned, but if anything
+goes wrong it means these parsers don't really have a clue
+what it was.
+
+&lt;p&gt;In
+&lt;a href=&quot;https://metacpan.org/release/Marpa-XS&quot;&gt;
+stable distribution, Marpa::XS&lt;/a&gt;,
+Marpa already made situational awareness available in
+a form that allowed Ruby Slippers parsing --
+at any point in the parse,
+it could return a list of expected tokens.
+A full description of the parse was also available in
+Marpa::XS's progress reports,
+which gave this information in text form.
+This was wonderful for tracing parsing issues,
+but it was not a convenient form for
+post-processing.
+
+&lt;p&gt;As of
+&lt;a href=&quot;https://metacpan.org/release/Marpa-R2&quot;&gt;
+its latest release&lt;/a&gt;,
+Marpa::R2
+&lt;a href=&quot;https://metacpan.org/module/Marpa::R2::Progress#Access-to-the-raw-progress-report-information&quot;&gt;
+makes available the &quot;raw&quot; data
+behind the progress reports&lt;/a&gt;.
+This is ideal for post-processing.
+My hope is that users will use this to
+invent their own advanced parsing tricks
+-- customized versions of the Ruby Slippers.
+
+&lt;p&gt;The road is open.
+&lt;a href=&quot;https://metacpan.org/release/Marpa-R2&quot;&gt;
+Marpa::R2&lt;/a&gt;
+
+is fast, powerful and maneuverable.
+Floor it.</description>
+  </item>
+  </channel>
+</rss>
