@@ -1,0 +1,47 @@
+Perl and Parsing 12: Beating up on the "use" statement
+<p>
+If you have been following the Perl blogosphere recently,
+you may have noticed that it has been a bad few weeks
+for Perl's <code class="prettyprint">use</code> statement.
+I have been
+<a href="http://blogs.perl.org/users/jeffrey_kegler/2011/10/perl-and-parsing-10-use-the-easier-way.html">
+picking it apart</a>
+in this series,
+and chromatic, on his blog,
+<a href="http://www.modernperlbooks.com/mt/2011/10/what-perl-5s-use-really-does.html">
+recently pointed out a documentation issue</a>.
+Unlike chromatic, who focuses on user concerns,
+I use Perl as a way to implement and to illustrate parsing.
+Though, to be sure,
+one of the points I try to make
+is that the choice of parsing strategy
+is ultimately very much a user concern.
+</p>
+<p>
+I find
+Perl's <code class="prettyprint">use</code> statement
+especially interesting because it is a good example of
+a natural syntax that you would like to be easy to parse,
+but which proves problematic with current parsing technology.
+With a general BNF parser, like Marpa, 
+Perl's <code class="prettyprint">use</code> statement is easy to parse.
+But the <code class="prettyprint">use</code> statement strains
+Perl's parser LALR parse engine to the limits.
+Indeed, as I will show next, even a bit beyond.
+
+</p>
+<h2>Reversed use statements</h2>
+<p>
+Consider this statement
+<pre><code class="prettyprint">use 2 Fatal;</code>
+</pre>
+Perl accepts this without error or warning, and interprets it as
+a request of at least version 2 of the <code class="prettyprint">Fatal</code>
+module.
+But there's a problem.
+If you missed it,
+look carefully -- module name and version are reversed
+from the documented order.
+As documented, the statement should be
+<pre><code class="prettyprint">use Fatal 2;</code>
+</pre>

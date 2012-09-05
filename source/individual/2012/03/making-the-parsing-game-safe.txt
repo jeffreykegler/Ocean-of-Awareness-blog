@@ -1,0 +1,38 @@
+Making the parsing game safe
+<p>
+In previous posts,
+I've talked about
+<a href="http://www.jeffreykegler.com/marpa">Marpa</a>
+as an alternative to other parsers.
+In this one,
+I want to talk
+about Marpa as an alternative
+for problems where
+<a href="#RE">parsing has been avoided</a>.
+</p>
+<p>
+Because parsing HAS been avoided in the past.
+And for good reason.
+If you were drawn by the allure of domain-specific languages,
+or yielded to the siren call of language-oriented programming,
+you plunged headlong toward two pitfalls:
+<ul>
+<li>Your parser might not parse your grammar.
+Which you might discover at any point in incremental development.
+Or when a vital maintenance change came along.
+</li>
+<li>
+Your input might not parse,
+and your parse engine might leave you
+with no easy way to find out
+what the problem is.
+Maybe your input was wrong,
+maybe your grammar was wrong,
+or maybe you've simply
+hit the limits of that parse engine.
+When it came to debugging, taking a language-based
+approach was a bit like deciding to write your problem up in
+<a href="http://en.wikipedia.org/wiki/P%E2%80%B2%E2%80%B2">P''</a>.
+
+</li>
+</ul>

@@ -1,0 +1,22 @@
+A new web site for Marpa
+<p>
+I have created an
+<a href="http://www.jeffreykegler.com/marpa">official web site
+for Marpa</a>.
+Marpa is attracting new users,
+to the point where I thought it might be useful to have a site to act as
+a central directory.
+The official web site won't have much in the way of new content.
+With new content,
+I plan to continue to do
+what I've been doing -- post it to this blog.
+</p>
+<p>
+I've started the site with an annotated list of the
+most important Marpa-related posts in this blog.
+I hope this will help people newly interested in
+Marpa figure out where they want to start.
+Those who've been following this blog for a while
+might also want to check the list to see if they've
+missed anything worthwhile.
+</p>

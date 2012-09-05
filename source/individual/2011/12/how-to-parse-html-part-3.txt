@@ -1,0 +1,158 @@
+How to parse HTML, part 3
+<p>
+When a solution has the same shape
+as the problem,
+it is a very good thing,
+and not just because it looks pretty.
+In
+<a href="#PREVIOUS">previous posts</a>,
+I have described
+<a href="https://metacpan.org/module/Marpa::HTML">Marpa::HTML</a>,
+a Marpa-based, "Ruby Slippers"
+approach to parsing liberal
+and defective HTML.
+A major advantage
+of
+<a href="https://metacpan.org/module/Marpa::HTML">Marpa::HTML</a>
+is that it looks like
+the problem it solves.
+</p>
+<h2>HTML parsing: the problem</h2>
+<ol>
+<li>
+The problem of parsing an HTML document
+is essentially
+the problem of finding
+the hierarchy of its HTML elements.
+Conceptually,
+HTML elements are delimited by start and end tags.
+<li>
+The HTML standards specify that certain of the
+start and end tags can be omitted.
+
+<li>
+In liberal and defective HTML,
+any HTML tag might be missing.
+<li>
+In liberal and defective HTML,
+unknown and spurious tags
+may be present in the physical input.
+</ol>
+<h2>HTML parsing: the solution</h2>
+<ol>
+<li>
+The parse engine uses an over-strict grammar,
+one which requires all HTML start and end tags.
+<li>
+When the parse engine runs into a token it cannot accept,
+if there is exactly one start or end tag which it
+could accept at that point,
+the parser uses "the Ruby Slippers".
+It invents a virtual token representing the desired
+tag, and feeds it to the parse engine.
+<li>
+If there is more than one virtual token is possible,
+<a href="https://metacpan.org/module/Marpa::HTML">Marpa::HTML</a>
+chooses a token to pass on to the parse engine.
+In the current
+implementation,
+this is done using rules of thumb.
+
+<li>
+If no virtual token is possible,
+the physical token is treated as "cruft".
+The grammar allows cruft to be a part of the contents
+of any HTML element,
+and the application can decide what to do
+with it.
+</ol>
+<p>
+This outline of the solution
+follows the structure of the problem point for point.
+In turn, the code follows this outline.
+It may seem
+that I just stated the painfully obvious,
+but in fact the design of
+the parsers in use today typically
+does NOT reflect the structure of their target languages
+in any straightforward way.
+In particular, the more a parser is
+considered "production quality",
+the less likely its code will bear any resemblance to
+the problem it is solving.
+</p>
+<h2>Toward hackable parsers</h2>
+<p>
+A lot could be said about the
+aesthetics and philosophy of this.
+In this post,
+let me cut straight to the bottom line.
+</p>
+<p>
+First and least important,
+it is usually easier to code a solution which looks like the problem.
+I say "least important,"
+because this perspective views the problem as static,
+and if the problem is static you can code it up
+and forget it.
+It does not matter too much whether
+the coding effort is fast,
+if it only has to be done once.
+But what if the problem keeps changing?
+</p>
+<p>
+You might say that most parsing is of the static type,
+and that's true.
+But that is
+because previous technology has left little
+choice in the matter.
+I believe that,
+if programmers had the option of hacking production-quality
+parsers, they'd be doing it all the time.
+</p>
+
+<p>
+In the past,
+hacking production quality parsers has been,
+for practical purposes, impossible.
+Look at those existing utilities which do work with, for
+example, C, HTML or Perl.
+These usually do NOT even attempt to leverage the production parser
+for these languages.
+Instead these tools use a new parser,
+one created from scratch.
+One consequence is that
+they must tolerate a considerable amount
+of approximation in the parsing.
+</p>
+<p>
+Why don't programmers take the production parsers for a language
+as the basis for tools working with that language?
+If you look at those production parsers,
+you'll see why.
+They reflect the structure of the languages so little,
+and are so complex,
+that they simply are unusable as a starting point
+for tools.
+<p>
+</p>
+A Marpa-powered "Ruby Slippers" approach to HTML,
+like the one implemented in 
+<a href="https://metacpan.org/module/Marpa::HTML">Marpa::HTML</a>
+but with its HTML interpretation layer rewritten in C,
+would be very competitive as a production HTML parser.
+Not the least of its advantages would be that it would make
+an excellent basis for HTML utilities.
+<p>
+<h2>Notes</h2>
+<ol>
+<li><p><a name="PREVIOUS">"previous posts"</a>:
+The previous posts in this series were
+"<a href="http://blogs.perl.org/users/jeffrey_kegler/2011/11/how-to-parse-html.html">How
+to parse HTML</a>"
+and 
+"<a href="http://blogs.perl.org/users/jeffrey_kegler/2011/12/how-to-parse-html-part-2.html">How
+to parse HTML, part 2</a>".
+</p>
+</li>
+</ol>

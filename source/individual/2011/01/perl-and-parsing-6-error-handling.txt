@@ -1,0 +1,163 @@
+Perl and Parsing 6: Error Handling 
+<h2>Is the Perl interpreter psychic?</h2>
+<p>An important consequence of the choice of parsing algorithm
+is the
+<a href="#NOTE1">handling of parse-time errors</a>.
+It's often overlooked.
+Perl's use of LALR based parsing puts severe limits on its
+ability to locate errors,
+limits which the Perl interpreter is sometimes able to overcome.
+Consider the following erroneous piece of code.
+<pre>
+<code class="prettyprint">
+my $lyric =
+'Sloopy wears a red dress, yeah
+As old as the hills
+but when sloopy wears that red dress, yeah
+you know it gives me the chills
+Sloopy when I see you walking, 
+walking down the street
+I say don't worry sloopy, girl
+You belong to me';
+print "$lyric\n";
+</code>
+</pre>
+<p>Some of you may have spotted this as the lost third verse of the
+October 1965 US #1 hit, "Hang on Sloopy".
+Others may notice that the single quote in "don't"
+is going to make things come out pear-shaped.
+On this latter point,
+the Perl interpreter's performance is uncanny, if a bit noisy:
+<p><pre>
+<code class="prettyprint">
+Bareword found where operator expected at bomb.pl line 8, near "I say don't"
+  (Might be a runaway multi-line '' string starting on line 2)
+        (Do you need to predeclare I?)
+syntax error at bomb.pl line 8, near "I say don't worry "
+Bad name after me' at bomb.pl line 9.
+</code>
+</pre>
+
+<p>I just said that Perl's LALR-based parsing made error detection difficult.
+So how do I explain the above, where the error detection is not merely good,
+it almost seems psychic?
+<h2>Behind the Smoke and Mirrors</h2>
+<p>A closer look will show how Perl pulls off this bit of apparent
+mind-reading.
+If you look at <var>toke.c</var>, you'll see the trick.
+Globals in the tokenizer track the beginning and ending of the 
+most recent multi-line object.
+Anytime a multi-line object ends just before an error,
+the Perl interpreter fingers it.
+It's a bit like police lieutenant Arthur Tragg in the old Perry Mason
+series, who on discovering a murder victim, always arrested the next
+person he saw -- usually Mason's client.
+It's a good guess and,
+unlike the indefatigable Arthur Tragg,
+who persisted despite turning out to be wrong week after week,
+it works for the Perl interpreter most of the time.
+<p>But not always.
+Let's rearrange this example, so that the string is OK,
+and we're depending on the LALR parser to locate an error.
+<p><pre>
+<code class="prettyprint">
+my $lyric =
+'Sloopy wears a red dress, yeah
+As old as the hills
+but when sloopy wears that red dress, yeah
+you know it gives me the chills
+Sloopy when I see you walking, 
+walking down the street
+I say don\'t worry sloopy, girl
+You belong to me'~!@$%^&*()_+;
+print "$lyric\n";
+</code>
+</pre>
+<p><pre>
+<code class="prettyprint">
+Bareword found where operator expected at bomb2.pl line 9, near ")_"
+        (Missing operator before _?)
+syntax error at bomb2.pl line 9, near "You belong to me'~"
+  (Might be a runaway multi-line '' string starting on line 2)
+Execution of bomb2.pl aborted due to compilation errors.
+
+</code>
+</pre>
+<p>This example clearly illustrates the limits of LALR parsing.
+A multi-line string just
+ended, and the tokenizer duly drops the dime,
+but there's no way to make the charge stick.
+The multi-line string is fine,
+and the problem is somewhere in the special characters after it.
+
+<p>
+But where?
+Now that we are no longer dazzled by the psychic abilities of the tokenizer,
+let's carefully define what we mean by the actual error location.
+The error location is the first character which makes a valid parse impossible.
+Put another way, if a parser reads a character, and that character renders
+it impossible that any subsequent reading of characters
+will produce a valid parse, then the location
+of that character is the error location.
+
+<p>Where is the error location in this example?
+I think it may be at the '%' sign,
+but I frankly don't know.
+More to the point, neither does the Perl interpreter,
+though it throws out guesses all over the map.
+
+<h2>The Immediate Error Detection Property</h2>
+<p>The error-locating ability of parsing algorithms divides them into
+two types.
+"Immediate error detection" is what you'd like to see in a parser --
+the moment the parser encounters a character which makes a valid parse
+impossible, it knows it.
+Other parsers, and LALR is prominent among them, need to grind on,
+reading more characters.
+Only later do they realize something has gone wrong.
+
+<p>When recursive descent is full LL(1) it has the immediate error detection
+property.
+(In simplified terms, recursive descent is full LL(1) when it is
+smart about lookahead for
+empty rules.)
+Recursive descent implementations which are not full LL(1) do not
+have the immediate error detection property.
+This is the case with most actual implementations of
+recursive descent.
+On the other hand,
+recursive descent's major attraction is that it is hack-friendly,
+so that a recursive descent implementation which is less than full LL(1)
+in theory might well
+do immediate error detection when it counts.
+
+<p>Earley's algorithm has the immediate error detection property.
+My implementation of it in
+<a href="http://search.cpan.org/dist/Marpa/">Marpa</a>
+has the
+immediate error detection property and then some.
+When it is about to read a token,
+<a href="http://search.cpan.org/dist/Marpa/">Marpa</a>
+knows, and can inform the lexer,
+exactly which input symbols
+will result in a viable parse.
+This allows <a
+href="http://blogs.perl.org/users/jeffrey_kegler/2010/06/parsing-with-ruby-slippers.html">
+
+some very nice tricks</a>.
+<p><a name="#NOTE1"><b>Note 1</b></a>:
+For the readers of my last post on <var>yacc</var>,
+the discussion of error reporting here changes the subject:
+That post dealt with the reporting of errors by a parser generator while the parser is
+being generated: generation-time error reporting.
+This post changes the topic to the reporting of errors in its input by a parser:
+parse-time error reporting.
+My next post in the
+<var>yacc</var>
+series will discuss
+<var>yacc</var>'s
+parse-time error reporting.
+<p>For a hand-written parser, of course, there is no such thing as generation-time,
+and therefore generation-time error reporting is a non-issue.
+Parse-time error reporting is an issue for all parsers,
+whether generated or hand-written.

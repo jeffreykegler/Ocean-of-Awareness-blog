@@ -1,0 +1,16 @@
+Zooey Deschanel to star as Ada
+<p>Apparently a movie about Ada Lovelace is in the works. Zooey Deschanel, whom many of you will remember very fondly as Trillain in the <i>Hitchhiker's Guide to the Galaxy</i>, is said to have agreed to play Ada.  A brilliant choice.
+
+<p>Ada is one of the most important people in the history of Western thought.  And perhaps for that very reason, she is a lightning rod for denialism like perhaps no other woman thinker.  I once heard a panel of three experts on BBC unanimously diminish her into a Babbage hanger-on.  To do this, these experts had to ignore the distinction between a big calculator and a computer and forget the one between software and hardware.  This they were able to do by gossiping about opium and race tracks.
+
+<p>Ada was the first person to articulate the distinction between software and hardware.  This was a vast leap.  Descartes and Spinoza had agreed about few things, but both had divided mind and thought from body and the material world.  Ada took software, something that clearly would seem to belong firmly on the thought side of the thought-matter distinction, and abruptly plopped it into the material world.</p>
+
+<p>These days every 5-year-old who wants to play with his new game console has a firm idea of what software is.  It is hard to remember back to the 1960's, when philosophy departments struggled with this idea.  Ada was writing in the 1840's.  Ada was thinking what, even for many of the best minds of her time, was the unthinkable.</p>
+
+<p>Babbage recognized that Ada's writings were brilliant.  But Babbage was religious.  For him the rigid Descartes-Spinoza mind-body distinction was tied to firm ideas about the division of labor between God and ourselves.  Thinking about software would have messed up that scheme.  Babbage could see that Ada had done something more than remarkable, but it was not something he could have or would have done himself.</p>
+
+<p>Ada's role in Turing's formalization of the idea of computing would, we might have hoped, put her significance beyond denial.  Because Turing learned about the Babbage engine not from a model (one was never built), but from Ada's writings.  Even if Babbage had built a model, it could never have given Turing the idea of a universal computer, which Ada's writings did.</p>
+
+<p>Why all the denialism directed at Ada?  I think it's because she's clearly the "father of computer science".  We are prepared to acknowledge women of talent.  Grace Hopper chairing the Cobol committee does not threaten our idea of the natural order.   But that final step, acceptance as the founder of a great field -- that we still reserve for men.</p>
+
+<p>But none of this -- no rational argument -- will tear down the wall of denial the way Zooey Deschanel will when she recreates Ada on silver screen.  Vive Hollywood!  Vive Zooey!  Vive Ada!

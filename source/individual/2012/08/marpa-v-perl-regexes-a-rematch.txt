@@ -1,0 +1,218 @@
+Marpa v. Perl regexes: a rematch
+<p>
+<a href="https://metacpan.org/release/Marpa-R2">
+Marpa::R2</a>,
+the latest version of
+<a href="http://www.jeffreykegler.com/marpa">
+Marpa</a>,
+has some significant speedups.
+Enough so, that it seems appropriate to revisit an
+old benchmark.
+(For those new to this blog
+<a href="http://www.jeffreykegler.com/marpa">
+Marpa is a new parser with a decades-long heritage</a>.
+Marpa parses anything you can write in BNF and,
+if your grammar is in one of the classes currently in practical use,
+parses  it in linear time.)
+</p><p>
+<a href="http://blogs.perl.org/users/jeffrey_kegler/2011/11/marpa-v-perl-regexes-some-numbers.html">
+The benchmark I'll revisit</a>
+compared Marpa to Perl regexes,
+testing the speed with which each could find balanced sets
+of parentheses in a string of parentheses,
+on a first longest match basis.
+It's an interesting test, because it has easy cases
+and hard cases,
+and because the dividing line between good applications
+for Marpa and good applications for regexes is
+somewhere between the two sets of cases.
+</p><p>
+In the "hard cases",
+the matches come toward the end.
+On these, Perl regexes go quadratic (O(n<sup>2</sup>)),
+while Marpa stays linear.
+When Perl regexes become unuseable depends on your hardware
+and your patience, but there does come such a point.
+</p><p>
+In the "easy cases",
+the matches come toward the start.
+Here Perl regexes stay linear.
+In my previous testing of easy cases,
+Perl regexes beat Marpa
+at a steady 40 to 1,
+even on some very long and non-trivial strings.
+So let's see what has changed ...
+</p><h2>The hard cases</h2>
+<p>
+</p><center>
+<table width="529" height="167">
+<tbody><tr><th colspan="7">
+Finding balanced parentheses: the hard cases<br />
+Executions per second by parsing method and length of input<br />
+(a higher number means a faster method)<meta http-equiv="content-type" content="text/html; charset=utf-8"></th></tr>
+
+<tr><td>
+</td><th align="center">3000
+</th><th align="center">2000
+</th><th align="center">1000
+</th><th align="center">500
+</th><th align="center">100
+</th><th align="center">10
+</th></tr>
+<tr><td>Marpa::R2, "thin" interface&nbsp;&nbsp;
+</td><td align="right">&nbsp;30.88&nbsp;&nbsp;
+</td><td align="right">&nbsp;46.14&nbsp;&nbsp;
+</td><td align="right">&nbsp;89.81&nbsp;&nbsp;
+</td><td align="right">&nbsp;176.98&nbsp;&nbsp;
+</td><td align="right">&nbsp;803.23&nbsp;&nbsp;
+</td><td align="right">&nbsp;2665.79&nbsp;&nbsp;
+</td></tr>
+<tr><td>Marpa::R2, standar<meta http-equiv="content-type" content="text/html; charset=utf-8">d interface&nbsp;
+</td><td align="right">&nbsp;7.79&nbsp;&nbsp;
+</td><td align="right">&nbsp;11.69&nbsp;&nbsp;
+</td><td align="right">&nbsp;22.47&nbsp;&nbsp;
+</td><td align="right">&nbsp;41.03&nbsp;&nbsp;
+</td><td align="right">&nbsp;140.00&nbsp;&nbsp;
+</td><td align="right">&nbsp;305.61&nbsp;&nbsp;
+</td></tr>
+<tr><td>Marpa::XS&nbsp;
+</td><td align="right">&nbsp;3.72&nbsp;&nbsp;
+</td><td align="right">&nbsp;5.47&nbsp;&nbsp;
+</td><td align="right">&nbsp;10.28&nbsp;&nbsp;
+</td><td align="right">&nbsp;19.50&nbsp;&nbsp;
+</td><td align="right">&nbsp;58.96&nbsp;&nbsp;
+</td><td align="right">&nbsp;111.71&nbsp;&nbsp;
+</td></tr>
+<tr><td>Perl regex&nbsp;
+</td><td align="right">&nbsp;0.13&nbsp;&nbsp;
+</td><td align="right">&nbsp;0.34&nbsp;&nbsp;
+</td><td align="right">&nbsp;1.84&nbsp;&nbsp;
+</td><td align="right">&nbsp;7.58&nbsp;&nbsp;
+</td><td align="right">&nbsp;197.25&nbsp;&nbsp;
+</td><td align="right">&nbsp;33429.33&nbsp;&nbsp;
+</td></tr>
+<tr><td>Regexp::Common::Balanced&nbsp;
+</td><td align="right">&nbsp;0.05&nbsp;&nbsp;
+</td><td align="right">&nbsp;0.12&nbsp;&nbsp;
+</td><td align="right">&nbsp;0.53&nbsp;&nbsp;
+</td><td align="right">&nbsp;2.43&nbsp;&nbsp;
+</td><td align="right">&nbsp;62.09&nbsp;&nbsp;
+</td><td align="right">&nbsp;3173.30&nbsp;&nbsp;
+</td></tr>
+</tbody></table><br /></center>
+<p>
+<a href="https://metacpan.org/release/Marpa-R2">
+Marpa::R2</a>
+and
+<a href="https://metacpan.org/module/Marpa::R2::Advanced::Thin">
+Marpa::R2::Thin</a>
+are the new version of Marpa,
+respectively its user-friendly and its "no-frills close to the C language" interfaces.
+<a href="https://metacpan.org/release/Marpa-XS">
+Marpa::XS</a>
+is an older version, now stable.
+The strings consist of left parentheses, except for a target: "<code class="prettyprint">(()())</code>".
+In the "hard cases", the target is near the end of the string.
+Further details on the benchmarking methodology are given in
+<a href="http://blogs.perl.org/users/jeffrey_kegler/2011/11/marpa-v-perl-regexes-some-numbers.html">
+the previous post</a>
+and the code for this benchmark is
+<a href="https://gist.github.com/3271072">
+a Github gist</a>.
+</p><p>
+For regexes
+against which to benchmark,
+I first went to Regexp::Common::Balanced on CPAN.
+The Regexp::Common::Balanced solution was not all fast,
+and went quadratic in the hard cases.
+Tom Christiansen provided a better solution for Perl 5.10 and above:
+</p><blockquote>
+<code class="prettyprint">(\\((?:[^()]++|(?-1))*+\\))</code>
+</blockquote>
+Tom's regex also goes quadratic in the hard cases,
+but it is roughly 3 times faster than the one in Regexp::Common::Balanced.
+<p>
+Marpa::XS
+already had a big lead in the hard cases,
+and Marpa::R2 and especially Marpa::R2::Thin
+have widened it.
+Marpa does extensive precomputation, so it loses for short strings,
+as you can see in the "10" column.
+But Marpa's precomputation pays off quickly.
+At around 125 parentheses,
+Marpa::R2 catches up.
+Marpa::R2::Thin catches up even faster
+-- at roughly 35 parentheses.
+When strings reach 3000 characters in length,
+Marpa::R2 is about 60 times faster,
+and Marpa::R2::Thin is more than 230 times as fast.
+</p><h2>The easy cases</h2>
+<p>
+</p><center><table>
+<tbody><tr><th colspan="7">
+Finding balanced parentheses: the easy cases<br />
+Executions per second by parsing method and length of input<br />
+(a higher number means a faster method)</th></tr>
+<tr><td>
+</td><th align="center">10000
+</th><th align="center">3000
+</th></tr>
+<tr><td>Marpa::R2, "thin" interface&nbsp;
+</td><td align="right">&nbsp;12.59&nbsp;
+</td><td align="right">&nbsp;41.59&nbsp;
+</td></tr>
+<tr><td>Marpa::R2, standard interface&nbsp;
+</td><td align="right">&nbsp;2.59&nbsp;
+</td><td align="right">&nbsp;8.60&nbsp;
+</td></tr>
+<tr><td>Perl regex&nbsp;
+</td><td align="right">&nbsp;20.43&nbsp;
+</td><td align="right">&nbsp;78.33&nbsp;
+</td></tr>
+<tr><td>Regexp::Common::Balanced&nbsp;
+</td><td align="right">9.55&nbsp;
+</td><td align="right">33.10&nbsp;
+</td></tr>
+</tbody></table><br /></center>
+<p>
+The "easy cases" are easy,
+relatively speaking,
+but they are not trivial.
+The string is the same as for the hard cases, except that
+the target starts at character position 2, near the beginning.
+This is not a trivial matching problem because,
+until the very end of the string,
+it cannot be known whether the match will start at character
+position 0, 1 or 2.
+(<a href="https://gist.github.com/3280533">This
+code is also in a Github gist</a>.)
+</p><p>
+For easy cases, I look at the numbers for longer strings.
+I've added a column
+for strings of 10,000 parentheses.
+(I had wanted to carry the "hard cases" test up to 10,000,
+but regex performance had deteriorated so badly by 3,000
+that getting numbers for 10,000 seemed pointless.)
+At 3,000 and even 10,000, regexes are
+usually better than Marpa::R2.
+(Usually, but not always: for these long strings
+Marpa::R2::Thin beats the solution from Regexp::Common::Balanced,
+even on these "easy" cases.)
+</p><p>
+Let's focus on the real race -- the one with Tom's regex.
+Tom's regex had beat Marpa::XS by 40 to 1 on this test.
+And it still beats Marpa::R2 by almost 10 to 1.
+But, for the easy cases,
+its lead over Marpa::R2::Thin is now less than 2 to 1.
+</p><p>
+There will always be cases where regexes beat Marpa.
+For this balanced parentheses benchmark,
+Marpa's precomputations guarantee that short strings will be one
+of those cases.
+But much of regex's currently remaining advantage comes,
+not from faster pattern recognition,
+but from faster string handling.
+Perl regexes do their string handling in C.
+Marpa::R2 currently does its string handling in Perl,
+something which could be changed.
+Stay tuned.</p>

@@ -1,0 +1,57 @@
+Announcing Marpa::XS 0.010000
+<p>
+Some time ago I released
+<a href="http://search.cpan.org/~jkegl/Marpa-XS-0.010000/">
+Marpa::XS 0.010000</a>.
+The core Marpa algorithm had already been converted to C,
+speeding it up considerably.
+Marpa::XS 0.010000 cleans up a lot of code left over from development,
+further speeding things up.
+</p>
+<h1>What is Marpa?</h1>
+<p>Marpa is an advance over recursive descent
+and yacc.
+I hope the Marpa algorithm
+will become the standard parser for
+problems too
+big for regular expressions.
+</p><ul>
+<li>Marpa parses, in linear time,  all
+classes of grammar that are currently in practical use.
+(<a href="#NOTE1">See Note 1</a>).
+</li>
+<li>The importance of parse-time debugging is often underestimated.
+Marpa's parse-time error detection breaks new ground -- Marpa is
+fully aware of exactly where in the parse it is at all times,
+and of exactly what input it expects and why.
+This means parse-time error detection, once a desperate last
+resort, now can be used as
+<a href="http://blogs.perl.org/users/jeffrey_kegler/2010/06/parsing-with-ruby-slippers.html">
+a parsing technique in itself</a>.
+
+</li>
+<li>Marpa is a general BNF parser -- that means if you feed it anything
+written in BNF, it "just parses" it.
+This includes grammars which are left-recursive, right-recursive and
+ambiguous -- even infinitely ambiguous.
+</li>
+<li>Marpa never goes exponential -- worst case, even for highly ambiguous
+grammars, is O(n**3), which is considered optimal
+(<a href="#NOTE2">See Note 2</a>).
+</li>
+</ul>
+<h1>What is Next with Marpa?</h1>
+I had planned to skip this announcement and wait to announce
+Marpa::XS 0.012000.
+I expected
+the release of Marpa::XS 0.012000
+to be just days away.
+And I did produce
+<a href="http://search.cpan.org/~jkegl/Marpa-XS-0.013_003/">
+its release candidate</a>
+almost immediately.
+But in the meantime cpantesters was hit with a prolonged outage,
+which continues as of this writing.
+I've always waited for a few days of cpantesters results on
+the release candidate before cutting an official release
+and I hope cpantesters will be back online soon.

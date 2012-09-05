@@ -1,0 +1,240 @@
+Perl and Parsing 7: Do List Operators have Left/Right Precedence?
+<h1>Chiral Operators</h1>
+In actual usage,
+the syntax of Perl's list operators is quite natural.
+Descriptions of that syntax, however, tend to be awkward.
+<p>The current practice is to describe this syntax in terms of "left precedence"
+and "right precedence".
+In other words, list operators are said to be chiral.
+I have
+problems with the Chiral Interpretation of list operators.
+The most serious of these: the Chiral Interpretation
+does not actually account for the behavior
+of expressions that contain list operators.
+<p>In this post, I assume you have a working knowledge of one or more
+list operators (examples are <var>join</var> and <var>sort</var>).
+The most authoritative account of the Chiral Interpretation
+is in
+<a href="http://perldoc.perl.org/perlop.html#Terms-and-List-Operators-(Leftward)">the perlop man
+page</a>.
+<h1>Our Example</h1>
+The rest of this post will use a single example:
+<pre>
+<code class="prettyprint">
+sub f { say $_[0]; return $_[0]; }
+say join ';', $a = f(1), $b = join ',', $c = f(2),
+    $d = join '-', $e = f(3), $f = f(4);
+</code>
+</pre>
+<p>
+Here's the output:
+<pre>
+<code class="prettyprint">
+1
+2
+3
+4
+1;2,3-4
+</code>
+</pre>
+<h1>What is Precedence?</h1>
+Precedence is a concept familiar from ordinary arithmetic.
+In school we learned that, in the expression
+<pre>
+<code class="prettyprint">
+   1+2*3+4
+
+</code>
+</pre>
+the 2*3 should be multiplied out first to yield 6, before either of the
+two additions are performed.
+Multiplication has higher prececedence than addition.
+<p>Precedence is a hierarchy.
+There is an order, from high to low,
+and each operator has a distinct place.
+<p>Some cases are tricky.
+The same symbol is often both a unary operator and a binary
+operator.
+It's very common for the ASCII hyphen-minus sign ("-") to act as both a unary
+negation operator, and as a binary subtraction operator.
+The precedence of the unary operator can
+be different from the precedence of the binary
+operator,
+and often is.
+But while the unary and binary operators may share the
+same symbol, they are considered to be distinct operators.
+<p>If we accept that list operators have a left
+and a right precedence,
+as the <var>perlop</var> man page does,
+that would be an outright exception
+to the hierarchical ordering of operators by precedence.
+This points to a potential problem in defining left and right
+precedence.
+But that is not the most serious issue with the Chirality Interpretation.
+So that I can go straight to my main point,
+let's assume that there are
+<b>no issues in defining left and right precedence</b>.
+For now,
+let's just say that "I can't tell you what the difference between left and
+right precedence is, exactly, but I know it when I see it".
+<p>Let's ask instead about the precedence of
+<b>operators other than the list operators</b>
+in expressions which contain list operators.
+<h1>Comma Operators versus Assignments</h1>
+<p>Look at the assignment and comma operators in the example above.
+Ask this question:
+Does the comma have a higher or
+lower precedence than the assignment operator?
+<p>According to the <var>perlop</var> man page,
+assignment has a higher precedence than
+the comma operator.
+But in the example above, this is <b>not</b> always true.
+Here are
+values of the variables after
+the example is executed:
+<pre>
+<code class="prettyprint">
+$a=1
+$b=2,3-4
+$c=2
+$d=3-4
+$e=3
+$f=4
+</code>
+</pre>
+For the assignments to
+<var>$a</var>,
+<var>$c</var>,
+
+<var>$e</var>,
+and <var>$f</var>,
+things are as <var>perlop</var> says -- those assignment operators
+have higher precedence than all the commas.
+<p>But for the assigment operators in the assignments to
+<var>$b</var>,
+and <var>$d</var>,
+things do <b>not</b> behave as advertized.
+True, those assignments still have higher precedence than the
+commas to their left.
+<b>But the assignment of $b
+has lower precedence than the
+commas to its right.</b>
+The same is true of the assignment to <var>$d</var>.
+<h2>Chirality is Contagious?</h2>
+<p>What seems to be happening
+is that not only are list operators showing chirality,
+but that chirality is spreading to other operators.
+The <var>perlop</var> man page does not really prepare us for
+this.
+<h1>The Grouping Operator Interpretation</h1>
+<p>Now let's add parentheses, so that they clarify the syntactic groupings
+without changing them:
+<pre>
+<code class="prettyprint">
+say join ';', $a = f(1), $b = (join ',', $c = f(2),
+    $d = (join '-', $e = f(3), $f = f(4))); 
+</code>
+</pre>
+
+With this the conceptual problems disappear.
+Why?
+Because parentheses are recognized as a <b>grouping operator</b>.
+That is, we know that, regardless of the precedence hierarchy among
+operators,
+operations inside parentheses will take precedence over operations
+outside the parentheses.
+Parentheses also have two different precedences, but they
+are not chiral -- parentheses have an internal and an external precedence.
+<p>The parentheses
+suggest a better way to describe
+Perl's list operators.
+We can think of the list operators as a special kind of grouping operator.
+<ul>
+<li>Just as a grouping begins before a left parenthesis,
+a grouping starts just before the list operator.
+<li>Just as with parentheses, operations inside a grouping
+take precedence over those outside.
+<li>Unlike parentheses, the grouping begun by a list operator is
+not closed explicitly.
+The grouping started by a list operator ends just
+before the next operator
+which has a precedence lower than the internal precedence of the list operator.
+<li>If, in an expression,
+no operator after the list operator has lower precedence,
+then the grouping ends at the end of the expression.
+<li>The internal precedence of list operators is between the precedence
+of the Perl comma operator and the precedence of Perl's logical <var>not</var>
+operator.
+This is higher
+than the internal precedence of parentheses.
+In the current
+<var>perlop</var> man page this is said to be
+the "rightward
+precedence" of list operators.
+<li>The external precedence of a list operator is the same
+as the
+precedence of a Perl term.
+This is the same as the external precedence of parentheses.
+In the current <var>perlop</var> man page, this is said to be the "leftward
+precedence" of list operators.
+<li>List operators do not have chirality.
+</ul>
+<h1>Other Problems with Chirality</h1>
+<h2>Operator Chirality is Hard to Define</h2>
+<p>Above, I deferred the question of how to define left
+and right precedence.  Now I'll come back to it.
+<p>Giving the same operator two different precedences violates
+the textbook definition of precedence.
+Precedence is a hierarchy.
+Chiral operators break that hierarchy.
+<p>
+Consider an operator which is to the right of one list
+operator, but to the left of another list operator.
+How do you assign it a precedence?
+<p>Grouping operators also break the hierarchy,
+but they do it in a well-defined way.
+You could modify the Chiral Interpretation so that it
+is equally well-defined.
+But I think, if you do so,
+you'll find you've reinvented grouping.
+<h2>Operator Chirality is Hard to Describe</h2>
+<p>Find a Perl book that describes list operator precedence.
+There are several excellent ones, by experts.
+Ask yourself:
+If I were a newbie, and I carefully
+studied these paragraphs,
+would I know list operator syntax cold?
+Or would there still be a lot of cases where
+I was not sure?
+The answer to this must be subjective,
+but my own observation is that many a lucid account
+of Perl bogs down when it is time to describe
+the syntax of list operators.
+<h2>Operator Chirality is not in the Textbooks</h2>
+<p>"Left precedence" and "Right precedence" certainly sound
+like academic terms,
+<a href="#NOTE1">but to my knowledge
+they are nowhere in the
+academic literature</a>.
+As far as I know, chiral operators are an
+"ad hoc" explanation invented and used
+exclusively in attempts to grapple with Perl's
+list operators.
+<p>Both
+the Chiral Interpretation and the Grouping Interpretation involve giving the same
+set of operators two different precedences.
+The difference is that the behavior of grouping operators is well understood
+and has been carefully documented in the academic literature.
+<p>The Perl tradition is not to fret excessively about
+theory.
+But when the descriptive going gets tough,
+it is nice to have theory to fall back on.
+<h1>Notes</h1>
+<a name="NOTE1">Note 1</a>:
+The academic literature on parsing is large, and it is risky
+to assert that something is not "Out There" somewhere.
+But there's no sign of "left precedence"
+and "right precedence" in
+the very comprehensive
+<a href="ftp://ftp.cs.vu.nl/pub/dick/PTAPG_2nd_Edition/index.html">
+Grune & Jacobs, Parsing Techniques: A Practical Guide - Second Edition</a>.

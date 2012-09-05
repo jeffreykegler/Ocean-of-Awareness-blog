@@ -1,0 +1,59 @@
+Perl and Parsing 9: "Use" and the Ruby Slippers
+<p>
+In this post, I talk about how
+Perl 5 parses its
+<code class="prettyprint">use</code> statement.
+The <code class="prettyprint">use</code> statement
+is implemented with
+what I have named
+<a href="http://blogs.perl.org/users/jeffrey_kegler/2010/06/parsing-with-ruby-slippers.html">
+"Ruby Slippers" parsing</a>.
+The idea is that you parse with a convenient grammar,
+but one which is too simple to actually describe the language
+you are parsing.
+For example, if you are parsing HTML, the grammar might assume
+all start tags have end tags.
+</p>
+<p>
+Whenever the simplified grammar has trouble parsing,
+the lexer fixes the situation by pretending the input
+is what the parser wants to see.
+The parser is like Dorothy in
+the <em>Wizard of Oz</em>, who really would
+like to be back in Kansas.
+The lexer is like the good witch,
+Glenda, who assures Dorothy that,
+because of her Ruby Slippers,
+Dorothy really can be wherever she wants to be.
+</p>
+
+<p>
+Few "new" programming ideas are so new
+that they have no
+precedent in previous practice.
+Perl 5 put the Ruby Slippers technique
+to work well before I described and named it.
+Its code captures the two essential elements of
+Ruby Slippers parsing.
+</p>
+<h2>The Syntax of the <code class="prettyprint">use</code> Statement</h2>
+<p>
+As a reminder, the 
+<code class="prettyprint">use</code> statement comes in several forms.
+Most of them are <a href="#MODULE">module</a>
+requests --
+that is, they request the loading of a module.
+In the long form of the module request, a version number
+is specified as well.  The version number is usually
+interpreted as the minimum acceptable version of
+that module.
+<pre>
+
+use Module VERSION
+</pre>
+For example,
+<code class="prettyprint">
+<pre>
+use List::Util 1.21;
+</pre>
+</code>

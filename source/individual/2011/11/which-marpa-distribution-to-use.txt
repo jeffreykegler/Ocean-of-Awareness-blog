@@ -1,0 +1,29 @@
+Which Marpa distribution to use?
+<p>
+Which distribution of Marpa should you use?
+<a href="https://metacpan.org/release/Marpa-XS">Marpa::XS</a>
+or
+<a href="https://metacpan.org/release/Marpa-PP">Marpa::PP</a>
+or the "bare name" Marpa?
+Use
+<a href="https://metacpan.org/release/Marpa-XS">Marpa::XS</a>
+if you can,
+<a href="https://metacpan.org/release/Marpa-PP">Marpa::PP</a>
+otherwise.
+The "bare name" Marpa is a legacy distribution,
+and should be avoided by new users
+and in new implementations.
+<h2>Marpa::XS</h2>
+<a href="https://metacpan.org/release/Marpa-XS">Marpa::XS</a>
+
+incorporates all of my C language speedups.
+As well as the fastest of the Marpa distributions,
+it is also the only one in beta --
+in particular, I will be at pains to keep the interface stable.
+<a href="https://metacpan.org/release/Marpa-XS">Marpa::XS</a>
+is best both for the casually curious,
+and for those intending to use
+the Marpa algorithm in their applications.
+Note that since
+<a href="https://metacpan.org/release/Marpa-XS">Marpa::XS</a>
+remains beta, caution is still advised.

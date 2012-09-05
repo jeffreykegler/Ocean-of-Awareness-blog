@@ -1,0 +1,52 @@
+High-level HTML Parsing
+<p>
+<a href="http://search.cpan.org/dist/Marpa-HTML">Marpa::HTML</a>
+is a high-level HTML parser, built on top of
+the very high-quality
+<a href="http://search.cpan.org/dist/HTML-Parser">HTML::Parser</a>
+module.
+Why bother with high-level parsing,
+especially if it means layering one parser on top of another?
+
+<p>Here is
+<a href="http://search.cpan.org/dist/HTML-Parser/Parser.pm#EXAMPLES">
+an example,
+taken
+from the main document for HTML::Parser</a>.
+The example prints out the title of an HTML document.
+To do this, 
+<a href="http://search.cpan.org/dist/HTML-Parser">HTML::Parser</a>
+uses handlers which set up other handlers.
+One handler finds the start tag,
+then sets up two other handlers.
+(I won't reproduce
+that example here --
+<a href="http://search.cpan.org/dist/HTML-Parser/Parser.pm#EXAMPLES">
+it's on CPAN.</a>
+)
+
+<p>Here's the
+<a href="http://search.cpan.org/dist/Marpa-HTML">Marpa::HTML</a>
+code for printing the title.
+It avoids the awkward state-driven switching of handlers.
+
+<pre>
+<code class="prettyprint">
+say html(
+    \$string_containging_html,
+    {   'title' => sub { return Marpa::HTML::contents() },
+        ':TOP'  => sub { return ( join q{}, @{ Marpa::HTML::values() } ) }
+    }
+);
+</code>
+</pre>
+
+The code is fairly transparent.
+<code class="prettyprint">html</code> is a static method.
+Here it takes two arguments: a string with the html to be parsed, and
+a hash specifying two handlers.
+One handler returns the contents of title elements.
+Another, top-level, handler takes all the values found below it,
+joins them together, and returns them.
+(<a href="http://search.cpan.org/dist/Marpa-HTML">Full
+documentation is on CPAN</a>.)

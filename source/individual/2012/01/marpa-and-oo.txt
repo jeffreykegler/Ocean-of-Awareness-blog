@@ -1,0 +1,115 @@
+Marpa and OO
+<p>
+Both
+<a href="http://www.perlmonks.org/?node_id=900763">publicly</a>
+and privately I hear from folks who
+tell me that
+<a href="https://metacpan.org/release/Marpa-XS">Marpa</a>
+is an OO
+superclass waiting to happen.
+I can see their point.
+If there ever was a case for code reuse,
+the Marpa algorithm is one.
+On the other hand,
+any non-trivial use of
+Marpa requires additional semantics,
+so that the Marpa classes
+walk, swim and quack
+very much like abstract type classes.
+</p>
+<p>
+Furthermore, the additional semantics
+that Marpa needs comes in pieces -- semantic actions.
+And even though these pieces
+often share little code
+with each other,
+they interact heavily
+as part of a specific
+structure.
+This means that their semantics are tightly coupled,
+both to each other and to Marpa.
+In short, Marpa's semantic actions look a lot
+like the methods of a subclass.
+</p>
+<p>
+Not that there aren't issues.
+In particular,
+if Marpa were a superclass,
+its subclasses wouldn't know which methods they
+needed to implement
+until after the grammar was fully specified --
+in other words until deep into runtime.
+But if you're into OO, there are no problems,
+just interesting challenges.
+</p>
+<p>
+A top priority with me is to empower those
+who have ideas for alternative Marpa interfaces,
+whether object-oriented or not.
+Currently,
+
+<a href="https://metacpan.org/release/Marpa-XS>Marpa::XS">Marpa::XS</a>
+is divided into two layers.
+The core algorithm is in a C library (libmarpa).
+The interface code is the upper layer.
+Written in Perl,
+this upper layer calls libmarpa.
+But in
+<a href="https://metacpan.org/release/Marpa-XS>Marpa::XS">Marpa::XS</a>,
+libmarpa's interface was not documented,
+and frankly the
+<a href="https://metacpan.org/release/Marpa-XS>Marpa::XS">Marpa::XS</a>
+version of libmarpa was
+so hackish that it needed to
+be rewritten
+before it could be effectively
+and clearly documented.
+In the development version of Marpa,
+<a href="http://search.cpan.org/dist/Marpa-R2/">Marpa::R2</a>,
+this rewrite
+has been completed,
+and the libmarpa documentation is now underway.
+</p>
+<p>
+With a documented libmarpa interface,
+authors of new Marpa interfaces can totally bypass
+the current
+<a href="https://metacpan.org/release/Marpa-XS>Marpa::XS">Marpa::XS</a>
+interface.
+And in terms of speed, they'll start the race
+with an advantage --
+<a href="http://search.cpan.org/dist/Marpa-R2/">Marpa::R2</a>
+
+is 20% faster
+than
+<a href="https://metacpan.org/release/Marpa-XS>Marpa::XS">Marpa::XS</a>.
+</p>
+<p>
+But why wait for
+<a href="http://search.cpan.org/dist/Marpa-R2/">Marpa::R2</a>
+to try out your ideas?
+At the cost of a modest overhead,
+a new OO interface can be layered on top of
+<a href="https://metacpan.org/release/Marpa-XS>Marpa::XS">Marpa::XS</a>.
+The new interface can simply define a default action
+to
+<a href="https://metacpan.org/release/Marpa-XS>Marpa::XS">Marpa::XS</a>,
+one that implements
+your wrapper's semantics.
+Supplying an OO context to Marpa's semantic actions
+is easy.
+All
+<a href="https://metacpan.org/release/Marpa-XS>Marpa::XS">Marpa::XS</a>'s
+actions receive as their first
+argument a "per-parse variable".
+The per-parse variable can be initialized
+to anything the upper layer wants.
+A wrapper object could pass itself to Marpa's
+semantic actions as their per-parse variable.
+<a href="https://metacpan.org/release/Marpa-XS>Marpa::XS">Marpa::XS</a>'s
+semantic actions can then easily use
+the wrapper object to call one of the wrapper's
+methods,
+passing it the semantic action's other arguments.
+
+</p>

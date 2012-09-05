@@ -1,0 +1,388 @@
+Prefixing the Ruby Slippers, and the Bigfoot Maneuver
+<a title="By Frank L Baum (Library of Congress[1]) [Public domain], via Wikimedia Commons" href="http://commons.wikimedia.org/wiki/File%3AGlinda_cover.jpg"><img style="float:left; padding:20px; border-color:White" width="256" alt="Glinda cover" src="http://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/Glinda_cover.jpg/256px-Glinda_cover.jpg"/></a>
+<p>In
+<a href="http://blogs.perl.org/users/jeffrey_kegler/2012/07/partial-parsing-and-error-reporting.html">
+my last post</a>
+I talked about partial parsing of Perl
+using my new parsing algorithm,
+<a href="http://www.jeffreykegler.com/marpa">
+Marpa</a>.
+This post explains how I do it.
+For those interested,
+the code for the example in my last post can be found in
+<span style="white-space:nowrap; font-family:monospace">t/curly2.t</span>
+in
+<a href="https://metacpan.org/release/JKEGL/Marpa-R2-2.015_001/">
+Marpa::R2 2.015_001</a>
+(a developer's version).
+For convenience, I've also pulled
+<a href="https://gist.github.com/3177276">
+
+<span style="white-space:nowrap; font-family:monospace">t/curly2.t</span>
+out as a Github gist</a>.
+</p>
+<h2>Introducing the problem</h2>
+<p>
+This technique will work for
+languages other than Perl.
+In fact, this technique could be used to look for several different
+target languages
+at once,
+for example, when searching a database
+of emails that might include code segments
+in Perl, HTML, C, etc.
+<p>
+For clarity, I will often refer to the
+Perl and C programs
+being sought as targets
+in text as "code segments".
+In the context of this blog post,
+a string is only considered to be a valid
+"code segment" if it is also a valid
+and complete program.
+</p>
+<p>
+Perl all by itself presents just about every parsing difficulty there is,
+and it will work fine for this discussion.
+We will search for the "longest first match", which is harder
+than most alternatives,
+but which is also what applications usually want.
+For example,
+take the following:
+<div style="text-align:center; font-family:monospace">
+abcdef ++$a; ++$b; ghijkl
+</div>
+
+<p>
+Here the null string is the first valid Perl code segment,
+and to be pedantic about it,
+it is the longest first match.
+But zero length Perl code segments are
+not of interest to most applications,
+so we'll ignore them from here on out.
+Ignoring zero-length Perl code segments,
+the string "<code class="prettyprint">++$a</code>" is a first match,
+but is still not the longest first match.
+"<span style="white-space:nowrap; font-family:monospace"> ++$a; ++$b; </span>"
+is valid Perl code,
+and that is the longest first match.
+</p>
+<p>
+The search can get considerably more complicated.
+Consider this code:
+<div style="text-align:center; font-family:monospace">
+abcdef sub f { ++$a; ++$b; } ghijkl
+</div>
+<p>
+Here
+"<span style ="white-space:nowrap; font-family:monospace"> sub f { ++$a; ++$b; } </span>"
+is the longest first match, but until the closing curly brace is seen it is not
+clear where the longest first match will start, much less end.
+
+</p>
+<h2>The Basic Idea</h2>
+<p>
+We note that no longest first match can start after some other match ends.
+That means there are two phases in the search -- one where we should allow
+targets to start, and one where we should not.
+<p>
+Let's assume that,
+whenever two different code segments share some of the input tokens,
+one contains the other -- that is, if strings
+<span style="font-family:monospace">AB</span>
+and
+<span style="font-family:monospace">BC</span>
+are valid code segments, then
+<span style="font-family:monospace">ABC</span>
+is valid code.
+(We'll call this the Overlap Closure Property.)
+Our strategy will be to parse in two "modes".
+In prefix mode, we track all possible Perl code segments.
+Prefix mode ends when the first non-zero length Perl code segment ends.
+At that point we know that one of the current candidates must
+be the longest first match.
+<p>
+
+After prefix mode,
+we continue to read tokens,
+building all our candidate code segments,
+and keeping track of where the most recent one ended.
+We do this until either parsing cannot continue,
+or we have run out of tokens.
+As we'll show more carefully below,
+once we can no longer continue parsing,
+the Perl code segment that ended most recently will be
+the longest first match.
+If several end at the same location,
+the longest of them will be the longest first match.
+<p>
+To actually implement this idea,
+I'll need to use a series of tricks:
+Prefixing, the Ruby Slippers
+and the Bigfoot Maneuver.
+I'll describe these next,
+then I'll put them together as an algorithm.
+<p>
+The technique I outline in this post
+has the advantage that it does not require
+rewriting the rules
+and symbols of the original, non-partial-parsing, grammar.
+New rules and symbols are added "on top of" the original
+grammar.
+<h2>Prefixing</h2>
+<p>
+Prefixing is the simplest of the tricks.
+As long as it is possible for a longest first match to start,
+my Marpa-based Perl parser is in "prefix mode".
+Once the end of a non-trivial Perl code segment is seen,
+"prefix mode" is turned off.
+<p>
+Here are rules to define the prefix
+<div style="text-align:center; font-family:monospace">
+&lt;embedded_perl&gt; ::= &lt;target&gt;<br>
+
+&lt;embedded_perl&gt; ::= &lt;non_perl_prefix&gt; &lt;target&gt;<br>
+&lt;non_perl_prefix&gt; ::= &lt;non_perl_token&gt;+
+</div>
+<p>
+The
+<span style="font-family:monospace">&lt;target&gt;</span>
+
+symbol represents the longest first match --
+the "target" that we are looking for.
+The plus sign after
+<span style="font-family:monospace">&lt;non_perl_token&gt;</span>
+indicates that
+<span style="font-family:monospace">&lt;non_perl_prefix&gt;</span>
+is a non-zero length sequence of
+<span style="font-family:monospace">&lt;non_perl_token&gt;</span>
+symbols.
+<span style="font-family:monospace">&lt;non_perl_token&gt;</span>'s
+are just "aliases"
+for the application's normal tokens.
+Marpa allows tokens to be ambiguous in this way.
+<p>
+While prefixing is turned on, every token is read as
+both its normal self within the original grammar,
+and as a
+<span style="font-family:monospace">&lt;non_perl_token&gt;</span>.
+Initially, prefixing is turned on.
+It will be turned off as described later.
+<h2>The Ruby Slippers</h2>
+
+The Ruby Slippers technique, as many of my readers will recall,
+is wishful thinking, brought to life and made effective within the world
+of parsing.
+So, let's ask ourselves, what could we wish for that would make finding
+the longest first match easy?
+<p>
+We close our eyes, click our sanguine heels and wish
+that the longest first match had markers in the input,
+one at its beginning, and one at its end.
+As Glinda gently urges us on,
+we add that to our grammar:
+<p>
+<div style="text-align:center; font-family:monospace">
+&lt;target&gt; ::= &lt;target_start_marker&gt; &lt;prog&gt; &lt;target_end_marker&gt;
+</div>
+<p>
+Here <code class="prettyprint">prog</code> is the top level symbol of the Perl grammar --
+the original grammar's "start" symbol.
+
+<p>
+Recall that in the Ruby Slippers technique, the grammar assumes that the
+world is unrealistically easy, orderly, etc.
+And the lexer makes the parser's wishes come true.
+For the partial Perl parser,
+we write the lexer so that, as long as prefixing is on,
+whenever the parser wants a
+<span style="font-family:monospace">&lt;target_start_marker&gt;</span>,
+it gives it one.
+<h2>The Bigfoot Maneuver</h2>
+<p>
+In parsing, the Bigfoot maneuver uses "bigfoot" tokens.
+We call them "bigfoot" tokens because,
+while we say they're out there,
+we never actually encounter one,
+and in fact are fortunate not to do so.
+<p>
+Marpa, at every point, knows which tokens it is expecting.
+We can use this feature, along with "bigfoot" tokens, to signal events to the
+lexer.
+When we want the parser to signal some event to the lexer, we arrange for it
+to expect a "bigfoot" token.
+Let's look again at this rule:
+<div style="text-align:center; font-family:monospace">
+&lt;target&gt; ::= &lt;target_start_marker&gt; &lt;prog&gt; &lt;target_end_marker&gt;
+
+</div>
+<p>
+Here
+<span style="font-family:monospace">&lt;target_end_marker&gt;</span>
+is a "bigfoot" token.
+We won't ever see one, but the fact that the parser is looking
+for one will tell us that we have found a Perl
+<span style="font-family:monospace">prog</span>.
+<p>
+We'll use another bigfoot token to deal with
+zero-length Perl code segments.
+A null string is a legal Perl code segment, but we don't want to count
+zero-length code segments as longest first matches.
+We could deal with this
+by rewriting the Perl grammar slightly,
+in order to exclude zero length Perl code segments.
+But it is desirable to leave Perl's rules and symbols untouched.
+So instead, we introduce another pair of rules
+<div style="text-align:center; font-family:monospace">
+&lt;target&gt; ::= &lt;target_start_marker&gt; &lt;line&gt; &lt;non_trivial_target_end&gt;<br>
+
+&lt;target&gt; ::= &lt;target_start_marker&gt; &lt;decl&gt; &lt;non_trivial_target_end&gt;<br>
+</div>
+<p>
+<span style="white-space:nowrap; font-family:monospace">&lt;line&gt;</span>
+and
+<span style="white-space:nowrap; font-family:monospace">&lt;decl&gt;</span>
+are two of the original Perl grammar's symbols.
+
+<span style="white-space:nowrap; font-family:monospace">&lt;line&gt;</span>
+and
+<span style="white-space:nowrap; font-family:monospace">&lt;decl&gt;</span>
+are never zero length.
+Every Perl
+<span style="white-space:nowrap; font-family:monospace">prog</span>
+is a sequence of zero or more
+<span style="white-space:nowrap; font-family:monospace">&lt;line&gt;</span>'s
+and
+<span style="white-space:nowrap; font-family:monospace">&lt;decl&gt;</span>'s.
+<p>
+We define a "non-trivial" Perl code segment as one that contains a
+<span style="white-space:nowrap; font-family:monospace">&lt;line&gt;</span>
+
+or a
+<span style="white-space:nowrap; font-family:monospace">&lt;decl&gt;</span>.
+To signal the lexer that we have found a non-trivial Perl code segment, we use
+<span style="white-space:nowrap; font-family:monospace">&lt;non_trivial_target_end&gt;</span>
+as a bigfoot token.
+<h2>The Strategy</h2>
+We can now describe the algorithm.
+The program to find all the Perl in an arbitrary text is a loop,
+which walks through the input finding one longest first match at a time.
+Each search for a longest first match is implemented as a separate parse.
+When a longest first match is found, a new search begins at the next token
+after the match.
+<p>
+To find a longest first match,
+we start out in prefix mode.
+In prefix mode,
+every Perl token is read in two ways.
+First, it is read
+the same way
+that it was read in the original Perl grammar.
+Second, it is read
+as a
+<span style="font-family:monospace">&lt;non_perl_token&gt;</span>.
+<p>
+In addition, as long as we are in prefix mode,
+whenever the parser demands a
+<span style="font-family:monospace">&lt;target_start_marker&gt;</span>,
+we provide it.
+This means that while in prefix mode,
+we are tracking all possible Perl code segments,
+as well as extending the string of
+
+<span style="font-family:monospace">&lt;non_perl_token&gt;</span>'s to
+act as the prefix to any new target candidate that we encounter.
+Note that the last prefix token -- the one that we read just before we turn prefix mode off --
+will be in all of our target candidates.
+This is important because it guarantees that they will all overlap.
+<p>
+When we see that a
+<span style="font-family:monospace">&lt;non_trivial_target_end&gt;</span>
+bigfoot token is expected,
+we turn prefix mode off.
+We now have at least one candidate for a target and,
+since we are not extending the prefix, we will start no new
+target candidates.
+For the rest of this parse,
+we will only lengthen the already started Perl code segments.
+<p>
+Whether in prefix mode or not,
+every time the parser requests a 
+<span style="font-family:monospace">&lt;target_end_marker&gt;</span>
+bigfoot token,
+we record our location.
+We never actually provide a
+<span style="font-family:monospace">&lt;target_end_marker&gt;</span>
+as input.
+Bigfoot tokens are not Ruby Slippers tokens.
+This means that rules that have bigfoot tokens are
+"virtual" rules in the sense that they will never actually
+be completed.
+<p>
+Parsing ends when it is "exhausted"
+or when we run out of tokens.
+An "exhausted" parse is one which cannot continue successfully,
+although it may have already succeeded.
+(In fact, since the partial parser extends the prefix forever
+unless a match is found,
+in our case an "exhausted" parse MUST be a successful parse.)
+
+<p>
+Once parsing ends,
+we call the recognizer's
+<span style="font-family:monospace">progress()</span>
+method to get a list of all the 
+<span style="font-family:monospace">prog</span>'s ending
+at the last location where we expected a
+<span style="font-family:monospace">&lt;target_end_marker&gt;</span>
+bigfoot.
+The longest of the completed
+<span style="font-family:monospace">prog</span> rules
+found in our
+<span style="font-family:monospace">progress()</span>
+report for that last location is our longest first match.
+If there is no last location,
+we will also have run out of tokens,
+and we are done processing the input.
+<h2>Other approaches</h2>
+
+<p>
+The above approach is not the only way to do partial parsing in Marpa.
+In fact, you can do it much more simply using only the Prefixing technique,
+along with a similar "Postfixing" technique.
+The problem is that this method easily goes cubic (O(n<sup>3</sup>)),
+and the worst case
+(the one where most or all of the input text is a single Perl code segment)
+is also one of practical interest.
+The approach outlined above will be linear (O(n)) for all cases of practical interest.
+I qualify my assertion by saying "cases of practical interest"
+because in fact Perl parsing is, in the general case, undecidable.
+<p>
+The method outlined in this post could be extended
+to deal with languages that do not have
+the Overlap Closure Property.
+In fact,
+it is not completely clear that Perl,
+in general,
+has the Overlap Closure Property.
+The C language does not in general have the Overlap Closure Property,
+at least not if the preprocessor is taken into account.
+Using the C preprocessor, it would be easy
+to construct strings 
+<span style="font-family:monospace">X</span>,
+<span style="font-family:monospace">Y</span>,
+<span style="font-family:monospace">Z</span>
+where 
+<span style="font-family:monospace">X</span>,
+<span style="font-family:monospace">Y</span>,
+
+<span style="font-family:monospace">Z</span>,
+<span style="font-family:monospace">XY</span>
+and
+<span style="font-family:monospace">YZ</span>
+are all completely valid C,
+but 
+<span style="font-family:monospace">XYZ</span>
+has a syntax error.
+But, for Perl and C code of practical interest,
+it is not unreasonable to expect the Overlap Closure Property will hold.

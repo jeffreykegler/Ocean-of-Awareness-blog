@@ -1,0 +1,8 @@
+In Praise of NYTProf
+<p>I'd like to add my praise to the heap of it already piled onto <a href="http://search.cpan.org/dist/Devel-NYTProf/">NYTProf</a>.  This is a Perl profiler available on CPAN, with a very attractive HTML interface.</p>
+
+<p>If you wait for your next efficiency issue before using NYTProf, you're making a mistake.  For me optimizing is no longer NYTProf's primary purpose.  NYTProf is a powerful debugging tool. The count of the number of times each line was executed yields marvelous insights quickly.  Consider an example: a script to process a file.  It is acting strangely.  You don't know where to begin.  Your test file is 1000 lines long.  You notice certain lines in the per-line logic are not being executed 1000 times.  Hmmm.</p>
+
+<p>Simply checking for lines which are not executed <strong>at all</strong> is a surprisingly powerful technique.  The HTML format allows you to skim the code, looking for these.  This is particularly useful when the question is not localized or some matter of detail, but whether your overall logic makes sense, and whether your code actually implements the logic/algorithm you intended.</p>
+
+<p>Adam Kaplan, Tim Bunce and Steve Peters, thank you.</p>

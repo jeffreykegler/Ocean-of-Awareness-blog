@@ -1,0 +1,76 @@
+BNF Parsing and Linear Time
+<p>I've just released <a href="http://search.cpan.org/dist/Marpa/">Marpa</a>,
+a general BNF parser generator, to CPAN.
+(A general BNF parser generator is a parser generator which works for any grammar you can express in BNF.)
+Previously, CPAN did not have a general BNF parser generator suitable
+for practical use.
+Then again, neither did much of anybody else.</p>
+
+<p>What was the issue?
+General BNF parsers have been around since the 60's.
+But the first ones were slow, and the reputation stuck.
+It's time to take a new look.
+As
+<a href="http://en.wikipedia.org/wiki/Earley_parser">
+Wikipedia says</a>,
+Earley's takes
+"linear time for almost all LR(k) grammars.
+It performs particularly well when the rules are written left-recursively."
+</p>
+
+<p>LR(k) grammars
+include all those parseable by Bison, YACC, recursive descent,
+or regular expressions.
+Chances are that
+Marpa runs in linear time on your grammar, or can
+easily be made to do so.
+If Marpa doesn't run your grammar in linear time,
+chances are that the alternatives you are considering
+do not run your grammar at all.
+</p>
+
+<p>What about Wikipedia's "almost all"?
+Wikipedia is referring to right-recursive grammars.
+Specifically, the grammars that 
+Earley's (and Marpa) run more slowly on are the right-recursive grammars.
+(Marpa is quadratic on unambiguous right-recursive grammars.)
+</p>
+
+<p>In practical uses, left recursion (which Marpa handles well)
+is much more important than right recursion.
+Right recursion is usually easy to eliminate.
+Three simple strategies take care of most cases.
+At least one of these strategies for eliminating right recursion 
+probably works on your grammar.</p>
+<ul>
+<li>
+First and most obviously, you can change the right recursion to a left recursion.
+If the semantics are those of a simple sequence, this works fine.
+</li>
+
+<li>
+Second, you can eliminate right recursion by
+modifying the language so that it explicitly terminates the construct.
+This is why English has periods at the end of sentences -- they eliminate
+right recursion.
+If the right recursion involves the whole file, you can eliminate it
+with an explicit end-of-file.
+</li>
+
+<li>
+Third, you can use look-ahead.
+Marpa makes it convenient for its lexers to use look-ahead --
+that is how <a href="http://search.cpan.org/dist/Marpa-HTML/">
+Marpa's HTML parser</a> works.
+</li>
+</ul>
+
+<p>
+It seems possible to modify Marpa to run in linear time on right-recursive grammars
+as well.
+There are suggestions in the academic literature on how to do this.
+But I try to keep the focus with Marpa practical.
+And so far I've been unable to find a grammar of practical interest
+where it's not convenient to simply
+eliminate the right recursion.
+</p>

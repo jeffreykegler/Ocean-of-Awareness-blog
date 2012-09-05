@@ -1,0 +1,160 @@
+Parsing Perl 2: Down the Garden Path
+<h2>The Garden Path</h2>
+
+<p>In Perl 5.10, the following code is a syntax error:
+<pre><code class="prettyprint">{42;{1,2,3;4}}
+</code></pre>
+If you try it,
+what you'll see 
+is something like this:
+<pre><code class="prettyprint">syntax error at (eval 25) line 1, near ";4"
+syntax error at (eval 25) line 1, near "}}
+</code></pre>
+
+<p>TPP is based on an algorithm called LALR.
+(To avoid confusion when discussing various programs which parse Perl,
+I will call the one that comes with the Perl distribution
+the Tradition Perl Parser, or TPP.)
+If you look at 
+<kbd>perly.y</kbd>,
+you will find a real achievement
+in LALR parsing.
+and therefore in computer language parsing in general.
+But LALR has its limits and even in the TPP
+these show up every now and then.
+
+<p>Let's call our first example the Garden Path Code Block.
+What is happening here?
+Perl is being taken
+"down the garden path" between the inner set of
+curly braces.
+TPP starts out down the path and, based on what it sees,
+decides that it is parsing an anonymous hash.
+TPP commits to that choice and then trainwrecks on the semicolon.
+<a href="http://search.cpan.org/dist/PPI/">PPI</a>
+does no better.
+PPI recognizes the Garden Path Code Block, but it parses it
+as an anonymous hash, which is wrong.
+
+<p>I am prototyping a new Perl syntax analyzer using
+<a href="http://search.cpan.org/dist/Marpa/">Marpa</a>,
+my new parser.
+Marpa parses anything you can write in BNF, using ideas based on those
+by Jay Earley.
+Marpa::Perl is still a prototype,
+but it has no difficulty in
+recognizing the Garden Path Code Block as a code block.
+
+<p>LALR's problem is that it is based on a state machine.
+LALR's state machine ran at speeds and used memory
+in keeping with the computer technology of 1969, which is
+when LALR was invented.
+But the LALR state machine needs to make decisions based
+on limited context.
+When the LALR parser in
+<a href="http://cpansearch.perl.org/src/JESSE/perl-5.12.1/perly.y">perly.y</a>
+sees that semicolon, it is pretty much game over.
+
+<p>LALR has always been
+a tight squeeze
+for the grammars of practical programming languages.
+This is despite the fact that LALR has had decades to
+condition 
+language designers to accept its idea of what
+"practical" means in a programming language.
+
+<p>For Marpa, the Garden Path Code Block is not
+even a serious challenge.
+Marpa is based on Jay Earley's ideas.
+These were the subject of 
+<a href="http://blogs.perl.org/users/jeffrey_kegler/2010/06/jay-earleys-idea.html">my last post</a>. 
+Briefly, the core idea is to create a table of "Earley items".
+Earley items are short records indicating parsing progress,
+keyed to locations in the input.
+For an Earley-based parser, a "garden path" is dealt with by having
+Earley items record the multiple possibilities.
+This need to deal with alternative possibilities
+is not dissimilar to the one
+which motivates other parsers to use more expensive strategies,
+such as backtracking or parallel processing.
+
+<h2>What the Man Page Says</h2>
+
+Suppose we go all the way down the "garden path",
+and it still is not clear whether the curly braces
+enclose an anonymous hash or a code block?
+If we alter our example to replace the deadly semicolon
+with an insidious comma, this is what it looks like:
+<pre><code class="prettyprint">{42;{1,2,3,4}}
+</code></pre>
+And for Perl 5.10, this is the result:
+<pre><code class="prettyprint">{'1' => 2,'3' => 4}
+</code></pre>
+PPI seems to agree with Perl 5.10.
+
+<p>Marpa::Perl, on the other hand, sees that this code is ambiguous.
+It recognizes two parses.
+The first parse is the one Perl and PPI see: an anonymous hash.
+Marpa::Perl's second parse treats both sets of curlies as surrounding
+code blocks.
+In scalar context, the value which results from this second parse
+is the number 4.
+
+<p>In cases of desperation,
+we look at the documentation.
+It takes some searching to find it,
+but there is
+a very relevant discussion in
+a section of the perlref man page.
+<a href="http://perldoc.perl.org/perlref.html#Making-References">
+It is worth reading</a>.
+Of its several examples,
+this is the most interesting:
+<pre><code class="prettyprint">sub showem {       { @_ } }   # ambiguous (currently ok, but may change)
+</code></pre>
+Here Perl's rules of thumb result in the "<tt>{ @_ }</tt>"
+being parsed as a code block --
+the opposite of the behavior in our previous example.
+
+<p>The threat made in the comment --
+that TPP's current behavior may change --
+would be a hard thing to make good on.
+Assuming array context,
+the effect of having the
+<a href="http://perldoc.perl.org/perlref.html">perlref</a>
+example flip semantics
+would be to change
+the return value from an
+array into a hash ref.
+That kind of silent change is not the kind
+of thing I like to see in production code.
+
+<p>Most Perl programmers are probably not aware of this gotcha.
+Even well-informed programmers
+can easily write ambiguous code by accident,
+and will receive no warning of their mistake.
+Perhaps a good application for Marpa::Perl
+would be spotting ambiguities like these.
+
+<h2>How to Disambiguate</h2>
+
+<p>Once spotted, ambiguous curlies are easy to fix.
+A standard way to disambiguate
+an anonymous hash
+is to prefix the
+curly braces
+with a plus sign:
+
+<pre><code class="prettyprint">{42;+{1,2,3,4}}
+</code></pre>
+TPP, PPI and Marpa::Perl have no trouble
+recognizing that the inner curly brackets enclose an anonymous hash in
+the above.
+
+<p>A programmer can disambiguate code blocks by
+placing a semicolon as the first thing inside the curly brackets.
+<pre><code class="prettyprint">{42;{;1,2,3;4}}
+</code></pre>
+The inner curlies in the above are recognized
+as defining a code block by all three parsers:
+TPP, PPI and Marpa::Perl.

@@ -1,0 +1,78 @@
+Marpa & customizing the Ruby Slippers
+<p>The
+<a href="http://www.jeffreykegler.com/marpa">
+Marpa parser</a>
+introduced
+<a href="http://blogs.perl.org/users/jeffrey_kegler/2011/11/marpa-and-the-ruby-slippers.html">
+Ruby Slippers parsing</a>.
+But the Ruby Slippers were just part of a broader feature
+of Marpa -- its "situational awareness".
+With the
+<a href="https://metacpan.org/release/Marpa-R2">
+latest release of Marpa::R2</a>,
+applications now have
+<a href="https://metacpan.org/module/Marpa::R2::Progress#Access-to-the-raw-progress-report-information">
+efficient access to the broader awareness</a>.
+
+<p>For those new to this blog
+<a href="http://www.jeffreykegler.com/marpa">
+Marpa is something new in parsing</a> --
+it parses anything you can write in BNF and,
+if your grammar is in one of the classes currently in practical use,
+parses  it in linear time.
+Marpa::R2's parse engine is written in optimized C,
+so that Marpa::R2's speed is competitive with parsers of far less power.
+
+
+<p>
+Marpa knows at every point in the parse,
+which rules are possible,
+how far into those rules the parse has already gotten,
+and where those rules might start.
+This degree of situational awareness is unusual in a parser,
+and the more "production quality" the parser,
+the more unusual it is.
+This seems paradoxical.
+Situational awareness seems like a
+common sense thing to want in any parser,
+and certainly in one that you'd hope would be able to
+produce quality error messages.
+But the practice has been for parsers,
+as a way to achieve efficiency,
+to turn their grammar into an abstraction.
+This can be OK if all goes as planned, but if anything
+goes wrong it means these parsers don't really have a clue
+what it was.
+
+<p>In
+<a href="https://metacpan.org/release/Marpa-XS">
+stable distribution, Marpa::XS</a>,
+Marpa already made situational awareness available in
+a form that allowed Ruby Slippers parsing --
+at any point in the parse,
+it could return a list of expected tokens.
+A full description of the parse was also available in
+Marpa::XS's progress reports,
+which gave this information in text form.
+This was wonderful for tracing parsing issues,
+but it was not a convenient form for
+post-processing.
+
+<p>As of
+<a href="https://metacpan.org/release/Marpa-R2">
+its latest release</a>,
+Marpa::R2
+<a href="https://metacpan.org/module/Marpa::R2::Progress#Access-to-the-raw-progress-report-information">
+makes available the "raw" data
+behind the progress reports</a>.
+This is ideal for post-processing.
+My hope is that users will use this to
+invent their own advanced parsing tricks
+-- customized versions of the Ruby Slippers.
+
+<p>The road is open.
+<a href="https://metacpan.org/release/Marpa-R2">
+Marpa::R2</a>
+
+is fast, powerful and maneuverable.
+Floor it.

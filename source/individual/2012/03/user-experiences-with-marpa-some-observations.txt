@@ -1,0 +1,93 @@
+User experiences with Marpa: some observations
+<p>
+When it comes to
+user experiences with Marpa,
+I confess to being a highly biased source.
+I hope the following observations
+will be useful nonetheless.
+(Marpa, for those new to this blog,
+is a new, powerful and fast parser and parsing algorithm.
+To learn more,
+check out <a href="http://www.jeffreykegler.com/marpa">its web page</a>.)
+</p>
+<h2>Marpa does the job</h2>
+<p>
+If you've read user's accounts of work with BNF grammars over
+the years
+(I have studied many),
+you know they follow a familiar pattern.
+The user has some BNF.
+He then tries tool X (for X substitute
+yacc, bison, PEG, recursive descent, etc.)
+and finds that it almost works.
+Almost, but not quite.
+The rest of the account describes the user
+beating up his grammar in an effort to make
+it fit the tool.
+Perhaps 50% of the time, he reports that his effort
+was wasted.
+</p>
+<p>
+The accounts from Marpa users are different,
+because the problem the users of other tools spend
+most of their time describing,
+and spent most of their time solving,
+does not exist with Marpa.
+Once they have their grammar worked out,
+Marpa parses it.
+As a practical
+matter, this difference is a big deal.
+A methodology that, half the time,
+takes you to a dead end,
+is one that practitioners will avoid.
+</p>
+<p>
+The reason that regular expressions became so dominant,
+I am convinced,
+is that they did the job.
+If you can write your problem as a regular expression
+(here I speak of regular expressions, not regexes)
+you are guaranteed two things.
+First that your regular expression engine *WILL* handle it.
+Second, that it will do so in acceptable time.
+Regular expressions did the job.
+With Marpa, BNF does the job.
+</p>
+<h2>BNF as a lost art</h2>
+
+<p>
+An obstacle to learning Marpa seems to be
+that writing BNF is something of a lost art.
+BNF is not difficult.
+By my accounting,
+BNF is actually simpler than regular expressions.
+BNF involves one idea: concatenation.
+Regular expressions involve all of concatenation,
+sequence and alternation.
+Even if you don't agree with my way of calculating
+difficulty,
+I think you'll agree that
+BNF is vastly simpler than Perl regexes.
+<p>
+</p>
+When I learned programming (around 1970),
+BNF was much better known than regular expressions.
+BNF had been established for years
+as the way of specifying languages.
+Regular expressions,
+on the other hand,
+did not come in prominence
+before Thompson's
+<a href="http://en.wikipedia.org/wiki/Ed_%28text_editor%29">ed editor</a>.
+The first PDP11 assembler version of that came out in 1971,
+the year I was taking the introduction to Computer Science
+with Alan Perlis.
+Prof. Perlis
+spent a lot of time on BNF
+and
+<a href="http://en.wikipedia.org/wiki/Markov_algorithm">
+Markov machines</a>.
+I cannot recall that he mentioned regular expressions.
+Since then, at least
+in the US, BNF and Markov machines seem to have been consigned to
+nearly the same degree of oblivion.

@@ -1,0 +1,102 @@
+Perl and Parsing 4: The Golden Age of Right Parsing
+<p>Like political views,
+parsers are often divided into left and right.
+Also like political views,
+the left-right classification is more
+hindrance than help in some cases.
+Earley's algorithm (my main interest) is one
+algorithm that does not fall into either category.
+
+<p>In this post I want to start to
+talk about those parsers which <b>can</b> be neatly
+classed as left or right.
+First off, to say a parser is a left or right parser
+does <b>not</b> describe
+the direction in which the parser works.
+The working direction of any parser
+is always left-to-right,
+except in the very rare cases that it is stated otherwise.
+Every treatment of parsing theory I've seen follows this
+convention.
+Right-to-left parsing is useful sometimes in practice,
+but the theory of right-to-left parsing
+is simply a mirror image of the theory
+for left-to-right parsing.
+
+<p>Left (or top-down) parsers, drill down the left side of 
+a parse.
+This may seem like a myopic approach.
+Frankly, it <b>is</b> a myopic approach.
+But it is one which is very far from dead --
+left parsers are actually gaining in popularity.
+
+<p>In fact, I'd say among those actually implementing
+parsers, top-down is by far <b>the</b> dominant trend.
+Why that is, I hope to explain in another post,
+one in which I come back to top-down parsers.
+In this one I want to talk about the Golden Age
+of the Right Parsers.
+
+<p> Right (or bottom-up) parsers are less myopic.
+Instead of simply drilling down the left hand edge of a parse tree,
+right parsers reach out to the right and produce a rightmost derivation.
+
+<p>How do they do this, while still working left-to-right?
+Right parsers do this by running the derivation backwards,
+or "bottom-up".
+Hence the name.
+
+<p>Looking for the rightmost derivation makes right
+parsers more powerful.  They handle more grammars,
+are better at error checking, etc., etc.
+Since they work bottom-up,
+they're more complicated to write than left parsers.
+Left parsers came first,
+and it took a while to figure out how to write
+an efficient right parser.
+
+<p>(A warning for those who haven't noticed.
+This is not going to be one of those histories
+with lots of carefully qualified statements.
+It's going to be more Winston Churchill than Fernand Braudel.)
+
+<p>The lineage of the Yacc algorithm starts with a 1965 paper by Knuth,
+which discovered the LR algorithm.
+The LR algorithm contained the basic ideas behind bottom-up parsing,
+but did not immediately revolutionize parsing.
+LR(0) -- LR with no lookahead -- was fast, but parsed very few grammars.
+LR(1) -- LR with 1 character of lookahead -- parsed enough grammars to be
+practical, but the tables LR(1) required were too large for the computers of
+the time.
+In 1969 Frank DeRemer discovered you could combine the two algorithms
+into something called LALR.  LALR parsed almost all the LR(1) grammars,
+but its tables weren't much larger than those for LR(0).
+With LALR, the theoretical groundwork for right parsing was laid.
+
+<p>The Golden Age of Right Parsing begins in 1975, with the Yacc parser
+generator.
+Yacc didn't just put LALR parsing on the map,
+it reshaped the geography of parsing
+so that parsing looked like LALR.
+LALR parsing dominated parsing theory for decades.
+At the nadir, some introductory textbooks on parsing theory were
+100% focused on LALR.
+For them, and any student whose view was limited to their pages,
+LALR parsing <b>was</b> parsing.
+
+<p>The Golden Age of Right Parsing was the
+time when our idea of what a programming language should look like
+was being formed.
+LALR wound up being a controlling force behind that idea.
+Perl came out in the middle of the Golden Age of Right Parsing.
+Perl's grammar is very much both a product of,
+and a reaction to,
+that Golden Age and the LALR algorithm.
+
+<p>In a previous post, I've already given a small example of how LALR shapes Perl:
+the following useless but syntactically reasonable statement
+<pre><code class="prettyprint">{42;{1,2,3;4}}
+</code></pre> 
+is in fact a syntax error in Perl 5.
+But the influence of LALR on Perl runs much deeper than that.
+I hope in future blog posts to attempt to describe that influence.

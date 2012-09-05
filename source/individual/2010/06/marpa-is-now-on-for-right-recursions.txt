@@ -1,0 +1,47 @@
+Marpa is now O(n) for Right Recursions
+<p>There's news with the latest version of <a href="http://search.cpan.org/~jkegl/Marpa-0.102000/">Marpa (0.102000)</a>.
+<a href="http://search.cpan.org/~jkegl/Marpa-0.102000/">Marpa</a> now parses grammars with right-recursions in linear time (O(n)).
+(<a href="http://search.cpan.org/~jkegl/Marpa-0.102000/">Marpa</a> already
+handled left-recursion in linear time.)
+
+<p>This means that <a href="http://search.cpan.org/~jkegl/Marpa-0.102000/">Marpa</a> is now O(n) for all LR-regular grammars.
+LR-regular means LR with infinite lookahead using regular expressions.
+That a big class of grammars.  It obviously includes all the LR(k) grammars,
+and therefore everything parsed by Yapp, yacc, and bison.
+LR-regular grammars also include
+everything parseable by recursive descent, PEGs,
+and other LL(k) grammars.
+LR-regular definitely includes all regular expressions.
+
+<p><a href="http://search.cpan.org/~jkegl/Marpa-0.102000/">Marpa</a>'s O(n) behavior has another nice feature.
+When it does <b>not</b> parse in O(n) time, it still parses.
+Some parser generators always parse quickly, because when they
+can't parse quickly, they don't parse at all.
+<a href="http://search.cpan.org/~jkegl/Marpa-0.102000/">Marpa</a> will parse anything you can write in BNF,
+even highly ambiguous grammars,
+and the absolute worst case is cubic (O(n**3)).
+
+<p>In my last post, I explained that the previous release of
+<a href="http://search.cpan.org/~jkegl/Marpa-0.102000/">Marpa</a> could parse unusually 
+large classes of grammars in linear time,
+and that the right recursive cases where <a href="http://search.cpan.org/~jkegl/Marpa-0.102000/">Marpa</a> was not linear could
+usually be worked around.
+In fact, my experience had been that working around a right recursion was
+easy, so I'd never bothered looking hard at the issue.
+
+<p>Sometimes, writing a long explanation of why a limitation does
+not matter makes me think:
+Perhaps it does matter enough to take
+a second look.  And take a second look is what I did.
+
+<p>A 1991 article by Joop Leo had laid out a modification to Earley's
+algorithm (the basis of Marpa) which was O(n) for all LR-regular
+grammars.  Problem was, <a href="http://search.cpan.org/~jkegl/Marpa-0.102000/">Marpa</a> already incorporated other, major,
+enhancements to Earley's from another article, <a href="http://www.cs.uvic.ca/~nigelh/Publications/PracticalEarleyParsing.pdf">this one by Aycock
+and Horspool and dating to 2002</a>.
+Were the two modifications compatible?
+
+<p>They are.  And <a href="http://search.cpan.org/~jkegl/Marpa-0.102000/">Marpa 0.102000</a> is the result.  CPAN and the Perl
+community has it,
+and everybody else will have it
+when they borrow from us.

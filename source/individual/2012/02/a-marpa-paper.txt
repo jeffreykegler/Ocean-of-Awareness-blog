@@ -1,0 +1,59 @@
+A Marpa paper
+<p>
+I have just uploaded
+<a href="http://github.com/downloads/jeffreykegler/Marpa-theory/recce.pdf">
+a late stage draft
+of a Theory of Computation paper on Marpa</a> to github.
+The paper contains pseudocode,
+a correctness proof,
+and proofs of my complexity claims.
+(Marpa, for those unfamiliar,
+is a new, powerful and fast parser and parsing algorithm.
+To learn more,
+check out <a href="http://www.jeffreykegler.com/marpa">its web page</a>.)
+</p>
+<p>
+Progress in software follows two avenues --
+implementation (aka "running code")
+and theory.
+With Marpa, it was my intention to pursue both.
+This is not the usual practice,
+but it's a natural choice in Marpa's case,
+because the two feed each other.
+It would have been simply
+impossible to write the code for Marpa
+without a theory of WHY the code worked,
+what kind of speed I expected in which cases,
+and WHY the code I was writing would be able to deliver
+that kind of speed.
+</p>
+<p>
+But if the example of Marpa and general parsing
+shows the need for theory,
+it also dramatically shows the need for running code.
+In writing Marpa I built on a lot of excellent work by others,
+work which has been largely,
+and in some cases completely,
+confined to the pages
+of the journals and textbooks.
+</p>
+<p>
+Unfortunately,
+even among its kind,
+my Marpa paper is not an easy read.
+It's a large and complex algorithm,
+and its writeup
+is large and complex.
+Nor is it self-contained --
+you need to be familiar with Jay Earley's algorithm,
+and parts of the paper will be very hard to follow
+if you've never looked at the work
+done by Joop Leo
+and by Aycock and Horspool.
+One hint:
+Even the experts read these papers
+by skipping from section to section,
+starting with the easy ones.
+In particular, they often leave the proofs
+for last or never.
+</p>

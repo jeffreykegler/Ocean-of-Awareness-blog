@@ -1,0 +1,47 @@
+What's new with Marpa
+Here's the Marpa "news" from the past few weeks.
+(Marpa is a new, powerful and fast parser and parsing algorithm.
+To learn more,
+check out <a href="http://www.jeffreykegler.com/marpa">its web page</a>.)
+<h2>Revision to the Theory paper</h2>
+<p>
+Most of my effort over the past weeks
+has gone into a paper
+on the math behind Marpa.
+I have just uploaded
+<a href="http://github.com/downloads/jeffreykegler/Marpa-theory/recce.pdf">
+a revised version</a>.
+I've fixed several typos, including a few nasty ones,
+for which I apologize.
+I've also improved the typography
+and smoothed out
+the presentation in many places.
+The basic structure and results of the paper
+are unchanged.
+The paper contains pseudocode,
+a correctness proof,
+and proofs of my complexity claims.
+</p>
+<h2>Deleting old releases</h2>
+<p>
+I plan to remove official releases
+of the various Marpa distributions
+(Marpa, Marpa::XS, Marpa::PP)
+that are more than one or two versions old.
+My guess is that this will release
+some disk space, and inconvenience nobody.
+</p>
+<h2>Updating the distributions</h2>
+
+Marpa::XS and Marpa::PP will be updated to make
+them compatible with a new release of Carp.
+Carp changed the format of one
+of its error messages,
+and since I test diagnostics,
+the change causes my test suite to fail.
+Testing diagnostics has paid off for me,
+but I am updating my tests to be less fussy
+about the exact format of Carp's feedback.
+I do NOT plan to update the bare name Marpa,
+which is an older,
+deprecated and legacy release.

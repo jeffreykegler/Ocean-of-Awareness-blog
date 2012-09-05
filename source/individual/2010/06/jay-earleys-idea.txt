@@ -1,0 +1,47 @@
+Jay Earley's Idea
+<h2>Truth == Simplicity?</h2>
+
+<p>In other posts,
+I talked about improvements to Jay Earley's parsing algorithm
+-- some from Joop Leo, some from Aycock and Horspool,
+<a href="http://search.cpan.org/dist/Marpa/">some of mine
+</a>.
+Here I'd like to talk about Jay Earley's original algorithm.
+A common belief of great scientists is that,
+if an idea is basic and true,
+it is in essence also simple,
+and therefore it must have a simple explanation.
+</p>
+<p>
+Finding the simple explanation might be far from simple.
+But a simple explanation there ought to be.
+I like to look for those simple explanations.
+Writing my mathematical novel, <i>The God Proof</i>,
+confirmed
+me in this habit.
+Whenever I am studying something,
+and it seems important and true,
+I look for the simple explanation.
+</p>
+
+<h2>Dotted Rules</h2>
+
+<p>
+The idea behind Earley's algorithm is that you can
+parse by building a table of rules
+and where you are in those rules.
+"Where" means two things: location in the rule relative to the rule's
+symbols,
+and location relative to the parse's input stream.
+</p>
+<p>
+Let's look at an example of a rule in a context-free grammar.
+Here's the rule for assignment in perl's
+<a href="http://cpansearch.perl.org/src/JESSE/perl-5.12.1/perly.y">perly.y
+</a>:
+<pre><code class="prettyprint">
+    termbinop => term ASSIGNOP term
+</code></pre>
+In parsing this rule, we can be at the beginning, before all of the symbols.
+We can also be immediately after any of the three symbols.
+That's a total of four possible locations.

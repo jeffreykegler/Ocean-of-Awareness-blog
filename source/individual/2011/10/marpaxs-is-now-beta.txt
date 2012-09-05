@@ -1,0 +1,73 @@
+Marpa::XS is now beta
+<p>
+I am very happy to announce that
+<a href="http://search.cpan.org/~jkegl/Marpa-XS-0.018000/">
+Marpa::XS is now beta</a>.
+Marpa::XS will kept stable.
+Changes to its interface will be especially avoided.
+</p>
+<h1>What is Marpa?</h1>
+<p>Marpa is an advance over recursive descent
+and yacc.
+I hope the Marpa algorithm
+will become the standard parser for
+problems too
+big for regular expressions.
+</p><ul>
+<li>Marpa parses,
+<a href="#LINEAR">
+in linear time</a>,
+those
+classes of grammar that are currently in practical use.
+</li>
+<li>The importance of parse-time debugging is often underestimated.
+Marpa's parse-time error detection breaks new ground -- Marpa is
+fully aware of exactly where in the parse it is at all times,
+and of exactly what input it expects and why.
+This means parse-time error detection, once a desperate last
+resort, now can be used as
+<a href="http://blogs.perl.org/users/jeffrey_kegler/2010/06/parsing-with-ruby-slippers.html">
+
+a parsing technique in itself</a>.
+
+</li>
+<li>Marpa is a general BNF parser -- that means if you feed it anything
+written in BNF, it "just parses" it.
+This includes grammars which are left-recursive, right-recursive and
+ambiguous -- even infinitely ambiguous.
+</li>
+<li>Marpa never goes exponential -- worst case, even for highly ambiguous
+grammars, is O(n**3), which is
+<a href="#OPTIMAL">considered optimal</a>.
+</li>
+</ul>
+<h1>New with this release</h1>
+<p>
+Marpa::XS 0.018000 contains two new
+ranking methods.
+These ranking methods allow applications to control
+the order of parse trees within
+an ambiguous parse.
+The two new ranking methods are the <code class="prettyprint">rule</code>
+ranking method and
+the <code class="prettyprint">high_rule_only</code> ranking method.
+In both methods, integer ranks are assigned to rules,
+and alternative parsings are ordered on a top-down, left-to-right basis.
+When it comes to comparing choices by rule rank, ties are allowed --
+in fact, they are common.
+By default, all the alternatives at every choice point
+tie with each other.
+When they are tied in rank,
+the order of choices is arbitrary.
+
+</p>
+In the <code class="prettyprint">rule</code> ranking method, all the parse trees are
+kept, and visited in order.
+In the <code class="prettyprint">high_rule_only</code> ranking method,
+only the highest ranked alternatives are kept,
+and they are visited in arbitrary order.
+Because of ties, more than one of the alternatives at a choice point
+can be "highest".
+A full description of the new ranking methods
+is <a href="http://search.cpan.org/perldoc?Marpa::XS::Semantics::Order">
+in Marpa::XS's documentation</a>.

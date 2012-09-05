@@ -1,0 +1,51 @@
+Marpa: Practical General BNF Parsing
+<p>With a regular expression engine, there
+are expectations.
+You feed a regular expression to the RE engine, it parses with it.
+That simple.
+
+<p>A general BNF parser is one which fulfills the same
+expectation for BNF.
+Write your language in BNF, you got a parser.
+But it hasn't been that simple.
+
+<p>The guys who write the textbooks have pushed
+general BNF parsing for years.
+Improvements in these algorithms have pushed
+the speeds down to linear or close to it
+for the kinds of language in practical use.
+
+<p>But the general parsing algorithms have languished
+on the textbook pages.
+And I did find it wasn't quite
+as easy as the academics suggested.
+There were some obstacles that they didn't forsee.
+But bottom line, they were right.
+General BNF parsing is practical.
+
+<p><a href="http://search.cpan.org/dist/Marpa/">Marpa</a> is a practical
+(if at this point alpha)
+general BNF parser
+generator.
+I have used Marpa to write a practical parser
+for a non-trivial task -- HTML parsing.
+That HTML parser is <a href="http://search.cpan.org/~jkegl/Marpa-0.002000/lib/Marpa/UrHTML/Doc/UrHTML.pod">Marpa::UrHTML</a>,
+and I now use
+Marpa::UrHTML
+in tasks I do routinely.
+
+<p>Over the next weeks, I will do phased releases of <a href="http://search.cpan.org/dist/Marpa/">Marpa</a>.
+The HTML parser, <a href="http://search.cpan.org/~jkegl/Marpa-0.002000/lib/Marpa/UrHTML/Doc/UrHTML.pod">Marpa::UrHTML, 
+is documented</a> and ready to use in the first release.
+Over the next few weeks,
+I will document Marpa,
+the parse engine itself.
+
+<p>Right now the Marpa parse engine is "pure Perl", and speeds
+are on the order of PPI.
+This is acceptable for many applications,
+but Marpa can do better.
+<a href="http://search.cpan.org/dist/Marpa/">Marpa</a> has as its parse engine a mathematical algorithm
+that lends itself to conversion to C.
+Further down the road, I'll write a Marpa C library,
+and an XS wrapper.

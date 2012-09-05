@@ -1,0 +1,81 @@
+Progress on Marpa::XS
+<h1>A Faster Marpa</h1>
+<p>I've been converting Marpa from Pure Perl to C.
+For those who don't know,
+<a href="http://search.cpan.org/dist/Marpa/">Marpa</a>
+is a parser generator
+which parses any grammar you can write in BNF.
+If the grammar is
+<a href="#NOTE1">one of those which can be parsed
+by yacc,
+by recursive descent or as a regular expression</a>,
+Marpa parses it
+<a href="#NOTE2">in linear time</a>.
+<p>Marpa's core algorithm does no system calls.
+It is almost 100% pointer twiddling.
+There is no floating point, and very little integer arithmetic.
+It's as if it was made to order to show C in its very best light.
+<p>I expected converting the Perl implementation
+to C to improve speed by two orders of magnitude,
+and first results are close -- the speedup for the code
+converted to C is 95 to 1.
+The code converted to C remains wrappered in Perl.
+The Perl wrapper handles the I/O,
+the user interface, and roughly the last third of the core algorithm.
+This last part of the core algorithm I have yet to rewrite in C.
+<p>The speedup for an actual application depends
+on how much Perl "wrappering" the application layers on top of the Marpa parse engine.
+But every test in the test suite is several times faster
+for XS than for Pure Perl.
+Ultimately, I will make Marpa's core algorithm available
+as <var>libmarpa</var>, a C library with a documented interface.
+If you write a wrapper for <var>libmarpa</var> in C,
+you will be able to get the full speedup, which I expect
+with a few more tweaks to be better than 100 to 1.
+<h1>Looking Onward: An "Official" Alpha Release</h1>
+<p>At this moment,
+Marpa::XS is available in developer's releases only.
+I prefer that most users look at
+<a href="http://search.cpan.org/dist/Marpa/">Marpa</a> instead.
+<a href="http://search.cpan.org/dist/Marpa/">Marpa</a> is Pure Perl.
+It is also alpha,
+but it is stable at this point.
+<p>But with this very measurable speedup,
+Marpa::XS now offers added value over
+<a href="http://search.cpan.org/dist/Marpa/">Marpa</a>,
+and I am turning to work on
+an "official alpha" release of Marpa::XS.
+Such a release would still not be suitable for use in production
+situations, and its interface would be subject to change.
+<h1>Notes</h1>
+<p><a name="NOTE1">Note 1</a>:
+Technically, the grammars that Marpa parses in linear time are the
+LR-regular grammars.
+These include the LR(k) grammars and the LL(k) grammars, for all k.
+<p><a name="NOTE2">Note 2</a>:
+The claim of O(n) time complexity is for the underlying algorithm.
+Actual implementations tend to pick those data structures
+which are fastest in practice, instead of on paper.
+Pure Perl implementations, of course,
+must rely on the internal implementation
+of Perl's native data structures.
+<p>The relationship between theoretical time complexity
+and actual implemented speed in our field is like that
+between quantum mechanics and Newtonian mechanics in physics.
+There are effects back and forth, and a realm
+where each clearly rules.
+There are also specialists in each,
+who tend to avoid looking at the scales
+where one set of rules ceases to apply
+and the other kicks in.
+<p>The relationship between
+theoretical time complexity and actual implemented speed interests
+me.
+In Marpa's XS implementation, I have control of the data
+structures, and I am using the implementation to work out
+in detail
+the proofs of time complexity for Earley's algorithm
+and Leo's modification of it.
+In the course of this I hope to make a full accounting of
+any differences
+between theoretical and implemented time complexity.

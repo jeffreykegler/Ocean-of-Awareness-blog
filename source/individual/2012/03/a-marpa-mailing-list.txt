@@ -1,0 +1,4 @@
+A Marpa mailing list
+<p>Ruslan Zakirov has started <a href="https://groups.google.com/forum/?hl=en&fromgroups#%21forum/marpa-parser">a Google mailing list</a> for discussions about Marpa: marpa-parser@googlegroups.com -- I am grateful to Ruslan for doing this and plan to follow the mailing list.
+
+<p>On another topic, I will be removing the "bare name" version of Marpa from CPAN shortly.  The "bare name" Marpa is a legacy, deprecated version and is simply causing too much confusion, with search engines and elsewhere.  The official, stable version of Marpa remains <a href="https://metacpan.org/module/Marpa::XS">Marpa::XS</a>.

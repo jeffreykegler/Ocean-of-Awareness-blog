@@ -1,0 +1,176 @@
+Precedence parsing made simpler
+<p>This post describes a new approach to precedence parsing,
+one that makes it simpler and
+more flexible.
+Many programmers find precedence
+is an intuitive way to
+look at problems.
+The traditional rules of arithmetic
+are a familiar example:
+<tt><pre>
+E ::= ( E )
+E ::= n
+E ::= E * E
+E ::= E + E
+</pre></tt>
+<p>
+Here, as in the rest of this post,
+the rules are ranked from tightest ("highest") precedence
+to loosest ("lowest").
+The order in the above display indicates that multiplication
+takes precedence over addition, and parentheses take precedence
+over everything else.
+<h2>The old way and the new way</h2>
+<p>The traditional way to deal with precedence
+centers on symbols.
+The symbols are divided sharply in two:
+those that define structure
+and those that carry information.
+The structural symbols (often called "operators")
+are assigned associativities and precedence.
+To help guide the parse,
+symbols may be further classified as infix, prefix,
+circumfix, etc.
+<p>
+Many rules, even those which intuitively seem part of
+the precedence order,
+do not fit into this symbol-oriented view of precedence.
+Implied operators are ruled out,
+as is any rule with two non-terminals in a row.
+Rules with an arity of 3 or above, when not also impossible,
+are a challenge.
+<p>The approach of this post is 100% rule-based.
+There is no attempt to identify operators or structural
+symbols,
+and no attempt to assign properties to them.
+This rule-based approach allows
+the convenient expression and
+efficient implementation of
+implied operators,
+of rules of arity 3 or higher,
+and of rules with any pattern of terminals or non-terminals.
+<h2>Simpler</h2>
+<p>
+Before getting into new features,
+it is probably best to show the new approach as applied
+to a grammar that
+can be parsed with the traditional methods.
+My notation is mostly standard or transparent,
+but here are details:
+<tt><pre>
+    ::=       separates the lhs of a rule from its rhs alternatives
+    |         separates alteratives at the same precedence level
+    ||        separates alteratives at different precedence levels
+    :group    indicates 'grouping' associativity
+    :left     indicates left associativity (the default)
+    :right    indicates right associativity
+</pre></tt>
+<p>
+Here is the grammar:
+<tt><pre>
+e ::=
+     NUM
+   | VAR
+   | :group '(' e ')'
+  || '-' e
+  || :right e '^' e
+  || e '*' e
+   | e '/' e
+  || e '+' e
+   | e '-' e
+  || VAR '=' e
+</pre></tt>
+<p>
+The above fully states the
+precedence and associativity for the grammar's rules.
+(As a reminder, the precedence follows the order of the rules,
+from tightest to loosest.)
+This is significantly simpler than what is required
+to set up a traditional precedence parser.
+On the other hand,
+intuitively, it looks like all the required
+information is there.
+And, in fact, this is the source from which
+Marpa::Demo::OP1 creates the grammar for a calculator.
+The code is
+<a href="https://gist.github.com/3427294">
+a Github gist</a>.
+<p>In real life, users of a calculator grammar,
+like the above,
+will be interested
+in a numeric result.
+However, in this post we are not interested in double-checking
+Perl's ability to do basic arithmetic,
+so instead we capture
+the syntactic structure that the calculator creates.
+Here are sample outputs, with square brackets
+added to show the parse.
+<tt><pre>
+Input: "4 * 3 + 42 / 1"
+  Parse: [[4*3]+[42/1]]
+Input: "4 * 3 / (a = b = 5) + 42 - 1"
+  Parse: [[[[4*3]/[([a=[b=5]])]]+42]-1]
+Input: "4 * 3 /  5 - - - 3 + 42 - 1"
+  Parse: [[[[[4*3]/5]-[-[-3]]]+42]-1]
+Input: "- a - b"
+  Parse: [[-a]-b]
+Input: "1 * 2 + 3 * 4 ^ 2 ^ 2 ^ 2 * 42 + 1"
+  Parse: [[[1*2]+[[3*[4^[2^[2^2]]]]*42]]+1]
+</pre></tt>
+<h2>More flexible</h2>
+<p>
+In the next grammar, I'll introduce an implied operator.
+An implied operator is prominent among the features
+that traditional precedence parsers
+simply could not handle.
+In the grammar that follows,
+a missing operator will indicate multiplication,
+just as in algebra.
+<p>
+Traditional precedence parsers also
+were stymied by
+rules with an arity of 3 or more.
+For Marpa::Demo::OP1, these are no problem at all.
+I'll introduce two ternary operations,
+and a quaternary operation.
+(New in the notation below is the "<tt>=> xyz</tt>",
+which specifies a non-default semantics,
+in this case "<tt>xyz()</tt>".)
+<p>
+<tt><pre>
+e ::=
+     NUM
+   | VAR
+   | :group '(' e ')'
+  || '-' e
+  || :right e '^' e
+  || e '*' e
+   | e e                                          => implied_multiply
+   | e '/' e
+  || e '+' e
+   | e '-' e
+  || VAR '=' e
+  || :right e '?' e ':' e                         => spaced
+   | :right e '??' e ':' e ':' e                  => spaced
+  || 'payment' 'on' e 'over' e 'years' 'at' e '%' => spaced
+</pre></tt>
+<p>The code for this second example is also
+<a href="https://gist.github.com/3427312">
+a Github gist</a>.
+And here is the output.
+(To make it easy to spot them,
+implied multiplications are shown with an "<code class="prettyprint">x</code>"
+instead of a "<code class="prettyprint">*</code>".)
+<tt><pre>
+Input: "4 3 42 + 1"
+  Parse: [[[4 x 3] x 42]+1]
+Input: "e = m c^2"
+  Parse: [e=[m x [c^2]]]
+Input: "4 * 3 5 (6 7) 8 9 10"
+  Parse: [[[[[[4*3] x 5] x [([6 x 7])]] x 8] x 9] x 10]
+Input: "1 ? 42 : 2 ?? 3 : 4 : 5 ? 6 : 7"
+  Parse: [1 ? 42 : [2 ?? 3 : 4 : [5 ? 6 : 7]]]
+Input: "payment on 1000 + 1000 over months/12 years at 5 + 1 %"
+  Parse: [payment on [1000+1000] over [months/12] years at [5+1] %]
+</pre></tt
+<h2>How rule-based precedence works

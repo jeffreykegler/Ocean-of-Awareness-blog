@@ -1,0 +1,82 @@
+The solved problem that isn't, is
+<p>In the title of
+<a href="http://tratt.net/laurie/tech_articles/articles/parsing_the_solved_problem_that_isnt">
+an excellent blog post</a>,
+Laurence Tratt calls parsing,
+"the solved problem that isn't".
+I thought this
+phrase captured the current situation
+in parsing theory and practice very nicely.
+In stating that parsing is not a solved problem,
+Tratt realized he was taking on a consensus.
+But the consensus is fading --
+for example, neither side in the interchange
+between
+<a href="http://arxiv.org/abs/1010.5023">
+Might/Darais</a>
+and
+<a href="http://research.swtch.com/yaccalive">
+Russ Cox</a>
+expresses complete
+contentment with the state of the art.
+<p>
+What would be a real solution to the parsing problem?
+I wish to suggest that
+<a href="http://www.jeffreykegler.com/marpa">Marpa</a>
+is that solution.
+I say that based on a list of features.
+Marpa is the first parser to have all of these features,
+and I claim they are enough to justify the assertion
+that, with Marpa,
+parsing is no longer an unsolved problem.
+Specifically,
+<ol>
+<li><p>Marpa parses everything you can write in BNF.
+<li><p>Marpa parses in times considered theoretically optimal.
+For unambiguous grammars, Marpa is never worse than O(n²).
+For ambiguous grammars, Marpa is never worse than O(n³).
+Marpa never goes exponential.
+<li><p>
+Marpa parses all
+classes of grammar in practical use today in linear time, O(n).
+Marpa is linear for all LR-regular grammars.
+The LR-regular grammars include regular expressions,
+LL(k) for all k,
+and LR(k) for all k.
+<li><p>A serious practical issue has been parse-time error detection.
+Marpa breaks new ground here.
+Marpa is fully aware, at every point in the parse, of
+all the rules it is parsing,
+how far into them it has proceeded,
+and of what tokens it expects next.
+This information is available
+to the application
+conveniently and efficiently.
+<li><p>
+Marpa parsers do not need to be handwritten.
+Marpa is available as a open-source library.
+It is written in C,
+and the C library can be used
+<a href="http://jeffreykegler.github.com/Marpa/libmarpa.html">
+directly</a>
+or via
+<a href="https://metacpan.org/release/Marpa-R2">
+a Perl interface</a>.
+<li><p>
+For general BNF parsing,
+the user does not need to craft
+a lookahead or backtracking strategy -- Marpa
+does not use lookahead and never backtracks.
+<li><p>
+Marpa's complexity and correctness claims come
+with the traditional theoretical apparatus of
+proofs based on prior literature.
+</ol>
+<p>
+In his post,
+Tratt focuses his discontent on the problem of "language composition" -- the
+problem of combining two grammars into one.
+Tratt knew that an efficient and practical general BNF parser, like Marpa,
+would make language composition easy.
+But he was not aware that any such parser existed.
+Language composition is a topic to which I hope to return.

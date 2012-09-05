@@ -1,0 +1,131 @@
+Why I Stuck With Perl
+<p>I've just read
+<a href="http://everythingsysadmin.com/2011/01/python-is-better-than-perl6.html">
+a very thoughtful
+description</a>
+of why one Perl
+programmer switched to Python.
+In this blog post, I'll explain why I did not.
+
+<p>When I started on the
+<a href="http://search.cpan.org/dist/Marpa/">Marpa</a>
+project, Perl was
+not an automatic choice.
+In fact it looked like it might
+be the wrong one.
+There was as much buzz for Python then
+as now.
+Maybe more.
+I'd had my own
+experience with Python,
+and it was excellent.
+I'd used Python to create a threaded mail client for
+testing purposes.
+I found Python to be easy to learn, fun to use,
+and an effective way to accomplish my task.
+
+<p>Perl had another problem.
+An important audience for
+<a href="http://search.cpan.org/dist/Marpa/">Marpa</a>,
+<a href="#NOTE1">my new parser</a>, 
+is academia.
+Academics certainly use Perl.
+My experience is that they even respect it in a certain sense.
+But Perl does not fit neatly into the minimalist
+paradigms which still rule academia.
+If you speak Perl to academics, you are not talking
+their language.
+That means you run a great
+risk that nobody will listen.
+
+<p>I read and studied a lot about the relative merits
+and demerits
+of various scripting languages.
+Others have covered, and continue to cover, that ground
+very well.
+Let me go straight to explaining why I stuck.
+Perl has CPAN.  And CPAN ...  well, let me tell you a story.
+
+<h1>An Incident on CPAN</h1>
+<p>Recently, my development version of Marpa::XS showed a lot of failures
+from the cpantesters.
+This happened immediately after a mild brag in this blog,
+about my impressive success rate in writing portable C code.
+It was like one of those Greek myths,
+where one of the Gods in Olympus decides a big-talking mortal needs to be taken down a peg.
+
+
+<p>I did not receive any lightning bolts, but I sure got a variety of test
+failures.
+With considerable effort,
+I was able to eliminate
+all but one of these on my own.
+The remaining failure happened only on the tests run by Andreas Koenig.
+Not that I expected Andreas's setup was at fault --
+it was more likely that all the other setups were being liberal where
+Andreas was being strict.
+Which is what turned out to be the case.
+
+<p>So I emailed Andreas.
+Frankly, I did not have high expectations.
+Andreas is doing a lot of important things.
+My guess was that
+discovering why new C code on the unstable development version
+of a new module does not execute in his test setup
+might take quite a while to percolate to the top of his "to do" list.
+
+<p>I was therefore very surprised when the answer rocketed back.
+My development version of Marpa::XS failed only with the development
+versions of Module::Build later than a certain version number.
+Andreas, it turns out,
+is set up to do regression analysis, and the regression analysis
+pointed straight to the combination.
+
+<p>For those of you who don't know, regression analysis essentially sets up
+an equation combining various factors (in this case, module versions, Perl versions,
+hardware, OS, etc.) with an outcome (in this case, success or failure).
+It can be used to see which factors correlate with which outcomes --
+in this case, which combinations of modules, hardware, etc. are correlated
+with failures.
+
+<p>It's a very cool technique.
+(I tried to get my clients to use it in my consulting practice,
+but there was just too much pushback on the math.)
+Andreas's regression tools pointed straight to the problem.
+It began to happen when Module::Build switched to non-lazy
+loading of dynamic code.
+
+<p>Here's what my bug was.  I had declared a C function, call it
+<var>xyz()</var>.
+But I had never defined <var>xyz()</var> -- there was no code for it.
+But I also never called
+<var>xyz()</var> anywhere.
+With lazy dynamic loading, that meant no attempt to load
+<var>xyz()</var> was ever made.
+So with lazy loading, my bug was harmless.
+
+
+<p>In the name of thorough testing, Module::Build was switching to
+non-lazy loading.  This meant that, call or no call, my executable
+looked for
+<var>xyz()</var> and, when it did not find it, abended.
+
+<p>In his email to me,
+David Golden left it an open question whether testing with
+lazy or non-lazy loading is best.
+I'll leave the final resolution of that to his capable judgement.
+For Marpa, I think Module::Build's new behavior is the best,
+and I've changed my test setup to always be non-lazy.
+In the future, any never-called never-defined function like
+<var>xyz()</var> will abend in my test setup.
+
+<h1>Summary</h1>
+<p>My quest is to make Marpa's C-enabled version
+widely portable.
+To this end, CPAN not only offers
+me free widespread testing, but even fast, polite, high-quality help with
+debugging.
+Would I get that if I were programming in a language other than Perl?
+<p><a name="NOTE1"><b>Note 1:</b></a>
+<a href="http://search.cpan.org/dist/Marpa/">Marpa</a>  parses any grammar that you can write in BNF,
+and parses all grammars parseable by yacc or recursive descent in linear time.

@@ -1,0 +1,50 @@
+What!  No Lexer?
+<p>
+To those who have noted that
+<a href="https://metacpan.org/module/Marpa::XS">
+Marpa::XS</a>
+does not come with a lexer,
+I'd respond that,
+in a very real sense it does --
+Perl.
+Perl5 is a powerful lexical analyzer.
+</p>
+<p>
+If you're trying to figure out how to write your first Marpa
+parser,
+I'd recommend a close look at 
+<a href="http://blogs.perl.org/users/wolfgang_kinkeldei/2011/12/trying-marpa-to-parse-css.html">
+Wolfgang Kinkeldei's recent posting about his
+Marpa-powered CSS parser</a>.
+Wolfgang lays his parser out in a very elegant fashion,
+and I find his code makes an excellent template.
+</p>
+Especially nice-looking is Wolfgang's lexer.
+Wolfgang follows one of the two
+main strategies for lexical analysis in 
+Perl:
+he consumes the input using substitution
+(<code class="prettyprint">s/ ... / ... /</code>) commands.
+<p>
+
+</p>
+The other strategy is to use the Perl regex search position
+to track the progress of the lexical analysis.
+In the search-position strategy,
+your cases consist of a lot of 
+match commands using the <code class="prettyprint">\G</code> anchor
+and the <code class="prettyprint">gc</code> modifier:
+<code class="prettyprint">m/\G ... /gc</code>.
+An excellent tutorial on this
+kind of lexing,
+albeit in a non-Marpa context,
+can be found in
+<a href="#DOMINUS">Mark Jason Dominus's book,
+<cite>Higher Order Perl</cite></a>.
+Mark's coverage of lexing is in
+Chapter 8, "Parsing", on pages 359-375.
+Mark's book can be read
+<a href="http://hop.perl.plover.com/book/">
+on-line</a>.
+I highly recommend Mark's book
+and own a paper copy.

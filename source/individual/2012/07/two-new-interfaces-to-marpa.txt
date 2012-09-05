@@ -1,0 +1,94 @@
+Two new interfaces to Marpa
+<blockquote>
+"You get to create your own world,
+and the only thing that limits what you can do
+are the capabilities of the machine --
+and, more and more often they days,
+your own abiliites"
+<cite>Linus Torvalds, <i>Just For Fun</i>, p. 74</cite>
+</blockquote>
+<p>As of
+<a href="https://metacpan.org/release/Marpa-R2">
+Marpa::R2 2.010000</a>,
+Marpa has two new, documented, interfaces.
+(For those new to this blog,
+<a href="http://www.jeffreykegler.com/marpa">
+Marpa is something new in parsing</a> --
+it parses anything you can write in BNF and,
+if your grammar is in one of the classes currently in practical use,
+parses  it in linear time.
+Marpa's parse engine is written in optimized C,
+so that Marpa's speed is competitive with parsers of far less power.
+Marpa's stable version is
+<a href="https://metacpan.org/module/Marpa::XS">
+Marpa::XS</a>.)
+
+
+<h2>Announcing Marpa's C library: Libmarpa</h2>
+The first new interface is Libmarpa, a C language library.
+Previously, Marpa's only documented interfaces required the
+programmer to use it
+through Perl.  Using Marpa through Perl had major advantages --
+it gave the programmer convenient access not just to Perl's capabiliites,
+but to all of CPAN as well.
+
+<p>But there were downsides.
+<ul>
+<li>
+There are other languages besides Perl,
+and these have their own advantages
+and their own fans.
+<li>There was a real cost in efficiency.
+Perhaps 90% of the time in the typical Marpa application
+was spent running Perl, as opposed to 10% in Marpa's C code.
+<li>Finally, making the user interface convenient also meant making choices
+for the user.
+Not all of the capabilities of
+Marpa were available through Marpa::XS and Marpa::R2.
+</ul>
+
+With Libmarpa, the programmer has access to the full speed
+and flexibility of Marpa's optimized C code.
+
+<h2>Announcing Marpa's "thin" interface: Marpa::R2::Thin</h2>
+<p>Together with Libmarpa, I am announcing a "thin" Perl interface to it.
+The "thin" interface is a raw interface to Libmarpa.
+It's a compromise between the "thick" Marpa::R2 and Marpa::XS
+interfaces,
+and having to program in C.
+The thin interface will be of interest to
+<ul>
+<li>Programmers creating interfaces to Marpa.  They no longer
+have to layer their code on top of Marpa::XS and Marpa::R2.
+All interfaces are now equal.
+
+<li>Perl programmers who want direct access to all of
+Libmarpa's capabilities.
+<li>Programmers in a situation which where lower overhead
+justifies extra effort.
+</ul>
+
+<h2>The documentation</h2>
+If you are new to Marpa, you
+do NOT want to head straight to the Libmarpa
+and Marpa::R2::Thin documentation.
+Instead, I suggest that you look at
+<a href="https://metacpan.org/release/Marpa-R2">
+the Marpa::R2 documentation</a>,
+or
+<a href="http://www.jeffreykegler.com/marpa">
+the Marpa web page</a>.
+The
+<a href="https://github.com/downloads/jeffreykegler/Marpa--R2/api-v2.10.0.pdf">
+Libmarpa API document</a>
+is a reference manual,
+which assumes that the user is already familiar with Marpa,
+either through Marpa::R2, Marpa::XS or
+
+<a href="https://github.com/downloads/jeffreykegler/Marpa-theory/recce.pdf">Marpa's
+theory paper</a>.
+Reading
+<a href="https://metacpan.org/module/Marpa::R2::Advanced::Thin">
+the Marpa::R2::Thin document</a>,
+in its turn, requires continual reference back
+to the Libmarpa API document.

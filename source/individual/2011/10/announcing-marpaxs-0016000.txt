@@ -1,0 +1,328 @@
+Announcing Marpa::XS 0.016000
+<p>
+I released
+<a href="http://search.cpan.org/~jkegl/Marpa-XS-0.016000/">
+Marpa::XS 0.016000</a>
+a week ago and the
+cpantesters results look excellent.
+With this release, my conversion of Marpa from Perl to C
+is finished.
+A lot of Perl code remains, to be sure,
+but all of it is code that
+arguably belongs in some kind of
+<a href="#HLL">higher-level language</a>.
+</p>
+<p>
+This release was checked 
+for leaks and other memory issues.
+The couple of issues that turned up were fixed.
+</p>
+<h1>What is Marpa?</h1>
+<p>Marpa is an advance over recursive descent
+and yacc.
+I hope the Marpa algorithm
+will become the standard parser for
+problems too
+big for regular expressions.
+</p><ul>
+<li>Marpa parses
+
+<a href="#LINEAR">
+in linear time</a>,
+all
+classes of grammar that are currently in practical use.
+</li>
+<li>The importance of parse-time debugging is often underestimated.
+Marpa's parse-time error detection breaks new ground -- Marpa is
+fully aware of exactly where in the parse it is at all times,
+and of exactly what input it expects and why.
+This means parse-time error detection, once a desperate last
+resort, now can be used as
+<a href="http://blogs.perl.org/users/jeffrey_kegler/2010/06/parsing-with-ruby-slippers.html">
+a parsing technique in itself</a>.
+
+</li>
+<li>Marpa is a general BNF parser -- that means if you feed it anything
+written in BNF, it "just parses" it.
+This includes grammars which are left-recursive, right-recursive and
+ambiguous -- even infinitely ambiguous.
+</li>
+<li>Marpa never goes exponential -- worst case, even for highly ambiguous
+grammars, is O(n**3), which is
+<a href="#OPTIMAL">considered optimal</a>.
+</li>
+</ul>
+<h1>What is next with Marpa?</h1>
+
+<p>
+At this point,
+little remains to be done before a
+a 1.000000 beta release of Marpa::XS.
+Once Marpa::XS does go beta, I expect to be able to keep
+its interface stable.
+</p>
+<p>
+Inside Marpa::XS,
+the portions converted to C amount to
+a complete, if low-level, parsing library.
+The <kbd>libmarpa</kbd> library
+does not, however, have the documentation that you'd expect in
+a library being released on its own.
+</p>
+<p>
+Also, frankly, before writing the documentation,
+I need to redo the interface to <kbd>libmarpa</kbd>.
+As long as the interface to libmarpa was a strictly internal affair,
+I didn't worry about it much --
+I made the first cut at a design, and got it working.
+I then looked at the result.
+If the design was so awful that
+it got in the way of features or was an efficiency issue,
+I fixed it.
+If ugliness or awkwardness was its main issue, I moved on.
+With the first pass and a few trial applications behind me,
+I now
+know how the <kbd>libmarpa</kbd> interface should look.
+</p>
+
+<p>
+Once I have <kbd>libmarpa</kbd> finished and documented,
+the next step will be Marpa::Thin.
+These days a lot of people like to hack interfaces.
+The Marpa project is about the parse engine -- when it
+comes to interfaces, I want to put everyone else on a level
+playing field with me, if not get out of the game altogether.
+Marpa::Thin will be a "thin" Perl interface to <kbd>libmarpa</kbd>.
+</p>
+<p>
+Currently, I plan to create a SWIG interface to <kbd>libmarpa</kbd>,
+which means that any environment that SWIG supports
+(and there are a lot of them)
+will have access to the low-level Perl library.
+I have mixed feelings about Marpa leaving its Perl home,
+but I think most Perlers share my belief --
+we contribute to the Perl community,
+not because it is a goal in itself,
+but because it is the best way to
+contribute to a larger community.
+</p>
+<h1>Limitations and Comparisons</h1>
+<p>
+Currently, the major limitation of Marpa::XS is
+that it is alpha.
+Development is well advanced, but the interface remains
+subject to change.
+For a comparison of Marpa to other parsers,
+one which is careful to point out situations
+where older parsing algorithms may still be superior,
+see the
+"Limitations and Comparisons" section
+
+<a href="http://blogs.perl.org/users/jeffrey_kegler/2011/08/announcing-marpaxs-080.html">
+in my announcement of Marpa::XS 0.008000</a>.
+</p><h2>Notes</h2>
+<ol>
+<li><a name="HLL">"higher-level language": </a>
+Of course, depending on the application, the ideal "high-level language"
+may be C.
+But I feel no real need to convert the code for the user interfaces
+to C,
+and the scripts for building and testing really should be in a
+highly portable high-level language.
+</li>
+<li><a name="LINEAR">"in linear time": </a>
+To be specific, Marpa parses any LR-regular grammar in linear time -- O(n).
+LR-regular is a vast class of grammars that includes LALR,
+LR(k) for all k,
+and LL(k) for all k.
+This means that Marpa parses,
+in linear time,
+every grammar parsed by yacc,
+recursive descent and regular expressions.
+</li>
+<li><a name="OPTIMAL">"considered optimal": </a>
+The phrase "considered optimal" elides some
+irrelevant bits of theory.
+It would be a bit of a
+surprise if it is possible to
+do general BNF parsing
+in O(n), but nobody has proved that it can't be done.
+The Valiant algorithm parses general BNF
+and is O(n**2.376...) or better.
+But Valiant's algorithm is only faster for huge problems,
+and for those it
+needs a machine with many terabytes of main memory
+to deliver on its speed claims.
+So it won't be competing with Marpa any time soon.
+
+</p>
+                            
+                        </div><!-- .entry-body -->
+                        
+                        <div class="entry-meta-2 pkg">
+                            <ul>
+                                <li><a href="#comments">0 comments</a></li>
+                                <!-- <li><a href="http://blogs.perl.org/users/jeffrey_kegler/2011/10/announcing-marpaxs-0016000.html">0 votes</a></li> -->
+                            </ul>
+                        </div>
+                    </div><!-- #entry-2294 -->
+                    
+
+
+
+
+	<div class="entry-tags">
+    <h4>Tagged as<span class="delimiter">:</span></h4>
+    <span><a href=
+"javascript:void(0)" onclick="location.href='http://blogs.perl.org/mt/mt-search.fcgi?blog_id=63&amp;tag=Marpa%20Earley%20Perl%20Parsing&amp;limit=20';return false;" rel="tag">Marpa Earley Perl Parsing</a></span>
+     </div>
+
+
+<div id="comments" class="comments">
+
+
+    
+    
+    
+
+    
+    
+    <div class="comments-open" id="comments-open">
+        <h2 class="comments-open-header">Leave a comment</h2>
+        <div class="comments-open-content">
+
+        
+            <div id="comment-greeting"></div>
+
+            <form method="post" action="http://blogs.perl.org/mt/mt-comments.fcgi" name="comments_form" id="comments-form" onsubmit="return mtCommentOnSubmit(this)">
+                <input type="hidden" name="static" value="1" />
+                <input type="hidden" name="entry_id" value="2294" />
+                <input type="hidden" name="__lang" value="en" />
+                <input type="hidden" name="parent_id" value="" id="comment-parent-id" />
+                <input type="hidden" name="armor" value="1" />
+                <input type="hidden" name="preview" value="" />
+                <input type="hidden" name="sid" value="" />
+                <div id="comments-open-data">
+                    <div id="comment-form-name">
+                        <label for="comment-author">Name</label>
+                        <input id="comment-author" name="author" size="30" value="" onfocus="mtCommentFormOnFocus()" />
+                    </div>
+                    <div id="comment-form-email">
+                        <label for="comment-email">Email Address</label>
+                        <input id="comment-email" name="email" size="30" value="" onfocus="mtCommentFormOnFocus()" />
+                    </div>
+                    <div id="comment-form-url">
+                        <label for="comment-url">URL</label>
+                        <input id="comment-url" name="url" size="30" value="" onfocus="mtCommentFormOnFocus()" />
+                    </div>
+                    <div id="comment-form-remember-me">
+                        <input type="checkbox" id="comment-bake-cookie" name="bakecookie" onclick="mtRememberMeOnClick(this)" value="1" accesskey="r" />
+                        <label for="comment-bake-cookie">Remember personal info?</label>
+                    </div>
+                </div>
+                <div id="comment-form-reply" style="display:none">
+                    <input type="checkbox" id="comment-reply" name="comment_reply" value="" onclick="mtSetCommentParentID()" />
+                    <label for="comment-reply" id="comment-reply-label"></label>
+                </div>
+                <div id="comments-open-text">
+                    <label for="comment-text">Comments
+                    (You may use HTML tags for style)</label>
+                    <textarea id="comment-text" name="text" rows="15" cols="50" onfocus="mtCommentFormOnFocus()"></textarea>
+                </div>
+                <div id="comments-open-captcha"></div>
+                <div id="comments-open-footer">
+                    <input type="submit" accesskey="v" name="preview_button" id="comment-preview" value="Preview" onclick="this.form.preview.value='1';" />
+                    <input type="submit" accesskey="s" name="post" id="comment-submit" value="Submit" />
+                </div>
+            </form>
+
+
+        </div>
+    </div>
+    <script type="text/javascript">
+    <!--
+    mtAttachEvent("load", mtEntryOnLoad);
+    mtAttachEvent("unload", mtEntryOnUnload);
+    //-->
+    </script>
+    
+
+
+</div>
+
+
+
+</div><!-- #content-main -->
+            
+            <div id="content-aux">
+            
+                
+                <div class="module-aux pkg" id="module-aux-about-author-181">
+                <div class="module-inner">
+                    <h3>About Jeffrey Kegler</h3>
+                    <p><img class="authorpic" src="http://blogs.perl.org/mt/mt-static/support/assets_c/2011/08/Jeffrey_Kegler_BEACH1-thumb-72x72-574.jpg"" alt="user-pic" />
+	            I blog about Marpa, my parsing algorithm, and other things of interest to techies.</p>
+                    <div class="more-link"><a href="http://blogs.perl.org/mt/mt-cp.fcgi?__mode=view&amp;id=181">More info &raquo;</a></div>
+                </div>
+                </div><!-- #module-aux-about-author -->
+
+
+
+
+                
+            
+            
+            <div class="module-aux pkg" id="module-aux-search">
+                <div class="module-inner">
+                    
+                    
+                    <h3>Search this blog</h3>
+                    
+                    
+					
+                    <div id="search-form-aux">
+                        <form method="get" action="http://blogs.perl.org/mt/mt-search.fcgi">
+                    
+                            <input type="hidden" name="IncludeBlogs" value="63" />
+                    
+                            <input type="hidden" name="limit" value="20" />
+                            <label for="search">Search</label>
+                            <input id="local-search" class="query" name="search" value="" />
+                            <input class="submit" type="submit" value="Go" />
+                        </form>
+                    </div><!-- #search-form-aux -->
+                </div>
+                </div><!-- #module-aux-search -->
+                    
+
+            
+            
+                
+                
+                
+                
+            
+
+            </div><!-- #content-aux -->
+
+
+
+        </div><!-- #content-inner -->
+        </div><!-- #content -->
+
+        <div id="footer">
+        <div id="footer-inner" class="pkg">
+            <ul id="footer-nav">
+                <li class="first"><a href="http://github.com/blogs-perl-org/blogs.perl.org/issues">Feedback welcome</a></li>
+                <li>Hosted by <a href="http://dave.org.uk">Dave Cross</a> of <a href="http://mag-sol.com/">Magnum Solutions</a> and <a href="http://aaroncrane.co.uk/">Aaron Crane</a> of <a href="http://cutbot.net/">Cutbot</a></li>
+            </ul>
+            
+            <div class="powered-by"><a href="http://www.movabletype.com/" target="_blank">Powered by Movable Type</a></div>
+        </div><!-- #footer-inner -->
+        </div><!-- #footer -->
+            
+        </div><!-- #content-inner -->
+        </div><!-- #content -->
+        
+    </div><!-- #container-inner -->
+    </div><!-- #container -->

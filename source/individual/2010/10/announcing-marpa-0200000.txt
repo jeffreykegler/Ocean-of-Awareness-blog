@@ -1,0 +1,42 @@
+Announcing Marpa 0.200000
+<p><a href="http://search.cpan.org/~jkegl/Marpa-0.200000/">Marpa</a>
+is now at 0.200000.
+Following a standard rhetoric of version numbers, this indicates
+that it's an official release and a major step forward,
+but still alpha.
+Marpa is a general BNF parser generator -- it parses from any grammar that
+you can write in BNF.
+It's based on Earley's algorithm, but incorporates recent advances,
+so that it runs in linear time for all those grammars parseable by yacc
+or recursive descent.
+
+<p>The big news with Marpa 0.200000 is Marpa's 3rd generation evaluator.
+The previous version of Marpa had two evaluators
+-- one fast, but only
+good for producing a single parse result,
+the other capable of dealing with ambiguous grammars, but slower.
+The 3rd generation has a single evaluator which combines the best
+of both.
+Not the least advantage of this change
+is that it simplifies the documentation
+and the interface.
+
+<p>Marpa remains alpha and its interface may change.
+But I use Marpa in my own work -- it's the basis 
+of
+<a href="http://search.cpan.org/dist/Marpa-HTML/">
+some rather handly HTML utilities</a>,
+if I do say so myself.
+But I would not at this point consider Marpa for anything
+mission-critical or "production".
+
+<p>An obsolete predecessor of Marpa, Parse::Marpa, is still on CPAN.
+I plan to remove Parse::Marpa from CPAN shortly.
+Anyone for whom that is a problem, please let me know.
+Remember, the heroes of old will feast forever in Valhalla,
+and Parse::Marpa will live eternally in
+<a href="http://backpan.perl.org/">backpan</a>.
+
+<p>As for the future:
+The major barrier between Marpa and world conquest is speed.
+I am busily converting Marpa to XS.
