@@ -5,8 +5,6 @@ use strict;
 use warnings;
 use English qw( -no_match_vars );
 use autodie;
-use URI::Escape;
-
 
 my %post_by_date;
 open my $dates_fh, q{<}, 'plugins/state/dates';
@@ -48,8 +46,11 @@ for my $julian (sort { $b <=> $a } keys %post_by_date) {
     my @month_names = qw( January February March April May June
 	July August September October November December );
 	my $month_name = $month_names[$mon];
-	my $safe_file = uri_escape($file);
-    say qq{<p>$month_name $mday <a href="$safe_file">$title</a></p>};
+    my $href_file = $file;
+    $href_file =~ s{^source\/}{};
+    $href_file =~ s/[.]txt$//;
+    $href_file .= '.html';
+    say qq{<p>$month_name $mday <a href="$url$href_file">$title</a></p>};
 }
   
 open my $foot_fh, q{<}, 'source/foot.html';
