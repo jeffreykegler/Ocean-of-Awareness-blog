@@ -700,8 +700,62 @@ Input: &quot;1 ? 42 : 2 ?? 3 : 4 : 5 ? 6 : 7&quot;
   Parse: [1 ? 42 : [2 ?? 3 : 4 : [5 ? 6 : 7]]]
 Input: &quot;payment on 1000 + 1000 over months/12 years at 5 + 1 %&quot;
   Parse: [payment on [1000+1000] over [months/12] years at [5+1] %]
-&lt;/pre&gt;&lt;/tt
-&lt;h2&gt;How rule-based precedence works</description>
+&lt;/pre&gt;&lt;/tt&gt;
+&lt;h2&gt;How rule-based precedence works&lt;/h2&gt;
+&lt;p&gt;
+Rule-based precedence parsing uses
+&lt;a href=&quot;http://www.jeffreykegler.com/marpa&quot;&gt;
+Marpa&lt;/a&gt;,
+a new and efficient general BNF parsing algorithm.
+With Marpa,
+the rest is straightforward.
+The grammars in the examples above are rewritten,
+using the included precedence and associativity information,
+into an &quot;order-explicit grammar&quot;.
+The BNF of an order-explicit grammar
+enforces the 
+precedence and associativity of the original, source grammar.
+Many textbooks on parsing describe
+how to write order-explicit BNF
+by hand.
+&lt;p&gt;
+Creating an algorithm to produce an order-explicit BNF grammar
+required some careful thought,
+but no flashes of brilliance.
+Previously, the major obstacle to this approach would have been
+the parse engine.
+Traditional parsers did not &quot;just parse&quot; arbitrary BNF -- far from it.
+Without (and often even with) programmer intervention,
+there would be little reason to hope that
+an LALR or LL parse engine would parse
+an arbitrary order-explicit BNF grammar.
+&lt;a href=&quot;http://www.jeffreykegler.com/marpa&quot;&gt;
+Marpa&lt;/a&gt;,
+on the other hand, does &quot;just parse&quot; arbitrary BNF,
+and a successful parse is guaranteed.
+&lt;p&gt;
+Any grammar which could have been parsed by yacc (LALR)
+or an operator-precedence parser will be parsed by Marpa in linear
+time.
+LALR and operator precedence are subsets of LR(1), while
+Marpa is linear for LR-regular,
+and for LR(k) for all k.
+This means that Marpa will stay linear for vast classes of grammars
+that the traditional techniques
+had no hope of ever parsing.
+&lt;p&gt;
+&lt;h2&gt;Acknowledgements&lt;/h2&gt;
+&lt;p&gt;
+This post is the outcome of a line of thinking started
+by an exchange with Alberto Sim&amp;otilde;es,
+begun when he graciously shared with me
+a pre-release
+copy of
+&lt;a href=&quot;http://drops.dagstuhl.de/opus/volltexte/2012/3513/pdf/6.pdf&quot;&gt;
+an article on lexical analysis&lt;/a&gt;,
+which he authored jointly.
+And, in creating the DSL used for the examples,
+I benefited immensely from studying the approaches used by Peter Stuifzand.</description>
   </item>
   <item>
     <title>The solved problem that isn't, is</title>

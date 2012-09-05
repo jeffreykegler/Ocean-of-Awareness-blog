@@ -742,8 +742,62 @@ Input: "1 ? 42 : 2 ?? 3 : 4 : 5 ? 6 : 7"
   Parse: [1 ? 42 : [2 ?? 3 : 4 : [5 ? 6 : 7]]]
 Input: "payment on 1000 + 1000 over months/12 years at 5 + 1 %"
   Parse: [payment on [1000+1000] over [months/12] years at [5+1] %]
-</pre></tt
-<h2>How rule-based precedence works
+</pre></tt>
+<h2>How rule-based precedence works</h2>
+<p>
+Rule-based precedence parsing uses
+<a href="http://www.jeffreykegler.com/marpa">
+Marpa</a>,
+a new and efficient general BNF parsing algorithm.
+With Marpa,
+the rest is straightforward.
+The grammars in the examples above are rewritten,
+using the included precedence and associativity information,
+into an "order-explicit grammar".
+The BNF of an order-explicit grammar
+enforces the 
+precedence and associativity of the original, source grammar.
+Many textbooks on parsing describe
+how to write order-explicit BNF
+by hand.
+<p>
+Creating an algorithm to produce an order-explicit BNF grammar
+required some careful thought,
+but no flashes of brilliance.
+Previously, the major obstacle to this approach would have been
+the parse engine.
+Traditional parsers did not "just parse" arbitrary BNF -- far from it.
+Without (and often even with) programmer intervention,
+there would be little reason to hope that
+an LALR or LL parse engine would parse
+an arbitrary order-explicit BNF grammar.
+<a href="http://www.jeffreykegler.com/marpa">
+Marpa</a>,
+on the other hand, does "just parse" arbitrary BNF,
+and a successful parse is guaranteed.
+<p>
+Any grammar which could have been parsed by yacc (LALR)
+or an operator-precedence parser will be parsed by Marpa in linear
+time.
+LALR and operator precedence are subsets of LR(1), while
+Marpa is linear for LR-regular,
+and for LR(k) for all k.
+This means that Marpa will stay linear for vast classes of grammars
+that the traditional techniques
+had no hope of ever parsing.
+<p>
+<h2>Acknowledgements</h2>
+<p>
+This post is the outcome of a line of thinking started
+by an exchange with Alberto Sim&otilde;es,
+begun when he graciously shared with me
+a pre-release
+copy of
+<a href="http://drops.dagstuhl.de/opus/volltexte/2012/3513/pdf/6.pdf">
+an article on lexical analysis</a>,
+which he authored jointly.
+And, in creating the DSL used for the examples,
+I benefited immensely from studying the approaches used by Peter Stuifzand.
 <br />
 <p>posted at: 09:58 |
 path: <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/08">/individual/2012/08</a> |
