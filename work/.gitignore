@@ -1,0 +1,3 @@
+# don't want to throw the work in pages/ away,
+# but also don't want to waste git space on it.
+/pages/
