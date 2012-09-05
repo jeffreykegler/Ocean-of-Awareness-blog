@@ -1,5 +1,7 @@
 #!/usr/bin/perl
 
+use 5.010;
+
 # Blosxom
 # Author: Rael Dornfest <rael@oreilly.com>
 # Version: 2.0
@@ -78,6 +80,7 @@ use File::Find;
 use File::stat;
 use Time::localtime;
 use CGI qw/:standard :netscape/;
+use autodie;
 
 $version = "2.0";
 
@@ -261,35 +264,54 @@ foreach my $plugin ( @plugins ) { $plugins{$plugin} > 0 and $plugin->can('filter
 # Always Static
 if (1) {
 
-  param('-quiet') or print "Blosxom is generating static index pages...\n";
+    param('-quiet') or print "Blosxom is generating static index pages...\n";
 
-  # Home Page and Directory Indexes
-  my %done;
-  foreach my $path ( sort keys %indexes) {
-    my $p = '';
-    foreach ( ('', split /\//, $path) ) {
-      $p .= "/$_";
-      $p =~ s!^/!!;
-      $path_info = $p;
-      $done{$p}++ and next;
-      (-d "$static_dir/$p" or $p =~ /\.$file_extension$/) or mkdir "$static_dir/$p", 0755;
-      foreach $flavour ( @static_flavours ) {
-        my $content_type = (&$template($p,'content_type',$flavour));
-        $content_type =~ s!\n.*!!s;
-        my $fn = $p =~ m!^(.+)\.$file_extension$! ? $1 : "$p/index";
-        param('-quiet') or print "$fn.$flavour\n";
-        my $fh_w = new FileHandle "> $static_dir/$fn.$flavour" or die "Couldn't open $static_dir/$p for writing: $!";  
+    foreach $flavour (@static_flavours) {
+        my $fh_w = new FileHandle "> $static_dir/index.$flavour";
+        my $content_type = ( &$template( '', 'content_type', $flavour ) );
         $output = '';
-        print $fh_w 
-          $indexes{$path} == 1
-            ? &generate('static', $p, '', $flavour, $content_type)
-            : &generate('static', '', $p, $flavour, $content_type);
+        print $fh_w &generate( 'static', '', '', $flavour, $content_type );
         $fh_w->close;
-        foreach my $plugin ( @plugins ) { $plugins{$plugin} > 0 and $plugin->can('reset') and $plugin->reset() }
-      }
-    }
-  }
-}
+    } ## end foreach $flavour (@static_flavours)
+
+    # Home Page and Directory Indexes
+    my %done;
+
+say join " ", "indexes:\n", %{$indexes};
+
+    PATH: foreach my $path ( sort keys %indexes ) {
+	say STDERR $path;
+        my $p = $path;
+
+            # Just do the bottom
+            next PATH if not $p =~ /\.$file_extension$/;
+        $p =~ s!^/!!;
+        $path_info = $p;
+        $done{$p}++ and next;
+	    # Assumes directories exist
+            # mkdir "$static_dir/$p", 0755;
+        foreach $flavour ('html') {
+            my $content_type = ( &$template( $p, 'content_type', $flavour ) );
+            $content_type =~ s!\n.*!!s;
+            my $fn = $p;
+            $fn =~ s{[.]$file_extension$}{}xms;
+	say STDERR "fn=", $fn;
+            param('-quiet') or print "$fn.$flavour\n";
+            open my $fh_w, q{>}, "$static_dir/$fn.$flavour";
+            $output = '';
+            print $fh_w $indexes{$path} == 1
+                ? &generate( 'static', $p, '', $flavour, $content_type )
+                : &generate( 'static', '', $p, $flavour, $content_type );
+            close $fh_w;
+
+            foreach my $plugin (@plugins) {
+                $plugins{$plugin} > 0
+                    and $plugin->can('reset')
+                    and $plugin->reset();
+            }
+        } ## end foreach $flavour ('html')
+    } ## end foreach my $path ( sort keys %indexes )
+} ## end if (1)
 
 # Dynamic
 else {
