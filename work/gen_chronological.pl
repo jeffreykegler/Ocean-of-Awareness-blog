@@ -33,6 +33,7 @@ my $header = join q{}, <$head_fh>;
 close $head_fh;
 print interpolate($header);
 
+say '<h1>Posts, in reverse chronological order</h1>';
 my $previous_year;
 for my $julian (sort { $b <=> $a } keys %post_by_date) {
     my $file = $post_by_date{$julian};
