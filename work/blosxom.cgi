@@ -30,7 +30,7 @@ $url = 'http://jeffreykegler.github.com/Ocean-of-Awareness-blog/';
 $depth = 0;
 
 # How many entries should I show on the home page?
-$num_entries = 10;
+$num_entries = 5;
 
 # What file extension signifies a blosxom entry?
 $file_extension = "txt";
