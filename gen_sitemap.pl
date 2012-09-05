@@ -26,6 +26,7 @@ for my $file (@filelist) {
    my $git_stamp = qx{git log "--pretty=format:%ci" -n 1 $file};
    $git_stamp =~ s/[ ]/T/xms;
    $git_stamp =~ s/[ ]//gxms;
+   $git_stamp =~ s{  (\d\d) (\d\d) \z }{$1:$2}xms;
    say '    <lastmod>', $git_stamp, '</lastmod>';
    say '  </url>';
 }
