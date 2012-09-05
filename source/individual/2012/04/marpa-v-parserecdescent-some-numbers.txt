@@ -101,3 +101,76 @@ recursive descent is hard to beat.
 <td align="center">1373.171
 </tr>
 </table>
+</p>
+
+<p>
+For Parse::RecDescent, the code used
+in the benchmark is Flavio's,
+with light
+modifications such as the
+one that allows inputs of varying lengths.
+The Marpa::XS parser
+used in this benchmark is
+<a href="https://gist.github.com/2364437">
+on github as a gist</a>.
+</p>
+<p>
+Since Marpa::XS has its parse engine in optimized C,
+while Parse::RecDescent is pure Perl,
+one would hope that Marpa::XS would put better numbers
+on the board,
+and it did.
+Marpa::XS has some startup overhead, but settles in
+at roughly 10 times faster than the Parse::RecDescent
+implementation.
+</p>
+<p>
+To test inputs of varying lengths, I took the example above and created
+arrays of it in the Dyck-Hollerith language.
+The reported length is the length of the top-level array.
+The example is 42 characters long, so a reported length of 1000 means
+the input string is 6+1000*42+1=42007 characters long.
+(The 6 is the length of the "A1000(" prefix of the enclosing
+array and the 1 is for
+its closing parenthesis.)
+</p>
+<h2>Conclusions</h2>
+<p>Benchmarks are like traffic accidents.
+They have a draw and an excitement,
+one that the wiser and
+nobler sort know is improper and to be resisted.
+But you'll often catch even them slowing down to look.
+</p>
+<p>
+
+Other factors than speed may determine the choice of a parser,
+particularly if large inputs do not occur.
+As noted, many programmers prefer the recursive descent approach
+of turning grammar rules into subroutines calls:
+for them, it is the way things SHOULD work.
+And given recursive descent's hacker friendliness, it is the
+way things often DO work.
+</p>
+<p>
+But I think those accustomed to recursive descent may want to
+look at Marpa.
+Marpa has all the same context that recursive descent
+has, and allows the same tricks and more.
+In this benchmark,
+Marpa did NOT haul out the Ruby Slippers --
+it limited itself to the context that recursive descent has.
+</p>
+<p>
+Marpa is faster in this benchmark because it gives the
+application the best of both worlds -- custom hacks,
+*AND* a parse engine written in optimized C.
+Recursive descent is good at custom hacks,
+and for this grammar its underlying algorithm has
+the same big-O complexity.
+But by its nature, Parse::RecDescent is pure Perl,
+so Marpa::XS clocks a steady factor-of-ten advantage.
+And, in fact, of the time Marpa::XS does use, only about 20%
+is used by its parse engine.
+Overhead and lexing in Marpa::XS are in pure Perl, and they take
+80% of the time.
+</p>

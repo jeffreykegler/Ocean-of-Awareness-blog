@@ -277,10 +277,7 @@ if (1) {
     # Home Page and Directory Indexes
     my %done;
 
-say join " ", "indexes:\n", %{$indexes};
-
     PATH: foreach my $path ( sort keys %indexes ) {
-	say STDERR $path;
         my $p = $path;
 
             # Just do the bottom
@@ -295,7 +292,6 @@ say join " ", "indexes:\n", %{$indexes};
             $content_type =~ s!\n.*!!s;
             my $fn = $p;
             $fn =~ s{[.]$file_extension$}{}xms;
-	say STDERR "fn=", $fn;
             param('-quiet') or print "$fn.$flavour\n";
             open my $fh_w, q{>}, "$static_dir/$fn.$flavour";
             $output = '';
