@@ -68,8 +68,8 @@ Even if you don't agree with my way of calculating
 difficulty,
 I think you'll agree that
 BNF is vastly simpler than Perl regexes.
-<p>
 </p>
+<p>
 When I learned programming (around 1970),
 BNF was much better known than regular expressions.
 BNF had been established for years
@@ -91,3 +91,30 @@ I cannot recall that he mentioned regular expressions.
 Since then, at least
 in the US, BNF and Markov machines seem to have been consigned to
 nearly the same degree of oblivion.
+</p>
+<p>
+It makes some sense that those with a pragmatic bent
+might forget BNF.
+Aside from reading standards documents,
+there wasn't much you could do with it -- yacc
+to the contrary notwithstanding.
+Meanwhile,
+in editing we came to use regular expressions so often
+many of us can write short ones without thinking.
+</p>
+<p>
+When I wrote Marpa,
+I assumed that its users
+would already know BNF.
+A number of users seem to have done it
+the opposite way --
+they've learned Marpa and used
+it to get the hang of BNF.
+Now that I think of it,
+I learned regular expressions,
+not in the classroom,
+but from the ed editor.
+When there's a real use for it,
+I have no doubt the lost art of BNF
+will be once again found.
+</p>
