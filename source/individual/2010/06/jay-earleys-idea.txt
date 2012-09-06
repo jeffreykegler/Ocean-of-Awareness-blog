@@ -39,9 +39,206 @@ Let's look at an example of a rule in a context-free grammar.
 Here's the rule for assignment in perl's
 <a href="http://cpansearch.perl.org/src/JESSE/perl-5.12.1/perly.y">perly.y
 </a>:
-<pre><code class="prettyprint">
+<pre><code>
     termbinop => term ASSIGNOP term
 </code></pre>
 In parsing this rule, we can be at the beginning, before all of the symbols.
 We can also be immediately after any of the three symbols.
 That's a total of four possible locations.
+</p>
+<p>
+Within a rule, position relative to the symbols of the rule
+is traditionally indicated with a dot.
+In fact, the symbol-relative rule position
+is very often called the <b>dot location</b>.
+Taken as a pair,
+a rule and a dot location are called a <b>dotted rule</b>.
+<p>
+Here's our rule with dot location indicated:
+<pre><code class="prettyprint">
+    termbinop => &middot; term ASSIGNOP term
+</code></pre>
+Here the dot is at the beginning of the rule.
+This dotted rule says we have not recognized any symbols in the rule yet.
+All we are doing is predicting that the rule will occur.
+A dotted rule with the dot before all of its symbols is called a <b>prediction</b>.
+</p>
+<p>
+Here's another dotted rule:
+<pre><code class="prettyprint">
+    termbinop => term &middot; ASSIGNOP term
+</code></pre>
+In this dotted rule,
+we are saying we have seen a <var>term</var>, but have not yet recognized
+an <var>ASSIGNOP</var>.  (<var>ASSIGNOP</var> is <tt>perly.y</tt>'s internal name for
+the assignment operator.  In plain Perl terms, this is the "<kbd>=</kbd>" character.)
+</p>
+<p>
+There's another special kind of dotted rule, a completion.
+Here's the completed version of the example we've been using:
+<pre><code class="prettyprint">
+    termbinop => term ASSIGNOP term &middot;
+</code></pre>
+A <b>completion</b> is a dotted rule with the dot after all of the symbols.
+It indicates that a rule has been fully recognized.
+</p>
+<h2>The Wheres</h2>
+<p>
+In dotted rules, Earley's algorithm has all but one piece of the information it needs to track.
+The final piece is the second of the two "wheres": where in the input stream.
+To associate input stream location and dotted rules, Earley's algorithm uses what are now called Earley items.
+<b>Earley items</b> match input streams locations with dotted rules
+on a many-to-many basis.
+<p>
+A convenient way to think of an Earley item is as a triple, or 3-tuple,
+consisting of dotted rule, origin and current location.
+The <b>origin</b> is the location in the input stream where the dotted rule starts.
+The <b>current location</b> is the location in the input stream which corresponds to the
+dot position.
+</p>
+<p>
+Two noteworthy consequences
+follow from the definitions in the previous paragraph.
+First,
+if a dotted rule is a prediction, origin and current location will always be the same.
+Second,
+the input stream location where a rule ends is not necessarily tracked, unless the
+dotted rule is a completion.
+In other cases,
+we don't necessarily know the location at which (or even if) the rule will
+be completed.
+</p>
+<h2>A Note on Terminology</h2>
+<p>Readers familiar with the literature on
+Earley parsing will notice
+that what I call the origin is usually called the "parent".
+Parent" is a confusing and heavily overloaded
+term.
+I avoid it when I can.
+</p>
+<p>
+The traditional
+representation of Earley items
+defines them
+as pairs of dotted rule and origin.
+Current location is represented by membership in an 
+<b>Earley set</b>, with the Earley sets corresponding,
+one-to-one, with locations in the input stream.
+For me,
+the traditional representation tangles the basic idea
+up in
+implementation details.
+I find thinking in terms of the 3-tuple is cleaner.
+</p>
+<h2>And That's All!  Kind of</h2>
+<p>
+Everything else about Earley's algorithm
+is about methods of creating the Earley items,
+about how to extract the parse from them,
+and about ways of speeding things up.
+It gets very complicated.
+In
+<a href="http://search.cpan.org/dist/Marpa/">Marpa</a>
+it gets so complicated it can be hard to remember that
+there is a basic idea.
+But there is,
+and it is Jay Earley's.
+</p>
+<p>
+Within a rule, position relative to the symbols of the rule
+is traditionally indicated with a dot.
+In fact, the symbol-relative rule position
+is very often called the <b>dot location</b>.
+Taken as a pair,
+a rule and a dot location are called a <b>dotted rule</b>.
+<p>
+Here's our rule with dot location indicated:
+<pre><code class="prettyprint">
+    termbinop => &middot; term ASSIGNOP term
+</code></pre>
+Here the dot is at the beginning of the rule.
+This dotted rule says we have not recognized any symbols in the rule yet.
+All we are doing is predicting that the rule will occur.
+A dotted rule with the dot before all of its symbols is called a <b>prediction</b>.
+</p>
+<p>
+Here's another dotted rule:
+<pre><code class="prettyprint">
+    termbinop => term &middot; ASSIGNOP term
+</code></pre>
+In this dotted rule,
+we are saying we have seen a <var>term</var>, but have not yet recognized
+an <var>ASSIGNOP</var>.  (<var>ASSIGNOP</var> is <tt>perly.y</tt>'s internal name for
+the assignment operator.  In plain Perl terms, this is the "<kbd>=</kbd>" character.)
+</p>
+<p>
+There's another special kind of dotted rule, a completion.
+Here's the completed version of the example we've been using:
+<pre><code class="prettyprint">
+    termbinop => term ASSIGNOP term &middot;
+</code></pre>
+A <b>completion</b> is a dotted rule with the dot after all of the symbols.
+It indicates that a rule has been fully recognized.
+</p>
+<h2>The Wheres</h2>
+<p>
+In dotted rules, Earley's algorithm has all but one piece of the information it needs to track.
+The final piece is the second of the two "wheres": where in the input stream.
+To associate input stream location and dotted rules, Earley's algorithm uses what are now called Earley items.
+<b>Earley items</b> match input streams locations with dotted rules
+on a many-to-many basis.
+<p>
+A convenient way to think of an Earley item is as a triple, or 3-tuple,
+consisting of dotted rule, origin and current location.
+The <b>origin</b> is the location in the input stream where the dotted rule starts.
+The <b>current location</b> is the location in the input stream which corresponds to the
+dot position.
+</p>
+<p>
+Two noteworthy consequences
+follow from the definitions in the previous paragraph.
+First,
+if a dotted rule is a prediction, origin and current location will always be the same.
+Second,
+the input stream location where a rule ends is not necessarily tracked, unless the
+dotted rule is a completion.
+In other cases,
+we don't necessarily know the location at which (or even if) the rule will
+be completed.
+</p>
+<h2>A Note on Terminology</h2>
+<p>Readers familiar with the literature on
+Earley parsing will notice
+that what I call the origin is usually called the "parent".
+Parent" is a confusing and heavily overloaded
+term.
+I avoid it when I can.
+</p>
+<p>
+The traditional
+representation of Earley items
+defines them
+as pairs of dotted rule and origin.
+Current location is represented by membership in an 
+<b>Earley set</b>, with the Earley sets corresponding,
+one-to-one, with locations in the input stream.
+For me,
+the traditional representation tangles the basic idea
+up in
+implementation details.
+I find thinking in terms of the 3-tuple is cleaner.
+</p>
+<h2>And That's All!  Kind of</h2>
+<p>
+Everything else about Earley's algorithm
+is about methods of creating the Earley items,
+about how to extract the parse from them,
+and about ways of speeding things up.
+It gets very complicated.
+In
+<a href="http://search.cpan.org/dist/Marpa/">Marpa</a>
+it gets so complicated it can be hard to remember that
+there is a basic idea.
+But there is,
+and it is Jay Earley's.
+</p>
