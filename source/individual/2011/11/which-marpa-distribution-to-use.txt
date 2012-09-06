@@ -27,3 +27,122 @@ the Marpa algorithm in their applications.
 Note that since
 <a href="https://metacpan.org/release/Marpa-XS">Marpa::XS</a>
 remains beta, caution is still advised.
+</p>
+<p>
+<a href="https://metacpan.org/release/Marpa-XS">Marpa::XS</a> DOES require a C compiler,
+as well as
+<a href="#GNU_LIBS">glib</a>
+and a few other GNU prerequisites.
+To run and install
+<a href="https://metacpan.org/release/Marpa-XS">Marpa::XS</a>
+
+and its documentation, you DO NOT
+need
+<a href="#POSIX">POSIX</a>,
+<a href="#GNU_LIBS">glibc</a>,
+<a href="#GCC">gcc</a> or
+<a href="#TEX">TeX</a>.
+</p>
+<h2>Marpa::PP</h2>
+<p>
+If you can't install
+<a href="https://metacpan.org/release/Marpa-XS">Marpa::XS</a>,
+the other choice is
+
+<a href="https://metacpan.org/release/Marpa-PP">Marpa::PP</a>.
+<a href="https://metacpan.org/release/Marpa-PP">Marpa::PP</a>
+is Pure Perl;
+it has most of the features of
+<a href="https://metacpan.org/release/Marpa-XS">Marpa::XS</a>;
+and it has fewer prerequisities.
+But
+<a href="https://metacpan.org/release/Marpa-PP">Marpa::PP</a>
+remains in alpha;
+it is 5 times slower than
+<a href="https://metacpan.org/release/Marpa-XS">Marpa::XS</a>;
+and it will have a lower priority for bug fixes.
+</p>
+<h2>"Bare name" Marpa</h2>
+<p>
+<a href="https://metacpan.org/release/Marpa">
+
+The "bare name" Marpa distribution is a legacy</a>.
+If you are new to Marpa, please do not use it.
+I leave it on CPAN only as a service to Marpa's past users.
+If I could remove it without impacting them, I would.
+</p>
+<h2>Notes</h2>
+<ol>
+<li><a name="POSIX">"POSIX"</a>:
+In theory,
+<a href="https://metacpan.org/release/Marpa-XS">Marpa::XS</a>
+runs on Windows.
+I say "in theory"
+because while all of
+<a href="https://metacpan.org/release/Marpa-XS">Marpa::XS</a>'s
+prerequisites run on Windows,
+to my knowledge nobody has ever assembled them
+and actually run Marpa::XS on Windows.
+I am not "anti-Microsoft", but
+I do not at this moment
+have access to a Windows machine.
+</li>
+<p><li><a name="GNU_LIBS">"glib and glibc"</a>:
+It's easy to confuse
+<a href="http://en.wikipedia.org/wiki/GLib">glib</a>
+and
+<a href="http://en.wikipedia.org/wiki/Glibc">glibc</a>.
+Both are GNU libraries.
+glibc is GNU's C standard library,
+which implements parts of
+POSIX and requires others.
+Marpa::XS
+does NOT require glibc or POSIX.
+</p>
+<p>
+glib, on the other hand,
+is GNU's cross-platform software utility library.
+Marpa::XS DOES require glib.
+glib does NOT require UNIX, POSIX, or glibc.
+glib is not tiny, but the alternative to
+<a href="https://metacpan.org/release/Marpa-XS">Marpa::XS</a>'s
+use of glib would be my attempt at a portable reimplementation
+of those parts of it that
+<a href="https://metacpan.org/release/Marpa-XS">Marpa::XS</a>
+uses.
+For the moment, glib is the safest and easiest way to go.
+</p>
+</li>
+<li><p><a name="GCC">"gcc"</a>:
+<a href="https://metacpan.org/release/Marpa-XS">Marpa::XS</a>'s
+C code consists of its core library (libmarpa) and an XS wrapper.
+The XS wrapper compiles with any compiler which compiles Perl.
+libmarpa compiles clean with the <kbd>-ansi</kbd>
+and <kbd>-pedantic</kbd> flags
+and therefore any C89 compiler should work.
+</p>
+</li>
+<li><p><a name="TEX">"TeX"</a>:
+If you poke into the subdirectories,
+you may be alarmed to see places where TeX and/or CWeb is used.
+No TeX or CWeb is required to install or run
+<a href="https://metacpan.org/release/Marpa-XS">Marpa::XS</a>
+or its documentation.
+They are for DEVELOPMENT ONLY.
+In fact, if you plan on hacking the Perl interface code,
+or even the XS wrapper, you still don't need to have
+TeX and CWeb on your system.
+It is only the highly mathematical core of Marpa,
+libmarpa, that uses CWeb and therefore TeX.
+If you look at
+<a href="https://github.com/downloads/jeffreykegler/Marpa--R2/marpa.pdf">
+
+the libmarpa code</a>,
+I think you'll see that,
+when it came to documenting libmarpa,
+POD, C comments, and man pages were simply not going
+to be enough to do the job.
+</p>
+</li>
+</ol>
+
