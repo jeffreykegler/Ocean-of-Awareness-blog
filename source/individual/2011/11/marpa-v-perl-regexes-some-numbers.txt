@@ -32,3 +32,304 @@ optimized.
 But even so,
 Marpa's processing requires more than a handful of
 machine instructions.
+</p>
+<p>
+In this context, I think some of the numbers below
+may surprise people.
+RE's beat everything else as long as they stick
+to their game.
+But these days they are often stretched beyond their limits,
+often without an appreciation of
+how quickly their efficiency deteriorates when
+outside those limits.
+<h2>Unanchored searches for balanced parens</h2>
+
+</p>
+I chose the problem solved
+by
+<a href="http://search.cpan.org/perldoc?Regexp::Common::balanced">
+Regexp::Common::balanced</a> --
+unanchored searches for balanced <a href="#PAREN">parens</a>.
+"Unanchored" here means that the search
+is not anchored to the beginning,
+or any other specific point of the string.
+Unanchored searches need,
+not only to identify the matching string,
+but to determine where in the searched string to find
+the target.
+</p>
+<p>
+When it comes to unanchored matches,
+most users want the "first longest" match.
+That is, they want the first match but,
+when one match is completely contained in another one,
+they want the longest match.
+This is the problem in its hardest form.
+It is simple to find
+the match which ends first.
+"First longest" needs the match which STARTS first.
+"First longest" is the problem that Regexp::Common::balanced addresses.
+For this benchmark,
+I programmed Marpa to return exactly the same results
+that Regexp::Common::balanced returns.
+</p>
+<p>
+The examples I will use in this post
+are sets of parens of varying length.
+All the examples will have a prefix, a balanced paren "target", and
+a short, unbalanced, trailer.
+If the string is of length <kbd>N</kbd>,
+the prefix consists of <kbd>N-8</kbd> left parens.
+The target is always this string: "<kbd>(()())</kbd>".
+The trailer is always two left parens: "<kbd>((</kbd>".
+Here, with spacing added for clarity, is the test string for length 20:
+
+<kbd><pre>
+(((((((((( ((()()) ((
+</pre></kbd>
+<h2>The Results</h2>
+<p>
+<table align="center" cellpadding="5" border="1" width="100%">
+<tr><th rowspan="2">Number<br>of parens<br>in test<br>string<th colspan="5">Executions per second</tr>
+<tr>
+<th>libmarpa<br>(pure C)
+<th>Marpa::XS<br>(mixed C<br>and Perl)
+
+<th>Regexp::<br>Common::<br>balanced
+<th>tchrist's<br>regex
+<th>Marpa::PP<br>(Pure<br>Perl)
+</tr>
+<tr><td>10
+<td align="center">4524.89
+<td align="center">111.71
+<td align="center">3173.30
+<td align="center">33429.33
+<td align="center">47.39
+</tr>
+<tr><td>100
+
+<td align="center">1180.64
+<td align="center">58.96
+<td align="center">62.09
+<td align="center">197.25
+<td align="center">15.35
+</tr>
+<tr><td>500
+<td align="center">252.40
+<td align="center">19.50
+<td align="center">2.43
+<td align="center">7.58
+<td align="center">4.09
+</tr>
+<tr>
+<td>1000
+<td align="center">117.16
+<td align="center">10.28
+<td align="center">0.53
+<td align="center">1.84
+<td align="center">2.14
+</tr>
+<tr>
+<td>2000
+<td align="center">56.07
+<td align="center">5.47
+<td align="center">0.12
+<td align="center">0.34
+<td align="center">1.08
+</tr>
+<tr>
+<td>3000
+<td align="center">36.35
+<td align="center">3.72
+<td align="center">0.05
+<td align="center">0.13
+<td align="center">0.74
+</tr>
+</table>
+</p>
+<p>
+The above results are in executions per second -- a higher number means a faster algorithm.
+These numbers are what happens when regexes are pushed beyond their limits.
+Regex::Balanced::common goes
+<a href="#QUADRATIC">quadratic</a>
+
+on these examples,
+while all versions of Marpa stay linear.
+(Here linear and quadratic refer to speed.
+The results above are reported in executions per second,
+and you need to take the reciprocal to get the speed.)
+</p>
+<p>
+libmarpa, the pure C version of Marpa, is faster than Regexp::Common::balanced
+on even the shortest example I tested.
+Marpa::XS, the XS (mixed C and Perl) version, catches up with it when the
+length of the test strings gets a little past 100 characters.
+You would expect that Marpa::PP, which is implemented entirely in Perl,
+would not have a chance against the Perl regex engine,
+which is implemented in C.
+But somewhere in the low 100's Marpa::PP also catches up and by the time
+we are testing strings of 500 characters, Marpa::PP is running twice as fast.
+<p>
+<p>
+As the length of the test strings increases,
+Marpa's relative advantage grows.
+At 3000, Marpa::XS is over 74 times as fast as Regexp::Common::balanced,
+and libmarpa is well over 700 times as fast.
+Even Marpa::PP is nearly 15 times as fast,
+and steadily improving its advantage.
+</p>
+<p>[ In the comments, Tom Christiansen shares a Perl regex which is faster than Regexp::Common::balanced.  I've included results for it in the table above.  For discussion of it, see the comments. ]</p>
+<h2>And I hardly even cheated!</h2>
+<p>
+In this comparison, I tried to be "fair".
+"Fair" can be hard to define in a benchmark.
+<h3>The Choice of Tests</h3>
+<p>
+The test strings,
+and the problem (unanchored searching for balanced parens)
+were chosen to highlight the limits of Perl regexes.
+On the other hand,
+this problem is typical of the things programmers want to do,
+as well as of the sort of thing they ask Perl regexes to to.
+</p>
+
+<h3>Official versus Developer's Versions</h3>
+<p>
+For Marpa::XS and Marpa::PP, I insisted on using official distributions out on CPAN.
+My benchmarking script is
+<a href="https://gist.github.com/1344187">available as a gist on github</a>.
+These benchmarks were done using only the DOCUMENTED interfaces of
+<a href="http://search.cpan.org/~jkegl/Marpa-XS-0.020000/">Marpa::XS 0.020000</a>
+and
+<a href="http://search.cpan.org/~jkegl/Marpa-PP-0.010000/">Marpa::PP 0.010000</a>.
+Both these versions had several useful capabilities which are not in the documented
+interface,
+and, especially with the shorter test strings,
+both Marpa::XS and Marpa::PP pay a real price for
+my decision not to use them.
+But I wanted to demonstrate the kinds of speeds that real users can get,
+using what is actually on CPAN now, as it is documented TODAY.
+</p>
+<p>
+The libmarpa numbers, on the other hand,
+are for a developer's version.
+The libmarpa library has never had a separate release,
+and is not yet documented.
+A stable libmarpa is part of Marpa::XS
+and the latest code is in Marpa::R2.
+The version used for these tests is the one
+in <a href="http://search.cpan.org/perldoc?Marpa::R2">
+Marpa::R2</a>
+
+and
+<a href="https://github.com/jeffreykegler/Marpa--R2/blob/master/r2/libmarpa/test/dev/balanced.c">
+my benchmarking code</a>
+is in
+<a href="https://github.com/jeffreykegler/Marpa--R2">the Marpa::R2 github repository</a>.
+</p>
+<h3>Precompilation</h3>
+<p>Parsers, like Marpa and yacc, are designed for repeated use.
+Regular expression engines, on the other hand, are often used in "one-shot"
+applications.
+When the application is viewed as a regex, it seems fair to include any precompilation
+in the benchmark times.
+If the application is thought of as parsing, it seems fair to allow the algorithms to see
+the grammar first, without the clock running, and optimize the heck out of it.
+Which is fair here?
+The choice would make a real difference.
+Marpa does a lot of precomputation, more than any other parsing algorithm I know of.
+</p>
+<p>
+I decided that this test would be about pitting Marpa versus regexes,
+on the regex's own turf and using their rules.
+In all the tests above, for every repetition, Marpa was forced to redo
+all its precomputations, while the clock was running.
+For shorter tests in particular,
+this put Marpa at a real disadvantage.
+But it makes the results clearly relevant to the use of Marpa inside a regex engine.
+</p>
+<h3>Reading the input string</h3>
+
+<p>
+Both libmarpa and Regexp::Common::balanced have a big advantage over
+Marpa::XS and Marpa::PP.
+Marpa::XS and Marpa::PP have to use Perl to convert the input string
+into their internal format.
+For Perl's regex engine and libmarpa, this is done in C.
+I decided to require both algorithms to do their
+string manipulation "with the clock running",
+very much to the disadvantage of Marpa::XS
+and Marpa::PP.
+</p>
+<p>
+This disadvantage could be called unfair,
+since the choice of language for
+string manipulation is about interface and convenience,
+and does not really have anything to do with the speed of the
+underlying algorithms.
+But I felt that,
+when string conversion times were included,
+run times were more realistic --
+more like what would be encountered
+in the actual applications that regexes are asked to deal with.
+This handicap makes Marpa::XS's performance
+all the more impressive.
+</p>
+<h2>A faster regex engine</h2>
+<p>
+I hope this post will encourage use of Marpa::XS.
+That is why I carefully limited the benchmark code for Marpa::XS
+to documented features of <a href="http://search.cpan.org/~jkegl/Marpa-XS-0.002000/">
+an already available, stable beta release</a>.
+</p>
+<p>
+I also want to suggest the possibility of using libmarpa to extend the Perl
+regex engine.
+It is possible to efficiently identify,
+for any regex, the presence
+of features that are problematic for an RE-based recognition engine.
+A regex implementation could check for these and select a recognition
+engine accordingly -- the tradition RE-based engine for simpler regexes or,
+when it seems beneficial,
+a Marpa-based recognition engine.
+</p>
+
+<h2>Notes</h2>
+<ol>
+<li><a name="RE">"regular expression": </a>
+In the pure mathematical sense, 
+a regular expression (RE) is a state machine
+that recognizes only patterns that use
+concatenation (<code>ab</code>),
+repetition (<code>a*</code>),
+alternation <code>a|b</code>),
+or some combination of these.
+Perl regexes are sometimes regular expressions
+or their equivalent.
+More often they are not.
+For example, any Perl regex which captures substrings is
+not equivalent to a regular expression.
+</li>
+<li><a name="TOKEN">"token": </a>
+In the example in this post, "token" can be taken as a synonym for character.
+RE's typically work with the individual characters
+of character strings.
+In this post, so does Marpa.
+Typically, general purpose parsers like Marpa let a lower level
+gather one or more individual characters into "tokens".
+</li>
+
+<li><a name="PAREN">"paren": </a>
+Saying "parenthesis" gets tedious.
+I often abbreviate it to "paren".
+</li>
+<li><a name="QUADRATIC">"quadratic": </a>
+By quadratic, I mean <kbd>O(n^2)</kbd> where <kbd>n</kbd>
+is the length of the test string.
+That Regexp::Common::balanced goes quadratic is my conjecture --
+I have no proof.
+But many of the simpler
+approaches to unanchored search are quadratic,
+and the benchmark numbers suggest this is the case here.
+</li>
+</ol>

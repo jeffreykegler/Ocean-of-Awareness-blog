@@ -73,6 +73,118 @@ from the documented order.
 As documented, the statement should be
 <pre><code class="prettyprint">use Fatal 2;</code>
 </pre>
+</p>
+<p>
+
+What happens if we try to include an argument list with a reversed
+use statement?
+If we keep things simple,
+we are still fine:
+<pre><code class="prettyprint">use 2 Fatal qw(open close);
+</code></pre>
+is equivalent to
+<pre><code class="prettyprint">use Fatal 2 qw(open close);
+</code></pre>
+</p>
+<h2>The real problem</h2>
+<p>
+If reversed 
+<code class="prettyprint">use</code> statements were orthogonal --
+that is, if they treated argument
+lists in the same way as their documented brethren --
+one could argue
+that they were a misfeature or even
+a feature.
+But, alas,
+reversed <code class="prettyprint">use</code> statements
+are not orthogonal.
+Perl complains about reversed
+<code class="prettyprint">use</code> statements with some lists,
+but not with others.
+As examples,
+the following statements are all
+reported as syntax errors:
+<pre><code class="prettyprint">use 2 Fatal +"open", "close";
+</pre></code>
+<pre><code class="prettyprint">use 2 Fatal "open", "close";
+</pre></code>
+<pre><code class="prettyprint">use 2 Fatal +qw(open close)
+</pre></code>
+<pre><code class="prettyprint">use 2 Fatal ("open", "close")
+</pre></code>
+
+<pre><code class="prettyprint">use 2 Fatal +("open", "close")
+</pre></code>
+</p>
+<p>
+The argument lists in the above statements are all syntactically correct.
+To see this,
+tranpose module name and version number
+into their documented order and try the "un-reversed" statements out.
+Perl will accept them,
+and will interpret their lists as argument lists.
+</p>
+<h2>Back it out?</h2>
+Is backing out the reversed
+<code class="prettyprint">use</code> statement an option?
+My guess is no.
+Almost certainly,
+in production environments somewhere out there,
+Perl scripts contain reversed <code class="prettyprint">use</code> statements.
+Most of these, I would expect, came about by accident.
+No diagnostic identifies
+reversed <code class="prettyprint">use</code> statements
+and the most common ones
+will perform just fine under testing.
+Even a careful desk-checking of the code
+could miss them,
+and
+
+<a href="http://dictionary.die.net/desk%20check">
+a jargon file entry from back in 1996</a>
+mockingly informs me that desk checks
+went out of style some time prior to that.
+</p>
+<h2>Keep it?</h2>
+<p>
+Let's suppose, then, that the
+reversed <code class="prettyprint">use</code> statement
+is kept on as a misfeature, documented or undocumented.
+That implies that it should continue to handle all the arguments
+lists it currently handles.
+After all, we don't want to break any scripts --
+that is the whole
+point of keeping it.
+</p>
+<p>
+But what of those arguments lists that the
+reversed <code class="prettyprint">use</code> statement does not handle?
+If you look at the code
+for the <code class="prettyprint">use</code> statement
+you will see it is extremely complicated.
+It would be very difficult
+to keep
+the reversed <code class="prettyprint">use</code> statement's
+behavior
+perfectly stable
+with respect to argument lists.
+So difficult that it would make the code for
+the <code class="prettyprint">use</code> statement almost untouchable.
+
+</p>
+<p>
+One candidate for the least bad solution is to
+allow changes to the list-handling
+behavior of the
+reversed <code class="prettyprint">use</code> statement,
+but only in the direction of expanding the 
+syntaxes allowed.
+It may not be desirable to document
+the reversed <code class="prettyprint">use</code> statement,
+but it should probably should be added to the test suite.
+The reversed <code class="prettyprint">use</code> statement would then live on,
+a deprecated but permanent part of Perl.
+</p>
 <br />
 <p>posted at: 18:08 |
 <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2011/10/perl-and-parsing-12-beating-up-on-the-use-statement.html">direct link to this entry</a>
