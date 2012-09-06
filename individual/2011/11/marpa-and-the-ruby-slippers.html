@@ -165,8 +165,8 @@ at every location in the parse,
 each list of possible rule applications was finished before
 the input
 starting at that location was read.
-<p>
 </p>
+<p>
 To make this happen,
 Marpa divides the single loop of previous Earley parse engines
 into two loops,
@@ -176,6 +176,35 @@ Marpa's parse engine turns the original Earley parse engine
 inside-out and upside-down.
 The result is provably equivalent to the original,
 and just as fast.
+</p>
+<p>
+At the end
+of the Wizard of Oz movie,
+Dorothy tells Glenda she wants to get back to Kansas.
+Glenda points down to Dorothy's Ruby Slippers and explains
+their powers,
+<a href="#GLENDA">adding that Dorothy could have gone to Kansas anytime she liked</a>.
+The Ruby Slippers have always been implicit in Earley's Algorithm.
+We've just had to realize they were there.
+</p>
+<h2>Notes</h2>
+<ol>
+<li><p><a name="POSSIBILITY">"possibility"</a>:
+Possiblity is defined the way you'd hope it would
+be: a rule application is "possible" at any point,
+if and only if,
+given the input up to that point,
+there is some input from that point on,
+that produces a parse
+which includes that rule application.
+</p>
+<li><p><a name="GLENDA">"anytime she liked"</a>:
+As a child I wondered if Glenda was not being a bit tactless.
+
+</p>
+</li>
+</ol>
+
 <br />
 <p>posted at: 15:48 |
 <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2011/11/marpa-and-the-ruby-slippers.html">direct link to this entry</a>
