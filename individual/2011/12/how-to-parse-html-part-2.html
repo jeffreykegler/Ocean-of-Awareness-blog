@@ -64,8 +64,8 @@ and one for which there is an excellent CPAN module:
 relies on
 <a href="https://metacpan.org/module/HTML::Parser">HTML::Parser</a>
 to do its tokenization.
-<p>
 </p>
+<p>
 <a href="https://metacpan.org/module/Marpa::HTML">Marpa::HTML</a>
 determines the large scale structure of the HTML document --
 what I will call in this post, "high-level" parsing.
@@ -79,6 +79,356 @@ as an upside-down tree,
 one where the "leaves" are the tokens,
 and where the "root" node represents the
 document as a whole.
+</p>
+<p>
+An HTML document contains components
+of many kinds,
+but the hard part of determining its structure
+is deciding where to begin and end its HTML elements.
+Know this and you know how to arrange the HTML elements in
+a hierarchy.
+Know how to arrange the HTML elements in a hierarchy,
+and you have produced essentially the entire parse
+tree for the HTML document.
+</p>
+<p>
+When it comes to knowing where to start
+and end HTML elements
+in liberal HTML,
+there are complications aplenty.
+Conceptually, every HTML element has a start
+and end tag but,
+even in fully standard-conforming input,
+not all of these tags need to be in the physical input.
+In real-life HTML, start and end tags are often
+missing.
+Additionally, a liberal HTML parser
+is expected to be robust in
+the face of spurious tags.
+</p>
+<h2>Second, do a census of the HTML elements</h2>
+
+<p>
+In HTML according to the standards,
+there is a fixed list of HTML elements.
+In theory, a liberal HTML parser could work
+from a list which is a superset of all the standards,
+plus a list of the known browser-specific tags.
+</p>
+<p>
+<a href="https://metacpan.org/module/Marpa::HTML">Marpa::HTML</a>
+takes another approach.
+It makes a first pass over its input to "census"
+the elements in the HTML document,
+and builds its grammar based on that census.
+This has several advantages:
+<ul>
+<li>It is an easy way to deal with spurious tags.
+</li>
+<li>Vendor-specific tags can handled using the same mechanisms
+that deal with spurious tags.
+This is reasonable since the boundary between vendor-specific
+and spurious tags is not sharp.
+</li>
+<li>It makes
+<a href="https://metacpan.org/module/Marpa::HTML">Marpa::HTML</a>
+robust in the 
+face of new HTML standards.
+</li>
+
+<li>It means
+<a href="https://metacpan.org/module/Marpa::HTML">Marpa::HTML</a>
+would be easy
+<a href="#XML">to extend to deal with XML</a>.
+</li>
+<li>The grammar avoids having lots of rules for
+elements which do not actually exist in the input.
+</li>
+</ul>
+</p>
+<h2>Third, create a grammar</h2>
+<p>
+<a href="https://metacpan.org/module/Marpa::HTML">Marpa::HTML</a>
+creates
+
+<a href="#NEW_GRAMMAR">a new grammar for every parse</a>.
+Much of the grammar is constant -- there is a "framework".
+This framework already includes some of the HTML elements.
+Into this framework,
+<a href="https://metacpan.org/module/Marpa::HTML">Marpa::HTML</a>
+inserts rules for
+the additional elements discovered during the
+census.
+Each element has only one rule,
+which takes the form:
+<kbd><pre>
+      ELEMENT ::= START_TAG CONTENTS END_TAG
+</pre></kbd>
+The grammar assumes that every HTML element
+has both a start tag and an end tag.
+From the grammar's point of view, these are never
+optional.
+<a href="https://metacpan.org/module/Marpa::HTML">Marpa::HTML</a>'s
+grammar is therefore,
+not just strict,
+but over-strict.
+If there were no Ruby Slippers,
+the over-strict grammar
+would fail to parse many
+standard-conforming HTML documents,
+and would be hopeless at dealing with liberal HTML.
+</p>
+<h2>Fourth, determine which tokens are allowed to be virtual</h2>
+<p>
+A necessary complement to
+
+<a href="https://metacpan.org/module/Marpa::HTML">Marpa::HTML</a>'s
+over-strict grammar
+is a list of the possible "virtual"
+tokens.
+"Virtual" here means that the token is not present in the
+physical input.
+Virtual tokens are tokens that the Ruby Slippers logic
+is allowed to invent
+in order to make the over-strict grammar's wishes
+come true.
+</p>
+<p>
+We don't want all tokens to be allowed as virtual tokens.
+For example, we don't want the Ruby Slippers logic
+<a href="#INVENTING_TEXT">inventing text</a>.
+What we want the Ruby Slippers to do is to supply
+just enough structure to make the HTML document
+conform to the over-strict grammar.
+</p>
+<p>
+The list of virtual tokens in
+<a href="https://metacpan.org/module/Marpa::HTML">Marpa::HTML</a>
+consists entirely of element tags.
+Every end tag is allowed as a virtual token.
+This is necessary for liberal HTML parsing with
+the over-strict grammar,
+because it enables
+<a href="https://metacpan.org/module/Marpa::HTML">Marpa::HTML</a>
+to supply a missing end tag for any HTML element.
+<p>
+
+For start tags,
+the list of allowed virtual tokens is much shorter.
+Four start tags are allowed as virtual tokens,
+because the HTML standards allow them to be
+missing,
+and because they are needed
+according to the over-strict grammar.
+The four are
+<kbd>html</kbd>,
+<kbd>head</kbd>,
+<kbd>body</kbd>,
+and 
+<kbd>tbody</kbd>.
+<a href="https://metacpan.org/module/Marpa::HTML">Marpa::HTML</a>
+goes beyond the standards in
+using start tags to
+<a href="#REPAIR_TABLE">repair a defective table</a>.
+The tags allowed as needed to repair a defective table are
+<kbd>table</kbd>,
+<kbd>tr</kbd>,
+and
+
+<kbd>td</kbd>.
+</p>
+<h2>Fifth, apply the Ruby Slippers</h2>
+<p>
+With all this set up,
+we can do the actual parsing.
+<a href="https://metacpan.org/module/Marpa::XS">Marpa::XS</a>
+is used as the parse engine.
+Almost certainly, the parse engine will soon
+receive a token which is not acceptable to the over-strict grammar.
+At that point the parse engine will complain
+that it cannot continue.
+</p>
+<p>
+<a href="https://metacpan.org/module/Marpa::XS">Marpa::XS</a>
+allows the application to retry with another token.
+<a href="https://metacpan.org/module/Marpa::XS">Marpa::XS</a>
+
+also has
+<a href="http://blogs.perl.org/users/jeffrey_kegler/2011/11/marpa-and-the-ruby-slippers.html">the
+very special ability</a>
+to produce, at any point in the parse,
+a list of those tokens that it is willing to accept.
+<a href="https://metacpan.org/module/Marpa::HTML">Marpa::HTML</a>
+asks to see the list of acceptable tokens and compares it to its
+list of virtual tokens.
+If exactly one of the allowed virtual tokens is acceptable as input,
+<a href="https://metacpan.org/module/Marpa::HTML">Marpa::HTML</a>
+invents a token of that type
+and passes it on to
+<a href="https://metacpan.org/module/Marpa::XS">Marpa::XS</a>.
+</p>
+When the physical input is standard-conforming HTML,
+at every point where the over-strict grammar has a problem,
+one and only one virtual token
+will be acceptable as input.
+However,
+<a href="https://metacpan.org/module/Marpa::HTML">Marpa::HTML</a>
+is designed to handle
+arbitrary input.
+That means
+
+<a href="https://metacpan.org/module/Marpa::HTML">Marpa::HTML</a>
+must deal with
+<ul>
+<li>Cruft: tokens that nothing can make right; and
+<li>Choices: situations where more than one
+of the virtual tokens
+is acceptable to the over-strict grammar.
+</ul>
+<h2>Cruft</h2>
+<p>
+Sometimes a token appears in the physical input that nothing can
+make right.
+One example of cruft
+is a <kbd>head</kbd> element start tag
+inside an HTML
+<kbd>body</kbd> element.
+There cannot be more than one HTML 
+
+<kbd>head</kbd> element in any HTML document, so this token
+has to be classified as cruft.
+For these,
+<a href="https://metacpan.org/module/Marpa::HTML">Marpa::HTML</a>
+has a special "cruft" pseudo-class.
+The application is allowed to specify a cruft handler,
+which can
+throw the cruft away,
+repackage it as a comment, etc., etc.
+The default behavior is simply to pass cruft on, untouched.
+</p>
+<h2>When there is a choice of virtual token</h2>
+<p>
+If an HTML document is standard-conforming HTML, it
+is not possible for more one virtual token to be acceptable
+at any point.
+In real life,
+and therefore in parsing liberal HTML,
+such things are not just possible,
+but quite common.
+</p>
+<p>
+<a href="https://metacpan.org/module/Marpa::HTML">Marpa::HTML</a>
+currently chooses
+between virtual tokens
+using rules of thumb.
+These often involve tradeoffs.
+For example,
+when it comes to ending an element versus starting one,
+the preference is, in general, to start one.
+But there are exceptions to this.
+One important exception is when starting an element
+would lead to an infinite loop.
+It would be nice if
+<a href="https://metacpan.org/module/Marpa::HTML">Marpa::HTML</a>'s
+behavior in dealing with choices among virtual tokens
+was configurable -- as of this writing it is not.
+
+</p>
+<h2>Notes</h2>
+<ol>
+<li><p><a name="HIGH-LEVEL">"high-level parsing"</a>:
+Actually, what I call "high-level parsing" in this
+post is, in most textbooks, simply called parsing.
+In this kind of context,
+lexical analysis is usually considered distinct from
+parsing.
+Here, however, I have the problem that the lexing is
+done by a module named
+<a href="https://metacpan.org/module/HTML::Parser">HTML::Parser</a>.
+</p>
+<p>
+Parsing is a loose term.
+Lexical analysis is called parsing in some contexts,
+so
+<a href="https://metacpan.org/module/HTML::Parser">HTML::Parser</a>'s
+name is not actually wrong.
+But it is certainly inconvenient,
+when the context is a description of what
+<a href="https://metacpan.org/module/Marpa::HTML">Marpa::HTML</a>
+does.
+The solution adopted in
+this discussion is to
+make a distinction between
+"low-level parsing" (lexical analysis or tokenization)
+and "high-level" parsing (determining the
+full structure of a document).
+</p>
+
+</li>
+<li><p><a name="XML">"XML"</a>:
+Extension of
+<a href="https://metacpan.org/module/Marpa::HTML">Marpa::HTML</a>
+to XML would be easy,
+but I have not done it.
+<a href="https://metacpan.org/module/Marpa::HTML">Marpa::HTML</a>
+is all about dealing
+with the difficult and
+varied HTML syntaxes,
+and with liberal and defective input.
+XML's syntax is well defined
+and extremely easy-to-parse.
+Furthermore,
+a conforming XML parser is NOT allowed
+to be liberal --
+at the first encounter with less-than-perfect
+input, a conforming XML parser
+must produce an error message
+and thereafter it may produce nothing
+else but error messages.
+When it comes to parsing perfect input
+for an easy-to-parse and well-defined language,
+the
+<a href="https://metacpan.org/module/Marpa::HTML">Marpa::HTML</a>
+approach, frankly, offers
+no advantage over the previous
+state of the art.
+</p>
+<li><p><a name="NEW_GRAMMAR">"a new grammar for every parse"</a>:
+As an alternative strategy,
+<a href="https://metacpan.org/module/Marpa::HTML">Marpa::HTML</a>
+
+could use a fixed
+grammar with a lot of "fill in the blank"
+elements.
+But it is not clear
+that this would be an improvement.
+</p>
+<li><p><a name="INVENTING_TEXT">"inventing text"</a>:
+Actually, one can
+imagine specific applications where filling
+in missing content would be useful.
+For example,
+a site might have headers and/or footers
+that need to be on every HTML page.
+Or there could be obligatory disclaimers,
+license information, etc.
+</p>
+</li>
+<li><p><a name="REPAIR_TABLE">"repair a defective table"</a>:
+Repairing tables is an impressive trick,
+but is not completely clear to me that this is the best 
+thing to do:
+discarding stray table tags as cruft might be a better idea.
+However, aggressive table repair is how
+<a href="https://metacpan.org/module/HTML::Tree">HTML::Tree</a>
+handles
+things,
+and in writing
+<a href="https://metacpan.org/module/Marpa::HTML">Marpa::HTML</a>
+I decided to follow
+its precedent.
+</p></li>
+</ol>
 <br />
 <p>posted at: 11:10 |
 <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2011/12/how-to-parse-html-part-2.html">direct link to this entry</a>
