@@ -44,6 +44,7 @@ And for good reason.
 If you were drawn by the allure of domain-specific languages,
 or yielded to the siren call of language-oriented programming,
 you plunged headlong toward two pitfalls:
+</p>
 <ul>
 <li>Your parser might not parse your grammar.
 Which you might discover at any point in incremental development.
@@ -61,9 +62,72 @@ hit the limits of that parse engine.
 When it came to debugging, taking a language-based
 approach was a bit like deciding to write your problem up in
 <a href="http://en.wikipedia.org/wiki/P%E2%80%B2%E2%80%B2">P''</a>.
-
 </li>
 </ul>
+<p>
+By approaching your problem as ANYTHING but a parsing
+problem,
+you avoided these two pitfalls.
+Ambitious programmers,
+after a few encounters
+with the traditional parsing tools, would learn this.
+And the next time they dreamed
+up an elegant little DSL to finesse their design issues,
+they would wake themselves up
+and decide that they ain't that desperate yet.
+</p>
+<h2>Changing the parsing game</h2>
+<p>
+With 
+<a href="http://www.jeffreykegler.com/marpa">Marpa</a>
+in the parsing game,
+the rules are different.
+Now, anything you can write in BNF will parse.
+If your grammar falls into anything close to
+one of the classes of grammar currently in practical
+use, Marpa parses in linear time.
+If there's a problem,
+Marpa tells you exactly what it was looking for and why
+it was looking for it.
+</p>
+The Interpreter pattern,
+<a href="http://en.wikipedia.org/wiki/Domain-specific_language">domain-specific languages</a>,
+and
+
+<a href="http://en.wikipedia.org/wiki/Language-oriented_programming">language-oriented programming</a>
+are all immensely powerful techniques.
+Almost any problem CAN be seen as the domain of a language.
+In practice, less powerful techniques are often a better fit.
+And with the traditional language-writing tools,
+it was a rare problem indeed for which
+a DSL was seen to justify the risk and effort.
+</p>
+<p>
+Since it was so hard to create a new language,
+reuse of languages was emphasized instead.
+We've gotten  used to the idea of leveraging existing languages,
+even ones which are a very poor fit to our problems,
+because the alternative was even worse.
+</p>
+<p>
+More and better DSL's could breathe new life into
+our programming tools, and our programming methods.
+And now that the parsing game has become easier,
+DSL's are within reach in cases
+where they had not been before.
+</p>
+<h2>Note</h2>
+<p>
+<a name="RE">"parsing has been avoided": </a>
+For the purposes of this post,
+I do not include regular expressions as "parsing solutions".
+This post focuses on languages,
+and the term "language" is usually avoided when describing
+anything within the restricted syntax accepted by regular expressions.
+However, regular expressions do largely avoid the pitfalls
+described in this post,
+and that goes a long way to explain their popularity.
+</p>
 <br />
 <p>posted at: 19:49 |
 <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/03/making-the-parsing-game-safe.html">direct link to this entry</a>
