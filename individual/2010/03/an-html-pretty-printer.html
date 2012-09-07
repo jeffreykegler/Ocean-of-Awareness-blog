@@ -29,7 +29,211 @@
 <br />
 <center><a name="an-html-pretty-printer"> <h2>An HTML Pretty-printer</h2> </a>
 </center>
-<!-- Following start tag is replacement for a missing one -->
+    <p>
+      It's nice to get a big project to the point where it produces
+      something which is actually useful.
+      I'm pleased to announce
+      <tt>
+
+        html_fmt</tt>,
+      an HTML pretty printer
+      that's part of the
+      <a href="http://search.cpan.org/dist/Marpa-HTML/">
+        Marpa::HTML</a>
+      distribution.
+    </p>
+    <!-- Preceding end tag is replacement for a missing one -->
+    <p>
+      The command
+    </p>
+
+    <!-- Preceding end tag is replacement for a missing one -->
+    <pre>
+    html_fmt http://perl.org
+
+</pre>
+   <p>will pretty-print
+    the HTML for
+    <tt>
+      http:://perl.org</tt>.
+    Tags are printed out one per line, indented according to structure.
+    <tt>
+      html_fmt
+    </tt>
+
+    supplies any missing start or end tags,
+    adding comments to that effect.
+    <tt>
+      html_fmt
+    </tt>
+    respects &lt;pre&gt; tags.
+    <p>
+      If the argument is not a URI, it's interpreted as a file name.
+      Suppose, for example, that
+      <tt>
+        very_bad_html
+      </tt>
+
+      is a file
+      containing this HTML: "<tt>&lt;tr&gt;cell data</tt>".
+      Then
+      <tt>
+        html_fmt very_bad_html
+      </tt>
+      will convert it into this:
+    </p>
+    <!-- Preceding end tag is replacement for a missing one -->
+    <pre>
+    &lt;!-- Following start tag is replacement for a missing one --&gt;
+    &lt;html&gt;
+      &lt;!-- Following start tag is replacement for a missing one --&gt;
+      &lt;head&gt;
+      &lt;/head&gt;
+      &lt;!-- Preceding end tag is replacement for a missing one --&gt;
+      &lt;!-- Following start tag is replacement for a missing one --&gt;
+      &lt;body&gt;
+        &lt;!-- Following start tag is replacement for a missing one --&gt;
+        &lt;table&gt;
+          &lt;!-- Following start tag is replacement for a missing one --&gt;
+          &lt;tbody&gt;
+            &lt;tr&gt;
+              &lt;!-- Following start tag is replacement for a missing one --&gt;
+              &lt;td&gt;
+                cell data
+              &lt;/td&gt;
+              &lt;!-- Preceding end tag is replacement for a missing one --&gt;
+            &lt;/tr&gt;
+            &lt;!-- Preceding end tag is replacement for a missing one --&gt;
+          &lt;/tbody&gt;
+          &lt;!-- Preceding end tag is replacement for a missing one --&gt;
+        &lt;/table&gt;
+        &lt;!-- Preceding end tag is replacement for a missing one --&gt;
+      &lt;/body&gt;
+      &lt;!-- Preceding end tag is replacement for a missing one --&gt;
+    &lt;/html&gt;
+    &lt;!-- Preceding end tag is replacement for a missing one --&gt;
+
+</pre>
+    <p>
+      <tt>
+        html_fmt
+      </tt>
+      seeks to be as liberal as any HTML rendering
+      engine you'll ever encounter.
+      It treats
+      <strong>
+
+        all
+      </strong>
+      files as HTML.
+      Occasionally even
+      <tt>
+        html_fmt</tt>'s
+      aggressive liberalizations of the syntax cannot make a document parse as HTML.
+      When that happens,
+      <tt>
+        html_fmt
+      </tt>
+      tags unparseable sections of the document as "cruft".
+      Cruft is included in the output,
+      but is ignored for the purpose of determining the document's structure.
+      An identifying comment is added after the cruft.
+    </p>
+    <!-- Preceding end tag is replacement for a missing one -->
+
+    <p>
+      <tt>html_fmt</tt> was intended to allow easy reading of HTML,
+      and as a diagnostic tool.
+      It was not originally intended for reformatting.
+      But the prettified output of
+      <tt>
+        html_fmt
+      </tt>
+      will usually render the same as the input,
+      modulo some extra spacing, particularly around end tags.
+      This blog post, for example,
+      was run through
+      an
+      <tt>
+        html_fmt
+      </tt>
+      command.
+      A future release may reduce or eliminate spacing changes.
+    </p>
+
+    <!-- Preceding end tag is replacement for a missing one -->
+    <p>
+      <tt>
+        html_fmt
+      </tt>
+      uses
+      <a href="http://search.cpan.org/dist/WWW-Mechanize/">
+        WWW::Mechanize</a>
+      to fetch URI's
+      and
+      <a href="http://search.cpan.org/dist/HTML-Parser/">
+
+        HTML::Parser</a>
+      to do the low-level HTML parsing.
+      The high-level structure of the HTML is determined by
+      <a href="http://search.cpan.org/dist/Marpa-HTML/">
+        Marpa::HTML</a><!--
+      -->.
+    </p>
+    <!-- Preceding end tag is replacement for a missing one -->
+    <p>
+      I developed
+      <tt>
+
+        html_fmt
+      </tt>
+      as a test of
+      <a href="http://search.cpan.org/dist/Marpa/">
+        Marpa<!--
+      --></a><!--
+      -->.
+      What are the advantages of using Marpa?
+      Other high-level
+      HTML/XHTML/XML parsers use regular expressions
+      and/or ad-hoc methods.
+      In some implementations these are fast,
+      but they are not easy to maintain.
+      <a href="http://search.cpan.org/dist/Marpa/">
+        Marpa</a>
+      is a general BNF parser generator,
+      and
+      <a href="http://search.cpan.org/dist/Marpa-HTML/">
+        Marpa::HTML<!--
+      --></a>
+
+      is based on a BNF representation of a liberalized HTML.
+      That makes it easy enough to change if you prefer a
+      different liberalization of the XHTML/HTML standards.
+    </p>
+    <!-- Preceding end tag is replacement for a missing one -->
+    <p>
+      A few additional parsing tricks are added for efficiency.
+      These also are intuitive and are driven by tables
+      that are straightforward to modify.
+      In future blog posts I hope to explain in detail how
+      <a href="http://search.cpan.org/dist/Marpa-HTML/">
+        Marpa::HTML</a>
+      parses HTML.
+    </p>
+    <!-- Preceding end tag is replacement for a missing one -->
+
+    <p>
+      <tt>
+        html_fmt</tt>'s
+      current speed is quite acceptable for looking at individual web pages.
+      Right now
+      <a href="http://search.cpan.org/dist/Marpa/">
+        Marpa</a>
+      is only in a "Pure Perl" implementation.
+      More could be desired by users who need to crunch a large database of HTML.
+      I've started on the XS version, and when that is complete I expect speeds,
+      not equal to those of rendering engines custom-coded in C,
+      but in the same ballpark.
 <br />
 <p>posted at: 09:24 |
 <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2010/03/an-html-pretty-printer.html">direct link to this entry</a>
