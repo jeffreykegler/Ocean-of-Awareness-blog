@@ -59,8 +59,8 @@ By default, all the alternatives at every choice point
 tie with each other.
 When they are tied in rank,
 the order of choices is arbitrary.
-
 </p>
+<p>
 In the <code class="prettyprint">rule</code> ranking method, all the parse trees are
 kept, and visited in order.
 In the <code class="prettyprint">high_rule_only</code> ranking method,
@@ -71,3 +71,92 @@ can be "highest".
 A full description of the new ranking methods
 is <a href="http://search.cpan.org/perldoc?Marpa::XS::Semantics::Order">
 in Marpa::XS's documentation</a>.
+</p>
+<h1>What is next with Marpa?</h1>
+<p>
+Marpa::XS is aimed at users who want a stable platform for applications.
+To ensure the stability of Marpa::XS,
+active development of Marpa is moving into a new fork:
+<a href="http://search.cpan.org/dist/Marpa-R2/">Marpa::R2</a>.
+This will isolate Marpa::XS users from the accidental changes
+and bugs that can be the side effect of active development.
+
+</p>
+<p>
+Initially, changes to Marpa::XS will be restricted to bug fixes.
+As it stands, Marpa::XS is very fully featured -- it offers applications
+far more flexibility than competing parsers.
+If I enhance the features of Marpa::XS,
+the new features will be back-ported from Marpa's active development forks,
+and I will preserve backward compatibility.
+<h1>Limitations and comparisons</h1>
+<p>
+Marpa::XS is, as the name suggests, XS only --
+installation requires access to a C compiler,
+and to many of the <a href="#GNU">GNU utilities and libraries as well</a>.
+Marpa::XS has been tested on a wide variety of POSIX systems.
+</p>
+<p>
+In theory Marpa::XS is NOT restricted to POSIX systems --
+all the tools and libraries
+it uses have Windows versions, for example.
+However, Marpa::XS has yet to be installed
+on a non-POSIX system.
+</p>
+<p>
+For a detailed comparison of Marpa to other parsers,
+one which is careful to point out situations
+where older parsing algorithms may still be superior,
+see the
+"Limitations and Comparisons" section
+<a href="http://blogs.perl.org/users/jeffrey_kegler/2011/08/announcing-marpaxs-080.html">
+in my announcement of Marpa::XS 0.008000</a>.
+
+</p><h2>Notes</h2>
+<ol>
+<li><a name="LINEAR">"in linear time": </a>
+To be specific, Marpa parses any LR-regular grammar in linear time -- O(n).
+LR-regular is a vast class of grammars that includes LALR,
+LR(k) for all k,
+and LL(k) for all k.
+This means that Marpa parses,
+in linear time,
+every grammar parsed by yacc,
+recursive descent and regular expressions.
+</li>
+<li><a name="OPTIMAL">"considered optimal": </a>
+The phrase "considered optimal" elides some
+irrelevant bits of theory.
+It would be a bit of a
+surprise if it is possible to
+do general BNF parsing
+in O(n), but nobody has proved that it can't be done.
+The Valiant algorithm parses general BNF
+and is O(n**2.376...) or better.
+But Valiant's algorithm is only faster for huge problems,
+and for those it
+needs a machine with many terabytes of main memory
+to deliver on its speed claims.
+So it won't be competing with Marpa any time soon.
+<li><a name="GNU">"GNU utilities and libraries": </a>
+These dependences can be an inconvenience, I admit, but
+the alternative is installing
+my attempt to portably re-create
+all the things the GNU people have developed.
+I think that it is clear that the GNU software is the easier
+and more reliable alternative.
+</p>
+<p>
+If you browse the package, you may see that it uses TeX as well.
+TeX is ONLY needed is you are working on libmarpa,
+the highly mathematical, low-level core library that provides
+the parse engine.
+To do this, you'd need to have studied a lot of the mathematics
+of parsing -- and you'd understand why I feel forced to do the
+documentation in TeX.
+All the non-mathematical parts are either in Perl, or in C code
+which can be read and changed on systems which do not have TeX
+installed.
+</p>
+</li>
+
