@@ -19,6 +19,7 @@ Marpa-powered CSS parser</a>.
 Wolfgang lays his parser out in a very elegant fashion,
 and I find his code makes an excellent template.
 </p>
+<p>
 Especially nice-looking is Wolfgang's lexer.
 Wolfgang follows one of the two
 main strategies for lexical analysis in 
@@ -27,7 +28,6 @@ he consumes the input using substitution
 (<code class="prettyprint">s/ ... / ... /</code>) commands.
 <p>
 
-</p>
 The other strategy is to use the Perl regex search position
 to track the progress of the lexical analysis.
 In the search-position strategy,
@@ -48,3 +48,12 @@ Mark's book can be read
 on-line</a>.
 I highly recommend Mark's book
 and own a paper copy.
+
+</p>
+<p>
+Actually, regular expressions are well within Marpa's capabilites,
+and lexical analysis could be done in Marpa.
+But a look at Mark and Wolfgang's code should convince you that
+lexical analysis is easy to do in Perl.
+</p>
+
