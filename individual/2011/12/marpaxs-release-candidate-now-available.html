@@ -139,11 +139,139 @@ With the fixes for this release,
 I expect that Marpa::XS can be taken out
 of beta and into a full 1.000000 release shortly.
 </p>
+<p>
 Development of new features for
 Marpa continues, but in another distribution:
 <a href="http://search.cpan.org/dist/Marpa-R2/">Marpa::R2</a>.
 This isolates Marpa::XS users from the accidental changes
 and bugs that can be the side effect of active development.
+</p>
+<h2>Limitations</h2>
+
+<p>
+Marpa::XS 
+installation requires a C compiler,
+and many of the <a href="#GNU">GNU utilities and libraries as well</a>.
+Marpa::XS has been tested on a wide variety of POSIX systems.
+In theory Marpa::XS is NOT restricted to POSIX systems --
+all the tools it uses have Windows versions, for example.
+However, Marpa::XS has yet to be installed
+on a non-POSIX system.
+</p>
+</p><h2>Notes</h2>
+<ol>
+<li><p><a name="LINEAR">"in linear time": </a>
+To be specific, Marpa parses any LR-regular grammar in linear time -- O(n).
+LR-regular is a vast class of grammars that includes LALR,
+LR(k) for all k,
+and LL(k) for all k.
+This means that Marpa parses,
+in linear time,
+every class of grammar
+parsed by yacc,
+recursive descent and regular expressions.
+</p>
+</li>
+<li><p><a name="OPTIMAL">"considered optimal": </a>
+The phrase "considered optimal" elides some
+irrelevant bits of theory.
+It would be a bit of a
+surprise if it is possible to
+do general BNF parsing
+in O(n), but nobody has proved that it can't be done.
+The Valiant algorithm parses general BNF
+and is O(n**2.373...) or better.
+But Valiant's algorithm is only faster for huge problems,
+and for those it
+needs a machine with many terabytes of main memory
+to deliver on its speed claims.
+So it won't be competing with Marpa any time soon.
+</p>
+
+<li><p><a name="JIROTKA">"unusual circumstances": </a>
+I call this bug, the Jirotka issue,
+in gratitude to its discoverer
+(and because it is otherwise hard to describe).
+Those curious can look in Marpa::XS's test suite, at
+<a href="http://api.metacpan.org/source/JKEGL/Marpa-XS-0.026000/t/jirotka.t">
+the regression test I created for the Jirotka issue</a>.
+Most users will want to upgrade to
+<a href="https://metacpan.org/release/JKEGL/Marpa-XS-0.026000/">
+the latest release</a>
+and remain unaware that this issue ever existed.
+</p>
+<p>
+In internalese,
+reproducing the Jirotka issue requires,
+at a minimum,
+a rule which creates a Leo chain with multiple rules
+and which has a certain pattern of nullables.
+The bug itself boiled down to using the wrong variable
+at a single point in the code for handling
+nullables and Leo chains.
+This incorrect variable often had either
+the same value as the correct variable,
+and or a value which had the same effect.
+This meant that,
+even if a test exercised
+Leo chains with multiple rules,
+and even if the nullables fell into the right positions,
+that test would not necessary surface the Jirotka issue.
+</p>
+<p>
+My actual fix was not just that one line,
+but included some refactoring.
+The refactoring made the logic clearer,
+so that I could examine the code carefully,
+think the issue through,
+and assure myself
+that no other problems lurked
+in nearby or associated logic.
+</p>
+
+<p>
+A bug report like
+Tom&aacute;&#353; Jirotka's
+is a good sign --
+it indicates that
+Marpa::XS
+has been very thoroughly
+exercised.
+This bug report also shows off a nice property
+of Marpa.
+Since Marpa parses every BNF grammar,
+it is very easy to determine whether Marpa's failure to
+parse a grammar is a bug or not --
+if Marpa does not parse it, it's a bug.
+Most parsers in current use
+parse only a subset of the
+grammars that can be written in BNF,
+and whether
+a particular grammar is one of those in the subset
+can be very difficult to determine.
+</p>
+</li>
+<li><p><a name="GNU">"GNU utilities and libraries": </a>
+These dependences can be an inconvenience, I admit, but
+the alternative is installing
+my attempt to portably re-create
+all the things the GNU people have developed.
+I think that it is clear that the GNU software is the easier
+and more reliable alternative.
+</p>
+<p>
+If you browse the package, you may see that it uses TeX as well.
+TeX is ONLY needed is you are working on libmarpa,
+the highly mathematical, low-level core library that provides
+the parse engine.
+To do this, you'd need to have studied a lot of the mathematics
+of parsing -- and you'd understand why I feel forced to do the
+documentation in TeX.
+All the non-mathematical parts are either in Perl, or in C code
+which can be read and changed on systems which do not have TeX
+installed.
+</p>
+</li>
 <br />
 <p>posted at: 21:17 |
 <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2011/12/marpaxs-release-candidate-now-available.html">direct link to this entry</a>
