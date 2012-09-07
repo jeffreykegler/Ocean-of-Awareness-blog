@@ -32,8 +32,8 @@
 <p>
 In this post, I talk about how
 Perl 5 parses its
-<code class="prettyprint">use</code> statement.
-The <code class="prettyprint">use</code> statement
+<code>use</code> statement.
+The <code>use</code> statement
 is implemented with
 what I have named
 <a href="http://blogs.perl.org/users/jeffrey_kegler/2010/06/parsing-with-ruby-slippers.html">
@@ -66,10 +66,10 @@ to work well before I described and named it.
 Its code captures the two essential elements of
 Ruby Slippers parsing.
 </p>
-<h2>The Syntax of the <code class="prettyprint">use</code> Statement</h2>
+<h2>The Syntax of the <code>use</code> Statement</h2>
 <p>
 As a reminder, the 
-<code class="prettyprint">use</code> statement comes in several forms.
+<code>use</code> statement comes in several forms.
 Most of them are <a href="#MODULE">module</a>
 requests --
 that is, they request the loading of a module.
@@ -82,11 +82,259 @@ that module.
 use Module VERSION
 </pre>
 For example,
-<code class="prettyprint">
+<code>
 <pre>
 use List::Util 1.21;
 </pre>
 </code>
+</p>
+The short form of the module request is a module
+request with no version specified.
+<pre>
+use Module
+</pre>
+For example,
+<code>
+<pre>
+use List::Util;
+
+</pre>
+</code>
+</p>
+<p>
+Module requests, both short form and long form,
+also allow a list argument.
+<pre>
+use Module VERSION LIST
+use Module LIST
+</pre>
+Here's an example of the short form with a list of arguments.
+<code>
+<pre>
+use List::Util qw(reduce shuffle);
+</pre>
+</code>
+Because a number can be either a version or a single item list argument,
+module requests of the long form are potentially ambiguous.
+That is,
+<code>
+<pre>
+
+use Fatal v42;
+</pre>
+</code>
+could be a request to use at least version
+42 of the Fatal module.
+It can also be
+a request to load any version of the Fatal module, catching errors
+for the function named <code>v42</code>.
+As implemented, Perl disambiguates these in the lexer.
+It parses the <code>use</code> statement
+as the long form, with version specified, whenever possible.
+The above line, for example, will complain that there is no
+version 42 of the <code>Fatal</code> module.
+</p>
+<p>
+If you want to use the
+<code>Fatal</code> module
+with a function that you happened to have named
+
+<code>v42</code>, you can take advantage of the fact
+that the lexer's idea of whether a lexeme is a version number
+or not is a guess.
+This guess is based entirely on the first character or,
+in the case of a v-string, the first two.
+For example,
+<code>
+<pre>
+use Fatal +'v42';
+</pre>
+</code>
+will be parsed as the short form of a module request with
+a single item list.
+<p>
+Perl 5 has
+to live within the limits of LALR parsing.
+So you would think what I've already described
+would be living plenty dangerously enough
+for its designers.
+But there is in fact
+an additional form of the
+<code>use</code> statement:
+<pre>
+use VERSION
+</pre>
+For example,
+
+<code>
+<pre>
+use 5.010;
+</pre>
+</code>
+This is the perl version request form.
+The example requires that the version of Perl
+used be at least 5.010.
+</p>
+<h2>Out Come the Ruby Slippers</h2>
+<p>
+So, to parse all these different forms, what is in Perl's BNF?
+The BNF in <kbd>perly.y</kbd> has a single rule for
+the <code>use</code> statement,
+one that specifies only the long form of the
+module request.
+The Perl 5 BNF rule
+is the equivalent of 
+
+<pre>
+use WORD WORD LIST
+</pre>
+Here I have <code>WORD</code> instead of
+<code>Module</code> and <code>VERSION</code>,
+because that is what 
+<kbd>perly.y</kbd> has.
+In this context, a <code>WORD</code>
+
+is a token which
+can be either a version number
+or the name of a module.
+</p>
+<p>
+Of the five forms of the <code>use</code>
+command, only one
+is represented in the BNF.
+Of couse, a <kbd>LIST</kbd> can be empty,
+and that accounts for two of the missing variants.
+But one BNF rule still accounts
+for three different syntaxes:
+<ul>
+<li>the long form of the module request,
+<li>the short form of the module request, and
+<li>the perl version request.
+</ul>
+<p>
+Collapsing three syntaxes into one rule makes
+for some
+gruesome code within <kbd>toke.c</kbd>, but
+Perl 5 has no better choice.
+Perl 5 is committed to LALR parsing.
+Restricting the grammar to a single BNF rule
+is the best hope of making sure the grammar
+does not go beyond LALR.
+
+</p>
+<p>
+So the Perl 5 BNF assumes, contrary to fact, that Perl
+<code>use</code> statements always contain both module name
+and version.
+Here we see the first part of the Ruby Slippers strategy:
+wishful thinking.
+When a feature of the actual language is inconvenient
+to parse,
+the Ruby Slippers allow you to simply pretend it does not
+exist.
+Perl 5's parser will only handle grammars that are LALR,
+but the Perl 5 language is not LALR.
+Using the Ruby Slippers approach,
+the Perl 5 BNF pretends that the language is LALR.
+</p>
+<h2>Making Wishes Come True</h2>
+<p>
+The second part of the Ruby Slippers strategy requires that
+wishful thinking be made to come true.
+That's easy in
+<a href="http://search.cpan.org/dist/Marpa-XS/">Marpa</a>,
+where the parse engine knows,
+and can tell the lexer,
+<a href="#WISH">exactly what it is wishing for
+and where</a>.
+<kbd>yacc</kbd> is much less context-aware.
+As far as <kbd>yacc</kbd> is concerned,
+if the lexer really loved it,
+it would know what it wants.
+
+</p>
+<p>
+The Perl 5 lexer winds up having to work very hard
+to make this particular relationship work.
+It looks ahead at the two <code>WORD</code>
+tokens and decides what to
+do based on what it sees.
+This amounts to figuring out in the lexer which variant of the
+<code>use</code> statement is actually being used.
+In effect Perl 5 parses every
+<code>use</code> statement twice:
+once in the lexer, and then one more time with <kbd>yacc</kbd>.
+</p>
+<p>
+If the lexer sees that the <code>use</code>
+
+statement is the short form,
+then it invents a second <code>WORD</code> token
+to fill in for the missing one.
+The lexer make the short form
+of the <code>use</code> statement
+look to yacc as if it was the full form.
+This is the classic Ruby Slippers approach.
+</p>
+<p>
+The perl version form of the
+<code>use</code> statement is essentially a completely different
+statement with the same keyword.
+As its first step, it also does the classic Ruby Slippers
+move, only in reverse.
+The lexer reads the version as the first <code>WORD</code>
+token.
+A second <code>WORD</code> is then invented, with <code>NULL</code>
+
+contents.
+</p>
+<p>
+As a final step, Perl 5 needs to distinguish
+perl version requests from module load requests.
+Here things get quite hackish.
+Because the lexer is actually creating the Perl scalars,
+it has full control over their internal representations:
+the semantics can rely on the internal representations of
+the <code>WORD</code> tokens.
+Perl 5 assumes that <code>WORD</code>'s
+are version numbers if and only if they have numeric
+representations.
+After the lexer reworks its input,
+the parser always sees two <code>WORD</code>'s,
+exactly one of which is a version number.
+Based
+on whether that version number is
+the first or second <code>WORD</code>,
+Perl 5 decides whether a <code>use</code> statement is
+a module request or a perl version request.
+Desperate men do desperate things.
+</p>
+
+<h2>Notes</h2>
+<ol>
+<li><p><a name="WISH">"exactly what it is wishing for": </a>
+As currently implemented, Marpa has a convenient call
+that,
+at any point in the parse,
+will return the list of expected terminals.
+An lexer willing to use the debug and trace functions
+can find
+a lot more information: which rules are in progress,
+how far they have been recognized,
+where they began, etc., etc.
+I could create convenient calls to access this information as well,
+but so far the list of expected terminals
+has been all that my lexers care to know.
+<li></p>
+<p><a name="MODULE">"module": </a>
+Actually, the <code>use</code> statement
+implements pragmas as well as modules,
+so the module request forms are also pragma
+invocations,
+and module names can be pragma names.
+</p>
+<ol>
+
 <br />
 <p>posted at: 11:34 |
 <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2011/09/perl-and-parsing-9-use-and-the-ruby-slippers.html">direct link to this entry</a>
