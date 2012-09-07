@@ -41,6 +41,7 @@ grammars, is O(n**3), which is considered optimal
 </li>
 </ul>
 <h1>What is Next with Marpa?</h1>
+<p>
 I had planned to skip this announcement and wait to announce
 Marpa::XS 0.012000.
 I expected
@@ -55,3 +56,77 @@ which continues as of this writing.
 I've always waited for a few days of cpantesters results on
 the release candidate before cutting an official release
 and I hope cpantesters will be back online soon.
+<p>
+</p>
+Thanks to git,
+delay in getting one release out is no major obstacle to work
+on its successor, and work toward
+Marpa::XS 0.014000 is well underway.
+At this point (assuming the cpantesters results
+will be positive) very little remains to be done before Marpa::XS
+can go beta.
+</p>
+<p>
+Marpa::XS 0.014000 will be about bug fixes.
+I will do one or two additional applications, just to
+see if any problems surface.
+Marpa's current test suite is already quite extensive --
+besides the usual specific and regression tests,
+it aggressively exercises a full parser for liberal HTML,
+and it runs a couple of large tests with a prototype Perl parser.
+So, while it may be unwise to make this kind of prediction in public,
+I frankly do not expect a new application or two to find
+much in the way of bugs.
+</p>
+<p>
+What I had not done for prior releases
+was look proactively for
+leaks and other memory issues.
+I am now
+most of the way through doing that for Marpa::XS 0.014000.
+So far, I have
+found and fixed one slow leak.
+No memory
+overruns have turned up. 
+I will complete the memory debugging and leak detection
+before taking Marpa::XS beta.
+</p>
+<h1>Limitations and Comparisons</h1>
+<p>
+Currently, the major limitation of Marpa::XS is
+that it is alpha.
+Development is well advanced, but the interface remains
+subject to change.
+For a comparison of Marpa to other parsers,
+which is careful to point out situations
+where older parsing algorithms may still be superior,
+see the
+"Limitations and Comparisons" section
+<a href="http://blogs.perl.org/users/jeffrey_kegler/2011/08/announcing-marpaxs-080.html">
+in my announcement of Marpa::XS 0.008000</a>.
+</p>
+<h2>Notes</h2>
+<p><a name="NOTE1">Note 1: </a>
+To be specific, Marpa parses any LR-regular grammar in linear time -- O(n).
+LR-regular is a vast class of grammars that includes LALR,
+LR(k) for all k,
+and LL(k) for all k.
+This means that Marpa parses,
+in linear time,
+every grammar parsed by yacc,
+recursive descent and regular expressions.
+</p><p><a name="NOTE2">Note 2: </a>
+The phrase "considered optimal" elides some
+irrelevant bits of theory.
+It would be a bit of a
+surprise if it is possible to
+do general BNF parsing
+in O(n), but nobody has proved that it can't be done.
+The Valiant algorithm parses general BNF
+and is O(n**2.376...) or better.
+But Valiant's algorithm is only faster for huge problems,
+and for those it
+needs a machine with many terabytes of main memory
+to deliver on its speed claims.
+So it won't be competing with Marpa any time soon.
+</p>
