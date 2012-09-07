@@ -50,3 +50,98 @@ Another, top-level, handler takes all the values found below it,
 joins them together, and returns them.
 (<a href="http://search.cpan.org/dist/Marpa-HTML">Full
 documentation is on CPAN</a>.)
+
+<p>Finding titles is an unusually easy problem --
+too easy to demonstrate the real advantage of using
+<a href="http://search.cpan.org/dist/Marpa-HTML">Marpa::HTML</a>.
+The
+<a href="http://search.cpan.org/dist/HTML-Parser">HTML::Parser</a>
+solution for finding titles is as simple as it is,
+only because it takes advantage of the special and unusually simple
+properties of HTML <code class="prettyprint">title</code> elements.
+There is only one title in a well-formed HTML document.
+Most HTML elements can occur more than once.
+Titles cannot be nested.
+In standard use,
+HTML elements are often nested to some depth.
+
+<p>Suppose instead you want to print out, instead of the title,
+all tables.
+In that case you need to handle multiple elements,
+and to deal with nested elements.
+Here's the 
+<a href="http://search.cpan.org/dist/Marpa-HTML">Marpa::HTML</a>
+solution:
+
+<pre>
+<code class="prettyprint">
+say html(
+    \$html,
+    {   'table' => sub { return Marpa::HTML::original() },
+        ':TOP'  => sub { return ( join qq{\n}, @{ Marpa::HTML::values() } ) }
+    }
+);
+</code>
+</pre>
+
+<p>Essentially the same code as for finding titles.
+The
+<a href="http://search.cpan.org/dist/Marpa-HTML">Marpa::HTML</a>
+solution for titles "scales" to tables.
+For nested tables, the above code returns the outermost table.
+It will return as many outermost tables as your HTML contains.
+
+<p>To use
+<a href="http://search.cpan.org/dist/HTML-Parser">HTML::Parser</a>
+to accomplish the same task, an application would have
+to keep track of the high-level HTML structure,
+perhaps using state logic and stacks.
+<a href="http://search.cpan.org/dist/HTML-Parser">HTML::Parser</a>
+has more of a track record, and a reader might reasonably think
+some additional solution complexity is tolerable for that reason.
+But I believe that any reader who tries the exercise of writing up
+an
+<a href="http://search.cpan.org/dist/HTML-Parser">HTML::Parser</a>
+solution to this problem
+will become willing to give
+<a href="http://search.cpan.org/dist/Marpa-HTML">Marpa::HTML</a>
+a try.
+
+<p>The
+<a href="http://search.cpan.org/dist/Marpa-HTML">Marpa::HTML</a>
+module contains more examples,
+and also contains documentation with
+full explanations of how all of this works.
+From that documentation,
+here's an example
+that's an especially happy
+match of the solution's shape to the problem's structure.
+This code determines the maximum
+element depth of an HTML document:
+
+<pre>
+<code class="prettyprint">
+sub depth_below_me {
+    return List::Util::max( 0, @{ Marpa::HTML::values() } );
+}
+my %handlers_to_calculate_maximum_element_depth = (
+    q{*}   => sub { return 1 + depth_below_me() },
+    ':TOP' => sub { return depth_below_me() },
+);
+my $maximum_depth = html( \$string_containing_html_document,
+    \%handlers_to_calculate_maximum_element_depth );
+</code>
+</pre>
+
+<p>
+<a href="http://search.cpan.org/dist/HTML-Parser">HTML::Parser</a>
+does its job (low-level parsing) extremely well.
+I've benefited not just from using it,
+but from studying it.
+But even with a time-tested
+module like
+<a href="http://search.cpan.org/dist/HTML-Parser">HTML::Parser</a>
+in CPAN,
+I think you'll find that
+<a href="http://search.cpan.org/dist/Marpa-HTML">Marpa::HTML</a>
+brings additional value.
