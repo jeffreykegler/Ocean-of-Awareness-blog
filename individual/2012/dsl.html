@@ -17,7 +17,7 @@
     and other topics of interest</p>
   <h3>Resources</h3>
   <p><a href="http://www.jeffreykegler.com/">Jeffrey Kegler's website</a></p>
-  <p><a href="http://www.jeffreykegler.com/marpa">The Marpa website</a></p>
+  <p><a href="http://jeffreykegler.github.com/Marpa/">The Marpa website</a></p>
   <p>The Ocean of Awareness blog: <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog">home page</a>,
   <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/metapages/chronological.html">chronological index</a>,
   and
@@ -35,13 +35,13 @@ What if you could create a simple language in hours or minutes?
 There's been a serious obstacle up to now.
 No practical parser "just parsed" BNF.
 With
-<a href="http://www.jeffreykegler.com/marpa">
+<a href="http://jeffreykegler.github.com/Marpa/">
 Marpa</a>,
 that restriction is lifted.
 <p>
 In this post, I will describe
 a small, sample
-<a href="http://www.jeffreykegler.com/marpa">
+<a href="http://jeffreykegler.github.com/Marpa/">
 Marpa</a>
 domain-specific language (DSL).
 In designing it I am inspired by
@@ -73,7 +73,7 @@ a Github gist</a>.
 <p>
 <h2>The grammar</h2>
 <p>
-<a href="http://www.jeffreykegler.com/marpa">
+<a href="http://jeffreykegler.github.com/Marpa/">
 Marpa</a>
 allows you to build your DSL as a clean modular
 structure,
@@ -178,7 +178,7 @@ the grammar is the name of the start symbol
 the semantics can be found
 (the current one, <tt>__PACKAGE__</tt>).
 <p>
-<a href="http://www.jeffreykegler.com/marpa">
+<a href="http://jeffreykegler.github.com/Marpa/">
 Marpa</a>
 does a lot of precomputation to its grammars.
 Once a grammar is fully defined,
@@ -267,7 +267,7 @@ Finally, note that the <tt>reduce</tt> operator is required to end on a word bou
     } ## end TOKEN: while ( pos $string < $length )
 </div>
 <p>The calculator's token engine creates a
-<a href="http://www.jeffreykegler.com/marpa">
+<a href="http://jeffreykegler.github.com/Marpa/">
 Marpa</a>
 recognizer
 with the <tt>new()</tt> constructor,
@@ -297,11 +297,11 @@ the DSL's function for handling <tt>read()</tt> errors,
 helpful.
 It produces a very specific and comprehensive error message.
 One of
-<a href="http://www.jeffreykegler.com/marpa">
+<a href="http://jeffreykegler.github.com/Marpa/">
 Marpa</a>'s
 greatest improvements over previous
 parsers is that, when a parse fails,
-<a href="http://www.jeffreykegler.com/marpa">
+<a href="http://jeffreykegler.github.com/Marpa/">
 Marpa</a>
 can explain why in considerable detail.
 It makes sense to take full advantage of that ability.
@@ -327,7 +327,7 @@ so we call <tt>value()</tt> only once.
 and a Perl <tt>undef</tt> if the parse failed.
 The error handling is worth noticing.
 One of
-<a href="http://www.jeffreykegler.com/marpa">
+<a href="http://jeffreykegler.github.com/Marpa/">
 Marpa</a>'s
 strengths is that it is fully aware of which rules
 are being tried at any point,
@@ -414,7 +414,7 @@ accurate and helpful error reporting.
 <p>
 Much more could be done in error message handling
 than is done by this calculator DSL.
-<a href="http://www.jeffreykegler.com/marpa">
+<a href="http://jeffreykegler.github.com/Marpa/">
 Marpa</a>'s
 situational awareness
 makes much easier to write usefully

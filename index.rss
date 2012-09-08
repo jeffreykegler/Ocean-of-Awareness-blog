@@ -104,13 +104,13 @@ What if you could create a simple language in hours or minutes?
 There's been a serious obstacle up to now.
 No practical parser &quot;just parsed&quot; BNF.
 With
-&lt;a href=&quot;http://www.jeffreykegler.com/marpa&quot;&gt;
+&lt;a href=&quot;http://jeffreykegler.github.com/Marpa/&quot;&gt;
 Marpa&lt;/a&gt;,
 that restriction is lifted.
 &lt;p&gt;
 In this post, I will describe
 a small, sample
-&lt;a href=&quot;http://www.jeffreykegler.com/marpa&quot;&gt;
+&lt;a href=&quot;http://jeffreykegler.github.com/Marpa/&quot;&gt;
 Marpa&lt;/a&gt;
 domain-specific language (DSL).
 In designing it I am inspired by
@@ -142,7 +142,7 @@ a Github gist&lt;/a&gt;.
 &lt;p&gt;
 &lt;h2&gt;The grammar&lt;/h2&gt;
 &lt;p&gt;
-&lt;a href=&quot;http://www.jeffreykegler.com/marpa&quot;&gt;
+&lt;a href=&quot;http://jeffreykegler.github.com/Marpa/&quot;&gt;
 Marpa&lt;/a&gt;
 allows you to build your DSL as a clean modular
 structure,
@@ -247,7 +247,7 @@ the grammar is the name of the start symbol
 the semantics can be found
 (the current one, &lt;tt&gt;__PACKAGE__&lt;/tt&gt;).
 &lt;p&gt;
-&lt;a href=&quot;http://www.jeffreykegler.com/marpa&quot;&gt;
+&lt;a href=&quot;http://jeffreykegler.github.com/Marpa/&quot;&gt;
 Marpa&lt;/a&gt;
 does a lot of precomputation to its grammars.
 Once a grammar is fully defined,
@@ -336,7 +336,7 @@ Finally, note that the &lt;tt&gt;reduce&lt;/tt&gt; operator is required to end o
     } ## end TOKEN: while ( pos $string &lt; $length )
 &lt;/div&gt;
 &lt;p&gt;The calculator's token engine creates a
-&lt;a href=&quot;http://www.jeffreykegler.com/marpa&quot;&gt;
+&lt;a href=&quot;http://jeffreykegler.github.com/Marpa/&quot;&gt;
 Marpa&lt;/a&gt;
 recognizer
 with the &lt;tt&gt;new()&lt;/tt&gt; constructor,
@@ -366,11 +366,11 @@ the DSL's function for handling &lt;tt&gt;read()&lt;/tt&gt; errors,
 helpful.
 It produces a very specific and comprehensive error message.
 One of
-&lt;a href=&quot;http://www.jeffreykegler.com/marpa&quot;&gt;
+&lt;a href=&quot;http://jeffreykegler.github.com/Marpa/&quot;&gt;
 Marpa&lt;/a&gt;'s
 greatest improvements over previous
 parsers is that, when a parse fails,
-&lt;a href=&quot;http://www.jeffreykegler.com/marpa&quot;&gt;
+&lt;a href=&quot;http://jeffreykegler.github.com/Marpa/&quot;&gt;
 Marpa&lt;/a&gt;
 can explain why in considerable detail.
 It makes sense to take full advantage of that ability.
@@ -396,7 +396,7 @@ so we call &lt;tt&gt;value()&lt;/tt&gt; only once.
 and a Perl &lt;tt&gt;undef&lt;/tt&gt; if the parse failed.
 The error handling is worth noticing.
 One of
-&lt;a href=&quot;http://www.jeffreykegler.com/marpa&quot;&gt;
+&lt;a href=&quot;http://jeffreykegler.github.com/Marpa/&quot;&gt;
 Marpa&lt;/a&gt;'s
 strengths is that it is fully aware of which rules
 are being tried at any point,
@@ -483,7 +483,7 @@ accurate and helpful error reporting.
 &lt;p&gt;
 Much more could be done in error message handling
 than is done by this calculator DSL.
-&lt;a href=&quot;http://www.jeffreykegler.com/marpa&quot;&gt;
+&lt;a href=&quot;http://jeffreykegler.github.com/Marpa/&quot;&gt;
 Marpa&lt;/a&gt;'s
 situational awareness
 makes much easier to write usefully
@@ -704,7 +704,7 @@ Input: &quot;payment on 1000 + 1000 over months/12 years at 5 + 1 %&quot;
 &lt;h2&gt;How rule-based precedence works&lt;/h2&gt;
 &lt;p&gt;
 Rule-based precedence parsing uses
-&lt;a href=&quot;http://www.jeffreykegler.com/marpa&quot;&gt;
+&lt;a href=&quot;http://jeffreykegler.github.com/Marpa/&quot;&gt;
 Marpa&lt;/a&gt;,
 a new and efficient general BNF parsing algorithm.
 With Marpa,
@@ -729,7 +729,7 @@ Without (and often even with) programmer intervention,
 there would be little reason to hope that
 an LALR or LL parse engine would parse
 an arbitrary order-explicit BNF grammar.
-&lt;a href=&quot;http://www.jeffreykegler.com/marpa&quot;&gt;
+&lt;a href=&quot;http://jeffreykegler.github.com/Marpa/&quot;&gt;
 Marpa&lt;/a&gt;,
 on the other hand, does &quot;just parse&quot; arbitrary BNF,
 and a successful parse is guaranteed.
@@ -783,7 +783,7 @@ contentment with the state of the art.
 &lt;p&gt;
 What would be a real solution to the parsing problem?
 I wish to suggest that
-&lt;a href=&quot;http://www.jeffreykegler.com/marpa&quot;&gt;Marpa&lt;/a&gt;
+&lt;a href=&quot;http://jeffreykegler.github.com/Marpa/&quot;&gt;Marpa&lt;/a&gt;
 is that solution.
 I say that based on a list of features.
 Marpa is the first parser to have all of these features,
