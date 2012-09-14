@@ -16,10 +16,13 @@
       &lt;!--
       perl ./marpa_r2_html_fmt
       --&gt;
-      This post focuses on
+      This post is about
       &lt;tt&gt;
         html_fmt&lt;/tt&gt;,
-      a reformatter (&quot;tidier&quot;) for liberal HTML.
+      a
+      &lt;a href=&quot;http://jeffreykegler.github.com/Marpa/&quot;&gt;
+        Marpa-&lt;/a&gt;based
+      reformatter (&quot;tidier&quot;) for liberal HTML.
       &lt;tt&gt;
         html_fmt&lt;/tt&gt;
       indents HTML according to the structure of the document,
@@ -56,8 +59,8 @@
       &lt;a href=&quot;http://jeffreykegler.github.com/Ocean-of-Awareness-blog/metapages/chronological.html&quot;&gt;
         my old posts&lt;/a&gt;,
       I wanted a filter that would tidy them up,
-      so I turned to an old Marpa demo I'd written.
-      The old demo code's usefulness was a pleasant surprise,
+      so I turned to an old demo script I'd written.
+      The old demo's usefulness was a pleasant surprise,
       but it lacked two features.
       First, it wouldn't read from standard input.
       Second, in formatting the HTML, it introduced new whitespace.
@@ -67,8 +70,10 @@
       among browsers and HTML variants.
     &lt;/p&gt;
     &lt;p&gt;
-      The result, &lt;tt&gt;html_fmt&lt;/tt&gt;,
-      is very well-suited as a first step in dealing with HTML
+      The result,
+      &lt;tt&gt;
+        html_fmt&lt;/tt&gt;,
+      works very well as the first step in dealing with HTML
       that you are rewriting by hand.
       One quick pass-through and your file is much easier to read,
       has all the proper tags,
@@ -98,7 +103,9 @@
       &lt;a href=&quot;http://blog.plover.com/oops/blosxom-sux.html&quot;&gt;
         &quot;Worse is Better&quot;&lt;/a&gt;
       point of view,
-      &lt;tt&gt;html_fmt&lt;/tt&gt; is a good start on a production-quality tool.
+      &lt;tt&gt;
+        html_fmt&lt;/tt&gt;
+      is a good start.
       It is 600 lines,
       short enough to find your
       way around in,
@@ -112,9 +119,12 @@
       &lt;tt&gt;
         html_fmt&lt;/tt&gt;
       is now available as a gist.
-      In a future release of Marpa::R2,
+      In a future release of
+      &lt;a href=&quot;https://metacpan.org/release/Marpa-R2&quot;&gt;
+        Marpa::R2&lt;/a&gt;,
       it will be available as the
-      &lt;tt&gt;marpa_r2_html_fmt&lt;/tt&gt;.
+      &lt;tt&gt;
+        marpa_r2_html_fmt&lt;/tt&gt;.
       But why wait until then to fork it?
     &lt;/p&gt;</description>
   </item>

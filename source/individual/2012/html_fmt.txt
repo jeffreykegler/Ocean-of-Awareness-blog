@@ -3,10 +3,13 @@ A Marpa-based HTML reformatter
       <!--
       perl ./marpa_r2_html_fmt
       -->
-      This post focuses on
+      This post is about
       <tt>
         html_fmt</tt>,
-      a reformatter ("tidier") for liberal HTML.
+      a
+      <a href="http://jeffreykegler.github.com/Marpa/">
+        Marpa-</a>based
+      reformatter ("tidier") for liberal HTML.
       <tt>
         html_fmt</tt>
       indents HTML according to the structure of the document,
@@ -43,8 +46,8 @@ A Marpa-based HTML reformatter
       <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/metapages/chronological.html">
         my old posts</a>,
       I wanted a filter that would tidy them up,
-      so I turned to an old Marpa demo I'd written.
-      The old demo code's usefulness was a pleasant surprise,
+      so I turned to an old demo script I'd written.
+      The old demo's usefulness was a pleasant surprise,
       but it lacked two features.
       First, it wouldn't read from standard input.
       Second, in formatting the HTML, it introduced new whitespace.
@@ -54,8 +57,10 @@ A Marpa-based HTML reformatter
       among browsers and HTML variants.
     </p>
     <p>
-      The result, <tt>html_fmt</tt>,
-      is very well-suited as a first step in dealing with HTML
+      The result,
+      <tt>
+        html_fmt</tt>,
+      works very well as the first step in dealing with HTML
       that you are rewriting by hand.
       One quick pass-through and your file is much easier to read,
       has all the proper tags,
@@ -85,7 +90,9 @@ A Marpa-based HTML reformatter
       <a href="http://blog.plover.com/oops/blosxom-sux.html">
         "Worse is Better"</a>
       point of view,
-      <tt>html_fmt</tt> is a good start on a production-quality tool.
+      <tt>
+        html_fmt</tt>
+      is a good start.
       It is 600 lines,
       short enough to find your
       way around in,
@@ -99,8 +106,11 @@ A Marpa-based HTML reformatter
       <tt>
         html_fmt</tt>
       is now available as a gist.
-      In a future release of Marpa::R2,
+      In a future release of
+      <a href="https://metacpan.org/release/Marpa-R2">
+        Marpa::R2</a>,
       it will be available as the
-      <tt>marpa_r2_html_fmt</tt>.
+      <tt>
+        marpa_r2_html_fmt</tt>.
       But why wait until then to fork it?
     </p>
