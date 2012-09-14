@@ -1,58 +1,60 @@
-    A Marpa-based HTML reformatter
-    This post focuses on
-    <code>
-      html_fmt
-    </code><!--
-      html_fmt: this comment is to avoid introducing whitespace
-    -->,
-    a reformatter ("tidier") for liberal HTML.
-    <code>
-      html_fmt
-    </code>
-    indents HTML according to structure,
-    in the process
-    adding missing start and end tags and identifying "cruft".
-    <code>
-      html_fmt
-    </code>
-    is ultra-liberal about its input.
-    Like a browser's rendering engine,
-    <code>
-      html_fmt
-    </code>
-    never rejects a file,
-    no matter how clearly defective it is as an HTML document.
-    In fact, an interesting experiment is to compare what your
-    favorite browser does with a random text file feed to
-    it directly,
-    and then passed through
-    <code>
-      html_fmt
-    </code><!--
-      html_fmt: this comment is to avoid introducing whitespace
-    -->.
+A Marpa-based HTML reformatter
     <p>
-      <code>
+      <!--
+      perl ./marpa_r2_html_fmt 
+      -->
+      This post focuses on
+      <tt>
         html_fmt
-      </code>
+      </tt>,
+      a reformatter ("tidier") for liberal HTML.
+      <tt>
+        html_fmt
+      </tt>
+      indents HTML according to the structure of the document,
+      which makes it a lot easier to read.
+      In the process
+      <tt>
+        html_fmt
+      </tt>
+      adds missing start and end tags and identifies "cruft".
+    </p>
+    <p>
+      <tt>
+        html_fmt
+      </tt>
+      is ultra-liberal about its input.
+      Like a browser's rendering engine,
+      <tt>
+        html_fmt
+      </tt>
+      never rejects a file,
+      no matter how clearly defective it is as an HTML document.
+      An interesting experiment would be to compare what your
+      favorite browser does with a random text file feed to
+      it directly,
+      with what it does to the same file
+      after it has been passed through
+      <tt>
+        html_fmt
+      </tt>.
+    </p>
+    <p>
+      <tt>
+        html_fmt
+      </tt>
       is a by-product of moving
       <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/">
         this blog to Github
-      </a><!--
-        html_fmt: this comment is to avoid introducing whitespace
-      -->.
+      </a>.
       In the course of bringing over
       <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/metapages/chronological.html">
         my old posts
-      </a><!--
-        html_fmt: this comment is to avoid introducing whitespace
-      -->,
+      </a>,
       I wanted a filter that would tidy them up,
       and turned to an old Marpa demo I'd written.
-      <!-- html_fmt: Following end tag is replacement for a missing one -->
-    </p><!--
-      html_fmt: this comment is to avoid introducing whitespace
-    --><p>
+    </p>
+    <p>
       Its usefulness was a pleasant surprise,
       but it lacked two features.
       First, it wouldn't read from standard input.
@@ -61,14 +63,12 @@
       Fixing the second involved coming up with a
       "lowest common denominator" for whitespace treatment
       among browsers and HTML variants.
-      <!-- html_fmt: Following end tag is replacement for a missing one -->
-    </p><!--
-      html_fmt: this comment is to avoid introducing whitespace
-    --><p>
+    </p>
+    <p>
       I making
-      <code>
+      <tt>
         html_fmt
-      </code>
+      </tt>
       result available as a
       gist.
       It is very well-suited as a first step in dealing with HTML
@@ -76,19 +76,17 @@
       One quick pass-through and your file is much easier to read,
       has all the proper tags,
       and has comments pointing out any "cruft" that's there.
-      <!-- html_fmt: Following end tag is replacement for a missing one -->
-    </p><!--
-      html_fmt: this comment is to avoid introducing whitespace
-    --><p>
+    </p>
+    <p>
       A production quality "tidier" would need to be something like
       <tt>
         gnuindent
       </tt>
       --
       bristling with options.
-      <code>
+      <tt>
         html_fmt
-      </code>
+      </tt>
       so far has only two choices: strategies for avoiding added whitespace.
       The default is to add comments, which keeps the indentation correct,
       but looks cluttered.
@@ -96,10 +94,8 @@
       text as is, which avoids
       clutter, but makes the structure of document harder to follow.
       Which I prefer depends very much on the situation.
-      <!-- html_fmt: Following end tag is replacement for a missing one -->
-    </p><!--
-      html_fmt: this comment is to avoid introducing whitespace
-    --><p>
+    </p>
+    <p>
       From a
       <a href="http://en.wikipedia.org/wiki/Worse_is_better">
         "Worse is Better"
@@ -108,9 +104,7 @@
       (as
       <a href="http://blog.plover.com/oops/blosxom-sux.html">
         stated very well by Mark Jason Dominus
-      </a><!--
-        html_fmt: this comment is to avoid introducing whitespace
-      -->,
+      </a>,
       it's a good start on a production-quality tool.
       It is 600 lines,
       short enough to be easy to find your
@@ -119,8 +113,6 @@
       And its underlying Marpa-based interface is documented:
       <a href="https://metacpan.org/module/Marpa::R2::HTML">
         Marpa::R2::HTML
-      </a><!--
-        html_fmt: this comment is to avoid introducing whitespace
-      -->.
+      </a>.
       Marpa::R2::HTML is beta, but has been stable for some time.
     </p>

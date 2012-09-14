@@ -10,62 +10,64 @@
     <language>en</language>
 
   <item>
-    <title>    A Marpa-based HTML reformatter</title>
+    <title>A Marpa-based HTML reformatter</title>
     <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog/2012/09/13#html_fmt</link>
-    <description>    This post focuses on
-    &lt;code&gt;
-      html_fmt
-    &lt;/code&gt;&lt;!--
-      html_fmt: this comment is to avoid introducing whitespace
-    --&gt;,
-    a reformatter (&quot;tidier&quot;) for liberal HTML.
-    &lt;code&gt;
-      html_fmt
-    &lt;/code&gt;
-    indents HTML according to structure,
-    in the process
-    adding missing start and end tags and identifying &quot;cruft&quot;.
-    &lt;code&gt;
-      html_fmt
-    &lt;/code&gt;
-    is ultra-liberal about its input.
-    Like a browser's rendering engine,
-    &lt;code&gt;
-      html_fmt
-    &lt;/code&gt;
-    never rejects a file,
-    no matter how clearly defective it is as an HTML document.
-    In fact, an interesting experiment is to compare what your
-    favorite browser does with a random text file feed to
-    it directly,
-    and then passed through
-    &lt;code&gt;
-      html_fmt
-    &lt;/code&gt;&lt;!--
-      html_fmt: this comment is to avoid introducing whitespace
-    --&gt;.
-    &lt;p&gt;
-      &lt;code&gt;
+    <description>    &lt;p&gt;
+      &lt;!--
+      perl ./marpa_r2_html_fmt 
+      --&gt;
+      This post focuses on
+      &lt;tt&gt;
         html_fmt
-      &lt;/code&gt;
+      &lt;/tt&gt;,
+      a reformatter (&quot;tidier&quot;) for liberal HTML.
+      &lt;tt&gt;
+        html_fmt
+      &lt;/tt&gt;
+      indents HTML according to the structure of the document,
+      which makes it a lot easier to read.
+      In the process
+      &lt;tt&gt;
+        html_fmt
+      &lt;/tt&gt;
+      adds missing start and end tags and identifies &quot;cruft&quot;.
+    &lt;/p&gt;
+    &lt;p&gt;
+      &lt;tt&gt;
+        html_fmt
+      &lt;/tt&gt;
+      is ultra-liberal about its input.
+      Like a browser's rendering engine,
+      &lt;tt&gt;
+        html_fmt
+      &lt;/tt&gt;
+      never rejects a file,
+      no matter how clearly defective it is as an HTML document.
+      An interesting experiment would be to compare what your
+      favorite browser does with a random text file feed to
+      it directly,
+      with what it does to the same file
+      after it has been passed through
+      &lt;tt&gt;
+        html_fmt
+      &lt;/tt&gt;.
+    &lt;/p&gt;
+    &lt;p&gt;
+      &lt;tt&gt;
+        html_fmt
+      &lt;/tt&gt;
       is a by-product of moving
       &lt;a href=&quot;http://jeffreykegler.github.com/Ocean-of-Awareness-blog/&quot;&gt;
         this blog to Github
-      &lt;/a&gt;&lt;!--
-        html_fmt: this comment is to avoid introducing whitespace
-      --&gt;.
+      &lt;/a&gt;.
       In the course of bringing over
       &lt;a href=&quot;http://jeffreykegler.github.com/Ocean-of-Awareness-blog/metapages/chronological.html&quot;&gt;
         my old posts
-      &lt;/a&gt;&lt;!--
-        html_fmt: this comment is to avoid introducing whitespace
-      --&gt;,
+      &lt;/a&gt;,
       I wanted a filter that would tidy them up,
       and turned to an old Marpa demo I'd written.
-      &lt;!-- html_fmt: Following end tag is replacement for a missing one --&gt;
-    &lt;/p&gt;&lt;!--
-      html_fmt: this comment is to avoid introducing whitespace
-    --&gt;&lt;p&gt;
+    &lt;/p&gt;
+    &lt;p&gt;
       Its usefulness was a pleasant surprise,
       but it lacked two features.
       First, it wouldn't read from standard input.
@@ -74,14 +76,12 @@
       Fixing the second involved coming up with a
       &quot;lowest common denominator&quot; for whitespace treatment
       among browsers and HTML variants.
-      &lt;!-- html_fmt: Following end tag is replacement for a missing one --&gt;
-    &lt;/p&gt;&lt;!--
-      html_fmt: this comment is to avoid introducing whitespace
-    --&gt;&lt;p&gt;
+    &lt;/p&gt;
+    &lt;p&gt;
       I making
-      &lt;code&gt;
+      &lt;tt&gt;
         html_fmt
-      &lt;/code&gt;
+      &lt;/tt&gt;
       result available as a
       gist.
       It is very well-suited as a first step in dealing with HTML
@@ -89,19 +89,17 @@
       One quick pass-through and your file is much easier to read,
       has all the proper tags,
       and has comments pointing out any &quot;cruft&quot; that's there.
-      &lt;!-- html_fmt: Following end tag is replacement for a missing one --&gt;
-    &lt;/p&gt;&lt;!--
-      html_fmt: this comment is to avoid introducing whitespace
-    --&gt;&lt;p&gt;
+    &lt;/p&gt;
+    &lt;p&gt;
       A production quality &quot;tidier&quot; would need to be something like
       &lt;tt&gt;
         gnuindent
       &lt;/tt&gt;
       --
       bristling with options.
-      &lt;code&gt;
+      &lt;tt&gt;
         html_fmt
-      &lt;/code&gt;
+      &lt;/tt&gt;
       so far has only two choices: strategies for avoiding added whitespace.
       The default is to add comments, which keeps the indentation correct,
       but looks cluttered.
@@ -109,10 +107,8 @@
       text as is, which avoids
       clutter, but makes the structure of document harder to follow.
       Which I prefer depends very much on the situation.
-      &lt;!-- html_fmt: Following end tag is replacement for a missing one --&gt;
-    &lt;/p&gt;&lt;!--
-      html_fmt: this comment is to avoid introducing whitespace
-    --&gt;&lt;p&gt;
+    &lt;/p&gt;
+    &lt;p&gt;
       From a
       &lt;a href=&quot;http://en.wikipedia.org/wiki/Worse_is_better&quot;&gt;
         &quot;Worse is Better&quot;
@@ -121,9 +117,7 @@
       (as
       &lt;a href=&quot;http://blog.plover.com/oops/blosxom-sux.html&quot;&gt;
         stated very well by Mark Jason Dominus
-      &lt;/a&gt;&lt;!--
-        html_fmt: this comment is to avoid introducing whitespace
-      --&gt;,
+      &lt;/a&gt;,
       it's a good start on a production-quality tool.
       It is 600 lines,
       short enough to be easy to find your
@@ -132,9 +126,7 @@
       And its underlying Marpa-based interface is documented:
       &lt;a href=&quot;https://metacpan.org/module/Marpa::R2::HTML&quot;&gt;
         Marpa::R2::HTML
-      &lt;/a&gt;&lt;!--
-        html_fmt: this comment is to avoid introducing whitespace
-      --&gt;.
+      &lt;/a&gt;.
       Marpa::R2::HTML is beta, but has been stable for some time.
     &lt;/p&gt;</description>
   </item>
