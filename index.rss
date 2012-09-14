@@ -17,30 +17,20 @@
       perl ./marpa_r2_html_fmt 
       --&gt;
       This post focuses on
-      &lt;tt&gt;
-        html_fmt
-      &lt;/tt&gt;,
+      &lt;tt&gt;html_fmt&lt;/tt&gt;,
       a reformatter (&quot;tidier&quot;) for liberal HTML.
-      &lt;tt&gt;
-        html_fmt
-      &lt;/tt&gt;
+      &lt;tt&gt;html_fmt&lt;/tt&gt;
       indents HTML according to the structure of the document,
       which makes it a lot easier to read.
       In the process
-      &lt;tt&gt;
-        html_fmt
-      &lt;/tt&gt;
+      &lt;tt&gt;html_fmt&lt;/tt&gt;
       adds missing start and end tags and identifies &quot;cruft&quot;.
     &lt;/p&gt;
     &lt;p&gt;
-      &lt;tt&gt;
-        html_fmt
-      &lt;/tt&gt;
+      &lt;tt&gt;html_fmt&lt;/tt&gt;
       is ultra-liberal about its input.
       Like a browser's rendering engine,
-      &lt;tt&gt;
-        html_fmt
-      &lt;/tt&gt;
+      &lt;tt&gt;html_fmt&lt;/tt&gt;
       never rejects a file,
       no matter how clearly defective it is as an HTML document.
       An interesting experiment would be to compare what your
@@ -48,14 +38,10 @@
       it directly,
       with what it does to the same file
       after it has been passed through
-      &lt;tt&gt;
-        html_fmt
-      &lt;/tt&gt;.
+      &lt;tt&gt;html_fmt&lt;/tt&gt;.
     &lt;/p&gt;
     &lt;p&gt;
-      &lt;tt&gt;
-        html_fmt
-      &lt;/tt&gt;
+      &lt;tt&gt;html_fmt&lt;/tt&gt;
       is a by-product of moving
       &lt;a href=&quot;http://jeffreykegler.github.com/Ocean-of-Awareness-blog/&quot;&gt;
         this blog to Github
@@ -79,9 +65,7 @@
     &lt;/p&gt;
     &lt;p&gt;
       I making
-      &lt;tt&gt;
-        html_fmt
-      &lt;/tt&gt;
+      &lt;tt&gt;html_fmt&lt;/tt&gt;
       result available as a
       gist.
       It is very well-suited as a first step in dealing with HTML
@@ -92,14 +76,10 @@
     &lt;/p&gt;
     &lt;p&gt;
       A production quality &quot;tidier&quot; would need to be something like
-      &lt;tt&gt;
-        gnuindent
-      &lt;/tt&gt;
+      &lt;tt&gt;gnuindent&lt;/tt&gt;
       --
       bristling with options.
-      &lt;tt&gt;
-        html_fmt
-      &lt;/tt&gt;
+      &lt;tt&gt;html_fmt&lt;/tt&gt;
       so far has only two choices: strategies for avoiding added whitespace.
       The default is to add comments, which keeps the indentation correct,
       but looks cluttered.
@@ -111,13 +91,11 @@
     &lt;p&gt;
       From a
       &lt;a href=&quot;http://en.wikipedia.org/wiki/Worse_is_better&quot;&gt;
-        &quot;Worse is Better&quot;
-      &lt;/a&gt;
+        &quot;Worse is Better&quot;&lt;/a&gt;
       point of view,
       (as
       &lt;a href=&quot;http://blog.plover.com/oops/blosxom-sux.html&quot;&gt;
-        stated very well by Mark Jason Dominus
-      &lt;/a&gt;,
+        stated very well by Mark Jason Dominus&lt;/a&gt;,
       it's a good start on a production-quality tool.
       It is 600 lines,
       short enough to be easy to find your
@@ -125,8 +103,7 @@
       particularly once you delete the parts you don't like.
       And its underlying Marpa-based interface is documented:
       &lt;a href=&quot;https://metacpan.org/module/Marpa::R2::HTML&quot;&gt;
-        Marpa::R2::HTML
-      &lt;/a&gt;.
+        Marpa::R2::HTML&lt;/a&gt;.
       Marpa::R2::HTML is beta, but has been stable for some time.
     &lt;/p&gt;</description>
   </item>

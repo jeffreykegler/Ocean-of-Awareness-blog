@@ -44,30 +44,20 @@
       perl ./marpa_r2_html_fmt 
       -->
       This post focuses on
-      <tt>
-        html_fmt
-      </tt>,
+      <tt>html_fmt</tt>,
       a reformatter ("tidier") for liberal HTML.
-      <tt>
-        html_fmt
-      </tt>
+      <tt>html_fmt</tt>
       indents HTML according to the structure of the document,
       which makes it a lot easier to read.
       In the process
-      <tt>
-        html_fmt
-      </tt>
+      <tt>html_fmt</tt>
       adds missing start and end tags and identifies "cruft".
     </p>
     <p>
-      <tt>
-        html_fmt
-      </tt>
+      <tt>html_fmt</tt>
       is ultra-liberal about its input.
       Like a browser's rendering engine,
-      <tt>
-        html_fmt
-      </tt>
+      <tt>html_fmt</tt>
       never rejects a file,
       no matter how clearly defective it is as an HTML document.
       An interesting experiment would be to compare what your
@@ -75,14 +65,10 @@
       it directly,
       with what it does to the same file
       after it has been passed through
-      <tt>
-        html_fmt
-      </tt>.
+      <tt>html_fmt</tt>.
     </p>
     <p>
-      <tt>
-        html_fmt
-      </tt>
+      <tt>html_fmt</tt>
       is a by-product of moving
       <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/">
         this blog to Github
@@ -106,9 +92,7 @@
     </p>
     <p>
       I making
-      <tt>
-        html_fmt
-      </tt>
+      <tt>html_fmt</tt>
       result available as a
       gist.
       It is very well-suited as a first step in dealing with HTML
@@ -119,14 +103,10 @@
     </p>
     <p>
       A production quality "tidier" would need to be something like
-      <tt>
-        gnuindent
-      </tt>
+      <tt>gnuindent</tt>
       --
       bristling with options.
-      <tt>
-        html_fmt
-      </tt>
+      <tt>html_fmt</tt>
       so far has only two choices: strategies for avoiding added whitespace.
       The default is to add comments, which keeps the indentation correct,
       but looks cluttered.
@@ -138,13 +118,11 @@
     <p>
       From a
       <a href="http://en.wikipedia.org/wiki/Worse_is_better">
-        "Worse is Better"
-      </a>
+        "Worse is Better"</a>
       point of view,
       (as
       <a href="http://blog.plover.com/oops/blosxom-sux.html">
-        stated very well by Mark Jason Dominus
-      </a>,
+        stated very well by Mark Jason Dominus</a>,
       it's a good start on a production-quality tool.
       It is 600 lines,
       short enough to be easy to find your
@@ -152,8 +130,7 @@
       particularly once you delete the parts you don't like.
       And its underlying Marpa-based interface is documented:
       <a href="https://metacpan.org/module/Marpa::R2::HTML">
-        Marpa::R2::HTML
-      </a>.
+        Marpa::R2::HTML</a>.
       Marpa::R2::HTML is beta, but has been stable for some time.
     </p>
 <br />
