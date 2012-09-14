@@ -35,6 +35,144 @@
   </p>
   </div>
   <div style="margin-left:190px;border-left:2px solid #38B0C0;padding:25px;">
+<h3>Thu, 13 Sep 2012</h3>
+<br />
+<center><a name="html_fmt"> <h2>    A Marpa-based HTML reformatter</h2> </a>
+</center>
+    This post focuses on
+    <code>
+      html_fmt
+    </code><!--
+      html_fmt: this comment is to avoid introducing whitespace
+    -->,
+    a reformatter ("tidier") for liberal HTML.
+    <code>
+      html_fmt
+    </code>
+    indents HTML according to structure,
+    in the process
+    adding missing start and end tags and identifying "cruft".
+    <code>
+      html_fmt
+    </code>
+    is ultra-liberal about its input.
+    Like a browser's rendering engine,
+    <code>
+      html_fmt
+    </code>
+    never rejects a file,
+    no matter how clearly defective it is as an HTML document.
+    In fact, an interesting experiment is to compare what your
+    favorite browser does with a random text file feed to
+    it directly,
+    and then passed through
+    <code>
+      html_fmt
+    </code><!--
+      html_fmt: this comment is to avoid introducing whitespace
+    -->.
+    <p>
+      <code>
+        html_fmt
+      </code>
+      is a by-product of moving
+      <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/">
+        this blog to Github
+      </a><!--
+        html_fmt: this comment is to avoid introducing whitespace
+      -->.
+      In the course of bringing over
+      <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/metapages/chronological.html">
+        my old posts
+      </a><!--
+        html_fmt: this comment is to avoid introducing whitespace
+      -->,
+      I wanted a filter that would tidy them up,
+      and turned to an old Marpa demo I'd written.
+      <!-- html_fmt: Following end tag is replacement for a missing one -->
+    </p><!--
+      html_fmt: this comment is to avoid introducing whitespace
+    --><p>
+      Its usefulness was a pleasant surprise,
+      but it lacked two features.
+      First, it wouldn't read from standard input.
+      Second, in formatting the HTML, it introduced new whitespace.
+      The first problem was easy to fix.
+      Fixing the second involved coming up with a
+      "lowest common denominator" for whitespace treatment
+      among browsers and HTML variants.
+      <!-- html_fmt: Following end tag is replacement for a missing one -->
+    </p><!--
+      html_fmt: this comment is to avoid introducing whitespace
+    --><p>
+      I making
+      <code>
+        html_fmt
+      </code>
+      result available as a
+      gist.
+      It is very well-suited as a first step in dealing with HTML
+      that you are rewriting by hand.
+      One quick pass-through and your file is much easier to read,
+      has all the proper tags,
+      and has comments pointing out any "cruft" that's there.
+      <!-- html_fmt: Following end tag is replacement for a missing one -->
+    </p><!--
+      html_fmt: this comment is to avoid introducing whitespace
+    --><p>
+      A production quality "tidier" would need to be something like
+      <tt>
+        gnuindent
+      </tt>
+      --
+      bristling with options.
+      <code>
+        html_fmt
+      </code>
+      so far has only two choices: strategies for avoiding added whitespace.
+      The default is to add comments, which keeps the indentation correct,
+      but looks cluttered.
+      The alternative is to simply leave whitespace-sensitive
+      text as is, which avoids
+      clutter, but makes the structure of document harder to follow.
+      Which I prefer depends very much on the situation.
+      <!-- html_fmt: Following end tag is replacement for a missing one -->
+    </p><!--
+      html_fmt: this comment is to avoid introducing whitespace
+    --><p>
+      From a
+      <a href="http://en.wikipedia.org/wiki/Worse_is_better">
+        "Worse is Better"
+      </a>
+      point of view,
+      (as
+      <a href="http://blog.plover.com/oops/blosxom-sux.html">
+        stated very well by Mark Jason Dominus
+      </a><!--
+        html_fmt: this comment is to avoid introducing whitespace
+      -->,
+      it's a good start on a production-quality tool.
+      It is 600 lines,
+      short enough to be easy to find your
+      way around in,
+      particularly once you delete the parts you don't like.
+      And its underlying Marpa-based interface is documented:
+      <a href="https://metacpan.org/module/Marpa::R2::HTML">
+        Marpa::R2::HTML
+      </a><!--
+        html_fmt: this comment is to avoid introducing whitespace
+      -->.
+      Marpa::R2::HTML is beta, but has been stable for some time.
+    </p>
+<br />
+<p>posted at: 20:08 |
+<a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/html_fmt.html">direct link to this entry</a>
+</p>
+<div style="color:#38B0C0;padding:1px;text-align:center;">
+&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&sect;
+</div>
 <h3>Mon, 03 Sep 2012</h3>
 <br />
 <center><a name="r2_is_beta"> <h2>Marpa::R2 is beta</h2> </a>
@@ -812,100 +950,6 @@ I benefited immensely from studying the approaches used by Peter Stuifzand.
 <br />
 <p>posted at: 09:58 |
 <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/08/precedence-parsing-made-simpler.html">direct link to this entry</a>
-</p>
-<div style="color:#38B0C0;padding:1px;text-align:center;">
-&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-&sect;
-</div>
-<h3>Sun, 12 Aug 2012</h3>
-<br />
-<center><a name="the-solved-problem-that-isnt-is"> <h2>The solved problem that isn't, is</h2> </a>
-</center>
-<p>In the title of
-<a href="http://tratt.net/laurie/tech_articles/articles/parsing_the_solved_problem_that_isnt">
-an excellent blog post</a>,
-Laurence Tratt calls parsing,
-"the solved problem that isn't".
-I thought this
-phrase captured the current situation
-in parsing theory and practice very nicely.
-In stating that parsing is not a solved problem,
-Tratt realized he was taking on a consensus.
-But the consensus is fading --
-for example, neither side in the interchange
-between
-<a href="http://arxiv.org/abs/1010.5023">
-Might/Darais</a>
-and
-<a href="http://research.swtch.com/yaccalive">
-Russ Cox</a>
-expresses complete
-contentment with the state of the art.
-<p>
-What would be a real solution to the parsing problem?
-I wish to suggest that
-<a href="http://jeffreykegler.github.com/Marpa/">Marpa</a>
-is that solution.
-I say that based on a list of features.
-Marpa is the first parser to have all of these features,
-and I claim they are enough to justify the assertion
-that, with Marpa,
-parsing is no longer an unsolved problem.
-Specifically,
-<ol>
-<li><p>Marpa parses everything you can write in BNF.
-<li><p>Marpa parses in times considered theoretically optimal.
-For unambiguous grammars, Marpa is never worse than O(n²).
-For ambiguous grammars, Marpa is never worse than O(n³).
-Marpa never goes exponential.
-<li><p>
-Marpa parses all
-classes of grammar in practical use today in linear time, O(n).
-Marpa is linear for all LR-regular grammars.
-The LR-regular grammars include regular expressions,
-LL(k) for all k,
-and LR(k) for all k.
-<li><p>A serious practical issue has been parse-time error detection.
-Marpa breaks new ground here.
-Marpa is fully aware, at every point in the parse, of
-all the rules it is parsing,
-how far into them it has proceeded,
-and of what tokens it expects next.
-This information is available
-to the application
-conveniently and efficiently.
-<li><p>
-Marpa parsers do not need to be handwritten.
-Marpa is available as a open-source library.
-It is written in C,
-and the C library can be used
-<a href="http://jeffreykegler.github.com/Marpa/libmarpa.html">
-directly</a>
-or via
-<a href="https://metacpan.org/release/Marpa-R2">
-a Perl interface</a>.
-<li><p>
-For general BNF parsing,
-the user does not need to craft
-a lookahead or backtracking strategy -- Marpa
-does not use lookahead and never backtracks.
-<li><p>
-Marpa's complexity and correctness claims come
-with the traditional theoretical apparatus of
-proofs based on prior literature.
-</ol>
-<p>
-In his post,
-Tratt focuses his discontent on the problem of "language composition" -- the
-problem of combining two grammars into one.
-Tratt knew that an efficient and practical general BNF parser, like Marpa,
-would make language composition easy.
-But he was not aware that any such parser existed.
-Language composition is a topic to which I hope to return.
-<br />
-<p>posted at: 20:07 |
-<a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/08/the-solved-problem-that-isnt-is.html">direct link to this entry</a>
 </p>
 <div style="color:#38B0C0;padding:1px;text-align:center;">
 &sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
