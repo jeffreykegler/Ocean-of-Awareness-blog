@@ -1,47 +1,50 @@
 A Marpa-based HTML reformatter
     <p>
       <!--
-      perl ./marpa_r2_html_fmt 
+      perl ./marpa_r2_html_fmt
       -->
       This post focuses on
-      <tt>html_fmt</tt>,
+      <tt>
+        html_fmt</tt>,
       a reformatter ("tidier") for liberal HTML.
-      <tt>html_fmt</tt>
+      <tt>
+        html_fmt</tt>
       indents HTML according to the structure of the document,
-      which makes it a lot easier to read.
+      which makes the HTML a lot easier to read.
       In the process
-      <tt>html_fmt</tt>
+      <tt>
+        html_fmt</tt>
       adds missing start and end tags and identifies "cruft".
     </p>
     <p>
-      <tt>html_fmt</tt>
+      <tt>
+        html_fmt</tt>
       is ultra-liberal about its input.
       Like a browser's rendering engine,
-      <tt>html_fmt</tt>
+      <tt>
+        html_fmt</tt>
       never rejects a file,
-      no matter how clearly defective it is as an HTML document.
+      no matter how defective it is as an HTML document.
       An interesting experiment would be to compare what your
       favorite browser does with a random text file feed to
       it directly,
       with what it does to the same file
       after it has been passed through
-      <tt>html_fmt</tt>.
+      <tt>
+        html_fmt</tt>.
     </p>
     <p>
-      <tt>html_fmt</tt>
+      <tt>
+        html_fmt</tt>
       is a by-product of moving
       <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/">
-        this blog to Github
-      </a>.
+        this blog to Github</a>.
       In the course of bringing over
       <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/metapages/chronological.html">
-        my old posts
-      </a>,
+        my old posts</a>,
       I wanted a filter that would tidy them up,
-      and turned to an old Marpa demo I'd written.
-    </p>
-    <p>
-      Its usefulness was a pleasant surprise,
+      so I turned to an old Marpa demo I'd written.
+      The old demo code's usefulness was a pleasant surprise,
       but it lacked two features.
       First, it wouldn't read from standard input.
       Second, in formatting the HTML, it introduced new whitespace.
@@ -51,11 +54,8 @@ A Marpa-based HTML reformatter
       among browsers and HTML variants.
     </p>
     <p>
-      I making
-      <tt>html_fmt</tt>
-      result available as a
-      gist.
-      It is very well-suited as a first step in dealing with HTML
+      The result, <tt>html_fmt</tt>,
+      is very well-suited as a first step in dealing with HTML
       that you are rewriting by hand.
       One quick pass-through and your file is much easier to read,
       has all the proper tags,
@@ -63,32 +63,44 @@ A Marpa-based HTML reformatter
     </p>
     <p>
       A production quality "tidier" would need to be something like
-      <tt>gnuindent</tt>
+      <tt>
+        gnuindent</tt>
       --
       bristling with options.
-      <tt>html_fmt</tt>
-      so far has only two choices: strategies for avoiding added whitespace.
-      The default is to add comments, which keeps the indentation correct,
-      but looks cluttered.
-      The alternative is to simply leave whitespace-sensitive
-      text as is, which avoids
-      clutter, but makes the structure of document harder to follow.
-      These two options are not
-      sufficient to deal with all whitespace issues,
-      and which I prefer depends very much on the situation.
+      <tt>
+        html_fmt</tt>
+      so far has only two options,
+      one dealing with whitespace before end tags,
+      the other allowing
+      a choice of strategies for avoiding added whitespace.
+      (One strategy uses comments, while the other simply leaves
+      the whitespace-sensitive locations as-is.)
+      These two options are not nearly
+      sufficient to deal with the full
+      range of whitespace issues,
+      never mind anything else.
     </p>
     <p>
-      From a
+      But from a
       <a href="http://blog.plover.com/oops/blosxom-sux.html">
         "Worse is Better"</a>
       point of view,
-      it's a good start on a production-quality tool.
+      <tt>html_fmt</tt> is a good start on a production-quality tool.
       It is 600 lines,
       short enough to find your
       way around in,
-      particularly after you've deleted the parts you don't like.
+      particularly once you've deleted the parts you don't like.
       And its underlying Marpa-based interface is documented:
       <a href="https://metacpan.org/module/Marpa::R2::HTML">
         Marpa::R2::HTML</a>.
       Marpa::R2::HTML is beta, but has been stable for some time.
+    </p>
+    <p>
+      <tt>
+        html_fmt</tt>
+      is now available as a gist.
+      In a future release of Marpa::R2,
+      it will be available as the
+      <tt>marpa_r2_html_fmt</tt>.
+      But why wait until then to fork it?
     </p>
