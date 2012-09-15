@@ -116,15 +116,16 @@
       Marpa::R2::HTML is beta, but has been stable for some time.
     &lt;/p&gt;
     &lt;p&gt;
+      &lt;a href=&quot;https://gist.github.com/3725639&quot;&gt;
       &lt;tt&gt;
         html_fmt&lt;/tt&gt;
-      is now available as a gist.
+      is now available as a gist.&lt;/a&gt;
       In a future release of
       &lt;a href=&quot;https://metacpan.org/release/Marpa-R2&quot;&gt;
         Marpa::R2&lt;/a&gt;,
       it will be available as the
       &lt;tt&gt;
-        marpa_r2_html_fmt&lt;/tt&gt;.
+        marpa_r2_html_fmt&lt;/tt&gt; script.
       But why wait until then to fork it?
     &lt;/p&gt;</description>
   </item>
