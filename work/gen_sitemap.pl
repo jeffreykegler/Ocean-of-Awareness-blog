@@ -33,26 +33,15 @@ File::Find::find(\&wanted, 'individual');
 for my $file (@filelist) {
    say '  <url>';
    say '    <loc>', ($root . $file), '</loc>';
-   my $git_stamp = qx{git log "--pretty=format:%ci" -n 1 $file};
+   (my $time_file = $file) =~ s/ [.] html \z /txt/xms;
+   $time_file = $file if not -r $time_file;
+   my $git_stamp = qx{git log "--pretty=format:%ci" -n 1 $time_file};
    $git_stamp =~ s/[ ]/T/xms;
    $git_stamp =~ s/[ ]//gxms;
    $git_stamp =~ s{  (\d\d) (\d\d) \z }{$1:$2}xms;
    say '    <lastmod>', $git_stamp, '</lastmod>';
    say '  </url>';
 }
-
-#   <url>
-#     <loc>http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/r2_is_beta.html</loc>
-#     <lastmod>2012-09-03</lastmod>
-#   </url>
-#   <url>
-#     <loc>http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/dsl.html</loc>
-#     <lastmod>2012-08-26</lastmod>
-#   </url>
-#   <url>
-#     <loc>http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/announce.html</loc>
-#     <lastmod>2012-08-26</lastmod>
-#   </url>
 
 print <<'END_OF_TEXT';
 </urlset>
