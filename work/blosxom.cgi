@@ -223,10 +223,10 @@ $entries =
                         # static rendering bits
                         and (
                         param('-all')
-                        or !-f "$static_dir/$1/index."
+                        or !-f "$static_dir/$1/$2."
                         . $static_flavours[0]
                         or timeof(
-                            "$static_dir/$1/index." . $static_flavours[0]
+                            "$static_dir/$1/$2." . $static_flavours[0]
                         ) < stat($File::Find::name)->mtime
                         )
                         and $indexes{$1} = 1
