@@ -10,7 +10,7 @@
     <language>en</language>
 
   <item>
-    <title>Parsing on a quantum computer</title>
+    <title>Parsing on your new hyper-quantum computer</title>
     <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog/2012/09/14#quantum</link>
     <description>    &lt;blockquote&gt;
       &lt;!--
@@ -23,83 +23,92 @@
       -- Antoine de Saint-Exupery
     &lt;/blockquote&gt;
     &lt;p&gt;
-      Let's imagine that, the day the new machine arrives,
-      you are maintaining a parser,
-      and that it uses what is the current state of the art
-      for production-quality parsers -- hand-written recursive descent
-      with lots of added procedural logic to help it along.
-    &lt;p&gt;
-      The new computer that
-      arrives to replace your staid old von Neumann machine is not
-      just a quantum computer.
-      It's inventors have figured out a way
-      to go beyond some of the limits of quantum computing,
-      so that it's fully non-deterministic (NP),
-      and has additional features.
-      You can superposition any time you'd like,
-      and then &quot;unsuperposition&quot; to restart.
-      And the inventors have discovered the &quot;hidden variables&quot; so that,
-      when superpositioning, you can can examine &lt;strong&gt;all&lt;/strong&gt;
-      possibilities, not just one.
+      Imagine that, the day the new machine arrives,
+      you are maintaining a parser.
+      Your parser
+      is the current state of the art
+      -- hand-written recursive descent.
+    &lt;/p&gt;&lt;p&gt;
+    &lt;/p&gt;
+    The new computer will
+    replace your staid old von Neumann box is not
+    just a quantum computer.
+    It's fully non-deterministic.
+    You can superposition any time you'd like,
+    and then &quot;unsuperposition&quot; to restart.
+    And when superpositioning, you can can examine
+    &lt;strong&gt;
+      all&lt;/strong&gt;
+    the possibilities, not just one.
     &lt;p&gt;
       How would you rewrite your
       recursive descent logic to take advantage of this new hyper-quantum computer?
-      Actually, Marpa poses the same question to you today.
+      Actually, this is exactly the same question that
+      &lt;a href=&quot;https://metacpan.org/module/Marpa::R2&quot;&gt;
+        Marpa&lt;/a&gt;
+      poses
+      to you today.
       Because for all classes of grammar in practical use, including
       the LL(k) grammars parseable by recursive descent,
-      Marpa is efficient non-determinism.
+      &lt;a href=&quot;https://metacpan.org/module/Marpa::R2&quot;&gt;
+        Marpa&lt;/a&gt;
+      is efficient non-determinism.
     &lt;/p&gt;
     &lt;p&gt;
       Your new hyper-quantum computer
-      might seem at first to make your job as a programmer harder.
+      might seem at first to make your work as a programmer harder.
       On the hyper-quantum computer,
       many things are happening at once.
-      With recursive descent on the deterministic box,
+      On the deterministic box,
       you were dealing with a single procedural thread.
     &lt;/p&gt;
     &lt;p&gt;
-      But as you get used to the new approach,
-      things may seem easier.
-      In the deterministic approach,
+      But as you get used to the new non-deterministic computer,
+      you find ways in which it makes things easier.
+      On the deterministic box,
       you only needed to follow a single thread,
       but you often needed to make that thread
       deal with multiple alternatives.
       To do this, you had to create
-      state information and keep track of it yourself.
-      This seemed natural because you'd gotten used to having to do it,
-      but actually your logic could get very hairy.
-      The hyper-quantum machine is now tracking of all these choices
-      for you.
-      You have to switch from thinking in terms of procedure,
-      to thinking in terms of sets of alternatives.
-    &lt;/p&gt;
-    &lt;p&gt;
-      Before, the alternatives did not come in sets.
-      You had to examine each of them on your own, track whatever relevant
-      information you found.
-      This certainly gave you a degree of control,
-      but the backtracking was not very efficient.
-      And in practice the complexity of dealing with
+      state information and keep track of it yourself
+      while backtracking.
+      The complexity of dealing with
       all this roll-your-own state
       information severely limited the kinds of grammar that you could parse,
       and even the extent to which you understood exactly what your parser
       would and would not accept.
+      Since much of the time on your old parser was spent
+      backtracking,
+      you no longer had a real handle on the
+      time complexity in many sections of your code.
+      In a couple of previous releases,
+      minor changes had let the backtracking get out of hand.
     &lt;/p&gt;
     &lt;p&gt;
-      You have to retrain yourself to think in terms of the alternatives
-      available at any point,
-      instead of thinking about how to come up with the alternatives.
-      The hyper-quantum computer (and the Marpa parser)
-      new comes up with the alternatives for you.
-      You don't even have to know which alternatives are there --
-      if you need to ask Marpa, it can tell you.
-      But you do have to learn to ask the right questions
+      The hyper-quantum computer
+      now comes up with the parsing
+      alternatives for you.
+      True, you have to retrain yourself to think in terms of the alternatives
+      available at any point.
+      But you don't even have to know which alternatives are there --
+      if you need to ask the hyper-quantum computer (or
+      &lt;a href=&quot;https://metacpan.org/module/Marpa::R2&quot;&gt;
+        Marpa&lt;/a&gt;),
+      &lt;a href=&quot;https://metacpan.org/module/Marpa::R2::Progress&quot;&gt;
+        it can tell you&lt;/a&gt;.
+    &lt;/p&gt;
+    &lt;p&gt;
+      You do have to learn to ask the right questions
       at the right places.
-      Once you do this, you will have a much more expressive
-      and flexible language,
-      translated at comparable or faster speeds
-      by an easier to program,
-      and easier to understand parser.
+      Once you do this,
+      you have a simpler and more cleanly written parser,
+      running at comparable or faster speeds.
+      And you begin to think about a few changes to
+      the language,
+      changes that will make your language more
+      natural and expressive,
+      but one which
+      you could not have parsed before.
     &lt;/p&gt;</description>
   </item>
   <item>

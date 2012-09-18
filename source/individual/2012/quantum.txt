@@ -1,4 +1,4 @@
-Parsing on a quantum computer
+Parsing on your new hyper-quantum computer
     <blockquote>
       <!--
       perl ./marpa_r2_html_fmt
@@ -10,81 +10,90 @@ Parsing on a quantum computer
       -- Antoine de Saint-Exupery
     </blockquote>
     <p>
-      Let's imagine that, the day the new machine arrives,
-      you are maintaining a parser,
-      and that it uses what is the current state of the art
-      for production-quality parsers -- hand-written recursive descent
-      with lots of added procedural logic to help it along.
-    <p>
-      The new computer that
-      arrives to replace your staid old von Neumann machine is not
-      just a quantum computer.
-      It's inventors have figured out a way
-      to go beyond some of the limits of quantum computing,
-      so that it's fully non-deterministic (NP),
-      and has additional features.
-      You can superposition any time you'd like,
-      and then "unsuperposition" to restart.
-      And the inventors have discovered the "hidden variables" so that,
-      when superpositioning, you can can examine <strong>all</strong>
-      possibilities, not just one.
+      Imagine that, the day the new machine arrives,
+      you are maintaining a parser.
+      Your parser
+      is the current state of the art
+      -- hand-written recursive descent.
+    </p><p>
+    </p>
+    The new computer will
+    replace your staid old von Neumann box is not
+    just a quantum computer.
+    It's fully non-deterministic.
+    You can superposition any time you'd like,
+    and then "unsuperposition" to restart.
+    And when superpositioning, you can can examine
+    <strong>
+      all</strong>
+    the possibilities, not just one.
     <p>
       How would you rewrite your
       recursive descent logic to take advantage of this new hyper-quantum computer?
-      Actually, Marpa poses the same question to you today.
+      Actually, this is exactly the same question that
+      <a href="https://metacpan.org/module/Marpa::R2">
+        Marpa</a>
+      poses
+      to you today.
       Because for all classes of grammar in practical use, including
       the LL(k) grammars parseable by recursive descent,
-      Marpa is efficient non-determinism.
+      <a href="https://metacpan.org/module/Marpa::R2">
+        Marpa</a>
+      is efficient non-determinism.
     </p>
     <p>
       Your new hyper-quantum computer
-      might seem at first to make your job as a programmer harder.
+      might seem at first to make your work as a programmer harder.
       On the hyper-quantum computer,
       many things are happening at once.
-      With recursive descent on the deterministic box,
+      On the deterministic box,
       you were dealing with a single procedural thread.
     </p>
     <p>
-      But as you get used to the new approach,
-      things may seem easier.
-      In the deterministic approach,
+      But as you get used to the new non-deterministic computer,
+      you find ways in which it makes things easier.
+      On the deterministic box,
       you only needed to follow a single thread,
       but you often needed to make that thread
       deal with multiple alternatives.
       To do this, you had to create
-      state information and keep track of it yourself.
-      This seemed natural because you'd gotten used to having to do it,
-      but actually your logic could get very hairy.
-      The hyper-quantum machine is now tracking of all these choices
-      for you.
-      You have to switch from thinking in terms of procedure,
-      to thinking in terms of sets of alternatives.
-    </p>
-    <p>
-      Before, the alternatives did not come in sets.
-      You had to examine each of them on your own, track whatever relevant
-      information you found.
-      This certainly gave you a degree of control,
-      but the backtracking was not very efficient.
-      And in practice the complexity of dealing with
+      state information and keep track of it yourself
+      while backtracking.
+      The complexity of dealing with
       all this roll-your-own state
       information severely limited the kinds of grammar that you could parse,
       and even the extent to which you understood exactly what your parser
       would and would not accept.
+      Since much of the time on your old parser was spent
+      backtracking,
+      you no longer had a real handle on the
+      time complexity in many sections of your code.
+      In a couple of previous releases,
+      minor changes had let the backtracking get out of hand.
     </p>
     <p>
-      You have to retrain yourself to think in terms of the alternatives
-      available at any point,
-      instead of thinking about how to come up with the alternatives.
-      The hyper-quantum computer (and the Marpa parser)
-      new comes up with the alternatives for you.
-      You don't even have to know which alternatives are there --
-      if you need to ask Marpa, it can tell you.
-      But you do have to learn to ask the right questions
+      The hyper-quantum computer
+      now comes up with the parsing
+      alternatives for you.
+      True, you have to retrain yourself to think in terms of the alternatives
+      available at any point.
+      But you don't even have to know which alternatives are there --
+      if you need to ask the hyper-quantum computer (or
+      <a href="https://metacpan.org/module/Marpa::R2">
+        Marpa</a>),
+      <a href="https://metacpan.org/module/Marpa::R2::Progress">
+        it can tell you</a>.
+    </p>
+    <p>
+      You do have to learn to ask the right questions
       at the right places.
-      Once you do this, you will have a much more expressive
-      and flexible language,
-      translated at comparable or faster speeds
-      by an easier to program,
-      and easier to understand parser.
+      Once you do this,
+      you have a simpler and more cleanly written parser,
+      running at comparable or faster speeds.
+      And you begin to think about a few changes to
+      the language,
+      changes that will make your language more
+      natural and expressive,
+      but one which
+      you could not have parsed before.
     </p>
