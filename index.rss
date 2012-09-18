@@ -11,7 +11,7 @@
 
   <item>
     <title>Parsing on your new hyper-quantum computer</title>
-    <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog/2012/09/14#quantum</link>
+    <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/quantum.html</link>
     <description>    &lt;blockquote&gt;
       &lt;!--
       perl ./marpa_r2_html_fmt
@@ -113,7 +113,7 @@
   </item>
   <item>
     <title>A Marpa-based HTML reformatter</title>
-    <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog/2012/09/13#html_fmt</link>
+    <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/html_fmt.html</link>
     <description>    &lt;p&gt;
       &lt;!--
       perl ./marpa_r2_html_fmt
@@ -233,7 +233,7 @@
   </item>
   <item>
     <title>Marpa::R2 is beta</title>
-    <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog/2012/09/03#r2_is_beta</link>
+    <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/r2_is_beta.html</link>
     <description>&lt;a href=&quot;https://metacpan.org/release/Marpa-R2&quot;&gt;Marpa::R2&lt;/a&gt;
 is now beta.
 Marpa is a new parsing algorithm,
@@ -319,7 +319,7 @@ is a &quot;thin&quot; interface to Libmarpa from Perl.
   </item>
   <item>
     <title>Domain-Specific Languages made simpler</title>
-    <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog/2012/08/26#dsl</link>
+    <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/dsl.html</link>
     <description>&lt;h2&gt;Writing your own language&lt;/h2&gt;
 &lt;p&gt;Creating your own language has been A Big Deal (tm).
 What if you could create a simple language in hours or minutes?
@@ -715,7 +715,7 @@ even in programs that are strictly for personal use.</description>
   </item>
   <item>
     <title>A new home for the Ocean of Awareness blog</title>
-    <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog/2012/08/26#announce</link>
+    <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/announce.html</link>
     <description>The folks at &lt;a href=&quot;blogs.perl.org&quot;&gt;blogs.perl.org&lt;/a&gt;
 has provided
 my Ocean of Awareness blog
