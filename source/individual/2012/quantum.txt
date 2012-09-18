@@ -10,57 +10,47 @@ Parsing on a quantum computer
       -- Antoine de Saint-Exupery
     </blockquote>
     <p>
-      Imagine that you have a recursive descent parser,
-      and a new box arrives to replace your staid old von Neumann machine --
-      a quantum computer.
-      In fact, your new machine is strictly speaking not a quantum computer,
-      but a step beyond - a hyper-quantum computer.
-      It is capable of fully non-deterministic programming,
-      and has access to the hidden-variables of the quantum mechanics.
-      The access to the hidden variables makes it
-      possible to interrupt the non-determinism as often as you like,
-      list all the possibilities, at that point.
-      That is, you can superpostiion and unsuperposition as much
-      as you want.
-    </p>
+      Let's imagine that, the day the new machine arrives,
+      you are maintaining a parser,
+      and that it uses what is the current state of the art
+      for production-quality parsers -- hand-written recursive descent
+      with lots of added procedural logic to help it along.
     <p>
-      How could you rewrite your
-      recursive descent logic to take advantage this new machine?
-      Essentially, this is the same question as how do you use Marpa for
-      parsing.
-      Because for all classes of grammar in practical use today, including
+      The new computer that
+      arrives to replace your staid old von Neumann machine is not
+      just a quantum computer.
+      It's inventors have figured out a way
+      to go beyond some of the limits of quantum computing,
+      so that it's fully non-deterministic (NP),
+      and has additional features.
+      You can superposition any time you'd like,
+      and then "unsuperposition" to restart.
+      And the inventors have discovered the "hidden variables" so that,
+      when superpositioning, you can can examine <strong>all</strong>
+      possibilities, not just one.
+    <p>
+      How would you rewrite your
+      recursive descent logic to take advantage of this new hyper-quantum computer?
+      Actually, Marpa poses the same question to you today.
+      Because for all classes of grammar in practical use, including
       the LL(k) grammars parseable by recursive descent,
-      Marpa is efficient non-determinism available today.
+      Marpa is efficient non-determinism.
     </p>
     <p>
-      A recursive descent parser,
-      follows a single thread of possibilities --
-      it is deterministic programming.
-      Marpa is non-deterministic -- at each token it keeps track of
-      all parsing possibilities.
-      For each token seen so far,
-      Marpa knows all the rules that
-      in which it could occur.
-      Marpa also knows all rules which could start all any point.
-      These can be listed and examined.
-    </p>
-    <p>
-      If the hyper-quantum computer plopped onto your desk today,
-      it might seem at first to make your job as a programmer harder.
-      You were used to thinking in terms of a single procedural thread.
+      Your new hyper-quantum computer
+      might seem at first to make your job as a programmer harder.
       On the hyper-quantum computer,
       many things are happening at once.
-      If you keep thinking procedural,
-      and try to work out all the threads,
-      it is just too much.
+      With recursive descent on the deterministic box,
+      you were dealing with a single procedural thread.
     </p>
     <p>
       But as you get used to the new approach,
       things may seem easier.
       In the deterministic approach,
       you only needed to follow a single thread,
-      but you often needed to have that thread
-      deal multiple alternatives.
+      but you often needed to make that thread
+      deal with multiple alternatives.
       To do this, you had to create
       state information and keep track of it yourself.
       This seemed natural because you'd gotten used to having to do it,
