@@ -31,13 +31,13 @@ Parsing on your new hyper-quantum computer
       How would you rewrite your
       recursive descent logic to take advantage of this new hyper-quantum computer?
       Actually, this is exactly the same question that
-      <a href="https://metacpan.org/module/Marpa::R2">
+      <a href="http://jeffreykegler.github.com/Marpa/">
         Marpa</a>
       poses
       to you today.
       Because for all classes of grammar in practical use, including
       the LL(k) grammars parseable by recursive descent,
-      <a href="https://metacpan.org/module/Marpa::R2">
+      <a href="http://jeffreykegler.github.com/Marpa/">
         Marpa</a>
       is efficient non-determinism.
     </p>
@@ -79,7 +79,7 @@ Parsing on your new hyper-quantum computer
       available at any point.
       But you don't even have to know which alternatives are there --
       if you need to ask the hyper-quantum computer (or
-      <a href="https://metacpan.org/module/Marpa::R2">
+      <a href="http://jeffreykegler.github.com/Marpa/">
         Marpa</a>),
       <a href="https://metacpan.org/module/Marpa::R2::Progress">
         it can tell you</a>.
