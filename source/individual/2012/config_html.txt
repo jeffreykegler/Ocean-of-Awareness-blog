@@ -1,0 +1,19 @@
+A Configurable HTML Parser
+    <p>
+      <!--
+      perl ./hide/marpa_r2_html_fmt
+      -->
+      This post introduces an HTML parser which is both liberal and configurable.
+      I have already explained some of the ideas behind it -- others are new.
+      It may be best that I start with a simple example.
+      Consider this piece of very defective html:
+<pre>
+I am too impatient to wait for a start tag.
+<p>I was more patient.
+</pre>
+Displayed, it will look roughly like this:
+<pre>
+I am too impatient to wait for a start tag.
+
+I was more patient.
+</pre>
