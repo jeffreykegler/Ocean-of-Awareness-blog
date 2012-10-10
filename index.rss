@@ -19,21 +19,9 @@
       This post introduces an HTML parser which is both liberal and configurable.
       I have already explained some of the ideas behind it -- others are new.
       Let me start with a simple example.
-      Consider this piece of very defective html:
-&lt;blockquote&gt;
-&lt;pre&gt;
-I am too impatient to wait for a start tag.
-&amp;lt;p&amp;gt;I was more patient.
-&lt;/pre&gt;
-&lt;/blockquote&gt;
-Displayed, it will look roughly like this:
-&lt;blockquote&gt;
-&lt;pre&gt;
-I am too impatient to wait for a start tag.
-
-I was more patient.
-&lt;/pre&gt;
-&lt;/blockquote&gt;</description>
+&lt;h1&gt;Why configurable?&lt;/h1&gt;
+First off, why do we want a configurable HTML parser?
+The new, configurable</description>
   </item>
   <item>
     <title>Parsing on your new hyper-quantum computer</title>
