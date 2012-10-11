@@ -112,7 +112,7 @@ ELE_marpa is a FLO_inline included in GRP_inline
     &lt;/p&gt;
     &lt;blockquote&gt;
       &lt;pre&gt;
-&amp;lt;marpa&amp;gt;-during-&amp;lt;span&amp;gt;-more inline stuff-&amp;lt;p&amp;gt;-new block-
+&amp;lt;acmerpa&amp;gt;-during-&amp;lt;span&amp;gt;-more inline stuff-&amp;lt;p&amp;gt;-new block-
 &lt;/pre&gt;&lt;/blockquote&gt;
     &lt;p&gt;
       With the following shell commands,
