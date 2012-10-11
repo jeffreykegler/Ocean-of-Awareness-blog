@@ -51,17 +51,21 @@ A Configurable HTML Parser
       simply called a "flow"
       in the HTML 4.01 DTD.)
     </p><p>
-      Archetypal elements are
+      Significant in the examples are
       <code>
         &lt;p&gt;</code>,
-      which is a block element that contains an inline flow;
+      which is a block element that contains an inline flow and
       <code>
         &lt;span&gt;</code>,
-      which is an inline element that contains an inline flow;
-      and
-      <code>
-        &lt;div&gt;</code>,
-      which is an block element that contains an mixed flow.
+      which is an inline element that contains an inline flow.
+      The <code>&lt;body&gt;</code> tag is an important structural tag,
+      which contains an block flow.
+      <p>
+      For simplicity I am following HTML 4.01 DTD -- HTML 5
+      uses radically different terminology and is more liberal
+      in what it allows.
+      These differences among standards are an important reason to want
+      an HTML parser to be configurable.
     </p>
     <h3>
       Controlling element context</h3>
@@ -115,6 +119,10 @@ ELE_acme is a FLO_x included in GRP_y
       -new block-
     &lt;/p&gt;&lt;/body&gt;
 &lt;/html&gt;
+    <h3>
+      The grammar configuration file</h3>
+    <h3>
+      Controlling element content</h3>
 </pre></blockquote>
 <!-- examples/acme-block-mixed.out -->
 <blockquote><pre>

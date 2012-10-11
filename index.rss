@@ -64,17 +64,21 @@
       simply called a &quot;flow&quot;
       in the HTML 4.01 DTD.)
     &lt;/p&gt;&lt;p&gt;
-      Archetypal elements are
+      Significant in the examples are
       &lt;code&gt;
         &amp;lt;p&amp;gt;&lt;/code&gt;,
-      which is a block element that contains an inline flow;
+      which is a block element that contains an inline flow and
       &lt;code&gt;
         &amp;lt;span&amp;gt;&lt;/code&gt;,
-      which is an inline element that contains an inline flow;
-      and
-      &lt;code&gt;
-        &amp;lt;div&amp;gt;&lt;/code&gt;,
-      which is an block element that contains an mixed flow.
+      which is an inline element that contains an inline flow.
+      The &lt;code&gt;&amp;lt;body&amp;gt;&lt;/code&gt; tag is an important structural tag,
+      which contains an block flow.
+      &lt;p&gt;
+      For simplicity I am following HTML 4.01 DTD -- HTML 5
+      uses radically different terminology and is more liberal
+      in what it allows.
+      These differences among standards are an important reason to want
+      an HTML parser to be configurable.
     &lt;/p&gt;
     &lt;h3&gt;
       Controlling element context&lt;/h3&gt;
@@ -128,6 +132,10 @@ ELE_acme is a FLO_x included in GRP_y
       -new block-
     &amp;lt;/p&amp;gt;&amp;lt;/body&amp;gt;
 &amp;lt;/html&amp;gt;
+    &lt;h3&gt;
+      The grammar configuration file&lt;/h3&gt;
+    &lt;h3&gt;
+      Controlling element content&lt;/h3&gt;
 &lt;/pre&gt;&lt;/blockquote&gt;
 &lt;!-- examples/acme-block-mixed.out --&gt;
 &lt;blockquote&gt;&lt;pre&gt;
