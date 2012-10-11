@@ -247,6 +247,11 @@ tag in the actual input.
     <h4>
       A block element containing a mixed flow</h4>
     <!-- examples/acme-block-mixed.out -->
+    <p>We can also configure the contents of
+    the
+<code>&lt;acme&gt;</code>
+element.
+This configuration line specifies a mixed flow.
     <blockquote>
       <pre>
 ELE_acme is a FLO_mixed included in GRP_block
@@ -264,13 +269,25 @@ ELE_acme is a FLO_mixed included in GRP_block
       &lt;/p&gt;&lt;/acme&gt;&lt;/body&gt;
 &lt;/html&gt;
 </pre></blockquote>
+<p>
+A mixed flow accepts any contents,
+and the
+<code>&lt;acme&gt;</code>
+element's contents expand to include the
+entire body of the html document.
+</p>
     <h4>
       A block element containing a block flow</h4>
     <!-- examples/acme-block-block.out -->
     <blockquote>
+    <p>With this configuration line, we request a block
+    flow for the contents:
+    </p>
       <pre>
 ELE_acme is a FLO_block included in GRP_block
 </pre></blockquote>
+    <p>The results:
+    </p>
     <blockquote>
       <pre>
 &lt;html&gt;
@@ -285,13 +302,35 @@ ELE_acme is a FLO_block included in GRP_block
       &lt;/p&gt;&lt;/acme&gt;&lt;/body&gt;
 &lt;/html&gt;
 </pre></blockquote>
+<p>
+Here the 
+<code>&lt;acme&gt;</code>
+element also spans the entire body of the HTML
+element,
+but because block flows are less liberal than
+mixed flows,
+the contents of the
+<code>&lt;acme&gt;</code>
+element have to be properly "packaged" inside
+block elements.
+</p>
     <h4>
       A block element containing PCDATA</h4>
     <!-- examples/acme-block-pcdata.out -->
+    <p>We will get progressively more restrictive with the contents
+of the <code>&lt;acme&gt;</code> element.
+We've already seen the example
+of an
+<code>&lt;acme&gt;</code>
+block element for inline contents.
+This configuration line specifies that the contents
+must be PCDATA.
+PCDATA allows text, but not child elements.
     <blockquote>
       <pre>
 ELE_acme is a FLO_pcdata included in GRP_block
 </pre></blockquote>
+The result:
     <blockquote>
       <pre>
 &lt;html&gt;
@@ -306,14 +345,23 @@ ELE_acme is a FLO_pcdata included in GRP_block
     &lt;/p&gt;&lt;/body&gt;
 &lt;/html&gt;
 </pre></blockquote>
+<p>Note here that the
+<code>&lt;acme&gt;</code>
+tag ends as soon as another element is encountered.
     <h4>
       An empty block element</h4>
+      <p>
+      The final restriciton would can put on the
+<code>&lt;acme&gt;</code>
+element is to insist that it be empty:
     <!-- examples/acme-block-empty.out -->
     <blockquote>
       <pre>
 ELE_acme is a FLO_empty included in GRP_block
 </pre></blockquote>
     <blockquote>
+    <p>
+    And here is our result:</p>
       <pre>
 &lt;html&gt;
   &lt;head&gt;

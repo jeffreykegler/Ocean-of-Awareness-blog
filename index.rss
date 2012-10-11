@@ -260,6 +260,11 @@ tag in the actual input.
     &lt;h4&gt;
       A block element containing a mixed flow&lt;/h4&gt;
     &lt;!-- examples/acme-block-mixed.out --&gt;
+    &lt;p&gt;We can also configure the contents of
+    the
+&lt;code&gt;&amp;lt;acme&amp;gt;&lt;/code&gt;
+element.
+This configuration line specifies a mixed flow.
     &lt;blockquote&gt;
       &lt;pre&gt;
 ELE_acme is a FLO_mixed included in GRP_block
@@ -277,13 +282,25 @@ ELE_acme is a FLO_mixed included in GRP_block
       &amp;lt;/p&amp;gt;&amp;lt;/acme&amp;gt;&amp;lt;/body&amp;gt;
 &amp;lt;/html&amp;gt;
 &lt;/pre&gt;&lt;/blockquote&gt;
+&lt;p&gt;
+A mixed flow accepts any contents,
+and the
+&lt;code&gt;&amp;lt;acme&amp;gt;&lt;/code&gt;
+element's contents expand to include the
+entire body of the html document.
+&lt;/p&gt;
     &lt;h4&gt;
       A block element containing a block flow&lt;/h4&gt;
     &lt;!-- examples/acme-block-block.out --&gt;
     &lt;blockquote&gt;
+    &lt;p&gt;With this configuration line, we request a block
+    flow for the contents:
+    &lt;/p&gt;
       &lt;pre&gt;
 ELE_acme is a FLO_block included in GRP_block
 &lt;/pre&gt;&lt;/blockquote&gt;
+    &lt;p&gt;The results:
+    &lt;/p&gt;
     &lt;blockquote&gt;
       &lt;pre&gt;
 &amp;lt;html&amp;gt;
@@ -298,13 +315,35 @@ ELE_acme is a FLO_block included in GRP_block
       &amp;lt;/p&amp;gt;&amp;lt;/acme&amp;gt;&amp;lt;/body&amp;gt;
 &amp;lt;/html&amp;gt;
 &lt;/pre&gt;&lt;/blockquote&gt;
+&lt;p&gt;
+Here the 
+&lt;code&gt;&amp;lt;acme&amp;gt;&lt;/code&gt;
+element also spans the entire body of the HTML
+element,
+but because block flows are less liberal than
+mixed flows,
+the contents of the
+&lt;code&gt;&amp;lt;acme&amp;gt;&lt;/code&gt;
+element have to be properly &quot;packaged&quot; inside
+block elements.
+&lt;/p&gt;
     &lt;h4&gt;
       A block element containing PCDATA&lt;/h4&gt;
     &lt;!-- examples/acme-block-pcdata.out --&gt;
+    &lt;p&gt;We will get progressively more restrictive with the contents
+of the &lt;code&gt;&amp;lt;acme&amp;gt;&lt;/code&gt; element.
+We've already seen the example
+of an
+&lt;code&gt;&amp;lt;acme&amp;gt;&lt;/code&gt;
+block element for inline contents.
+This configuration line specifies that the contents
+must be PCDATA.
+PCDATA allows text, but not child elements.
     &lt;blockquote&gt;
       &lt;pre&gt;
 ELE_acme is a FLO_pcdata included in GRP_block
 &lt;/pre&gt;&lt;/blockquote&gt;
+The result:
     &lt;blockquote&gt;
       &lt;pre&gt;
 &amp;lt;html&amp;gt;
@@ -319,14 +358,23 @@ ELE_acme is a FLO_pcdata included in GRP_block
     &amp;lt;/p&amp;gt;&amp;lt;/body&amp;gt;
 &amp;lt;/html&amp;gt;
 &lt;/pre&gt;&lt;/blockquote&gt;
+&lt;p&gt;Note here that the
+&lt;code&gt;&amp;lt;acme&amp;gt;&lt;/code&gt;
+tag ends as soon as another element is encountered.
     &lt;h4&gt;
       An empty block element&lt;/h4&gt;
+      &lt;p&gt;
+      The final restriciton would can put on the
+&lt;code&gt;&amp;lt;acme&amp;gt;&lt;/code&gt;
+element is to insist that it be empty:
     &lt;!-- examples/acme-block-empty.out --&gt;
     &lt;blockquote&gt;
       &lt;pre&gt;
 ELE_acme is a FLO_empty included in GRP_block
 &lt;/pre&gt;&lt;/blockquote&gt;
     &lt;blockquote&gt;
+    &lt;p&gt;
+    And here is our result:&lt;/p&gt;
       &lt;pre&gt;
 &amp;lt;html&amp;gt;
   &amp;lt;head&amp;gt;
