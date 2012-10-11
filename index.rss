@@ -106,7 +106,7 @@
     &lt;/p&gt;
     &lt;blockquote&gt;
       &lt;pre&gt;
-ELE_marpa is a FLO_inline included in GRP_inline
+ELE_acme is a FLO_inline included in GRP_inline
 &lt;/pre&gt;&lt;/blockquote&gt;&lt;p&gt;
       Let's take as our HTML, the following:
     &lt;/p&gt;
