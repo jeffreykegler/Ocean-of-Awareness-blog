@@ -200,7 +200,7 @@ the
 element's contents are inline,
 the
 <code>&lt;acme&gt;</code>
-still had to be ended before
+still needed to be ended before
 the
 <code>&lt;p&gt;</code>
 tag in the actual input.

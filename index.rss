@@ -213,7 +213,7 @@ the
 element's contents are inline,
 the
 &lt;code&gt;&amp;lt;acme&amp;gt;&lt;/code&gt;
-still had to be ended before
+still needed to be ended before
 the
 &lt;code&gt;&amp;lt;p&amp;gt;&lt;/code&gt;
 tag in the actual input.
