@@ -132,11 +132,11 @@ ELE_acme is a FLO_x included in GRP_y
       -new block-
     &amp;lt;/p&amp;gt;&amp;lt;/body&amp;gt;
 &amp;lt;/html&amp;gt;
+&lt;/pre&gt;&lt;/blockquote&gt;
     &lt;h3&gt;
       The grammar configuration file&lt;/h3&gt;
     &lt;h3&gt;
       Controlling element content&lt;/h3&gt;
-&lt;/pre&gt;&lt;/blockquote&gt;
 &lt;!-- examples/acme-block-mixed.out --&gt;
 &lt;blockquote&gt;&lt;pre&gt;
 ELE_acme is a FLO_x included in GRP_y
