@@ -70,7 +70,9 @@
       or will look up what he needs to know,
       about HTML.
       But block vs. inline is a essential HTML concept
-      which is often ignored -- even the excellent Wikipedia page on HTML
+      which is often ignored -- even
+      <a href="http://en.wikipedia.org/wiki/HTML">
+      the excellent Wikipedia page on HTML</a>
       does not define "inline", although it uses the term in the technical
       sense twice.
       Since the concept is also central to this post,
@@ -108,10 +110,11 @@
       tag is an important structural tag,
       which contains an block flow.
     </p><p>
-      For simplicity I am following HTML 4.01 DTD -- HTML 5
+      For simplicity I am following HTML 4.01 DTD.
+      HTML 5
       uses radically different terminology and is more liberal
       in what it allows.
-      These differences among standards are an important reason to want
+      Differences among standards are an important reason for
       an HTML parser to be configurable.
     </p>
     <h3>
@@ -159,9 +162,10 @@ echo '&lt;acme&gt;-during-&lt;span&gt;-more inline stuff-&lt;p&gt;-new block-' |
   marpa_r2_html_fmt --no-added-tag --compile test.cfg
 </pre></blockquote>
     <p>
-      Here's the result,
-      indented and
-      with the missing tags added to show the structure.
+<code>marpa_r2_html_fmt</code> indents the HTML and
+      adds missing tags
+This will show us the structure of our small HTML document.
+      Here is what we get:
     </p>
     <!-- examples/acme-inline-inline.out -->
     <blockquote>
@@ -195,15 +199,12 @@ echo '&lt;acme&gt;-during-&lt;span&gt;-more inline stuff-&lt;p&gt;-new block-' |
       <code>
         &lt;acme&gt;</code>
       element.
-      (Which contents are acceptable inside a
-      the
+      (A Marpa::R2::HTML configuration can also change
+      the contents that are acceptable inside the
       <code>
         &lt;body&gt;</code>.
-      can also be changed via the Marpa::R2::HTML
-      configuration file,
-      but for simplicity we'll take it as a given in
-      this post that
-      the
+      For the moment, we'll keep it simple
+      and accept as given that
       <code>
         &lt;body&gt;</code>
       contains a block flow.)
@@ -236,7 +237,7 @@ echo '&lt;acme&gt;-during-&lt;span&gt;-more inline stuff-&lt;p&gt;-new block-' |
       A block element containing an inline flow</h4>
     <!-- examples/acme-block-inline.out -->
     <p>
-      Our new configuration line can specify that
+      Our new configuration line can also specify that
       <code>
         &lt;acme&gt;</code>
       is a block element:
@@ -280,7 +281,7 @@ ELE_acme is a FLO_inline included in GRP_block
       the
       <code>
         &lt;acme&gt;</code>
-      still needed to be ended before
+      element still needed to be ended before
       the
       <code>
         &lt;p&gt;</code>
@@ -331,6 +332,7 @@ ELE_acme is a FLO_inline included in GRP_block
       <pre>
 ELE_acme is a FLO_mixed included in GRP_block
 </pre></blockquote>
+<p>And here is what we get:</p>
     <blockquote>
       <pre>
 &lt;html&gt;
@@ -346,7 +348,7 @@ ELE_acme is a FLO_mixed included in GRP_block
 </pre></blockquote>
     <p>
       A mixed flow accepts any contents,
-      and the
+      so that the
       <code>
         &lt;acme&gt;</code>
       element's contents expand to include the
@@ -355,11 +357,10 @@ ELE_acme is a FLO_mixed included in GRP_block
     <h4>
       A block element containing a block flow</h4>
     <!-- examples/acme-block-block.out -->
-    <blockquote>
-      <p>
-        With this configuration line, we request a block
+<p>With this configuration line, we request a block
         flow for the contents:
       </p>
+    <blockquote>
       <pre>
 ELE_acme is a FLO_block included in GRP_block
 </pre></blockquote>
@@ -398,7 +399,7 @@ ELE_acme is a FLO_block included in GRP_block
       A block element containing PCDATA</h4>
     <!-- examples/acme-block-pcdata.out -->
     <p>
-      We will get progressively more restrictive with the contents
+      We are getting progressively more restrictive with the contents
       of the
       <code>
         &lt;acme&gt;</code>
@@ -438,18 +439,18 @@ ELE_acme is a FLO_pcdata included in GRP_block
     </p><h4>
       An empty block element</h4>
     <p>
-      The final restriciton would can put on the
+      The final restriction on the
       <code>
         &lt;acme&gt;</code>
-      element is to insist that it be empty:
+      element is the insistance that it be empty:
       <!-- examples/acme-block-empty.out -->
     </p><blockquote>
       <pre>
 ELE_acme is a FLO_empty included in GRP_block
 </pre></blockquote>
-    <blockquote>
       <p>
         And here is our result:</p>
+    <blockquote>
       <pre>
 &lt;html&gt;
   &lt;head&gt;
@@ -504,7 +505,7 @@ ELE_acme is a FLO_empty included in GRP_block
       <code>
         &lt;acme&gt;</code>
       element varies,
-      but they always coincide with the beginning or
+      always coincides with the beginning or
       end of other block elements,
       so that the visible display is as
       two paragraphs:
