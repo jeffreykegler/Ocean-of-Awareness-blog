@@ -14,14 +14,68 @@
     <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/config_html.html</link>
     <description>    &lt;p&gt;
       &lt;!--
-      perl ./hide/marpa_r2_html_fmt
+      marpa_r2_html_fmt --no-added-tag-comment
       --&gt;
       This post introduces an HTML parser which is both liberal and configurable.
-      I have already explained some of the ideas behind it -- others are new.
-      Let me start with a simple example.
-&lt;h1&gt;Why configurable?&lt;/h1&gt;
-First off, why do we want a configurable HTML parser?
-The new, configurable</description>
+      Marpa::R2::HTML allows detailed 
+      configuration of new tags
+      and reconfiguration of existing tags,
+    &lt;/p&gt;&lt;p&gt;
+      In this post, I'd like to start simple.
+      Let's suppose we have a new tag, call it
+      &lt;code&gt;
+        &amp;lt;marpa&amp;gt;&lt;/code&gt;.
+      Already, the non-configurable version of Marpa, like most browsers,
+      would recognize this tag.
+      But they'd simply give it a default configuration,
+      one which is usually very liberal --
+      liberal meaning it allowed the tag to contain just about anything,
+      and go just about anywhere.
+      Let's try to be more restrictive.
+    &lt;/p&gt;&lt;h1&gt;
+      Block vs. inline&lt;/h1&gt;&lt;p&gt;
+      In this post
+      I am going to assume that the reader knows,
+      or will look up what he needs to know,
+      about HTML.
+      But block vs. inline is a essential HTML concept
+      which is often ignored -- even the excellent Wikipedia page on HTML
+      does not define &quot;inline&quot;, although it uses the term in the technical
+      sense twice.
+      Since the concept is also central to this post,
+      let me briefly summarize it.
+    &lt;/p&gt;&lt;p&gt;
+      Quoting from the
+      &lt;a href=&quot;http://www.w3.org/TR/1999/PR-html40-19990824/sgml/dtd.html#inline&quot;&gt;
+        HTML 4.01 Strict DTD&lt;/a&gt;,
+    &lt;/p&gt;&lt;blockquote&gt;
+      &lt;pre&gt;
+      HTML has two basic content models:
+
+        %inline;     character level elements and text strings
+        %block;      block-like elements e.g. paragraphs and lists
+&lt;/pre&gt;
+    &lt;/blockquote&gt;
+    &lt;p&gt;
+      There is also what I will call a &quot;mixed flow&quot;,
+      which can contain anything that
+      can appear in either a block or inline flow.
+      (What I call a mixed flow is
+      simply called a &quot;flow&quot;
+      in the HTML 4.01 DTD.)
+    &lt;/p&gt;&lt;p&gt;
+      Archetypal elements are
+      &lt;code&gt;
+        &amp;lt;p&amp;gt;&lt;/code&gt;,
+      which is a block element that contains an inline flow;
+      &lt;code&gt;
+        &amp;lt;span&amp;gt;&lt;/code&gt;,
+      which is an inline element that contains an inline flow;
+      and
+      &lt;code&gt;
+        &amp;lt;div&amp;gt;&lt;/code&gt;,
+      which is an block element that contains an mixed flow.
+    &lt;/p&gt;</description>
   </item>
   <item>
     <title>Parsing on your new hyper-quantum computer</title>
