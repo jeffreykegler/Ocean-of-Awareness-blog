@@ -17,14 +17,14 @@
       marpa_r2_html_fmt --no-added-tag-comment
       --&gt;
       This post introduces an HTML parser which is both liberal and configurable.
-      Marpa::R2::HTML allows detailed 
+      Marpa::R2::HTML allows detailed
       configuration of new tags
       and reconfiguration of existing tags,
     &lt;/p&gt;&lt;p&gt;
       In this post, I'd like to start simple.
       Let's suppose we have a new tag, call it
       &lt;code&gt;
-        &amp;lt;marpa&amp;gt;&lt;/code&gt;.
+        &amp;lt;acme&amp;gt;&lt;/code&gt;.
       Already, the non-configurable version of Marpa, like most browsers,
       would recognize this tag.
       But they'd simply give it a default configuration,
@@ -32,8 +32,8 @@
       liberal meaning it allowed the tag to contain just about anything,
       and go just about anywhere.
       Let's try to be more restrictive.
-    &lt;/p&gt;&lt;h1&gt;
-      Block vs. inline&lt;/h1&gt;&lt;p&gt;
+    &lt;/p&gt;&lt;h3&gt;
+      Block vs. inline&lt;/h3&gt;&lt;p&gt;
       In this post
       I am going to assume that the reader knows,
       or will look up what he needs to know,
@@ -75,7 +75,43 @@
       &lt;code&gt;
         &amp;lt;div&amp;gt;&lt;/code&gt;,
       which is an block element that contains an mixed flow.
-    &lt;/p&gt;</description>
+    &lt;/p&gt;
+    &lt;h3&gt;
+      Controlling element context&lt;/h3&gt;
+    &lt;p&gt;
+      Let's define the
+      &lt;code&gt;
+        &amp;lt;acme&amp;gt;&lt;/code&gt;
+      tag
+      to be an inline tag with inline contents.
+      This is done by adding the following line to the
+      Marpa::R2::HTML grammar configuration file:
+    &lt;/p&gt;&lt;blockquote&gt;
+      &lt;pre&gt;
+	ELE_marpa is a FLO_inline included in GRP_inline
+&lt;/pre&gt;&lt;/blockquote&gt;&lt;p&gt;
+      Let's take as our HTML, the following:
+    &lt;/p&gt;&lt;blockquote&gt;
+      &lt;pre&gt;
+	&amp;lt;marpa&amp;gt;-during-&amp;lt;span&amp;gt;-more inline stuff-&amp;lt;p&amp;gt;-new block-
+&lt;/pre&gt;&lt;/blockquote&gt;&lt;p&gt;
+      Here's the result,
+      with tags added to show the structure
+      in detail.
+    &lt;/p&gt;&lt;blockquote&gt;
+      &lt;pre&gt;
+&amp;lt;html&amp;gt;
+  &amp;lt;head&amp;gt;
+  &amp;lt;/head&amp;gt;
+  &amp;lt;body&amp;gt;
+    &amp;lt;p&amp;gt;
+      &amp;lt;marpa&amp;gt;
+        -during-&amp;lt;span&amp;gt;
+          -more inline stuff-&amp;lt;/span&amp;gt;&amp;lt;/marpa&amp;gt;&amp;lt;/p&amp;gt;&amp;lt;p&amp;gt;
+      -new block-
+    &amp;lt;/p&amp;gt;&amp;lt;/body&amp;gt;
+&amp;lt;/html&amp;gt;
+&lt;/pre&gt;&lt;/blockquote&gt;</description>
   </item>
   <item>
     <title>Parsing on your new hyper-quantum computer</title>

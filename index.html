@@ -43,14 +43,14 @@
       marpa_r2_html_fmt --no-added-tag-comment
       -->
       This post introduces an HTML parser which is both liberal and configurable.
-      Marpa::R2::HTML allows detailed 
+      Marpa::R2::HTML allows detailed
       configuration of new tags
       and reconfiguration of existing tags,
     </p><p>
       In this post, I'd like to start simple.
       Let's suppose we have a new tag, call it
       <code>
-        &lt;marpa&gt;</code>.
+        &lt;acme&gt;</code>.
       Already, the non-configurable version of Marpa, like most browsers,
       would recognize this tag.
       But they'd simply give it a default configuration,
@@ -58,8 +58,8 @@
       liberal meaning it allowed the tag to contain just about anything,
       and go just about anywhere.
       Let's try to be more restrictive.
-    </p><h1>
-      Block vs. inline</h1><p>
+    </p><h3>
+      Block vs. inline</h3><p>
       In this post
       I am going to assume that the reader knows,
       or will look up what he needs to know,
@@ -102,6 +102,42 @@
         &lt;div&gt;</code>,
       which is an block element that contains an mixed flow.
     </p>
+    <h3>
+      Controlling element context</h3>
+    <p>
+      Let's define the
+      <code>
+        &lt;acme&gt;</code>
+      tag
+      to be an inline tag with inline contents.
+      This is done by adding the following line to the
+      Marpa::R2::HTML grammar configuration file:
+    </p><blockquote>
+      <pre>
+	ELE_marpa is a FLO_inline included in GRP_inline
+</pre></blockquote><p>
+      Let's take as our HTML, the following:
+    </p><blockquote>
+      <pre>
+	&lt;marpa&gt;-during-&lt;span&gt;-more inline stuff-&lt;p&gt;-new block-
+</pre></blockquote><p>
+      Here's the result,
+      with tags added to show the structure
+      in detail.
+    </p><blockquote>
+      <pre>
+&lt;html&gt;
+  &lt;head&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;p&gt;
+      &lt;marpa&gt;
+        -during-&lt;span&gt;
+          -more inline stuff-&lt;/span&gt;&lt;/marpa&gt;&lt;/p&gt;&lt;p&gt;
+      -new block-
+    &lt;/p&gt;&lt;/body&gt;
+&lt;/html&gt;
+</pre></blockquote>
 <br />
 <p>posted at: 17:46 |
 <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/config_html.html">direct link to this entry</a>
