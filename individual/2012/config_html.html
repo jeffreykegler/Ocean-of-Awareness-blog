@@ -36,7 +36,7 @@
   <div style="margin-left:190px;border-left:2px solid #38B0C0;padding:25px;">
 <h3>Mon, 08 Oct 2012</h3>
 <br />
-<center><a name="config_html"> <h2>A Configurable HTML Parser</h2> </a>
+<center><a name="config_html"> <h2> Configurable HTML Parser</h2> </a>
 </center>
     <p>
       <!--
@@ -97,9 +97,12 @@
       <code>
         &lt;span&gt;</code>,
       which is an inline element that contains an inline flow.
-      The <code>&lt;body&gt;</code> tag is an important structural tag,
+      The
+      <code>
+        &lt;body&gt;</code>
+      tag is an important structural tag,
       which contains an block flow.
-      <p>
+    </p><p>
       For simplicity I am following HTML 4.01 DTD -- HTML 5
       uses radically different terminology and is more liberal
       in what it allows.
@@ -108,6 +111,8 @@
     </p>
     <h3>
       Controlling element context</h3>
+    <h4>
+      An inline element containing an inline flow</h4>
     <p>
       Let's define the
       <code>
@@ -117,20 +122,40 @@
       This is done by adding the following line to the
       Marpa::R2::HTML grammar configuration file:
     </p>
-<blockquote><pre>
+    <blockquote>
+      <pre>
 ELE_marpa is a FLO_inline included in GRP_inline
 </pre></blockquote><p>
       Let's take as our HTML, the following:
     </p>
-<blockquote><pre>
+    <blockquote>
+      <pre>
 &lt;marpa&gt;-during-&lt;span&gt;-more inline stuff-&lt;p&gt;-new block-
-</pre></blockquote><p>
-      Here's the result,
-      with tags added to show the structure
-      in detail.
+</pre></blockquote>
+
+<p>
+With the following shell commands,
+we add the new line to <a href="https://gist.github.com/3869482"><code>default.cfg</code>,
+the default grammar configuration file</a>.
+We then use the <code>marpa_r2_html_fmt</code> utility
+that comes with Marpa::R2
+to parse the HTML.
+</p>
+    <blockquote>
+      <pre>
+cp default.cfg test.cfg
+echo "ELE_acme is a FLO_inline included in GRP_inline" &gt;&gt; test.cfg
+echo '&lt;acme&gt;-during-&lt;span&gt;-more inline stuff-&lt;p&gt;-new block-' |
+  marpa_r2_html_fmt --no-added-tag --compile test.cfg
+</pre></blockquote>
+<p>
+Here's the result,
+indented and
+with the missing tags added to show the structure.
     </p>
-<!-- examples/acme-inline-inline.out -->
-<blockquote><pre>
+    <!-- examples/acme-inline-inline.out -->
+    <blockquote>
+      <pre>
 &lt;html&gt;
   &lt;head&gt;
   &lt;/head&gt;
@@ -143,11 +168,53 @@ ELE_marpa is a FLO_inline included in GRP_inline
     &lt;/p&gt;&lt;/body&gt;
 &lt;/html&gt;
 </pre></blockquote>
-<!-- examples/acme-block-inline.out -->
-<blockquote><pre>
-ELE_acme is a FLO_x included in GRP_y
+<p>
+We see from this that the configuration took proper effect.
+Since the 
+<code>&lt;acme&gt;</code>
+tag was configured as an inline element,
+it cannot go directly inside the
+the <code>&lt;body&gt;</code>.
+So a new 
+<code>&lt;p&gt;</code> is created to contain the
+<code>&lt;acme&gt;</code> element.
+(Which contents are acceptable inside a
+the <code>&lt;body&gt;</code>.
+can also be changed via the Marpa::R2::HTML
+configuration file,
+but for simplicity we'll take it as a given in
+this post that 
+the <code>&lt;body&gt;</code>
+contains a block flow.)
+<p>
+Similarly,
+since the
+<code>&lt;acme&gt;</code>
+tag contains an inline flow,
+it must end before the next
+<code>&lt;p&gt;</code>
+tag.
+The parser supplies an
+end tag for the
+<code>&lt;acme&gt;</code>
+element,
+and also
+closes the
+<code>&lt;p&gt;</code>
+paragraph that was
+started to hold the
+<code>&lt;acme&gt;</code>
+element.
+</p>
+    <h4>
+      A block element containing an inline flow</h4>
+    <!-- examples/acme-block-inline.out -->
+    <blockquote>
+      <pre>
+ELE_acme is a FLO_inline included in GRP_block
 </pre></blockquote>
-<blockquote><pre>
+    <blockquote>
+      <pre>
 &lt;html&gt;
   &lt;head&gt;
   &lt;/head&gt;
@@ -159,15 +226,63 @@ ELE_acme is a FLO_x included in GRP_y
     &lt;/p&gt;&lt;/body&gt;
 &lt;/html&gt;
 </pre></blockquote>
+<p>
+Here the
+<code>&lt;acme&gt;</code>
+element is allowed in a block,
+so no new
+<code>&lt;p&gt;</code>
+element was needed to contain it.
+Since
+the
+<code>&lt;acme&gt;</code>
+element's contents are inline,
+the
+<code>&lt;acme&gt;</code>
+still had to be ended before
+the
+<code>&lt;p&gt;</code>
+tag in the actual input.
+</p>
     <h3>
       The grammar configuration file</h3>
-    <h3>
+    <p>
+      This who click through to look at
+<a href="https://gist.github.com/3869482">the grammar configuration file</a>
+      may notice
+      its length.
+      Three pages.
+      And almost half of those three pages
+      are single-line descriptions of elements
+      which are one or more of deprecated, obsolete
+      or proprietary.
+      Arguably the configuration file
+      should be even shorter.
+    </p><p>
+      Those familiar with other implementations of liberal HTML
+      parsers will know they spread the logic specifying the HTML
+      variant across a considerably larger body of code,
+      sometimes a vastly larger.
+      This very much affects the cost of evolving and
+      maintain the parser.
+    </p><p>
+      As the configuration file's format at the moment:
+      it is experimental.
+      I can state from experience that it is
+      quite serviceable,
+      and fairly readable,
+      but it could be more elegant.
+    </p><h3>
       Controlling element content</h3>
-<!-- examples/acme-block-mixed.out -->
-<blockquote><pre>
-ELE_acme is a FLO_x included in GRP_y
+    <h4>
+      A block element containing a mixed flow</h4>
+    <!-- examples/acme-block-mixed.out -->
+    <blockquote>
+      <pre>
+ELE_acme is a FLO_mixed included in GRP_block
 </pre></blockquote>
-<blockquote><pre>
+    <blockquote>
+      <pre>
 &lt;html&gt;
   &lt;head&gt;
   &lt;/head&gt;
@@ -179,11 +294,15 @@ ELE_acme is a FLO_x included in GRP_y
       &lt;/p&gt;&lt;/acme&gt;&lt;/body&gt;
 &lt;/html&gt;
 </pre></blockquote>
-<!-- examples/acme-block-block.out -->
-<blockquote><pre>
-ELE_acme is a FLO_x included in GRP_y
+    <h4>
+      A block element containing a block flow</h4>
+    <!-- examples/acme-block-block.out -->
+    <blockquote>
+      <pre>
+ELE_acme is a FLO_block included in GRP_block
 </pre></blockquote>
-<blockquote><pre>
+    <blockquote>
+      <pre>
 &lt;html&gt;
   &lt;head&gt;
   &lt;/head&gt;
@@ -196,11 +315,15 @@ ELE_acme is a FLO_x included in GRP_y
       &lt;/p&gt;&lt;/acme&gt;&lt;/body&gt;
 &lt;/html&gt;
 </pre></blockquote>
-<!-- examples/acme-block-pcdata.out -->
-<blockquote><pre>
-ELE_acme is a FLO_x included in GRP_y
+    <h4>
+      A block element containing PCDATA</h4>
+    <!-- examples/acme-block-pcdata.out -->
+    <blockquote>
+      <pre>
+ELE_acme is a FLO_pcdata included in GRP_block
 </pre></blockquote>
-<blockquote><pre>
+    <blockquote>
+      <pre>
 &lt;html&gt;
   &lt;head&gt;
   &lt;/head&gt;
@@ -213,11 +336,15 @@ ELE_acme is a FLO_x included in GRP_y
     &lt;/p&gt;&lt;/body&gt;
 &lt;/html&gt;
 </pre></blockquote>
-<!-- examples/acme-block-empty.out -->
-<blockquote><pre>
-ELE_acme is a FLO_x included in GRP_y
+    <h4>
+      An empty block element</h4>
+    <!-- examples/acme-block-empty.out -->
+    <blockquote>
+      <pre>
+ELE_acme is a FLO_empty included in GRP_block
 </pre></blockquote>
-<blockquote><pre>
+    <blockquote>
+      <pre>
 &lt;html&gt;
   &lt;head&gt;
   &lt;/head&gt;
@@ -230,6 +357,55 @@ ELE_acme is a FLO_x included in GRP_y
     &lt;/p&gt;&lt;/body&gt;
 &lt;/html&gt;
 </pre></blockquote>
+    <h3>Displayed effects</h3> 
+    <p>
+    Any of these different configurations of
+    the
+<code>&lt;acme&gt;</code>
+tag could have a dramatic effect on what is displayed,
+depending on your CSS file.
+Whether or not
+<code>&lt;acme&gt;</code>
+is a block element also affects
+what is displayed.
+When
+<code>&lt;acme&gt;</code>
+is a block element,
+its boundaries will typically display as paragraph breaks.
+    </p>
+    <p>
+    In the above examples,
+    the case where
+<code>&lt;acme&gt;</code>
+is configured as a block element containing PCDATA
+it typically displays as three paragraphs:
+<pre>
+-during-
+
+-more inline stuff-
+
+-new block-
+</pre>
+</p>
+<p>
+In the other cases, the end boundary of the
+<code>&lt;acme&gt;</code> element varies,
+but they always coincide with the beginning or
+end of other block elements,
+so that the visible display is as
+two paragraphs:
+<pre>
+-during- -more inline stuff-
+
+-new block-
+</pre>
+</p>
+    <h3>
+      Comments</h3><p>
+      Comments on this post can be sent to the Marpa Google Group:
+      <code>
+        marpa-parser@googlegroups.com</code>
+    </p>
 <br />
 <p>posted at: 17:46 |
 <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/config_html.html">direct link to this entry</a>
