@@ -183,10 +183,19 @@ element.
     &lt;h4&gt;
       A block element containing an inline flow&lt;/h4&gt;
     &lt;!-- examples/acme-block-inline.out --&gt;
+    &lt;p&gt;Our new configuration line can specify that
+&lt;code&gt;&amp;lt;acme&amp;gt;&lt;/code&gt;
+is a block element:
     &lt;blockquote&gt;
       &lt;pre&gt;
 ELE_acme is a FLO_inline included in GRP_block
 &lt;/pre&gt;&lt;/blockquote&gt;
+The code to test this is very similar to that displayed above.
+It, and the scripts for all of this post's other examples,
+can be found
+&lt;a href=&quot;https://gist.github.com/3870030&quot;&gt;
+as a gist&lt;/a&gt;.
+Here's the result:
     &lt;blockquote&gt;
       &lt;pre&gt;
 &amp;lt;html&amp;gt;
@@ -221,7 +230,7 @@ tag in the actual input.
     &lt;h3&gt;
       The grammar configuration file&lt;/h3&gt;
     &lt;p&gt;
-      This who click through to look at
+      Those who click through to look at
 &lt;a href=&quot;https://gist.github.com/3869482&quot;&gt;the grammar configuration file&lt;/a&gt;
       may notice
       its length.
@@ -233,14 +242,14 @@ tag in the actual input.
       Arguably the configuration file
       should be even shorter.
     &lt;/p&gt;&lt;p&gt;
-      Those familiar with other implementations of liberal HTML
-      parsers will know they spread the logic specifying the HTML
+      Other implementations of liberal HTML
+      parsers spread the logic specifying the HTML
       variant across a considerably larger body of code,
       sometimes a vastly larger.
       This very much affects the cost of evolving and
       maintain the parser.
     &lt;/p&gt;&lt;p&gt;
-      As the configuration file's format at the moment:
+      As for the configuration file's format at the moment:
       it is experimental.
       I can state from experience that it is
       quite serviceable,

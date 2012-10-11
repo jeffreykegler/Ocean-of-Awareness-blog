@@ -170,10 +170,19 @@ element.
     <h4>
       A block element containing an inline flow</h4>
     <!-- examples/acme-block-inline.out -->
+    <p>Our new configuration line can specify that
+<code>&lt;acme&gt;</code>
+is a block element:
     <blockquote>
       <pre>
 ELE_acme is a FLO_inline included in GRP_block
 </pre></blockquote>
+The code to test this is very similar to that displayed above.
+It, and the scripts for all of this post's other examples,
+can be found
+<a href="https://gist.github.com/3870030">
+as a gist</a>.
+Here's the result:
     <blockquote>
       <pre>
 &lt;html&gt;
@@ -208,7 +217,7 @@ tag in the actual input.
     <h3>
       The grammar configuration file</h3>
     <p>
-      This who click through to look at
+      Those who click through to look at
 <a href="https://gist.github.com/3869482">the grammar configuration file</a>
       may notice
       its length.
@@ -220,14 +229,14 @@ tag in the actual input.
       Arguably the configuration file
       should be even shorter.
     </p><p>
-      Those familiar with other implementations of liberal HTML
-      parsers will know they spread the logic specifying the HTML
+      Other implementations of liberal HTML
+      parsers spread the logic specifying the HTML
       variant across a considerably larger body of code,
       sometimes a vastly larger.
       This very much affects the cost of evolving and
       maintain the parser.
     </p><p>
-      As the configuration file's format at the moment:
+      As for the configuration file's format at the moment:
       it is experimental.
       I can state from experience that it is
       quite serviceable,
