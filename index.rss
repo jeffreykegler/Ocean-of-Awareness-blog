@@ -86,28 +86,112 @@
       to be an inline tag with inline contents.
       This is done by adding the following line to the
       Marpa::R2::HTML grammar configuration file:
-    &lt;/p&gt;&lt;blockquote&gt;
-      &lt;pre&gt;
-	ELE_marpa is a FLO_inline included in GRP_inline
+    &lt;/p&gt;
+&lt;blockquote&gt;&lt;pre&gt;
+ELE_marpa is a FLO_inline included in GRP_inline
 &lt;/pre&gt;&lt;/blockquote&gt;&lt;p&gt;
       Let's take as our HTML, the following:
-    &lt;/p&gt;&lt;blockquote&gt;
-      &lt;pre&gt;
-	&amp;lt;marpa&amp;gt;-during-&amp;lt;span&amp;gt;-more inline stuff-&amp;lt;p&amp;gt;-new block-
+    &lt;/p&gt;
+&lt;blockquote&gt;&lt;pre&gt;
+&amp;lt;marpa&amp;gt;-during-&amp;lt;span&amp;gt;-more inline stuff-&amp;lt;p&amp;gt;-new block-
 &lt;/pre&gt;&lt;/blockquote&gt;&lt;p&gt;
       Here's the result,
       with tags added to show the structure
       in detail.
-    &lt;/p&gt;&lt;blockquote&gt;
-      &lt;pre&gt;
+    &lt;/p&gt;
+&lt;!-- examples/acme-inline-inline.out --&gt;
+&lt;blockquote&gt;&lt;pre&gt;
 &amp;lt;html&amp;gt;
   &amp;lt;head&amp;gt;
   &amp;lt;/head&amp;gt;
   &amp;lt;body&amp;gt;
     &amp;lt;p&amp;gt;
-      &amp;lt;marpa&amp;gt;
+      &amp;lt;acme&amp;gt;
         -during-&amp;lt;span&amp;gt;
-          -more inline stuff-&amp;lt;/span&amp;gt;&amp;lt;/marpa&amp;gt;&amp;lt;/p&amp;gt;&amp;lt;p&amp;gt;
+          -more inline stuff-&amp;lt;/span&amp;gt;&amp;lt;/acme&amp;gt;&amp;lt;/p&amp;gt;&amp;lt;p&amp;gt;
+      -new block-
+    &amp;lt;/p&amp;gt;&amp;lt;/body&amp;gt;
+&amp;lt;/html&amp;gt;
+&lt;/pre&gt;&lt;/blockquote&gt;
+&lt;!-- examples/acme-block-inline.out --&gt;
+&lt;blockquote&gt;&lt;pre&gt;
+ELE_acme is a FLO_x included in GRP_y
+&lt;/pre&gt;&lt;/blockquote&gt;
+&lt;blockquote&gt;&lt;pre&gt;
+&amp;lt;html&amp;gt;
+  &amp;lt;head&amp;gt;
+  &amp;lt;/head&amp;gt;
+  &amp;lt;body&amp;gt;
+    &amp;lt;acme&amp;gt;
+      -during-&amp;lt;span&amp;gt;
+        -more inline stuff-&amp;lt;/span&amp;gt;&amp;lt;/acme&amp;gt;&amp;lt;p&amp;gt;
+      -new block-
+    &amp;lt;/p&amp;gt;&amp;lt;/body&amp;gt;
+&amp;lt;/html&amp;gt;
+&lt;/pre&gt;&lt;/blockquote&gt;
+&lt;!-- examples/acme-block-mixed.out --&gt;
+&lt;blockquote&gt;&lt;pre&gt;
+ELE_acme is a FLO_x included in GRP_y
+&lt;/pre&gt;&lt;/blockquote&gt;
+&lt;blockquote&gt;&lt;pre&gt;
+&amp;lt;html&amp;gt;
+  &amp;lt;head&amp;gt;
+  &amp;lt;/head&amp;gt;
+  &amp;lt;body&amp;gt;
+    &amp;lt;acme&amp;gt;
+      -during-&amp;lt;span&amp;gt;
+        -more inline stuff-&amp;lt;/span&amp;gt;&amp;lt;p&amp;gt;
+        -new block-
+      &amp;lt;/p&amp;gt;&amp;lt;/acme&amp;gt;&amp;lt;/body&amp;gt;
+&amp;lt;/html&amp;gt;
+&lt;/pre&gt;&lt;/blockquote&gt;
+&lt;!-- examples/acme-block-block.out --&gt;
+&lt;blockquote&gt;&lt;pre&gt;
+ELE_acme is a FLO_x included in GRP_y
+&lt;/pre&gt;&lt;/blockquote&gt;
+&lt;blockquote&gt;&lt;pre&gt;
+&amp;lt;html&amp;gt;
+  &amp;lt;head&amp;gt;
+  &amp;lt;/head&amp;gt;
+  &amp;lt;body&amp;gt;
+    &amp;lt;acme&amp;gt;
+      &amp;lt;p&amp;gt;
+        -during-&amp;lt;span&amp;gt;
+          -more inline stuff-&amp;lt;/span&amp;gt;&amp;lt;/p&amp;gt;&amp;lt;p&amp;gt;
+        -new block-
+      &amp;lt;/p&amp;gt;&amp;lt;/acme&amp;gt;&amp;lt;/body&amp;gt;
+&amp;lt;/html&amp;gt;
+&lt;/pre&gt;&lt;/blockquote&gt;
+&lt;!-- examples/acme-block-pcdata.out --&gt;
+&lt;blockquote&gt;&lt;pre&gt;
+ELE_acme is a FLO_x included in GRP_y
+&lt;/pre&gt;&lt;/blockquote&gt;
+&lt;blockquote&gt;&lt;pre&gt;
+&amp;lt;html&amp;gt;
+  &amp;lt;head&amp;gt;
+  &amp;lt;/head&amp;gt;
+  &amp;lt;body&amp;gt;
+    &amp;lt;acme&amp;gt;
+      -during-&amp;lt;/acme&amp;gt;&amp;lt;p&amp;gt;
+      &amp;lt;span&amp;gt;
+        -more inline stuff-&amp;lt;/span&amp;gt;&amp;lt;/p&amp;gt;&amp;lt;p&amp;gt;
+      -new block-
+    &amp;lt;/p&amp;gt;&amp;lt;/body&amp;gt;
+&amp;lt;/html&amp;gt;
+&lt;/pre&gt;&lt;/blockquote&gt;
+&lt;!-- examples/acme-block-empty.out --&gt;
+&lt;blockquote&gt;&lt;pre&gt;
+ELE_acme is a FLO_x included in GRP_y
+&lt;/pre&gt;&lt;/blockquote&gt;
+&lt;blockquote&gt;&lt;pre&gt;
+&amp;lt;html&amp;gt;
+  &amp;lt;head&amp;gt;
+  &amp;lt;/head&amp;gt;
+  &amp;lt;body&amp;gt;
+    &amp;lt;acme&amp;gt;
+    &amp;lt;/acme&amp;gt;&amp;lt;p&amp;gt;
+      -during-&amp;lt;span&amp;gt;
+        -more inline stuff-&amp;lt;/span&amp;gt;&amp;lt;/p&amp;gt;&amp;lt;p&amp;gt;
       -new block-
     &amp;lt;/p&amp;gt;&amp;lt;/body&amp;gt;
 &amp;lt;/html&amp;gt;

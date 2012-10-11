@@ -112,28 +112,112 @@
       to be an inline tag with inline contents.
       This is done by adding the following line to the
       Marpa::R2::HTML grammar configuration file:
-    </p><blockquote>
-      <pre>
-	ELE_marpa is a FLO_inline included in GRP_inline
+    </p>
+<blockquote><pre>
+ELE_marpa is a FLO_inline included in GRP_inline
 </pre></blockquote><p>
       Let's take as our HTML, the following:
-    </p><blockquote>
-      <pre>
-	&lt;marpa&gt;-during-&lt;span&gt;-more inline stuff-&lt;p&gt;-new block-
+    </p>
+<blockquote><pre>
+&lt;marpa&gt;-during-&lt;span&gt;-more inline stuff-&lt;p&gt;-new block-
 </pre></blockquote><p>
       Here's the result,
       with tags added to show the structure
       in detail.
-    </p><blockquote>
-      <pre>
+    </p>
+<!-- examples/acme-inline-inline.out -->
+<blockquote><pre>
 &lt;html&gt;
   &lt;head&gt;
   &lt;/head&gt;
   &lt;body&gt;
     &lt;p&gt;
-      &lt;marpa&gt;
+      &lt;acme&gt;
         -during-&lt;span&gt;
-          -more inline stuff-&lt;/span&gt;&lt;/marpa&gt;&lt;/p&gt;&lt;p&gt;
+          -more inline stuff-&lt;/span&gt;&lt;/acme&gt;&lt;/p&gt;&lt;p&gt;
+      -new block-
+    &lt;/p&gt;&lt;/body&gt;
+&lt;/html&gt;
+</pre></blockquote>
+<!-- examples/acme-block-inline.out -->
+<blockquote><pre>
+ELE_acme is a FLO_x included in GRP_y
+</pre></blockquote>
+<blockquote><pre>
+&lt;html&gt;
+  &lt;head&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;acme&gt;
+      -during-&lt;span&gt;
+        -more inline stuff-&lt;/span&gt;&lt;/acme&gt;&lt;p&gt;
+      -new block-
+    &lt;/p&gt;&lt;/body&gt;
+&lt;/html&gt;
+</pre></blockquote>
+<!-- examples/acme-block-mixed.out -->
+<blockquote><pre>
+ELE_acme is a FLO_x included in GRP_y
+</pre></blockquote>
+<blockquote><pre>
+&lt;html&gt;
+  &lt;head&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;acme&gt;
+      -during-&lt;span&gt;
+        -more inline stuff-&lt;/span&gt;&lt;p&gt;
+        -new block-
+      &lt;/p&gt;&lt;/acme&gt;&lt;/body&gt;
+&lt;/html&gt;
+</pre></blockquote>
+<!-- examples/acme-block-block.out -->
+<blockquote><pre>
+ELE_acme is a FLO_x included in GRP_y
+</pre></blockquote>
+<blockquote><pre>
+&lt;html&gt;
+  &lt;head&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;acme&gt;
+      &lt;p&gt;
+        -during-&lt;span&gt;
+          -more inline stuff-&lt;/span&gt;&lt;/p&gt;&lt;p&gt;
+        -new block-
+      &lt;/p&gt;&lt;/acme&gt;&lt;/body&gt;
+&lt;/html&gt;
+</pre></blockquote>
+<!-- examples/acme-block-pcdata.out -->
+<blockquote><pre>
+ELE_acme is a FLO_x included in GRP_y
+</pre></blockquote>
+<blockquote><pre>
+&lt;html&gt;
+  &lt;head&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;acme&gt;
+      -during-&lt;/acme&gt;&lt;p&gt;
+      &lt;span&gt;
+        -more inline stuff-&lt;/span&gt;&lt;/p&gt;&lt;p&gt;
+      -new block-
+    &lt;/p&gt;&lt;/body&gt;
+&lt;/html&gt;
+</pre></blockquote>
+<!-- examples/acme-block-empty.out -->
+<blockquote><pre>
+ELE_acme is a FLO_x included in GRP_y
+</pre></blockquote>
+<blockquote><pre>
+&lt;html&gt;
+  &lt;head&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;acme&gt;
+    &lt;/acme&gt;&lt;p&gt;
+      -during-&lt;span&gt;
+        -more inline stuff-&lt;/span&gt;&lt;/p&gt;&lt;p&gt;
       -new block-
     &lt;/p&gt;&lt;/body&gt;
 &lt;/html&gt;

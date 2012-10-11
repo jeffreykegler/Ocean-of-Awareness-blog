@@ -86,99 +86,97 @@ ELE_marpa is a FLO_inline included in GRP_inline
       with tags added to show the structure
       in detail.
     </p>
-<\!-- examples/marpa-inline-inline.out -->
+<!-- examples/acme-inline-inline.out -->
 <blockquote><pre>
 &lt;html&gt;
   &lt;head&gt;
   &lt;/head&gt;
   &lt;body&gt;
     &lt;p&gt;
-      &lt;marpa&gt;
+      &lt;acme&gt;
         -during-&lt;span&gt;
-          -more inline stuff-&lt;/span&gt;&lt;/marpa&gt;&lt;/p&gt;&lt;p&gt;
+          -more inline stuff-&lt;/span&gt;&lt;/acme&gt;&lt;/p&gt;&lt;p&gt;
       -new block-
     &lt;/p&gt;&lt;/body&gt;
 &lt;/html&gt;
 </pre></blockquote>
-<\!-- examples/marpa-block-inline.out -->
+<!-- examples/acme-block-inline.out -->
 <blockquote><pre>
-ELE_marpa is a FLO_inline included in GRP_block
+ELE_acme is a FLO_x included in GRP_y
 </pre></blockquote>
-<p>
 <blockquote><pre>
 &lt;html&gt;
   &lt;head&gt;
   &lt;/head&gt;
   &lt;body&gt;
-    &lt;marpa&gt;
+    &lt;acme&gt;
       -during-&lt;span&gt;
-        -more inline stuff-&lt;/span&gt;&lt;/marpa&gt;&lt;p&gt;
+        -more inline stuff-&lt;/span&gt;&lt;/acme&gt;&lt;p&gt;
       -new block-
     &lt;/p&gt;&lt;/body&gt;
 &lt;/html&gt;
 </pre></blockquote>
-<h3>Controlling element contents</h3>
-<\!-- examples/marpa-block-mixed.out -->
+<!-- examples/acme-block-mixed.out -->
 <blockquote><pre>
-ELE_marpa is a FLO_mixed included in GRP_block
+ELE_acme is a FLO_x included in GRP_y
 </pre></blockquote>
 <blockquote><pre>
 &lt;html&gt;
   &lt;head&gt;
   &lt;/head&gt;
   &lt;body&gt;
-    &lt;marpa&gt;
+    &lt;acme&gt;
       -during-&lt;span&gt;
         -more inline stuff-&lt;/span&gt;&lt;p&gt;
         -new block-
-      &lt;/p&gt;&lt;/marpa&gt;&lt;/body&gt;
+      &lt;/p&gt;&lt;/acme&gt;&lt;/body&gt;
 &lt;/html&gt;
 </pre></blockquote>
-<\!-- examples/marpa-block-block.out -->
+<!-- examples/acme-block-block.out -->
 <blockquote><pre>
-ELE_marpa is a FLO_block included in GRP_block
+ELE_acme is a FLO_x included in GRP_y
 </pre></blockquote>
 <blockquote><pre>
 &lt;html&gt;
   &lt;head&gt;
   &lt;/head&gt;
   &lt;body&gt;
-    &lt;marpa&gt;
+    &lt;acme&gt;
       &lt;p&gt;
         -during-&lt;span&gt;
           -more inline stuff-&lt;/span&gt;&lt;/p&gt;&lt;p&gt;
         -new block-
-      &lt;/p&gt;&lt;/marpa&gt;&lt;/body&gt;
+      &lt;/p&gt;&lt;/acme&gt;&lt;/body&gt;
 &lt;/html&gt;
 </pre></blockquote>
-<\!-- examples/marpa-block-pcdata.out -->
+<!-- examples/acme-block-pcdata.out -->
 <blockquote><pre>
-ELE_marpa is a FLO_pcdata included in GRP_block
+ELE_acme is a FLO_x included in GRP_y
 </pre></blockquote>
 <blockquote><pre>
 &lt;html&gt;
   &lt;head&gt;
   &lt;/head&gt;
   &lt;body&gt;
-    &lt;marpa&gt;
-      -during-&lt;/marpa&gt;&lt;p&gt;
+    &lt;acme&gt;
+      -during-&lt;/acme&gt;&lt;p&gt;
       &lt;span&gt;
         -more inline stuff-&lt;/span&gt;&lt;/p&gt;&lt;p&gt;
       -new block-
     &lt;/p&gt;&lt;/body&gt;
 &lt;/html&gt;
 </pre></blockquote>
-<\!-- examples/marpa-block-empty.out -->
+<!-- examples/acme-block-empty.out -->
 <blockquote><pre>
-ELE_marpa is a FLO_empty included in GRP_block
+ELE_acme is a FLO_x included in GRP_y
 </pre></blockquote>
 <blockquote><pre>
 &lt;html&gt;
   &lt;head&gt;
   &lt;/head&gt;
   &lt;body&gt;
-    &lt;marpa&gt;
-    &lt;/marpa&gt;&lt;p&gt;
+    &lt;acme&gt;
+    &lt;/acme&gt;&lt;p&gt;
       -during-&lt;span&gt;
         -more inline stuff-&lt;/span&gt;&lt;/p&gt;&lt;p&gt;
       -new block-
