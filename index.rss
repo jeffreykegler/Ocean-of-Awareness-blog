@@ -33,8 +33,8 @@
       would recognize this tag.
       But they'd simply give it a default configuration,
       one which is usually very liberal --
-      liberal meaning it allowed the tag to contain just about anything,
-      and go just about anywhere.
+      liberal meaning the tag is allowed to contain just about anything,
+      and to go just about anywhere.
       A configurable parser allows us to specify the new tag's behavior
       more explicitly and strictly.
     &lt;/p&gt;&lt;h3&gt;
@@ -464,7 +464,7 @@ ELE_acme is a FLO_empty included in GRP_block
       &lt;code&gt;
         &amp;lt;acme&amp;gt;&lt;/code&gt;
       is configured as a block element containing PCDATA
-      it typically displays as three paragraphs:
+      typically displays as three paragraphs:
     &lt;/p&gt;&lt;pre&gt;
 -during-
 
@@ -479,7 +479,7 @@ ELE_acme is a FLO_empty included in GRP_block
       &lt;code&gt;
         &amp;lt;acme&amp;gt;&lt;/code&gt;
       element varies,
-      always coincides with the beginning or
+      but always coincides with the beginning or
       end of other block elements,
       so that the visible display is as
       two paragraphs:
