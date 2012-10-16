@@ -30,8 +30,7 @@
       the HTML grammar more aggressively,
       changing the contents
       of the HTML body (the
-      &lt;tt&gt;
-        &amp;lt;body&amp;gt;&lt;/tt&gt;
+      &lt;tt&gt;&amp;lt;body&amp;gt;&lt;/tt&gt;
       element).
     &lt;/p&gt;&lt;h3&gt;
       Is changing the definition of the HTML body useful?&lt;/h3&gt;&lt;p&gt;
@@ -237,7 +236,8 @@ and the parse proceeds normally.
     &lt;h4&gt;
       Body is empty&lt;/h4&gt;
 The final example requires the
-the &amp;lt;body&amp;gt;
+the
+      &lt;tt&gt;&amp;lt;body&amp;gt;&lt;/tt&gt;
 to be empty.
     &lt;blockquote&gt;
       &lt;pre&gt;&lt;tt&gt;
@@ -247,11 +247,12 @@ to be empty.
       In the other examples, the one-line change in the configuration
       file was all that it took to do the job.
       In the case changing the
-      &amp;lt;body&amp;gt; to an empty element,
+      &lt;tt&gt;&amp;lt;body&amp;gt;&lt;/tt&gt;
+      to an empty element,
       element, there's a small complication.
       The Ruby Slippers lines refer to the end tag of the
       body element:
-      &amp;lt;/body&amp;gt;.
+      &lt;tt&gt;&amp;lt;/body&amp;gt;&lt;/tt&gt;.
       The fix is simple -- just eliminate all references
       to the no-longer-existing end tag.
       (Ruby Slippers configuration is something I'll discuss in more detail
@@ -269,6 +270,14 @@ to be empty.
       html_fmt: Next line is cruft
     --&amp;gt;I can&amp;lt;/html&amp;gt;
 &lt;/tt&gt;&lt;/pre&gt;&lt;/blockquote&gt;
+&lt;p&gt;
+The parser recognizes the empty
+      &lt;tt&gt;&amp;lt;body&amp;gt;&lt;/tt&gt;
+      tag.
+      But an empty
+      &lt;tt&gt;&amp;lt;body&amp;gt;&lt;/tt&gt;
+      leaves the parser with no place to put other tags and text,
+      so it labels all of them as &quot;cruft&quot;.
     &lt;h3&gt;
       Code and comments&lt;/h3&gt;&lt;p&gt;
       The examples here were run using Marpa::R2 release 2.021_010.

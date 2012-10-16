@@ -56,8 +56,7 @@
       the HTML grammar more aggressively,
       changing the contents
       of the HTML body (the
-      <tt>
-        &lt;body&gt;</tt>
+      <tt>&lt;body&gt;</tt>
       element).
     </p><h3>
       Is changing the definition of the HTML body useful?</h3><p>
@@ -263,7 +262,8 @@ and the parse proceeds normally.
     <h4>
       Body is empty</h4>
 The final example requires the
-the &lt;body&gt;
+the
+      <tt>&lt;body&gt;</tt>
 to be empty.
     <blockquote>
       <pre><tt>
@@ -273,11 +273,12 @@ to be empty.
       In the other examples, the one-line change in the configuration
       file was all that it took to do the job.
       In the case changing the
-      &lt;body&gt; to an empty element,
+      <tt>&lt;body&gt;</tt>
+      to an empty element,
       element, there's a small complication.
       The Ruby Slippers lines refer to the end tag of the
       body element:
-      &lt;/body&gt;.
+      <tt>&lt;/body&gt;</tt>.
       The fix is simple -- just eliminate all references
       to the no-longer-existing end tag.
       (Ruby Slippers configuration is something I'll discuss in more detail
@@ -295,6 +296,14 @@ to be empty.
       html_fmt: Next line is cruft
     --&gt;I can&lt;/html&gt;
 </tt></pre></blockquote>
+<p>
+The parser recognizes the empty
+      <tt>&lt;body&gt;</tt>
+      tag.
+      But an empty
+      <tt>&lt;body&gt;</tt>
+      leaves the parser with no place to put other tags and text,
+      so it labels all of them as "cruft".
     <h3>
       Code and comments</h3><p>
       The examples here were run using Marpa::R2 release 2.021_010.
