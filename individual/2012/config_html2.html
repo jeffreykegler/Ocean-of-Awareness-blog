@@ -52,9 +52,9 @@
       The previous post showed one of the simplest variations --
       the ability to specify the contents of new tags,
       and the context in which they can appear.
-    </p><p>
-      This post is about a more aggressive variation of
-      the HTML grammar -- the ability to change the contents
+      In this I vary
+      the HTML grammar more aggressively,
+      changing the contents
       of the HTML body (the
       <tt>
         &lt;body&gt;</tt>
@@ -222,12 +222,24 @@ I cannot wait for a start tag&lt;p&gt;I can
       I can&lt;/p&gt;&lt;/body&gt;
 &lt;/html&gt;
 </tt></pre></blockquote>
+<h3>Stupid parser tricks</h3>
+Marpa::R2::HTML configuration is designed to allow the parser to
+range over the useful variations of HTML.
+In addition,
+it allows many variations which will probably find no application.
+The two variations which follow do help illustrate how configuration
+works, and what happens if you go wrong with it.
     <h4>
       Body contains inline flow</h4>
+An inline flow cannot contain block elements,
+although it can contain text and inline elements.
+This is far too restrictive for the body of an HTML document,
+but here is is how you'd specify it:
     <blockquote>
       <pre><tt>
 &lt;body&gt; is *inline
 </tt></pre></blockquote>
+And here is what happens:
     <blockquote>
       <pre><tt>
 &lt;html&gt;
@@ -239,8 +251,20 @@ I cannot wait for a start tag&lt;p&gt;I can
       --&gt;&lt;p&gt;I can&lt;/body&gt;
 &lt;/html&gt;
 </tt></pre></blockquote>
+Text is acceptable in an inline flow, so the first text string winds up in the
+body.
+But
+the &lt;p&gt;
+starts a block element, and cannot be accepted.
+Marpa::R2::HTML labels
+the &lt;p&gt; as "cruft".
+The rest of the input is more text,
+and the parse proceeds normally.
     <h4>
       Body is empty</h4>
+The final example requires the
+the &lt;body&gt;
+to be empty.
     <blockquote>
       <pre><tt>
 &lt;body&gt; is *empty
