@@ -118,6 +118,7 @@
       ambiguities.
       </ul>
       <h3>Examples</h3>
+<h4>Body contains mixed flow</h4>
       Two examples parses will illustrate what I mean.
       The first uses a a block-flow
       <tt>&lt;body&gt;</tt>,
@@ -171,6 +172,55 @@ Here is the output:
       A user may have a clear preference,
       or may want to use different configurations
       in different situations.
+ 
+<h4>Body contains mixed flow</h4>
+<blockquote><pre><tt>
+&lt;body&gt; is *mixed
+</tt></pre></blockquote>
+<blockquote><pre><tt>
+&lt;html&gt;
+  &lt;head&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+    I cannot wait for a start tag&lt;p&gt;
+      I can&lt;/p&gt;&lt;/body&gt;
+&lt;/html&gt;
+</tt></pre></blockquote>
+
+<h4>Body contains inline flow</h4>
+<blockquote><pre><tt>
+&lt;body&gt; is *inline
+</tt></pre></blockquote>
+<blockquote><pre><tt>
+&lt;html&gt;
+  &lt;head&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+    I cannot wait for a start tag&lt;!--
+        html_fmt: Next line is cruft
+      --&gt;&lt;p&gt;I can&lt;/body&gt;
+&lt;/html&gt;
+</tt></pre></blockquote>
+
+<h4>Body is empty</h4>
+<blockquote><pre><tt>
+&lt;body&gt; is *empty
+</tt></pre></blockquote>
+<blockquote><pre><tt>
+$test_config =~ s{^ \s* [<][/]body[>] \s [^\n]* $}{}xms;
+$test_config =~ s{  [<][/]body[>] }{}gxms;
+$expected_output = <<'END_OF_EXPECTED_OUTPUT';
+<blockquote><pre><tt>
+&lt;html&gt;
+  &lt;head&gt;
+  &lt;/head&gt;&lt;body&gt;&lt;!--
+      html_fmt: Next line is cruft
+    --&gt;I cannot wait for a start tag&lt;!--
+      html_fmt: Next line is cruft
+    --&gt;&lt;p&gt;&lt;!--
+      html_fmt: Next line is cruft
+    --&gt;I can&lt;/html&gt;
+</tt></pre></blockquote>
 <br />
 <p>posted at: 18:50 |
 <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/config_html2.html">direct link to this entry</a>

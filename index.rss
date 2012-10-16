@@ -92,6 +92,7 @@
       ambiguities.
       &lt;/ul&gt;
       &lt;h3&gt;Examples&lt;/h3&gt;
+&lt;h4&gt;Body contains mixed flow&lt;/h4&gt;
       Two examples parses will illustrate what I mean.
       The first uses a a block-flow
       &lt;tt&gt;&amp;lt;body&amp;gt;&lt;/tt&gt;,
@@ -144,7 +145,56 @@ Here is the output:
       and the user gets to decide.
       A user may have a clear preference,
       or may want to use different configurations
-      in different situations.</description>
+      in different situations.
+ 
+&lt;h4&gt;Body contains mixed flow&lt;/h4&gt;
+&lt;blockquote&gt;&lt;pre&gt;&lt;tt&gt;
+&amp;lt;body&amp;gt; is *mixed
+&lt;/tt&gt;&lt;/pre&gt;&lt;/blockquote&gt;
+&lt;blockquote&gt;&lt;pre&gt;&lt;tt&gt;
+&amp;lt;html&amp;gt;
+  &amp;lt;head&amp;gt;
+  &amp;lt;/head&amp;gt;
+  &amp;lt;body&amp;gt;
+    I cannot wait for a start tag&amp;lt;p&amp;gt;
+      I can&amp;lt;/p&amp;gt;&amp;lt;/body&amp;gt;
+&amp;lt;/html&amp;gt;
+&lt;/tt&gt;&lt;/pre&gt;&lt;/blockquote&gt;
+
+&lt;h4&gt;Body contains inline flow&lt;/h4&gt;
+&lt;blockquote&gt;&lt;pre&gt;&lt;tt&gt;
+&amp;lt;body&amp;gt; is *inline
+&lt;/tt&gt;&lt;/pre&gt;&lt;/blockquote&gt;
+&lt;blockquote&gt;&lt;pre&gt;&lt;tt&gt;
+&amp;lt;html&amp;gt;
+  &amp;lt;head&amp;gt;
+  &amp;lt;/head&amp;gt;
+  &amp;lt;body&amp;gt;
+    I cannot wait for a start tag&amp;lt;!--
+        html_fmt: Next line is cruft
+      --&amp;gt;&amp;lt;p&amp;gt;I can&amp;lt;/body&amp;gt;
+&amp;lt;/html&amp;gt;
+&lt;/tt&gt;&lt;/pre&gt;&lt;/blockquote&gt;
+
+&lt;h4&gt;Body is empty&lt;/h4&gt;
+&lt;blockquote&gt;&lt;pre&gt;&lt;tt&gt;
+&amp;lt;body&amp;gt; is *empty
+&lt;/tt&gt;&lt;/pre&gt;&lt;/blockquote&gt;
+&lt;blockquote&gt;&lt;pre&gt;&lt;tt&gt;
+$test_config =~ s{^ \s* [&lt;][/]body[&gt;] \s [^\n]* $}{}xms;
+$test_config =~ s{  [&lt;][/]body[&gt;] }{}gxms;
+$expected_output = &lt;&lt;'END_OF_EXPECTED_OUTPUT';
+&lt;blockquote&gt;&lt;pre&gt;&lt;tt&gt;
+&amp;lt;html&amp;gt;
+  &amp;lt;head&amp;gt;
+  &amp;lt;/head&amp;gt;&amp;lt;body&amp;gt;&amp;lt;!--
+      html_fmt: Next line is cruft
+    --&amp;gt;I cannot wait for a start tag&amp;lt;!--
+      html_fmt: Next line is cruft
+    --&amp;gt;&amp;lt;p&amp;gt;&amp;lt;!--
+      html_fmt: Next line is cruft
+    --&amp;gt;I can&amp;lt;/html&amp;gt;
+&lt;/tt&gt;&lt;/pre&gt;&lt;/blockquote&gt;</description>
   </item>
   <item>
     <title>A Configurable HTML Parser</title>
