@@ -162,18 +162,17 @@ I cannot wait for a start tag&amp;lt;p&amp;gt;I can
       utility,
       my grammar specified a mixed flow.
       In a second version,
-      I decided that it produced a more precise parse if I was stricter in the grammar,
-      and use the Ruby Slippers to &quot;loosen things up&quot;,
-      getting close, I hoped, to the best of both worlds.
+      I decided that it produced a more precise parse if I changed to a stricter grammar,
+      leaving it to the Ruby Slippers to &quot;loosen things up&quot;
+      when the grammar was too strict.
+      This was close, I hoped, to the best of both worlds.
       This second choice -- strict grammar and liberal Ruby Slippers --
       remains the default in the configurable version.
     &lt;/p&gt;&lt;p&gt;
-      In this new configurable version,
-      both the grammar and Ruby Slippers are configurable,
-      and the user gets to decide.
-      A user may have a clear preference,
-      or may want to use different configurations
-      in different situations.
+      The new configurable Marpa::R2::HTML is more likely to produce
+      the best of all possible worlds.
+      Now both the grammar and the Ruby Slippers are configurable.
+      The user gets to decide what she wants at runtime.
     &lt;/p&gt;&lt;h4&gt;
       Body contains mixed flow&lt;/h4&gt;
     &lt;blockquote&gt;
