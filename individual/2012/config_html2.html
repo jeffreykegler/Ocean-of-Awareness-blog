@@ -42,17 +42,21 @@
       <!--
       marpa_r2_html_fmt --no-added-tag-comment
       -->
-      My last post introduced Marpa::R2::HTML,
+      <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/config_html.html">
+      My last post</a>
+      introduced Marpa::R2::HTML,
       a configurable HTML parser.
-      By editing a configuration file,
-      the user can change,
+      By editing
+      <a href="https://gist.github.com/3901637">
+      a configuration file</a>,
+      the user can change
       over a very wide range,
       the variant of HTML
       that Marpa::R2::HTML parses.
       The previous post showed one of the simplest variations --
       the ability to specify the contents of new tags,
       and the context in which they can appear.
-      In this I vary
+      In this post I vary
       the HTML grammar more aggressively,
       changing the contents
       of the HTML body (the
@@ -102,12 +106,12 @@
       which means that
       the answer is "No, text must be in the contents of a child element".
       Implementations of HTML were encouraged to be liberal, however,
-      and in practice so much of the HTML out there has text directly
+      and in practice much of the HTML has text directly
       in
       <tt>
         &lt;body&gt;</tt>
-      elements,
-      that a browser is expected to allow it.
+      elements.
+      Users expect their browsers is render these as the writer intended.
     </p><p>
       Recognizing existing practice,
       HTML 5 changed to require conforming implementations to
@@ -127,25 +131,30 @@
       <li>
         Common practice requires accepting a mixed flow.
       </li><li>
-        Careful practice suggests writing a block flow.
+        Cautious practice suggests writing a block flow.
       </li><li>
         HTML 4.01 requires block, but suggests being liberal.
       </li><li>
-        HTML 5 requires that a mixed flow be accepting,
-        but also requires that it be displayed as if it was blocked into
-        paragraphs, and suggests that blocking be used to eliminate
+        HTML 5 requires that a mixed flow be accepted.
+      </li><li>
+        But HTML5 also requires that the mixed flow be displayed as if it was written
+	in blocks,
+        suggests that explicit blocking be used to eliminate
         ambiguities.
       </li></ul>
     <h3>
       Examples</h3>
     <h4>
-      Body contains mixed flow</h4><p>
-      Two examples parses will illustrate what I mean.
-      The first uses a a block-flow
+      Body contains block flow</h4><p>
+      In the first example,
+      the
       <tt>
         &lt;body&gt;</tt>,
-      which is the default.
-      Here is the pertinent line from the configuration file:
+	contains a block flow.
+      This is what is specified in
+      <a href="https://gist.github.com/3901637">
+      the default configuration file</a>.
+      Here is the pertinent line:
     </p><blockquote>
       <pre><tt>
 &lt;body&gt; is *block
@@ -158,7 +167,9 @@
       Here the star is a sigil which suggests the repetition operator
       of DTD's and regular expressions.
       (Readers of my last post will notice I've changed the configuration
-      file syntax and will I hope find the new format an improvement.)
+      file syntax and will,
+      I hope,
+      find the new format an improvement.)
     </p><p>
       For all of the examples in this post,
       the HTML will be
@@ -180,31 +191,27 @@ I cannot wait for a start tag&lt;p&gt;I can
       I can&lt;/p&gt;&lt;/body>
 &lt;/html&gt;
 </tt></pre></blockquote>
-    <p>
-      Faced with all this,
-      in my first implementation of the
-      <tt>
-        html_fmt</tt>
-      utility,
-      my grammar specified a mixed flow.
-      In a second version,
-      I decided that it produced a more precise parse if I changed to a stricter grammar,
-      leaving it to the Ruby Slippers to "loosen things up"
-      when the grammar was too strict.
-      This was close, I hoped, to the best of both worlds.
-      This second choice -- strict grammar and liberal Ruby Slippers --
-      remains the default in the configurable version.
-    </p><p>
-      The new configurable Marpa::R2::HTML is more likely to produce
-      the best of all possible worlds.
-      Now both the grammar and the Ruby Slippers are configurable.
-      The user gets to decide what she wants at runtime.
-    </p><h4>
+The first thing the parser encounters is text
+which in this example is not allowed
+to occur directly in the body.
+As part of being highly liberal HTML parser,
+however, Marpa::R2::HTML will supply a start tag
+in these situations.
+(This behavior, by the way, is also configurable --
+a change to the configuration file will
+tell Marpa::R2::HTML not to do this.)
+With its two <tt>&lt;p&gt;</tt> start tags,
+one of them conjured up by the Ruby Slippers,
+Marpa::R2::HTML breezes through input.
+    <h4>
       Body contains mixed flow</h4>
+      In the second example, we liberalize the contents of
+      the <tt>&lt;body&gt;</tt> to allow a mixed flow:
     <blockquote>
       <pre><tt>
 &lt;body&gt; is *mixed
 </tt></pre></blockquote>
+Here is the result:
     <blockquote>
       <pre><tt>
 &lt;html&gt;
@@ -215,6 +222,40 @@ I cannot wait for a start tag&lt;p&gt;I can
       I can&lt;/p&gt;&lt;/body&gt;
 &lt;/html&gt;
 </tt></pre></blockquote>
+<p>
+In a mixed flow, no
+second <tt>&lt;p&gt;</tt> start tag
+is needed, and none is created.
+Its matching end tag
+(<tt>&lt;/p&gt;</tt>) also does not
+have to be created.
+Otherwise, all is as before.
+    <h3>
+      What I decided</h3>
+    <p>
+      Before I figured out how to make my HTML parser configurable,
+      I had to make a decision.
+      My first
+      implementation of the
+      <tt>
+        html_fmt</tt>
+      utility was based on Marpa::XS
+      and 
+      its grammar specified a mixed flow.
+      When I started a new version
+      of the utility
+      for Marpa::R2
+      I decided that it produced a more precise parse if I changed to a stricter grammar,
+      leaving it to the Ruby Slippers to "loosen things up"
+      when the grammar was too strict.
+      This was close, I hoped, to the best of both worlds,
+      so I changed.
+      This second choice -- strict block-flow-body grammar and liberal Ruby Slippers --
+      remains the default in the configurable version.
+    </p><p>
+      Now both the grammar and the Ruby Slippers are configurable.
+      The user gets to decide what she wants at runtime.
+    </p>
 <h3>Stupid parser tricks</h3>
 Marpa::R2::HTML configuration is designed to allow the parser to
 range over the useful variations of HTML.
@@ -247,10 +288,13 @@ And here is what happens:
 Text is acceptable in an inline flow, so the first text string winds up in the
 body.
 But
-the &lt;p&gt;
+the
+<tt>&lt;p&gt;</tt>
 starts a block element, and cannot be accepted.
 Marpa::R2::HTML labels
-the &lt;p&gt; as "cruft".
+the
+<tt>&lt;p&gt;</tt>
+as "cruft".
 The rest of the input is more text,
 and the parse proceeds normally.
     <h4>
