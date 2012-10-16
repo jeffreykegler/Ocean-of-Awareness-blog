@@ -128,8 +128,7 @@
       that the
       &lt;tt&gt;
         &amp;lt;body&amp;gt;&lt;/tt&gt;
-      element contains a block flow (&lt;tt&gt;
-        *block&lt;/tt&gt;).
+      element contains a block flow (&lt;tt&gt;*block&lt;/tt&gt;).
       Here the star is a sigil which suggests the repetition operator
       of DTD's and regular expressions.
       (Readers of my last post will notice I've changed the configuration
