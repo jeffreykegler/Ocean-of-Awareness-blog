@@ -128,7 +128,6 @@ Here is the output:
       I can&amp;lt;/p&amp;gt;&amp;lt;/body&gt;
 &amp;lt;/html&amp;gt;
 &lt;/tt&gt;&lt;/pre&gt;&lt;/blockquote&gt;
-&lt;p&gt;In each example
       &lt;p&gt;
       Faced with all this,
       in my first implementation of the &lt;tt&gt;html_fmt&lt;/tt&gt; utility,
@@ -180,10 +179,20 @@ Here is the output:
 &lt;blockquote&gt;&lt;pre&gt;&lt;tt&gt;
 &amp;lt;body&amp;gt; is *empty
 &lt;/tt&gt;&lt;/pre&gt;&lt;/blockquote&gt;
-&lt;blockquote&gt;&lt;pre&gt;&lt;tt&gt;
-$test_config =~ s{^ \s* [&lt;][/]body[&gt;] \s [^\n]* $}{}xms;
-$test_config =~ s{  [&lt;][/]body[&gt;] }{}gxms;
-$expected_output = &lt;&lt;'END_OF_EXPECTED_OUTPUT';
+&lt;p&gt;
+In the other examples, the one-line change in the configuration
+file was all that it took to do the job.
+In the case changing the
+&amp;lt;body&amp;gt; to an empty element,
+element, there's a small complication.
+The Ruby Slippers lines refer to the end tag of the
+body element:
+&amp;lt;/body&amp;gt;.
+The fix is simple -- just eliminate all references
+to the no-longer-existing end tag.
+(Ruby Slippers configuration is something I'll discuss in more detail
+later.)
+Here is our result:
 &lt;blockquote&gt;&lt;pre&gt;&lt;tt&gt;
 &amp;lt;html&amp;gt;
   &amp;lt;head&amp;gt;

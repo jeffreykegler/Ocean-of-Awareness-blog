@@ -154,7 +154,6 @@ Here is the output:
       I can&lt;/p&gt;&lt;/body>
 &lt;/html&gt;
 </tt></pre></blockquote>
-<p>In each example
       <p>
       Faced with all this,
       in my first implementation of the <tt>html_fmt</tt> utility,
@@ -206,10 +205,20 @@ Here is the output:
 <blockquote><pre><tt>
 &lt;body&gt; is *empty
 </tt></pre></blockquote>
-<blockquote><pre><tt>
-$test_config =~ s{^ \s* [<][/]body[>] \s [^\n]* $}{}xms;
-$test_config =~ s{  [<][/]body[>] }{}gxms;
-$expected_output = <<'END_OF_EXPECTED_OUTPUT';
+<p>
+In the other examples, the one-line change in the configuration
+file was all that it took to do the job.
+In the case changing the
+&lt;body&gt; to an empty element,
+element, there's a small complication.
+The Ruby Slippers lines refer to the end tag of the
+body element:
+&lt;/body&gt;.
+The fix is simple -- just eliminate all references
+to the no-longer-existing end tag.
+(Ruby Slippers configuration is something I'll discuss in more detail
+later.)
+Here is our result:
 <blockquote><pre><tt>
 &lt;html&gt;
   &lt;head&gt;
