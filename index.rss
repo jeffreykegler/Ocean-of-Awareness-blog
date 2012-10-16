@@ -10,6 +10,126 @@
     <language>en</language>
 
   <item>
+    <title>A configurable HTML parser, part 2</title>
+    <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/config_html2.html</link>
+    <description>    &lt;p&gt;
+      &lt;!--
+      marpa_r2_html_fmt --no-added-tag-comment
+      --&gt;
+      My last post introduced Marpa::R2::HTML,
+      a configurable HTML parser.
+      By editing a configuration file,
+      the user can change,
+      over a very wide range,
+      the variant of HTML
+      that Marpa::R2::HTML parses.
+      The previous post showed one of the simplest variations --
+      the ability to specify the contents of new tags,
+      and the context in which they can appear.
+      &lt;p&gt;
+      This post is about a more aggressive variation of
+      the HTML grammar -- the ability to change the contents
+      of the HTML body (the
+      &lt;tt&gt;&amp;lt;body&amp;gt;&lt;/tt&gt;
+      element.
+      &lt;h3&gt;How is changing the HTML body useful?&lt;/h3&gt;
+      Marpa::R2::HTML allows changing the contents of all pre-existing
+      element, with the exception of the highest level one --
+      the 
+      &lt;tt&gt;&amp;lt;html&amp;gt;&lt;/tt&gt; element itself.
+      This can be more impressive than utilitarian,
+      but in the case of th 
+      &lt;tt&gt;&amp;lt;body&amp;gt;&lt;/tt&gt;
+      element there is a real case to be made for allowing the
+      application to choose.
+      &lt;h3&gt;Can text appear directly in an HTML body?&lt;/h3&gt;
+      &lt;p&gt;Can text appear directly in an HTML
+      &lt;tt&gt;&amp;lt;body&amp;gt;&lt;/tt&gt;
+      element.
+      That is, must text inside an HTML
+      &lt;tt&gt;&amp;lt;body&amp;gt;&lt;/tt&gt;
+      be part of one of its child elements,
+      or can it be directly part of the contents
+      of the 
+      &lt;tt&gt;&amp;lt;body&amp;gt;&lt;/tt&gt; element?
+      &lt;p&gt;
+      The answer according to the standards depends on
+      which standard you read.
+      According the 
+      &lt;a href=&quot;http://www.w3.org/TR/1999/PR-html40-19990824/sgml/dtd.html#inline&quot;&gt;
+        HTML 4.01 Strict DTD&lt;/a&gt;,
+	the 
+      &lt;tt&gt;&amp;lt;body&amp;gt;&lt;/tt&gt; contains a &quot;block flow&quot;,
+      which means that
+	the answer is &quot;No, text must be in the contents of a child element&quot;.
+	Implementations of HTML were encouraged to be liberal, however,
+	and in practice so much of the HTML out there has text directly
+	in
+      &lt;tt&gt;&amp;lt;body&amp;gt;&lt;/tt&gt; elements,
+      that a browser is expected to allow it.
+      &lt;p&gt;
+	Recognizing existing practice,
+	HTML 5 changed to require conforming implementations to
+	allow text to be interspersed with the block flow,
+	in what I call a &quot;mixed flow&quot;.
+      &lt;tt&gt;&amp;lt;body&amp;gt;&lt;/tt&gt;.
+      A mixed flow can directly contain blocks and text,
+      as well as inline elements.
+      (The inline vs. block element distinction is basic to HTML parsing.
+      See my earlier post or
+      &lt;a href=&quot;http://en.wikipedia.org/wiki/HTML_element&quot;&gt;
+      the well-organized Wikipedia page on HTML elements&lt;/a&gt;.)
+      &lt;h3&gt;Block or mixed flow?&lt;/h3&gt;
+      In parsing HTML, do you want to treat the body as a block flow or a mixed flow?
+      Here are some of the factors.
+      &lt;ul&gt;
+      &lt;li&gt;Common practice requires accepting a mixed flow.
+      &lt;li&gt;Careful practice suggests writing a block flow.
+      &lt;li&gt;HTML 4.01 requires block, but suggests being liberal.
+      &lt;li&gt;HTML 5 requires that a mixed flow be accepting,
+      but also requires that it be displayed as if it was blocked into
+      paragraphs, and suggests that blocking be used to eliminate
+      ambiguities.
+      &lt;/ul&gt;
+      &lt;h3&gt;Examples&lt;/h3&gt;
+      Two examples parses will illustrate what I mean.
+      The first uses a a block-flow
+      &lt;tt&gt;&amp;lt;body&amp;gt;&lt;/tt&gt;,
+      which is the default.
+      Here is the pertinent line from the configuration file:
+&lt;blockquote&gt;&lt;pre&gt;&lt;tt&gt;
+&amp;lt;body&amp;gt; is *block
+&lt;/tt&gt;&lt;/pre&gt;&lt;/blockquote&gt;
+This line says
+that the 
+&lt;tt&gt;&amp;lt;body&amp;gt;&lt;/tt&gt;
+element contains a block flow (&lt;tt&gt;*block&lt;/tt&gt;).
+Here the star is a sigil which suggests the repetition operator
+of DTD's and regular expressions,
+but which actually is more of a sigil.
+(Readers of my last post will notice I've changed the configuration
+file syntax and will I hope find the new format an improvement.)
+      &lt;p&gt;
+      Faced with all this,
+      in my first implementation of the &lt;tt&gt;html_fmt&lt;/tt&gt; utility,
+      my grammar specified a mixed flow.
+      In a second version,
+      I decided that it produced a more precise parse if I was stricter in the grammar,
+      and use the Ruby Slippers to &quot;loosen things up&quot;,
+      getting close, I hoped, to the best of both worlds.
+      This second choice -- strict grammar and liberal Ruby Slippers --
+      remains the default in the configurable version.
+      &lt;p&gt;
+      In this new configurable version,
+      both the grammar and Ruby Slippers are configurable,
+      and the user gets to decide.
+      A user may have a clear preference,
+      or may want to use different configurations
+      in different situations.
+      &lt;h3&gt;Examples&lt;/h3&gt;
+      in different situations.</description>
+  </item>
+  <item>
     <title>A Configurable HTML Parser</title>
     <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/config_html.html</link>
     <description>    &lt;p&gt;
@@ -807,402 +927,6 @@ Marpa::R2::Thin&lt;/a&gt;,
 is a &quot;thin&quot; interface to Libmarpa from Perl.
 (Marpa::R2::Thin remains alpha at this point.)
 &lt;/ol&gt;</description>
-  </item>
-  <item>
-    <title>Domain-Specific Languages made simpler</title>
-    <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/dsl.html</link>
-    <description>&lt;h2&gt;Writing your own language&lt;/h2&gt;
-&lt;p&gt;Creating your own language has been A Big Deal (tm).
-What if you could create a simple language in hours or minutes?
-There's been a serious obstacle up to now.
-No practical parser &quot;just parsed&quot; BNF.
-With
-&lt;a href=&quot;http://jeffreykegler.github.com/Marpa/&quot;&gt;
-Marpa&lt;/a&gt;,
-that restriction is lifted.
-&lt;p&gt;
-In this post, I will describe
-a small, sample
-&lt;a href=&quot;http://jeffreykegler.github.com/Marpa/&quot;&gt;
-Marpa&lt;/a&gt;
-domain-specific language (DSL).
-In designing it I am inspired by
-&lt;a href=&quot;http://blog.plover.com/oops/blosxom-sux.html&quot;&gt;
-Mark Dominus's description&lt;/a&gt;
-of the
-&lt;a href=&quot;http://en.wikipedia.org/wiki/Worse_is_better&quot;&gt;
-&quot;Worse is Better&quot; philosophy&lt;/a&gt;,
-and its implementation in the form of
-&lt;a href=&quot;http://en.wikipedia.org/wiki/Blosxom&quot;&gt;
-Blosxom&lt;/a&gt;.
-This DSL is feature-poor,
-but short, simple and extensible.
-&lt;h2&gt;A calculator&lt;/h2&gt;
-&lt;p&gt;
-This DSL is a calculator.
-Calculators are familiar and,
-after all, whatever tool you build this
-DSL into, it will probably be useful
-to have a calculator as part of it.
-What follows contains only the parts of the code
-relevant to the discussion,
-not necessarily in lexical order.
-If you find the following interesting,
-you'll almost certainly want the full code,
-which is available as
-&lt;a href=&quot;https://gist.github.com/3521836&quot;&gt;
-a Github gist&lt;/a&gt;.
-&lt;p&gt;
-&lt;h2&gt;The grammar&lt;/h2&gt;
-&lt;p&gt;
-&lt;a href=&quot;http://jeffreykegler.github.com/Marpa/&quot;&gt;
-Marpa&lt;/a&gt;
-allows you to build your DSL as a clean modular
-structure,
-with a separate grammar, tokenizer and semantics.
-If you're used to doing parsing with regexes or recursive descent,
-you expect to see things mixed together,
-and much as you might like modularity in other contexts,
-this cleaner approach may make you uneasy.
-And not without reason.
-Traditionally, parsing tools that
-took a modular approach
-were painful to use and,
-for practical grammars,
-often rewarded the extra effort
-they required by failing to work.
-&lt;p&gt;Here's the grammar for our calculator.
-
-&lt;div style=&quot;white-space:pre;overflow:auto;font-family:monospace;margin:0;padding:1em 0 1em 2.8em;&quot;&gt;
-my $rules = Marpa::Demo::OP2::parse_rules(
-    &lt;&lt;'END_OF_GRAMMAR'
-reduce_op ::=
-    '+'                   =&gt; do_arg0
-  | '-'                   =&gt; do_arg0
-  | '/'                   =&gt; do_arg0
-  | '*'                   =&gt; do_arg0
-script ::= e              =&gt; do_arg0
-script ::= script ';' e   =&gt; do_arg2
-e ::=
-     NUM                  =&gt; do_arg0
-   | VAR                  =&gt; do_is_var
-   | :group '(' e ')'     =&gt; do_arg1
-  || '-' e                =&gt; do_negate
-  || :right e '^' e       =&gt; do_binop
-  || e '*' e              =&gt; do_binop
-   | e '/' e              =&gt; do_binop
-  || e '+' e              =&gt; do_binop
-   | e '-' e              =&gt; do_binop
-  || e ',' e              =&gt; do_array
-  || reduce_op 'reduce' e =&gt; do_reduce
-  || VAR '=' e            =&gt; do_set_var
-END_OF_GRAMMAR
-);
-&lt;/div&gt;
-
-&lt;p&gt;This is a simple language, but it's already an advance over,
-&lt;a href=&quot;http://blog.plover.com/prog/bash-expr.html&quot;&gt;
-say, shell arithmetic&lt;/a&gt;.
-And the &lt;tt&gt;reduce&lt;/tt&gt; operator is even a bit
-of fanciness.
-It's a second-order binary operator,
-whose left operand is another operator.
-&lt;p&gt;The grammar is written in another DSL, &lt;tt&gt;Marpa::Demo::OP2&lt;/tt&gt;,
-which is bundled into the same file.
-(OP2's grammar is defined directly in
-&lt;a href=&quot;https://metacpan.org/release/Marpa-R2&quot;&gt;
-Marpa::R2&lt;/a&gt;.)
-Together, these two quite useable DSL's require 600 lines,
-self-testing included.
-&lt;p&gt;
-I'm using OP2 in this post, as it presents the &lt;strong&gt;idea&lt;/strong&gt;
-of a grammar more clearly.
-&lt;a href=&quot;https://metacpan.org/release/Marpa-R2&quot;&gt;
-Marpa::R2&lt;/a&gt;'s
-lower level syntax, while more stable, flexible and efficient,
-is more cluttered.
-OP2 itself is interesting as an extension and generalization of
-precedence parsing,
-as I described in
-&lt;a href=&quot;http://blogs.perl.org/users/jeffrey_kegler/2012/08/precedence-parsing-made-simpler.html&quot;&gt;
-a previous post&lt;/a&gt;.
-Here's its syntax:
-&lt;dl&gt;
-&lt;dt&gt;&lt;strong&gt;&lt;tt&gt;::=&lt;/tt&gt;&lt;/strong&gt;&lt;dd&gt;A BNF rule in LHS &lt;tt&gt;::=&lt;/tt&gt; RHS form
-&lt;dt&gt;&lt;strong&gt;&lt;tt&gt;'abc'&lt;/tt&gt;&lt;/strong&gt;&lt;dd&gt;A literal token.
-&lt;dt&gt;&lt;strong&gt;&lt;tt&gt;|&lt;/tt&gt;&lt;/strong&gt;&lt;dd&gt;Separates alternative RHS's at the &lt;strong&gt;same&lt;/strong&gt; precedence level
-&lt;dt&gt;&lt;strong&gt;&lt;tt&gt;||&lt;/tt&gt;&lt;/strong&gt;&lt;dd&gt;Separates alternative RHS's at the &lt;strong&gt;different&lt;/strong&gt; precedence levels.
-  The tighter (&quot;higher&quot;) precedence alternative is first, the
-  looser (&quot;lower&quot;) precedence alternative is second.
-&lt;dt&gt;&lt;strong&gt;&lt;tt&gt;=&amp;gt;&lt;/tt&gt;&lt;/strong&gt;&lt;dd&gt;&lt;tt&gt;rule =&amp;gt; semantics&lt;/tt&gt;, where &lt;tt&gt;semantics&lt;/tt&gt;
-is a Perl closure.
-&lt;dt&gt;&lt;strong&gt;&lt;tt&gt;:left&lt;/tt&gt;&lt;/strong&gt;&lt;dd&gt;The alternative is left-associative (the default)
-&lt;dt&gt;&lt;strong&gt;&lt;tt&gt;:right&lt;/tt&gt;&lt;/strong&gt;&lt;dd&gt;The alternative is right-associative
-&lt;dt&gt;&lt;strong&gt;&lt;tt&gt;:group&lt;/tt&gt;&lt;/strong&gt;&lt;dd&gt;The alternative is grouping-associative -- that is, its
-operator(s), regardless of their own precedence,
-group expressions of the loosest precedence
-&lt;/dl&gt;
-
-&lt;div style=&quot;white-space:pre;overflow:auto;font-family:monospace;margin:0;padding:1em 0 1em 2.8em;&quot;&gt;
-my $grammar = Marpa::R2::Grammar-&gt;new(
-    {   start          =&gt; 'script',
-        actions        =&gt; __PACKAGE__,
-        rules          =&gt; $rules,
-    }
-);
-$grammar-&gt;precompute;
-&lt;/div&gt;
-
-&lt;p&gt;The code just above creates a new grammar from the OP2-generated rules.
-The only other information needed to fully define
-the grammar is the name of the start symbol
-(&quot;&lt;tt&gt;script&lt;/tt&gt;&quot;) and the name of the package where
-the semantics can be found
-(the current one, &lt;tt&gt;__PACKAGE__&lt;/tt&gt;).
-&lt;p&gt;
-&lt;a href=&quot;http://jeffreykegler.github.com/Marpa/&quot;&gt;
-Marpa&lt;/a&gt;
-does a lot of precomputation to its grammars.
-Once a grammar is fully defined,
-and before a recognizer can be created from it,
-the &lt;tt&gt;precompute()&lt;/tt&gt; method must be called.
-&lt;h2&gt;The semantics&lt;/h2&gt;
-&lt;p&gt;
-Those curious about the semantics of this calculator
-can look at
-&lt;a href=&quot;https://gist.github.com/3521836&quot;&gt;
-the Github gist&lt;/a&gt;.
-They are somewhat interesting.
-But this post is about how to get &lt;strong&gt;your&lt;/strong&gt; interesting
-semantics out easily and quickly,
-in the form of a powerful
-language specifically designed for them.
-&lt;h2&gt;The lexer&lt;/h2&gt;
-&lt;h3&gt;The token table&lt;/h3&gt;
-&lt;p&gt;The calculator's lexer is table-driven.
-The table is quite simple -- it's an array
-of two element arrays.
-In the inner arrays, the first element is the symbol name,
-as specified in the grammar,
-and the second is a regex which matches it.
-
-&lt;div style=&quot;white-space:pre;overflow:auto;font-family:monospace;margin:0;padding:1em 0 1em 2.8em;&quot;&gt;
-my @terminals = (
-    [ q{'reduce'}, qr/reduce\b/xms ],
-    [ 'NUM',       qr/\d+/xms ],
-    [ 'VAR',       qr/\w+/xms ],
-    [ q{'='},      qr/[=]/xms ],
-    [ q{';'},      qr/[;]/xms ],
-    [ q{'*'},      qr/[*]/xms ],
-    [ q{'/'},      qr/[\/]/xms ],
-    [ q{'+'},      qr/[+]/xms ],
-    [ q{'-'},      qr/[-]/xms ],
-    [ q{'^'},      qr/[\^]/xms ],
-    [ q{'('},      qr/[(]/xms ],
-    [ q{')'},      qr/[)]/xms ],
-    [ q{','},      qr/[,]/xms ],
-);
-&lt;/div&gt;
-
-&lt;p&gt;
-Order in the above table matters when you have
-terminals, one of which can prefix another.
-An example would be the operators
-&lt;tt&gt;==&lt;/tt&gt; and &lt;tt&gt;=&lt;/tt&gt;.
-There is no such pair here,
-however,
-so that
-in this application,
-the order makes no difference.
-&lt;p&gt;
-As you can see,
-I am one of those who specify &lt;tt&gt;xms&lt;/tt&gt; for every
-regex.
-The symbol names preserve the surrounding single quotes.
-This is convenient for processing,
-and it also makes diagnostic messages involving
-those symbols more comprehensible.
-Finally, note that the &lt;tt&gt;reduce&lt;/tt&gt; operator is required to end on a word boundary.
-&lt;h3&gt;The tokenizing engine&lt;/h3&gt;
-
-&lt;div style=&quot;white-space:pre;overflow:auto;font-family:monospace;margin:0;padding:1em 0 1em 2.8em;&quot;&gt;
-    my $rec = Marpa::R2::Recognizer-&gt;new( { grammar =&gt; $grammar } );
-
-    my $length = length $string;
-    pos $string = 0;
-    TOKEN: while ( pos $string &lt; $length ) {
-
-        # skip whitespace
-        next TOKEN if $string =~ m/\G\s+/gcxms;
-
-        # read other tokens
-        TOKEN_TYPE: for my $t (@terminals) {
-            next TOKEN_TYPE if not $string =~ m/\G($t-&gt;[1])/gcxms;
-            if ( not defined $rec-&gt;read( $t-&gt;[0], $1 ) ) {
-                die_on_read_problem( $rec, $t, $1, $string, pos $string );
-            }
-            next TOKEN;
-        } ## end TOKEN_TYPE: for my $t (@terminals)
-
-        die q{No token at &quot;}, ( substr $string, pos $string, 40 ),
-            q{&quot;, position }, pos $string;
-    } ## end TOKEN: while ( pos $string &lt; $length )
-&lt;/div&gt;
-&lt;p&gt;The calculator's token engine creates a
-&lt;a href=&quot;http://jeffreykegler.github.com/Marpa/&quot;&gt;
-Marpa&lt;/a&gt;
-recognizer
-with the &lt;tt&gt;new()&lt;/tt&gt; constructor,
-and feeds it tokens with the &lt;tt&gt;read()&lt;/tt&gt; method.
-In this token engine,
-I use Perl's progressive matching capabilities:
-the
-&lt;tt&gt;g&lt;/tt&gt; and
-&lt;tt&gt;c&lt;/tt&gt; modifiers, the
-&lt;tt&gt;\G&lt;/tt&gt; assertion and the
-&lt;tt&gt;pos&lt;/tt&gt; function.
-When writing a token engine,
-there is, as the expression goes, more than one way
-to do it,
-many of them somewhat easier than this approach.
-But progressive matching is powerful, efficient,
-very flexible,
-and it has the advantage that
-it leaves the original string intact.
-&lt;p&gt;
-Those who go on to look at the
-&lt;a href=&quot;https://gist.github.com/3521836&quot;&gt;
-code in the gist&lt;/a&gt;
-may find
-&lt;tt&gt;die_on_read_problem()&lt;/tt&gt;,
-the DSL's function for handling &lt;tt&gt;read()&lt;/tt&gt; errors,
-helpful.
-It produces a very specific and comprehensive error message.
-One of
-&lt;a href=&quot;http://jeffreykegler.github.com/Marpa/&quot;&gt;
-Marpa&lt;/a&gt;'s
-greatest improvements over previous
-parsers is that, when a parse fails,
-&lt;a href=&quot;http://jeffreykegler.github.com/Marpa/&quot;&gt;
-Marpa&lt;/a&gt;
-can explain why in considerable detail.
-It makes sense to take full advantage of that ability.
-
-&lt;h2&gt;Evaluating the parse&lt;/h2&gt;
-&lt;p&gt;
-&lt;div style=&quot;white-space:pre;overflow:auto;font-family:monospace;margin:0;padding:1em 0 1em 2.8em;&quot;&gt;
-
-    my $value_ref = $rec-&gt;value;
-
-    if ( !defined $value_ref ) {
-        say $rec-&gt;show_progress() or die &quot;say failed: $ERRNO&quot;;
-        die 'Parse failed';
-    }
-    return ${$value_ref};
-
-&lt;/div&gt;
-&lt;p&gt;Evaluation of the parse is done with the &lt;tt&gt;value()&lt;/tt&gt; method.
-This can return all the parse results of an ambiguous parse.
-We want only one parse here,
-so we call &lt;tt&gt;value()&lt;/tt&gt; only once.
-&lt;tt&gt;value()&lt;/tt&gt; returns a reference to the value of the parse,
-and a Perl &lt;tt&gt;undef&lt;/tt&gt; if the parse failed.
-The error handling is worth noticing.
-One of
-&lt;a href=&quot;http://jeffreykegler.github.com/Marpa/&quot;&gt;
-Marpa&lt;/a&gt;'s
-strengths is that it is fully aware of which rules
-are being tried at any point,
-and of how far into those rules recognition has progressed.
-The &lt;tt&gt;show_progress()&lt;/tt&gt; method reports that information.
-
-&lt;h2&gt;OP2&lt;/h2&gt;
-&lt;p&gt;
-This ends our description of the calculator code.
-In
-&lt;a href=&quot;https://gist.github.com/3521836&quot;&gt;
-the Github gist&lt;/a&gt;
-a second DSL immediately follows the
-calculator DSL.
-This second DSL is OP2,
-which is used to define the grammar for the calculator.
-OP2 is more complicated than the calculator,
-but its design is similar,
-and it can be used as a second DSL example.
-&lt;h2&gt;Alernatives&lt;/h2&gt;
-&lt;h3&gt;Marpa::R2 verus Marpa::XS&lt;/h3&gt;
-&lt;p&gt;This calculator uses
-&lt;a href=&quot;https://metacpan.org/release/Marpa-R2&quot;&gt;
-Marpa::R2&lt;/a&gt;.
-&lt;a href=&quot;https://metacpan.org/release/Marpa-R2&quot;&gt;
-Marpa::R2&lt;/a&gt;
-is beta,
-while
-&lt;a href=&quot;https://metacpan.org/module/Marpa::XS&quot;&gt;
-Marpa::XS&lt;/a&gt;
-is in a stable, bug-fix only release.
-On the other hand
-&lt;a href=&quot;https://metacpan.org/release/Marpa-R2&quot;&gt;
-Marpa::R2&lt;/a&gt;
-is somewhat faster,
-and its reporting of parse-time problems is better.
-&lt;h3&gt;Specifying the grammar&lt;/h3&gt;
-The grammar of the calculator is specified in OP2,
-which is a clear and elegant way to do it.
-But OP2 is an experimental DSL created just for this
-one use.
-&lt;p&gt;
-A more robust way to 
-specify grammars is to do it directly in
-&lt;a href=&quot;https://metacpan.org/release/Marpa-R2&quot;&gt;
-Marpa::R2&lt;/a&gt;.
-OP2's grammar is specified directly in
-&lt;a href=&quot;https://metacpan.org/release/Marpa-R2&quot;&gt;
-Marpa::R2&lt;/a&gt;.
-A compromise between elegance and stability would be
-to use OP2 (or a derivative)
-to generate the rules (or some of them).
-The OP2-generated rules can be used
-as is, or edited to taste.
-When you are happy with them,
-Data::Dumper can turn the OP2-generated rules
-into code,
-which you can
-then incorporate into your DSL program.
-&lt;h3&gt;Error messages&lt;/h3&gt;
-It is hard to compare
-the quality of the
-messages from these DSL's,
-unfamiliar programs which explore new ground,
-against, for example,
-the comprehensibility of a C compiler's
-error messages.
-With the C compiler, I have the advantage of
-over 40 years of Pavlovian training in guessing what
-they really mean.
-&lt;p&gt;
-I believe that this DSL's error messages
-are already, on average, up to the level
-of typical production languages.
-My main reason for this bold assertion is that
-production parsers have set the bar,
-frankly, extremely low.
-I hasten to add,
-this is often not because of lack of care or effort
-by the implementers.
-The traditional parsing technologies simply
-do not provide enough information to support
-accurate and helpful error reporting.
-&lt;p&gt;
-Much more could be done in error message handling
-than is done by this calculator DSL.
-&lt;a href=&quot;http://jeffreykegler.github.com/Marpa/&quot;&gt;
-Marpa&lt;/a&gt;'s
-situational awareness
-makes much easier to write usefully
-accurate error messages than has been the case.
-And I find better error messages often repay a high priority,
-even in programs that are strictly for personal use.</description>
   </item>
   </channel>
 </rss>
