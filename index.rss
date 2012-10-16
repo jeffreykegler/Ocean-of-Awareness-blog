@@ -31,21 +31,21 @@
       the HTML grammar -- the ability to change the contents
       of the HTML body (the
       &lt;tt&gt;&amp;lt;body&amp;gt;&lt;/tt&gt;
-      element.
-      &lt;h3&gt;How is changing the HTML body useful?&lt;/h3&gt;
+      element).
+      &lt;h3&gt;Is changing the definition of the HTML body useful?&lt;/h3&gt;
       Marpa::R2::HTML allows changing the contents of all pre-existing
       element, with the exception of the highest level one --
       the 
       &lt;tt&gt;&amp;lt;html&amp;gt;&lt;/tt&gt; element itself.
       This can be more impressive than utilitarian,
-      but in the case of th 
+      but in the case of the
       &lt;tt&gt;&amp;lt;body&amp;gt;&lt;/tt&gt;
       element there is a real case to be made for allowing the
       application to choose.
       &lt;h3&gt;Can text appear directly in an HTML body?&lt;/h3&gt;
       &lt;p&gt;Can text appear directly in an HTML
       &lt;tt&gt;&amp;lt;body&amp;gt;&lt;/tt&gt;
-      element.
+      element?
       That is, must text inside an HTML
       &lt;tt&gt;&amp;lt;body&amp;gt;&lt;/tt&gt;
       be part of one of its child elements,
@@ -53,8 +53,9 @@
       of the 
       &lt;tt&gt;&amp;lt;body&amp;gt;&lt;/tt&gt; element?
       &lt;p&gt;
-      The answer according to the standards depends on
-      which standard you read.
+      If you want an
+      answer strictly according to the standards,
+      then you get your choice in the matter.
       According the 
       &lt;a href=&quot;http://www.w3.org/TR/1999/PR-html40-19990824/sgml/dtd.html#inline&quot;&gt;
         HTML 4.01 Strict DTD&lt;/a&gt;,
@@ -72,7 +73,6 @@
 	HTML 5 changed to require conforming implementations to
 	allow text to be interspersed with the block flow,
 	in what I call a &quot;mixed flow&quot;.
-      &lt;tt&gt;&amp;lt;body&amp;gt;&lt;/tt&gt;.
       A mixed flow can directly contain blocks and text,
       as well as inline elements.
       (The inline vs. block element distinction is basic to HTML parsing.
@@ -105,10 +105,29 @@ that the
 &lt;tt&gt;&amp;lt;body&amp;gt;&lt;/tt&gt;
 element contains a block flow (&lt;tt&gt;*block&lt;/tt&gt;).
 Here the star is a sigil which suggests the repetition operator
-of DTD's and regular expressions,
-but which actually is more of a sigil.
+of DTD's and regular expressions.
 (Readers of my last post will notice I've changed the configuration
 file syntax and will I hope find the new format an improvement.)
+&lt;p&gt;For all of the examples in this post,
+the HTML will be
+&lt;blockquote&gt;&lt;pre&gt;&lt;tt&gt;
+I cannot wait for a start tag&amp;lt;p&amp;gt;I can
+&lt;/tt&gt;&lt;/pre&gt;&lt;/blockquote&gt;
+We run this through the &lt;tt&gt;marpa_r2_html_fmt --no-added-tag&lt;/tt&gt;.
+(The examples here were run using Marpa::R@ release 2.021_010.
+There are part of its test suite as &lt;tt&gt;html/t/cfg_fmt.t&lt;/tt&gt;.)
+Here is the output:
+&lt;blockquote&gt;&lt;pre&gt;&lt;tt&gt;
+&amp;lt;html&amp;gt;
+  &amp;lt;head&amp;gt;
+  &amp;lt;/head&amp;gt;
+  &amp;lt;body&amp;gt;
+    &amp;lt;p&amp;gt;
+      I cannot wait for a start tag&amp;lt;/p&amp;gt;&amp;lt;p&gt;
+      I can&amp;lt;/p&amp;gt;&amp;lt;/body&gt;
+&amp;lt;/html&amp;gt;
+&lt;/tt&gt;&lt;/pre&gt;&lt;/blockquote&gt;
+&lt;p&gt;In each example
       &lt;p&gt;
       Faced with all this,
       in my first implementation of the &lt;tt&gt;html_fmt&lt;/tt&gt; utility,
@@ -125,8 +144,6 @@ file syntax and will I hope find the new format an improvement.)
       and the user gets to decide.
       A user may have a clear preference,
       or may want to use different configurations
-      in different situations.
-      &lt;h3&gt;Examples&lt;/h3&gt;
       in different situations.</description>
   </item>
   <item>

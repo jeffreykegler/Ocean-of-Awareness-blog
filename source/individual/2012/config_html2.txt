@@ -18,21 +18,21 @@ A configurable HTML parser, part 2
       the HTML grammar -- the ability to change the contents
       of the HTML body (the
       <tt>&lt;body&gt;</tt>
-      element.
-      <h3>How is changing the HTML body useful?</h3>
+      element).
+      <h3>Is changing the definition of the HTML body useful?</h3>
       Marpa::R2::HTML allows changing the contents of all pre-existing
       element, with the exception of the highest level one --
       the 
       <tt>&lt;html&gt;</tt> element itself.
       This can be more impressive than utilitarian,
-      but in the case of th 
+      but in the case of the
       <tt>&lt;body&gt;</tt>
       element there is a real case to be made for allowing the
       application to choose.
       <h3>Can text appear directly in an HTML body?</h3>
       <p>Can text appear directly in an HTML
       <tt>&lt;body&gt;</tt>
-      element.
+      element?
       That is, must text inside an HTML
       <tt>&lt;body&gt;</tt>
       be part of one of its child elements,
@@ -40,8 +40,9 @@ A configurable HTML parser, part 2
       of the 
       <tt>&lt;body&gt;</tt> element?
       <p>
-      The answer according to the standards depends on
-      which standard you read.
+      If you want an
+      answer strictly according to the standards,
+      then you get your choice in the matter.
       According the 
       <a href="http://www.w3.org/TR/1999/PR-html40-19990824/sgml/dtd.html#inline">
         HTML 4.01 Strict DTD</a>,
@@ -59,7 +60,6 @@ A configurable HTML parser, part 2
 	HTML 5 changed to require conforming implementations to
 	allow text to be interspersed with the block flow,
 	in what I call a "mixed flow".
-      <tt>&lt;body&gt;</tt>.
       A mixed flow can directly contain blocks and text,
       as well as inline elements.
       (The inline vs. block element distinction is basic to HTML parsing.
@@ -92,10 +92,29 @@ that the
 <tt>&lt;body&gt;</tt>
 element contains a block flow (<tt>*block</tt>).
 Here the star is a sigil which suggests the repetition operator
-of DTD's and regular expressions,
-but which actually is more of a sigil.
+of DTD's and regular expressions.
 (Readers of my last post will notice I've changed the configuration
 file syntax and will I hope find the new format an improvement.)
+<p>For all of the examples in this post,
+the HTML will be
+<blockquote><pre><tt>
+I cannot wait for a start tag&lt;p&gt;I can
+</tt></pre></blockquote>
+We run this through the <tt>marpa_r2_html_fmt --no-added-tag</tt>.
+(The examples here were run using Marpa::R@ release 2.021_010.
+There are part of its test suite as <tt>html/t/cfg_fmt.t</tt>.)
+Here is the output:
+<blockquote><pre><tt>
+&lt;html&gt;
+  &lt;head&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;p&gt;
+      I cannot wait for a start tag&lt;/p&gt;&lt;p>
+      I can&lt;/p&gt;&lt;/body>
+&lt;/html&gt;
+</tt></pre></blockquote>
+<p>In each example
       <p>
       Faced with all this,
       in my first implementation of the <tt>html_fmt</tt> utility,
@@ -112,6 +131,4 @@ file syntax and will I hope find the new format an improvement.)
       and the user gets to decide.
       A user may have a clear preference,
       or may want to use different configurations
-      in different situations.
-      <h3>Examples</h3>
       in different situations.
