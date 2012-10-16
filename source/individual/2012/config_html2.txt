@@ -13,99 +13,131 @@ A configurable HTML parser, part 2
       The previous post showed one of the simplest variations --
       the ability to specify the contents of new tags,
       and the context in which they can appear.
-      <p>
+    </p><p>
       This post is about a more aggressive variation of
       the HTML grammar -- the ability to change the contents
       of the HTML body (the
-      <tt>&lt;body&gt;</tt>
+      <tt>
+        &lt;body&gt;</tt>
       element).
-      <h3>Is changing the definition of the HTML body useful?</h3>
+    </p><h3>
+      Is changing the definition of the HTML body useful?</h3><p>
       Marpa::R2::HTML allows changing the contents of all pre-existing
       element, with the exception of the highest level one --
-      the 
-      <tt>&lt;html&gt;</tt> element itself.
+      the
+      <tt>
+        &lt;html&gt;</tt>
+      element itself.
       This can be more impressive than utilitarian,
       but in the case of the
-      <tt>&lt;body&gt;</tt>
+      <tt>
+        &lt;body&gt;</tt>
       element there is a real case to be made for allowing the
       application to choose.
-      <h3>Can text appear directly in an HTML body?</h3>
-      <p>Can text appear directly in an HTML
-      <tt>&lt;body&gt;</tt>
+    </p><h3>
+      Can text appear directly in an HTML body?</h3>
+    <p>
+      Can text appear directly in an HTML
+      <tt>
+        &lt;body&gt;</tt>
       element?
       That is, must text inside an HTML
-      <tt>&lt;body&gt;</tt>
+      <tt>
+        &lt;body&gt;</tt>
       be part of one of its child elements,
       or can it be directly part of the contents
-      of the 
-      <tt>&lt;body&gt;</tt> element?
-      <p>
+      of the
+      <tt>
+        &lt;body&gt;</tt>
+      element?
+    </p><p>
       If you want an
       answer strictly according to the standards,
       then you get your choice in the matter.
-      According the 
+      According the
       <a href="http://www.w3.org/TR/1999/PR-html40-19990824/sgml/dtd.html#inline">
         HTML 4.01 Strict DTD</a>,
-	the 
-      <tt>&lt;body&gt;</tt> contains a "block flow",
+      the
+      <tt>
+        &lt;body&gt;</tt>
+      contains a "block flow",
       which means that
-	the answer is "No, text must be in the contents of a child element".
-	Implementations of HTML were encouraged to be liberal, however,
-	and in practice so much of the HTML out there has text directly
-	in
-      <tt>&lt;body&gt;</tt> elements,
+      the answer is "No, text must be in the contents of a child element".
+      Implementations of HTML were encouraged to be liberal, however,
+      and in practice so much of the HTML out there has text directly
+      in
+      <tt>
+        &lt;body&gt;</tt>
+      elements,
       that a browser is expected to allow it.
-      <p>
-	Recognizing existing practice,
-	HTML 5 changed to require conforming implementations to
-	allow text to be interspersed with the block flow,
-	in what I call a "mixed flow".
+    </p><p>
+      Recognizing existing practice,
+      HTML 5 changed to require conforming implementations to
+      allow text to be interspersed with the block flow,
+      in what I call a "mixed flow".
       A mixed flow can directly contain blocks and text,
       as well as inline elements.
       (The inline vs. block element distinction is basic to HTML parsing.
       See my earlier post or
       <a href="http://en.wikipedia.org/wiki/HTML_element">
-      the well-organized Wikipedia page on HTML elements</a>.)
-      <h3>Block or mixed flow?</h3>
+        the well-organized Wikipedia page on HTML elements</a>.)
+    </p><h3>
+      Block or mixed flow?</h3><p>
       In parsing HTML, do you want to treat the body as a block flow or a mixed flow?
       Here are some of the factors.
-      <ul>
-      <li>Common practice requires accepting a mixed flow.
-      <li>Careful practice suggests writing a block flow.
-      <li>HTML 4.01 requires block, but suggests being liberal.
-      <li>HTML 5 requires that a mixed flow be accepting,
-      but also requires that it be displayed as if it was blocked into
-      paragraphs, and suggests that blocking be used to eliminate
-      ambiguities.
-      </ul>
-      <h3>Examples</h3>
-<h4>Body contains mixed flow</h4>
+    </p><ul>
+      <li>
+        Common practice requires accepting a mixed flow.
+      </li><li>
+        Careful practice suggests writing a block flow.
+      </li><li>
+        HTML 4.01 requires block, but suggests being liberal.
+      </li><li>
+        HTML 5 requires that a mixed flow be accepting,
+        but also requires that it be displayed as if it was blocked into
+        paragraphs, and suggests that blocking be used to eliminate
+        ambiguities.
+      </li></ul>
+    <h3>
+      Examples</h3>
+    <h4>
+      Body contains mixed flow</h4><p>
       Two examples parses will illustrate what I mean.
       The first uses a a block-flow
-      <tt>&lt;body&gt;</tt>,
+      <tt>
+        &lt;body&gt;</tt>,
       which is the default.
       Here is the pertinent line from the configuration file:
-<blockquote><pre><tt>
+    </p><blockquote>
+      <pre><tt>
 &lt;body&gt; is *block
-</tt></pre></blockquote>
-This line says
-that the 
-<tt>&lt;body&gt;</tt>
-element contains a block flow (<tt>*block</tt>).
-Here the star is a sigil which suggests the repetition operator
-of DTD's and regular expressions.
-(Readers of my last post will notice I've changed the configuration
-file syntax and will I hope find the new format an improvement.)
-<p>For all of the examples in this post,
-the HTML will be
-<blockquote><pre><tt>
+</tt></pre></blockquote><p>
+      This line says
+      that the
+      <tt>
+        &lt;body&gt;</tt>
+      element contains a block flow (<tt>
+        *block</tt>).
+      Here the star is a sigil which suggests the repetition operator
+      of DTD's and regular expressions.
+      (Readers of my last post will notice I've changed the configuration
+      file syntax and will I hope find the new format an improvement.)
+    </p><p>
+      For all of the examples in this post,
+      the HTML will be
+    </p><blockquote>
+      <pre><tt>
 I cannot wait for a start tag&lt;p&gt;I can
-</tt></pre></blockquote>
-We run this through the <tt>marpa_r2_html_fmt --no-added-tag</tt>.
-(The examples here were run using Marpa::R@ release 2.021_010.
-There are part of its test suite as <tt>html/t/cfg_fmt.t</tt>.)
-Here is the output:
-<blockquote><pre><tt>
+</tt></pre></blockquote><p>
+      We run this through the
+      <tt>marpa_r2_html_fmt --no-added-tag-comment</tt>.
+      (The examples here were run using Marpa::R@ release 2.021_010.
+      There are part of its test suite as
+      <tt>
+        html/t/cfg_fmt.t</tt>.)
+      Here is the output:
+    </p><blockquote>
+      <pre><tt>
 &lt;html&gt;
   &lt;head&gt;
   &lt;/head&gt;
@@ -115,9 +147,12 @@ Here is the output:
       I can&lt;/p&gt;&lt;/body>
 &lt;/html&gt;
 </tt></pre></blockquote>
-      <p>
+    <p>
       Faced with all this,
-      in my first implementation of the <tt>html_fmt</tt> utility,
+      in my first implementation of the
+      <tt>
+        html_fmt</tt>
+      utility,
       my grammar specified a mixed flow.
       In a second version,
       I decided that it produced a more precise parse if I was stricter in the grammar,
@@ -125,19 +160,21 @@ Here is the output:
       getting close, I hoped, to the best of both worlds.
       This second choice -- strict grammar and liberal Ruby Slippers --
       remains the default in the configurable version.
-      <p>
+    </p><p>
       In this new configurable version,
       both the grammar and Ruby Slippers are configurable,
       and the user gets to decide.
       A user may have a clear preference,
       or may want to use different configurations
       in different situations.
- 
-<h4>Body contains mixed flow</h4>
-<blockquote><pre><tt>
+    </p><h4>
+      Body contains mixed flow</h4>
+    <blockquote>
+      <pre><tt>
 &lt;body&gt; is *mixed
 </tt></pre></blockquote>
-<blockquote><pre><tt>
+    <blockquote>
+      <pre><tt>
 &lt;html&gt;
   &lt;head&gt;
   &lt;/head&gt;
@@ -146,12 +183,14 @@ Here is the output:
       I can&lt;/p&gt;&lt;/body&gt;
 &lt;/html&gt;
 </tt></pre></blockquote>
-
-<h4>Body contains inline flow</h4>
-<blockquote><pre><tt>
+    <h4>
+      Body contains inline flow</h4>
+    <blockquote>
+      <pre><tt>
 &lt;body&gt; is *inline
 </tt></pre></blockquote>
-<blockquote><pre><tt>
+    <blockquote>
+      <pre><tt>
 &lt;html&gt;
   &lt;head&gt;
   &lt;/head&gt;
@@ -161,26 +200,28 @@ Here is the output:
       --&gt;&lt;p&gt;I can&lt;/body&gt;
 &lt;/html&gt;
 </tt></pre></blockquote>
-
-<h4>Body is empty</h4>
-<blockquote><pre><tt>
+    <h4>
+      Body is empty</h4>
+    <blockquote>
+      <pre><tt>
 &lt;body&gt; is *empty
 </tt></pre></blockquote>
-<p>
-In the other examples, the one-line change in the configuration
-file was all that it took to do the job.
-In the case changing the
-&lt;body&gt; to an empty element,
-element, there's a small complication.
-The Ruby Slippers lines refer to the end tag of the
-body element:
-&lt;/body&gt;.
-The fix is simple -- just eliminate all references
-to the no-longer-existing end tag.
-(Ruby Slippers configuration is something I'll discuss in more detail
-later.)
-Here is our result:
-<blockquote><pre><tt>
+    <p>
+      In the other examples, the one-line change in the configuration
+      file was all that it took to do the job.
+      In the case changing the
+      &lt;body&gt; to an empty element,
+      element, there's a small complication.
+      The Ruby Slippers lines refer to the end tag of the
+      body element:
+      &lt;/body&gt;.
+      The fix is simple -- just eliminate all references
+      to the no-longer-existing end tag.
+      (Ruby Slippers configuration is something I'll discuss in more detail
+      later.)
+      Here is our result:
+    </p><blockquote>
+      <pre><tt>
 &lt;html&gt;
   &lt;head&gt;
   &lt;/head&gt;&lt;body&gt;&lt;!--
@@ -191,3 +232,15 @@ Here is our result:
       html_fmt: Next line is cruft
     --&gt;I can&lt;/html&gt;
 </tt></pre></blockquote>
+    <h3>
+      Code and comments</h3><p>
+      The examples here were run using Marpa::R2 release 2.021_010.
+      There are part of its test suite as <tt>html/t/cfg_fmt.t</tt>.
+	</p>
+      The configurable Marpa::R2::HTML does considerably more than
+      can be comfortably described in a single post.
+      This post is the second of a series.
+      Comments on this post can be sent to the Marpa Google Group:
+      <code>
+        marpa-parser@googlegroups.com</code>
+    </p>
