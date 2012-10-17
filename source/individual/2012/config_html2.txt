@@ -102,7 +102,7 @@ A configurable HTML parser, part 2
       </li><li>
         HTML 5 requires that a mixed flow be accepted.
       </li><li>
-        But HTML5 also requires that the mixed flow be displayed as if it was written
+        But HTML 5 also requires that the mixed flow be displayed as if it was written
         in blocks and
         suggests that explicit blocking be used to eliminate
         ambiguities.
