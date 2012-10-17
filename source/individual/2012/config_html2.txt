@@ -37,7 +37,7 @@ A configurable HTML parser, part 2
       <tt>&lt;body&gt;</tt>
       element.
       Fundamental to the HTML document as this element as it is,
-      the definiton of its contents has been very much in play.
+      the definition of its contents has been very much in play.
     </p>
     <p>
       Let's start with the question posed in the title of this section:
@@ -58,12 +58,11 @@ A configurable HTML parser, part 2
       If you want an
       answer strictly according to the standards,
       then you get your choice in the matter.
-      According the
+      According to the
       <a href="http://www.w3.org/TR/1999/PR-html40-19990824/sgml/dtd.html#inline">
         HTML 4.01 Strict DTD</a>,
       the
-      <tt>
-        &lt;body&gt;</tt>
+      <tt>&lt;body&gt;</tt>
       contains a "block flow",
       which means that
       the answer is "No, text must be in the contents of a child element".

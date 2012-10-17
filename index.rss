@@ -50,7 +50,7 @@
       &lt;tt&gt;&amp;lt;body&amp;gt;&lt;/tt&gt;
       element.
       Fundamental to the HTML document as this element as it is,
-      the definiton of its contents has been very much in play.
+      the definition of its contents has been very much in play.
     &lt;/p&gt;
     &lt;p&gt;
       Let's start with the question posed in the title of this section:
@@ -71,12 +71,11 @@
       If you want an
       answer strictly according to the standards,
       then you get your choice in the matter.
-      According the
+      According to the
       &lt;a href=&quot;http://www.w3.org/TR/1999/PR-html40-19990824/sgml/dtd.html#inline&quot;&gt;
         HTML 4.01 Strict DTD&lt;/a&gt;,
       the
-      &lt;tt&gt;
-        &amp;lt;body&amp;gt;&lt;/tt&gt;
+      &lt;tt&gt;&amp;lt;body&amp;gt;&lt;/tt&gt;
       contains a &quot;block flow&quot;,
       which means that
       the answer is &quot;No, text must be in the contents of a child element&quot;.
