@@ -52,31 +52,33 @@
       the user can change
       the variant of HTML
       that Marpa::R2::HTML parses.
-      The changes are very wide ranging.
+      The changes allowed are very wide ranging.
       The previous post started with a very simple variations --
       the ability to specify the contents of new tags,
       and the context in which they can appear.
-      In this post I get much more aggressive.
-    </p><p>I
-      change the contents of an existing HTML tag --
-      and not just any tag, but
-      one of the HTML's three "structural" tags.
-    </p><h3>Is changing the definition of the HTML body useful?</h3>
+    </p>
     <p>
-      Marpa::R2::HTML allows changing the contents of all pre-existing
-      elements, with the exception of the highest level one --
+      In this post I get more aggressive.
+      I change the contents of an existing HTML element --
+      and not just any element, but
+      one of the HTML's three "structural" elements.
+      Marpa::R2::HTML allows the configuration file to change
+      the contents of all pre-existing
+      elements, with the exception of the highest level of the three
+      structural elements:
       the
       <tt>
         &lt;html&gt;</tt>
       element itself.
-      In the case of the
-      <tt>
-        &lt;body&gt;</tt>
-      element there is a real case to be made for allowing the
-      application to choose.
-    </p><h3>
-      Can text appear directly in an HTML body?</h3>
+    </p><h3>Can text appear directly in an HTML body?</h3><p>
+      This post will discuss changing the contents of the
+      <tt>&lt;body&gt;</tt>
+      element.
+      Fundamental to the HTML document as this element as it is,
+      the definiton of its contents has been very much in play.
+    </p>
     <p>
+      Let's start with the question posed in the title of this section:
       Can text appear directly in an HTML
       <tt>
         &lt;body&gt;</tt>

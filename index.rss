@@ -26,31 +26,33 @@
       the user can change
       the variant of HTML
       that Marpa::R2::HTML parses.
-      The changes are very wide ranging.
+      The changes allowed are very wide ranging.
       The previous post started with a very simple variations --
       the ability to specify the contents of new tags,
       and the context in which they can appear.
-      In this post I get much more aggressive.
-    &lt;/p&gt;&lt;p&gt;I
-      change the contents of an existing HTML tag --
-      and not just any tag, but
-      one of the HTML's three &quot;structural&quot; tags.
-    &lt;/p&gt;&lt;h3&gt;Is changing the definition of the HTML body useful?&lt;/h3&gt;
+    &lt;/p&gt;
     &lt;p&gt;
-      Marpa::R2::HTML allows changing the contents of all pre-existing
-      elements, with the exception of the highest level one --
+      In this post I get more aggressive.
+      I change the contents of an existing HTML element --
+      and not just any element, but
+      one of the HTML's three &quot;structural&quot; elements.
+      Marpa::R2::HTML allows the configuration file to change
+      the contents of all pre-existing
+      elements, with the exception of the highest level of the three
+      structural elements:
       the
       &lt;tt&gt;
         &amp;lt;html&amp;gt;&lt;/tt&gt;
       element itself.
-      In the case of the
-      &lt;tt&gt;
-        &amp;lt;body&amp;gt;&lt;/tt&gt;
-      element there is a real case to be made for allowing the
-      application to choose.
-    &lt;/p&gt;&lt;h3&gt;
-      Can text appear directly in an HTML body?&lt;/h3&gt;
+    &lt;/p&gt;&lt;h3&gt;Can text appear directly in an HTML body?&lt;/h3&gt;&lt;p&gt;
+      This post will discuss changing the contents of the
+      &lt;tt&gt;&amp;lt;body&amp;gt;&lt;/tt&gt;
+      element.
+      Fundamental to the HTML document as this element as it is,
+      the definiton of its contents has been very much in play.
+    &lt;/p&gt;
     &lt;p&gt;
+      Let's start with the question posed in the title of this section:
       Can text appear directly in an HTML
       &lt;tt&gt;
         &amp;lt;body&amp;gt;&lt;/tt&gt;
