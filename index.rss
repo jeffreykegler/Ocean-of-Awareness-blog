@@ -12,40 +12,38 @@
   <item>
     <title>A configurable HTML parser, part 2</title>
     <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/config_html2.html</link>
-    <description>    &lt;p&gt;
+    <description>  &lt;p&gt;
       &lt;!--
-      marpa_r2_html_fmt --no-added-tag-comment
+      marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
       --&gt;
       &lt;a href=&quot;http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/config_html.html&quot;&gt;
-      My last post&lt;/a&gt;
+        My last post&lt;/a&gt;
       introduced Marpa::R2::HTML,
       a configurable HTML parser.
       By editing
       &lt;a href=&quot;https://gist.github.com/3901637&quot;&gt;
-      a configuration file&lt;/a&gt;,
+        a configuration file&lt;/a&gt;,
       the user can change
-      over a very wide range,
       the variant of HTML
       that Marpa::R2::HTML parses.
-      The previous post showed one of the simplest variations --
+      The changes are very wide ranging.
+      The previous post started with a very simple variations --
       the ability to specify the contents of new tags,
       and the context in which they can appear.
-      In this post I vary
-      the HTML grammar more aggressively,
-      changing the contents
-      of the HTML body (the
-      &lt;tt&gt;&amp;lt;body&amp;gt;&lt;/tt&gt;
-      element).
-    &lt;/p&gt;&lt;h3&gt;
-      Is changing the definition of the HTML body useful?&lt;/h3&gt;&lt;p&gt;
+      In this post I get much more aggressive.
+    &lt;/p&gt;&lt;p&gt;I
+      change the contents of an existing HTML tag --
+      and not just any tag, but
+      one of the HTML's three &quot;structural&quot; tags.
+    &lt;/p&gt;&lt;h3&gt;Is changing the definition of the HTML body useful?&lt;/h3&gt;
+    &lt;p&gt;
       Marpa::R2::HTML allows changing the contents of all pre-existing
-      element, with the exception of the highest level one --
+      elements, with the exception of the highest level one --
       the
       &lt;tt&gt;
         &amp;lt;html&amp;gt;&lt;/tt&gt;
       element itself.
-      This can be more impressive than utilitarian,
-      but in the case of the
+      In the case of the
       &lt;tt&gt;
         &amp;lt;body&amp;gt;&lt;/tt&gt;
       element there is a real case to be made for allowing the
@@ -80,13 +78,15 @@
       which means that
       the answer is &quot;No, text must be in the contents of a child element&quot;.
       Implementations of HTML were encouraged to be liberal, however,
-      and in practice much of the HTML has text directly
+      and in practice a lot of the HTML &quot;out there&quot;
+      has text directly
       in
-      &lt;tt&gt;
-        &amp;lt;body&amp;gt;&lt;/tt&gt;
+      &lt;tt&gt;&amp;lt;body&amp;gt;&lt;/tt&gt;
       elements.
-      Users expect their browsers is render these as the writer intended.
-    &lt;/p&gt;&lt;p&gt;
+      Users expect their browsers is render these pages
+      in the way that the writer intended them to look.
+    &lt;/p&gt;
+    &lt;p&gt;
       Recognizing existing practice,
       HTML 5 changed to require conforming implementations to
       allow text to be interspersed with the block flow,
@@ -99,7 +99,8 @@
         the well-organized Wikipedia page on HTML elements&lt;/a&gt;.)
     &lt;/p&gt;&lt;h3&gt;
       Block or mixed flow?&lt;/h3&gt;&lt;p&gt;
-      In parsing HTML, do you want to treat the body as a block flow or a mixed flow?
+      When parsing HTML, do you want to the treat contents of the body
+      as a block flow or a mixed flow?
       Here are some of the factors.
     &lt;/p&gt;&lt;ul&gt;
       &lt;li&gt;
@@ -112,7 +113,7 @@
         HTML 5 requires that a mixed flow be accepted.
       &lt;/li&gt;&lt;li&gt;
         But HTML5 also requires that the mixed flow be displayed as if it was written
-	in blocks,
+        in blocks and
         suggests that explicit blocking be used to eliminate
         ambiguities.
       &lt;/li&gt;&lt;/ul&gt;
@@ -120,14 +121,13 @@
       Examples&lt;/h3&gt;
     &lt;h4&gt;
       Body contains block flow&lt;/h4&gt;&lt;p&gt;
-      In the first example,
+      In this first example,
       the
-      &lt;tt&gt;
-        &amp;lt;body&amp;gt;&lt;/tt&gt;,
-	contains a block flow.
+      &lt;tt&gt;&amp;lt;body&amp;gt;&lt;/tt&gt;
+      contains a block flow.
       This is what is specified in
       &lt;a href=&quot;https://gist.github.com/3901637&quot;&gt;
-      the default configuration file&lt;/a&gt;.
+        the default configuration file&lt;/a&gt;.
       Here is the pertinent line:
     &lt;/p&gt;&lt;blockquote&gt;
       &lt;pre&gt;&lt;tt&gt;
@@ -164,29 +164,33 @@ I cannot wait for a start tag&amp;lt;p&amp;gt;I can
       I cannot wait for a start tag&amp;lt;/p&amp;gt;&amp;lt;p&gt;
       I can&amp;lt;/p&amp;gt;&amp;lt;/body&gt;
 &amp;lt;/html&amp;gt;
-&lt;/tt&gt;&lt;/pre&gt;&lt;/blockquote&gt;
-The first thing the parser encounters is text
-which in this example is not allowed
-to occur directly in the body.
-As part of being highly liberal HTML parser,
-however, Marpa::R2::HTML will supply a start tag
-in these situations.
-(This behavior, by the way, is also configurable --
-a change to the configuration file will
-tell Marpa::R2::HTML not to do this.)
-With its two &lt;tt&gt;&amp;lt;p&amp;gt;&lt;/tt&gt; start tags,
-one of them conjured up by the Ruby Slippers,
-Marpa::R2::HTML breezes through input.
-    &lt;h4&gt;
-      Body contains mixed flow&lt;/h4&gt;
+&lt;/tt&gt;&lt;/pre&gt;&lt;/blockquote&gt;&lt;p&gt;
+      The first thing the parser encounters is text
+      which in this example is not allowed
+      to occur directly in the body.
+      As part of being highly liberal HTML parser,
+      however, Marpa::R2::HTML will supply a start tag
+      in these situations.
+      (This behavior, by the way, is also configurable --
+      a change to the configuration file will
+      tell Marpa::R2::HTML not to do this.)
+      With its two
+      &lt;tt&gt;&amp;lt;p&amp;gt;&lt;/tt&gt;
+      start tags,
+      one of them conjured up by the Ruby Slippers,
+      Marpa::R2::HTML breezes through input.
+    &lt;/p&gt;&lt;h4&gt;
+      Body contains mixed flow&lt;/h4&gt;&lt;p&gt;
       In the second example, we liberalize the contents of
-      the &lt;tt&gt;&amp;lt;body&amp;gt;&lt;/tt&gt; to allow a mixed flow:
-    &lt;blockquote&gt;
+      the
+      &lt;tt&gt;&amp;lt;body&amp;gt;&lt;/tt&gt;
+      to allow a mixed flow:
+    &lt;/p&gt;&lt;blockquote&gt;
       &lt;pre&gt;&lt;tt&gt;
 &amp;lt;body&amp;gt; is *mixed
-&lt;/tt&gt;&lt;/pre&gt;&lt;/blockquote&gt;
-Here is the result:
-    &lt;blockquote&gt;
+&lt;/tt&gt;&lt;/pre&gt;&lt;/blockquote&gt;&lt;p&gt;
+      Here is the result:
+    &lt;/p&gt;&lt;blockquote&gt;
       &lt;pre&gt;&lt;tt&gt;
 &amp;lt;html&amp;gt;
   &amp;lt;head&amp;gt;
@@ -196,15 +200,17 @@ Here is the result:
       I can&amp;lt;/p&amp;gt;&amp;lt;/body&amp;gt;
 &amp;lt;/html&amp;gt;
 &lt;/tt&gt;&lt;/pre&gt;&lt;/blockquote&gt;
-&lt;p&gt;
-In a mixed flow, no
-second &lt;tt&gt;&amp;lt;p&amp;gt;&lt;/tt&gt; start tag
-is needed, and none is created.
-Its matching end tag
-(&lt;tt&gt;&amp;lt;/p&amp;gt;&lt;/tt&gt;) also does not
-have to be created.
-Otherwise, all is as before.
-    &lt;h3&gt;
+    &lt;p&gt;
+      In a mixed flow, no
+      second
+      &lt;tt&gt;&amp;lt;p&amp;gt;&lt;/tt&gt;
+      start tag
+      is needed, and none is created.
+      Its matching end tag
+      (&lt;tt&gt;&amp;lt;/p&amp;gt;&lt;/tt&gt;) also does not
+      have to be created.
+      Otherwise, all is as before.
+    &lt;/p&gt;&lt;h3&gt;
       What I decided&lt;/h3&gt;
     &lt;p&gt;
       Before I figured out how to make my HTML parser configurable,
@@ -214,12 +220,13 @@ Otherwise, all is as before.
       &lt;tt&gt;
         html_fmt&lt;/tt&gt;
       utility was based on Marpa::XS
-      and 
+      and
       its grammar specified a mixed flow.
       When I started a new version
       of the utility
-      for Marpa::R2
-      I decided that it produced a more precise parse if I changed to a stricter grammar,
+      for Marpa::R2,
+      I decided that it produced a more precise parse
+      when I used a stricter grammar,
       leaving it to the Ruby Slippers to &quot;loosen things up&quot;
       when the grammar was too strict.
       This was close, I hoped, to the best of both worlds,
@@ -232,97 +239,12 @@ Otherwise, all is as before.
       both the grammar and the Ruby Slippers are configurable.
       The user gets to decide what she wants at runtime.
     &lt;/p&gt;
-&lt;h3&gt;Stupid parser tricks&lt;/h3&gt;
-Marpa::R2::HTML configuration is designed to allow the parser to
-range over the useful variations of HTML.
-In addition,
-it allows many variations which will probably find no application.
-The two variations which follow do help illustrate how configuration
-works, and what happens if you go wrong with it.
-    &lt;h4&gt;
-      Body contains inline flow&lt;/h4&gt;
-An inline flow cannot contain block elements,
-although it can contain text and inline elements.
-This is far too restrictive for the body of an HTML document,
-but here is is how you'd specify it:
-    &lt;blockquote&gt;
-      &lt;pre&gt;&lt;tt&gt;
-&amp;lt;body&amp;gt; is *inline
-&lt;/tt&gt;&lt;/pre&gt;&lt;/blockquote&gt;
-And here is what happens:
-    &lt;blockquote&gt;
-      &lt;pre&gt;&lt;tt&gt;
-&amp;lt;html&amp;gt;
-  &amp;lt;head&amp;gt;
-  &amp;lt;/head&amp;gt;
-  &amp;lt;body&amp;gt;
-    I cannot wait for a start tag&amp;lt;!--
-        html_fmt: Next line is cruft
-      --&amp;gt;&amp;lt;p&amp;gt;I can&amp;lt;/body&amp;gt;
-&amp;lt;/html&amp;gt;
-&lt;/tt&gt;&lt;/pre&gt;&lt;/blockquote&gt;
-Text is acceptable in an inline flow, so the first text string winds up in the
-body.
-But
-the
-&lt;tt&gt;&amp;lt;p&amp;gt;&lt;/tt&gt;
-starts a block element, and cannot be accepted.
-Marpa::R2::HTML labels
-the
-&lt;tt&gt;&amp;lt;p&amp;gt;&lt;/tt&gt;
-as &quot;cruft&quot;.
-The rest of the input is more text,
-and the parse proceeds normally.
-    &lt;h4&gt;
-      Body is empty&lt;/h4&gt;
-The final example requires the
-the
-      &lt;tt&gt;&amp;lt;body&amp;gt;&lt;/tt&gt;
-to be empty.
-    &lt;blockquote&gt;
-      &lt;pre&gt;&lt;tt&gt;
-&amp;lt;body&amp;gt; is *empty
-&lt;/tt&gt;&lt;/pre&gt;&lt;/blockquote&gt;
-    &lt;p&gt;
-      In the other examples, the one-line change in the configuration
-      file was all that it took to do the job.
-      In the case changing the
-      &lt;tt&gt;&amp;lt;body&amp;gt;&lt;/tt&gt;
-      to an empty element,
-      element, there's a small complication.
-      The Ruby Slippers lines refer to the end tag of the
-      body element:
-      &lt;tt&gt;&amp;lt;/body&amp;gt;&lt;/tt&gt;.
-      The fix is simple -- just eliminate all references
-      to the no-longer-existing end tag.
-      (Ruby Slippers configuration is something I'll discuss in more detail
-      later.)
-      Here is our result:
-    &lt;/p&gt;&lt;blockquote&gt;
-      &lt;pre&gt;&lt;tt&gt;
-&amp;lt;html&amp;gt;
-  &amp;lt;head&amp;gt;
-  &amp;lt;/head&amp;gt;&amp;lt;body&amp;gt;&amp;lt;!--
-      html_fmt: Next line is cruft
-    --&amp;gt;I cannot wait for a start tag&amp;lt;!--
-      html_fmt: Next line is cruft
-    --&amp;gt;&amp;lt;p&amp;gt;&amp;lt;!--
-      html_fmt: Next line is cruft
-    --&amp;gt;I can&amp;lt;/html&amp;gt;
-&lt;/tt&gt;&lt;/pre&gt;&lt;/blockquote&gt;
-&lt;p&gt;
-The parser recognizes the empty
-      &lt;tt&gt;&amp;lt;body&amp;gt;&lt;/tt&gt;
-      tag.
-      But an empty
-      &lt;tt&gt;&amp;lt;body&amp;gt;&lt;/tt&gt;
-      leaves the parser with no place to put other tags and text,
-      so it labels all of them as &quot;cruft&quot;.
     &lt;h3&gt;
       Code and comments&lt;/h3&gt;&lt;p&gt;
       The examples here were run using Marpa::R2 release 2.021_010.
-      They are part of its test suite as &lt;tt&gt;html/t/cfg_fmt.t&lt;/tt&gt;.
-	&lt;/p&gt;
+      They are part of its test suite as
+      &lt;tt&gt;html/t/cfg_fmt.t&lt;/tt&gt;.
+    &lt;/p&gt;&lt;p&gt;
       The configurable Marpa::R2::HTML does considerably more than
       can be comfortably described in a single post.
       This post is the second of a series.
