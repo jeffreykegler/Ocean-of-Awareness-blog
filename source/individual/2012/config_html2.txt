@@ -203,37 +203,46 @@ I cannot wait for a start tag&lt;p&gt;I can
     </p>
     <h3>What I decided</h3>
     <p>
-      Before I figured out how to make my HTML parser configurable,
-      I had to make a decision.
+      Before I made my HTML parser configurable,
+      I was forced to decide the issue of
+      <tt>&lt;body&gt;</tt>
+      contents one way or the other.
       My first
       implementation of the
       <tt>html_fmt</tt>
       utility was based on Marpa::XS
       and
       its grammar specified a mixed flow.
+    </p><p>
       When I started a new version
       of the utility
-      for Marpa::R2,
-      I decided that it produced a more precise parse
-      when I used a stricter grammar,
-      leaving it to the Ruby Slippers to "loosen things up"
+      based on Marpa::R2,
+      I reopened the issue.
+      I decided that a stricter grammar produced a more precise parse,
+      and that it was best to leave it up
+      to the Ruby Slippers to "loosen things up"
       when the grammar was too strict.
       This was close, I hoped, to the best of both worlds,
-      so I changed.
+      So I changed the grammar to specify a block
+      flow for the contents of
+      <tt>&lt;body&gt;</tt>
+      element.
       This second choice -- strict block-flow-body grammar and liberal Ruby Slippers --
       remains the default in the configurable version.
     </p>
     <p>
-      In Marpa::R2's current developer's releases,
+      In current developer's releases of Marpa::R2,
       and in its next indexed release,
       both the grammar and the Ruby Slippers are configurable.
-      The user gets to decide what she wants at runtime.
+      The true best of both worlds happens when
+      the user gets to decide.
     </p>
     <h3>Code and comments</h3>
     <p>
       The examples here were run using Marpa::R2 release 2.021_010.
       They are part of its test suite and can be found in the
-      <tt>html/t/cfg_fmt.t</tt> file.
+      <tt>html/t/cfg_fmt.t</tt>
+      file.
     </p>
     <p>
       The configurable Marpa::R2::HTML does considerably more than

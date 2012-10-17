@@ -216,37 +216,46 @@ I cannot wait for a start tag&amp;lt;p&amp;gt;I can
     &lt;/p&gt;
     &lt;h3&gt;What I decided&lt;/h3&gt;
     &lt;p&gt;
-      Before I figured out how to make my HTML parser configurable,
-      I had to make a decision.
+      Before I made my HTML parser configurable,
+      I was forced to decide the issue of
+      &lt;tt&gt;&amp;lt;body&amp;gt;&lt;/tt&gt;
+      contents one way or the other.
       My first
       implementation of the
       &lt;tt&gt;html_fmt&lt;/tt&gt;
       utility was based on Marpa::XS
       and
       its grammar specified a mixed flow.
+    &lt;/p&gt;&lt;p&gt;
       When I started a new version
       of the utility
-      for Marpa::R2,
-      I decided that it produced a more precise parse
-      when I used a stricter grammar,
-      leaving it to the Ruby Slippers to &quot;loosen things up&quot;
+      based on Marpa::R2,
+      I reopened the issue.
+      I decided that a stricter grammar produced a more precise parse,
+      and that it was best to leave it up
+      to the Ruby Slippers to &quot;loosen things up&quot;
       when the grammar was too strict.
       This was close, I hoped, to the best of both worlds,
-      so I changed.
+      So I changed the grammar to specify a block
+      flow for the contents of
+      &lt;tt&gt;&amp;lt;body&amp;gt;&lt;/tt&gt;
+      element.
       This second choice -- strict block-flow-body grammar and liberal Ruby Slippers --
       remains the default in the configurable version.
     &lt;/p&gt;
     &lt;p&gt;
-      In Marpa::R2's current developer's releases,
+      In current developer's releases of Marpa::R2,
       and in its next indexed release,
       both the grammar and the Ruby Slippers are configurable.
-      The user gets to decide what she wants at runtime.
+      The true best of both worlds happens when
+      the user gets to decide.
     &lt;/p&gt;
     &lt;h3&gt;Code and comments&lt;/h3&gt;
     &lt;p&gt;
       The examples here were run using Marpa::R2 release 2.021_010.
       They are part of its test suite and can be found in the
-      &lt;tt&gt;html/t/cfg_fmt.t&lt;/tt&gt; file.
+      &lt;tt&gt;html/t/cfg_fmt.t&lt;/tt&gt;
+      file.
     &lt;/p&gt;
     &lt;p&gt;
       The configurable Marpa::R2::HTML does considerably more than
