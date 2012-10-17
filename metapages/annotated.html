@@ -9,6 +9,9 @@
     </style>
   </head>
   <body>
+    <!--
+      marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
+      -->
     <div id="header"
   style="color:white;background-color:#38B0C0;padding:1em;clear:left;text-align:center;">
       <h1>
@@ -33,36 +36,33 @@
       </p>
       <p class="view">
         <a href="#PARSE_HTML">
-          How to parse HTML
+          Parsing HTML
         </a>
-        <!-- Preceding end tag is replacement for a missing one -->
       </p>
       <p class="view">
         <a href="#COMPARISONS">
-          Marpa vs. other parsers
-        </a>
+          Marpa vs. other parsers</a>
       </p>
       <p class="view">
         <a href="#BOVICIDE">
-          The Bovicide series
-        </a>
+          The Bovicide series</a>
       </p>
       <p class="view">
         <a href="#PERL_AND_PARSING">
-          The Perl and parsing series
-        </a>
+          The Perl and parsing series</a>
       </p>
       <p class="view">
-        <a href="#NLP">
-          Natural Language Processing
-        </a>
+        <a href="#NLP">Natural Language Processing</a>
+      </p>
+      <p class="view">
+        <a href="#VISIONS">Visions</a>
       </p>
       <h3>
         Other Resources
       </h3>
       <p>
         <a href="http://www.jeffreykegler.com/">
-          Jeffrey Kegler's website
+          Jeffrey Kegler's personal website
         </a>
       </p>
       <p>
@@ -91,60 +91,64 @@
         Posts not part of a series
       </h2>
       <ul>
-<li><p><a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/dsl.html">Domain-Specific Languages made simpler</a>.
-Practical general parsing makes writing DSL's a lot simpler.
-The example of this post has two full DSL's in less than 600 lines of code,
-test cases included.
-
-<li><p><a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/08/precedence-parsing-made-simpler.html">Precedence parsing made simpler</a>.
-Defining grammars in terms of precedence is an attractive technique.
-General parsing makes it a lot simpler.
-Here's a precedence parsing DSL where you don't have to define your
-operators, much less describe them as infix, postfix, circumfix, etc.
-Which means efficient precedence parsing can be conveniently extended to n-ary 
-operations, and can even allow implied operators.
-<li><p><a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/08/the-solved-problem-that-isnt-is.html">The solved problem that isn't, is</a>.
-In an excellent post, Laurence Tratt described parsing as "the solved problem that isn't".
-That expressed my reasons for creating very well I thought.
-In this post, I state point by point why I believe I can accurately claim
-that, with Marpa, the parsing problem is, indeed, now solved.
-
-</a>
-<li><p><a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/07/partial-parsing-and-error-reporting.html">Partial parsing and error reporting
-</a>
-describes the technique of partial parsing -- parsing
-when you can only deal with some of the target language.
-This technique is useful for incremental parser development.
-It is also the way to really do error reporting well.
-<a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/07/prefixing-the-ruby-slippers-and-the-bigfoot-maneuver.html">Prefixing the Ruby Slippers, and the Bigfoot Maneuver</a>
-goes into the topic even more deeply.
-<li><p><a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/07/two-new-interfaces-to-marpa.html">Two new interfaces to Marpa
-</a>
-describes Libmarpa and Marpa::R2::Thin.
-Libmarpa is the core of Marpa, available as a C library.
-Marpa::R2::Thin is a "thin" wrapper for Libmarpa.
-With Libmarpa, you get pure C language speed.
-With Marpa::R2::Thin, you get the ability to create your
-own Marpa interface in Perl,
-on a completely equal footing with Marpa::R2 itself.
-
-<li><p><a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/06/the-useful-the-playful-the-easy-the-hard-and-the-beautiful.html">The useful, the playful, the easy, the hard and the beautiful
-</a> starts out describing a nice interface to Marpa written by Peter Stuifzand,
-and then gets into a discussion of how number series emerge from grammars.
-I especially enjoyed this post, as apparently did a number of readers.
-
-<li><p><a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/06/marpa-customizing-the-ruby-slippers.html">Marpa & customizing the Ruby Slippers
-</a> announces one of Marpa::R2's more important features.
-The Marpa algorithm, at every point in a parse,
-knows which rules were being recognized and how far recognition had proceeded.
-Much of this information was already available,
-in one form or another,
-in Marpa::XS.
-As of Marpa::R2, the application programmer has
-efficient and direct access to 100% of this
-information.
-
+        <li><p><a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/dsl.html">Domain-Specific Languages made simpler</a>.
+            Practical general parsing makes writing DSL's a lot simpler.
+            The example of this post has two full DSL's in less than 600 lines of code,
+            test cases included.
+          </p>
+        </li>
+        <li><p><a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/08/precedence-parsing-made-simpler.html">Precedence parsing made simpler</a>.
+            Defining grammars in terms of precedence is an attractive technique.
+            General parsing makes it a lot simpler.
+            Here's a precedence parsing DSL where you don't have to define your
+            operators, much less describe them as infix, postfix, circumfix, etc.
+            Which means efficient precedence parsing can be conveniently extended to n-ary
+            operations, and can even allow implied operators.
+          </p></li>
+        <li><p><a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/08/the-solved-problem-that-isnt-is.html">The solved problem that isn't, is</a>.
+            In an excellent post, Laurence Tratt described parsing as "the solved problem that isn't".
+            That expressed my reasons for creating very well I thought.
+            In this post, I state point by point why I believe I can accurately claim
+            that, with Marpa, the parsing problem is, indeed, now solved.
+          </p></li>
+      </ul>
+      <ul>
         <li>
+          <p>
+            <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/07/partial-parsing-and-error-reporting.html">Partial parsing and error reporting
+            </a>
+            describes the technique of partial parsing -- parsing
+            when you can only deal with some of the target language.
+            This technique is useful for incremental parser development.
+            It is also the way to really do error reporting well.
+            <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/07/prefixing-the-ruby-slippers-and-the-bigfoot-maneuver.html">Prefixing the Ruby Slippers, and the Bigfoot Maneuver</a>
+            goes into the topic even more deeply.
+          </p></li><li><p><a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/07/two-new-interfaces-to-marpa.html">Two new interfaces to Marpa
+            </a>
+            describes Libmarpa and Marpa::R2::Thin.
+            Libmarpa is the core of Marpa, available as a C library.
+            Marpa::R2::Thin is a "thin" wrapper for Libmarpa.
+            With Libmarpa, you get pure C language speed.
+            With Marpa::R2::Thin, you get the ability to create your
+            own Marpa interface in Perl,
+            on a completely equal footing with Marpa::R2 itself.
+          </p></li><li><p><a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/06/the-useful-the-playful-the-easy-the-hard-and-the-beautiful.html">The useful, the playful, the easy, the hard and the beautiful
+            </a>
+            starts out describing a nice interface to Marpa written by Peter Stuifzand,
+            and then gets into a discussion of how number series emerge from grammars.
+            I especially enjoyed this post, as apparently did a number of readers.
+          </p></li><li><p><a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/06/marpa-customizing-the-ruby-slippers.html">Marpa & customizing the Ruby Slippers
+            </a>
+            announces one of Marpa::R2's more important features.
+            The Marpa algorithm, at every point in a parse,
+            knows which rules were being recognized and how far recognition had proceeded.
+            Much of this information was already available,
+            in one form or another,
+            in Marpa::XS.
+            As of Marpa::R2, the application programmer has
+            efficient and direct access to 100% of this
+            information.
+          </p></li><li>
           <p>
             <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2011/11/what-is-the-marpa-algorithm.html">
               What is the Marpa algorithm?
@@ -178,14 +182,6 @@ information.
         </li>
         <li>
           <p>
-            <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/01/marpa-and-oo.html">
-              Marpa and OO
-            </a>
-            : Comments on the relationship between object-oriented programming and Marpa.
-          </p>
-        </li>
-        <li>
-          <p>
             <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/01/what-no-lexer.html">
               What? No Lexer!
             </a>
@@ -208,39 +204,67 @@ information.
             : How users react to Marpa. Of course, I am a hopelessly biased source. but I do get a lot of feedback.
           </p>
         </li>
-        <li>
-          <p>
-            <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/03/making-the-parsing-game-safe.html">
-              Making the parsing game safe
-            </a>
-            : What Marpa means for Domain-Specific Languages (DSLs) and Language-Oriented Programming (LOP).
-          </p>
-        </li>
       </ul>
       <h2><a name="PARSE_HTML">How to parse HTML</a></h2>
-          <p>
-	    This series describes a new strategy for parsing liberal HTML,
-	    using Marpa and the Ruby Slippers techniques it makes possible.
-	    It is the most worked out example of Marpa use that I've done to date.
-	    <ul>
-	    <li>
-            <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2011/11/how-to-parse-html.html">
-              How to Parse HTML
-            </a>
-	    <li>
-            <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2011/12/how-to-parse-html-part-2.html">
-              How to parse HTML, part 2
-            </a>
-	    <li>
-            <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2011/12/how-to-parse-html-part-3.html">
-              How to parse HTML, part 3
-            </a>
-	    </ul>
-      </h2>
-      <h2><a name="COMPARISONS">Marpa v. other parsers</h2>
-      <p>These posts compare Marpa directly to other parsers,
-      with benchmarks.
+      <p>
+        This series describes a new strategy for parsing liberal HTML,
+        using Marpa and the Ruby Slippers techniques it makes possible.
+        It is the most worked out example of Marpa use that I've done to date.
+      </p>
       <ul>
+        <li>
+          <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2011/11/how-to-parse-html.html">
+            How to Parse HTML
+          </a>
+        </li>
+        <li>
+          <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2011/12/how-to-parse-html-part-2.html">
+            How to parse HTML, part 2
+          </a>
+        </li>
+        <li>
+          <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2011/12/how-to-parse-html-part-3.html">
+            How to parse HTML, part 3
+          </a>
+        </li>
+      </ul>
+      <p>The Marpa-based HTML reformatter,
+        <tt>html_fmt</tt>,
+        is the Marpa application that I use the most.
+        In fact, as I am typing this HTML,
+        I am using it repeatedly as a filter,
+        much in the same way that you'd use
+        <tt>gnuindent</tt>
+        for C code or
+        <tt>perltidy</tt>
+        for Perl.
+      </p>
+      <ul>
+        <li>
+          <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/html_fmt.html">
+            A Marpa-based HTML reformatter</a>
+        </li>
+      </ul>
+      <p>When I left off with the first series, I mentioned that an HTML parser really should
+        be configurable -- the user/application should be able to decide which variant of HTML
+        they want to parse.
+        The result is a parser driven by a configuration file that allows the user to reshape
+        HTML.
+        And, by the way, the configurable version is almost twice as fast.
+      </p><ul>
+        <li>
+          <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/config_html.html">
+            A configurable HTML parser</a>
+        </li>
+        <li>
+          <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/config_html2.html">
+            A configurable HTML parser, part 2</a>
+        </li>
+      </ul>
+      <h2><a name="COMPARISONS">Marpa v. other parsers</a></h2>
+      <p>These posts compare Marpa directly to other parsers,
+        with benchmarks.
+      </p><ul>
         <li>
           <p>
             <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2011/11/marpa-v-perl-regexes-some-numbers.html">
@@ -248,21 +272,21 @@ information.
             </a>
             pits Marpa directly against Perl regexes. Marpa will never beat regular expressions at their own game, but regular expressions are often taken out of their game, and in those cases the results can get interesting.
           </p>
-<li><p><a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/08/marpa-v-perl-regexes-a-rematch.html">Marpa v. Perl regexes: a rematch</a>
-revisits the comparison of the earlier post.
-In that benchmark, much of the advantage of Perl regexes came, not from faster parsing,
-but from lower overhead.
-This post contains a more direct comparison of the two parse engines.
-</p>
-<li><p><a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/04/marpa-v-parserecdescent-some-numbers.html">Marpa v. Parse::RecDescent: some numbers</a>
-Recursive descent is currently very popular.
-This post takes an interesting example from another post,
-and rewrites it from Parse::RecDescent into Marpa.
-Marpa has equal time complexity, and its parse engine is written in heavily optimized C,
-while Parse::RecDescent is pure Perl.
-The result is what you'd expect.
-</p>
-      </ul>
+        </li><li><p><a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/08/marpa-v-perl-regexes-a-rematch.html">Marpa v. Perl regexes: a rematch</a>
+            revisits the comparison of the earlier post.
+            In that benchmark, much of the advantage of Perl regexes came, not from faster parsing,
+            but from lower overhead.
+            This post contains a more direct comparison of the two parse engines.
+          </p>
+        </li><li><p><a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/04/marpa-v-parserecdescent-some-numbers.html">Marpa v. Parse::RecDescent: some numbers</a>
+            Recursive descent is currently very popular.
+            This post takes an interesting example from another post,
+            and rewrites it from Parse::RecDescent into Marpa.
+            Marpa has equal time complexity, and its parse engine is written in heavily optimized C,
+            while Parse::RecDescent is pure Perl.
+            The result is what you'd expect.
+          </p>
+        </li></ul>
       <h2>
         <a name="BOVICIDE">The Bovicide Series
         </a>
@@ -477,17 +501,61 @@ href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2011/05
           </p>
         </li>
       </ul>
-
-      <h2><a name="NLP">Natural Language Processing</a> </h2>
+      <h2><a name="NLP">Natural Language Processing</a></h2>
       <ul>
-      <li>
-      <p><a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/03/the-syntax-of-english-is-undecidable.html">The
-      syntax of English is undecidable</a>.
-      Many of those most interested in Marpa are from the natural language processing (NLP) community.
-      In taking on natural language,
-      as in taking on any other computing task,
-      a reasonable first question is, "Is it decidable?".
-      This post claims to answer that question.
+        <li>
+          <p><a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/03/the-syntax-of-english-is-undecidable.html">The
+              syntax of English is undecidable</a>.
+            Many of those most interested in Marpa are from the natural language processing (NLP) community.
+            In taking on natural language,
+            as in taking on any other computing task,
+            a reasonable first question is, "Is it decidable?".
+            This post claims to answer that question.
+          </p></li></ul>
+      <h2><a name="VISIONS">Visions</a></h2>
+      <p>A warning to the reader:
+        The posts in this section are my most misunderstood,
+        and therefore, so far, can be called my least successful.
+        These are posts in which I outline future directions,
+        as plainly and simply as I know how to,
+        uncluttered by details.
+        The problem seems to be that, without technical details
+        and code examples,
+        many readers take my words
+        as pleasant speculations,
+        and not as I intend them,
+	as descriptions of things
+        that can be done now, today.
+      </p>
+      <ul>
+        <li>
+          <p>
+            <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/quantum.html">
+              Parsing on your new hyper-quantum computer</a>
+            Marpa is a non-deterministic parser, and those used to coping with recursive decsent are
+            used to thinking in terms of a single thread.
+            With non-determinism, you become free of all that backtracking and lookahead,
+            and your parser becomes simpler and more modular.
+            This requires a re-visioning of parsing, but it is very similar to the re-visioning
+            you'd need to do if you were suddenly delivered new non-deterministic hardware
+            and asked to program efficiently for it.
+          </p>
+        </li>
+        <li>
+          <p>
+            <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/03/making-the-parsing-game-safe.html">
+              Making the parsing game safe</a>:
+            What Marpa means for Domain-Specific Languages (DSLs) and Language-Oriented Programming (LOP).
+          </p>
+        </li>
+        <li>
+          <p>
+            <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/01/marpa-and-oo.html">
+              Marpa and OO</a>:
+            Like it says.
+            Object-oriented programming and how it relates to Marpa.
+          </p>
+        </li>
       </ul>
     </div>
     <div id="footer" style="border-top:thick solid #38B0C0;clear:left;padding:1em;">
