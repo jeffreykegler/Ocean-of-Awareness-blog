@@ -14,12 +14,12 @@ A configurable HTML parser, part 2
       the variant of HTML
       being parsed.
       The changes allowed are very wide ranging.
-      The previous post started with a very simple variations --
+      The previous post started with simple changes --
       the ability to specify the contents of new tags,
       and the context in which they can appear.
     </p>
     <p>
-      In this post I get more aggressive.
+      In this post the changes get more aggressive.
       I change the contents of an existing HTML element --
       and not just any element, but
       one of the HTML's three "structural" elements.
@@ -28,10 +28,11 @@ A configurable HTML parser, part 2
       elements, with the exception of the highest level of the three
       structural elements:
       the
-      <tt>
-        &lt;html&gt;</tt>
+      <tt>&lt;html&gt;</tt>
       element itself.
-    </p><h3>Can text appear directly in an HTML body?</h3><p>
+    </p>
+    <h3>Can text appear directly in an HTML body?</h3>
+    <p>
       This post will discuss changing the contents of the
       <tt>&lt;body&gt;</tt>
       element.
@@ -86,8 +87,9 @@ A configurable HTML parser, part 2
       See my earlier post or
       <a href="http://en.wikipedia.org/wiki/HTML_element">
         the well-organized Wikipedia page on HTML elements</a>.)
-    </p><h3>
-      Block or mixed flow?</h3><p>
+    </p>
+    <h3>Block or mixed flow?</h3>
+    <p>
       When parsing HTML, do you want to the treat contents of the body
       as a block flow or a mixed flow?
       Here are some of the factors.
@@ -106,10 +108,9 @@ A configurable HTML parser, part 2
         suggests that explicit blocking be used to eliminate
         ambiguities.
       </li></ul>
-    <h3>
-      Examples</h3>
-    <h4>
-      Body contains block flow</h4><p>
+    <h3>Examples</h3>
+    <h4>Body contains block flow</h4>
+    <p>
       In this first example,
       the
       <tt>&lt;body&gt;</tt>
@@ -168,8 +169,9 @@ I cannot wait for a start tag&lt;p&gt;I can
       start tags,
       one of them conjured up by the Ruby Slippers,
       Marpa::R2::HTML breezes through input.
-    </p><h4>
-      Body contains mixed flow</h4><p>
+    </p>
+    <h4>Body contains mixed flow</h4>
+    <p>
       In the second example, we liberalize the contents of
       the
       <tt>&lt;body&gt;</tt>
@@ -199,15 +201,14 @@ I cannot wait for a start tag&lt;p&gt;I can
       (<tt>&lt;/p&gt;</tt>) also does not
       have to be created.
       Otherwise, all is as before.
-    </p><h3>
-      What I decided</h3>
+    </p>
+    <h3>What I decided</h3>
     <p>
       Before I figured out how to make my HTML parser configurable,
       I had to make a decision.
       My first
       implementation of the
-      <tt>
-        html_fmt</tt>
+      <tt>html_fmt</tt>
       utility was based on Marpa::XS
       and
       its grammar specified a mixed flow.
@@ -222,22 +223,25 @@ I cannot wait for a start tag&lt;p&gt;I can
       so I changed.
       This second choice -- strict block-flow-body grammar and liberal Ruby Slippers --
       remains the default in the configurable version.
-    </p><p>
+    </p>
+    <p>
       In Marpa::R2's current developer's releases,
       and in its next indexed release,
       both the grammar and the Ruby Slippers are configurable.
       The user gets to decide what she wants at runtime.
     </p>
-    <h3>
-      Code and comments</h3><p>
+    <h3>Code and comments</h3>
+    <p>
       The examples here were run using Marpa::R2 release 2.021_010.
       They are part of its test suite as
       <tt>html/t/cfg_fmt.t</tt>.
-    </p><p>
+    </p>
+    <p>
       The configurable Marpa::R2::HTML does considerably more than
       can be comfortably described in a single post.
       This post is the second of a series.
       Comments on this post can be sent to the Marpa Google Group:
-      <code>
-        marpa-parser@googlegroups.com</code>
+      <code>marpa-parser@googlegroups.com</code>
     </p>
+  </body>
+</html>
