@@ -36,7 +36,7 @@ A configurable HTML parser, part 2
       This post will discuss changing the contents of the
       <tt>&lt;body&gt;</tt>
       element.
-      Fundamental to the HTML document as this element as it is,
+      Fundamental to the HTML document as this element is,
       the definition of its contents has been very much in play.
     </p>
     <p>
@@ -157,17 +157,17 @@ I cannot wait for a start tag&lt;p&gt;I can
       The first thing the parser encounters is text,
       which in this example is not allowed
       to occur directly in the body.
-      As part of being highly liberal HTML parser,
+      As part of being a highly liberal HTML parser,
       however, Marpa::R2::HTML will supply a start tag
       in these situations.
       (This behavior, by the way, is also configurable --
-      a change to the configuration file will
+      a change to the configuration file can
       tell Marpa::R2::HTML not to do this.)
       With its two
       <tt>&lt;p&gt;</tt>
       start tags,
       one of them conjured up by the Ruby Slippers,
-      Marpa::R2::HTML breezes through input.
+      Marpa::R2::HTML breezes through its input.
     </p>
     <h4>Body contains mixed flow</h4>
     <p>
