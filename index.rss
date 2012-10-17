@@ -25,7 +25,7 @@
         a configuration file&lt;/a&gt;,
       the user can change
       the variant of HTML
-      that Marpa::R2::HTML parses.
+      being parsed.
       The changes allowed are very wide ranging.
       The previous post started with a very simple variations --
       the ability to specify the contents of new tags,
