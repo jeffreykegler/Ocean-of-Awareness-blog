@@ -30,8 +30,13 @@
         On this page
       </h3>
       <p class="view">
-        <a href="#NOT_SERIES">
-          Posts not part of a series
+        <a href="#TUTORIAL">
+          Tutorials
+        </a>
+      </p>
+      <p class="view">
+        <a href="#GENERAL">
+          Generally about Marpa
         </a>
       </p>
       <p class="view">
@@ -54,6 +59,10 @@
       <p class="view">
         <a href="#NLP">Natural Language Processing</a>
       </p>
+      <p class="view">
+        <a href="#THEORY">THeory</a>
+      </p>
+      <h3>
       <p class="view">
         <a href="#VISIONS">Visions</a>
       </p>
@@ -85,13 +94,11 @@
       <h1>
         Posts about Marpa: an annotated list
       </h1>
-      <h2>
-        <a name="#NOT_SERIES">
-        </a>
-        Posts not part of a series
-      </h2>
-      <ul>
-        <li><p><a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/dsl.html">Domain-Specific Languages made simpler</a>.
+      <h2><a name="#TUTORIAL">Tutorials</a></h2>
+	<ul>
+        <li>
+	<p><a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/dsl.html">
+	Domain-Specific Languages made simpler</a>.
             Practical general parsing makes writing DSL's a lot simpler.
             The example of this post has two full DSL's in less than 600 lines of code,
             test cases included.
@@ -106,6 +113,17 @@
             Which means efficient precedence parsing can be conveniently extended to n-ary
             operations, and can even allow implied operators.
           </p></li>
+        <li>
+          <p>
+            <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/01/developing-parsers-incrementally-with-marpa.html">
+              Developing parsers incrementally with Marpa
+            </a>
+            : Hints on how to get started with Marpa::XS.
+          </p>
+        </li>
+	</ul>
+      <h2><a name="#GENERAL"></a>About Marpa in general</h2>
+      <ul>
         <li><p><a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/08/the-solved-problem-that-isnt-is.html">The solved problem that isn't, is</a>.
             In an excellent post, Laurence Tratt described parsing as "the solved problem that isn't".
             That expressed my reasons for creating very well I thought.
@@ -149,14 +167,7 @@
             As of Marpa::R2, the application programmer has
             efficient and direct access to 100% of this
             information.
-          </p></li><li>
-          <p>
-            <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2011/11/what-is-the-marpa-algorithm.html">
-              What is the Marpa algorithm?
-            </a>
-            lays out the essentials of the Marpa algorithm.
-          </p>
-        </li>
+          </p></li>
         <li>
           <p>
             <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2011/11/marpa-and-the-ruby-slippers.html">
@@ -175,26 +186,10 @@
         </li>
         <li>
           <p>
-            <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2010/06/jay-earleys-idea.html">
-              Jay Earley's Idea
-            </a>
-            : A user-friendly description of Earley's algorithm. Marpa's algorithm is much more complicated, but at heart, Marpa is an Earley parser.
-          </p>
-        </li>
-        <li>
-          <p>
             <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/01/what-no-lexer.html">
               What? No Lexer!
             </a>
             : A generation of programmers have grown up identifying lexing with parsing. Marpa is not a lexer, and Marpa::XS does not even contain a lexer. This post explains why, and how to get your lexing done if you are using Marpa. (This post is rapidly becoming outdated. Several people have undertaken lexers specifically intended as Marpa front-ends, and I expect that one or more will soon be on CPAN.)
-          </p>
-        </li>
-        <li>
-          <p>
-            <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/01/developing-parsers-incrementally-with-marpa.html">
-              Developing parsers incrementally with Marpa
-            </a>
-            : Hints on how to get started with Marpa::XS.
           </p>
         </li>
         <li>
@@ -513,6 +508,28 @@ href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2011/05
             a reasonable first question is, "Is it decidable?".
             This post claims to answer that question.
           </p></li></ul>
+      <h2><a name="THEORY">Theory</a></h2>
+      <p>Behind Marpa is a lot of mathematics,
+      a lot of it old, but also some new.
+      These posts are for those curious about the Theory side of Marpa.
+      <ul>
+        <li>
+          <p>
+            <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2010/06/jay-earleys-idea.html">
+              Jay Earley's Idea
+            </a>
+            : A user-friendly description of Earley's algorithm. Marpa's algorithm is much more complicated, but at heart, Marpa is an Earley parser.
+          </p>
+        </li>
+	  <li>
+          <p>
+            <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2011/11/what-is-the-marpa-algorithm.html">
+              What is the Marpa algorithm?
+            </a>
+            lays out the essentials of the Marpa algorithm.
+          </p>
+        </li>
+      </ul>
       <h2><a name="VISIONS">Visions</a></h2>
       <p>A warning to the reader:
         The posts in this section are my most misunderstood,
