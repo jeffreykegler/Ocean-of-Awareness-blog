@@ -10,6 +10,104 @@
     <language>en</language>
 
   <item>
+    <title>Configuring the Ruby Slippers for HTML</title>
+    <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/config_html3.html</link>
+    <description>  &lt;p&gt;
+      &lt;!--
+      marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
+      --&gt;
+      This post is part of 
+      &lt;a href=&quot;http://jeffreykegler.github.com/Ocean-of-Awareness-blog/metapages/annotated.html#PARSE_HTML&quot;&gt;
+        a series&lt;/a&gt;
+	describing Marpa::R2::HTML,
+      a configurable HTML parser.
+      The last two posts described how to change
+      context and contents of the HTML
+      elements, both new and existing.
+      This post describes how to configure the parser's behavior with respect
+      to optional tags.
+    &lt;/p&gt;
+    &lt;h3&gt;Optional HTML tags&lt;/h3&gt;
+      Every non-empty HTML element has, in concept,
+      a start and an end tag,
+      but the standards allow both to be omitted in circumstances
+      where it is expected that the HTML parser
+      is able to &quot;do what you mean&quot;.
+      The
+      &lt;a href=&quot;http://www.w3.org/TR/1999/PR-html40-19990824/sgml/dtd.html#inline&quot;&gt;
+        HTML 4.01 Strict DTD&lt;/a&gt;
+	allows end tags to be omitted for
+      &lt;tt&gt;&amp;lt;p&amp;gt;&lt;/tt&gt; and
+      &lt;tt&gt;&amp;lt;li&amp;gt;&lt;/tt&gt;
+	elements, for example.
+	For the structural elements,
+      (&lt;tt&gt;&amp;lt;html&amp;gt;&lt;/tt&gt;,
+      &lt;tt&gt;&amp;lt;head&amp;gt;&lt;/tt&gt; and
+      &lt;tt&gt;&amp;lt;body&amp;gt;&lt;/tt&gt;)
+	both tags can be omitted.
+	The same is true for the &quot;table body&quot; element (&lt;tt&gt;&amp;lt;tbody&amp;gt;&lt;/tt&gt;).
+	Marpa::R2::HTML goes well beyond the requirements of the standards.
+	In Marpa::R2::HTML all end tags are optional,
+	and which start tags are optional is up to you.
+    &lt;h3&gt;How the parser works&lt;/h3&gt;
+    &lt;p&gt;
+    In the first posts in this series I went into some detail describing
+    my Marpa-based approach to HTML parsing.
+    Briefly, it combines a parse engine using a &quot;wishful thinking&quot; grammar
+    with a Ruby Slippers lexer.
+    The &quot;wishful thinking&quot; grammar expects all elements,
+    without exception,
+    to have both start and end tags.
+    This overstrict grammar demands tags even in cases
+    where the HTML 4.01 Strict DTD
+    mandates they be treated as optional.
+    &lt;p&gt;
+    The overstrict grammar is liberalized by the Ruby Slippers.
+    Marpa has an unusual property among parsers -- it is fully
+    informed about the state of the parse at all points,
+    and can conveniently and efficiently share that information
+    with the application.
+    In this case, when the parse engine, with its
+    overstrict grammar, grinds to a halt for lack
+    of a tag that does not exist
+    in the physical input,
+    the lexer can ask the parse engine which tag is looking for.
+    It can then dummy one up, feed it to the parse engine,
+    and start things back up.
+    It's as simple as that.
+    &lt;p&gt;
+    And in the case of HTML end tags,
+    the Ruby Slippers works stunningly well.
+    Only one end tag will be expected at any point.
+    Even in cases where a stack of elements must be properly terminated,
+    the parse engine will request the end tags, one at a time,
+    in proper order.
+    The grammar can simplify life for itself by demanding a perfect
+    world, and on the lexer's side, things are no harder -- it just
+    has to do what it is told.
+    &lt;p&gt;
+    For start tags that are optional according to the Strict HTML 4.01,
+    things are just as simple -- they occur in place where only one
+    at a time will be demanded, and the Ruby Slippers lexer need
+    only do what it is told to.
+    However, if you want to further liberalize HTML, there will be
+    cases where there is a choice between start tags, or between
+    starting one element or ending another.
+    &lt;p&gt;
+    For example, if the &lt;tt&gt;&amp;lt;/table&amp;gt;&lt;/tt&gt; end tag is optional,
+    what do you do when you see a 
+    &lt;tt&gt;&amp;lt;table&amp;gt;&lt;/tt&gt; start tag while building a table?
+    End the current table?
+    Or nest them?
+    In real-life HTML,
+    nested tables are extremely common.
+    &lt;h3&gt;Code and comments&lt;/h3&gt;
+    &lt;p&gt;
+      Comments on this post can be sent to the Marpa Google Group:
+      &lt;code&gt;marpa-parser@googlegroups.com&lt;/code&gt;
+    &lt;/p&gt;</description>
+  </item>
+  <item>
     <title>A configurable HTML parser, part 2</title>
     <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/config_html2.html</link>
     <description>  &lt;p&gt;
@@ -979,92 +1077,6 @@ ELE_acme is a FLO_empty included in GRP_block
         marpa_r2_html_fmt&lt;/tt&gt; script.
       But why wait until then to fork it?
     &lt;/p&gt;</description>
-  </item>
-  <item>
-    <title>Marpa::R2 is beta</title>
-    <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/r2_is_beta.html</link>
-    <description>&lt;a href=&quot;https://metacpan.org/release/Marpa-R2&quot;&gt;Marpa::R2&lt;/a&gt;
-is now beta.
-Marpa is a new parsing algorithm,
-based on decades of prior art.
-It is a practical and efficient solution
-targeted at all parsing problems that are too
-complex for regular expressions.
-&lt;p&gt;
-The
-&lt;a href=&quot;https://metacpan.org/release/Marpa-R2&quot;&gt;Marpa::R2&lt;/a&gt;
-module is the most recent Marpa module.
-Marpa is also available as the
-&lt;a href=&quot;https://metacpan.org/release/Marpa-XS&quot;&gt;
-Marpa::XS&lt;/a&gt;
-module,
-which is stable and bug-fix only.
-Both Marpa modules:
-&lt;ol&gt;
-&lt;li&gt;&lt;p&gt;Parse everything you can write in BNF.
-&lt;li&gt;&lt;p&gt;
-Parse all
-classes of grammar in practical use today in linear time.
-&lt;li&gt;&lt;p&gt;Parse all BNF grammars
-in times considered theoretically optimal.
-For unambiguous grammars, Marpa is never worse than
-O(n&lt;sup&gt;2&lt;/sup&gt;).
-For ambiguous grammars, Marpa is never worse than
-O(n&lt;sup&gt;3&lt;/sup&gt;).
-Marpa never goes exponential.
-&lt;li&gt;&lt;p&gt;
-Are fully aware, at every point in the parse, of
-all the rules they are parsing,
-how far into them they have proceeded,
-and of what tokens they expect next.
-Especially with Marpa::R2,
-this information is available
-to the application
-conveniently and efficiently.
-&lt;li&gt;&lt;p&gt;
-Do not need to be handwritten.
-Marpa is available as a open-source library.
-It is written in C,
-and the C library can be used
-&lt;a href=&quot;http://jeffreykegler.github.com/Marpa/libmarpa.html&quot;&gt;
-directly&lt;/a&gt;
-or via
-&lt;a href=&quot;https://metacpan.org/release/Marpa-R2&quot;&gt;
-a Perl interface&lt;/a&gt;.
-&lt;li&gt;&lt;p&gt;
-For general BNF parsing,
-do not require
-the user to craft
-a lookahead or backtracking strategy -- Marpa
-does not use lookahead and never backtracks.
-&lt;li&gt;&lt;p&gt;
-Come
-with the traditional theoretical apparatus of
-proofs based on prior literature.
-&lt;/ol&gt;
-&lt;p&gt;
-&lt;a href=&quot;https://metacpan.org/release/Marpa-R2&quot;&gt;Marpa::R2&lt;/a&gt;
-is a major rewrite of the Marpa internals.
-The most visible of these changes:
-&lt;ol&gt;
-&lt;li&gt;&lt;p&gt;Marpa::R2 is faster.
-&lt;li&gt;&lt;p&gt;Marpa::R2 is easier to install.
-In particular the dependency on Glib has been removed.
-Marpa::R2 now has no non-core CPAN dependencies.
-&lt;li&gt;&lt;p&gt;Marpa::R2's internal symbols are now invisible
-to the user, even when tracing and debugging.
-&lt;li&gt;&lt;p&gt;
-&lt;a href=&quot;http://jeffreykegler.github.com/Marpa/libmarpa&quot;&gt;
-Libmarpa, the C library which is at the core of Marpa&lt;/a&gt;,
-is now documented
-and separately installable.
-(Libmarpa remains alpha at this point.)
-&lt;li&gt;&lt;p&gt;Another new documented interface,
-&lt;a href=&quot;https://metacpan.org/module/Marpa::R2::Advanced::Thin&quot;&gt;
-Marpa::R2::Thin&lt;/a&gt;,
-is a &quot;thin&quot; interface to Libmarpa from Perl.
-(Marpa::R2::Thin remains alpha at this point.)
-&lt;/ol&gt;</description>
   </item>
   </channel>
 </rss>

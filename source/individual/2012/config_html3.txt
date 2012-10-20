@@ -1,0 +1,95 @@
+Configuring the Ruby Slippers for HTML
+  <p>
+      <!--
+      marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
+      -->
+      This post is part of 
+      <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/metapages/annotated.html#PARSE_HTML">
+        a series</a>
+	describing Marpa::R2::HTML,
+      a configurable HTML parser.
+      The last two posts described how to change
+      context and contents of the HTML
+      elements, both new and existing.
+      This post describes how to configure the parser's behavior with respect
+      to optional tags.
+    </p>
+    <h3>Optional HTML tags</h3>
+      Every non-empty HTML element has, in concept,
+      a start and an end tag,
+      but the standards allow both to be omitted in circumstances
+      where it is expected that the HTML parser
+      is able to "do what you mean".
+      The
+      <a href="http://www.w3.org/TR/1999/PR-html40-19990824/sgml/dtd.html#inline">
+        HTML 4.01 Strict DTD</a>
+	allows end tags to be omitted for
+      <tt>&lt;p&gt;</tt> and
+      <tt>&lt;li&gt;</tt>
+	elements, for example.
+	For the structural elements,
+      (<tt>&lt;html&gt;</tt>,
+      <tt>&lt;head&gt;</tt> and
+      <tt>&lt;body&gt;</tt>)
+	both tags can be omitted.
+	The same is true for the "table body" element (<tt>&lt;tbody&gt;</tt>).
+	Marpa::R2::HTML goes well beyond the requirements of the standards.
+	In Marpa::R2::HTML all end tags are optional,
+	and which start tags are optional is up to you.
+    <h3>How the parser works</h3>
+    <p>
+    In the first posts in this series I went into some detail describing
+    my Marpa-based approach to HTML parsing.
+    Briefly, it combines a parse engine using a "wishful thinking" grammar
+    with a Ruby Slippers lexer.
+    The "wishful thinking" grammar expects all elements,
+    without exception,
+    to have both start and end tags.
+    This overstrict grammar demands tags even in cases
+    where the HTML 4.01 Strict DTD
+    mandates they be treated as optional.
+    <p>
+    The overstrict grammar is liberalized by the Ruby Slippers.
+    Marpa has an unusual property among parsers -- it is fully
+    informed about the state of the parse at all points,
+    and can conveniently and efficiently share that information
+    with the application.
+    In this case, when the parse engine, with its
+    overstrict grammar, grinds to a halt for lack
+    of a tag that does not exist
+    in the physical input,
+    the lexer can ask the parse engine which tag is looking for.
+    It can then dummy one up, feed it to the parse engine,
+    and start things back up.
+    It's as simple as that.
+    <p>
+    And in the case of HTML end tags,
+    the Ruby Slippers works stunningly well.
+    Only one end tag will be expected at any point.
+    Even in cases where a stack of elements must be properly terminated,
+    the parse engine will request the end tags, one at a time,
+    in proper order.
+    The grammar can simplify life for itself by demanding a perfect
+    world, and on the lexer's side, things are no harder -- it just
+    has to do what it is told.
+    <p>
+    For start tags that are optional according to the Strict HTML 4.01,
+    things are just as simple -- they occur in place where only one
+    at a time will be demanded, and the Ruby Slippers lexer need
+    only do what it is told to.
+    However, if you want to further liberalize HTML, there will be
+    cases where there is a choice between start tags, or between
+    starting one element or ending another.
+    <p>
+    For example, if the <tt>&lt;/table&gt;</tt> end tag is optional,
+    what do you do when you see a 
+    <tt>&lt;table&gt;</tt> start tag while building a table?
+    End the current table?
+    Or nest them?
+    In real-life HTML,
+    nested tables are extremely common.
+    <h3>Code and comments</h3>
+    <p>
+      Comments on this post can be sent to the Marpa Google Group:
+      <code>marpa-parser@googlegroups.com</code>
+    </p>
