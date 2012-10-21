@@ -296,8 +296,7 @@ PCDATA -&gt; @inline_rubies
       <pre><tt>@inline_rubies = @block_rubies &lt;tbody&gt; &lt;tr&gt; &lt;td&gt;</tt></pre>
     </blockquote>
     <p>
-      In the default configuration file,
-      changing
+      Changing
       <tt>@inline_rubies</tt>
       has effect
       of eliminating

@@ -309,8 +309,7 @@ PCDATA -&amp;gt; @inline_rubies
       &lt;pre&gt;&lt;tt&gt;@inline_rubies = @block_rubies &amp;lt;tbody&amp;gt; &amp;lt;tr&amp;gt; &amp;lt;td&amp;gt;&lt;/tt&gt;&lt;/pre&gt;
     &lt;/blockquote&gt;
     &lt;p&gt;
-      In the default configuration file,
-      changing
+      Changing
       &lt;tt&gt;@inline_rubies&lt;/tt&gt;
       has effect
       of eliminating
