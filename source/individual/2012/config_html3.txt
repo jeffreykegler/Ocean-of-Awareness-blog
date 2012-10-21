@@ -310,10 +310,10 @@ PCDATA -&gt; @inline_rubies
       Only <tt>&lt;p&gt;</tt> tags actually in the physical
       input will be recognized.
       This is what was actually done
-      in the
+      in
       <a href="https://gist.github.com/3925571">
         <tt>g/config/reject_text.txt</tt>,
-        configuration file used in our example</a>.
+        the configuration file used in our example</a>.
     </p>
     <h3>Code and comments</h3>
     <p>
