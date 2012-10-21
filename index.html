@@ -271,11 +271,16 @@ list:
 <blockquote><pre><tt>
 @inline_rubies = @block_rubies &lt;tbody&gt; &lt;tr&gt; &lt;td&gt; 
 </tt></pre></blockquote>
-Changing <tt>@inline_rubies</tt> will have the additional effect
+In the default configuration file,
+changing <tt>@inline_rubies</tt> has effect
 of elimination the
-<tt>&lt;p&gt;</tt>
+<tt>&lt;p&gt;</tt> start tag
 as a Ruby Slippers token in all cases,
-which is what was actually done in our example.
+and this is what was actually done
+in the
+<a href="https://gist.github.com/3925571">
+<tt>g/config/reject_text.txt</tt>,
+configuration file used in our example</a>.
     <h3>Code and comments</h3>
     <p>
       Comments on this post can be sent to the Marpa Google Group:
