@@ -48,17 +48,19 @@
 	describing Marpa::R2::HTML,
       a configurable HTML parser.
       The last two posts described how to change
-      context and contents of the HTML
+      the context and contents of the HTML
       elements, both new and existing.
-      This post describes how to configure the parser's behavior with respect
-      to optional tags.
+      This post describes how to configure
+      optional start tags -- which start tags
+      are allowed to be optional,
+      and under what circumstances.
     </p>
     <h3>Optional HTML tags</h3>
       Every non-empty HTML element has, in concept,
       a start and an end tag,
       but the standards allow both to be omitted in circumstances
       where it is expected that the HTML parser
-      is able to "do what you mean".
+      can easily "do what you mean".
       The
       <a href="http://www.w3.org/TR/1999/PR-html40-19990824/sgml/dtd.html#inline">
         HTML 4.01 Strict DTD</a>
@@ -72,6 +74,7 @@
       <tt>&lt;body&gt;</tt>)
 	both tags can be omitted.
 	The same is true for the "table body" element (<tt>&lt;tbody&gt;</tt>).
+	<p>
 	Marpa::R2::HTML goes well beyond the requirements of the standards.
 	In Marpa::R2::HTML all end tags are optional,
 	and which start tags are optional is up to you.
@@ -86,24 +89,24 @@
     to have both start and end tags.
     This overstrict grammar demands tags even in cases
     where the HTML 4.01 Strict DTD
-    mandates they be treated as optional.
+    mandates that they be treated as optional.
     <p>
     The overstrict grammar is liberalized by the Ruby Slippers.
     Marpa has an unusual property among parsers -- it is fully
     informed about the state of the parse at all points,
     and can conveniently and efficiently share that information
     with the application.
-    In this case, when the parse engine, with its
+    In Marpa::R2::HTML, when the parse engine, with its
     overstrict grammar, grinds to a halt for lack
     of a tag that does not exist
     in the physical input,
-    the lexer can ask the parse engine which tag is looking for.
+    the lexer can ask the parse engine which tag it is looking for.
     It can then dummy one up, feed it to the parse engine,
     and start things back up.
     It's as simple as that.
     <p>
     And in the case of HTML end tags,
-    the Ruby Slippers works stunningly well.
+    the Ruby Slippers work stunningly well.
     Only one end tag will be expected at any point.
     Even in cases where a stack of elements must be properly terminated,
     the parse engine will request the end tags, one at a time,
@@ -113,20 +116,83 @@
     has to do what it is told.
     <p>
     For start tags that are optional according to the Strict HTML 4.01,
-    things are just as simple -- they occur in place where only one
+    things are just as simple -- they occur in places where only one
     at a time will be demanded, and the Ruby Slippers lexer need
     only do what it is told to.
     However, if you want to further liberalize HTML, there will be
     cases where there is a choice between start tags, or between
     starting one element or ending another.
+    <h3>Configuring the Ruby Slippers</h3>
     <p>
-    For example, if the <tt>&lt;/table&gt;</tt> end tag is optional,
-    what do you do when you see a 
-    <tt>&lt;table&gt;</tt> start tag while building a table?
-    End the current table?
-    Or nest them?
-    In real-life HTML,
-    nested tables are extremely common.
+    In the last post,
+    I showed how to configure Marpa::R2::HTML to allow or disallow
+    text directly in the
+    <tt>&lt;body&gt;</tt>
+    element.
+    If Marpa::R2::HTML
+    encountered text that was directly part of the
+    <tt>&lt;body&gt;</tt> element
+    and it was configured to not allow that,
+    Marpa::R2::HTML would start a block
+    by supplying a <tt>&lt;p&gt;</tt>
+    start tag in front of the text.
+    In other words, Marpa::R2::HTML treated
+    the <tt>&lt;p&gt;</tt>
+    start tag as optional.
+    <p>
+    As an example suppose the HTML document consists of the string 
+<blockquote><pre><tt>
+    Hello, world
+</tt></pre></blockquote>
+To see how this parses by default, we run <tt>html_fmt</tt>,
+as follows:
+<blockquote><pre><tt>
+echo 'Hello, world' |
+/Users/jeffreykegler/perl5/bin/marpa_r2_html_fmt --no-added-tag-comment
+</tt></pre></blockquote>
+This is our result:
+<blockquote><pre><tt>
+&lt;html&gt;
+  &lt;head&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;p&gt;
+      Hello, world
+    &lt;/p&gt;&lt;/body&gt;
+&lt;/html&gt;
+</tt></pre></blockquote>
+This was produced using the default configuration which
+resides in
+<a href="http://api.metacpan.org/source/JKEGL/Marpa-R2-2.022000/g/config/default.txt">
+the 
+<tt>g/config/default.txt</tt> file</a>.
+(All the examples is this post use version 2.022000 of Marpa::R2.)
+<p>
+We want to a new configuration,
+call it
+<tt>g/config/reject_text.txt</tt>,
+that will not start a new
+<tt>&lt;p&gt;</tt> element,
+but instead reject the text as cruft.
+To see if it worked we can use <tt>html_fmt</tt>:
+<blockquote><pre><tt>
+echo 'Hello, world' |
+/Users/jeffreykegler/perl5/bin/marpa_r2_html_fmt --compile reject_pcdata.txt  --no-added-tag-comment
+</tt></pre></blockquote>
+This should be our result:
+<blockquote><pre><tt&>
+&lt;html&gt;
+  &lt;head&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;!-- html_fmt: Next line is cruft --&gt;
+    Hello, world
+&lt;/body&gt;
+</tt></pre></blockquote>
+<p>Note that in this second example, there are no tags
+for the 
+<tt>&lt;p&gt;</tt> element,
+and that the text is now labeled as "cruft", as desired.
     <h3>Code and comments</h3>
     <p>
       Comments on this post can be sent to the Marpa Google Group:
