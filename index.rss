@@ -309,14 +309,18 @@ PCDATA -&amp;gt; @inline_rubies
       &lt;pre&gt;&lt;tt&gt;@inline_rubies = @block_rubies &amp;lt;tbody&amp;gt; &amp;lt;tr&amp;gt; &amp;lt;td&amp;gt;&lt;/tt&gt;&lt;/pre&gt;
     &lt;/blockquote&gt;
     &lt;p&gt;
-      Changing
+      In the Ruby Slippers configuration lines of
+      the default configuration file,
+      the &lt;tt&gt;@inline_rubies&lt;/tt&gt; list is the only place that
+      the
+      &lt;tt&gt;&amp;lt;p&amp;gt;&lt;/tt&gt; tag is mentioned.
+      So changing
       &lt;tt&gt;@inline_rubies&lt;/tt&gt;
       has effect
       of eliminating
       &lt;tt&gt;&amp;lt;p&amp;gt;&lt;/tt&gt;
-      as an optional start tag
-      in all cases --
-      only &lt;tt&gt;&amp;lt;p&amp;gt;&lt;/tt&gt; tags actually in the physical
+      as an optional start tag.
+      Only &lt;tt&gt;&amp;lt;p&amp;gt;&lt;/tt&gt; tags actually in the physical
       input will be recognized.
       This is what was actually done
       in the
