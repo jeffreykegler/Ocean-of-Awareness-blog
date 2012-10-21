@@ -25,37 +25,11 @@
       the context and contents of the HTML
       elements, both new and existing.
       This post describes how to configure
-      optional start tags -- which start tags
-      are allowed to be optional,
-      and under what circumstances.
-    &lt;/p&gt;
-    &lt;h3&gt;Optional HTML tags&lt;/h3&gt;
-    &lt;p&gt;
-      Every non-empty HTML element has, in concept,
-      a start and an end tag,
-      but the standards allow both to be omitted in circumstances
-      where it is expected that the HTML parser
-      can easily &quot;do what you mean&quot;.
-      The
-      &lt;a href=&quot;http://www.w3.org/TR/1999/PR-html40-19990824/sgml/dtd.html#inline&quot;&gt;
-        HTML 4.01 Strict DTD&lt;/a&gt;
-      allows end tags to be omitted for
-      &lt;tt&gt;&amp;lt;p&amp;gt;&lt;/tt&gt;
-      and
-      &lt;tt&gt;&amp;lt;li&amp;gt;&lt;/tt&gt;
-      elements, for example.
-      For the structural elements,
-      (&lt;tt&gt;&amp;lt;html&amp;gt;&lt;/tt&gt;,
-      &lt;tt&gt;&amp;lt;head&amp;gt;&lt;/tt&gt;
-      and
-      &lt;tt&gt;&amp;lt;body&amp;gt;&lt;/tt&gt;)
-      both tags can be omitted.
-      The same is true for the &quot;table body&quot; element (&lt;tt&gt;&amp;lt;tbody&amp;gt;&lt;/tt&gt;).
-    &lt;/p&gt;
-    &lt;p&gt;
-      Marpa::R2::HTML goes well beyond the requirements of the standards.
-      In Marpa::R2::HTML all end tags are optional,
-      and which start tags are optional is up to you.
+      optional start tags -- to change 
+      which start tags
+      are optional,
+      and to specify the circumstances
+      under which they will be supplied.
     &lt;/p&gt;
     &lt;h3&gt;How the parser works&lt;/h3&gt;
     &lt;p&gt;
@@ -67,7 +41,9 @@
       without exception,
       to have both start and end tags.
       This overstrict grammar demands tags even in cases
-      where the HTML 4.01 Strict DTD
+      where the
+      &lt;a href=&quot;http://www.w3.org/TR/1999/PR-html40-19990824/sgml/dtd.html#inline&quot;&gt;
+        HTML 4.01 Strict DTD&lt;/a&gt;
       mandates that they be treated as optional.
     &lt;/p&gt;
     &lt;p&gt;
@@ -86,7 +62,7 @@
       It's as simple as that.
     &lt;/p&gt;
     &lt;p&gt;
-      And in the case of HTML end tags,
+      In the case of HTML end tags,
       the Ruby Slippers work stunningly well.
       Only one end tag will be expected at any point.
       Even in cases where a stack of elements must be properly terminated,
@@ -97,7 +73,8 @@
       has to do what it is told.
     &lt;/p&gt;
     &lt;p&gt;
-      For start tags that are optional according to the Strict HTML 4.01,
+      For the very few start tags
+      that are optional according to the Strict HTML 4.01,
       things are just as simple -- they occur in places where only one
       at a time will be demanded, and the Ruby Slippers lexer need
       only do what it is told to.
@@ -126,26 +103,21 @@
       &lt;tt&gt;&amp;lt;p&amp;gt;&lt;/tt&gt;
       start tag as optional.
     &lt;/p&gt;
-    &lt;h3&gt;First, the results&lt;/h3&gt;
-    &lt;p&gt;The configuration will not be difficult,
-      but it is perhaps still best to first show the result
-      that I am aiming at.
-      Suppose the HTML document consists of the string
+      Suppose the HTML document consisted of the string
     &lt;/p&gt;
     &lt;blockquote&gt;
       &lt;pre&gt;&lt;tt&gt;Hello, world&lt;/tt&gt;&lt;/pre&gt;
     &lt;/blockquote&gt;
     &lt;p&gt;
-      To see how this parses by default, we run
-      &lt;tt&gt;html_fmt&lt;/tt&gt;,
-      as follows:
+      and that, using the default configuration,
+      we ran &lt;tt&gt;html_fmt&lt;/tt&gt; as  follows:
     &lt;/p&gt;
     &lt;blockquote&gt;
       &lt;pre&gt;&lt;tt&gt;echo 'Hello, world' |
 /Users/jeffreykegler/perl5/bin/marpa_r2_html_fmt --no-added-tag-comment&lt;/tt&gt;&lt;/pre&gt;
     &lt;/blockquote&gt;
     &lt;p&gt;
-      This is our result:
+      This would be our result:
     &lt;/p&gt;
     &lt;blockquote&gt;
       &lt;pre&gt;&lt;tt&gt;&amp;lt;html&amp;gt;
@@ -167,16 +139,24 @@
         file&lt;/a&gt;.
       (All the examples is this post use version 2.022000 of Marpa::R2.)
     &lt;/p&gt;
+    &lt;h3&gt;First, the results&lt;/h3&gt;
     &lt;p&gt;
-      We want to a new configuration,
-      call it
-      &lt;tt&gt;g/config/reject_text.txt&lt;/tt&gt;,
-      that will not start a new
+      Let's change the behavior of 
+      Marpa::R2::HTML, so that,
+      instead of starting a new
       &lt;tt&gt;&amp;lt;p&amp;gt;&lt;/tt&gt;
       element,
-      but instead reject the text as cruft.
-      To see if it worked we can use
-      &lt;tt&gt;html_fmt&lt;/tt&gt;:
+      it will reject the text as cruft.
+      We'' create a new configuration,
+      putting it into a file named
+      &lt;tt&gt;g/config/reject_text.txt&lt;/tt&gt;.
+    &lt;p&gt;
+      Creating the
+      configuration will not be difficult,
+      but it will perhaps be easiest to understand
+      if we first see the result
+      that we are aiming at.
+      Again we run &lt;tt&gt;html_fmt&lt;/tt&gt;:
     &lt;/p&gt;
     &lt;blockquote&gt;
       &lt;pre&gt;&lt;tt&gt;echo 'Hello, world' |
@@ -184,7 +164,7 @@
   --compile reject_pcdata.txt  --no-added-tag-comment&lt;/tt&gt;&lt;/pre&gt;
     &lt;/blockquote&gt;
     &lt;p&gt;
-      This should be our result:
+      And this is our new result:
     &lt;/p&gt;&lt;blockquote&gt;&lt;pre&gt;&lt;tt&gt;&amp;lt;html&amp;gt;
   &amp;lt;head&amp;gt;
   &amp;lt;/head&amp;gt;

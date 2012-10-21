@@ -12,37 +12,11 @@ Configuring the Ruby Slippers for HTML
       the context and contents of the HTML
       elements, both new and existing.
       This post describes how to configure
-      optional start tags -- which start tags
-      are allowed to be optional,
-      and under what circumstances.
-    </p>
-    <h3>Optional HTML tags</h3>
-    <p>
-      Every non-empty HTML element has, in concept,
-      a start and an end tag,
-      but the standards allow both to be omitted in circumstances
-      where it is expected that the HTML parser
-      can easily "do what you mean".
-      The
-      <a href="http://www.w3.org/TR/1999/PR-html40-19990824/sgml/dtd.html#inline">
-        HTML 4.01 Strict DTD</a>
-      allows end tags to be omitted for
-      <tt>&lt;p&gt;</tt>
-      and
-      <tt>&lt;li&gt;</tt>
-      elements, for example.
-      For the structural elements,
-      (<tt>&lt;html&gt;</tt>,
-      <tt>&lt;head&gt;</tt>
-      and
-      <tt>&lt;body&gt;</tt>)
-      both tags can be omitted.
-      The same is true for the "table body" element (<tt>&lt;tbody&gt;</tt>).
-    </p>
-    <p>
-      Marpa::R2::HTML goes well beyond the requirements of the standards.
-      In Marpa::R2::HTML all end tags are optional,
-      and which start tags are optional is up to you.
+      optional start tags -- to change 
+      which start tags
+      are optional,
+      and to specify the circumstances
+      under which they will be supplied.
     </p>
     <h3>How the parser works</h3>
     <p>
@@ -54,7 +28,9 @@ Configuring the Ruby Slippers for HTML
       without exception,
       to have both start and end tags.
       This overstrict grammar demands tags even in cases
-      where the HTML 4.01 Strict DTD
+      where the
+      <a href="http://www.w3.org/TR/1999/PR-html40-19990824/sgml/dtd.html#inline">
+        HTML 4.01 Strict DTD</a>
       mandates that they be treated as optional.
     </p>
     <p>
@@ -73,7 +49,7 @@ Configuring the Ruby Slippers for HTML
       It's as simple as that.
     </p>
     <p>
-      And in the case of HTML end tags,
+      In the case of HTML end tags,
       the Ruby Slippers work stunningly well.
       Only one end tag will be expected at any point.
       Even in cases where a stack of elements must be properly terminated,
@@ -84,7 +60,8 @@ Configuring the Ruby Slippers for HTML
       has to do what it is told.
     </p>
     <p>
-      For start tags that are optional according to the Strict HTML 4.01,
+      For the very few start tags
+      that are optional according to the Strict HTML 4.01,
       things are just as simple -- they occur in places where only one
       at a time will be demanded, and the Ruby Slippers lexer need
       only do what it is told to.
@@ -113,26 +90,21 @@ Configuring the Ruby Slippers for HTML
       <tt>&lt;p&gt;</tt>
       start tag as optional.
     </p>
-    <h3>First, the results</h3>
-    <p>The configuration will not be difficult,
-      but it is perhaps still best to first show the result
-      that I am aiming at.
-      Suppose the HTML document consists of the string
+      Suppose the HTML document consisted of the string
     </p>
     <blockquote>
       <pre><tt>Hello, world</tt></pre>
     </blockquote>
     <p>
-      To see how this parses by default, we run
-      <tt>html_fmt</tt>,
-      as follows:
+      and that, using the default configuration,
+      we ran <tt>html_fmt</tt> as  follows:
     </p>
     <blockquote>
       <pre><tt>echo 'Hello, world' |
 /Users/jeffreykegler/perl5/bin/marpa_r2_html_fmt --no-added-tag-comment</tt></pre>
     </blockquote>
     <p>
-      This is our result:
+      This would be our result:
     </p>
     <blockquote>
       <pre><tt>&lt;html&gt;
@@ -154,16 +126,24 @@ Configuring the Ruby Slippers for HTML
         file</a>.
       (All the examples is this post use version 2.022000 of Marpa::R2.)
     </p>
+    <h3>First, the results</h3>
     <p>
-      We want to a new configuration,
-      call it
-      <tt>g/config/reject_text.txt</tt>,
-      that will not start a new
+      Let's change the behavior of 
+      Marpa::R2::HTML so that,
+      instead of starting a new
       <tt>&lt;p&gt;</tt>
       element,
-      but instead reject the text as cruft.
-      To see if it worked we can use
-      <tt>html_fmt</tt>:
+      it will reject the text as cruft.
+      We'' create a new configuration,
+      putting it into a file named
+      <tt>g/config/reject_text.txt</tt>.
+    <p>
+      Creating the
+      configuration will not be difficult,
+      but it will perhaps be easiest to understand
+      if we first see the result
+      that we are aiming at.
+      Again we run <tt>html_fmt</tt>:
     </p>
     <blockquote>
       <pre><tt>echo 'Hello, world' |
@@ -171,7 +151,7 @@ Configuring the Ruby Slippers for HTML
   --compile reject_pcdata.txt  --no-added-tag-comment</tt></pre>
     </blockquote>
     <p>
-      This should be our result:
+      And this is our new result:
     </p><blockquote><pre><tt>&lt;html&gt;
   &lt;head&gt;
   &lt;/head&gt;
