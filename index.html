@@ -88,7 +88,7 @@
       It's as simple as that.
     </p>
     <p>
-      In the case of HTML end tags,
+      For HTML end tags,
       the Ruby Slippers work stunningly well.
       Only one end tag will be expected at any point.
       In cases where a stack of elements must be properly terminated,
@@ -100,7 +100,7 @@
     </p>
     <p>
       For the very few start tags
-      that are optional according to the Strict HTML 4.01,
+      that are optional according to the Strict HTML 4.01 DTD,
       things are just as simple -- they occur in places where only one
       at a time will be demanded, and the Ruby Slippers lexer need
       only do what it is told to.
@@ -117,7 +117,7 @@
       <tt>&lt;body&gt;</tt>
       element.
       If Marpa::R2::HTML
-      was configured to not allow 
+      was configured to disallow 
       text directly in the
       <tt>&lt;body&gt;</tt>
       element,
@@ -161,8 +161,8 @@
 </tt></pre>
     </blockquote>
     <p>
-      This was produced using the default configuration which
-      resides in
+      This was produced using the default configuration,
+      which resides in
       <a href="http://api.metacpan.org/source/JKEGL/Marpa-R2-2.022000/g/config/default.txt">
         the
         <tt>g/config/default.txt</tt>
@@ -314,7 +314,7 @@ PCDATA -&gt; @inline_rubies
     </p>
     <p>
       Once you understand how the Ruby Slippers configuration lines work,
-      the fix in this case becomes obvious.
+      the fix in this case becomes obvious:
       In the expanded line,
       elminate the
       <tt>&lt;p&gt;</tt>
