@@ -100,8 +100,11 @@ Configuring the Ruby Slippers for HTML
     In other words, Marpa::R2::HTML treated
     the <tt>&lt;p&gt;</tt>
     start tag as optional.
-    <p>
-    As an example suppose the HTML document consists of the string 
+    <h3>First, the results</h3>
+    <p>The configuration will not be difficult,
+    but it is perhaps still best to first show the result
+    that I am aiming at.
+    Suppose the HTML document consists of the string 
 <blockquote><pre><tt>
     Hello, world
 </tt></pre></blockquote>
@@ -138,10 +141,11 @@ but instead reject the text as cruft.
 To see if it worked we can use <tt>html_fmt</tt>:
 <blockquote><pre><tt>
 echo 'Hello, world' |
-/Users/jeffreykegler/perl5/bin/marpa_r2_html_fmt --compile reject_pcdata.txt  --no-added-tag-comment
+/Users/jeffreykegler/perl5/bin/marpa_r2_html_fmt \
+  --compile reject_pcdata.txt  --no-added-tag-comment
 </tt></pre></blockquote>
 This should be our result:
-<blockquote><pre><tt&>
+<blockquote><pre><tt>
 &lt;html&gt;
   &lt;head&gt;
   &lt;/head&gt;
@@ -154,6 +158,85 @@ This should be our result:
 for the 
 <tt>&lt;p&gt;</tt> element,
 and that the text is now labeled as "cruft", as desired.
+    <h3>How it was done</h3>
+    How would we change the default configuration file to refuse to start a new
+<tt>&lt;p&gt;</tt> element in front of text?
+The three relevant lines are:
+<blockquote><pre><tt>
+@block_rubies  = &lt;html&gt; &lt;head&gt; &lt;body&gt;
+@inline_rubies = @block_rubies &lt;tbody&gt; &lt;tr&gt; &lt;td&gt; &lt;p&gt;
+PCDATA -&gt; @inline_rubies
+</tt></pre></blockquote>
+<p>The symbols with an "<tt>@</tt>" sigil are lists,
+which the configuration file uses as a convenient shorthand for groups
+of symbols which occur frequently.
+For convenience in this discussion,
+let's expand them, so that relevant extract looks like this
+<blockquote><pre><tt>
+PCDATA -&gt; &lt;html&gt; &lt;head&gt; &lt;body&gt; &lt;tbody&gt; &lt;tr&gt; &lt;td&gt; &lt;p&gt;
+</tt></pre></blockquote>
+<p>
+In the configuration file,
+<tt>PCDATA</tt> can be thought of as non-whitespace text.
+Precisely, it is whatever
+HTML::Parser returns as text that is not whitespace
+and does not have the <tt>is_cdata</tt> flag turned on.)
+What this line says, is, whenever <tt>PCDATA</tt> is rejected,
+try to fix the problem by
+<ul>
+<li>1. If possible, starting an <tt>&lt;html&gt;</tt> element.
+<li>2. Otherwise, if possible, starting an <tt>&lt;head&gt;</tt> element.
+<li>3. Otherwise, if possible, starting an <tt>&lt;body&gt;</tt> element.
+<li>4. Otherwise, if possible, starting an <tt>&lt;tbody&gt;</tt> element.
+<li>5. Otherwise, if possible, starting an <tt>&lt;tr&gt;</tt> element.
+<li>6. Otherwise, if possible, starting an <tt>&lt;td&gt;</tt> element.
+<li>7. Otherwise, if possible, starting an <tt>&lt;p&gt;</tt> element.
+<li>8. Otherwise, by ending whatever element it is possible to end
+at this point.  (There will be at most one.)
+<li>9. Finally, if nothing else works, by marking the "PCDATA" as cruft.
+</ul>
+<p>
+Of these alternatives, the first three allow Marpa::R2::HTML to supply missing
+structural tasks, as required by the standards.
+Alternatives 4, 5 and 6 allow Marpa::R2::HTML to continue building a table
+if table-building is in progress.
+(But note that the line does not allow Marpa::R2::HTML
+to deal with rejected
+PCDATA by starting a new table.)
+Alternative 7 allows Marpa::R2::HTML to start a new
+<tt>&lt;p&gt;</tt>
+element if PCDATA is rejected.
+Alternatives 8 and 9 are implicity.
+By default, after all the explicit Ruby Slippers
+alternatives have been tried,
+Marpa::R2::HTML will create a Ruby Slippers tags
+for any end tag that is allowed.
+And Marpa::R2::HTML always reserves the possibility of,
+as a last resort,
+labeling a token as "cruft" and moving on.
+<p>
+Once you understand how the Ruby Slippers configuration lines work,
+the fix in this case becomes obvious.
+In the expanded line,
+elminate the
+<tt>&lt;p&gt;</tt>
+as one of the alternatives considered for the Ruby Slippers.
+In terms of the expanded line,
+this means changing it to
+<blockquote><pre><tt>
+PCDATA -&gt; &lt;html&gt; &lt;head&gt; &lt;body&gt; &lt;tbody&gt; &lt;tr&gt; &lt;td&gt;
+</tt></pre></blockquote>
+In terms of the original set of lines,
+this means changing the one for the <tt>@inline_rubies</tt>
+list:
+<blockquote><pre><tt>
+@inline_rubies = @block_rubies &lt;tbody&gt; &lt;tr&gt; &lt;td&gt; 
+</tt></pre></blockquote>
+Changing <tt>@inline_rubies</tt> will have the additional effect
+of elimination the
+<tt>&lt;p&gt;</tt>
+as a Ruby Slippers token in all cases,
+which is what was actually done in our example.
     <h3>Code and comments</h3>
     <p>
       Comments on this post can be sent to the Marpa Google Group:

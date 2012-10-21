@@ -113,8 +113,11 @@
     In other words, Marpa::R2::HTML treated
     the &lt;tt&gt;&amp;lt;p&amp;gt;&lt;/tt&gt;
     start tag as optional.
-    &lt;p&gt;
-    As an example suppose the HTML document consists of the string 
+    &lt;h3&gt;First, the results&lt;/h3&gt;
+    &lt;p&gt;The configuration will not be difficult,
+    but it is perhaps still best to first show the result
+    that I am aiming at.
+    Suppose the HTML document consists of the string 
 &lt;blockquote&gt;&lt;pre&gt;&lt;tt&gt;
     Hello, world
 &lt;/tt&gt;&lt;/pre&gt;&lt;/blockquote&gt;
@@ -151,10 +154,11 @@ but instead reject the text as cruft.
 To see if it worked we can use &lt;tt&gt;html_fmt&lt;/tt&gt;:
 &lt;blockquote&gt;&lt;pre&gt;&lt;tt&gt;
 echo 'Hello, world' |
-/Users/jeffreykegler/perl5/bin/marpa_r2_html_fmt --compile reject_pcdata.txt  --no-added-tag-comment
+/Users/jeffreykegler/perl5/bin/marpa_r2_html_fmt \
+  --compile reject_pcdata.txt  --no-added-tag-comment
 &lt;/tt&gt;&lt;/pre&gt;&lt;/blockquote&gt;
 This should be our result:
-&lt;blockquote&gt;&lt;pre&gt;&lt;tt&amp;&gt;
+&lt;blockquote&gt;&lt;pre&gt;&lt;tt&gt;
 &amp;lt;html&amp;gt;
   &amp;lt;head&amp;gt;
   &amp;lt;/head&amp;gt;
@@ -167,6 +171,85 @@ This should be our result:
 for the 
 &lt;tt&gt;&amp;lt;p&amp;gt;&lt;/tt&gt; element,
 and that the text is now labeled as &quot;cruft&quot;, as desired.
+    &lt;h3&gt;How it was done&lt;/h3&gt;
+    How would we change the default configuration file to refuse to start a new
+&lt;tt&gt;&amp;lt;p&amp;gt;&lt;/tt&gt; element in front of text?
+The three relevant lines are:
+&lt;blockquote&gt;&lt;pre&gt;&lt;tt&gt;
+@block_rubies  = &amp;lt;html&amp;gt; &amp;lt;head&amp;gt; &amp;lt;body&amp;gt;
+@inline_rubies = @block_rubies &amp;lt;tbody&amp;gt; &amp;lt;tr&amp;gt; &amp;lt;td&amp;gt; &amp;lt;p&amp;gt;
+PCDATA -&amp;gt; @inline_rubies
+&lt;/tt&gt;&lt;/pre&gt;&lt;/blockquote&gt;
+&lt;p&gt;The symbols with an &quot;&lt;tt&gt;@&lt;/tt&gt;&quot; sigil are lists,
+which the configuration file uses as a convenient shorthand for groups
+of symbols which occur frequently.
+For convenience in this discussion,
+let's expand them, so that relevant extract looks like this
+&lt;blockquote&gt;&lt;pre&gt;&lt;tt&gt;
+PCDATA -&amp;gt; &amp;lt;html&amp;gt; &amp;lt;head&amp;gt; &amp;lt;body&amp;gt; &amp;lt;tbody&amp;gt; &amp;lt;tr&amp;gt; &amp;lt;td&amp;gt; &amp;lt;p&amp;gt;
+&lt;/tt&gt;&lt;/pre&gt;&lt;/blockquote&gt;
+&lt;p&gt;
+In the configuration file,
+&lt;tt&gt;PCDATA&lt;/tt&gt; can be thought of as non-whitespace text.
+Precisely, it is whatever
+HTML::Parser returns as text that is not whitespace
+and does not have the &lt;tt&gt;is_cdata&lt;/tt&gt; flag turned on.)
+What this line says, is, whenever &lt;tt&gt;PCDATA&lt;/tt&gt; is rejected,
+try to fix the problem by
+&lt;ul&gt;
+&lt;li&gt;1. If possible, starting an &lt;tt&gt;&amp;lt;html&amp;gt;&lt;/tt&gt; element.
+&lt;li&gt;2. Otherwise, if possible, starting an &lt;tt&gt;&amp;lt;head&amp;gt;&lt;/tt&gt; element.
+&lt;li&gt;3. Otherwise, if possible, starting an &lt;tt&gt;&amp;lt;body&amp;gt;&lt;/tt&gt; element.
+&lt;li&gt;4. Otherwise, if possible, starting an &lt;tt&gt;&amp;lt;tbody&amp;gt;&lt;/tt&gt; element.
+&lt;li&gt;5. Otherwise, if possible, starting an &lt;tt&gt;&amp;lt;tr&amp;gt;&lt;/tt&gt; element.
+&lt;li&gt;6. Otherwise, if possible, starting an &lt;tt&gt;&amp;lt;td&amp;gt;&lt;/tt&gt; element.
+&lt;li&gt;7. Otherwise, if possible, starting an &lt;tt&gt;&amp;lt;p&amp;gt;&lt;/tt&gt; element.
+&lt;li&gt;8. Otherwise, by ending whatever element it is possible to end
+at this point.  (There will be at most one.)
+&lt;li&gt;9. Finally, if nothing else works, by marking the &quot;PCDATA&quot; as cruft.
+&lt;/ul&gt;
+&lt;p&gt;
+Of these alternatives, the first three allow Marpa::R2::HTML to supply missing
+structural tasks, as required by the standards.
+Alternatives 4, 5 and 6 allow Marpa::R2::HTML to continue building a table
+if table-building is in progress.
+(But note that the line does not allow Marpa::R2::HTML
+to deal with rejected
+PCDATA by starting a new table.)
+Alternative 7 allows Marpa::R2::HTML to start a new
+&lt;tt&gt;&amp;lt;p&amp;gt;&lt;/tt&gt;
+element if PCDATA is rejected.
+Alternatives 8 and 9 are implicity.
+By default, after all the explicit Ruby Slippers
+alternatives have been tried,
+Marpa::R2::HTML will create a Ruby Slippers tags
+for any end tag that is allowed.
+And Marpa::R2::HTML always reserves the possibility of,
+as a last resort,
+labeling a token as &quot;cruft&quot; and moving on.
+&lt;p&gt;
+Once you understand how the Ruby Slippers configuration lines work,
+the fix in this case becomes obvious.
+In the expanded line,
+elminate the
+&lt;tt&gt;&amp;lt;p&amp;gt;&lt;/tt&gt;
+as one of the alternatives considered for the Ruby Slippers.
+In terms of the expanded line,
+this means changing it to
+&lt;blockquote&gt;&lt;pre&gt;&lt;tt&gt;
+PCDATA -&amp;gt; &amp;lt;html&amp;gt; &amp;lt;head&amp;gt; &amp;lt;body&amp;gt; &amp;lt;tbody&amp;gt; &amp;lt;tr&amp;gt; &amp;lt;td&amp;gt;
+&lt;/tt&gt;&lt;/pre&gt;&lt;/blockquote&gt;
+In terms of the original set of lines,
+this means changing the one for the &lt;tt&gt;@inline_rubies&lt;/tt&gt;
+list:
+&lt;blockquote&gt;&lt;pre&gt;&lt;tt&gt;
+@inline_rubies = @block_rubies &amp;lt;tbody&amp;gt; &amp;lt;tr&amp;gt; &amp;lt;td&amp;gt; 
+&lt;/tt&gt;&lt;/pre&gt;&lt;/blockquote&gt;
+Changing &lt;tt&gt;@inline_rubies&lt;/tt&gt; will have the additional effect
+of elimination the
+&lt;tt&gt;&amp;lt;p&amp;gt;&lt;/tt&gt;
+as a Ruby Slippers token in all cases,
+which is what was actually done in our example.
     &lt;h3&gt;Code and comments&lt;/h3&gt;
     &lt;p&gt;
       Comments on this post can be sent to the Marpa Google Group:
