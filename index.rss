@@ -142,7 +142,7 @@
     &lt;h3&gt;First, the results&lt;/h3&gt;
     &lt;p&gt;
       Let's change the behavior of 
-      Marpa::R2::HTML, so that,
+      Marpa::R2::HTML so that,
       instead of starting a new
       &lt;tt&gt;&amp;lt;p&amp;gt;&lt;/tt&gt;
       element,
@@ -205,55 +205,61 @@ PCDATA -&amp;gt; @inline_rubies
     &lt;p&gt;
       In the configuration file,
       &lt;tt&gt;PCDATA&lt;/tt&gt;
-      can be thought of as non-whitespace text.
-      Precisely, it is whatever
+      can be thought of as non-whitespace text,
+      occurring in a context which is parsed
+      for markup and entities.
+      (Precisely, it is whatever
       HTML::Parser returns as text that is not whitespace
-      and does not have the
+      and does not turn on the
       &lt;tt&gt;is_cdata&lt;/tt&gt;
-      flag turned on.)
-      What this line says, is, whenever
-      &lt;tt&gt;PCDATA&lt;/tt&gt;
+      flag.)
+      What this line says is that, whenever
+      a &lt;tt&gt;PCDATA&lt;/tt&gt; token
       is rejected,
-      try to fix the problem by
+      Marpa::R2::HTML should try to fix the problem as follows:
     &lt;/p&gt;
     &lt;ul&gt;
-      &lt;li&gt;1. If possible, starting an
+      &lt;li&gt;1. If possible, start an
         &lt;tt&gt;&amp;lt;html&amp;gt;&lt;/tt&gt;
         element.
       &lt;/li&gt;
-      &lt;li&gt;2. Otherwise, if possible, starting an
+      &lt;li&gt;2. Otherwise, if possible, start a
         &lt;tt&gt;&amp;lt;head&amp;gt;&lt;/tt&gt;
         element.
       &lt;/li&gt;
-      &lt;li&gt;3. Otherwise, if possible, starting an
+      &lt;li&gt;3. Otherwise, if possible, start a
         &lt;tt&gt;&amp;lt;body&amp;gt;&lt;/tt&gt;
         element.
       &lt;/li&gt;
-      &lt;li&gt;4. Otherwise, if possible, starting an
+      &lt;li&gt;4. Otherwise, if possible, start a
         &lt;tt&gt;&amp;lt;tbody&amp;gt;&lt;/tt&gt;
         element.
       &lt;/li&gt;
-      &lt;li&gt;5. Otherwise, if possible, starting an
+      &lt;li&gt;5. Otherwise, if possible, start a
         &lt;tt&gt;&amp;lt;tr&amp;gt;&lt;/tt&gt;
         element.
       &lt;/li&gt;
-      &lt;li&gt;6. Otherwise, if possible, starting an
+      &lt;li&gt;6. Otherwise, if possible, start a
         &lt;tt&gt;&amp;lt;td&amp;gt;&lt;/tt&gt;
         element.
       &lt;/li&gt;
-      &lt;li&gt;7. Otherwise, if possible, starting an
+      &lt;li&gt;7. Otherwise, if possible, start a
         &lt;tt&gt;&amp;lt;p&amp;gt;&lt;/tt&gt;
         element.
       &lt;/li&gt;
-      &lt;li&gt;8. Otherwise, by ending whatever element it is possible to end
-        at this point.  (There will be at most one.)
+      &lt;li&gt;8. Otherwise, if is possible to end
+        a non-structural or a 
+        &lt;tt&gt;&amp;lt;head&amp;gt;&lt;/tt&gt;
+	element at this point, do so.
+	(At any point, it will be possible to end
+	at most one element.)
       &lt;/li&gt;
-      &lt;li&gt;9. Finally, if nothing else works, by marking the &quot;PCDATA&quot; as cruft.
+      &lt;li&gt;9. Finally, if nothing else works, by mark the &quot;PCDATA&quot; as cruft.
       &lt;/li&gt;
     &lt;/ul&gt;
     &lt;p&gt;
       Of these alternatives, the first three allow Marpa::R2::HTML to supply missing
-      structural tasks, as required by the standards.
+      structural start tags, as required by the standards.
       Alternatives 4, 5 and 6 allow Marpa::R2::HTML to continue building a table
       if table-building is in progress.
       (But note that the line does not allow Marpa::R2::HTML
@@ -262,11 +268,16 @@ PCDATA -&amp;gt; @inline_rubies
       Alternative 7 allows Marpa::R2::HTML to start a new
       &lt;tt&gt;&amp;lt;p&amp;gt;&lt;/tt&gt;
       element if PCDATA is rejected.
+      &lt;p&gt;
       Alternatives 8 and 9 are implicit.
       By default, after all the explicit Ruby Slippers
       alternatives have been tried,
       Marpa::R2::HTML will create a Ruby Slippers tags
-      for any end tag that is allowed.
+      for any end tag that is allowed,
+      with two exceptions:
+      Marpa::R2::HTML will not create
+      &lt;tt&gt;&amp;lt;/body&amp;gt;&lt;/tt&gt; and
+      &lt;tt&gt;&amp;lt;/html&amp;gt;&lt;/tt&gt; end tags except at the end of file.
       And Marpa::R2::HTML always reserves the possibility of,
       as a last resort,
       labeling a token as &quot;cruft&quot; and moving on.

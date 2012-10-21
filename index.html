@@ -168,7 +168,7 @@
     <h3>First, the results</h3>
     <p>
       Let's change the behavior of 
-      Marpa::R2::HTML, so that,
+      Marpa::R2::HTML so that,
       instead of starting a new
       <tt>&lt;p&gt;</tt>
       element,
@@ -231,55 +231,61 @@ PCDATA -&gt; @inline_rubies
     <p>
       In the configuration file,
       <tt>PCDATA</tt>
-      can be thought of as non-whitespace text.
-      Precisely, it is whatever
+      can be thought of as non-whitespace text,
+      occurring in a context which is parsed
+      for markup and entities.
+      (Precisely, it is whatever
       HTML::Parser returns as text that is not whitespace
-      and does not have the
+      and does not turn on the
       <tt>is_cdata</tt>
-      flag turned on.)
-      What this line says, is, whenever
-      <tt>PCDATA</tt>
+      flag.)
+      What this line says is that, whenever
+      a <tt>PCDATA</tt> token
       is rejected,
-      try to fix the problem by
+      Marpa::R2::HTML should try to fix the problem as follows:
     </p>
     <ul>
-      <li>1. If possible, starting an
+      <li>1. If possible, start an
         <tt>&lt;html&gt;</tt>
         element.
       </li>
-      <li>2. Otherwise, if possible, starting an
+      <li>2. Otherwise, if possible, start a
         <tt>&lt;head&gt;</tt>
         element.
       </li>
-      <li>3. Otherwise, if possible, starting an
+      <li>3. Otherwise, if possible, start a
         <tt>&lt;body&gt;</tt>
         element.
       </li>
-      <li>4. Otherwise, if possible, starting an
+      <li>4. Otherwise, if possible, start a
         <tt>&lt;tbody&gt;</tt>
         element.
       </li>
-      <li>5. Otherwise, if possible, starting an
+      <li>5. Otherwise, if possible, start a
         <tt>&lt;tr&gt;</tt>
         element.
       </li>
-      <li>6. Otherwise, if possible, starting an
+      <li>6. Otherwise, if possible, start a
         <tt>&lt;td&gt;</tt>
         element.
       </li>
-      <li>7. Otherwise, if possible, starting an
+      <li>7. Otherwise, if possible, start a
         <tt>&lt;p&gt;</tt>
         element.
       </li>
-      <li>8. Otherwise, by ending whatever element it is possible to end
-        at this point.  (There will be at most one.)
+      <li>8. Otherwise, if is possible to end
+        a non-structural or a 
+        <tt>&lt;head&gt;</tt>
+	element at this point, do so.
+	(At any point, it will be possible to end
+	at most one element.)
       </li>
-      <li>9. Finally, if nothing else works, by marking the "PCDATA" as cruft.
+      <li>9. Finally, if nothing else works, by mark the "PCDATA" as cruft.
       </li>
     </ul>
     <p>
       Of these alternatives, the first three allow Marpa::R2::HTML to supply missing
-      structural tasks, as required by the standards.
+      structural start tags, as required by the standards.
       Alternatives 4, 5 and 6 allow Marpa::R2::HTML to continue building a table
       if table-building is in progress.
       (But note that the line does not allow Marpa::R2::HTML
@@ -288,11 +294,16 @@ PCDATA -&gt; @inline_rubies
       Alternative 7 allows Marpa::R2::HTML to start a new
       <tt>&lt;p&gt;</tt>
       element if PCDATA is rejected.
+      <p>
       Alternatives 8 and 9 are implicit.
       By default, after all the explicit Ruby Slippers
       alternatives have been tried,
       Marpa::R2::HTML will create a Ruby Slippers tags
-      for any end tag that is allowed.
+      for any end tag that is allowed,
+      with two exceptions:
+      Marpa::R2::HTML will not create
+      <tt>&lt;/body&gt;</tt> and
+      <tt>&lt;/html&gt;</tt> end tags except at the end of file.
       And Marpa::R2::HTML always reserves the possibility of,
       as a last resort,
       labeling a token as "cruft" and moving on.
