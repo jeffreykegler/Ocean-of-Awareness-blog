@@ -10,6 +10,208 @@
     <language>en</language>
 
   <item>
+    <title>A Marpa DSL tutorial: Error reporting made easy.</title>
+    <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/error.html</link>
+    <description>    &lt;p&gt;
+      &lt;!--
+      marpa_r2_html_fmt --no-added-tag-comment
+      --&gt;
+      Marpa's facilities for error reporting are new.
+      Using them, your quickie domain-specific language can,
+      as of its first draft,
+      have error reporting whose helpfulness and precision exceeds 
+      that of carefully hand-crafted production compilers.
+      &lt;p&gt;
+      This post will give an example.
+      Two techniques will be used.
+      First and most basic, 
+      in the technical sense, Marpa's knowledge of when the parse
+      could not longer proceed is 100% accurate and immediate.
+      (This is not the case with yacc-derived parsers and not usually the
+      case with recursive descent parsers.)
+      &lt;p&gt;
+      The second technique is new with the post.
+      Marpa also knows, at any point, the entire history of the parse.
+      This is the case even if the parse fails.
+      So you can ask the Marpa parser questions, like,
+      &lt;blockquote&gt;&lt;p&gt;
+      &quot;What was the last statement you successfully parsed?&quot;
+      &quot;What was the last expression you successfully parsed?&quot;
+      &quot;The last block you successfully parsed, where did it end?&quot;
+      &lt;/p&gt;
+      &lt;/blockquote&gt;
+      &lt;p&gt;
+      Imagine that you C compiler or 4GL interpreter reported this
+      information every time you made an error.
+      Your work would be a lot faster.
+      For users of your next DSL, you don't have to imagine -- this
+      kind of error-reporting will be a standard feature
+      from its earliest versions.
+      &lt;h3&gt;The language&lt;/h3&gt;
+      &lt;p&gt;
+      To focus on the logic of the error reporting,
+      I picked a language that was error-prone,
+      but otherwise as simple as possible.
+      For this purpose,
+      prefix arithmetic is like a gift from the dakinis.
+      Simple in concept,
+      it is almost impossible to get right when it is more than a few
+      characters long,
+      and confusing to read.
+      &lt;q&gt;say + 1 2&lt;/q&gt; and
+      &lt;q&gt;+++ 1 2 3 + + 1 2 4&lt;/q&gt; are two correct strings in this
+      language.
+      Their results are, in order, 3 and 13.
+      &lt;p&gt;
+      I restricted the calculator to addition, because even with one
+      operator, prefix notation is confusing enough to serve our purposes.
+      I have included an optional &lt;tt&gt;say&lt;/tt&gt; keyword, in order
+      to illustrate rejection of a token by type.
+      In pure prefix arithmetic, either all tokens are valid or none are.
+      The &lt;tt&gt;say&lt;/tt&gt; keyword is only valid as the first token.
+      &lt;h3&gt;The grammar&lt;/h3&gt;
+
+&lt;pre&gt;&lt;tt&gt;
+my $prefix_grammar = Marpa::R2::Grammar-&amp;gt;new(
+    {   start          =&amp;gt; 'Script',
+        actions        =&amp;gt; 'My_Actions',
+        default_action =&amp;gt; 'do_arg0',
+        rules          =&amp;gt; [ &amp;lt;&amp;lt;'END_OF_RULES' ]
+Script ::=
+     Expression
+   | kw_say Expression action =&amp;gt; do_arg1
+Expression ::=
+     Number
+   | op_add Expression Expression action =&amp;gt; do_add
+END_OF_RULES
+    }
+);
+
+sub My_Actions::do_add  { shift; return $_[1] + $_[2] }
+sub My_Actions::do_arg0 { shift; return shift; }
+sub My_Actions::do_arg1 { shift; return $_[1]; }
+
+$prefix_grammar-&amp;gt;precompute();
+
+my @terminals = (
+    [ Number =&amp;gt; qr/\d+/xms,   'Number' ],
+    [ op_add =&amp;gt; qr/[+]/xms,   'Addition operator' ],
+    [ kw_say =&amp;gt; qr/say\b/xms, qq{&quot;say&quot; keyword} ],
+);
+
+sub My_Error::last_completed_range {
+    my ( $self, $symbol_name ) = @_;
+    my $grammar      = $self-&amp;gt;{grammar};
+    my $recce        = $self-&amp;gt;{recce};
+    my @sought_rules = ();
+    for my $rule_id ( $grammar-&amp;gt;rule_ids() ) {
+        my ($lhs) = $grammar-&amp;gt;bnf_rule($rule_id);
+        push @sought_rules, $rule_id if $lhs eq $symbol_name;
+    }
+    die &quot;Looking for completion of non-existent rule lhs: $symbol_name&quot;
+        if not scalar @sought_rules;
+    my $latest_earley_set = $recce-&amp;gt;latest_earley_set();
+    my $earley_set        = $latest_earley_set;
+
+    # Initialize to one past the end, so we can tell if there were no hits
+    my $first_origin = $latest_earley_set + 1;
+    EARLEY_SET: while ( $earley_set &amp;gt;= 0 ) {
+        my $report_items = $recce-&amp;gt;progress($earley_set);
+        ITEM: for my $report_item ( @{$report_items} ) {
+            my ( $rule_id, $dot_position, $origin ) = @{$report_item};
+            next ITEM if $dot_position != -1;
+            next ITEM if not scalar grep { $_ == $rule_id } @sought_rules;
+            next ITEM if $origin &amp;gt;= $first_origin;
+            $first_origin = $origin;
+        } ## end ITEM: for my $report_item ( @{$report_items} )
+        last EARLEY_SET if $first_origin &amp;lt;= $latest_earley_set;
+        $earley_set--;
+    } ## end EARLEY_SET: while ( $earley_set &amp;gt;= 0 )
+    return if $earley_set &amp;lt; 0;
+    return ( $first_origin, $earley_set );
+} ## end sub My_Error::last_completed_range
+
+# Given a string, an earley set to position mapping,
+# and two earley sets, return the slice of the string
+sub My_Error::input_slice {
+    my ( $self, $start, $end ) = @_;
+    my $positions = $self-&amp;gt;{positions};
+    return if not defined $start;
+    my $start_position = $positions-&amp;gt;[$start];
+    my $length         = $positions-&amp;gt;[$end] - $start_position;
+    return substr ${ $self-&amp;gt;{input} }, $start_position, $length;
+} ## end sub My_Error::input_slice
+
+sub My_Error::show_last_expression {
+    my ($self) = @_;
+    my $last_expression =
+        $self-&amp;gt;input_slice( $self-&amp;gt;last_completed_range('Expression') );
+    return
+        defined $last_expression
+        ? &quot;Last expression successfully parsed was: $last_expression&quot;
+        : 'No expression was successfully parsed';
+} ## end sub My_Error::show_last_expression
+
+sub My_Error::show_position {
+    my ( $self, $position ) = @_;
+    my $input = $self-&amp;gt;{input};
+    my $local_string = substr ${$input}, $position, 40;
+    $local_string =~ s/\n/\\n/gxms;
+    return $local_string;
+} ## end sub My_Error::show_position
+
+sub my_parser {
+    my ( $grammar, $string ) = @_;
+    my @positions = (0);
+    my $recce = Marpa::R2::Recognizer-&amp;gt;new( { grammar =&amp;gt; $grammar } );
+
+    # A quasi-object, for internal use only
+    my $self = bless {
+        grammar   =&amp;gt; $grammar,
+        input     =&amp;gt; \$string,
+        recce     =&amp;gt; $recce,
+        positions =&amp;gt; \@positions
+        },
+        'My_Error';
+
+    my $length = length $string;
+    pos $string = $positions[-1];
+    TOKEN: while ( pos $string &amp;lt; $length ) {
+        next TOKEN if $string =~ m/\G\s+/gcxms;    # skip whitespace
+        if ( $recce-&amp;gt;exhausted() ) {
+            die $self-&amp;gt;show_last_expression(), &quot;\n&quot;,
+                q{The parse became exhausted here: &quot;},
+                $self-&amp;gt;show_position( $positions[-1] ), qq{&quot;\n},
+                ;
+        } ## end if ( $recce-&amp;gt;exhausted() )
+        TOKEN_TYPE: for my $t (@terminals) {
+            my ( $token_name, $regex, $long_name ) = @{$t};
+            next TOKEN_TYPE if not $string =~ m/\G($regex)/gcxms;
+            if ( defined $recce-&amp;gt;read( $token_name, $1 ) ) {
+                my $latest_earley_set_ID = $recce-&amp;gt;latest_earley_set();
+                $positions[$latest_earley_set_ID] = pos $string;
+                next TOKEN;
+            }
+            die $self-&amp;gt;show_last_expression(), &quot;\n&quot;,
+                'A problem occurred here: ',
+                $self-&amp;gt;show_position( $positions[-1] ), &quot;\n&quot;,
+                qq{Parser rejected token &quot;$long_name&quot;};
+        } ## end TOKEN_TYPE: for my $t (@terminals)
+        die 'A problem occurred here: ',
+            $self-&amp;gt;show_position( $positions[-1] ), &quot;\n&quot;,
+            q{No valid token was found};
+    } ## end TOKEN: while ( pos $string &amp;lt; $length )
+    my $value_ref = $recce-&amp;gt;value;
+    if ( not defined $value_ref ) {
+        die $self-&amp;gt;show_last_expression(), &quot;\n&quot;,
+            &quot;No parse was found, after reading the entire input\n&quot;;
+    }
+    return ${$value_ref};
+} ## end sub my_parser
+
+&lt;/tt&gt;&lt;/pre&gt;</description>
+  </item>
+  <item>
     <title>Configuring the Ruby Slippers for HTML</title>
     <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/config_html3.html</link>
     <description>  &lt;p&gt;
@@ -1183,126 +1385,6 @@ ELE_acme is a FLO_empty included in GRP_block
       natural and expressive,
       but one which
       you could not have parsed before.
-    &lt;/p&gt;</description>
-  </item>
-  <item>
-    <title>A Marpa-based HTML reformatter</title>
-    <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/html_fmt.html</link>
-    <description>    &lt;p&gt;
-      &lt;!--
-      perl ./marpa_r2_html_fmt
-      --&gt;
-      This post is about
-      &lt;tt&gt;
-        html_fmt&lt;/tt&gt;,
-      a
-      &lt;a href=&quot;http://jeffreykegler.github.com/Marpa/&quot;&gt;
-        Marpa-&lt;/a&gt;based
-      reformatter (&quot;tidier&quot;) for liberal HTML.
-      &lt;tt&gt;
-        html_fmt&lt;/tt&gt;
-      indents HTML according to the structure of the document,
-      which makes the HTML a lot easier to read.
-      In the process
-      &lt;tt&gt;
-        html_fmt&lt;/tt&gt;
-      adds missing start and end tags and identifies &quot;cruft&quot;.
-    &lt;/p&gt;
-    &lt;p&gt;
-      &lt;tt&gt;
-        html_fmt&lt;/tt&gt;
-      is ultra-liberal about its input.
-      Like a browser's rendering engine,
-      &lt;tt&gt;
-        html_fmt&lt;/tt&gt;
-      never rejects a file,
-      no matter how defective it is as an HTML document.
-      An interesting experiment would be to compare what your
-      favorite browser does with a random text file feed to
-      it directly,
-      with what it does to the same file
-      after it has been passed through
-      &lt;tt&gt;
-        html_fmt&lt;/tt&gt;.
-    &lt;/p&gt;
-    &lt;p&gt;
-      &lt;tt&gt;
-        html_fmt&lt;/tt&gt;
-      is a by-product of moving
-      &lt;a href=&quot;http://jeffreykegler.github.com/Ocean-of-Awareness-blog/&quot;&gt;
-        this blog to Github&lt;/a&gt;.
-      In the course of bringing over
-      &lt;a href=&quot;http://jeffreykegler.github.com/Ocean-of-Awareness-blog/metapages/chronological.html&quot;&gt;
-        my old posts&lt;/a&gt;,
-      I wanted a filter that would tidy them up,
-      so I turned to an old demo script I'd written.
-      The old demo's usefulness was a pleasant surprise,
-      but it lacked two features.
-      First, it wouldn't read from standard input.
-      Second, in formatting the HTML, it introduced new whitespace.
-      The first problem was easy to fix.
-      Fixing the second involved coming up with a
-      &quot;lowest common denominator&quot; for whitespace treatment
-      among browsers and HTML variants.
-    &lt;/p&gt;
-    &lt;p&gt;
-      The result,
-      &lt;tt&gt;
-        html_fmt&lt;/tt&gt;,
-      works very well as the first step in dealing with HTML
-      that you are rewriting by hand.
-      One quick pass-through and your file is much easier to read,
-      has all the proper tags,
-      and has comments pointing out any &quot;cruft&quot; that's there.
-    &lt;/p&gt;
-    &lt;p&gt;
-      A production quality &quot;tidier&quot; would need to be something like
-      &lt;tt&gt;
-        gnuindent&lt;/tt&gt;
-      --
-      bristling with options.
-      &lt;tt&gt;
-        html_fmt&lt;/tt&gt;
-      so far has only two options,
-      one dealing with whitespace before end tags,
-      the other allowing
-      a choice of strategies for avoiding added whitespace.
-      (One strategy uses comments, while the other simply leaves
-      the whitespace-sensitive locations as-is.)
-      These two options are not nearly
-      sufficient to deal with the full
-      range of whitespace issues,
-      never mind anything else.
-    &lt;/p&gt;
-    &lt;p&gt;
-      But from a
-      &lt;a href=&quot;http://blog.plover.com/oops/blosxom-sux.html&quot;&gt;
-        &quot;Worse is Better&quot;&lt;/a&gt;
-      point of view,
-      &lt;tt&gt;
-        html_fmt&lt;/tt&gt;
-      is a good start.
-      It is 600 lines,
-      short enough to find your
-      way around in,
-      particularly once you've deleted the parts you don't like.
-      And its underlying Marpa-based interface is documented:
-      &lt;a href=&quot;https://metacpan.org/module/Marpa::R2::HTML&quot;&gt;
-        Marpa::R2::HTML&lt;/a&gt;.
-      Marpa::R2::HTML is beta, but has been stable for some time.
-    &lt;/p&gt;
-    &lt;p&gt;
-      &lt;a href=&quot;https://gist.github.com/3725639&quot;&gt;
-      &lt;tt&gt;
-        html_fmt&lt;/tt&gt;
-      is now available as a gist.&lt;/a&gt;
-      In a future release of
-      &lt;a href=&quot;https://metacpan.org/release/Marpa-R2&quot;&gt;
-        Marpa::R2&lt;/a&gt;,
-      it will be available as the
-      &lt;tt&gt;
-        marpa_r2_html_fmt&lt;/tt&gt; script.
-      But why wait until then to fork it?
     &lt;/p&gt;</description>
   </item>
   </channel>

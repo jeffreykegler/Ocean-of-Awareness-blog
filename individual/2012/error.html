@@ -1,0 +1,277 @@
+<html>
+<head>
+<link rel="alternate" title="Ocean of Awareness RSS" type="application/rss+xml" title="RSS" href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/index.rss" />
+<title>Ocean of Awareness</title>
+<style type="text/css">
+   strong {font-weight: 700;}
+</style>
+</head>
+<body>
+<div
+  style="color:white;background-color:#38B0C0;padding:1em;clear:left;text-align:center;">
+<h1>Ocean of Awareness</h1>
+</div>
+  <div style="margin:0;padding:10px 30px 10px 10px;width:150px;float:left;border-right:2px solid #38B0C0">
+  <p>
+  <strong>Jeffrey Kegler's blog</strong>
+  about Marpa, his new parsing algorithm,
+    and other topics of interest</p>
+  <p><a href="http://www.jeffreykegler.com/">Jeffrey's personal website</a></p>
+      <p>
+	<a href="https://twitter.com/jeffreykegler" class="twitter-follow-button" data-show-count="false">Follow @jeffreykegler</a>
+      </p>
+      <p style="text-align:center">
+	<!-- Place this code where you want the badge to render. -->
+	<a href="//plus.google.com/101567692867247957860?prsrc=3" rel="publisher" style="text-decoration:none;">
+	<img src="//ssl.gstatic.com/images/icons/gplus-32.png" alt="Google+" style="border:0;width:32px;height:32px;"/></a>
+      </p>
+  <h3>Marpa resources</h3>
+  <p><a href="http://jeffreykegler.github.com/Marpa/">The Marpa website</a></p>
+  <p>The Ocean of Awareness blog: <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog">home page</a>,
+  <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/metapages/chronological.html">chronological index</a>,
+  and
+  <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/metapages/annotated.html">annotated index</a>.
+  </p>
+  </div>
+  <div style="margin-left:190px;border-left:2px solid #38B0C0;padding:25px;">
+<h3>Mon, 29 Oct 2012</h3>
+<br />
+<center><a name="error"> <h2>A Marpa DSL tutorial: Error reporting made easy.</h2> </a>
+</center>
+    <p>
+      <!--
+      marpa_r2_html_fmt --no-added-tag-comment
+      -->
+      Marpa's facilities for error reporting are new.
+      Using them, your quickie domain-specific language can,
+      as of its first draft,
+      have error reporting whose helpfulness and precision exceeds 
+      that of carefully hand-crafted production compilers.
+      <p>
+      This post will give an example.
+      Two techniques will be used.
+      First and most basic, 
+      in the technical sense, Marpa's knowledge of when the parse
+      could not longer proceed is 100% accurate and immediate.
+      (This is not the case with yacc-derived parsers and not usually the
+      case with recursive descent parsers.)
+      <p>
+      The second technique is new with the post.
+      Marpa also knows, at any point, the entire history of the parse.
+      This is the case even if the parse fails.
+      So you can ask the Marpa parser questions, like,
+      <blockquote><p>
+      "What was the last statement you successfully parsed?"
+      "What was the last expression you successfully parsed?"
+      "The last block you successfully parsed, where did it end?"
+      </p>
+      </blockquote>
+      <p>
+      Imagine that you C compiler or 4GL interpreter reported this
+      information every time you made an error.
+      Your work would be a lot faster.
+      For users of your next DSL, you don't have to imagine -- this
+      kind of error-reporting will be a standard feature
+      from its earliest versions.
+      <h3>The language</h3>
+      <p>
+      To focus on the logic of the error reporting,
+      I picked a language that was error-prone,
+      but otherwise as simple as possible.
+      For this purpose,
+      prefix arithmetic is like a gift from the dakinis.
+      Simple in concept,
+      it is almost impossible to get right when it is more than a few
+      characters long,
+      and confusing to read.
+      <q>say + 1 2</q> and
+      <q>+++ 1 2 3 + + 1 2 4</q> are two correct strings in this
+      language.
+      Their results are, in order, 3 and 13.
+      <p>
+      I restricted the calculator to addition, because even with one
+      operator, prefix notation is confusing enough to serve our purposes.
+      I have included an optional <tt>say</tt> keyword, in order
+      to illustrate rejection of a token by type.
+      In pure prefix arithmetic, either all tokens are valid or none are.
+      The <tt>say</tt> keyword is only valid as the first token.
+      <h3>The grammar</h3>
+
+<pre><tt>
+my $prefix_grammar = Marpa::R2::Grammar-&gt;new(
+    {   start          =&gt; 'Script',
+        actions        =&gt; 'My_Actions',
+        default_action =&gt; 'do_arg0',
+        rules          =&gt; [ &lt;&lt;'END_OF_RULES' ]
+Script ::=
+     Expression
+   | kw_say Expression action =&gt; do_arg1
+Expression ::=
+     Number
+   | op_add Expression Expression action =&gt; do_add
+END_OF_RULES
+    }
+);
+
+sub My_Actions::do_add  { shift; return $_[1] + $_[2] }
+sub My_Actions::do_arg0 { shift; return shift; }
+sub My_Actions::do_arg1 { shift; return $_[1]; }
+
+$prefix_grammar-&gt;precompute();
+
+my @terminals = (
+    [ Number =&gt; qr/\d+/xms,   'Number' ],
+    [ op_add =&gt; qr/[+]/xms,   'Addition operator' ],
+    [ kw_say =&gt; qr/say\b/xms, qq{"say" keyword} ],
+);
+
+sub My_Error::last_completed_range {
+    my ( $self, $symbol_name ) = @_;
+    my $grammar      = $self-&gt;{grammar};
+    my $recce        = $self-&gt;{recce};
+    my @sought_rules = ();
+    for my $rule_id ( $grammar-&gt;rule_ids() ) {
+        my ($lhs) = $grammar-&gt;bnf_rule($rule_id);
+        push @sought_rules, $rule_id if $lhs eq $symbol_name;
+    }
+    die "Looking for completion of non-existent rule lhs: $symbol_name"
+        if not scalar @sought_rules;
+    my $latest_earley_set = $recce-&gt;latest_earley_set();
+    my $earley_set        = $latest_earley_set;
+
+    # Initialize to one past the end, so we can tell if there were no hits
+    my $first_origin = $latest_earley_set + 1;
+    EARLEY_SET: while ( $earley_set &gt;= 0 ) {
+        my $report_items = $recce-&gt;progress($earley_set);
+        ITEM: for my $report_item ( @{$report_items} ) {
+            my ( $rule_id, $dot_position, $origin ) = @{$report_item};
+            next ITEM if $dot_position != -1;
+            next ITEM if not scalar grep { $_ == $rule_id } @sought_rules;
+            next ITEM if $origin &gt;= $first_origin;
+            $first_origin = $origin;
+        } ## end ITEM: for my $report_item ( @{$report_items} )
+        last EARLEY_SET if $first_origin &lt;= $latest_earley_set;
+        $earley_set--;
+    } ## end EARLEY_SET: while ( $earley_set &gt;= 0 )
+    return if $earley_set &lt; 0;
+    return ( $first_origin, $earley_set );
+} ## end sub My_Error::last_completed_range
+
+# Given a string, an earley set to position mapping,
+# and two earley sets, return the slice of the string
+sub My_Error::input_slice {
+    my ( $self, $start, $end ) = @_;
+    my $positions = $self-&gt;{positions};
+    return if not defined $start;
+    my $start_position = $positions-&gt;[$start];
+    my $length         = $positions-&gt;[$end] - $start_position;
+    return substr ${ $self-&gt;{input} }, $start_position, $length;
+} ## end sub My_Error::input_slice
+
+sub My_Error::show_last_expression {
+    my ($self) = @_;
+    my $last_expression =
+        $self-&gt;input_slice( $self-&gt;last_completed_range('Expression') );
+    return
+        defined $last_expression
+        ? "Last expression successfully parsed was: $last_expression"
+        : 'No expression was successfully parsed';
+} ## end sub My_Error::show_last_expression
+
+sub My_Error::show_position {
+    my ( $self, $position ) = @_;
+    my $input = $self-&gt;{input};
+    my $local_string = substr ${$input}, $position, 40;
+    $local_string =~ s/\n/\\n/gxms;
+    return $local_string;
+} ## end sub My_Error::show_position
+
+sub my_parser {
+    my ( $grammar, $string ) = @_;
+    my @positions = (0);
+    my $recce = Marpa::R2::Recognizer-&gt;new( { grammar =&gt; $grammar } );
+
+    # A quasi-object, for internal use only
+    my $self = bless {
+        grammar   =&gt; $grammar,
+        input     =&gt; \$string,
+        recce     =&gt; $recce,
+        positions =&gt; \@positions
+        },
+        'My_Error';
+
+    my $length = length $string;
+    pos $string = $positions[-1];
+    TOKEN: while ( pos $string &lt; $length ) {
+        next TOKEN if $string =~ m/\G\s+/gcxms;    # skip whitespace
+        if ( $recce-&gt;exhausted() ) {
+            die $self-&gt;show_last_expression(), "\n",
+                q{The parse became exhausted here: "},
+                $self-&gt;show_position( $positions[-1] ), qq{"\n},
+                ;
+        } ## end if ( $recce-&gt;exhausted() )
+        TOKEN_TYPE: for my $t (@terminals) {
+            my ( $token_name, $regex, $long_name ) = @{$t};
+            next TOKEN_TYPE if not $string =~ m/\G($regex)/gcxms;
+            if ( defined $recce-&gt;read( $token_name, $1 ) ) {
+                my $latest_earley_set_ID = $recce-&gt;latest_earley_set();
+                $positions[$latest_earley_set_ID] = pos $string;
+                next TOKEN;
+            }
+            die $self-&gt;show_last_expression(), "\n",
+                'A problem occurred here: ',
+                $self-&gt;show_position( $positions[-1] ), "\n",
+                qq{Parser rejected token "$long_name"};
+        } ## end TOKEN_TYPE: for my $t (@terminals)
+        die 'A problem occurred here: ',
+            $self-&gt;show_position( $positions[-1] ), "\n",
+            q{No valid token was found};
+    } ## end TOKEN: while ( pos $string &lt; $length )
+    my $value_ref = $recce-&gt;value;
+    if ( not defined $value_ref ) {
+        die $self-&gt;show_last_expression(), "\n",
+            "No parse was found, after reading the entire input\n";
+    }
+    return ${$value_ref};
+} ## end sub my_parser
+
+</tt></pre>
+<br />
+<p>posted at: 09:46 |
+<a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/error.html">direct link to this entry</a>
+</p>
+<div style="color:#38B0C0;padding:1px;text-align:center;">
+&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&sect;
+</div>
+</div>
+</div>
+<div id="footer" style="border-top:thick solid #38B0C0;clear:left;padding:1em;">
+<p>This is Ocean of Awareness's
+  new home.  This blog has been hosted at
+  <a href="http://blogs.perl.org/users/jeffrey_kegler/">blogs.perl.org</a>
+  but I have succumbed to the lure of static blogging.
+  I have not yet decided how to deal with comments at this new blog location.
+If the post is Marpa-related,
+<a href="https://groups.google.com/forum/?hl=en&fromgroups#%21forum/marpa-parser">
+the Marpa mailing list</a>
+is a good place to comment.
+Also,
+I will continue to dual-post for some time,
+and have not yet frozen comments on the versions of the
+post at
+<a href="http://blogs.perl.org/users/jeffrey_kegler/">blogs.perl.org</a>.
+</div>
+	<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+              <script type="text/javascript">
+            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+          </script>
+          <script type="text/javascript">
+            try {
+              var pageTracker = _gat._getTracker("UA-33430331-1");
+            pageTracker._trackPageview();
+            } catch(err) {}
+          </script>
+</body></html>
