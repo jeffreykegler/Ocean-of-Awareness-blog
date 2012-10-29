@@ -36,7 +36,7 @@
   <div style="margin-left:190px;border-left:2px solid #38B0C0;padding:25px;">
 <h3>Mon, 29 Oct 2012</h3>
 <br />
-<center><a name="error"> <h2>A Marpa DSL tutorial: Error reporting made easy.</h2> </a>
+<center><a name="error"> <h2>A Marpa DSL tutorial: Error reporting made easy</h2> </a>
 </center>
     <p>
       <!--
@@ -124,24 +124,64 @@ END_OF_RULES
 </tt></pre></blockquote>
 <p>The rules are specified in another DSL,
 of the kind I've used
-<a href="https://metacpan.org/release/JKEGL/Marpa-R2-2.023_007>in previous posts</a>.
+<a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/dsl.html">
+in previous posts</a>.
 This one is incorporated in Marpa::R2 itself,
-and is documented here.
+and is <a href="https://metacpan.org/module/JKEGL/Marpa-R2-2.023_007/pod/BNF.pod">
+documented here</a>.
+Here are its features relevant to this example:
+<dl>
+<dt><strong><tt>::=</tt></strong><dd>A BNF rule in LHS <tt>::=</tt> RHS form
+<dt><strong><tt>|</tt></strong><dd>Separates alternative RHS's at the <strong>same</strong> precedence level
+<dt><strong><tt>=&gt;</tt></strong><dd><tt>keyword =&gt; value</tt>, where <tt>keyword</tt>
+the name of an adverb.
+</dl>
+<p>The <tt>action =&gt; do_add</tt> adverb indicates that the semantics for the alternative
+are in the Perl closure named <tt>do_add</tt>.
+<p>The rest of the grammar's definition will be familiar to Marpa users.
+<tt>Script</tt> is the start symbol,
+the Perl closures implementing semantics are to be found in the
+<tt>My_Actions</tt> package,
+and where no semantics are explicitly specified,
+the Perl closure <tt>do_arg0</tt> is the default.
 
+<h3>The Semantics</h3>
+<p>The semantics for this example are easy.
+(The first argument to a Marpa semantic closure is a "per-parse variable",
+which is not used in this case.
+The others are the values of the child nodes,
+as determined recursively and in lexical order.
 <blockquote><pre><tt>
-
 sub My_Actions::do_add  { shift; return $_[1] + $_[2] }
 sub My_Actions::do_arg0 { shift; return shift; }
 sub My_Actions::do_arg1 { shift; return $_[1]; }
+</tt></pre></blockquote>
 
-$prefix_grammar-&gt;precompute();
-
+<h3>The lexer's table</h3>
+<p>
+In this post, I
+I am skipping through the code --
+<a href="https://gist.github.com/3974816">
+the full code is in the gist</a>.
+But lexical analysis is of particular interest to new
+Marpa users.
+The lexer I use for this example is overkill --
+table-driven and using Perl's progressive matching
+capabilities, it is capable of serving a much more
+complex language.
+(I talked about lexing more
+<a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/dsl.html">
+in a previous example</a>.)
+Here is the lexer's table:
+<blockquote><pre><tt>
 my @terminals = (
     [ Number =&gt; qr/\d+/xms,   'Number' ],
     [ op_add =&gt; qr/[+]/xms,   'Addition operator' ],
     [ kw_say =&gt; qr/say\b/xms, qq{"say" keyword} ],
 );
+</tt></pre></blockquote>
 
+<blockquote><pre><tt>
 sub My_Error::last_completed_range {
     my ( $self, $symbol_name ) = @_;
     my $grammar      = $self-&gt;{grammar};

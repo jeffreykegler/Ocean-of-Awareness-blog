@@ -10,7 +10,7 @@
     <language>en</language>
 
   <item>
-    <title>A Marpa DSL tutorial: Error reporting made easy.</title>
+    <title>A Marpa DSL tutorial: Error reporting made easy</title>
     <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/error.html</link>
     <description>    &lt;p&gt;
       &lt;!--
@@ -98,24 +98,64 @@ END_OF_RULES
 &lt;/tt&gt;&lt;/pre&gt;&lt;/blockquote&gt;
 &lt;p&gt;The rules are specified in another DSL,
 of the kind I've used
-&lt;a href=&quot;https://metacpan.org/release/JKEGL/Marpa-R2-2.023_007&gt;in previous posts&lt;/a&gt;.
+&lt;a href=&quot;http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/dsl.html&quot;&gt;
+in previous posts&lt;/a&gt;.
 This one is incorporated in Marpa::R2 itself,
-and is documented here.
+and is &lt;a href=&quot;https://metacpan.org/module/JKEGL/Marpa-R2-2.023_007/pod/BNF.pod&quot;&gt;
+documented here&lt;/a&gt;.
+Here are its features relevant to this example:
+&lt;dl&gt;
+&lt;dt&gt;&lt;strong&gt;&lt;tt&gt;::=&lt;/tt&gt;&lt;/strong&gt;&lt;dd&gt;A BNF rule in LHS &lt;tt&gt;::=&lt;/tt&gt; RHS form
+&lt;dt&gt;&lt;strong&gt;&lt;tt&gt;|&lt;/tt&gt;&lt;/strong&gt;&lt;dd&gt;Separates alternative RHS's at the &lt;strong&gt;same&lt;/strong&gt; precedence level
+&lt;dt&gt;&lt;strong&gt;&lt;tt&gt;=&amp;gt;&lt;/tt&gt;&lt;/strong&gt;&lt;dd&gt;&lt;tt&gt;keyword =&amp;gt; value&lt;/tt&gt;, where &lt;tt&gt;keyword&lt;/tt&gt;
+the name of an adverb.
+&lt;/dl&gt;
+&lt;p&gt;The &lt;tt&gt;action =&amp;gt; do_add&lt;/tt&gt; adverb indicates that the semantics for the alternative
+are in the Perl closure named &lt;tt&gt;do_add&lt;/tt&gt;.
+&lt;p&gt;The rest of the grammar's definition will be familiar to Marpa users.
+&lt;tt&gt;Script&lt;/tt&gt; is the start symbol,
+the Perl closures implementing semantics are to be found in the
+&lt;tt&gt;My_Actions&lt;/tt&gt; package,
+and where no semantics are explicitly specified,
+the Perl closure &lt;tt&gt;do_arg0&lt;/tt&gt; is the default.
 
+&lt;h3&gt;The Semantics&lt;/h3&gt;
+&lt;p&gt;The semantics for this example are easy.
+(The first argument to a Marpa semantic closure is a &quot;per-parse variable&quot;,
+which is not used in this case.
+The others are the values of the child nodes,
+as determined recursively and in lexical order.
 &lt;blockquote&gt;&lt;pre&gt;&lt;tt&gt;
-
 sub My_Actions::do_add  { shift; return $_[1] + $_[2] }
 sub My_Actions::do_arg0 { shift; return shift; }
 sub My_Actions::do_arg1 { shift; return $_[1]; }
+&lt;/tt&gt;&lt;/pre&gt;&lt;/blockquote&gt;
 
-$prefix_grammar-&amp;gt;precompute();
-
+&lt;h3&gt;The lexer's table&lt;/h3&gt;
+&lt;p&gt;
+In this post, I
+I am skipping through the code --
+&lt;a href=&quot;https://gist.github.com/3974816&quot;&gt;
+the full code is in the gist&lt;/a&gt;.
+But lexical analysis is of particular interest to new
+Marpa users.
+The lexer I use for this example is overkill --
+table-driven and using Perl's progressive matching
+capabilities, it is capable of serving a much more
+complex language.
+(I talked about lexing more
+&lt;a href=&quot;http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/dsl.html&quot;&gt;
+in a previous example&lt;/a&gt;.)
+Here is the lexer's table:
+&lt;blockquote&gt;&lt;pre&gt;&lt;tt&gt;
 my @terminals = (
     [ Number =&amp;gt; qr/\d+/xms,   'Number' ],
     [ op_add =&amp;gt; qr/[+]/xms,   'Addition operator' ],
     [ kw_say =&amp;gt; qr/say\b/xms, qq{&quot;say&quot; keyword} ],
 );
+&lt;/tt&gt;&lt;/pre&gt;&lt;/blockquote&gt;
 
+&lt;blockquote&gt;&lt;pre&gt;&lt;tt&gt;
 sub My_Error::last_completed_range {
     my ( $self, $symbol_name ) = @_;
     my $grammar      = $self-&amp;gt;{grammar};
