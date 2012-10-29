@@ -23,12 +23,14 @@ A Marpa DSL tutorial: Error reporting made easy.
       So you can ask the Marpa parser questions, like,
       <blockquote><p>
       "What was the last statement you successfully parsed?"
+      <p>
       "What was the last expression you successfully parsed?"
+      <p>
       "The last block you successfully parsed, where did it end?"
       </p>
       </blockquote>
       <p>
-      Imagine that you C compiler or 4GL interpreter reported this
+      Imagine that your C compiler or 4GL interpreter reported this
       information every time you made an error.
       Your work would be a lot faster.
       For users of your next DSL, you don't have to imagine -- this
@@ -57,8 +59,15 @@ A Marpa DSL tutorial: Error reporting made easy.
       In pure prefix arithmetic, either all tokens are valid or none are.
       The <tt>say</tt> keyword is only valid as the first token.
       <h3>The grammar</h3>
+      The full code for this post is in
+      <a href="https://gist.github.com/3974816">
+      a Github gist</a>.
+      It was run using
+      <a href="https://metacpan.org/release/JKEGL/Marpa-R2-2.023_007"
+      a release candidate for the full release of Marpa::R2</a>
+      Here is the grammar.
 
-<pre><tt>
+<blockquote><pre><tt>
 my $prefix_grammar = Marpa::R2::Grammar-&gt;new(
     {   start          =&gt; 'Script',
         actions        =&gt; 'My_Actions',
@@ -73,6 +82,14 @@ Expression ::=
 END_OF_RULES
     }
 );
+</tt></pre></blockquote>
+<p>The rules are specified in another DSL,
+of the kind I've used
+<a href="https://metacpan.org/release/JKEGL/Marpa-R2-2.023_007>in previous posts</a>.
+This one is incorporated in Marpa::R2 itself,
+and is documented here.
+
+<blockquote><pre><tt>
 
 sub My_Actions::do_add  { shift; return $_[1] + $_[2] }
 sub My_Actions::do_arg0 { shift; return shift; }
@@ -182,7 +199,7 @@ sub my_parser {
             die $self-&gt;show_last_expression(), "\n",
                 'A problem occurred here: ',
                 $self-&gt;show_position( $positions[-1] ), "\n",
-                qq{Parser rejected token "$long_name"};
+                qq{Parser rejected token "$long_name"\n};
         } ## end TOKEN_TYPE: for my $t (@terminals)
         die 'A problem occurred here: ',
             $self-&gt;show_position( $positions[-1] ), "\n",
@@ -196,4 +213,4 @@ sub my_parser {
     return ${$value_ref};
 } ## end sub my_parser
 
-</tt></pre>
+</blockquote></tt></pre>

@@ -36,12 +36,14 @@
       So you can ask the Marpa parser questions, like,
       &lt;blockquote&gt;&lt;p&gt;
       &quot;What was the last statement you successfully parsed?&quot;
+      &lt;p&gt;
       &quot;What was the last expression you successfully parsed?&quot;
+      &lt;p&gt;
       &quot;The last block you successfully parsed, where did it end?&quot;
       &lt;/p&gt;
       &lt;/blockquote&gt;
       &lt;p&gt;
-      Imagine that you C compiler or 4GL interpreter reported this
+      Imagine that your C compiler or 4GL interpreter reported this
       information every time you made an error.
       Your work would be a lot faster.
       For users of your next DSL, you don't have to imagine -- this
@@ -70,8 +72,15 @@
       In pure prefix arithmetic, either all tokens are valid or none are.
       The &lt;tt&gt;say&lt;/tt&gt; keyword is only valid as the first token.
       &lt;h3&gt;The grammar&lt;/h3&gt;
+      The full code for this post is in
+      &lt;a href=&quot;https://gist.github.com/3974816&quot;&gt;
+      a Github gist&lt;/a&gt;.
+      It was run using
+      &lt;a href=&quot;https://metacpan.org/release/JKEGL/Marpa-R2-2.023_007&quot;
+      a release candidate for the full release of Marpa::R2&lt;/a&gt;
+      Here is the grammar.
 
-&lt;pre&gt;&lt;tt&gt;
+&lt;blockquote&gt;&lt;pre&gt;&lt;tt&gt;
 my $prefix_grammar = Marpa::R2::Grammar-&amp;gt;new(
     {   start          =&amp;gt; 'Script',
         actions        =&amp;gt; 'My_Actions',
@@ -86,6 +95,14 @@ Expression ::=
 END_OF_RULES
     }
 );
+&lt;/tt&gt;&lt;/pre&gt;&lt;/blockquote&gt;
+&lt;p&gt;The rules are specified in another DSL,
+of the kind I've used
+&lt;a href=&quot;https://metacpan.org/release/JKEGL/Marpa-R2-2.023_007&gt;in previous posts&lt;/a&gt;.
+This one is incorporated in Marpa::R2 itself,
+and is documented here.
+
+&lt;blockquote&gt;&lt;pre&gt;&lt;tt&gt;
 
 sub My_Actions::do_add  { shift; return $_[1] + $_[2] }
 sub My_Actions::do_arg0 { shift; return shift; }
@@ -195,7 +212,7 @@ sub my_parser {
             die $self-&amp;gt;show_last_expression(), &quot;\n&quot;,
                 'A problem occurred here: ',
                 $self-&amp;gt;show_position( $positions[-1] ), &quot;\n&quot;,
-                qq{Parser rejected token &quot;$long_name&quot;};
+                qq{Parser rejected token &quot;$long_name&quot;\n};
         } ## end TOKEN_TYPE: for my $t (@terminals)
         die 'A problem occurred here: ',
             $self-&amp;gt;show_position( $positions[-1] ), &quot;\n&quot;,
@@ -209,7 +226,7 @@ sub my_parser {
     return ${$value_ref};
 } ## end sub my_parser
 
-&lt;/tt&gt;&lt;/pre&gt;</description>
+&lt;/blockquote&gt;&lt;/tt&gt;&lt;/pre&gt;</description>
   </item>
   <item>
     <title>Configuring the Ruby Slippers for HTML</title>
