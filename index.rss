@@ -175,15 +175,15 @@ my @terminals = (
     [ kw_say =&amp;gt; qr/say\b/xms, qq{&quot;say&quot; keyword} ],
 );
 &lt;/pre&gt;&lt;/blockquote&gt;
-        &lt;p&gt;The lexing table is an array of 3-element arrays.
-        Each sub-array contains the symbol name, a regular expression
-        that is used to recognize it, and a &quot;long name&quot;,
-        a human-readable name more appropriate for error messages
-        than the symbol name.
-        For some languages,
-        the order of our lexing tables may be significant,
-        although in the case of this language it makes no difference.
-      &lt;/p&gt;
+    &lt;p&gt;The lexing table is an array of 3-element arrays.
+      Each sub-array contains the symbol name, a regular expression
+      that is used to recognize it, and a &quot;long name&quot;,
+      a human-readable name more appropriate for error messages
+      than the symbol name.
+      For some languages,
+      the order of our lexing tables may be significant,
+      although in the case of this language it makes no difference.
+    &lt;/p&gt;
     &lt;h3&gt;Types of parsing error&lt;/h3&gt;
     &lt;p&gt;Before plunging into the error-handling code,
       I will describe the forms parsing errors take,
@@ -334,7 +334,8 @@ sub my_parser {
       and allows an elegant syntax for the error-handling calls.
     &lt;/p&gt;
     &lt;p&gt;The loop for reading tokens will be described below.
-      After it, but before the &lt;tt&gt;return&lt;/tt&gt;,
+      After it, but before the
+      &lt;tt&gt;return&lt;/tt&gt;,
       is our first error check.
       &quot;No parse&quot; errors show up after all the tokens have been read,
       when the
@@ -553,7 +554,7 @@ sub My_Error::last_completed_range {
       progress reports, can look in
       &lt;a href=&quot;https://metacpan.org/module/JKEGL/Marpa-R2-2.023_007/pod/Progress.pod&quot;&gt;
         the documentation for progress reports&lt;/a&gt;.)
-    Of the completions, we are interested only in those for one of
+      Of the completions, we are interested only in those for one of
       the
       &lt;tt&gt;@sought_rules&lt;/tt&gt;.
     &lt;/p&gt;

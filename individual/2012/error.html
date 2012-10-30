@@ -34,7 +34,7 @@
   </p>
   </div>
   <div style="margin-left:190px;border-left:2px solid #38B0C0;padding:25px;">
-<h3>Mon, 29 Oct 2012</h3>
+<h3>Tue, 30 Oct 2012</h3>
 <br />
 <center><a name="error"> <h2>A Marpa DSL tutorial: Error reporting made easy</h2> </a>
 </center>
@@ -201,15 +201,15 @@ my @terminals = (
     [ kw_say =&gt; qr/say\b/xms, qq{"say" keyword} ],
 );
 </pre></blockquote>
-        <p>The lexing table is an array of 3-element arrays.
-        Each sub-array contains the symbol name, a regular expression
-        that is used to recognize it, and a "long name",
-        a human-readable name more appropriate for error messages
-        than the symbol name.
-        For some languages,
-        the order of our lexing tables may be significant,
-        although in the case of this language it makes no difference.
-      </p>
+    <p>The lexing table is an array of 3-element arrays.
+      Each sub-array contains the symbol name, a regular expression
+      that is used to recognize it, and a "long name",
+      a human-readable name more appropriate for error messages
+      than the symbol name.
+      For some languages,
+      the order of our lexing tables may be significant,
+      although in the case of this language it makes no difference.
+    </p>
     <h3>Types of parsing error</h3>
     <p>Before plunging into the error-handling code,
       I will describe the forms parsing errors take,
@@ -360,7 +360,8 @@ sub my_parser {
       and allows an elegant syntax for the error-handling calls.
     </p>
     <p>The loop for reading tokens will be described below.
-      After it, but before the <tt>return</tt>,
+      After it, but before the
+      <tt>return</tt>,
       is our first error check.
       "No parse" errors show up after all the tokens have been read,
       when the
@@ -579,7 +580,7 @@ sub My_Error::last_completed_range {
       progress reports, can look in
       <a href="https://metacpan.org/module/JKEGL/Marpa-R2-2.023_007/pod/Progress.pod">
         the documentation for progress reports</a>.)
-    Of the completions, we are interested only in those for one of
+      Of the completions, we are interested only in those for one of
       the
       <tt>@sought_rules</tt>.
     </p>
@@ -630,7 +631,7 @@ EARLEY_SET: while ( $earley_set &gt;= 0 ) {
       <code>marpa-parser@googlegroups.com</code>
     </p>
 <br />
-<p>posted at: 09:46 |
+<p>posted at: 09:30 |
 <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/error.html">direct link to this entry</a>
 </p>
 <div style="color:#38B0C0;padding:1px;text-align:center;">
