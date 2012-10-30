@@ -42,30 +42,30 @@
       <!--
       marpa_r2_html_fmt --no-added-tag-comment
       -->
-      Marpa's facilities for error reporting are new.
-      Using them, your quickie domain-specific language can,
+      Using
+      Marpa's facilities for error reporting,
+      a quickly written domain-specific language can,
       as of its first draft,
       have error reporting whose helpfulness and precision exceeds 
       that of carefully hand-crafted production compilers.
-      <p>
       This post will give an example.
       Two techniques will be used.
+      <p>
       First and most basic, 
       in the technical sense, Marpa's knowledge of when the parse
-      could not longer proceed is 100% accurate and immediate.
-      (This is not the case with yacc-derived parsers and not usually the
-      case with recursive descent parsers.)
+      can no longer proceed is 100% accurate and immediate.
+      This is not the case with yacc-derived parsers,
+      and is not the case with most recursive descent parsers.
       <p>
-      The second technique is new with the post.
-      Marpa also knows, at any point, the entire history of the parse.
-      This is the case even if the parse fails.
-      So you can ask the Marpa parser questions, like,
+      The second technique involves giving an exact account of what
+      Marpa believes it has seen so far.
+      The Marpa parser can report the answer to questions like
       <blockquote><p>
       "What was the last statement you successfully parsed?"
       <p>
       "What was the last expression you successfully parsed?"
       <p>
-      "The last block you successfully parsed, where did it end?"
+      "Where did the last successfully parsed block end?"
       </p>
       </blockquote>
       <p>
@@ -102,7 +102,7 @@
       <a href="https://gist.github.com/3974816">
       a Github gist</a>.
       It was run using
-      <a href="https://metacpan.org/release/JKEGL/Marpa-R2-2.023_007"
+      <a href="https://metacpan.org/release/JKEGL/Marpa-R2-2.023_007">
       a release candidate for the full release of Marpa::R2</a>
       Here is the grammar.
 

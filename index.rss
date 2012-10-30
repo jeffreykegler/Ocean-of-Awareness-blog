@@ -16,30 +16,30 @@
       &lt;!--
       marpa_r2_html_fmt --no-added-tag-comment
       --&gt;
-      Marpa's facilities for error reporting are new.
-      Using them, your quickie domain-specific language can,
+      Using
+      Marpa's facilities for error reporting,
+      a quickly written domain-specific language can,
       as of its first draft,
       have error reporting whose helpfulness and precision exceeds 
       that of carefully hand-crafted production compilers.
-      &lt;p&gt;
       This post will give an example.
       Two techniques will be used.
+      &lt;p&gt;
       First and most basic, 
       in the technical sense, Marpa's knowledge of when the parse
-      could not longer proceed is 100% accurate and immediate.
-      (This is not the case with yacc-derived parsers and not usually the
-      case with recursive descent parsers.)
+      can no longer proceed is 100% accurate and immediate.
+      This is not the case with yacc-derived parsers,
+      and is not the case with most recursive descent parsers.
       &lt;p&gt;
-      The second technique is new with the post.
-      Marpa also knows, at any point, the entire history of the parse.
-      This is the case even if the parse fails.
-      So you can ask the Marpa parser questions, like,
+      The second technique involves giving an exact account of what
+      Marpa believes it has seen so far.
+      The Marpa parser can report the answer to questions like
       &lt;blockquote&gt;&lt;p&gt;
       &quot;What was the last statement you successfully parsed?&quot;
       &lt;p&gt;
       &quot;What was the last expression you successfully parsed?&quot;
       &lt;p&gt;
-      &quot;The last block you successfully parsed, where did it end?&quot;
+      &quot;Where did the last successfully parsed block end?&quot;
       &lt;/p&gt;
       &lt;/blockquote&gt;
       &lt;p&gt;
@@ -76,7 +76,7 @@
       &lt;a href=&quot;https://gist.github.com/3974816&quot;&gt;
       a Github gist&lt;/a&gt;.
       It was run using
-      &lt;a href=&quot;https://metacpan.org/release/JKEGL/Marpa-R2-2.023_007&quot;
+      &lt;a href=&quot;https://metacpan.org/release/JKEGL/Marpa-R2-2.023_007&quot;&gt;
       a release candidate for the full release of Marpa::R2&lt;/a&gt;
       Here is the grammar.
 
