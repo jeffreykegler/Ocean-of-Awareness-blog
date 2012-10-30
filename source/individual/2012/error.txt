@@ -587,7 +587,7 @@ EARLEY_SET: while ( $earley_set &gt;= 0 ) {
 } ## end EARLEY_SET: while ( $earley_set &gt;= 0 )
 </pre>
     </blockquote>
-    <h3>Code and comments</h3>
+    <h3>Comments</h3>
     <p>
       Comments on this post can be sent to the Marpa Google Group:
       <code>marpa-parser@googlegroups.com</code>
