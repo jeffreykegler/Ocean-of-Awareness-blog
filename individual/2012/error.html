@@ -272,7 +272,7 @@ The parse became exhausted here: " 3 + + 1 2 4"
 Last expression successfully parsed was: 1
 The parse became exhausted here: " + 2 +3  4 + 5 + 6 + 7"
 </pre></blockquote>
-    <h4>The input is fully read, but there is no parse</h4><p>
+    <h4>The input is fully accepted, but there is no parse</h4><p>
       Finally, it may happen that lexer and parser read and accept
       the entire input, but do not find a valid parse in it.
       For example, if the input is
@@ -312,7 +312,7 @@ No parse was found, after reading the entire input
       involving a single operator.
       More interesting languages will have statements and blocks,
       and layers of subexpressions.
-      The logic below can be easily modified to show us
+      The logic below can be straightforwardly modified to show us
       as much about these as we think will be helpful.
     </p><h3>Parsing the DSL</h3>
     <blockquote><pre>
@@ -345,7 +345,7 @@ sub my_parser {
     <p>The above closure takes a grammar and an input string, and either produces a parse
       value,
       or a diagnostic telling us exactly why it could not.
-    </p><p>For any really helpful diagnostics, I find it necessary to be able to quote
+    </p><p>For truly helpful diagnostics, I find it necessary to be able to quote
       the input exactly.
       The
       <tt>@positions</tt>
@@ -353,14 +353,17 @@ sub my_parser {
       parser uses back to positions in the original input string.
       Marpa location 0 is always before any input symbol, so it is initialized
       to string position 0.
-    </p><p>
+    </p>
+    <p>
       The
       <tt>$self</tt>
       object is a convenience for the error handling, allowing
       the information the error handler needs to be collected, as well as a nice
       syntax for the calls.
-    </p><p>The loop for reading tokens will be described below.
-      After it, but before returning is our first error check.
+    </p>
+    <p>The loop for reading tokens will be described below.
+      After it, but before returning,
+      is our first error check.
       "No parse" errors show up after all the tokens have been read,
       when the
       <tt>$recce-&gt;value()</tt>
@@ -432,7 +435,7 @@ TOKEN_TYPE: for my $t (@terminals) {
 } ## end TOKEN_TYPE: for my $t (@terminals)
 </pre></blockquote>
     <p>
-      Our innermost look is through the lexing table,
+      Our innermost loop is through the lexing table,
       checking each table entry against the input string.
       If a match is found, the Marpa recognizer's
       <tt>read()</tt>
