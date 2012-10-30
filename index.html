@@ -147,10 +147,10 @@ END_OF_RULES
       <dt><strong><tt>=&gt;</tt></strong></dt>
       <dd><tt>keyword =&gt; value</tt>, where
         <tt>keyword</tt>
-        the name of an adverb.</dd>
+        is the name of an adverb.</dd>
     </dl>
     <p>The
-      <tt>action =&gt; do_add</tt>
+      "<tt>action =&gt; do_add</tt>"
       adverb indicates that the semantics for the alternative
       are in the Perl closure named
       <tt>do_add</tt>.
@@ -241,9 +241,7 @@ A problem occurred here:  say 2
 Parser rejected token ""say" keyword"
 </pre>
     </blockquote>
-    <p>In this situation spotting the bad keyword should be all
-      the information the user needs, but
-      note that Marpa did successfully determine that
+    <p>Marpa successfully determined that
       "<tt>1</tt>" is a valid expression of the language, but
       "<tt>+ 1</tt>" is not.
     </p>
@@ -345,7 +343,7 @@ sub my_parser {
     <p>The above closure takes a grammar and an input string, and either produces a parse
       value,
       or a diagnostic telling us exactly why it could not.
-    </p><p>For truly helpful diagnostics, I find it necessary to be able to quote
+      For truly helpful diagnostics, I find it necessary to be able to quote
       the input exactly.
       The
       <tt>@positions</tt>
@@ -357,12 +355,12 @@ sub my_parser {
     <p>
       The
       <tt>$self</tt>
-      object is a convenience for the error handling, allowing
-      the information the error handler needs to be collected, as well as a nice
-      syntax for the calls.
+      object is a convenience.
+      It collects the information the error handler needs,
+      and allows an elegant syntax for the error-handling calls.
     </p>
     <p>The loop for reading tokens will be described below.
-      After it, but before returning,
+      After it, but before the <tt>return</tt>,
       is our first error check.
       "No parse" errors show up after all the tokens have been read,
       when the
@@ -404,7 +402,7 @@ TOKEN: while ( pos $string &lt; $length ) {
       method check if the parse is
       exhausted,
       and again the hard work is done by the
-      <tt>show_last_expression</tt>
+      <tt>show_last_expression()</tt>
       method.
     </p><p>If we get through the lexing table without finding a token,
       we produce an invalid token message
@@ -412,12 +410,12 @@ TOKEN: while ( pos $string &lt; $length ) {
       <tt>show_position()</tt>
       method.
       For invalid tokens, position should be all that
-      the user need to know.
+      the user needs to know.
       Position is also reported in the case of an exhausted parse.
       Implementation of the
       <tt>show_position()</tt>
       method presents
-      no difficulties and the code can be found in the gist.
+      no difficulties -- the code can be found in the gist.
     </p><h3>Looping through the lexing table</h3>
     <blockquote><pre>
 TOKEN_TYPE: for my $t (@terminals) {
@@ -505,7 +503,7 @@ sub My_Error::input_slice {
       interface someday.
     </p><p>
       Successful recognitions of a symbol are called,
-      again following standard Earley parsing terminolgy,
+      again following standard Earley parsing terminology,
       "completions".
       Completions are recorded by rule,
       so the first thing that must be done is to turn the
