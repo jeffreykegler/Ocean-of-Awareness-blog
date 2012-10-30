@@ -48,44 +48,35 @@
       as of its first draft,
       have error reporting whose helpfulness and precision exceeds
       that of carefully hand-crafted production compilers.
-      This post will give an example.
-      Two techniques will be used.
+      This post will show how, with an example.
     </p><p>
+      Two techniques will be used.
       First and most basic,
-      in the technical sense, Marpa's knowledge of when the parse
+      in the technical sense, Marpa's knowledge of the point
+      at which the parse
       can no longer proceed is 100% accurate and immediate.
       This is not the case with yacc-derived parsers,
       and is not the case with most recursive descent parsers.
     </p><p>
-      The second technique involves giving an exact account of what
-      Marpa believes it has seen so far.
+      The second technique involves giving an account of exactly
+      what has been recognized so far.
       The Marpa parser can report the answer to questions like
     </p><blockquote><p>
-        "What was the last statement you successfully parsed?"
-      </p><p>
-        "What was the last expression you successfully parsed?"
-      </p><p>
-        "Where did the last successfully parsed block end?"
+        "What was the last statement you successfully parsed?"<br>
+        "What was the last expression you successfully parsed?"<br>
+        "Where did the last successfully parsed block end?"<br>
       </p>
     </blockquote>
-    <p>
-      Imagine that your C compiler or 4GL interpreter reported this
-      information every time you made an error.
-      Your work would be a lot faster.
-      For users of your next DSL, you don't have to imagine -- this
-      kind of error-reporting will be a standard feature
-      from its earliest versions.
-    </p><h3>The language</h3>
+    <h3>The language</h3>
     <p>
       To focus on the logic of the error reporting,
-      I picked a language that was error-prone,
-      but otherwise as simple as possible.
+      I looked for a language that was error-prone,
+      but extremely simple.
       For this purpose,
       prefix arithmetic is like a gift from the dakinis.
-      Simple in concept,
-      it is almost impossible to get right when it is more than a few
-      characters long,
-      and confusing to read.
+      It is almost trivial in concept,
+      and almost impossible to get right when it is more than a few
+      characters long.
       <q>say + 1 2</q>
       and
       <q>+++ 1 2 3 + + 1 2 4</q>
@@ -94,7 +85,7 @@
       Their results are, in order, 3 and 13.
     </p><p>
       I restricted the calculator to addition, because even with one
-      operator, prefix notation is confusing enough to serve our purposes.
+      operator, prefix notation is more than confusing enough to serve our purposes.
       I have included an optional
       <tt>say</tt>
       keyword, in order
@@ -109,7 +100,7 @@
         a Github gist</a>.
       It was run using
       <a href="https://metacpan.org/release/JKEGL/Marpa-R2-2.023_007">
-        a release candidate for the full release of Marpa::R2</a>
+        a release candidate for the full release of Marpa::R2</a>.
       Here is the grammar.
     </p><blockquote><pre><tt>
 my $prefix_grammar = Marpa::R2::Grammar-&gt;new(
@@ -175,9 +166,9 @@ sub My_Actions::do_arg1 { shift; return $_[1]; }
     <p>
       The first argument to a Marpa semantic closure is a "per-parse variable",
       which is not used in this application.
-      The others are the values of the child nodes,
+      The other arguments are the values of the child nodes,
       as determined recursively and in lexical order.
-    </p><h3>The lexer's table</h3>
+    </p><h3>The lexing table</h3>
     <p>
       In this post,
       I am skipping around in the code --
@@ -192,107 +183,119 @@ sub My_Actions::do_arg1 { shift; return $_[1]; }
       (I talked about lexing more
       <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/dsl.html">
         in a previous example</a>.)
-      Here is the lexer's table:
+      Here is the lexing table:
     </p>
-<blockquote> <pre>
+    <blockquote>
+      <pre>
 my @terminals = (
     [ Number =&gt; qr/\d+/xms,   'Number' ],
     [ op_add =&gt; qr/[+]/xms,   'Addition operator' ],
     [ kw_say =&gt; qr/say\b/xms, qq{"say" keyword} ],
 );
-/pre> </blockquote>
+</pre>
+    </blockquote>
     <h3>Types of parsing error</h3>
-    <p>Before plunging in the code that captures parsing and issues,
-    it may be best to describe the forms they take,
-    and show the messages that the code that follows will produce.
+    <p>Before plunging in the code that captures errors,
+      I will describe the forms parsing errors take,
+      and show the messages that the code that follows will produce.
+    </p>
     <h4>No valid token</h4>
     <p>The lexer may reach a point in the input
-    where it does not find one of the allowed tokens.
-    An example in this language would be an input with an
-        an exclamation point.
-	Errors of this kind have always been easy to diagnose,
-	pinpoint and, usually, to fix.
-<h4>The parser rejects a token</h4>
-	In some cases the lexer finds a token,
-	but it is not one the parser will accept at that point,
-	so the parser rejects the token.
-	An example with this language would be the input
-	"<tt>+ 1 say 2</tt>", which causes the following diagnostic:
-<blockquote><pre>
+      where it does not find one of the allowed tokens.
+      An example in this language would be an input with an
+      an exclamation point.
+      This is no need to talk much about this kind of error,
+      which has always been relatively easy to diagnose,
+      pinpoint and, usually, to fix.
+    </p>
+    <h4>The parser rejects a token</h4>
+    <p>
+      In some cases the lexer finds a token,
+      but it is not one the parser will accept at that point,
+      so the parser rejects the token.
+      An example with this language would be the input
+      "<tt>+ 1 say 2</tt>", which causes the following diagnostic:
+    </p>
+    <blockquote>
+      <pre>
 Last expression successfully parsed was:  1
 A problem occurred here:  say 2
 Parser rejected token ""say" keyword"
-</pre></blockquote>
-<p>In this situation spotting the bad keyword should be all
-the information the user needs, but
-note that Marpa did successfully determine that
-"<tt>1</tt>" is a valid expression of the language, but
-"<tt>+ 1</tt>" is not.
-<h4>The parser becomes exhausted</h4>
-<p>
-In other cases, the parser may "dead end" -- reach a point
-where no more input can be accepted.
-One example is with the input
-"<tt>+ 1 2 3 + + 1 2 4</tt>".
-This causes the following diagnostic:
-<blockquote><pre>
+</pre>
+    </blockquote>
+    <p>In this situation spotting the bad keyword should be all
+      the information the user needs, but
+      note that Marpa did successfully determine that
+      "<tt>1</tt>" is a valid expression of the language, but
+      "<tt>+ 1</tt>" is not.
+    </p>
+    <h4>The parser becomes exhausted</h4>
+    <p>
+      In other cases, the parser may "dead end" -- reach a point
+      where no more input can be accepted.
+      One example is with the input
+      "<tt>+ 1 2 3 + + 1 2 4</tt>".
+      This causes the following diagnostic:
+    </p><blockquote><pre>
 Last expression successfully parsed was: + 1 2
 The parse became exhausted here: " 3 + + 1 2 4"
 </pre></blockquote>
-<p>The parser has completed a prefix expression,
-and unlike infix and postfix expressions, once they have
-been allowed to end
-there is no way to add "new stuff" at the end.
-The parse is "exhausted".
-<p>A second example of an exhausted parse
-occurs with the the input
-"<tt>1 + 2 +3  4 + 5 + 6 + 7</tt>".
-Here is the diagnostic:
-<blockquote><pre>
+    <p>The parser has completed a prefix expression,
+      and unlike infix and postfix expressions, once they have
+      been allowed to end
+      there is no way to add "new stuff" at the end.
+      The parse is "exhausted".
+    </p><p>A second example of an exhausted parse
+      occurs with the the input
+      "<tt>1 + 2 +3  4 + 5 + 6 + 7</tt>".
+      Here is the diagnostic:
+    </p><blockquote><pre>
 Last expression successfully parsed was: 1
 The parse became exhausted here: " + 2 +3  4 + 5 + 6 + 7"
 </pre></blockquote>
-<h4>The input is fully read, but there is no parse</h4>
-Finally, it may happen that lexer and parser read and accept
-the entire input, but do not find a valid parse in it.
-For example, if the input is 
-"<tt>+++</tt>", the diagnostic will be:
-<blockquote><pre>
+    <h4>The input is fully read, but there is no parse</h4><p>
+      Finally, it may happen that lexer and parser read and accept
+      the entire input, but do not find a valid parse in it.
+      For example, if the input is
+      "<tt>+++</tt>", the diagnostic will be:
+    </p><blockquote><pre>
 No expression was successfully parsed
 No parse was found, after reading the entire input
 </pre></blockquote>
-<p>The input was a good start for a prefix expression,
-but no numbers were ever found,
-and our DSL reports that it never recognized any
-prefix expressions.
-<p>A more complicated case is this input:
-"<tt>++1 2++</tt>".
-Here is what our DSL tells us:
-<blockquote><pre>
+    <p>The input was a good start for a prefix expression,
+      but no numbers were ever found,
+      and our DSL reports that it never recognized any
+      prefix expressions.
+    </p><p>A more complicated case is this input:
+      "<tt>++1 2++</tt>".
+      Here is what our DSL tells us:
+    </p><blockquote><pre>
 Last expression successfully parsed was: +1 2
 No parse was found, after reading the entire input
 </pre></blockquote>
-<p>
-Our DSL did find a good expression, and tells us where it was.
-If there is more than one good expression, our DSL tells us
-the most recent.
-With input "<tt>++1 2++3 4++</tt>",
-the diagnostic becomes
-<blockquote><pre>
+    <p>
+      Our DSL did find a good expression, and tells us where it was.
+      If there is more than one good expression, our DSL tells us
+      the most recent.
+      With input "<tt>++1 2++3 4++</tt>",
+      the diagnostic becomes
+    </p><blockquote><pre>
 Last expression successfully parsed was: +3 4
 No parse was found, after reading the entire input
 </pre></blockquote>
-<p>In fact, if we thought it would be helpful
-our DSL could show all the expressions found,
-or the last <i>N</i> expressions for some
-<i>N</i>.
-This is a simple language with nothing but expressions
-involving a single operator.
-More interesting languages will have statements and blocks,
-and layers of subexpressions.
-The logic below can be easily modified to show us
-as much about these as we think will be helpful.
-    <h3>Parsing the DSL</h3>
+    <p>In fact, if we thought it would be helpful
+      our DSL could show all the expressions found,
+      or the last
+      <i>N</i>
+      expressions for some
+      <i>N</i>.
+      This is a simple language with nothing but expressions
+      involving a single operator.
+      More interesting languages will have statements and blocks,
+      and layers of subexpressions.
+      The logic below can be easily modified to show us
+      as much about these as we think will be helpful.
+    </p><h3>Parsing the DSL</h3>
     <blockquote><pre>
 sub my_parser {
     my ( $grammar, $string ) = @_;
@@ -339,7 +342,15 @@ TOKEN: while ( pos $string &lt; $length ) {
 } ## end TOKEN: while ( pos $string &lt; $length )
 <!--
           html_fmt: An missing end tag was added to close the preceding <pre> element
+        --><!--
+          html_fmt: An missing end tag was added to close the preceding <pre> element
+        --><!--
+          html_fmt: An missing end tag was added to close the preceding <pre> element
         --><pre><!--
+          html_fmt: An missing end tag was added to close the preceding <pre> element
+        --><!--
+          html_fmt: An missing end tag was added to close the preceding <pre> element
+        --><!--
           html_fmt: An missing end tag was added to close the preceding <pre> element
         --></blockquote>
     <h3>Looping through the lexing table</h3>
