@@ -468,7 +468,8 @@ sub My_Error::show_last_expression {
       using the
       <tt>last_completed_range()</tt>
       method.
-      (In the Marpa, as in other Earley parsers, a symbol or rule that has been recognized
+      (In Marpa,
+      as in other Earley parsers, a symbol or rule that has been recognized
       from start to finish is said to be "completed".)
       The parse locations are passed to the
       <tt>input_slice()</tt>
@@ -549,11 +550,12 @@ sub My_Error::last_completed_range {
     <p>
       Once we have traversed the Earley sets, we need only return
       the appropriate value.
-      If the Earley set number fell below 0, we never did not any completions,
-      which we report with a bare
+      If the Earley set number fell below 0, we never found any completions
+      of the "sought rules",
+      a circumstance which we report with a bare
       <tt>return</tt>
       statement.
-      Otheriwse,
+      Otherwise,
       <tt>$first_origin</tt>
       and
       <tt>$earley_set</tt>
@@ -574,13 +576,12 @@ sub My_Error::last_completed_range {
       as of that Earley set.
       Of these, we are only interested in completions,
       which have a "dot position" of -1.
-      (Those interested in an explanation of "dot positions"
-      and more on progress reports, can look
-      in
+      (Those interested in a fuller explanation of "dot positions",
+      progress items, and
+      progress reports, can look in
       <a href="https://metacpan.org/module/JKEGL/Marpa-R2-2.023_007/pod/Progress.pod">
         the documentation for progress reports</a>.)
-    </p>
-    <p>Of the completions, we are interested only in those for one of
+    Of the completions, we are interested only in those for one of
       the
       <tt>@sought_rules</tt>.
     </p>
@@ -588,7 +589,8 @@ sub My_Error::last_completed_range {
       For any given set of sought rules, more than one might end at
       an given Earley set.
       Usually we are most interested in the longest of these,
-      and this logic assumes that we are only interested in that completion.
+      and this logic assumes that we are only interested in the
+      longest completion.
       We check if the start of the completion (its "origin") is prior to
       our current match, and if so its becomes our new
       <tt>$first_origin</tt>.
@@ -606,7 +608,7 @@ sub My_Error::last_completed_range {
       <tt>$earley_set</tt>
       contain the information that we were looking for -- the start and end
       locations of the most recent longest completion of one of the
-      <tt>@sought_rules</tt>
+      <tt>@sought_rules</tt>.
     </p><blockquote>
       <pre>
 my $first_origin = $latest_earley_set + 1;
