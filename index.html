@@ -192,7 +192,20 @@ my @terminals = (
     [ op_add =&gt; qr/[+]/xms,   'Addition operator' ],
     [ kw_say =&gt; qr/say\b/xms, qq{"say" keyword} ],
 );
-</pre>
+<!--
+          html_fmt: An missing end tag was added to close the preceding <pre> element
+        --><p>The lexing table is an array of 3-element arrays.
+        Each sub-array contains the symbol name, a regular expression
+        that is used to recognizer it, and a "long name",
+        a human-readable name more appropriate for error messages
+        than the symbol name.
+        For some languages,
+        the order of our lexing tables may be significant,
+        although in the case of this language it makes no difference.
+      </p></blockquote><!--
+        html_fmt: Next end tag is cruft
+      --></pre>
+    <!-- html_fmt: Next end tag is cruft -->
     </blockquote>
     <h3>Types of parsing error</h3>
     <p>Before plunging in the code that captures errors,
@@ -240,10 +253,11 @@ Parser rejected token ""say" keyword"
 Last expression successfully parsed was: + 1 2
 The parse became exhausted here: " 3 + + 1 2 4"
 </pre></blockquote>
-    <p>The parser has completed a prefix expression,
-      and unlike infix and postfix expressions, once they have
-      been allowed to end
-      there is no way to add "new stuff" at the end.
+    <p>The parser has completed a prefix expression.
+      Unlike infix and postfix expressions, once a prefix
+      expression has been
+      allowed to end
+      there is no way to "extend" or "restart" it.
       The parse is "exhausted".
     </p><p>A second example of an exhausted parse
       occurs with the the input
@@ -323,8 +337,39 @@ sub my_parser {
     return ${$value_ref};
 } ## end sub my_parser
 </pre></blockquote>
-    <h3>Reading the tokens</h3>
-    <blockquote><pre>
+    <p>The above closure takes a grammar and an input string, and either produces a parse
+      value,
+      or a diagnostic telling us exactly why it could not.
+    </p><p>For any really helpful diagnostics, I find it necessary to be able to quote
+      the input exactly.
+      The
+      <tt>@positions</tt>
+      array will be used to map the locations that the Marpa
+      parser uses back to positions in the original input string.
+      Marpa location 0 is always before any input symbol, so it is initialized
+      to string position 0.
+    </p><p>
+      The
+      <tt>$self</tt>
+      object is a convenience for the error handling, allowing
+      the information the error handler needs to be collected, as well as a nice
+      syntax for the calls.
+    </p><p>The loop for reading tokens will be described below.
+      After it, but before returning is our first error check.
+      "No parse" errors show up after all the tokens have been read,
+      when the
+      <tt>$recce-&gt;value()</tt>
+      call returns a Perl
+      <tt>undef</tt>.
+      In that case,
+      we produce the message we showed above.
+      The tricky details are hidden in the
+      <tt>show_last_expression()</tt>
+      method,
+      which we will come to.
+    </p><h3>Reading the tokens</h3>
+    <blockquote>
+      <pre>
 TOKEN: while ( pos $string &lt; $length ) {
     next TOKEN if $string =~ m/\G\s+/gcxms;    # skip whitespace
     if ( $recce-&gt;exhausted() ) {
@@ -340,20 +385,32 @@ TOKEN: while ( pos $string &lt; $length ) {
 	$self-&gt;show_position( $positions[-1] ), "\n",
 	q{No valid token was found};
 } ## end TOKEN: while ( pos $string &lt; $length )
-<!--
-          html_fmt: An missing end tag was added to close the preceding <pre> element
-        --><!--
-          html_fmt: An missing end tag was added to close the preceding <pre> element
-        --><!--
-          html_fmt: An missing end tag was added to close the preceding <pre> element
-        --><pre><!--
-          html_fmt: An missing end tag was added to close the preceding <pre> element
-        --><!--
-          html_fmt: An missing end tag was added to close the preceding <pre> element
-        --><!--
-          html_fmt: An missing end tag was added to close the preceding <pre> element
-        --></blockquote>
-    <h3>Looping through the lexing table</h3>
+</pre>
+    </blockquote>
+    <p>This loop implements part of our progressive matching
+      within
+      <tt>$string</tt>,
+      and contains two of our four error checks.
+      The
+      <tt>exhausted()</tt>
+      method check if the parse is
+      exhausted,
+      and again the hard work is done by the
+      <tt>show_last_expression</tt>
+      method.
+    </p><p>If we get through the lexing table without finding a token,
+      we produce an invalid token message
+      and report the position using the
+      <tt>show_position()</tt>
+      method.
+      For invalid tokens, position should be all that
+      the user need to know.
+      Position is also reported in the case of an exhausted parse.
+      Implementation of the
+      <tt>show_position()</tt>
+      method presents
+      no difficulties and the code can be found in the gist.
+    </p><h3>Looping through the lexing table</h3>
     <blockquote><pre>
 TOKEN_TYPE: for my $t (@terminals) {
     my ( $token_name, $regex, $long_name ) = @{$t};
@@ -369,7 +426,21 @@ TOKEN_TYPE: for my $t (@terminals) {
 	qq{Parser rejected token "$long_name"\n};
 } ## end TOKEN_TYPE: for my $t (@terminals)
 </pre></blockquote>
-    <h3>Showing the last expression</h3>
+    <p>
+      Our innermost look is through the lexing table,
+      checking each table entry against the input string.
+      If a match is found, the Marpa recognizer's
+      <tt>read()</tt>
+      method is called.
+      This may fail due to our fourth and last type of error:
+      a rejected token.
+      Again,
+      <tt>show_position()</tt>
+      reports position
+      and
+      <tt>show_last_expression()</tt>
+      does the interesting stuff.
+    </p><h3>Showing the last expression</h3>
     <blockquote><pre><tt>
 sub My_Error::show_last_expression {
     my ($self) = @_;
@@ -381,8 +452,23 @@ sub My_Error::show_last_expression {
         : 'No expression was successfully parsed';
 } ## end sub My_Error::show_last_expression
 </tt></pre></blockquote>
-    <h3>Slicing the input</h3>
-    <blockquote><pre><tt>
+    <p>At its top level,
+      <tt>show_last_expression()</tt>
+      finds the parse locations of the last completed
+      <tt>Expression</tt>
+      symbol,
+      using the
+      <tt>last_completed_range()</tt>
+      method.
+      (In the Marpa, as in other Earley parsers, a symbol or rule that has been recognized
+      from start to finish is said to be "completed".)
+      The parse locations are passed to the
+      <tt>input_slice()</tt>
+      method,
+      which translates them into the corresponding substring of the input
+      string.
+    </p><blockquote>
+      <pre>
 sub My_Error::input_slice {
     my ( $self, $start, $end ) = @_;
     my $positions = $self-&gt;{positions};
@@ -391,9 +477,47 @@ sub My_Error::input_slice {
     my $length         = $positions-&gt;[$end] - $start_position;
     return substr ${ $self-&gt;{input} }, $start_position, $length;
 } ## end sub My_Error::input_slice
-</tt></pre></blockquote>
+</pre>
+    </blockquote>
     <h3>Finding the last successful parse of a symbol</h3>
-    <blockquote><pre>
+    <p>The
+      <tt>last_completed_range()</tt>
+      method does the
+      complicated part of the error handling -- finding the last
+      successfully recognized ("completed")
+      occurrence of a symbol.
+      The
+      <tt>last_completed_range()</tt>
+      method does not use
+      any internals, but it certainly gets technical
+      in its use of the external methods.
+      It or something like it
+      is a prime candidate to be folded into the Marpa
+      interface someday.
+    </p><p>
+      Successful recognitions of a symbol are called,
+      again following standard Earley parsing terminolgy,
+      "completions".
+      Completions are recorded by rule,
+      so the first thing that must be done is to turn the
+      symbol name into a list of those rules which have
+      that symbol on their left hand side.
+      These are called the
+      <tt>@sought_rules</tt>.
+      We also need to initialize the loop by
+      recording the last parse location ("latest Earley set").
+      <tt>$earley_set</tt>
+      will be our loop variable.
+    </p><p>Note the use of the
+      <tt>bnf_rule()</tt>
+      method.
+      The BNF interface sometimes rewrites symbol names,
+      and
+      <tt>bnf_rule()</tt>
+      will return the symbol names
+      as actually specified by the user,
+      instead of in their rewritten form.
+    </p><blockquote><pre>
 sub My_Error::last_completed_range {
     my ( $self, $symbol_name ) = @_;
     my $grammar      = $self-&gt;{grammar};
@@ -414,8 +538,69 @@ sub My_Error::last_completed_range {
     return ( $first_origin, $earley_set );
 } ## end sub My_Error::last_completed_range
 </pre></blockquote>
+    <p>
+      Once we have traversed the Earley sets, we need only return
+      the appropriate value.
+      If the Earley set number fell below 0, we never did not any completions,
+      which we report with a bare
+      <tt>return</tt>
+      statement.
+      Otheriwse,
+      <tt>$first_origin</tt>
+      and
+      <tt>$earley_set</tt>
+      will be set to the first and last parse locations of the completion,
+      and we return them.
+    </p>
     <h3>Traversing the Earley sets</h3>
-    <blockquote><pre>
+    <p>This is our final code sample, and the buck stops here.
+      Marpa::R2 introduced more detailed user access to the progress reporting
+      information, and
+      <a href="https://metacpan.org/module/JKEGL/Marpa-R2-2.023_007/pod/Progress.pod">
+        that interface</a>
+      is used here.
+    </p>
+    <p>We traverse the Earley sets in reverse order,
+      beginning with the latest and going back, if necessary to Earley set 0.
+      For each Earley sets, there are "progress items", reports of the progress
+      as of that Earley set.
+      Of these, we are only interested in completions,
+      which have a "dot position" of -1.
+      (Those interested in an explanation of "dot positions"
+      and more on progress reports, can look
+      in
+      <a href="https://metacpan.org/module/JKEGL/Marpa-R2-2.023_007/pod/Progress.pod">
+        the documentation for progress reports</a>.)
+    </p>
+    <p>Of the completions, we are interested only in those for one of
+      the
+      <tt>@sought_rules</tt>.
+    </p>
+    <p>
+      For any given set of sought rules, more than one might end at
+      an given Earley set.
+      Usually we are most interested in the longest of these,
+      and this logic assumes that we are only interested in that completion.
+      We check if the start of the completion (its "origin") is prior to
+      our current match, and if so its becomes our new
+      <tt>$first_origin</tt>.
+    </p>
+    <p><tt>$first_origin</tt>
+      was initialized to an non-existent Earley set,
+      higher in number than any actual one.
+      Once out of the loop through the progress items, we check if
+      <tt>$first_origin</tt>
+      is still at its initialized value.
+      If so, we need to iterate backward one more Earley set.
+      If not, we are done, and
+      <tt>$first_origin</tt>
+      and
+      <tt>$earley_set</tt>
+      contain the information that we were looking for -- the start and end
+      locations of the most recent longest completion of one of the
+      <tt>@sought_rules</tt>
+    </p><blockquote>
+      <pre>
 my $first_origin = $latest_earley_set + 1;
 EARLEY_SET: while ( $earley_set &gt;= 0 ) {
     my $report_items = $recce-&gt;progress($earley_set);
@@ -429,9 +614,13 @@ EARLEY_SET: while ( $earley_set &gt;= 0 ) {
     last EARLEY_SET if $first_origin &lt;= $latest_earley_set;
     $earley_set--;
 } ## end EARLEY_SET: while ( $earley_set &gt;= 0 )
-</pre></blockquote>
-    <h3>Comments
-    </h3>
+</pre>
+    </blockquote>
+    <h3>Code and comments</h3>
+    <p>
+      Comments on this post can be sent to the Marpa Google Group:
+      <code>marpa-parser@googlegroups.com</code>
+    </p>
 <br />
 <p>posted at: 09:46 |
 <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/error.html">direct link to this entry</a>
