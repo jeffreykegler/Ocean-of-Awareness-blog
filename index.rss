@@ -177,14 +177,13 @@ Such a parser is said to be &quot;exhausted&quot;.
 finds there does not parse according to the grammar.
 &lt;/ol&gt;
 
-&lt;h3&gt;The DSL's parsing closure&lt;/h3&gt;
+&lt;h3&gt;Parsing the DSL&lt;/h3&gt;
 &lt;blockquote&gt;&lt;pre&gt;
 sub my_parser {
     my ( $grammar, $string ) = @_;
     my @positions = (0);
     my $recce = Marpa::R2::Recognizer-&amp;gt;new( { grammar =&amp;gt; $grammar } );
 
-    # A quasi-object, for internal use only
     my $self = bless {
         grammar   =&amp;gt; $grammar,
         input     =&amp;gt; \$string,
@@ -196,7 +195,7 @@ sub my_parser {
     my $length = length $string;
     pos $string = $positions[-1];
 
-    &lt;big&gt;&lt;b&gt;... the loop that reads tokens goes here ...&lt;/b&gt;&lt;/big&gt;
+    &lt;big&gt;&lt;b&gt;... &quot;Reading the tokens&quot; goes here ...&lt;/b&gt;&lt;/big&gt;
 
     my $value_ref = $recce-&amp;gt;value;
     if ( not defined $value_ref ) {
@@ -207,27 +206,27 @@ sub my_parser {
 } ## end sub my_parser
 &lt;/pre&gt;&lt;/blockquote&gt;
 
-&lt;h3&gt;The token reading loop&lt;/h3&gt;
-&lt;blockquote&gt;&lt;pre&gt;&lt;tt&gt;
-    TOKEN: while ( pos $string &amp;lt; $length ) {
-        next TOKEN if $string =~ m/\G\s+/gcxms;    # skip whitespace
-        if ( $recce-&amp;gt;exhausted() ) {
-            die $self-&amp;gt;show_last_expression(), &quot;\n&quot;,
-                q{The parse became exhausted here: &quot;},
-                $self-&amp;gt;show_position( $positions[-1] ), qq{&quot;\n},
-                ;
-        } ## end if ( $recce-&amp;gt;exhausted() )
+&lt;h3&gt;Reading the tokens&lt;/h3&gt;
+&lt;blockquote&gt;&lt;pre&gt;
+TOKEN: while ( pos $string &amp;lt; $length ) {
+    next TOKEN if $string =~ m/\G\s+/gcxms;    # skip whitespace
+    if ( $recce-&amp;gt;exhausted() ) {
+	die $self-&amp;gt;show_last_expression(), &quot;\n&quot;,
+	    q{The parse became exhausted here: &quot;},
+	    $self-&amp;gt;show_position( $positions[-1] ), qq{&quot;\n},
+	    ;
+    } ## end if ( $recce-&amp;gt;exhausted() )
 
-	&lt;big&gt;&lt;b&gt;... the loop through the lexer table goes here ...&lt;/b&gt;&lt;/big&gt;
+    &lt;big&gt;&lt;b&gt;...  &quot;Looping through the lexing table&quot; goes here ...&lt;/b&gt;&lt;/big&gt;
 
-        die 'A problem occurred here: ',
-            $self-&amp;gt;show_position( $positions[-1] ), &quot;\n&quot;,
-            q{No valid token was found};
-    } ## end TOKEN: while ( pos $string &amp;lt; $length )
-&lt;/blockquote&gt;&lt;/tt&gt;&lt;/pre&gt;
+    die 'A problem occurred here: ',
+	$self-&amp;gt;show_position( $positions[-1] ), &quot;\n&quot;,
+	q{No valid token was found};
+} ## end TOKEN: while ( pos $string &amp;lt; $length )
+&lt;pre&gt;&lt;/blockquote&gt;
 
-&lt;h3&gt;The loop through lexing table&lt;/h3&gt;
-&lt;blockquote&gt;&lt;pre&gt;&lt;tt&gt;
+&lt;h3&gt;Looping through the lexing table&lt;/h3&gt;
+&lt;blockquote&gt;&lt;pre&gt;
 TOKEN_TYPE: for my $t (@terminals) {
     my ( $token_name, $regex, $long_name ) = @{$t};
     next TOKEN_TYPE if not $string =~ m/\G($regex)/gcxms;
@@ -241,9 +240,9 @@ TOKEN_TYPE: for my $t (@terminals) {
 	$self-&amp;gt;show_position( $positions[-1] ), &quot;\n&quot;,
 	qq{Parser rejected token &quot;$long_name&quot;\n};
 } ## end TOKEN_TYPE: for my $t (@terminals)
-&lt;/blockquote&gt;&lt;/tt&gt;&lt;/pre&gt;
+&lt;/pre&gt;&lt;/blockquote&gt;
 
-&lt;h3&gt;The error handlers&lt;/h3&gt;
+&lt;h3&gt;Showing the last expression&lt;/h3&gt;
 &lt;blockquote&gt;&lt;pre&gt;&lt;tt&gt;
 sub My_Error::show_last_expression {
     my ($self) = @_;
@@ -256,6 +255,7 @@ sub My_Error::show_last_expression {
 } ## end sub My_Error::show_last_expression
 &lt;/tt&gt;&lt;/pre&gt;&lt;/blockquote&gt;
 
+&lt;h3&gt;Slicing the input&lt;/h3&gt;
 &lt;blockquote&gt;&lt;pre&gt;&lt;tt&gt;
 sub My_Error::input_slice {
     my ( $self, $start, $end ) = @_;
@@ -268,7 +268,7 @@ sub My_Error::input_slice {
 &lt;/tt&gt;&lt;/pre&gt;&lt;/blockquote&gt;
 
 &lt;h3&gt;Finding the last successful parse of a symbol&lt;/h3&gt;
-&lt;blockquote&gt;&lt;pre&gt;&lt;tt&gt;
+&lt;blockquote&gt;&lt;pre&gt;
 sub My_Error::last_completed_range {
     my ( $self, $symbol_name ) = @_;
     my $grammar      = $self-&amp;gt;{grammar};
@@ -283,15 +283,15 @@ sub My_Error::last_completed_range {
     my $latest_earley_set = $recce-&amp;gt;latest_earley_set();
     my $earley_set        = $latest_earley_set;
 
-    &lt;big&gt;&lt;b&gt;... the loop traversing the Earley sets goes here ...&lt;/b&gt;&lt;/big&gt;
+    &lt;big&gt;&lt;b&gt;... &quot;Traversing the Earley sets&quot; goes here ...&lt;/b&gt;&lt;/big&gt;
 
     return if $earley_set &amp;lt; 0;
     return ( $first_origin, $earley_set );
 } ## end sub My_Error::last_completed_range
-&lt;/tt&gt;&lt;/pre&gt;&lt;/blockquote&gt;
+&lt;/pre&gt;&lt;/blockquote&gt;
 
-&lt;h4&gt;Traversing the Earley sets&lt;/h4&gt;
-&lt;blockquote&gt;&lt;pre&gt;&lt;tt&gt;
+&lt;h3&gt;Traversing the Earley sets&lt;/h3&gt;
+&lt;blockquote&gt;&lt;pre&gt;
 my $first_origin = $latest_earley_set + 1;
 EARLEY_SET: while ( $earley_set &amp;gt;= 0 ) {
     my $report_items = $recce-&amp;gt;progress($earley_set);
@@ -305,7 +305,7 @@ EARLEY_SET: while ( $earley_set &amp;gt;= 0 ) {
     last EARLEY_SET if $first_origin &amp;lt;= $latest_earley_set;
     $earley_set--;
 } ## end EARLEY_SET: while ( $earley_set &amp;gt;= 0 )
-&lt;/tt&gt;&lt;/pre&gt;&lt;/blockquote&gt;
+&lt;/pre&gt;&lt;/blockquote&gt;
 &lt;h3&gt;Comments</description>
   </item>
   <item>

@@ -203,14 +203,13 @@ Such a parser is said to be "exhausted".
 finds there does not parse according to the grammar.
 </ol>
 
-<h3>The DSL's parsing closure</h3>
+<h3>Parsing the DSL</h3>
 <blockquote><pre>
 sub my_parser {
     my ( $grammar, $string ) = @_;
     my @positions = (0);
     my $recce = Marpa::R2::Recognizer-&gt;new( { grammar =&gt; $grammar } );
 
-    # A quasi-object, for internal use only
     my $self = bless {
         grammar   =&gt; $grammar,
         input     =&gt; \$string,
@@ -222,7 +221,7 @@ sub my_parser {
     my $length = length $string;
     pos $string = $positions[-1];
 
-    <big><b>... the loop that reads tokens goes here ...</b></big>
+    <big><b>... "Reading the tokens" goes here ...</b></big>
 
     my $value_ref = $recce-&gt;value;
     if ( not defined $value_ref ) {
@@ -233,27 +232,27 @@ sub my_parser {
 } ## end sub my_parser
 </pre></blockquote>
 
-<h3>The token reading loop</h3>
-<blockquote><pre><tt>
-    TOKEN: while ( pos $string &lt; $length ) {
-        next TOKEN if $string =~ m/\G\s+/gcxms;    # skip whitespace
-        if ( $recce-&gt;exhausted() ) {
-            die $self-&gt;show_last_expression(), "\n",
-                q{The parse became exhausted here: "},
-                $self-&gt;show_position( $positions[-1] ), qq{"\n},
-                ;
-        } ## end if ( $recce-&gt;exhausted() )
+<h3>Reading the tokens</h3>
+<blockquote><pre>
+TOKEN: while ( pos $string &lt; $length ) {
+    next TOKEN if $string =~ m/\G\s+/gcxms;    # skip whitespace
+    if ( $recce-&gt;exhausted() ) {
+	die $self-&gt;show_last_expression(), "\n",
+	    q{The parse became exhausted here: "},
+	    $self-&gt;show_position( $positions[-1] ), qq{"\n},
+	    ;
+    } ## end if ( $recce-&gt;exhausted() )
 
-	<big><b>... the loop through the lexer table goes here ...</b></big>
+    <big><b>...  "Looping through the lexing table" goes here ...</b></big>
 
-        die 'A problem occurred here: ',
-            $self-&gt;show_position( $positions[-1] ), "\n",
-            q{No valid token was found};
-    } ## end TOKEN: while ( pos $string &lt; $length )
-</blockquote></tt></pre>
+    die 'A problem occurred here: ',
+	$self-&gt;show_position( $positions[-1] ), "\n",
+	q{No valid token was found};
+} ## end TOKEN: while ( pos $string &lt; $length )
+<pre></blockquote>
 
-<h3>The loop through lexing table</h3>
-<blockquote><pre><tt>
+<h3>Looping through the lexing table</h3>
+<blockquote><pre>
 TOKEN_TYPE: for my $t (@terminals) {
     my ( $token_name, $regex, $long_name ) = @{$t};
     next TOKEN_TYPE if not $string =~ m/\G($regex)/gcxms;
@@ -267,9 +266,9 @@ TOKEN_TYPE: for my $t (@terminals) {
 	$self-&gt;show_position( $positions[-1] ), "\n",
 	qq{Parser rejected token "$long_name"\n};
 } ## end TOKEN_TYPE: for my $t (@terminals)
-</blockquote></tt></pre>
+</pre></blockquote>
 
-<h3>The error handlers</h3>
+<h3>Showing the last expression</h3>
 <blockquote><pre><tt>
 sub My_Error::show_last_expression {
     my ($self) = @_;
@@ -282,6 +281,7 @@ sub My_Error::show_last_expression {
 } ## end sub My_Error::show_last_expression
 </tt></pre></blockquote>
 
+<h3>Slicing the input</h3>
 <blockquote><pre><tt>
 sub My_Error::input_slice {
     my ( $self, $start, $end ) = @_;
@@ -294,7 +294,7 @@ sub My_Error::input_slice {
 </tt></pre></blockquote>
 
 <h3>Finding the last successful parse of a symbol</h3>
-<blockquote><pre><tt>
+<blockquote><pre>
 sub My_Error::last_completed_range {
     my ( $self, $symbol_name ) = @_;
     my $grammar      = $self-&gt;{grammar};
@@ -309,15 +309,15 @@ sub My_Error::last_completed_range {
     my $latest_earley_set = $recce-&gt;latest_earley_set();
     my $earley_set        = $latest_earley_set;
 
-    <big><b>... the loop traversing the Earley sets goes here ...</b></big>
+    <big><b>... "Traversing the Earley sets" goes here ...</b></big>
 
     return if $earley_set &lt; 0;
     return ( $first_origin, $earley_set );
 } ## end sub My_Error::last_completed_range
-</tt></pre></blockquote>
+</pre></blockquote>
 
-<h4>Traversing the Earley sets</h4>
-<blockquote><pre><tt>
+<h3>Traversing the Earley sets</h3>
+<blockquote><pre>
 my $first_origin = $latest_earley_set + 1;
 EARLEY_SET: while ( $earley_set &gt;= 0 ) {
     my $report_items = $recce-&gt;progress($earley_set);
@@ -331,7 +331,7 @@ EARLEY_SET: while ( $earley_set &gt;= 0 ) {
     last EARLEY_SET if $first_origin &lt;= $latest_earley_set;
     $earley_set--;
 } ## end EARLEY_SET: while ( $earley_set &gt;= 0 )
-</tt></pre></blockquote>
+</pre></blockquote>
 <h3>Comments
 <br />
 <p>posted at: 09:46 |
