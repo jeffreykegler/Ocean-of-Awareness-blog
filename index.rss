@@ -119,22 +119,23 @@ the Perl closures implementing semantics are to be found in the
 and where no semantics are explicitly specified,
 the Perl closure &lt;tt&gt;do_arg0&lt;/tt&gt; is the default.
 
-&lt;h3&gt;The Semantics&lt;/h3&gt;
+&lt;h3&gt;The semantics&lt;/h3&gt;
 &lt;p&gt;The semantics for this example are easy.
-(The first argument to a Marpa semantic closure is a &quot;per-parse variable&quot;,
-which is not used in this case.
-The others are the values of the child nodes,
-as determined recursively and in lexical order.
 &lt;blockquote&gt;&lt;pre&gt;&lt;tt&gt;
 sub My_Actions::do_add  { shift; return $_[1] + $_[2] }
 sub My_Actions::do_arg0 { shift; return shift; }
 sub My_Actions::do_arg1 { shift; return $_[1]; }
 &lt;/tt&gt;&lt;/pre&gt;&lt;/blockquote&gt;
+&lt;p&gt;
+The first argument to a Marpa semantic closure is a &quot;per-parse variable&quot;,
+which is not used in this application.
+The others are the values of the child nodes,
+as determined recursively and in lexical order.
 
 &lt;h3&gt;The lexer's table&lt;/h3&gt;
 &lt;p&gt;
-In this post, I
-I am skipping through the code --
+In this post,
+I am skipping around in the code --
 &lt;a href=&quot;https://gist.github.com/3974816&quot;&gt;
 the full code is in the gist&lt;/a&gt;.
 But lexical analysis is of particular interest to new
@@ -155,68 +156,29 @@ my @terminals = (
 );
 &lt;/tt&gt;&lt;/pre&gt;&lt;/blockquote&gt;
 
-&lt;blockquote&gt;&lt;pre&gt;&lt;tt&gt;
-sub My_Error::last_completed_range {
-    my ( $self, $symbol_name ) = @_;
-    my $grammar      = $self-&amp;gt;{grammar};
-    my $recce        = $self-&amp;gt;{recce};
-    my @sought_rules = ();
-    for my $rule_id ( $grammar-&amp;gt;rule_ids() ) {
-        my ($lhs) = $grammar-&amp;gt;bnf_rule($rule_id);
-        push @sought_rules, $rule_id if $lhs eq $symbol_name;
-    }
-    die &quot;Looking for completion of non-existent rule lhs: $symbol_name&quot;
-        if not scalar @sought_rules;
-    my $latest_earley_set = $recce-&amp;gt;latest_earley_set();
-    my $earley_set        = $latest_earley_set;
+&lt;h3&gt;Types of error&lt;/h3&gt;
+&lt;p&gt;Before plunging in error-handling code,
+it will be useful to itemize the errors we
+will be dealing with:
+&lt;ol&gt;
+&lt;li&gt;The lexer cannot find a token in the input.
+This happens in this appication if, for example,
+an exclamation point (&quot;&lt;tt&gt;!&lt;/tt&gt;&quot;) is encountered.
+None of the valid tokens contain exclamation points.
+Error of this kind are easily diagnosed, pinpointed and (usually)
+fixed, and will not be discussed further.
+&lt;li&gt;A token is read by the lexer,
+but it is not one of the ones acceptable to
+the parser, and is rejected by the parser.
+&lt;li&gt;The parser reaches a &quot;dead end&quot; -- there is more
+input, but the parser cannot accept any more input.
+Such a parser is said to be &quot;exhausted&quot;.
+&lt;li&gt;The parser successfully accepts the entire input, but
+finds there does not parse according to the grammar.
+&lt;/ol&gt;
 
-    # Initialize to one past the end, so we can tell if there were no hits
-    my $first_origin = $latest_earley_set + 1;
-    EARLEY_SET: while ( $earley_set &amp;gt;= 0 ) {
-        my $report_items = $recce-&amp;gt;progress($earley_set);
-        ITEM: for my $report_item ( @{$report_items} ) {
-            my ( $rule_id, $dot_position, $origin ) = @{$report_item};
-            next ITEM if $dot_position != -1;
-            next ITEM if not scalar grep { $_ == $rule_id } @sought_rules;
-            next ITEM if $origin &amp;gt;= $first_origin;
-            $first_origin = $origin;
-        } ## end ITEM: for my $report_item ( @{$report_items} )
-        last EARLEY_SET if $first_origin &amp;lt;= $latest_earley_set;
-        $earley_set--;
-    } ## end EARLEY_SET: while ( $earley_set &amp;gt;= 0 )
-    return if $earley_set &amp;lt; 0;
-    return ( $first_origin, $earley_set );
-} ## end sub My_Error::last_completed_range
-
-# Given a string, an earley set to position mapping,
-# and two earley sets, return the slice of the string
-sub My_Error::input_slice {
-    my ( $self, $start, $end ) = @_;
-    my $positions = $self-&amp;gt;{positions};
-    return if not defined $start;
-    my $start_position = $positions-&amp;gt;[$start];
-    my $length         = $positions-&amp;gt;[$end] - $start_position;
-    return substr ${ $self-&amp;gt;{input} }, $start_position, $length;
-} ## end sub My_Error::input_slice
-
-sub My_Error::show_last_expression {
-    my ($self) = @_;
-    my $last_expression =
-        $self-&amp;gt;input_slice( $self-&amp;gt;last_completed_range('Expression') );
-    return
-        defined $last_expression
-        ? &quot;Last expression successfully parsed was: $last_expression&quot;
-        : 'No expression was successfully parsed';
-} ## end sub My_Error::show_last_expression
-
-sub My_Error::show_position {
-    my ( $self, $position ) = @_;
-    my $input = $self-&amp;gt;{input};
-    my $local_string = substr ${$input}, $position, 40;
-    $local_string =~ s/\n/\\n/gxms;
-    return $local_string;
-} ## end sub My_Error::show_position
-
+&lt;h3&gt;The DSL's parsing closure&lt;/h3&gt;
+&lt;blockquote&gt;&lt;pre&gt;
 sub my_parser {
     my ( $grammar, $string ) = @_;
     my @positions = (0);
@@ -233,6 +195,20 @@ sub my_parser {
 
     my $length = length $string;
     pos $string = $positions[-1];
+
+    &lt;big&gt;&lt;b&gt;... the loop that reads tokens goes here ...&lt;/b&gt;&lt;/big&gt;
+
+    my $value_ref = $recce-&amp;gt;value;
+    if ( not defined $value_ref ) {
+        die $self-&amp;gt;show_last_expression(), &quot;\n&quot;,
+            &quot;No parse was found, after reading the entire input\n&quot;;
+    }
+    return ${$value_ref};
+} ## end sub my_parser
+&lt;/pre&gt;&lt;/blockquote&gt;
+
+&lt;h3&gt;The token reading loop&lt;/h3&gt;
+&lt;blockquote&gt;&lt;pre&gt;&lt;tt&gt;
     TOKEN: while ( pos $string &amp;lt; $length ) {
         next TOKEN if $string =~ m/\G\s+/gcxms;    # skip whitespace
         if ( $recce-&amp;gt;exhausted() ) {
@@ -241,32 +217,96 @@ sub my_parser {
                 $self-&amp;gt;show_position( $positions[-1] ), qq{&quot;\n},
                 ;
         } ## end if ( $recce-&amp;gt;exhausted() )
-        TOKEN_TYPE: for my $t (@terminals) {
-            my ( $token_name, $regex, $long_name ) = @{$t};
-            next TOKEN_TYPE if not $string =~ m/\G($regex)/gcxms;
-            if ( defined $recce-&amp;gt;read( $token_name, $1 ) ) {
-                my $latest_earley_set_ID = $recce-&amp;gt;latest_earley_set();
-                $positions[$latest_earley_set_ID] = pos $string;
-                next TOKEN;
-            }
-            die $self-&amp;gt;show_last_expression(), &quot;\n&quot;,
-                'A problem occurred here: ',
-                $self-&amp;gt;show_position( $positions[-1] ), &quot;\n&quot;,
-                qq{Parser rejected token &quot;$long_name&quot;\n};
-        } ## end TOKEN_TYPE: for my $t (@terminals)
+
+	&lt;big&gt;&lt;b&gt;... the loop through the lexer table goes here ...&lt;/b&gt;&lt;/big&gt;
+
         die 'A problem occurred here: ',
             $self-&amp;gt;show_position( $positions[-1] ), &quot;\n&quot;,
             q{No valid token was found};
     } ## end TOKEN: while ( pos $string &amp;lt; $length )
-    my $value_ref = $recce-&amp;gt;value;
-    if ( not defined $value_ref ) {
-        die $self-&amp;gt;show_last_expression(), &quot;\n&quot;,
-            &quot;No parse was found, after reading the entire input\n&quot;;
-    }
-    return ${$value_ref};
-} ## end sub my_parser
+&lt;/blockquote&gt;&lt;/tt&gt;&lt;/pre&gt;
 
-&lt;/blockquote&gt;&lt;/tt&gt;&lt;/pre&gt;</description>
+&lt;h3&gt;The loop through lexing table&lt;/h3&gt;
+&lt;blockquote&gt;&lt;pre&gt;&lt;tt&gt;
+TOKEN_TYPE: for my $t (@terminals) {
+    my ( $token_name, $regex, $long_name ) = @{$t};
+    next TOKEN_TYPE if not $string =~ m/\G($regex)/gcxms;
+    if ( defined $recce-&amp;gt;read( $token_name, $1 ) ) {
+	my $latest_earley_set_ID = $recce-&amp;gt;latest_earley_set();
+	$positions[$latest_earley_set_ID] = pos $string;
+	next TOKEN;
+    }
+    die $self-&amp;gt;show_last_expression(), &quot;\n&quot;,
+	'A problem occurred here: ',
+	$self-&amp;gt;show_position( $positions[-1] ), &quot;\n&quot;,
+	qq{Parser rejected token &quot;$long_name&quot;\n};
+} ## end TOKEN_TYPE: for my $t (@terminals)
+&lt;/blockquote&gt;&lt;/tt&gt;&lt;/pre&gt;
+
+&lt;h3&gt;The error handlers&lt;/h3&gt;
+&lt;blockquote&gt;&lt;pre&gt;&lt;tt&gt;
+sub My_Error::show_last_expression {
+    my ($self) = @_;
+    my $last_expression =
+        $self-&amp;gt;input_slice( $self-&amp;gt;last_completed_range('Expression') );
+    return
+        defined $last_expression
+        ? &quot;Last expression successfully parsed was: $last_expression&quot;
+        : 'No expression was successfully parsed';
+} ## end sub My_Error::show_last_expression
+&lt;/tt&gt;&lt;/pre&gt;&lt;/blockquote&gt;
+
+&lt;blockquote&gt;&lt;pre&gt;&lt;tt&gt;
+sub My_Error::input_slice {
+    my ( $self, $start, $end ) = @_;
+    my $positions = $self-&amp;gt;{positions};
+    return if not defined $start;
+    my $start_position = $positions-&amp;gt;[$start];
+    my $length         = $positions-&amp;gt;[$end] - $start_position;
+    return substr ${ $self-&amp;gt;{input} }, $start_position, $length;
+} ## end sub My_Error::input_slice
+&lt;/tt&gt;&lt;/pre&gt;&lt;/blockquote&gt;
+
+&lt;h3&gt;Finding the last successful parse of a symbol&lt;/h3&gt;
+&lt;blockquote&gt;&lt;pre&gt;&lt;tt&gt;
+sub My_Error::last_completed_range {
+    my ( $self, $symbol_name ) = @_;
+    my $grammar      = $self-&amp;gt;{grammar};
+    my $recce        = $self-&amp;gt;{recce};
+    my @sought_rules = ();
+    for my $rule_id ( $grammar-&amp;gt;rule_ids() ) {
+        my ($lhs) = $grammar-&amp;gt;bnf_rule($rule_id);
+        push @sought_rules, $rule_id if $lhs eq $symbol_name;
+    }
+    die &quot;Looking for completion of non-existent rule lhs: $symbol_name&quot;
+        if not scalar @sought_rules;
+    my $latest_earley_set = $recce-&amp;gt;latest_earley_set();
+    my $earley_set        = $latest_earley_set;
+
+    &lt;big&gt;&lt;b&gt;... the loop traversing the Earley sets goes here ...&lt;/b&gt;&lt;/big&gt;
+
+    return if $earley_set &amp;lt; 0;
+    return ( $first_origin, $earley_set );
+} ## end sub My_Error::last_completed_range
+&lt;/tt&gt;&lt;/pre&gt;&lt;/blockquote&gt;
+
+&lt;h4&gt;Traversing the Earley sets&lt;/h4&gt;
+&lt;blockquote&gt;&lt;pre&gt;&lt;tt&gt;
+my $first_origin = $latest_earley_set + 1;
+EARLEY_SET: while ( $earley_set &amp;gt;= 0 ) {
+    my $report_items = $recce-&amp;gt;progress($earley_set);
+    ITEM: for my $report_item ( @{$report_items} ) {
+	my ( $rule_id, $dot_position, $origin ) = @{$report_item};
+	next ITEM if $dot_position != -1;
+	next ITEM if not scalar grep { $_ == $rule_id } @sought_rules;
+	next ITEM if $origin &amp;gt;= $first_origin;
+	$first_origin = $origin;
+    } ## end ITEM: for my $report_item ( @{$report_items} )
+    last EARLEY_SET if $first_origin &amp;lt;= $latest_earley_set;
+    $earley_set--;
+} ## end EARLEY_SET: while ( $earley_set &amp;gt;= 0 )
+&lt;/tt&gt;&lt;/pre&gt;&lt;/blockquote&gt;
+&lt;h3&gt;Comments</description>
   </item>
   <item>
     <title>Configuring the Ruby Slippers for HTML</title>
