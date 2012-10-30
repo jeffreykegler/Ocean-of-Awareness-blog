@@ -13,19 +13,28 @@ A Marpa DSL tutorial: Error reporting made easy
     </p><p>
       Two techniques will be used.
       First and most basic,
-      in the technical sense, Marpa's knowledge of the point
+      Marpa's knowledge of the point
       at which the parse
       can no longer proceed is 100% accurate and immediate.
       This is not the case with yacc-derived parsers,
       and is not the case with most recursive descent parsers.
-    </p><p>
-      The second technique involves giving an account of exactly
-      what has been recognized so far.
+    </p>
+    <p>
+      However, even Marpa's 100% accuracy in pinpointing
+      the problem location is only accuracy
+      in the technical sense -- it cannot take into account what the
+      programmer intended.
+      A second technique allows the programmer to double-check his
+      intentions against what the parser has actually seen.
+      Marpa can tell the programmer exactly how it thinks
+      the input parsed, up to the point at which it could no
+      longer proceed.
       The Marpa parser can report the answer to questions like
     </p><blockquote><p>
         "What was the last statement you successfully parsed?"<br>
         "What was the last expression you successfully parsed?"<br>
-        "Where did the last successfully parsed block end?"<br>
+        "What was the last arithmetic expression you successfully parsed?"<br>
+        "Where did the last successfully parsed block start?  End?"<br>
       </p>
     </blockquote>
     <h3>The language</h3>
@@ -38,11 +47,10 @@ A Marpa DSL tutorial: Error reporting made easy
       It is almost trivial in concept,
       and almost impossible to get right when it is more than a few
       characters long.
+      Two valid strings in this language are
       <q>say + 1 2</q>
       and
-      <q>+++ 1 2 3 + + 1 2 4</q>
-      are two correct strings in this
-      language.
+      <q>+++ 1 2 3 + + 1 2 4</q>.
       Their results are, in order, 3 and 13.
     </p><p>
       I restricted the calculator to addition, because even with one
@@ -153,25 +161,21 @@ my @terminals = (
     [ op_add =&gt; qr/[+]/xms,   'Addition operator' ],
     [ kw_say =&gt; qr/say\b/xms, qq{"say" keyword} ],
 );
-<!--
-          html_fmt: An missing end tag was added to close the preceding <pre> element
-        --><p>The lexing table is an array of 3-element arrays.
+</pre></blockquote>
+        <p>The lexing table is an array of 3-element arrays.
         Each sub-array contains the symbol name, a regular expression
-        that is used to recognizer it, and a "long name",
+        that is used to recognize it, and a "long name",
         a human-readable name more appropriate for error messages
         than the symbol name.
         For some languages,
         the order of our lexing tables may be significant,
         although in the case of this language it makes no difference.
-      </p></blockquote><!--
-        html_fmt: Next end tag is cruft
-      --></pre>
-    <!-- html_fmt: Next end tag is cruft -->
-    </blockquote>
+      </p>
     <h3>Types of parsing error</h3>
-    <p>Before plunging in the code that captures errors,
+    <p>Before plunging into the error-handling code,
       I will describe the forms parsing errors take,
-      and show the messages that the code that follows will produce.
+      and show the messages that the code this example
+      DSL's error handling produces.
     </p>
     <h4>No valid token</h4>
     <p>The lexer may reach a point in the input
@@ -185,9 +189,10 @@ my @terminals = (
     <h4>The parser rejects a token</h4>
     <p>
       In some cases the lexer finds a token,
-      but it is not one the parser will accept at that point,
+      but it is not one
+      that the parser will accept at that point,
       so the parser rejects the token.
-      An example with this language would be the input
+      An example for this language would be the input
       "<tt>+ 1 say 2</tt>", which causes the following diagnostic:
     </p>
     <blockquote>

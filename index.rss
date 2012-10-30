@@ -26,19 +26,28 @@
     &lt;/p&gt;&lt;p&gt;
       Two techniques will be used.
       First and most basic,
-      in the technical sense, Marpa's knowledge of the point
+      Marpa's knowledge of the point
       at which the parse
       can no longer proceed is 100% accurate and immediate.
       This is not the case with yacc-derived parsers,
       and is not the case with most recursive descent parsers.
-    &lt;/p&gt;&lt;p&gt;
-      The second technique involves giving an account of exactly
-      what has been recognized so far.
+    &lt;/p&gt;
+    &lt;p&gt;
+      However, even Marpa's 100% accuracy in pinpointing
+      the problem location is only accuracy
+      in the technical sense -- it cannot take into account what the
+      programmer intended.
+      A second technique allows the programmer to double-check his
+      intentions against what the parser has actually seen.
+      Marpa can tell the programmer exactly how it thinks
+      the input parsed, up to the point at which it could no
+      longer proceed.
       The Marpa parser can report the answer to questions like
     &lt;/p&gt;&lt;blockquote&gt;&lt;p&gt;
         &quot;What was the last statement you successfully parsed?&quot;&lt;br&gt;
         &quot;What was the last expression you successfully parsed?&quot;&lt;br&gt;
-        &quot;Where did the last successfully parsed block end?&quot;&lt;br&gt;
+        &quot;What was the last arithmetic expression you successfully parsed?&quot;&lt;br&gt;
+        &quot;Where did the last successfully parsed block start?  End?&quot;&lt;br&gt;
       &lt;/p&gt;
     &lt;/blockquote&gt;
     &lt;h3&gt;The language&lt;/h3&gt;
@@ -51,11 +60,10 @@
       It is almost trivial in concept,
       and almost impossible to get right when it is more than a few
       characters long.
+      Two valid strings in this language are
       &lt;q&gt;say + 1 2&lt;/q&gt;
       and
-      &lt;q&gt;+++ 1 2 3 + + 1 2 4&lt;/q&gt;
-      are two correct strings in this
-      language.
+      &lt;q&gt;+++ 1 2 3 + + 1 2 4&lt;/q&gt;.
       Their results are, in order, 3 and 13.
     &lt;/p&gt;&lt;p&gt;
       I restricted the calculator to addition, because even with one
@@ -166,25 +174,21 @@ my @terminals = (
     [ op_add =&amp;gt; qr/[+]/xms,   'Addition operator' ],
     [ kw_say =&amp;gt; qr/say\b/xms, qq{&quot;say&quot; keyword} ],
 );
-&lt;!--
-          html_fmt: An missing end tag was added to close the preceding &lt;pre&gt; element
-        --&gt;&lt;p&gt;The lexing table is an array of 3-element arrays.
+&lt;/pre&gt;&lt;/blockquote&gt;
+        &lt;p&gt;The lexing table is an array of 3-element arrays.
         Each sub-array contains the symbol name, a regular expression
-        that is used to recognizer it, and a &quot;long name&quot;,
+        that is used to recognize it, and a &quot;long name&quot;,
         a human-readable name more appropriate for error messages
         than the symbol name.
         For some languages,
         the order of our lexing tables may be significant,
         although in the case of this language it makes no difference.
-      &lt;/p&gt;&lt;/blockquote&gt;&lt;!--
-        html_fmt: Next end tag is cruft
-      --&gt;&lt;/pre&gt;
-    &lt;!-- html_fmt: Next end tag is cruft --&gt;
-    &lt;/blockquote&gt;
+      &lt;/p&gt;
     &lt;h3&gt;Types of parsing error&lt;/h3&gt;
-    &lt;p&gt;Before plunging in the code that captures errors,
+    &lt;p&gt;Before plunging into the error-handling code,
       I will describe the forms parsing errors take,
-      and show the messages that the code that follows will produce.
+      and show the messages that the code this example
+      DSL's error handling produces.
     &lt;/p&gt;
     &lt;h4&gt;No valid token&lt;/h4&gt;
     &lt;p&gt;The lexer may reach a point in the input
@@ -198,9 +202,10 @@ my @terminals = (
     &lt;h4&gt;The parser rejects a token&lt;/h4&gt;
     &lt;p&gt;
       In some cases the lexer finds a token,
-      but it is not one the parser will accept at that point,
+      but it is not one
+      that the parser will accept at that point,
       so the parser rejects the token.
-      An example with this language would be the input
+      An example for this language would be the input
       &quot;&lt;tt&gt;+ 1 say 2&lt;/tt&gt;&quot;, which causes the following diagnostic:
     &lt;/p&gt;
     &lt;blockquote&gt;
