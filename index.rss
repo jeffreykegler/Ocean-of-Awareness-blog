@@ -12,45 +12,45 @@
   <item>
     <title>A Marpa DSL tutorial: Error reporting made easy</title>
     <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/error.html</link>
-    <description>    &lt;p&gt;
+    <description>  &lt;p&gt;
       &lt;!--
-      marpa_r2_html_fmt --no-added-tag-comment
+      marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
       --&gt;
       Using
       Marpa's facilities for error reporting,
       a quickly written domain-specific language can,
       as of its first draft,
-      have error reporting whose helpfulness and precision exceeds 
+      have error reporting whose helpfulness and precision exceeds
       that of carefully hand-crafted production compilers.
       This post will give an example.
       Two techniques will be used.
-      &lt;p&gt;
-      First and most basic, 
+    &lt;/p&gt;&lt;p&gt;
+      First and most basic,
       in the technical sense, Marpa's knowledge of when the parse
       can no longer proceed is 100% accurate and immediate.
       This is not the case with yacc-derived parsers,
       and is not the case with most recursive descent parsers.
-      &lt;p&gt;
+    &lt;/p&gt;&lt;p&gt;
       The second technique involves giving an exact account of what
       Marpa believes it has seen so far.
       The Marpa parser can report the answer to questions like
-      &lt;blockquote&gt;&lt;p&gt;
-      &quot;What was the last statement you successfully parsed?&quot;
-      &lt;p&gt;
-      &quot;What was the last expression you successfully parsed?&quot;
-      &lt;p&gt;
-      &quot;Where did the last successfully parsed block end?&quot;
+    &lt;/p&gt;&lt;blockquote&gt;&lt;p&gt;
+        &quot;What was the last statement you successfully parsed?&quot;
+      &lt;/p&gt;&lt;p&gt;
+        &quot;What was the last expression you successfully parsed?&quot;
+      &lt;/p&gt;&lt;p&gt;
+        &quot;Where did the last successfully parsed block end?&quot;
       &lt;/p&gt;
-      &lt;/blockquote&gt;
-      &lt;p&gt;
+    &lt;/blockquote&gt;
+    &lt;p&gt;
       Imagine that your C compiler or 4GL interpreter reported this
       information every time you made an error.
       Your work would be a lot faster.
       For users of your next DSL, you don't have to imagine -- this
       kind of error-reporting will be a standard feature
       from its earliest versions.
-      &lt;h3&gt;The language&lt;/h3&gt;
-      &lt;p&gt;
+    &lt;/p&gt;&lt;h3&gt;The language&lt;/h3&gt;
+    &lt;p&gt;
       To focus on the logic of the error reporting,
       I picked a language that was error-prone,
       but otherwise as simple as possible.
@@ -60,27 +60,32 @@
       it is almost impossible to get right when it is more than a few
       characters long,
       and confusing to read.
-      &lt;q&gt;say + 1 2&lt;/q&gt; and
-      &lt;q&gt;+++ 1 2 3 + + 1 2 4&lt;/q&gt; are two correct strings in this
+      &lt;q&gt;say + 1 2&lt;/q&gt;
+      and
+      &lt;q&gt;+++ 1 2 3 + + 1 2 4&lt;/q&gt;
+      are two correct strings in this
       language.
       Their results are, in order, 3 and 13.
-      &lt;p&gt;
+    &lt;/p&gt;&lt;p&gt;
       I restricted the calculator to addition, because even with one
       operator, prefix notation is confusing enough to serve our purposes.
-      I have included an optional &lt;tt&gt;say&lt;/tt&gt; keyword, in order
+      I have included an optional
+      &lt;tt&gt;say&lt;/tt&gt;
+      keyword, in order
       to illustrate rejection of a token by type.
       In pure prefix arithmetic, either all tokens are valid or none are.
-      The &lt;tt&gt;say&lt;/tt&gt; keyword is only valid as the first token.
-      &lt;h3&gt;The grammar&lt;/h3&gt;
+      The
+      &lt;tt&gt;say&lt;/tt&gt;
+      keyword is only valid as the first token.
+    &lt;/p&gt;&lt;h3&gt;The grammar&lt;/h3&gt;&lt;p&gt;
       The full code for this post is in
       &lt;a href=&quot;https://gist.github.com/3974816&quot;&gt;
-      a Github gist&lt;/a&gt;.
+        a Github gist&lt;/a&gt;.
       It was run using
       &lt;a href=&quot;https://metacpan.org/release/JKEGL/Marpa-R2-2.023_007&quot;&gt;
-      a release candidate for the full release of Marpa::R2&lt;/a&gt;
+        a release candidate for the full release of Marpa::R2&lt;/a&gt;
       Here is the grammar.
-
-&lt;blockquote&gt;&lt;pre&gt;&lt;tt&gt;
+    &lt;/p&gt;&lt;blockquote&gt;&lt;pre&gt;&lt;tt&gt;
 my $prefix_grammar = Marpa::R2::Grammar-&amp;gt;new(
     {   start          =&amp;gt; 'Script',
         actions        =&amp;gt; 'My_Actions',
@@ -96,89 +101,173 @@ END_OF_RULES
     }
 );
 &lt;/tt&gt;&lt;/pre&gt;&lt;/blockquote&gt;
-&lt;p&gt;The rules are specified in another DSL,
-of the kind I've used
-&lt;a href=&quot;http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/dsl.html&quot;&gt;
-in previous posts&lt;/a&gt;.
-This one is incorporated in Marpa::R2 itself,
-and is &lt;a href=&quot;https://metacpan.org/module/JKEGL/Marpa-R2-2.023_007/pod/BNF.pod&quot;&gt;
-documented here&lt;/a&gt;.
-Here are its features relevant to this example:
-&lt;dl&gt;
-&lt;dt&gt;&lt;strong&gt;&lt;tt&gt;::=&lt;/tt&gt;&lt;/strong&gt;&lt;dd&gt;A BNF rule in LHS &lt;tt&gt;::=&lt;/tt&gt; RHS form
-&lt;dt&gt;&lt;strong&gt;&lt;tt&gt;|&lt;/tt&gt;&lt;/strong&gt;&lt;dd&gt;Separates alternative RHS's at the &lt;strong&gt;same&lt;/strong&gt; precedence level
-&lt;dt&gt;&lt;strong&gt;&lt;tt&gt;=&amp;gt;&lt;/tt&gt;&lt;/strong&gt;&lt;dd&gt;&lt;tt&gt;keyword =&amp;gt; value&lt;/tt&gt;, where &lt;tt&gt;keyword&lt;/tt&gt;
-the name of an adverb.
-&lt;/dl&gt;
-&lt;p&gt;The &lt;tt&gt;action =&amp;gt; do_add&lt;/tt&gt; adverb indicates that the semantics for the alternative
-are in the Perl closure named &lt;tt&gt;do_add&lt;/tt&gt;.
-&lt;p&gt;The rest of the grammar's definition will be familiar to Marpa users.
-&lt;tt&gt;Script&lt;/tt&gt; is the start symbol,
-the Perl closures implementing semantics are to be found in the
-&lt;tt&gt;My_Actions&lt;/tt&gt; package,
-and where no semantics are explicitly specified,
-the Perl closure &lt;tt&gt;do_arg0&lt;/tt&gt; is the default.
-
-&lt;h3&gt;The semantics&lt;/h3&gt;
-&lt;p&gt;The semantics for this example are easy.
-&lt;blockquote&gt;&lt;pre&gt;&lt;tt&gt;
+    &lt;p&gt;The rules are specified in another DSL,
+      of the kind I've used
+      &lt;a href=&quot;http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/dsl.html&quot;&gt;
+        in previous posts&lt;/a&gt;.
+      This one is incorporated in Marpa::R2 itself,
+      and is
+      &lt;a href=&quot;https://metacpan.org/module/JKEGL/Marpa-R2-2.023_007/pod/BNF.pod&quot;&gt;
+        documented here&lt;/a&gt;.
+      Here are its features relevant to this example:
+    &lt;/p&gt;&lt;dl&gt;
+      &lt;dt&gt;&lt;strong&gt;&lt;tt&gt;::=&lt;/tt&gt;&lt;/strong&gt;&lt;/dt&gt;
+      &lt;dd&gt;A BNF rule in LHS
+        &lt;tt&gt;::=&lt;/tt&gt;
+        RHS form&lt;/dd&gt;
+      &lt;dt&gt;&lt;strong&gt;&lt;tt&gt;|&lt;/tt&gt;&lt;/strong&gt;&lt;/dt&gt;
+      &lt;dd&gt;Separates alternative RHS's at the
+        &lt;strong&gt;same&lt;/strong&gt;
+        precedence level&lt;/dd&gt;
+      &lt;dt&gt;&lt;strong&gt;&lt;tt&gt;=&amp;gt;&lt;/tt&gt;&lt;/strong&gt;&lt;/dt&gt;
+      &lt;dd&gt;&lt;tt&gt;keyword =&amp;gt; value&lt;/tt&gt;, where
+        &lt;tt&gt;keyword&lt;/tt&gt;
+        the name of an adverb.&lt;/dd&gt;
+    &lt;/dl&gt;
+    &lt;p&gt;The
+      &lt;tt&gt;action =&amp;gt; do_add&lt;/tt&gt;
+      adverb indicates that the semantics for the alternative
+      are in the Perl closure named
+      &lt;tt&gt;do_add&lt;/tt&gt;.
+    &lt;/p&gt;&lt;p&gt;The rest of the grammar's definition will be familiar to Marpa users.
+      &lt;tt&gt;Script&lt;/tt&gt;
+      is the start symbol,
+      the Perl closures implementing semantics are to be found in the
+      &lt;tt&gt;My_Actions&lt;/tt&gt;
+      package,
+      and where no semantics are explicitly specified,
+      the Perl closure
+      &lt;tt&gt;do_arg0&lt;/tt&gt;
+      is the default.
+    &lt;/p&gt;&lt;h3&gt;The semantics&lt;/h3&gt;
+    &lt;p&gt;The semantics for this example are easy.
+    &lt;/p&gt;&lt;blockquote&gt;&lt;pre&gt;&lt;tt&gt;
 sub My_Actions::do_add  { shift; return $_[1] + $_[2] }
 sub My_Actions::do_arg0 { shift; return shift; }
 sub My_Actions::do_arg1 { shift; return $_[1]; }
 &lt;/tt&gt;&lt;/pre&gt;&lt;/blockquote&gt;
-&lt;p&gt;
-The first argument to a Marpa semantic closure is a &quot;per-parse variable&quot;,
-which is not used in this application.
-The others are the values of the child nodes,
-as determined recursively and in lexical order.
-
-&lt;h3&gt;The lexer's table&lt;/h3&gt;
-&lt;p&gt;
-In this post,
-I am skipping around in the code --
-&lt;a href=&quot;https://gist.github.com/3974816&quot;&gt;
-the full code is in the gist&lt;/a&gt;.
-But lexical analysis is of particular interest to new
-Marpa users.
-The lexer I use for this example is overkill --
-table-driven and using Perl's progressive matching
-capabilities, it is capable of serving a much more
-complex language.
-(I talked about lexing more
-&lt;a href=&quot;http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/dsl.html&quot;&gt;
-in a previous example&lt;/a&gt;.)
-Here is the lexer's table:
-&lt;blockquote&gt;&lt;pre&gt;&lt;tt&gt;
+    &lt;p&gt;
+      The first argument to a Marpa semantic closure is a &quot;per-parse variable&quot;,
+      which is not used in this application.
+      The others are the values of the child nodes,
+      as determined recursively and in lexical order.
+    &lt;/p&gt;&lt;h3&gt;The lexer's table&lt;/h3&gt;
+    &lt;p&gt;
+      In this post,
+      I am skipping around in the code --
+      &lt;a href=&quot;https://gist.github.com/3974816&quot;&gt;
+        the full code is in the gist&lt;/a&gt;.
+      But lexical analysis is of particular interest to new
+      Marpa users.
+      The lexer I use for this example is overkill --
+      table-driven and using Perl's progressive matching
+      capabilities, it is capable of serving a much more
+      complex language.
+      (I talked about lexing more
+      &lt;a href=&quot;http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/dsl.html&quot;&gt;
+        in a previous example&lt;/a&gt;.)
+      Here is the lexer's table:
+    &lt;/p&gt;
+&lt;blockquote&gt; &lt;pre&gt;
 my @terminals = (
     [ Number =&amp;gt; qr/\d+/xms,   'Number' ],
     [ op_add =&amp;gt; qr/[+]/xms,   'Addition operator' ],
     [ kw_say =&amp;gt; qr/say\b/xms, qq{&quot;say&quot; keyword} ],
 );
-&lt;/tt&gt;&lt;/pre&gt;&lt;/blockquote&gt;
-
-&lt;h3&gt;Types of error&lt;/h3&gt;
-&lt;p&gt;Before plunging in error-handling code,
-it will be useful to itemize the errors we
-will be dealing with:
-&lt;ol&gt;
-&lt;li&gt;The lexer cannot find a token in the input.
-This happens in this appication if, for example,
-an exclamation point (&quot;&lt;tt&gt;!&lt;/tt&gt;&quot;) is encountered.
-None of the valid tokens contain exclamation points.
-Error of this kind are easily diagnosed, pinpointed and (usually)
-fixed, and will not be discussed further.
-&lt;li&gt;A token is read by the lexer,
-but it is not one of the ones acceptable to
-the parser, and is rejected by the parser.
-&lt;li&gt;The parser reaches a &quot;dead end&quot; -- there is more
-input, but the parser cannot accept any more input.
-Such a parser is said to be &quot;exhausted&quot;.
-&lt;li&gt;The parser successfully accepts the entire input, but
-finds there does not parse according to the grammar.
-&lt;/ol&gt;
-
-&lt;h3&gt;Parsing the DSL&lt;/h3&gt;
+/pre&gt; &lt;/blockquote&gt;
+    &lt;h3&gt;Types of parsing error&lt;/h3&gt;
+    &lt;p&gt;Before plunging in the code that captures parsing and issues,
+    it may be best to describe the forms they take,
+    and show the messages that the code that follows will produce.
+    &lt;h4&gt;No valid token&lt;/h4&gt;
+    &lt;p&gt;The lexer may reach a point in the input
+    where it does not find one of the allowed tokens.
+    An example in this language would be an input with an
+        an exclamation point.
+	Errors of this kind have always been easy to diagnose,
+	pinpoint and, usually, to fix.
+&lt;h4&gt;The parser rejects a token&lt;/h4&gt;
+	In some cases the lexer finds a token,
+	but it is not one the parser will accept at that point,
+	so the parser rejects the token.
+	An example with this language would be the input
+	&quot;&lt;tt&gt;+ 1 say 2&lt;/tt&gt;&quot;, which causes the following diagnostic:
 &lt;blockquote&gt;&lt;pre&gt;
+Last expression successfully parsed was:  1
+A problem occurred here:  say 2
+Parser rejected token &quot;&quot;say&quot; keyword&quot;
+&lt;/pre&gt;&lt;/blockquote&gt;
+&lt;p&gt;In this situation spotting the bad keyword should be all
+the information the user needs, but
+note that Marpa did successfully determine that
+&quot;&lt;tt&gt;1&lt;/tt&gt;&quot; is a valid expression of the language, but
+&quot;&lt;tt&gt;+ 1&lt;/tt&gt;&quot; is not.
+&lt;h4&gt;The parser becomes exhausted&lt;/h4&gt;
+&lt;p&gt;
+In other cases, the parser may &quot;dead end&quot; -- reach a point
+where no more input can be accepted.
+One example is with the input
+&quot;&lt;tt&gt;+ 1 2 3 + + 1 2 4&lt;/tt&gt;&quot;.
+This causes the following diagnostic:
+&lt;blockquote&gt;&lt;pre&gt;
+Last expression successfully parsed was: + 1 2
+The parse became exhausted here: &quot; 3 + + 1 2 4&quot;
+&lt;/pre&gt;&lt;/blockquote&gt;
+&lt;p&gt;The parser has completed a prefix expression,
+and unlike infix and postfix expressions, once they have
+been allowed to end
+there is no way to add &quot;new stuff&quot; at the end.
+The parse is &quot;exhausted&quot;.
+&lt;p&gt;A second example of an exhausted parse
+occurs with the the input
+&quot;&lt;tt&gt;1 + 2 +3  4 + 5 + 6 + 7&lt;/tt&gt;&quot;.
+Here is the diagnostic:
+&lt;blockquote&gt;&lt;pre&gt;
+Last expression successfully parsed was: 1
+The parse became exhausted here: &quot; + 2 +3  4 + 5 + 6 + 7&quot;
+&lt;/pre&gt;&lt;/blockquote&gt;
+&lt;h4&gt;The input is fully read, but there is no parse&lt;/h4&gt;
+Finally, it may happen that lexer and parser read and accept
+the entire input, but do not find a valid parse in it.
+For example, if the input is 
+&quot;&lt;tt&gt;+++&lt;/tt&gt;&quot;, the diagnostic will be:
+&lt;blockquote&gt;&lt;pre&gt;
+No expression was successfully parsed
+No parse was found, after reading the entire input
+&lt;/pre&gt;&lt;/blockquote&gt;
+&lt;p&gt;The input was a good start for a prefix expression,
+but no numbers were ever found,
+and our DSL reports that it never recognized any
+prefix expressions.
+&lt;p&gt;A more complicated case is this input:
+&quot;&lt;tt&gt;++1 2++&lt;/tt&gt;&quot;.
+Here is what our DSL tells us:
+&lt;blockquote&gt;&lt;pre&gt;
+Last expression successfully parsed was: +1 2
+No parse was found, after reading the entire input
+&lt;/pre&gt;&lt;/blockquote&gt;
+&lt;p&gt;
+Our DSL did find a good expression, and tells us where it was.
+If there is more than one good expression, our DSL tells us
+the most recent.
+With input &quot;&lt;tt&gt;++1 2++3 4++&lt;/tt&gt;&quot;,
+the diagnostic becomes
+&lt;blockquote&gt;&lt;pre&gt;
+Last expression successfully parsed was: +3 4
+No parse was found, after reading the entire input
+&lt;/pre&gt;&lt;/blockquote&gt;
+&lt;p&gt;In fact, if we thought it would be helpful
+our DSL could show all the expressions found,
+or the last &lt;i&gt;N&lt;/i&gt; expressions for some
+&lt;i&gt;N&lt;/i&gt;.
+This is a simple language with nothing but expressions
+involving a single operator.
+More interesting languages will have statements and blocks,
+and layers of subexpressions.
+The logic below can be easily modified to show us
+as much about these as we think will be helpful.
+    &lt;h3&gt;Parsing the DSL&lt;/h3&gt;
+    &lt;blockquote&gt;&lt;pre&gt;
 sub my_parser {
     my ( $grammar, $string ) = @_;
     my @positions = (0);
@@ -205,9 +294,8 @@ sub my_parser {
     return ${$value_ref};
 } ## end sub my_parser
 &lt;/pre&gt;&lt;/blockquote&gt;
-
-&lt;h3&gt;Reading the tokens&lt;/h3&gt;
-&lt;blockquote&gt;&lt;pre&gt;
+    &lt;h3&gt;Reading the tokens&lt;/h3&gt;
+    &lt;blockquote&gt;&lt;pre&gt;
 TOKEN: while ( pos $string &amp;lt; $length ) {
     next TOKEN if $string =~ m/\G\s+/gcxms;    # skip whitespace
     if ( $recce-&amp;gt;exhausted() ) {
@@ -223,10 +311,13 @@ TOKEN: while ( pos $string &amp;lt; $length ) {
 	$self-&amp;gt;show_position( $positions[-1] ), &quot;\n&quot;,
 	q{No valid token was found};
 } ## end TOKEN: while ( pos $string &amp;lt; $length )
-&lt;pre&gt;&lt;/blockquote&gt;
-
-&lt;h3&gt;Looping through the lexing table&lt;/h3&gt;
-&lt;blockquote&gt;&lt;pre&gt;
+&lt;!--
+          html_fmt: An missing end tag was added to close the preceding &lt;pre&gt; element
+        --&gt;&lt;pre&gt;&lt;!--
+          html_fmt: An missing end tag was added to close the preceding &lt;pre&gt; element
+        --&gt;&lt;/blockquote&gt;
+    &lt;h3&gt;Looping through the lexing table&lt;/h3&gt;
+    &lt;blockquote&gt;&lt;pre&gt;
 TOKEN_TYPE: for my $t (@terminals) {
     my ( $token_name, $regex, $long_name ) = @{$t};
     next TOKEN_TYPE if not $string =~ m/\G($regex)/gcxms;
@@ -241,9 +332,8 @@ TOKEN_TYPE: for my $t (@terminals) {
 	qq{Parser rejected token &quot;$long_name&quot;\n};
 } ## end TOKEN_TYPE: for my $t (@terminals)
 &lt;/pre&gt;&lt;/blockquote&gt;
-
-&lt;h3&gt;Showing the last expression&lt;/h3&gt;
-&lt;blockquote&gt;&lt;pre&gt;&lt;tt&gt;
+    &lt;h3&gt;Showing the last expression&lt;/h3&gt;
+    &lt;blockquote&gt;&lt;pre&gt;&lt;tt&gt;
 sub My_Error::show_last_expression {
     my ($self) = @_;
     my $last_expression =
@@ -254,9 +344,8 @@ sub My_Error::show_last_expression {
         : 'No expression was successfully parsed';
 } ## end sub My_Error::show_last_expression
 &lt;/tt&gt;&lt;/pre&gt;&lt;/blockquote&gt;
-
-&lt;h3&gt;Slicing the input&lt;/h3&gt;
-&lt;blockquote&gt;&lt;pre&gt;&lt;tt&gt;
+    &lt;h3&gt;Slicing the input&lt;/h3&gt;
+    &lt;blockquote&gt;&lt;pre&gt;&lt;tt&gt;
 sub My_Error::input_slice {
     my ( $self, $start, $end ) = @_;
     my $positions = $self-&amp;gt;{positions};
@@ -266,9 +355,8 @@ sub My_Error::input_slice {
     return substr ${ $self-&amp;gt;{input} }, $start_position, $length;
 } ## end sub My_Error::input_slice
 &lt;/tt&gt;&lt;/pre&gt;&lt;/blockquote&gt;
-
-&lt;h3&gt;Finding the last successful parse of a symbol&lt;/h3&gt;
-&lt;blockquote&gt;&lt;pre&gt;
+    &lt;h3&gt;Finding the last successful parse of a symbol&lt;/h3&gt;
+    &lt;blockquote&gt;&lt;pre&gt;
 sub My_Error::last_completed_range {
     my ( $self, $symbol_name ) = @_;
     my $grammar      = $self-&amp;gt;{grammar};
@@ -289,9 +377,8 @@ sub My_Error::last_completed_range {
     return ( $first_origin, $earley_set );
 } ## end sub My_Error::last_completed_range
 &lt;/pre&gt;&lt;/blockquote&gt;
-
-&lt;h3&gt;Traversing the Earley sets&lt;/h3&gt;
-&lt;blockquote&gt;&lt;pre&gt;
+    &lt;h3&gt;Traversing the Earley sets&lt;/h3&gt;
+    &lt;blockquote&gt;&lt;pre&gt;
 my $first_origin = $latest_earley_set + 1;
 EARLEY_SET: while ( $earley_set &amp;gt;= 0 ) {
     my $report_items = $recce-&amp;gt;progress($earley_set);
@@ -306,7 +393,8 @@ EARLEY_SET: while ( $earley_set &amp;gt;= 0 ) {
     $earley_set--;
 } ## end EARLEY_SET: while ( $earley_set &amp;gt;= 0 )
 &lt;/pre&gt;&lt;/blockquote&gt;
-&lt;h3&gt;Comments</description>
+    &lt;h3&gt;Comments
+    &lt;/h3&gt;</description>
   </item>
   <item>
     <title>Configuring the Ruby Slippers for HTML</title>
