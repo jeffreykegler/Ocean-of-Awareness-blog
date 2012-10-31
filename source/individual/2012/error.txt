@@ -68,7 +68,7 @@ A Marpa DSL tutorial: Error reporting made easy
       <a href="https://gist.github.com/3974816">
         a Github gist</a>.
       It was run using
-      <a href="https://metacpan.org/release/JKEGL/Marpa-R2-2.023_007">
+      <a href="https://metacpan.org/release/JKEGL/Marpa-R2-2.023_008">
         a release candidate for the full release of Marpa::R2</a>.
       Here is the grammar.
     </p><blockquote><pre><tt>
@@ -93,7 +93,7 @@ END_OF_RULES
         in previous posts</a>.
       This one is incorporated in Marpa::R2 itself,
       and is
-      <a href="https://metacpan.org/module/JKEGL/Marpa-R2-2.023_007/pod/BNF.pod">
+      <a href="https://metacpan.org/module/JKEGL/Marpa-R2-2.023_008/pod/BNF.pod">
         documented here</a>.
       Here are its features relevant to this example:
     </p><dl>
@@ -477,23 +477,15 @@ sub My_Error::input_slice {
       recording the last parse location ("latest Earley set").
       <tt>$earley_set</tt>
       will be our loop variable.
-    </p><p>Note the use of the
-      <tt>bnf_rule()</tt>
-      method.
-      The BNF interface sometimes rewrites symbol names,
-      and
-      <tt>bnf_rule()</tt>
-      will return the symbol names
-      as actually specified by the user,
-      instead of in their rewritten form.
-    </p><blockquote><pre>
+    </p>
+    <blockquote><pre>
 sub My_Error::last_completed_range {
     my ( $self, $symbol_name ) = @_;
     my $grammar      = $self-&gt;{grammar};
     my $recce        = $self-&gt;{recce};
     my @sought_rules = ();
     for my $rule_id ( $grammar-&gt;rule_ids() ) {
-        my ($lhs) = $grammar-&gt;bnf_rule($rule_id);
+        my ($lhs) = $grammar-&gt;rule($rule_id);
         push @sought_rules, $rule_id if $lhs eq $symbol_name;
     }
     die "Looking for completion of non-existent rule lhs: $symbol_name"
@@ -526,7 +518,7 @@ sub My_Error::last_completed_range {
     <p>This is our final code sample, and the buck stops here.
       Marpa::R2 introduced more detailed user access to the progress reporting
       information, and
-      <a href="https://metacpan.org/module/JKEGL/Marpa-R2-2.023_007/pod/Progress.pod">
+      <a href="https://metacpan.org/module/JKEGL/Marpa-R2-2.023_008/pod/Progress.pod">
         that interface</a>
       is used here.
     </p>
@@ -539,7 +531,7 @@ sub My_Error::last_completed_range {
       (Those interested in a fuller explanation of "dot positions",
       progress items, and
       progress reports, can look in
-      <a href="https://metacpan.org/module/JKEGL/Marpa-R2-2.023_007/pod/Progress.pod">
+      <a href="https://metacpan.org/module/JKEGL/Marpa-R2-2.023_008/pod/Progress.pod">
         the documentation for progress reports</a>.)
       Of the completions, we are interested only in those for one of
       the
