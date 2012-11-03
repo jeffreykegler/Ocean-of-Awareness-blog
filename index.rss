@@ -23,31 +23,32 @@
       yacc had done it,
       in Appendix B of
       &lt;a href=&quot;http://dinosaur.compilertools.net/yacc/&quot;&gt;
-      the original 1975 paper&lt;/a&gt;.
+        the original 1975 paper&lt;/a&gt;.
       By 1979, Hoftstadter's book Godel-Escher-Bach (GEB) was out,
       and the next year it took the Pulitzer for
       General Nonfiction.
       Self-description, recursive, self-reference, self-embedding, you name it
-      (preferably &lt;a href=&quot;http://en.wikipedia.org/wiki/Autological_word&quot;&gt;autologically&lt;/a&gt;),
+      (preferably
+      &lt;a href=&quot;http://en.wikipedia.org/wiki/Autological_word&quot;&gt;autologically&lt;/a&gt;),
       were all the rage.
-      &lt;/p&gt;
-&lt;p&gt;The magic of a useful piece of code, simultaneously example
-and description, is an idea that still speaks to me after all
-these decades.
-Regular expressions cannot describe themselves.
-Recursive descent can parse themselves in a sense,
-but like all recursive descent
-parsers, it would have to be hand-written,
-so, even when it can be done, there is no &quot;magic&quot;.
-Ironically, yacc actually cannot parse its own description language.
-(&quot;Ironically&quot; is the word used in the paper.)
-Like almost all useful grammars, yacc's description language
-goes beyond the capabilities of yacc's LALR parser,
-and a lexer hack is needed.
-&lt;p&gt;Marpa is a general BNF parser and has no trouble efficiently
-parsing the following:
-&lt;blockquote&gt;
-&lt;pre&gt;
+    &lt;/p&gt;
+    &lt;p&gt;The magic of a useful piece of code, simultaneously example
+      and description, is an idea that still speaks to me after all
+      these decades.
+      Regular expressions cannot describe themselves.
+      Recursive descent can parse themselves in a sense,
+      but like all recursive descent
+      parsers, it would have to be hand-written,
+      so, even when it can be done, there is no &quot;magic&quot;.
+      Ironically, yacc actually cannot parse its own description language.
+      (&quot;Ironically&quot; is the word used in the paper.)
+      Like almost all useful grammars, yacc's description language
+      goes beyond the capabilities of yacc's LALR parser,
+      and a lexer hack is needed.
+    &lt;/p&gt;&lt;p&gt;Marpa is a general BNF parser and has no trouble efficiently
+      parsing the following:
+    &lt;/p&gt;&lt;blockquote&gt;
+      &lt;pre&gt;
 rules ::= rule+ action =&gt; do_rules
 rule ::= empty_rule | priority_rule | quantified_rule
 priority_rule ::= lhs op_declare priorities
@@ -91,36 +92,40 @@ name ::= bracketed_name action =&gt; do_bracketed_name
 reserved_word ::= kw_action | kw_assoc | kw_separator | kw_proper
   | kw_left | kw_right | kw_group
 &lt;/pre&gt;
-&lt;/blockquote&gt;
-&lt;p&gt;
-Self-parsing compiler compilers were the trend in the age of bellbottoms.
-Self-parsing has lasted better, but not by much.
-When some years I wrote a self-describing language as an interface to
-Marpa, it seemed to confuse people.
-They wondered what Marpa did,
-and parsing your own description did not seem to be really
-directly &lt;b&gt;doing&lt;/b&gt; anything, really.
-So I switched to calculators.
-(Ironically, Hofstadter seems to have had the same problem with
-GEB -- he felt that
-people did not understand what his book was all about --
-even those who liked it.)
-&lt;p&gt;
-But ideas from Larry Wall and Peter Stuifzand
-re-ignited my interest.
-And this time the self-parsing parser was written
-with a use in mind.
-I plan to enhance this language.
-I have found that the
-convenience
-of this interface more than compensates for the circular
-dependency issues.
-bootstrapping.
-The BNF source in &lt;b&gt;the&lt;/b&gt; source from which its
-own parser is created,
-a parser which I expect to produce improved versions
-of itself.
-    &lt;h3&gt;Comments&lt;/h3&gt;
+    &lt;/blockquote&gt;
+    &lt;p&gt;
+      Self-parsing compiler compilers were the trend in the age of bellbottoms.
+      Self-parsing has lasted better, but not by much.
+      When some years I wrote a self-describing language as an interface to
+      Marpa, it seemed to confuse people.
+      They wondered what Marpa did,
+      and parsing your own description did not seem to be really
+      directly
+      &lt;b&gt;doing&lt;/b&gt;
+      anything, really.
+      So I switched to calculators.
+      (Ironically, Hofstadter seems to have had the same problem with
+      GEB -- he felt that
+      people did not understand what his book was all about --
+      even those who liked it.)
+    &lt;/p&gt;&lt;p&gt;
+      But ideas from Larry Wall and Peter Stuifzand
+      re-ignited my interest.
+      And this time the self-parsing parser was written
+      with a use in mind.
+      I plan to enhance this language.
+      I have found that the
+      convenience
+      of this interface more than compensates for the circular
+      dependency issues.
+      bootstrapping.
+      The BNF source in
+      &lt;b&gt;the&lt;/b&gt;
+      source from which its
+      own parser is created,
+      a parser which I expect to produce improved versions
+      of itself.
+    &lt;/p&gt;&lt;h3&gt;Comments&lt;/h3&gt;
     &lt;p&gt;
       Comments on this post can be sent to the Marpa Google Group:
       &lt;code&gt;marpa-parser@googlegroups.com&lt;/code&gt;
