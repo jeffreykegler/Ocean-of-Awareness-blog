@@ -1,0 +1,187 @@
+<html>
+<head>
+<link rel="alternate" title="Ocean of Awareness RSS" type="application/rss+xml" title="RSS" href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/index.rss" />
+<title>Ocean of Awareness</title>
+<style type="text/css">
+   strong {font-weight: 700;}
+</style>
+</head>
+<body>
+<div
+  style="color:white;background-color:#38B0C0;padding:1em;clear:left;text-align:center;">
+<h1>Ocean of Awareness</h1>
+</div>
+  <div style="margin:0;padding:10px 30px 10px 10px;width:150px;float:left;border-right:2px solid #38B0C0">
+  <p>
+  <strong>Jeffrey Kegler's blog</strong>
+  about Marpa, his new parsing algorithm,
+    and other topics of interest</p>
+  <p><a href="http://www.jeffreykegler.com/">Jeffrey's personal website</a></p>
+      <p>
+	<a href="https://twitter.com/jeffreykegler" class="twitter-follow-button" data-show-count="false">Follow @jeffreykegler</a>
+      </p>
+      <p style="text-align:center">
+	<!-- Place this code where you want the badge to render. -->
+	<a href="//plus.google.com/101567692867247957860?prsrc=3" rel="publisher" style="text-decoration:none;">
+	<img src="//ssl.gstatic.com/images/icons/gplus-32.png" alt="Google+" style="border:0;width:32px;height:32px;"/></a>
+      </p>
+  <h3>Marpa resources</h3>
+  <p><a href="http://jeffreykegler.github.com/Marpa/">The Marpa website</a></p>
+  <p>The Ocean of Awareness blog: <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog">home page</a>,
+  <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/metapages/chronological.html">chronological index</a>,
+  and
+  <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/metapages/annotated.html">annotated index</a>.
+  </p>
+  </div>
+  <div style="margin-left:190px;border-left:2px solid #38B0C0;padding:25px;">
+<h3>Sat, 03 Nov 2012</h3>
+<br />
+<center><a name="self_parse"> <h2>A grammar that parses itself</h2> </a>
+</center>
+  <p>
+      <!--
+      marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
+      -->
+      For Marpa's new BNF interface,
+      I've written a grammar in that interface which parses it.
+      In the 70's, when I learned parsing theory,
+      this was a very fashionable thing to do, perhaps because
+      yacc had done it,
+      in Appendix B of
+      <a href="http://dinosaur.compilertools.net/yacc/">
+      the original 1975 paper</a>.
+      By 1979, Hoftstadter's book Godel-Escher-Bach was out,
+      and the next year it took the Pulitzer for
+      General Nonfiction.
+      Self-description, recursive, self=reference, you name it
+      (preferably <a href="http://en.wikipedia.org/wiki/Autological_word">autologically</a>),
+      were all the rage.
+      </p>
+<p>A snippet which is simultaneously its own example
+its own description does have a kind of charm.
+Regular expressions cannot describe themselves.
+Recursive descent can parse themselves in a sense,
+but like all recursive descent
+parsers, it would have to be hand-written,
+so the "magic" quality is not there.
+Ironically, yacc actually cannot.
+("Ironically" is the word used in the paper.)
+Like almost all useful grammars, yacc's description language
+goes beyond the capabilities of yacc's LALR parser,
+and a lexer hack is needed.
+<p>Marpa is a general BNF parser and has not trouble efficiently
+parsing the following:
+<blockquote>
+<pre>
+rules ::= rule+ action => do_rules
+rule ::= empty_rule | priority_rule | quantified_rule
+priority_rule ::= lhs op_declare priorities
+  action => do_priority_rule
+empty_rule ::= lhs op_declare adverb_list
+  action => do_empty_rule
+quantified_rule ::= lhs op_declare name quantifier adverb_list
+    action => do_quantified_rule
+priorities ::= alternatives+
+    separator => op_tighter proper => 1
+    action => do_discard_separators
+alternatives ::= alternative+
+    separator => op_eq_pri proper => 1
+    action => do_discard_separators
+alternative ::= rhs adverb_list action => do_alternative 
+adverb_list ::= adverb_item* action => do_adverb_list
+adverb_item ::=
+      action
+    | left_association | right_association | group_association
+    | separator_specification | proper_specification
+
+action ::= kw_action op_arrow name action => do_action
+left_association ::= kw_assoc op_arrow kw_left
+  action => do_left_association 
+right_association ::= kw_assoc op_arrow kw_right
+  action => do_right_association 
+group_association ::= kw_assoc op_arrow kw_group
+  action => do_group_association 
+separator_specification ::= kw_separator op_arrow name
+  action => do_separator_specification
+proper_specification ::= kw_proper op_arrow boolean
+action => do_proper_specification
+
+lhs ::= name action => do_lhs 
+rhs ::= names
+quantifier ::= op_star | op_plus
+names ::= name+ action => do_array
+name ::= bare_name | reserved_word | quoted_name
+name ::= bracketed_name action => do_bracketed_name
+
+reserved_word ::= kw_action | kw_assoc | kw_separator | kw_proper
+  | kw_left | kw_right | kw_group
+</pre>
+</blockquote>
+<p>
+Self-parsing compiler compilers were the trend in the age of bellbottoms.
+Self-parsing has lasted better, but not by much.
+When some years I wrote a self-describing language as an interface to
+Marpa, it seemed to confuse people.
+They wondered what Marpa did,
+and parsing your own description did not seem to be really
+directly <b>doing</b> anything, really.
+So I switched to calculators.
+<p>
+But ideas from Larry Wall and Peter Stuifzand
+re-ignited my interest.
+And this time the self-parsing parser was written
+with a use in mind.
+I plan to enhance this language.
+I have found that the
+convenience
+of this interface more than compensates for the circular
+dependency issues.
+bootstrapping.
+The BNF source in <b>the</b> source from which its
+own parser is created,
+a parser which I expect to produce improved versions
+of itself.
+    <h3>Comments</h3>
+    <p>
+      Comments on this post can be sent to the Marpa Google Group:
+      <code>marpa-parser@googlegroups.com</code>
+    </p>
+<br />
+<p>posted at: 14:56 |
+<a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/self_parse.html">direct link to this entry</a>
+</p>
+<div style="color:#38B0C0;padding:1px;text-align:center;">
+&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&sect;
+</div>
+</div>
+</div>
+<div id="footer" style="border-top:thick solid #38B0C0;clear:left;padding:1em;">
+<p>This is Ocean of Awareness's
+  new home.  This blog has been hosted at
+  <a href="http://blogs.perl.org/users/jeffrey_kegler/">blogs.perl.org</a>
+  but I have succumbed to the lure of static blogging.
+  I have not yet decided how to deal with comments at this new blog location.
+If the post is Marpa-related,
+<a href="https://groups.google.com/forum/?hl=en&fromgroups#%21forum/marpa-parser">
+the Marpa mailing list</a>
+is a good place to comment.
+Also,
+I will continue to dual-post for some time,
+and have not yet frozen comments on the versions of the
+post at
+<a href="http://blogs.perl.org/users/jeffrey_kegler/">blogs.perl.org</a>.
+</div>
+	<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+              <script type="text/javascript">
+            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+          </script>
+          <script type="text/javascript">
+            try {
+              var pageTracker = _gat._getTracker("UA-33430331-1");
+            pageTracker._trackPageview();
+            } catch(err) {}
+          </script>
+</body></html>

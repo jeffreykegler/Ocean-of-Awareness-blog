@@ -10,6 +10,118 @@
     <language>en</language>
 
   <item>
+    <title>A grammar that parses itself</title>
+    <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/self_parse.html</link>
+    <description>  &lt;p&gt;
+      &lt;!--
+      marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
+      --&gt;
+      For Marpa's new BNF interface,
+      I've written a grammar in that interface which parses it.
+      In the 70's, when I learned parsing theory,
+      this was a very fashionable thing to do, perhaps because
+      yacc had done it,
+      in Appendix B of
+      &lt;a href=&quot;http://dinosaur.compilertools.net/yacc/&quot;&gt;
+      the original 1975 paper&lt;/a&gt;.
+      By 1979, Hoftstadter's book Godel-Escher-Bach was out,
+      and the next year it took the Pulitzer for
+      General Nonfiction.
+      Self-description, recursive, self=reference, you name it
+      (preferably &lt;a href=&quot;http://en.wikipedia.org/wiki/Autological_word&quot;&gt;autologically&lt;/a&gt;),
+      were all the rage.
+      &lt;/p&gt;
+&lt;p&gt;A snippet which is simultaneously its own example
+its own description does have a kind of charm.
+Regular expressions cannot describe themselves.
+Recursive descent can parse themselves in a sense,
+but like all recursive descent
+parsers, it would have to be hand-written,
+so the &quot;magic&quot; quality is not there.
+Ironically, yacc actually cannot.
+(&quot;Ironically&quot; is the word used in the paper.)
+Like almost all useful grammars, yacc's description language
+goes beyond the capabilities of yacc's LALR parser,
+and a lexer hack is needed.
+&lt;p&gt;Marpa is a general BNF parser and has not trouble efficiently
+parsing the following:
+&lt;blockquote&gt;
+&lt;pre&gt;
+rules ::= rule+ action =&gt; do_rules
+rule ::= empty_rule | priority_rule | quantified_rule
+priority_rule ::= lhs op_declare priorities
+  action =&gt; do_priority_rule
+empty_rule ::= lhs op_declare adverb_list
+  action =&gt; do_empty_rule
+quantified_rule ::= lhs op_declare name quantifier adverb_list
+    action =&gt; do_quantified_rule
+priorities ::= alternatives+
+    separator =&gt; op_tighter proper =&gt; 1
+    action =&gt; do_discard_separators
+alternatives ::= alternative+
+    separator =&gt; op_eq_pri proper =&gt; 1
+    action =&gt; do_discard_separators
+alternative ::= rhs adverb_list action =&gt; do_alternative 
+adverb_list ::= adverb_item* action =&gt; do_adverb_list
+adverb_item ::=
+      action
+    | left_association | right_association | group_association
+    | separator_specification | proper_specification
+
+action ::= kw_action op_arrow name action =&gt; do_action
+left_association ::= kw_assoc op_arrow kw_left
+  action =&gt; do_left_association 
+right_association ::= kw_assoc op_arrow kw_right
+  action =&gt; do_right_association 
+group_association ::= kw_assoc op_arrow kw_group
+  action =&gt; do_group_association 
+separator_specification ::= kw_separator op_arrow name
+  action =&gt; do_separator_specification
+proper_specification ::= kw_proper op_arrow boolean
+action =&gt; do_proper_specification
+
+lhs ::= name action =&gt; do_lhs 
+rhs ::= names
+quantifier ::= op_star | op_plus
+names ::= name+ action =&gt; do_array
+name ::= bare_name | reserved_word | quoted_name
+name ::= bracketed_name action =&gt; do_bracketed_name
+
+reserved_word ::= kw_action | kw_assoc | kw_separator | kw_proper
+  | kw_left | kw_right | kw_group
+&lt;/pre&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;
+Self-parsing compiler compilers were the trend in the age of bellbottoms.
+Self-parsing has lasted better, but not by much.
+When some years I wrote a self-describing language as an interface to
+Marpa, it seemed to confuse people.
+They wondered what Marpa did,
+and parsing your own description did not seem to be really
+directly &lt;b&gt;doing&lt;/b&gt; anything, really.
+So I switched to calculators.
+&lt;p&gt;
+But ideas from Larry Wall and Peter Stuifzand
+re-ignited my interest.
+And this time the self-parsing parser was written
+with a use in mind.
+I plan to enhance this language.
+I have found that the
+convenience
+of this interface more than compensates for the circular
+dependency issues.
+bootstrapping.
+The BNF source in &lt;b&gt;the&lt;/b&gt; source from which its
+own parser is created,
+a parser which I expect to produce improved versions
+of itself.
+    &lt;h3&gt;Comments&lt;/h3&gt;
+    &lt;p&gt;
+      Comments on this post can be sent to the Marpa Google Group:
+      &lt;code&gt;marpa-parser@googlegroups.com&lt;/code&gt;
+    &lt;/p&gt;</description>
+  </item>
+  <item>
     <title>A Marpa DSL tutorial: Error reporting made easy</title>
     <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/error.html</link>
     <description>  &lt;p&gt;
@@ -1669,108 +1781,6 @@ ELE_acme is a FLO_empty included in GRP_block
       Comments on this post can be sent to the Marpa Google Group:
       &lt;code&gt;
         marpa-parser@googlegroups.com&lt;/code&gt;
-    &lt;/p&gt;</description>
-  </item>
-  <item>
-    <title>Parsing on your new hyper-quantum computer</title>
-    <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/quantum.html</link>
-    <description>    &lt;blockquote&gt;
-      &lt;!--
-      perl ./marpa_r2_html_fmt
-      --&gt;
-      &lt;i&gt;
-        If you want to build a ship, don't drum up the men to gather wood,
-        divide the work and give orders. Instead, teach them to yearn for
-        the vast and endless sea.&lt;/i&gt;
-      -- Antoine de Saint-Exupery
-    &lt;/blockquote&gt;
-    &lt;p&gt;
-      Imagine that, the day the new machine arrives,
-      you are maintaining a parser.
-      Your parser
-      is the current state of the art
-      -- hand-written recursive descent.
-    &lt;/p&gt;&lt;p&gt;
-    &lt;/p&gt;
-    The new computer will
-    replace your staid old von Neumann box is not
-    just a quantum computer.
-    It's fully non-deterministic.
-    You can superposition any time you'd like,
-    and then &quot;unsuperposition&quot; to restart.
-    And when superpositioning, you can can examine
-    &lt;strong&gt;
-      all&lt;/strong&gt;
-    the possibilities, not just one.
-    &lt;p&gt;
-      How would you rewrite your
-      recursive descent logic to take advantage of this new hyper-quantum computer?
-      Actually, this is exactly the same question that
-      &lt;a href=&quot;http://jeffreykegler.github.com/Marpa/&quot;&gt;
-        Marpa&lt;/a&gt;
-      poses
-      to you today.
-      Because for all classes of grammar in practical use, including
-      the LL(k) grammars parseable by recursive descent,
-      &lt;a href=&quot;http://jeffreykegler.github.com/Marpa/&quot;&gt;
-        Marpa&lt;/a&gt;
-      is efficient non-determinism.
-    &lt;/p&gt;
-    &lt;p&gt;
-      Your new hyper-quantum computer
-      might seem at first to make your work as a programmer harder.
-      On the hyper-quantum computer,
-      many things are happening at once.
-      On the deterministic box,
-      you were dealing with a single procedural thread.
-    &lt;/p&gt;
-    &lt;p&gt;
-      But as you get used to the new non-deterministic computer,
-      you find ways in which it makes things easier.
-      On the deterministic box,
-      you only needed to follow a single thread,
-      but you often needed to make that thread
-      deal with multiple alternatives.
-      To do this, you had to create
-      state information and keep track of it yourself
-      while backtracking.
-      The complexity of dealing with
-      all this roll-your-own state
-      information severely limited the kinds of grammar that you could parse,
-      and even the extent to which you understood exactly what your parser
-      would and would not accept.
-      Since much of the time on your old parser was spent
-      backtracking,
-      you no longer had a real handle on the
-      time complexity in many sections of your code.
-      In a couple of previous releases,
-      minor changes had let the backtracking get out of hand.
-    &lt;/p&gt;
-    &lt;p&gt;
-      The hyper-quantum computer
-      now comes up with the parsing
-      alternatives for you.
-      True, you have to retrain yourself to think in terms of the alternatives
-      available at any point.
-      But you don't even have to know which alternatives are there --
-      if you need to ask the hyper-quantum computer (or
-      &lt;a href=&quot;http://jeffreykegler.github.com/Marpa/&quot;&gt;
-        Marpa&lt;/a&gt;),
-      &lt;a href=&quot;https://metacpan.org/module/Marpa::R2::Progress&quot;&gt;
-        it can tell you&lt;/a&gt;.
-    &lt;/p&gt;
-    &lt;p&gt;
-      You do have to learn to ask the right questions
-      at the right places.
-      Once you do this,
-      you have a simpler and more cleanly written parser,
-      running at comparable or faster speeds.
-      And you begin to think about a few changes to
-      the language,
-      changes that will make your language more
-      natural and expressive,
-      but one which
-      you could not have parsed before.
     &lt;/p&gt;</description>
   </item>
   </channel>
