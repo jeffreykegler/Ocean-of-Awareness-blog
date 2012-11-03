@@ -50,26 +50,27 @@
       in Appendix B of
       <a href="http://dinosaur.compilertools.net/yacc/">
       the original 1975 paper</a>.
-      By 1979, Hoftstadter's book Godel-Escher-Bach was out,
+      By 1979, Hoftstadter's book Godel-Escher-Bach (GEB) was out,
       and the next year it took the Pulitzer for
       General Nonfiction.
-      Self-description, recursive, self=reference, you name it
+      Self-description, recursive, self-reference, self-embedding, you name it
       (preferably <a href="http://en.wikipedia.org/wiki/Autological_word">autologically</a>),
       were all the rage.
       </p>
-<p>A snippet which is simultaneously its own example
-its own description does have a kind of charm.
+<p>The magic of a useful piece of code, simultaneously example
+and description, is an idea that still speaks to me after all
+these decades.
 Regular expressions cannot describe themselves.
 Recursive descent can parse themselves in a sense,
 but like all recursive descent
 parsers, it would have to be hand-written,
-so the "magic" quality is not there.
-Ironically, yacc actually cannot.
+so, even when it can be done, there is no "magic".
+Ironically, yacc actually cannot parse its own description language.
 ("Ironically" is the word used in the paper.)
 Like almost all useful grammars, yacc's description language
 goes beyond the capabilities of yacc's LALR parser,
 and a lexer hack is needed.
-<p>Marpa is a general BNF parser and has not trouble efficiently
+<p>Marpa is a general BNF parser and has no trouble efficiently
 parsing the following:
 <blockquote>
 <pre>
@@ -126,6 +127,10 @@ They wondered what Marpa did,
 and parsing your own description did not seem to be really
 directly <b>doing</b> anything, really.
 So I switched to calculators.
+(Ironically, Hofstadter seems to have had the same problem with
+GEB -- he felt that
+people did not understand what his book was all about --
+even those who liked it.)
 <p>
 But ideas from Larry Wall and Peter Stuifzand
 re-ignited my interest.
