@@ -1,0 +1,109 @@
+A grammar that parses itself
+  <p>
+      <!--
+      marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
+      -->
+      For Marpa's new BNF interface,
+      I've written a grammar in that interface which parses it.
+      In the 70's, when I learned parsing theory,
+      this was a very fashionable thing to do, perhaps because
+      yacc had done it,
+      in Appendix B of
+      <a href="http://dinosaur.compilertools.net/yacc/">
+      the original 1975 paper</a>.
+      By 1979, Hoftstadter's book Godel-Escher-Bach was out,
+      and the next year it took the Pulitzer for
+      General Nonfiction.
+      Self-description, recursive, self=reference, you name it
+      (preferably <a href="http://en.wikipedia.org/wiki/Autological_word">autologically</a>),
+      were all the rage.
+      </p>
+<p>A snippet which is simultaneously its own example
+its own description does have a kind of charm.
+Regular expressions cannot describe themselves.
+Recursive descent can parse themselves in a sense,
+but like all recursive descent
+parsers, it would have to be hand-written,
+so the "magic" quality is not there.
+Ironically, yacc actually cannot.
+("Ironically" is the word used in the paper.)
+Like almost all useful grammars, yacc's description language
+goes beyond the capabilities of yacc's LALR parser,
+and a lexer hack is needed.
+<p>Marpa is a general BNF parser and has not trouble efficiently
+parsing the following:
+<blockquote>
+<pre>
+rules ::= rule+ action => do_rules
+rule ::= empty_rule | priority_rule | quantified_rule
+priority_rule ::= lhs op_declare priorities
+  action => do_priority_rule
+empty_rule ::= lhs op_declare adverb_list
+  action => do_empty_rule
+quantified_rule ::= lhs op_declare name quantifier adverb_list
+    action => do_quantified_rule
+priorities ::= alternatives+
+    separator => op_tighter proper => 1
+    action => do_discard_separators
+alternatives ::= alternative+
+    separator => op_eq_pri proper => 1
+    action => do_discard_separators
+alternative ::= rhs adverb_list action => do_alternative 
+adverb_list ::= adverb_item* action => do_adverb_list
+adverb_item ::=
+      action
+    | left_association | right_association | group_association
+    | separator_specification | proper_specification
+
+action ::= kw_action op_arrow name action => do_action
+left_association ::= kw_assoc op_arrow kw_left
+  action => do_left_association 
+right_association ::= kw_assoc op_arrow kw_right
+  action => do_right_association 
+group_association ::= kw_assoc op_arrow kw_group
+  action => do_group_association 
+separator_specification ::= kw_separator op_arrow name
+  action => do_separator_specification
+proper_specification ::= kw_proper op_arrow boolean
+action => do_proper_specification
+
+lhs ::= name action => do_lhs 
+rhs ::= names
+quantifier ::= op_star | op_plus
+names ::= name+ action => do_array
+name ::= bare_name | reserved_word | quoted_name
+name ::= bracketed_name action => do_bracketed_name
+
+reserved_word ::= kw_action | kw_assoc | kw_separator | kw_proper
+  | kw_left | kw_right | kw_group
+</pre>
+</blockquote>
+<p>
+Self-parsing compiler compilers were the trend in the age of bellbottoms.
+Self-parsing has lasted better, but not by much.
+When some years I wrote a self-describing language as an interface to
+Marpa, it seemed to confuse people.
+They wondered what Marpa did,
+and parsing your own description did not seem to be really
+directly <b>doing</b> anything, really.
+So I switched to calculators.
+<p>
+But ideas from Larry Wall and Peter Stuifzand
+re-ignited my interest.
+And this time the self-parsing parser was written
+with a use in mind.
+I plan to enhance this language.
+I have found that the
+convenience
+of this interface more than compensates for the circular
+dependency issues.
+bootstrapping.
+The BNF source in <b>the</b> source from which its
+own parser is created,
+a parser which I expect to produce improved versions
+of itself.
+    <h3>Comments</h3>
+    <p>
+      Comments on this post can be sent to the Marpa Google Group:
+      <code>marpa-parser@googlegroups.com</code>
+    </p>
