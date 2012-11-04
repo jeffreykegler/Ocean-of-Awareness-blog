@@ -7,7 +7,7 @@ A Marpa-based HTML reformatter
       <tt>
         html_fmt</tt>,
       a
-      <a href="http://jeffreykegler.github.com/Marpa/">
+      <a href="http://jeffreykegler.github.com/Marpa-web-site/">
         Marpa-</a>based
       reformatter ("tidier") for liberal HTML.
       <tt>

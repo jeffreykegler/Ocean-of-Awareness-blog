@@ -12,7 +12,7 @@ your own abiliites"
 Marpa::R2 2.010000</a>,
 Marpa has two new, documented, interfaces.
 (For those new to this blog,
-<a href="http://jeffreykegler.github.com/Marpa/">
+<a href="http://jeffreykegler.github.com/Marpa-web-site/">
 Marpa is something new in parsing</a> --
 it parses anything you can write in BNF and,
 if your grammar is in one of the classes currently in practical use,
@@ -76,7 +76,7 @@ Instead, I suggest that you look at
 <a href="https://metacpan.org/release/Marpa-R2">
 the Marpa::R2 documentation</a>,
 or
-<a href="http://jeffreykegler.github.com/Marpa/">
+<a href="http://jeffreykegler.github.com/Marpa-web-site/">
 the Marpa web page</a>.
 The
 <a href="https://github.com/downloads/jeffreykegler/Marpa--R2/api-v2.10.0.pdf">

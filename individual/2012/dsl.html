@@ -44,13 +44,13 @@ What if you could create a simple language in hours or minutes?
 There's been a serious obstacle up to now.
 No practical parser "just parsed" BNF.
 With
-<a href="http://jeffreykegler.github.com/Marpa/">
+<a href="http://jeffreykegler.github.com/Marpa-web-site/">
 Marpa</a>,
 that restriction is lifted.
 <p>
 In this post, I will describe
 a small, sample
-<a href="http://jeffreykegler.github.com/Marpa/">
+<a href="http://jeffreykegler.github.com/Marpa-web-site/">
 Marpa</a>
 domain-specific language (DSL).
 In designing it I am inspired by
@@ -82,7 +82,7 @@ a Github gist</a>.
 <p>
 <h2>The grammar</h2>
 <p>
-<a href="http://jeffreykegler.github.com/Marpa/">
+<a href="http://jeffreykegler.github.com/Marpa-web-site/">
 Marpa</a>
 allows you to build your DSL as a clean modular
 structure,
@@ -187,7 +187,7 @@ the grammar is the name of the start symbol
 the semantics can be found
 (the current one, <tt>__PACKAGE__</tt>).
 <p>
-<a href="http://jeffreykegler.github.com/Marpa/">
+<a href="http://jeffreykegler.github.com/Marpa-web-site/">
 Marpa</a>
 does a lot of precomputation to its grammars.
 Once a grammar is fully defined,
@@ -276,7 +276,7 @@ Finally, note that the <tt>reduce</tt> operator is required to end on a word bou
     } ## end TOKEN: while ( pos $string < $length )
 </div>
 <p>The calculator's token engine creates a
-<a href="http://jeffreykegler.github.com/Marpa/">
+<a href="http://jeffreykegler.github.com/Marpa-web-site/">
 Marpa</a>
 recognizer
 with the <tt>new()</tt> constructor,
@@ -306,11 +306,11 @@ the DSL's function for handling <tt>read()</tt> errors,
 helpful.
 It produces a very specific and comprehensive error message.
 One of
-<a href="http://jeffreykegler.github.com/Marpa/">
+<a href="http://jeffreykegler.github.com/Marpa-web-site/">
 Marpa</a>'s
 greatest improvements over previous
 parsers is that, when a parse fails,
-<a href="http://jeffreykegler.github.com/Marpa/">
+<a href="http://jeffreykegler.github.com/Marpa-web-site/">
 Marpa</a>
 can explain why in considerable detail.
 It makes sense to take full advantage of that ability.
@@ -336,7 +336,7 @@ so we call <tt>value()</tt> only once.
 and a Perl <tt>undef</tt> if the parse failed.
 The error handling is worth noticing.
 One of
-<a href="http://jeffreykegler.github.com/Marpa/">
+<a href="http://jeffreykegler.github.com/Marpa-web-site/">
 Marpa</a>'s
 strengths is that it is fully aware of which rules
 are being tried at any point,

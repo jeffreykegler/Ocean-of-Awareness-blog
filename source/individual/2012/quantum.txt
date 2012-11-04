@@ -31,7 +31,7 @@ Parsing on your new hyper-quantum computer
       How would you rewrite your
       recursive descent logic to take advantage of this new hyper-quantum computer?
       Actually, this is exactly the same question that
-      <a href="http://jeffreykegler.github.com/Marpa/">
+      <a href="http://jeffreykegler.github.com/Marpa-web-site/">
         Marpa</a>
       poses
       to you today.
