@@ -3,8 +3,8 @@ A grammar that parses itself
       <!--
       marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
       -->
-      For Marpa's new BNF interface,
-      I've written a grammar in that interface which parses it.
+      I've written a grammar in Marpa's new BNF interface,
+      to parse Marpa's new BNF interface.
       In the 70's, when I learned parsing theory,
       this was a very fashionable thing to do, perhaps because
       yacc had done it,
@@ -14,27 +14,30 @@ A grammar that parses itself
       By 1979, Hoftstadter's book Godel-Escher-Bach (GEB) was out,
       and the next year it took the Pulitzer for
       General Nonfiction.
-      Self-description, recursive, self-reference, self-embedding, you name it
+      Self-description, recursive, self-reference, self-embedding,
+      you
       (preferably
-      <a href="http://en.wikipedia.org/wiki/Autological_word">autologically</a>),
-      were all the rage.
+      <a href="http://en.wikipedia.org/wiki/Autological_word">autologically</a>)
+      name it,
+      these things were all the rage.
     </p>
-    <p>The magic of a useful piece of code, simultaneously example
-      and description, is an idea that still speaks to me after all
-      these decades.
+    <p>Reading code
+    that is at once both example and description
+    still holds a certain magic for me, even after the decades.
       Regular expressions cannot describe themselves.
-      Recursive descent can parse themselves in a sense,
-      but like all recursive descent
-      parsers, it would have to be hand-written,
-      so, even when it can be done, there is no "magic".
+      Recursive descent parsers are hand-written
+      in another general-purpose language,
+      so there can be no concise self-description.
       Ironically, yacc actually cannot parse its own description language.
       ("Ironically" is the word used in the paper.)
       Like almost all useful grammars, yacc's description language
       goes beyond the capabilities of yacc's LALR parser,
-      and a lexer hack is needed.
-    </p><p>Marpa is a general BNF parser and has no trouble efficiently
-      parsing the following:
-    </p><blockquote>
+      and a lexer hack is needed to make the code in Appendix B work.
+    </p>
+    <p>Marpa is a general BNF parser and requires no special hacks
+    to parse the following efficiently:
+    </p>
+    <blockquote>
       <pre>
 rules ::= rule+ action => do_rules
 rule ::= empty_rule | priority_rule | quantified_rule
@@ -50,7 +53,7 @@ priorities ::= alternatives+
 alternatives ::= alternative+
     separator => op_eq_pri proper => 1
     action => do_discard_separators
-alternative ::= rhs adverb_list action => do_alternative 
+alternative ::= rhs adverb_list action => do_alternative
 adverb_list ::= adverb_item* action => do_adverb_list
 adverb_item ::=
       action
@@ -59,17 +62,17 @@ adverb_item ::=
 
 action ::= kw_action op_arrow name action => do_action
 left_association ::= kw_assoc op_arrow kw_left
-  action => do_left_association 
+  action => do_left_association
 right_association ::= kw_assoc op_arrow kw_right
-  action => do_right_association 
+  action => do_right_association
 group_association ::= kw_assoc op_arrow kw_group
-  action => do_group_association 
+  action => do_group_association
 separator_specification ::= kw_separator op_arrow name
   action => do_separator_specification
 proper_specification ::= kw_proper op_arrow boolean
 action => do_proper_specification
 
-lhs ::= name action => do_lhs 
+lhs ::= name action => do_lhs
 rhs ::= names
 quantifier ::= op_star | op_plus
 names ::= name+ action => do_array
@@ -81,38 +84,50 @@ reserved_word ::= kw_action | kw_assoc | kw_separator | kw_proper
 </pre>
     </blockquote>
     <p>
-      Self-parsing compiler compilers were the trend in the age of bellbottoms.
+    Its conventions are standard or transparent.
+    The "<tt>::=</tt>" symbol separates the left and right hand sides of rules.
+    The "<tt>|</tt>" symbol separates alternative right hand sides.
+    The "<tt>*</tt>" and
+    "<tt>+</tt>" are quantifiers, similar those in regular expressions,
+    and indicate, respectively, zero or more repetitions and one or more repetitions
+    of the preceding symbol.
+    Adverbs take the form "<tt>keyword => value</tt>",
+    and indicate semantics or the style of the sequence separators.
+    Full documentation can be found
+    <a href="https://metacpan.org/module/JKEGL/Marpa-R2-2.023_010/pod/BNF.pod">
+    here.</a>
+    <p>
+      Self-parsing compiler compilers rules the earth
+      in the age of bellbottoms.
       Self-parsing has lasted better, but not by much.
       When some years I wrote a self-describing language as an interface to
       Marpa, it seemed to confuse people.
-      They wondered what Marpa did,
-      and parsing your own description did not seem to be really
-      directly
-      <b>doing</b>
-      anything, really.
-      So I switched to calculators.
-      (Ironically, Hofstadter seems to have had the same problem with
+      They wondered what Marpa did --
+      parsing your own description did not seem to be
+      about <b>doing</b> anything.
+      These days my examples feature a lot of calculators.
+      ("Ironically", Hofstadter seems to have had the same problem with
       GEB -- he felt that
-      people did not understand what his book was all about --
+      people did not understand what his book was saying --
       even those who liked it.)
-    </p><p>
+    </p>
+    <p>
       But ideas from Larry Wall and Peter Stuifzand
-      re-ignited my interest.
+      have re-ignited my interest in self-parsing.
       And this time the self-parsing parser was written
-      with a use in mind.
+      with a specific purpose.
       I plan to enhance this language.
-      I have found that the
-      convenience
-      of this interface more than compensates for the circular
+      I have found that the convenience of this interface
+      more than compensates for the circular
       dependency issues.
-      bootstrapping.
-      The BNF source in
+      The BNF source in this post is
       <b>the</b>
-      source from which its
-      own parser is created,
-      a parser which I expect to produce improved versions
+      source for its own parser,
+      and I plan to use it
+      to produce improved versions
       of itself.
-    </p><h3>Comments</h3>
+    </p>
+    <h3>Comments</h3>
     <p>
       Comments on this post can be sent to the Marpa Google Group:
       <code>marpa-parser@googlegroups.com</code>
