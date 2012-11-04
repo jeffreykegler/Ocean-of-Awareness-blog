@@ -10,7 +10,7 @@ recursive descent.
 Specifically he'd used Perl's Parse::RecDescent
 module.
 Several people asked me how
-<a href="http://jeffreykegler.github.com/Marpa/">
+<a href="http://jeffreykegler.github.com/Marpa-web-site/">
 Marpa</a>
 would do on this language.
 This post contains

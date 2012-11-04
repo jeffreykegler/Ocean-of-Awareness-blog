@@ -2,7 +2,7 @@ Making the parsing game safe
 <p>
 In previous posts,
 I've talked about
-<a href="http://jeffreykegler.github.com/Marpa/">Marpa</a>
+<a href="http://jeffreykegler.github.com/Marpa-web-site/">Marpa</a>
 as an alternative to other parsers.
 In this one,
 I want to talk
@@ -51,7 +51,7 @@ and decide that they ain't that desperate yet.
 <h2>Changing the parsing game</h2>
 <p>
 With 
-<a href="http://jeffreykegler.github.com/Marpa/">Marpa</a>
+<a href="http://jeffreykegler.github.com/Marpa-web-site/">Marpa</a>
 in the parsing game,
 the rules are different.
 Now, anything you can write in BNF will parse.
