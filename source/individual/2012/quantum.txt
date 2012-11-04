@@ -37,7 +37,7 @@ Parsing on your new hyper-quantum computer
       to you today.
       Because for all classes of grammar in practical use, including
       the LL(k) grammars parseable by recursive descent,
-      <a href="http://jeffreykegler.github.com/Marpa/">
+      <a href="http://jeffreykegler.github.com/Marpa-web-site/">
         Marpa</a>
       is efficient non-determinism.
     </p>
@@ -79,7 +79,7 @@ Parsing on your new hyper-quantum computer
       available at any point.
       But you don't even have to know which alternatives are there --
       if you need to ask the hyper-quantum computer (or
-      <a href="http://jeffreykegler.github.com/Marpa/">
+      <a href="http://jeffreykegler.github.com/Marpa-web-site/">
         Marpa</a>),
       <a href="https://metacpan.org/module/Marpa::R2::Progress">
         it can tell you</a>.

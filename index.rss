@@ -1712,7 +1712,7 @@ ELE_acme is a FLO_empty included in GRP_block
       to you today.
       Because for all classes of grammar in practical use, including
       the LL(k) grammars parseable by recursive descent,
-      &lt;a href=&quot;http://jeffreykegler.github.com/Marpa/&quot;&gt;
+      &lt;a href=&quot;http://jeffreykegler.github.com/Marpa-web-site/&quot;&gt;
         Marpa&lt;/a&gt;
       is efficient non-determinism.
     &lt;/p&gt;
@@ -1754,7 +1754,7 @@ ELE_acme is a FLO_empty included in GRP_block
       available at any point.
       But you don't even have to know which alternatives are there --
       if you need to ask the hyper-quantum computer (or
-      &lt;a href=&quot;http://jeffreykegler.github.com/Marpa/&quot;&gt;
+      &lt;a href=&quot;http://jeffreykegler.github.com/Marpa-web-site/&quot;&gt;
         Marpa&lt;/a&gt;),
       &lt;a href=&quot;https://metacpan.org/module/Marpa::R2::Progress&quot;&gt;
         it can tell you&lt;/a&gt;.
