@@ -10,7 +10,7 @@
     <language>en</language>
 
   <item>
-    <title>A grammar that parses itself</title>
+    <title>A grammar that exemplifies, describes and parses itself</title>
     <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/self_parse.html</link>
     <description>  &lt;p&gt;
       &lt;!--
@@ -27,7 +27,7 @@
       By 1979, Hoftstadter's book Godel-Escher-Bach (GEB) was out,
       and the next year it took the Pulitzer for
       General Nonfiction.
-      Self-description, recursive, self-reference, self-embedding,
+      Self-description, recursion, self-reference, self-embedding,
       you
       (preferably
       &lt;a href=&quot;http://en.wikipedia.org/wiki/Autological_word&quot;&gt;autologically&lt;/a&gt;)
@@ -35,8 +35,8 @@
       these things were all the rage.
     &lt;/p&gt;
     &lt;p&gt;Reading code
-    that is at once both example and description
-    still holds a certain magic for me, even after the decades.
+    that is at once both self-example and self-description
+    does still hold a certain magic for me.
       Regular expressions cannot describe themselves.
       Recursive descent parsers are hand-written
       in another general-purpose language,
@@ -97,7 +97,7 @@ reserved_word ::= kw_action | kw_assoc | kw_separator | kw_proper
 &lt;/pre&gt;
     &lt;/blockquote&gt;
     &lt;p&gt;
-    Its conventions are standard or transparent.
+    The conventions are standard or transparent.
     The &quot;&lt;tt&gt;::=&lt;/tt&gt;&quot; symbol separates the left and right hand sides of rules.
     The &quot;&lt;tt&gt;|&lt;/tt&gt;&quot; symbol separates alternative right hand sides.
     The &quot;&lt;tt&gt;*&lt;/tt&gt;&quot; and
@@ -105,12 +105,12 @@ reserved_word ::= kw_action | kw_assoc | kw_separator | kw_proper
     and indicate, respectively, zero or more repetitions and one or more repetitions
     of the preceding symbol.
     Adverbs take the form &quot;&lt;tt&gt;keyword =&gt; value&lt;/tt&gt;&quot;,
-    and indicate semantics or the style of the sequence separators.
+    and indicate semantics or the style of sequence separation.
     Full documentation can be found
     &lt;a href=&quot;https://metacpan.org/module/JKEGL/Marpa-R2-2.023_010/pod/BNF.pod&quot;&gt;
-    here.&lt;/a&gt;
+    here&lt;/a&gt;.
     &lt;p&gt;
-      Self-parsing compiler compilers rules the earth
+      Self-parsing compiler compilers ruled the earth
       in the age of bellbottoms.
       Self-parsing has lasted better, but not by much.
       When some years I wrote a self-describing language as an interface to
