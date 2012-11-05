@@ -88,7 +88,7 @@ reserved_word ::= kw_action | kw_assoc | kw_separator | kw_proper
     The "<tt>::=</tt>" symbol separates the left and right hand sides of rules.
     The "<tt>|</tt>" symbol separates alternative right hand sides.
     The "<tt>*</tt>" and
-    "<tt>+</tt>" are quantifiers, similar those in regular expressions,
+    "<tt>+</tt>" are quantifiers, similar to those in regular expressions,
     and indicate, respectively, zero or more repetitions and one or more repetitions
     of the preceding symbol.
     Adverbs take the form "<tt>keyword => value</tt>",
