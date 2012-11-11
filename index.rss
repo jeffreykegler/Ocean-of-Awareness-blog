@@ -12,43 +12,41 @@
   <item>
     <title>A Marpa tutorial: Pattern searches</title>
     <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/11/pattern_search.html</link>
-    <description>  &lt;p&gt;
+    <description>  &lt;h3&gt;Pattern searches&lt;/h3&gt;
+    &lt;p&gt;
       &lt;!--
       marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
       --&gt;
-      The Marpa parser can be used for pattern searching.
-      In usual practice these days, we use regular expression engines for this.
-      This standard practice works very nicely if the target pattern
-      is a regular expression.
-      But it means that if our target pattern is not a regular expression,
-      we are out of luck.
+      In usual practice these days, we use regular expression engines for pattern searching.
+      This standard practice works very beautifully --
+      if the target pattern is a regular expression.
+    &lt;/p&gt;
+    &lt;p&gt;
+      But if what you were searching for was not a regular expression?
+      Sometimes you could approximate with an over-liberal regular expression,
+      and sort out the false positives by other means.
+      Other times you were simply out of luck.
+    &lt;/p&gt;
+    &lt;p&gt;
       In this post I will show how to use Marpa to search text files for
-      a pattern that is well beyond waht regular expressions can describe --
-      arithmetic expressions.
+      arbitrary context-free expressions.
+      The search target that
+      I will use in this example,
+      is one that is clearly beyond a regular
+      expression search: arithmetic expressions.
     &lt;/p&gt;
     &lt;p&gt;
-      This tutorial introduces a powerful technique, useful for much more
-      than pattern searches.
-      it does build on earlier tutorials,
-      and readers may want to start with them.
-      A number of
-      advanced techniques are used,
-      which can be described only very briefly
-      -- ambiguous lexing; ambiguous parsing; the Ruby Slippers.
-      This poses real obstacles  to the reader,
-      for which I apologize.
-      But I hope and believe that the reader will find
-      that each of this techniques is of interest for its own sake,
-      and the together they have a power that rewards
-      those patient with
-      their initial unfamiliarity.
+      This tutorial builds on earlier tutorials.
+      It is be possible to simply dive into it,
+      following up on unfamiliar aspects
+      in the Marpa documentation,
+      but it may be easier
+      to start with those earlier posts.
     &lt;/p&gt;
-    &lt;h3&gt;Strategy&lt;/h3&gt;
+    &lt;h3&gt;The grammar&lt;/h3&gt;
     &lt;p&gt;
-      Specifically, this example
-      will search Perl for arithmetic expressions.
       Even the arithmetic subset of Perl expressions is quite complex,
-      but we can get the job done
+      but in this case we can get the job done
       with a dozen or so lines of grammar and a table-driven lexer.
       Here is the grammar:
     &lt;/p&gt;
@@ -133,15 +131,15 @@ my @lexer_table = (
 &lt;/tt&gt;
 &lt;/pre&gt;
     &lt;/blockquote&gt;
-    &lt;!-- html_fmt: Next end tag is cruft --&gt;
-    &lt;/p&gt;&lt;p&gt;
+    &lt;p&gt;
       Order is significant here -- in particular
       two-character operators are checked for first,
       so that a prefix
       &lt;tt&gt;--&lt;/tt&gt;
       will be seen as an
       increment operator, and not as a double negation.
-    &lt;/p&gt;&lt;h3&gt;The main loop&lt;/h3&gt;
+    &lt;/p&gt;
+    &lt;h3&gt;The main loop&lt;/h3&gt;
     &lt;p&gt;
       The main loop iterates through input looking for tokens.
       Whitespace is skipped, but comments are not --
@@ -261,21 +259,22 @@ TOKEN: while ( pos $string &amp;lt; $length ) {
       (Marpa's idea of location is called an &quot;earleme&quot;, in honor of the great
       parsing theorist, Jay Earley.)
     &lt;/p&gt;
-&lt;h3&gt;Finding the targets&lt;/h3&gt;
-&lt;p&gt;
-Once the parse is complete, it remains to find
-and print the &quot;targets&quot; found
-by the search.
-In a previous post,
-I showed how, for error reporting, to find the last symbol found,
-given a symbol name.
-That routine needs to be modified to allow repeated searches.
-The code is in the gist,
-and was explained in the previous post,
-so I won't repeat here.
+    &lt;h3&gt;Finding the targets&lt;/h3&gt;
+    &lt;p&gt;
+      Once the parse is complete, it remains to find
+      and print the &quot;targets&quot; found
+      by the search.
+      In a previous post,
+      I showed how, for error reporting, to find the last symbol found,
+      given a symbol name.
+      That routine needs to be modified to allow repeated searches.
+      The code is in the gist,
+      and was explained in the previous post,
+      so I won't repeat here.
+    &lt;/p&gt;
     &lt;h3&gt;Comments&lt;/h3&gt;
-&lt;p&gt;The example in this post was run with Marpa::R2 2.024000,
-as of this writing the latest full release.
+    &lt;p&gt;The example in this post was run with Marpa::R2 2.024000,
+      as of this writing the latest full release.
       Comments can be sent to the Marpa Google Group:
       &lt;code&gt;marpa-parser@googlegroups.com&lt;/code&gt;
     &lt;/p&gt;</description>
