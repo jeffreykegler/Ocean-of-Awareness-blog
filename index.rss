@@ -163,9 +163,11 @@ my @lexer_table = (
     &lt;h3&gt;The main loop&lt;/h3&gt;
     &lt;p&gt;
       The main loop iterates through input looking for tokens.
-      Whitespace is skipped, but comments are not --
-      for some utilities, finding arithmetic expressions in
-      strings or comments is a feature.
+      Whitespace is skipped.
+      Note that comments are not skipped.
+      Finding arithmetic expressions in
+      strings and/or comments can be highly useful,
+      and we will assume that in this case that it is.
     &lt;/p&gt;
     &lt;p&gt;
       The most interesting action is inside the
@@ -292,6 +294,33 @@ TOKEN: while ( pos $string &amp;lt; $length ) {
       The code is in the gist,
       and was explained in the previous post,
       so I won't repeat here.
+    &lt;/p&gt;
+    &lt;h3&gt;Pattern searching and incremental development&lt;/h3&gt;
+    &lt;p&gt;
+    You may notice that this pattern searcher is also
+    a start on a Perl parser.
+    The first priority would have to be restoring proper associativity
+    and precedence to the expressions.
+    This can be done by copying the
+    table at the beginning of the perlop man page
+    into the precedence statement in the grammar.
+    &lt;/p&gt;
+    &lt;p&gt;
+    From this start, you would adding more and more syntax to the grammar,
+    and more and more recognition to the lexer.
+    As you expanded the pattern searcher, the target would gradually become
+    closer and closer to the entire language.
+    &lt;/p&gt;
+    &lt;p&gt;
+    When, for all valid input files, your pattern searcher always finds
+    a single match that spans the input file, you can remove rules which
+    parse the prefix, and make &lt;tt&gt;target&lt;/tt&gt; the new start symbol.
+    Or you may wish to keep them, as an aid to error reporting.
+    Either way, your parser is finished.
+    My own experience is that parsers are far easier
+    to write
+    if you can build them incrementally,
+    taking advantage of the kind of feedback that Marpa allows.
     &lt;/p&gt;
     &lt;h3&gt;Comments&lt;/h3&gt;
     &lt;p&gt;The example in this post was run with Marpa::R2 2.024000,
