@@ -286,9 +286,23 @@ TOKEN: while ( pos $string &lt; $length ) {
       for that location have been entered.
       (Marpa's idea of location is called an "earleme", in honor of the great
       parsing theorist, Jay Earley.)
-    </p><h3>Comments</h3>
-    <p>
-      Comments on this post can be sent to the Marpa Google Group:
+    </p>
+<h3>Finding the targets</h3>
+<p>
+Once the parse is complete, it remains to find
+and print the "targets" found
+by the search.
+In a previous post,
+I showed how, for error reporting, to find the last symbol found,
+given a symbol name.
+That routine needs to be modified to allow repeated searches.
+The code is in the gist,
+and was explained in the previous post,
+so I won't repeat here.
+    <h3>Comments</h3>
+<p>The example in this post was run with Marpa::R2 2.024000,
+as of this writing the latest full release.
+      Comments can be sent to the Marpa Google Group:
       <code>marpa-parser@googlegroups.com</code>
     </p>
 <br />
