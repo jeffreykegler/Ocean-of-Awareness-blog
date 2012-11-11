@@ -71,27 +71,48 @@ expression ::=
       What we are searching for is defined by the
       <tt>target</tt>
       symbol.
-      To turn the parser into a pattern searcher, we add rules that
+      For <tt>target</tt>
+      you could substitute any context-free grammar,
+      and the technique of this example would still work.
+      To turn a parser for <tt>target</tt>
+      into a pattern searcher, we add a new start
+      symbol (unimaginatively named "<tt>start</tt>")
+      and two rules that
       allow the target to have a
       <tt>prefix</tt>,
       and use Marpa's ability to do ambiguous parsing.
     </p>
-    <p>
-      At any point, Marpa has one or two parses going.
-      The one parse that is always going is
-      extending the prefix, and it can never end, because
+<h3>Ambiguous parsing</h3>
+<p>This method will make simple use of three advanced techniques.
+Ambiguous parsing is the first of them.
+Some use of ambiguous parsing is not unfamiliar even in
+standard parsing.
+For example, the C grammar contains a small ambiguity,
+</p>
+<p>
+At any where this example has found a target,
+it will have, in effect, at least two parses going.
+One parse, which is always going,
+      extends the prefix.
+      The prefix will never end, because
       any token (literally
       <tt>any_token</tt>)
-      extends
-      <tt>prefix</tt>.
-      In addition, we may be recognizing a
-      <tt>target</tt>.
+      extends it.
+</p>
+<p>
+In addition, we may be recognizing a
+      <tt>target</tt>,
+      we will have its parses going.
+I say "parses" because the target can be ambiguous,
+although in this case it is not.
     </p>
     <p>
-      Ambiguous parsing can have a serious downside -- it is not necessarily efficient.
-      But Marpa can parse many types of ambiguous grammar in linear time, and
-      this kind of "prefix and pattern" grammar is one of them.
-      Keeping the prefix going requires only a couple of table items per token.
+Ambiguous parsing has a serious potential downside --
+      it is not necessarily efficient.
+      But Marpa can parse many types of ambiguous grammar in linear time and,
+      as long as the target is unambiguous,
+      this kind of "prefix and pattern" grammar will be one of them.
+Keeping the prefix going requires a tiny constant overhead per token.
     </p>
     <h3>The lexer table</h3>
     <p>
