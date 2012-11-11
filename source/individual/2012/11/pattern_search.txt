@@ -1,0 +1,79 @@
+A Marpa tutorial: Pattern searches
+  <p>
+      <!--
+      marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
+      -->
+      The Marpa parser can be used for pattern searching.
+      In usual practice these days, we use regular expression engines for this.
+      This standard practice works very nicely if the target pattern
+      is a regular expression.
+      But it means that if our target pattern is not a regular expression,
+      we are out of luck.
+      In this post I will show how to use Marpa to search text files for
+      a pattern that is well beyond waht regular expressions can describe --
+      arithmetic expressions.
+    </p>
+    <h3>Strategy</h3>
+    <p>
+      Specifically, this example
+      will search Perl for arithmetic expressions.
+      Even the arithmetic subset of Perl expressions is quite complex,
+      but we can get the job done
+      with a dozen or so lines of grammar and a table-driven lexer.
+      Here is the grammar:
+    </p>
+    <blockquote>
+    <pre>
+    <tt>
+start ::= prefix target
+prefix ::= any_token*
+target ::= expression
+expression ::=
+       number | scalar | scalar postfix_op
+    || op_lparen expression op_rparen assoc =&gt; group
+    || unop expression
+    || expression binop expression`
+    </tt>
+    </pre>
+    </blockquote>
+<p>
+This grammar uses Marpa::R2's BNF interface, which is documented here.
+It takes considerable advantage of the fact that we are not <b>parsing</b>
+these expressions, but <b>recognizing</b> them.
+Because of this, we don't have to specify whether expressions left- or right-associate.
+We can also ignore what operators mean and group them according to syntax only
+-- binary, prefix unary and postfix unary.
+Similarly, we can ignore the precedence within these large groups.
+This leaves us with numbers, scalars,
+binary, prefix unary and postfix unary operators
+and parentheses.
+(To keep this example simple, this code only deals with Perl scalars.)
+</p>
+<p>
+What we are searching for is defined by the <tt>target</tt> symbol.
+To turn the parser into a pattern searcher, we add rules that
+allow the target to have a <tt>prefix</tt>,
+and use Marpa's ability to do ambiguous parsing.
+</p>
+<p>
+At any point, Marpa has one or two parses going.
+The one parse that is always going is
+extending the prefix, and it can never end, because
+any token (literally <tt>any_token</tt>)
+extends <tt>prefix</tt>.
+In addition, we may be recognizing a <tt>target</tt>.
+</p>
+<p>
+Ambiguous parsing can have a serious downside -- it is not necessarily efficient.
+But Marpa can parse many types of ambiguous grammar in linear time, and
+this kind of "prefix and pattern" grammar is one of them.
+Keeping the prefix going requires only a couple of table items per token.
+</p>
+<h3>The lexer</h3>
+<p>
+</p>
+    <h3>Comments</h3>
+    <p>
+      Comments on this post can be sent to the Marpa Google Group:
+      <code>marpa-parser@googlegroups.com</code>
+    </p>
