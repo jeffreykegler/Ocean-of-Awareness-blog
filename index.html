@@ -34,6 +34,272 @@
   </p>
   </div>
   <div style="margin-left:190px;border-left:2px solid #38B0C0;padding:25px;">
+<h3>Sat, 10 Nov 2012</h3>
+<br />
+<center><a name="pattern_search"> <h2>A Marpa tutorial: Pattern searches</h2> </a>
+</center>
+  <p>
+      <!--
+      marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
+      -->
+      The Marpa parser can be used for pattern searching.
+      In usual practice these days, we use regular expression engines for this.
+      This standard practice works very nicely if the target pattern
+      is a regular expression.
+      But it means that if our target pattern is not a regular expression,
+      we are out of luck.
+      In this post I will show how to use Marpa to search text files for
+      a pattern that is well beyond waht regular expressions can describe --
+      arithmetic expressions.
+    </p>
+    <p>
+      This tutorial introduces a powerful technique, useful for much more
+      than pattern searches.
+      it does build on earlier tutorials,
+      and readers may want to start with them.
+      A number of
+      advanced techniques are used,
+      which can be described only very briefly
+      -- ambiguous lexing; ambiguous parsing; the Ruby Slippers.
+      This poses real obstacles  to the reader,
+      for which I apologize.
+      But I hope and believe that the reader will find
+      that each of this techniques is of interest for its own sake,
+      and the together they have a power that rewards
+      those patient with
+      their initial unfamiliarity.
+    </p>
+    <h3>Strategy</h3>
+    <p>
+      Specifically, this example
+      will search Perl for arithmetic expressions.
+      Even the arithmetic subset of Perl expressions is quite complex,
+      but we can get the job done
+      with a dozen or so lines of grammar and a table-driven lexer.
+      Here is the grammar:
+    </p>
+    <blockquote>
+      <pre>
+    <tt>
+start ::= prefix target
+prefix ::= any_token*
+target ::= expression
+expression ::=
+       number | scalar | scalar postfix_op
+    || op_lparen expression op_rparen assoc =&gt; group
+    || unop expression
+    || expression binop expression`
+    </tt>
+    </pre>
+    </blockquote>
+    <p>
+      This grammar uses Marpa::R2's BNF interface, which is documented here.
+      It takes considerable advantage of the fact that we are not
+      <b>parsing</b>
+      these expressions, but
+      <b>recognizing</b>
+      them.
+      Because of this, we don't have to specify whether expressions left- or right-associate.
+      We can also ignore what operators mean and group them according to syntax only
+      -- binary, prefix unary and postfix unary.
+      Similarly, we can ignore the precedence within these large groups.
+      This leaves us with numbers, scalars,
+      binary, prefix unary and postfix unary operators
+      and parentheses.
+      (To keep this example simple, this code only deals with Perl scalars.)
+    </p>
+    <p>
+      What we are searching for is defined by the
+      <tt>target</tt>
+      symbol.
+      To turn the parser into a pattern searcher, we add rules that
+      allow the target to have a
+      <tt>prefix</tt>,
+      and use Marpa's ability to do ambiguous parsing.
+    </p>
+    <p>
+      At any point, Marpa has one or two parses going.
+      The one parse that is always going is
+      extending the prefix, and it can never end, because
+      any token (literally
+      <tt>any_token</tt>)
+      extends
+      <tt>prefix</tt>.
+      In addition, we may be recognizing a
+      <tt>target</tt>.
+    </p>
+    <p>
+      Ambiguous parsing can have a serious downside -- it is not necessarily efficient.
+      But Marpa can parse many types of ambiguous grammar in linear time, and
+      this kind of "prefix and pattern" grammar is one of them.
+      Keeping the prefix going requires only a couple of table items per token.
+    </p>
+    <h3>The lexer table</h3>
+    <p>
+      The lexer is driven by a table of pairs: token name and regex.
+    </p><blockquote>
+      <pre>
+<tt>
+my @lexer_table = (
+    [ number     =&gt; qr/(?:\d+(?:\.\d*)?|\.\d+)/xms ],
+    [ scalar     =&gt; qr/ [\$] \w+ \b/xms ],
+    [ postfix_op =&gt; qr/ [-][-] | [+][+] /xms ],
+    [ unop       =&gt; qr/ [-][-] | [+][+] /xms ],
+    [   binop =&gt; qr/
+          [*][*] | [&gt;][&gt;] | [&lt;][&lt;]
+        | [*] | [\/] | [%] | [x] \b
+        | [+] | [-] | [&amp;] | [|] | [=] | [,]
+    /xms
+    ],
+    [   unop =&gt; qr/ [-] | [+] | [!] | [~] /xms
+    ],
+    [ op_lparen =&gt; qr/[(]/xms ],
+    [ op_rparen =&gt; qr/[)]/xms ],
+);
+</tt>
+</pre>
+    </blockquote>
+    <!-- html_fmt: Next end tag is cruft -->
+    </p><p>
+      Order is significant here -- in particular
+      two-character operators are checked for first,
+      so that a prefix
+      <tt>--</tt>
+      will be seen as an
+      increment operator, and not as a double negation.
+    </p><h3>The main loop</h3>
+    <p>
+      The main loop iterates through input looking for tokens.
+      Whitespace is skipped, but comments are not --
+      for some utilities, finding arithmetic expressions in
+      strings or comments is a feature.
+    </p>
+    <p>
+      The most interesting action is inside the
+      <tt>FIND_ALTERNATIVE</tt>
+      block, where the order of the lexing table is combined with
+      "Ruby Slippers" parsing.
+      The "Ruby Slippers" parsing technique solves difficult lexing
+      and parsing problems by asking the parser, at the problem point,
+      what it is looking for.
+      This seems a fairly obvious approach,
+      but the Ruby Slippers is new with Marpa --
+      previous parsers could not provide this information conveniently
+      or efficiently.
+    </p>
+    <p>
+      As an example,
+      a real problem here is minus signs,
+      which can negate a number,
+      be a subtraction operation,
+      or be part of a decrement operation (postfix or prefix).
+      Some of this issue is dealt with by the lexer.
+      The order of lexer table puts two-character operators,
+      like decrement,
+      ("<tt>--</tt>")
+      before one-character operators,
+      such as negation
+      ("<tt>-</tt>").
+    </p><p>In this lexer, an initial minus sign is never part of a number.
+      A number constant is always positive, though it may have
+      a unary negation operator in front of it.
+      PPI sometimes includes initial minus signs in numeric
+      constants. Unfortunately, lacking the Ruby Slippers,
+      it will do this in cases where the minus
+      sign is actually a binary operator.
+    </p>
+    <p>
+      The
+      <tt>FIND_ALTERNATIVE</tt>
+      loop is short,
+      but worth a careful look.
+      It tries every lexeme, in lexer table order.
+      If the
+      <tt>alternative()</tt>
+      method
+      returns a Perl
+      <tt>undef</tt>,
+      it means the token was "rejected".
+      This means the parser was not expecting it.
+      Unlike most parsers in use today, Marpa is 100% accurate about
+      what tokens can and cannot result in a successful parse.
+    </p>
+    <p>
+      This means that Marpa knows whether a minus sign can be
+      a unary or binary operator.
+      (Because of Perl's grammar, it can be one or the other,
+      but never both in the same position.)
+      This is the Ruby Slippers in action --
+      a very simple solution to what for
+      <tt>perly.y</tt>
+      and PPI is a very complicated problem.
+    </p>
+    <p>
+      Once the right token has been determined, the
+      <tt>alternative()</tt>
+      method is called again to
+      ready in an
+      <tt>any_token</tt>.
+      (Marpa allows ambiguous lexing --
+      the same character can be read as two different
+      tokens.)
+      If the entire lexer table is tried, and no acceptable
+      lexeme is found,
+      a single character is read as an
+      <tt>any_token</tt>.
+    </p>
+    <blockquote>
+      <pre>
+<tt>
+my $length = length $string;
+pos $string = $positions[-1];
+TOKEN: while ( pos $string &lt; $length ) {
+    next TOKEN if $string =~ m/\G\s+/gcxms;    # skip whitespace
+    my $position = pos $string;
+    FIND_ALTERNATIVE: {
+        TOKEN_TYPE: for my $t (@lexer_table) {
+            my ( $token_name, $regex ) = @{$t};
+            next TOKEN_TYPE if not $string =~ m/\G($regex)/gcxms;
+            if ( not defined $recce-&gt;alternative($token_name) ) {
+                pos $string = $position;       # reset position for matching
+                next TOKEN_TYPE;
+            }
+            $recce-&gt;alternative('any_token');
+            last FIND_ALTERNATIVE;
+        } ## end TOKEN_TYPE: for my $t (@lexer_table)
+        ## Nothing in the lexer table matched
+        ## Just read the currrent character as an 'any_token'
+        pos $string = $position + 1;
+        $recce-&gt;alternative('any_token');
+    } ## end FIND_ALTERNATIVE:
+    $recce-&gt;earleme_complete();
+    my $latest_earley_set_ID = $recce-&gt;latest_earley_set();
+    $positions[$latest_earley_set_ID] = pos $string;
+} ## end TOKEN: while ( pos $string &lt; $length )
+</tt>
+</pre>
+    </blockquote>
+    <p>
+      The
+      <tt>earleme_complete()</tt>
+      method tells Marpa that all the alternatives
+      for that location have been entered.
+      (Marpa's idea of location is called an "earleme", in honor of the great
+      parsing theorist, Jay Earley.)
+    </p><h3>Comments</h3>
+    <p>
+      Comments on this post can be sent to the Marpa Google Group:
+      <code>marpa-parser@googlegroups.com</code>
+    </p>
+<br />
+<p>posted at: 19:35 |
+<a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/11/pattern_search.html">direct link to this entry</a>
+</p>
+<div style="color:#38B0C0;padding:1px;text-align:center;">
+&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&sect;
+</div>
 <h3>Sun, 04 Nov 2012</h3>
 <br />
 <center><a name="self_parse"> <h2>A grammar that exemplifies, describes and parses itself</h2> </a>
@@ -1373,506 +1639,6 @@ I cannot wait for a start tag&lt;p&gt;I can
 <br />
 <p>posted at: 18:50 |
 <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/config_html2.html">direct link to this entry</a>
-</p>
-<div style="color:#38B0C0;padding:1px;text-align:center;">
-&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-&sect;
-</div>
-<h3>Mon, 08 Oct 2012</h3>
-<br />
-<center><a name="config_html"> <h2>A Configurable HTML Parser</h2> </a>
-</center>
-    <p>
-      <!--
-      marpa_r2_html_fmt --no-added-tag-comment
-      -->
-      This post introduces an HTML parser which is both liberal and configurable.
-      Currently available as a
-      <a href="https://metacpan.org/release/JKEGL/Marpa-R2-2.021_006">
-        part of a Marpa::R2 developer's release on CPAN</a>,
-      the new Marpa::R2::HTML allows detailed
-      configuration of new tags
-      and respecification of the behavior of existing tags.
-    </p><p>
-      To show how a configurable HTML parser works,
-      I will start with a simple task.
-      Let's suppose we have a new tag, call it
-      <code>
-        &lt;acme&gt;</code>.
-      The older, non-configurable version of Marpa, and most browsers,
-      would recognize this tag.
-      But they'd simply give it a default configuration,
-      one which is usually very liberal --
-      liberal meaning the tag is allowed to contain just about anything,
-      and to go just about anywhere.
-      A configurable parser allows us to specify the new tag's behavior
-      more explicitly and strictly.
-    </p><h3>
-      Block vs. inline</h3><p>
-      In this post
-      I am going to assume that the reader knows,
-      or will look up what he needs to know,
-      about HTML.
-      But block vs. inline is a essential HTML concept
-      which is often ignored -- even
-      <a href="http://en.wikipedia.org/wiki/HTML">
-      the excellent Wikipedia page on HTML</a>
-      does not define "inline", although it uses the term in the technical
-      sense twice.
-      Since the concept is also central to this post,
-      let me briefly summarize it.
-    </p><p>
-      Quoting from the
-      <a href="http://www.w3.org/TR/1999/PR-html40-19990824/sgml/dtd.html#inline">
-        HTML 4.01 Strict DTD</a>,
-    </p><blockquote>
-      <pre>
-      HTML has two basic content models:
-
-        %inline;     character level elements and text strings
-        %block;      block-like elements e.g. paragraphs and lists
-</pre>
-    </blockquote>
-    <p>
-      There is also what I will call a "mixed flow",
-      which can contain anything that
-      can appear in either a block or inline flow.
-      (What I call a mixed flow is
-      simply called a "flow"
-      in the HTML 4.01 DTD.)
-    </p><p>
-      Significant in the examples are
-      <code>
-        &lt;p&gt;</code>,
-      which is a block element that contains an inline flow and
-      <code>
-        &lt;span&gt;</code>,
-      which is an inline element that contains an inline flow.
-      The
-      <code>
-        &lt;body&gt;</code>
-      tag is an important structural tag,
-      which contains an block flow.
-    </p><p>
-      For simplicity I am following HTML 4.01 DTD.
-      HTML 5
-      uses radically different terminology and is more liberal
-      in what it allows.
-      Differences among standards are an important reason for
-      an HTML parser to be configurable.
-    </p>
-    <h3>
-      Controlling element context</h3>
-    <h4>
-      An inline element containing an inline flow</h4>
-    <p>
-      Let's define the
-      <code>
-        &lt;acme&gt;</code>
-      tag
-      to be an inline tag with inline contents.
-      This is done by adding the following line to the
-      Marpa::R2::HTML grammar configuration file:
-    </p>
-    <blockquote>
-      <pre>
-ELE_acme is a FLO_inline included in GRP_inline
-</pre></blockquote><p>
-      Let's take as our HTML, the following:
-    </p>
-    <blockquote>
-      <pre>
-&lt;acme&gt;-during-&lt;span&gt;-more inline stuff-&lt;p&gt;-new block-
-</pre></blockquote>
-    <p>
-      With the following shell commands,
-      we add the new line to
-      <a href="https://gist.github.com/3869482">
-        <code>
-          default.cfg</code>,
-        the default grammar configuration file</a>.
-      We then use the
-      <code>
-        marpa_r2_html_fmt</code>
-      utility
-      that comes with Marpa::R2
-      to parse the HTML.
-    </p>
-    <blockquote>
-      <pre>
-cp default.cfg test.cfg
-echo "ELE_acme is a FLO_inline included in GRP_inline" &gt;&gt; test.cfg
-echo '&lt;acme&gt;-during-&lt;span&gt;-more inline stuff-&lt;p&gt;-new block-' |
-  marpa_r2_html_fmt --no-added-tag --compile test.cfg
-</pre></blockquote>
-    <p>
-<code>marpa_r2_html_fmt</code> indents the HTML and
-      adds missing tags
-This will show us the structure of our small HTML document.
-      Here is what we get:
-    </p>
-    <!-- examples/acme-inline-inline.out -->
-    <blockquote>
-      <pre>
-&lt;html&gt;
-  &lt;head&gt;
-  &lt;/head&gt;
-  &lt;body&gt;
-    &lt;p&gt;
-      &lt;acme&gt;
-        -during-&lt;span&gt;
-          -more inline stuff-&lt;/span&gt;&lt;/acme&gt;&lt;/p&gt;&lt;p&gt;
-      -new block-
-    &lt;/p&gt;&lt;/body&gt;
-&lt;/html&gt;
-</pre></blockquote>
-    <p>
-      We see from this that the configuration took proper effect.
-      Since the
-      <code>
-        &lt;acme&gt;</code>
-      tag was configured as an inline element,
-      it cannot go directly inside the
-      the
-      <code>
-        &lt;body&gt;</code>.
-      So a new
-      <code>
-        &lt;p&gt;</code>
-      is created to contain the
-      <code>
-        &lt;acme&gt;</code>
-      element.
-      (A Marpa::R2::HTML configuration can also change
-      the contents that are acceptable inside the
-      <code>
-        &lt;body&gt;</code>.
-      For the moment, we'll keep it simple
-      and accept as given that
-      <code>
-        &lt;body&gt;</code>
-      contains a block flow.)
-    </p><p>
-      Similarly,
-      since the
-      <code>
-        &lt;acme&gt;</code>
-      tag contains an inline flow,
-      it must end before the next
-      <code>
-        &lt;p&gt;</code>
-      tag.
-      The parser supplies an
-      end tag for the
-      <code>
-        &lt;acme&gt;</code>
-      element,
-      and also
-      closes the
-      <code>
-        &lt;p&gt;</code>
-      paragraph that was
-      started to hold the
-      <code>
-        &lt;acme&gt;</code>
-      element.
-    </p>
-    <h4>
-      A block element containing an inline flow</h4>
-    <!-- examples/acme-block-inline.out -->
-    <p>
-      Our new configuration line can also specify that
-      <code>
-        &lt;acme&gt;</code>
-      is a block element:
-    </p><blockquote>
-      <pre>
-ELE_acme is a FLO_inline included in GRP_block
-</pre></blockquote><p>
-      The code to test this is very similar to that displayed above.
-      It, and the scripts for all of this post's other examples,
-      can be found
-      <a href="https://gist.github.com/3870030">
-        as a gist</a>.
-      Here's the result:
-    </p><blockquote>
-      <pre>
-&lt;html&gt;
-  &lt;head&gt;
-  &lt;/head&gt;
-  &lt;body&gt;
-    &lt;acme&gt;
-      -during-&lt;span&gt;
-        -more inline stuff-&lt;/span&gt;&lt;/acme&gt;&lt;p&gt;
-      -new block-
-    &lt;/p&gt;&lt;/body&gt;
-&lt;/html&gt;
-</pre></blockquote>
-    <p>
-      Here the
-      <code>
-        &lt;acme&gt;</code>
-      element is allowed in a block,
-      so no new
-      <code>
-        &lt;p&gt;</code>
-      element was needed to contain it.
-      Since
-      the
-      <code>
-        &lt;acme&gt;</code>
-      element's contents are inline,
-      the
-      <code>
-        &lt;acme&gt;</code>
-      element still needed to be ended before
-      the
-      <code>
-        &lt;p&gt;</code>
-      tag in the actual input.
-    </p>
-    <h3>
-      The grammar configuration file</h3>
-    <p>
-      Those who click through to look at
-      <a href="https://gist.github.com/3869482">
-        the grammar configuration file</a>
-      may notice
-      its length.
-      Three pages.
-      And almost half of those three pages
-      are single-line descriptions of elements
-      which are one or more of deprecated, obsolete
-      or proprietary.
-      Arguably the configuration file
-      should be even shorter.
-    </p><p>
-      Other implementations of liberal HTML
-      parsers spread the logic specifying the HTML
-      variant across a considerably larger body of code,
-      sometimes a vastly larger.
-      This very much affects the cost of evolving and
-      maintain the parser.
-    </p><p>
-      As for the configuration file's format at the moment:
-      it is experimental.
-      I can state from experience that it is
-      quite serviceable,
-      and fairly readable,
-      but it could be more elegant.
-    </p><h3>
-      Controlling element content</h3>
-    <h4>
-      A block element containing a mixed flow</h4>
-    <!-- examples/acme-block-mixed.out -->
-    <p>
-      We can also configure the contents of
-      the
-      <code>
-        &lt;acme&gt;</code>
-      element.
-      This configuration line specifies a mixed flow.
-    </p><blockquote>
-      <pre>
-ELE_acme is a FLO_mixed included in GRP_block
-</pre></blockquote>
-<p>And here is what we get:</p>
-    <blockquote>
-      <pre>
-&lt;html&gt;
-  &lt;head&gt;
-  &lt;/head&gt;
-  &lt;body&gt;
-    &lt;acme&gt;
-      -during-&lt;span&gt;
-        -more inline stuff-&lt;/span&gt;&lt;p&gt;
-        -new block-
-      &lt;/p&gt;&lt;/acme&gt;&lt;/body&gt;
-&lt;/html&gt;
-</pre></blockquote>
-    <p>
-      A mixed flow accepts any contents,
-      so that the
-      <code>
-        &lt;acme&gt;</code>
-      element's contents expand to include the
-      entire body of the html document.
-    </p>
-    <h4>
-      A block element containing a block flow</h4>
-    <!-- examples/acme-block-block.out -->
-<p>With this configuration line, we request a block
-        flow for the contents:
-      </p>
-    <blockquote>
-      <pre>
-ELE_acme is a FLO_block included in GRP_block
-</pre></blockquote>
-    <p>
-      The results:
-    </p>
-    <blockquote>
-      <pre>
-&lt;html&gt;
-  &lt;head&gt;
-  &lt;/head&gt;
-  &lt;body&gt;
-    &lt;acme&gt;
-      &lt;p&gt;
-        -during-&lt;span&gt;
-          -more inline stuff-&lt;/span&gt;&lt;/p&gt;&lt;p&gt;
-        -new block-
-      &lt;/p&gt;&lt;/acme&gt;&lt;/body&gt;
-&lt;/html&gt;
-</pre></blockquote>
-    <p>
-      Here the
-      <code>
-        &lt;acme&gt;</code>
-      element also spans the entire body of the HTML
-      element,
-      but because block flows are less liberal than
-      mixed flows,
-      the contents of the
-      <code>
-        &lt;acme&gt;</code>
-      element have to be properly "packaged" inside
-      block elements.
-    </p>
-    <h4>
-      A block element containing PCDATA</h4>
-    <!-- examples/acme-block-pcdata.out -->
-    <p>
-      We are getting progressively more restrictive with the contents
-      of the
-      <code>
-        &lt;acme&gt;</code>
-      element.
-      We've already seen the example
-      of an
-      <code>
-        &lt;acme&gt;</code>
-      block element for inline contents.
-      This configuration line specifies that the contents
-      must be PCDATA.
-      PCDATA allows text, but not child elements.
-    </p><blockquote>
-      <pre>
-ELE_acme is a FLO_pcdata included in GRP_block
-</pre></blockquote><p>
-      The result:
-    </p><blockquote>
-      <pre>
-&lt;html&gt;
-  &lt;head&gt;
-  &lt;/head&gt;
-  &lt;body&gt;
-    &lt;acme&gt;
-      -during-&lt;/acme&gt;&lt;p&gt;
-      &lt;span&gt;
-        -more inline stuff-&lt;/span&gt;&lt;/p&gt;&lt;p&gt;
-      -new block-
-    &lt;/p&gt;&lt;/body&gt;
-&lt;/html&gt;
-</pre></blockquote>
-    <p>
-      Note here that the
-      <code>
-        &lt;acme&gt;</code>
-      tag ends as soon as another element is encountered.
-    </p><h4>
-      An empty block element</h4>
-    <p>
-      The final restriction on the
-      <code>
-        &lt;acme&gt;</code>
-      element is the insistance that it be empty:
-      <!-- examples/acme-block-empty.out -->
-    </p><blockquote>
-      <pre>
-ELE_acme is a FLO_empty included in GRP_block
-</pre></blockquote>
-      <p>
-        And here is our result:</p>
-    <blockquote>
-      <pre>
-&lt;html&gt;
-  &lt;head&gt;
-  &lt;/head&gt;
-  &lt;body&gt;
-    &lt;acme&gt;
-    &lt;/acme&gt;&lt;p&gt;
-      -during-&lt;span&gt;
-        -more inline stuff-&lt;/span&gt;&lt;/p&gt;&lt;p&gt;
-      -new block-
-    &lt;/p&gt;&lt;/body&gt;
-&lt;/html&gt;
-</pre></blockquote>
-    <h3>
-      Displayed effects</h3>
-    <p>
-      Any of these different configurations of
-      the
-      <code>
-        &lt;acme&gt;</code>
-      tag could have a dramatic effect on what is displayed,
-      depending on your CSS file.
-      Whether or not
-      <code>
-        &lt;acme&gt;</code>
-      is a block element also affects
-      what is displayed.
-      When
-      <code>
-        &lt;acme&gt;</code>
-      is a block element,
-      its boundaries will typically display as paragraph breaks.
-    </p>
-    <p>
-      In the above examples,
-      the case where
-      <code>
-        &lt;acme&gt;</code>
-      is configured as a block element containing PCDATA
-      typically displays as three paragraphs:
-    </p><pre>
--during-
-
--more inline stuff-
-
--new block-
-</pre>
-    <!-- html_fmt: Next line is cruft -->
-    </p>
-    <p>
-      In the other cases, the end boundary of the
-      <code>
-        &lt;acme&gt;</code>
-      element varies,
-      but always coincides with the beginning or
-      end of other block elements,
-      so that the visible display is as
-      two paragraphs:
-    </p><pre>
--during- -more inline stuff-
-
--new block-
-</pre>
-    <!-- html_fmt: Next line is cruft -->
-    </p>
-    <h3>
-      Final remarks</h3><p>
-      The configurable Marpa::R2::HTML does considerably more than
-      could be mentioned in this post.
-      I hope to say more about it soon.
-      Comments on this post can be sent to the Marpa Google Group:
-      <code>
-        marpa-parser@googlegroups.com</code>
-    </p>
-<br />
-<p>posted at: 17:46 |
-<a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/config_html.html">direct link to this entry</a>
 </p>
 <div style="color:#38B0C0;padding:1px;text-align:center;">
 &sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;

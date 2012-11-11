@@ -13,23 +13,23 @@ A Marpa tutorial: Pattern searches
       a pattern that is well beyond waht regular expressions can describe --
       arithmetic expressions.
     </p>
-<p>
-This tutorial introduces a powerful technique, useful for much more
-than pattern searches.
-it does build on earlier tutorials,
-and readers may want to start with them.
-A number of
-advanced techniques are used,
-which can be described only very briefly
--- ambiguous lexing; ambiguous parsing; the Ruby Slippers.
-This poses real obstacles  to the reader,
-for which I apologize.
-But I hope and believe that the reader will find
-that each of this techniques is of interest for its own sake,
-and the together they have a power that rewards
-those patient with 
-their initial unfamiliarity.
-</p>
+    <p>
+      This tutorial introduces a powerful technique, useful for much more
+      than pattern searches.
+      it does build on earlier tutorials,
+      and readers may want to start with them.
+      A number of
+      advanced techniques are used,
+      which can be described only very briefly
+      -- ambiguous lexing; ambiguous parsing; the Ruby Slippers.
+      This poses real obstacles  to the reader,
+      for which I apologize.
+      But I hope and believe that the reader will find
+      that each of this techniques is of interest for its own sake,
+      and the together they have a power that rewards
+      those patient with
+      their initial unfamiliarity.
+    </p>
     <h3>Strategy</h3>
     <p>
       Specifically, this example
@@ -40,7 +40,7 @@ their initial unfamiliarity.
       Here is the grammar:
     </p>
     <blockquote>
-    <pre>
+      <pre>
     <tt>
 start ::= prefix target
 prefix ::= any_token*
@@ -53,44 +53,53 @@ expression ::=
     </tt>
     </pre>
     </blockquote>
-<p>
-This grammar uses Marpa::R2's BNF interface, which is documented here.
-It takes considerable advantage of the fact that we are not <b>parsing</b>
-these expressions, but <b>recognizing</b> them.
-Because of this, we don't have to specify whether expressions left- or right-associate.
-We can also ignore what operators mean and group them according to syntax only
--- binary, prefix unary and postfix unary.
-Similarly, we can ignore the precedence within these large groups.
-This leaves us with numbers, scalars,
-binary, prefix unary and postfix unary operators
-and parentheses.
-(To keep this example simple, this code only deals with Perl scalars.)
-</p>
-<p>
-What we are searching for is defined by the <tt>target</tt> symbol.
-To turn the parser into a pattern searcher, we add rules that
-allow the target to have a <tt>prefix</tt>,
-and use Marpa's ability to do ambiguous parsing.
-</p>
-<p>
-At any point, Marpa has one or two parses going.
-The one parse that is always going is
-extending the prefix, and it can never end, because
-any token (literally <tt>any_token</tt>)
-extends <tt>prefix</tt>.
-In addition, we may be recognizing a <tt>target</tt>.
-</p>
-<p>
-Ambiguous parsing can have a serious downside -- it is not necessarily efficient.
-But Marpa can parse many types of ambiguous grammar in linear time, and
-this kind of "prefix and pattern" grammar is one of them.
-Keeping the prefix going requires only a couple of table items per token.
-</p>
-<h3>The lexer table</h3>
-<p>
-The lexer is driven by a table of pairs: token name and regex.
-<blockquote>
-<pre>
+    <p>
+      This grammar uses Marpa::R2's BNF interface, which is documented here.
+      It takes considerable advantage of the fact that we are not
+      <b>parsing</b>
+      these expressions, but
+      <b>recognizing</b>
+      them.
+      Because of this, we don't have to specify whether expressions left- or right-associate.
+      We can also ignore what operators mean and group them according to syntax only
+      -- binary, prefix unary and postfix unary.
+      Similarly, we can ignore the precedence within these large groups.
+      This leaves us with numbers, scalars,
+      binary, prefix unary and postfix unary operators
+      and parentheses.
+      (To keep this example simple, this code only deals with Perl scalars.)
+    </p>
+    <p>
+      What we are searching for is defined by the
+      <tt>target</tt>
+      symbol.
+      To turn the parser into a pattern searcher, we add rules that
+      allow the target to have a
+      <tt>prefix</tt>,
+      and use Marpa's ability to do ambiguous parsing.
+    </p>
+    <p>
+      At any point, Marpa has one or two parses going.
+      The one parse that is always going is
+      extending the prefix, and it can never end, because
+      any token (literally
+      <tt>any_token</tt>)
+      extends
+      <tt>prefix</tt>.
+      In addition, we may be recognizing a
+      <tt>target</tt>.
+    </p>
+    <p>
+      Ambiguous parsing can have a serious downside -- it is not necessarily efficient.
+      But Marpa can parse many types of ambiguous grammar in linear time, and
+      this kind of "prefix and pattern" grammar is one of them.
+      Keeping the prefix going requires only a couple of table items per token.
+    </p>
+    <h3>The lexer table</h3>
+    <p>
+      The lexer is driven by a table of pairs: token name and regex.
+    </p><blockquote>
+      <pre>
 <tt>
 my @lexer_table = (
     [ number     =&gt; qr/(?:\d+(?:\.\d*)?|\.\d+)/xms ],
@@ -110,85 +119,98 @@ my @lexer_table = (
 );
 </tt>
 </pre>
-</blockquote>
-</p>
-Order is significant here -- in particular
-two-character operators are checked for first,
-so that a prefix <tt>--</tt> will be seen as an
-increment operator, and not as a double negation.
-<h3>The main loop</h3>
-<p>
-The main loop iterates through input looking for tokens.
-Whitespace is skipped, but comments are not --
-for some utilities, finding arithmetic expressions in
-strings or comments is a feature.
-</p>
-<p>
-The most interesting action is inside the <tt>FIND_ALTERNATIVE</tt>
-block, where the order of the lexing table is combined with
-"Ruby Slippers" parsing.
-The "Ruby Slippers" parsing technique solves difficult lexing
-and parsing problems by asking the parser, at the problem point,
-what it is looking for.
-This seems a fairly obvious approach,
-but the Ruby Slippers is new with Marpa --
-previous parsers could not provide this information conveniently
-or efficiently.
-</p>
-<p>
-As an example,
-a real problem here is minus signs,
-which can negate a number,
-be a subtraction operation,
-or be part of a decrement operation (postfix or prefix).
-Some of this issue is dealt with by the lexer.
-The order of lexer table puts two-character operators,
-like decrement,
-("<tt>--</tt>")
-before one-character operators,
-such as negation
-("<tt>-</tt>").
-<p>In this lexer, an initial minus sign is never part of a number.
-A number constant is always positive, though it may have
-a unary negation operator in front of it.
-PPI sometimes includes initial minus signs in numeric
-constants.  Unfortunately, lacking the Ruby Slippers,
-it will do this in cases where the minus
-sign is actually a binary operator.
-</p>
-<p>
-The <tt>FIND_ALTERNATIVE</tt> loop is short,
-but worth a careful look.
-It tries every lexeme, in lexer table order.
-If the <tt>alternative()</tt> method
-returns a Perl <tt>undef</tt>,
-it means the token was "rejected".
-This means the parser was not expecting it.
-Unlike most parsers in use today, Marpa is 100% accurate about
-what tokens can and cannot result in a successful parse.
-</p>
-<p>
-This means that Marpa knows whether a minus sign can be
-a unary or binary operator.
-(Because of Perl's grammar, it can be one or the other,
-but never both in the same position.)
-This is the Ruby Slippers in action --
-a very simple solution to what for <tt>perly.y</tt>
-and PPI is a very complicated problem.
-</p>
-<p>
-Once the right token has been determined, the
-<tt>alternative()</tt> method is called again to
-ready in an <tt>any_token</tt>.
-(Marpa allows ambiguous lexing --
-the same character can be read as two different
-tokens.)
-If the entire lexer table is tried, and no acceptable
-lexeme is found,
-a single character is read as an <tt>any_token</tt>.
-</p>
-<blockquote>
-<pre>
+    </blockquote>
+    <!-- html_fmt: Next end tag is cruft -->
+    </p><p>
+      Order is significant here -- in particular
+      two-character operators are checked for first,
+      so that a prefix
+      <tt>--</tt>
+      will be seen as an
+      increment operator, and not as a double negation.
+    </p><h3>The main loop</h3>
+    <p>
+      The main loop iterates through input looking for tokens.
+      Whitespace is skipped, but comments are not --
+      for some utilities, finding arithmetic expressions in
+      strings or comments is a feature.
+    </p>
+    <p>
+      The most interesting action is inside the
+      <tt>FIND_ALTERNATIVE</tt>
+      block, where the order of the lexing table is combined with
+      "Ruby Slippers" parsing.
+      The "Ruby Slippers" parsing technique solves difficult lexing
+      and parsing problems by asking the parser, at the problem point,
+      what it is looking for.
+      This seems a fairly obvious approach,
+      but the Ruby Slippers is new with Marpa --
+      previous parsers could not provide this information conveniently
+      or efficiently.
+    </p>
+    <p>
+      As an example,
+      a real problem here is minus signs,
+      which can negate a number,
+      be a subtraction operation,
+      or be part of a decrement operation (postfix or prefix).
+      Some of this issue is dealt with by the lexer.
+      The order of lexer table puts two-character operators,
+      like decrement,
+      ("<tt>--</tt>")
+      before one-character operators,
+      such as negation
+      ("<tt>-</tt>").
+    </p><p>In this lexer, an initial minus sign is never part of a number.
+      A number constant is always positive, though it may have
+      a unary negation operator in front of it.
+      PPI sometimes includes initial minus signs in numeric
+      constants. Unfortunately, lacking the Ruby Slippers,
+      it will do this in cases where the minus
+      sign is actually a binary operator.
+    </p>
+    <p>
+      The
+      <tt>FIND_ALTERNATIVE</tt>
+      loop is short,
+      but worth a careful look.
+      It tries every lexeme, in lexer table order.
+      If the
+      <tt>alternative()</tt>
+      method
+      returns a Perl
+      <tt>undef</tt>,
+      it means the token was "rejected".
+      This means the parser was not expecting it.
+      Unlike most parsers in use today, Marpa is 100% accurate about
+      what tokens can and cannot result in a successful parse.
+    </p>
+    <p>
+      This means that Marpa knows whether a minus sign can be
+      a unary or binary operator.
+      (Because of Perl's grammar, it can be one or the other,
+      but never both in the same position.)
+      This is the Ruby Slippers in action --
+      a very simple solution to what for
+      <tt>perly.y</tt>
+      and PPI is a very complicated problem.
+    </p>
+    <p>
+      Once the right token has been determined, the
+      <tt>alternative()</tt>
+      method is called again to
+      ready in an
+      <tt>any_token</tt>.
+      (Marpa allows ambiguous lexing --
+      the same character can be read as two different
+      tokens.)
+      If the entire lexer table is tried, and no acceptable
+      lexeme is found,
+      a single character is read as an
+      <tt>any_token</tt>.
+    </p>
+    <blockquote>
+      <pre>
 <tt>
 my $length = length $string;
 pos $string = $positions[-1];
@@ -217,13 +239,15 @@ TOKEN: while ( pos $string &lt; $length ) {
 } ## end TOKEN: while ( pos $string &lt; $length )
 </tt>
 </pre>
-</blockquote>
-<p>
-The <tt>earleme_complete()</tt> method tells Marpa that all the alternatives
-for that location have been entered.
-(Marpa's idea of location is called an "earleme", in honor of the great
-parsing theorist, Jay Earley.)
-    <h3>Comments</h3>
+    </blockquote>
+    <p>
+      The
+      <tt>earleme_complete()</tt>
+      method tells Marpa that all the alternatives
+      for that location have been entered.
+      (Marpa's idea of location is called an "earleme", in honor of the great
+      parsing theorist, Jay Earley.)
+    </p><h3>Comments</h3>
     <p>
       Comments on this post can be sent to the Marpa Google Group:
       <code>marpa-parser@googlegroups.com</code>
