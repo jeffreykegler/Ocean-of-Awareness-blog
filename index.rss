@@ -240,65 +240,6 @@ my @lexer_table = (
       strings and/or comments can be useful.
       We will assume that is the case here.
     &lt;/p&gt;
-    &lt;p&gt;
-      As an example,
-      a real problem here is minus signs,
-      which can negate a number,
-      be a subtraction operation,
-      or be part of a decrement operation (postfix or prefix).
-      Some of this issue is dealt with by the lexer.
-      The order of lexer table puts two-character operators,
-      like decrement,
-      (&quot;&lt;tt&gt;--&lt;/tt&gt;&quot;)
-      before one-character operators,
-      such as negation
-      (&quot;&lt;tt&gt;-&lt;/tt&gt;&quot;).
-    &lt;/p&gt;&lt;p&gt;In this lexer, an initial minus sign is never part of a number.
-      A number constant is always positive, though it may have
-      a unary negation operator in front of it.
-      PPI sometimes includes initial minus signs in numeric
-      constants. Unfortunately, lacking the Ruby Slippers,
-      it will do this in cases where the minus
-      sign is actually a binary operator.
-    &lt;/p&gt;
-    &lt;p&gt;
-      The
-      &lt;tt&gt;FIND_ALTERNATIVE&lt;/tt&gt;
-      loop is short,
-      but worth a careful look.
-      It tries every lexeme, in lexer table order.
-      If the
-      &lt;tt&gt;alternative()&lt;/tt&gt;
-      method
-      returns a Perl
-      &lt;tt&gt;undef&lt;/tt&gt;,
-      it means the token was &quot;rejected&quot;.
-      This means the parser was not expecting it.
-    &lt;/p&gt;
-    &lt;p&gt;
-      This means that Marpa knows whether a minus sign can be
-      a unary or binary operator.
-      (Because of Perl's grammar, it can be one or the other,
-      but never both in the same position.)
-      This is the Ruby Slippers in action --
-      a very simple solution to what for
-      &lt;tt&gt;perly.y&lt;/tt&gt;
-      and PPI is a very complicated problem.
-    &lt;/p&gt;
-    &lt;p&gt;
-      Once the right token has been determined, the
-      &lt;tt&gt;alternative()&lt;/tt&gt;
-      method is called again to
-      ready in an
-      &lt;tt&gt;any_token&lt;/tt&gt;.
-      (Marpa allows ambiguous lexing --
-      the same character can be read as two different
-      tokens.)
-      If the entire lexer table is tried, and no acceptable
-      lexeme is found,
-      a single character is read as an
-      &lt;tt&gt;any_token&lt;/tt&gt;.
-    &lt;/p&gt;
     &lt;blockquote&gt;
       &lt;pre&gt;
 &lt;tt&gt;
@@ -339,18 +280,68 @@ TOKEN: while ( pos $string &amp;lt; $length ) {
       parsing theorist, Jay Earley.)
     &lt;/p&gt;
     &lt;h3&gt;How to parse without really trying&lt;/h3&gt;
+    &lt;p&gt;
+    At this point, I would draw your attention to the code
+    that deals with special cases for the minus sign.
+    Specifically, to the fact that there isn't any.
+    The more familiar you are with PPI and/or
+      &lt;tt&gt;perly.y&lt;/tt&gt;,
+      the more remarkable this will be seem.
+      &lt;/p&gt;
+      &lt;p&gt;
+      To take one example, PPI correctly realizes that the minus
+      sign in
+      &quot;&lt;tt&gt;1+2-3&lt;/tt&gt;&quot; is a binary operator.
+      However PPI fails on &quot;&lt;tt&gt;(1+2)-3&lt;/tt&gt;&quot; --
+      it thinks the minus sign is part of the number &quot;-3&quot;.
+      Why don't the authors of PPI just look at &lt;tt&gt;perly.y&lt;/tt&gt;
+      and &lt;tt&gt;toke.c&lt;/tt&gt; and copy the logic there?
+      A glance at those will give you the answer to that question.
+      &lt;/p&gt;
+      &lt;p&gt;The problem is that you cannot tell whether a minus sign is a unary
+      operator or a binary operator,
+      without context.
+      And the parse engines for PPI and for perl itself,
+      while quite different in many respects,
+      share a property common to traditional parsers --
+      they offer the lexer, respectively,
+      little or no help, in determining context.
+      &lt;/p&gt;
+      &lt;p&gt;
+      What is happening with Marpa is that
+      the &lt;tt&gt;alternative()&lt;/tt&gt; method is, by accepting
+      and rejecting tokens, guiding the lexer to the right choice.
+    &lt;/p&gt;
+    &lt;p&gt;
+      This means that Marpa knows whether a minus sign can be
+      a unary or binary operator.
+      (Because of Perl's grammar, it can be one or the other,
+      but never both in the same position.)
+      This is the Ruby Slippers in action --
+      a very simple solution to what for
+      and PPI is a very complicated problem.
+    &lt;/p&gt;
     &lt;h3&gt;Finding the targets&lt;/h3&gt;
     &lt;p&gt;
       Once the parse is complete, it remains to find
       and print the &quot;targets&quot; found
       by the search.
-      In a previous post,
-      I showed how, for error reporting, to find the last symbol found,
-      given a symbol name.
-      That routine needs to be modified to allow repeated searches.
-      The code is in the gist,
-      and was explained in the previous post,
-      so I won't repeat here.
+      In
+      &lt;a href=&quot;http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/error.html&quot;&gt;
+      a previous post&lt;/a&gt;,
+      I showed how, 
+      given a symbol name,
+      to find the last occurence of the symbol in a Marpa parse.
+      That routine needed to be modified to allow repeated searches,
+      but change was straightforward.
+      The code is in the
+      &lt;a href=&quot;https://gist.github.com/4057239&quot;&gt;
+      gist&lt;/a&gt;,
+      and the ideas behind it were explained
+      in
+      &lt;a href=&quot;http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/error.html&quot;&gt;
+      the previous post&lt;/a&gt;,
+      so I won't repeat them here.
     &lt;/p&gt;
     &lt;h3&gt;Pattern searching and incremental development&lt;/h3&gt;
     &lt;p&gt;
@@ -388,13 +379,14 @@ TOKEN: while ( pos $string &amp;lt; $length ) {
     &lt;/p&gt;
     &lt;h3&gt;Code and comments&lt;/h3&gt;
     &lt;p&gt;The example in this post is available as
-      a giithub gist.
+    &lt;a href=&quot;https://gist.github.com/4057239&quot;&gt;
+      a Github gist&lt;/a&gt;.
       It was run with Marpa::R2 2.024000,
       as of this writing the latest full release,
       and tested with the displays from the
       &lt;a href=&quot;http://perldoc.perl.org/perlop.html&quot;&gt;perlop man page&lt;/a&gt;.
-    &lt;/p&gt;&lt;p&gt;
-    &lt;/p&gt;&lt;p&gt;
+    &lt;/p&gt;
+    &lt;p&gt;
       Comments can be sent to the Marpa Google Group:
       &lt;code&gt;marpa-parser@googlegroups.com&lt;/code&gt;
     &lt;/p&gt;</description>

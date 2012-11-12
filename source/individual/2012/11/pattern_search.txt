@@ -227,65 +227,6 @@ my @lexer_table = (
       strings and/or comments can be useful.
       We will assume that is the case here.
     </p>
-    <p>
-      As an example,
-      a real problem here is minus signs,
-      which can negate a number,
-      be a subtraction operation,
-      or be part of a decrement operation (postfix or prefix).
-      Some of this issue is dealt with by the lexer.
-      The order of lexer table puts two-character operators,
-      like decrement,
-      ("<tt>--</tt>")
-      before one-character operators,
-      such as negation
-      ("<tt>-</tt>").
-    </p><p>In this lexer, an initial minus sign is never part of a number.
-      A number constant is always positive, though it may have
-      a unary negation operator in front of it.
-      PPI sometimes includes initial minus signs in numeric
-      constants. Unfortunately, lacking the Ruby Slippers,
-      it will do this in cases where the minus
-      sign is actually a binary operator.
-    </p>
-    <p>
-      The
-      <tt>FIND_ALTERNATIVE</tt>
-      loop is short,
-      but worth a careful look.
-      It tries every lexeme, in lexer table order.
-      If the
-      <tt>alternative()</tt>
-      method
-      returns a Perl
-      <tt>undef</tt>,
-      it means the token was "rejected".
-      This means the parser was not expecting it.
-    </p>
-    <p>
-      This means that Marpa knows whether a minus sign can be
-      a unary or binary operator.
-      (Because of Perl's grammar, it can be one or the other,
-      but never both in the same position.)
-      This is the Ruby Slippers in action --
-      a very simple solution to what for
-      <tt>perly.y</tt>
-      and PPI is a very complicated problem.
-    </p>
-    <p>
-      Once the right token has been determined, the
-      <tt>alternative()</tt>
-      method is called again to
-      ready in an
-      <tt>any_token</tt>.
-      (Marpa allows ambiguous lexing --
-      the same character can be read as two different
-      tokens.)
-      If the entire lexer table is tried, and no acceptable
-      lexeme is found,
-      a single character is read as an
-      <tt>any_token</tt>.
-    </p>
     <blockquote>
       <pre>
 <tt>
@@ -326,18 +267,68 @@ TOKEN: while ( pos $string &lt; $length ) {
       parsing theorist, Jay Earley.)
     </p>
     <h3>How to parse without really trying</h3>
+    <p>
+    At this point, I would draw your attention to the code
+    that deals with special cases for the minus sign.
+    Specifically, to the fact that there isn't any.
+    The more familiar you are with PPI and/or
+      <tt>perly.y</tt>,
+      the more remarkable this will be seem.
+      </p>
+      <p>
+      To take one example, PPI correctly realizes that the minus
+      sign in
+      "<tt>1+2-3</tt>" is a binary operator.
+      However PPI fails on "<tt>(1+2)-3</tt>" --
+      it thinks the minus sign is part of the number "-3".
+      Why don't the authors of PPI just look at <tt>perly.y</tt>
+      and <tt>toke.c</tt> and copy the logic there?
+      A glance at those will give you the answer to that question.
+      </p>
+      <p>The problem is that you cannot tell whether a minus sign is a unary
+      operator or a binary operator,
+      without context.
+      And the parse engines for PPI and for perl itself,
+      while quite different in many respects,
+      share a property common to traditional parsers --
+      they offer the lexer, respectively,
+      little or no help, in determining context.
+      </p>
+      <p>
+      What is happening with Marpa is that
+      the <tt>alternative()</tt> method is, by accepting
+      and rejecting tokens, guiding the lexer to the right choice.
+    </p>
+    <p>
+      This means that Marpa knows whether a minus sign can be
+      a unary or binary operator.
+      (Because of Perl's grammar, it can be one or the other,
+      but never both in the same position.)
+      This is the Ruby Slippers in action --
+      a very simple solution to what for
+      and PPI is a very complicated problem.
+    </p>
     <h3>Finding the targets</h3>
     <p>
       Once the parse is complete, it remains to find
       and print the "targets" found
       by the search.
-      In a previous post,
-      I showed how, for error reporting, to find the last symbol found,
-      given a symbol name.
-      That routine needs to be modified to allow repeated searches.
-      The code is in the gist,
-      and was explained in the previous post,
-      so I won't repeat here.
+      In
+      <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/error.html">
+      a previous post</a>,
+      I showed how, 
+      given a symbol name,
+      to find the last occurence of the symbol in a Marpa parse.
+      That routine needed to be modified to allow repeated searches,
+      but change was straightforward.
+      The code is in the
+      <a href="https://gist.github.com/4057239">
+      gist</a>,
+      and the ideas behind it were explained
+      in
+      <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/error.html">
+      the previous post</a>,
+      so I won't repeat them here.
     </p>
     <h3>Pattern searching and incremental development</h3>
     <p>
@@ -375,13 +366,14 @@ TOKEN: while ( pos $string &lt; $length ) {
     </p>
     <h3>Code and comments</h3>
     <p>The example in this post is available as
-      a giithub gist.
+    <a href="https://gist.github.com/4057239">
+      a Github gist</a>.
       It was run with Marpa::R2 2.024000,
       as of this writing the latest full release,
       and tested with the displays from the
       <a href="http://perldoc.perl.org/perlop.html">perlop man page</a>.
-    </p><p>
-    </p><p>
+    </p>
+    <p>
       Comments can be sent to the Marpa Google Group:
       <code>marpa-parser@googlegroups.com</code>
     </p>
