@@ -208,7 +208,7 @@ my @lexer_table = (
       advance what it is looking for.
       The code that follows uses another method.
       Instead of determining in advance what tokens to read,
-      it simply feeds its candidate tokens to the parser.
+      it simply feeds tokens to the parser.
     &lt;/p&gt;
     &lt;p&gt;
       Token rejection is a &quot;soft&quot; error -- it costs
@@ -345,7 +345,7 @@ TOKEN: while ( pos $string &amp;lt; $length ) {
       a previous post&lt;/a&gt;,
       I showed how, 
       given a symbol name,
-      to find the last occurence of the symbol in a Marpa parse.
+      to find the last occurrence of the symbol in a Marpa parse.
       That routine needed to be modified to allow repeated searches,
       but the change was straightforward.
       The code is in the
