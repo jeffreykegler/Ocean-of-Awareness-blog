@@ -17,14 +17,12 @@
       &lt;!--
       marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
       --&gt;
-      We use regular expression engines for pattern searching these days.
-      But what if what you are searching for is not a regular expression?
+      We use regular expressions for pattern searching these days.
+      But what if your search target is not a regular expression?
       In this post I will show how to use Marpa to search text files for
       arbitrary context-free expressions.
     &lt;/p&gt;
     &lt;p&gt;
-      I will use arithmetic expressions as
-      the example of a search target.
       This tutorial builds on earlier tutorials.
       It is possible to simply dive into it,
       but it may be easier
@@ -35,6 +33,8 @@
     &lt;/p&gt;
     &lt;h3&gt;The grammar&lt;/h3&gt;
     &lt;p&gt;
+      I will use arithmetic expressions as
+      the example of a search target.
       Even the arithmetic subset of Perl expressions is quite complex,
       but in this case we can get the job done
       with eight lines of grammar and a lexer driven
@@ -227,7 +227,7 @@ my @lexer_table = (
       When a token is accepted,
       the main loop can safely assume that it is on the right track.
       Marpa is 100% accurate about
-      what tokens can and cannot result in a successful parse.
+      which tokens can and cannot result in a successful parse.
     &lt;/p&gt;
     &lt;h3&gt;The main loop&lt;/h3&gt;
     &lt;p&gt;

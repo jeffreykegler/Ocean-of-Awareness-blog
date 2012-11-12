@@ -4,14 +4,12 @@ A Marpa tutorial: pattern searches
       <!--
       marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
       -->
-      We use regular expression engines for pattern searching these days.
-      But what if what you are searching for is not a regular expression?
+      We use regular expressions for pattern searching these days.
+      But what if your search target is not a regular expression?
       In this post I will show how to use Marpa to search text files for
       arbitrary context-free expressions.
     </p>
     <p>
-      I will use arithmetic expressions as
-      the example of a search target.
       This tutorial builds on earlier tutorials.
       It is possible to simply dive into it,
       but it may be easier
@@ -22,6 +20,8 @@ A Marpa tutorial: pattern searches
     </p>
     <h3>The grammar</h3>
     <p>
+      I will use arithmetic expressions as
+      the example of a search target.
       Even the arithmetic subset of Perl expressions is quite complex,
       but in this case we can get the job done
       with eight lines of grammar and a lexer driven
@@ -214,7 +214,7 @@ my @lexer_table = (
       When a token is accepted,
       the main loop can safely assume that it is on the right track.
       Marpa is 100% accurate about
-      what tokens can and cannot result in a successful parse.
+      which tokens can and cannot result in a successful parse.
     </p>
     <h3>The main loop</h3>
     <p>
@@ -267,7 +267,7 @@ TOKEN: while ( pos $string &lt; $length ) {
     </p>
     <h3>How to parse without really trying</h3>
     <p>
-    At this point, I would draw your attention to the code
+    At this point, I want to draw the reader's attention to the code
     that deals with special cases for the minus sign.
     Specifically, to the fact that there is no such code.
     The more familiar you are with PPI and/or
