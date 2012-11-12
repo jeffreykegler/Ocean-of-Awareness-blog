@@ -43,31 +43,30 @@
       <!--
       marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
       -->
-      In usual practice these days, we use regular expression engines for pattern searching.
-      This standard practice works very beautifully --
-      if the target pattern is a regular expression.
+      These days we use regular expression engines for pattern searching.
+      And this works beautifully --
+      as long as the target pattern is a regular expression.
     </p>
     <p>
-      But if what you were searching for was not a regular expression?
-      Sometimes you could approximate with an over-liberal regular expression,
-      and sort out the false positives by other means.
-      Other times you were simply out of luck.
+      But if what you are searching for is not a regular expression?
+      You could approximate with an over-liberal regular expression,
+      and sort out any false positives by other means.
+      Or you could be out of luck.
     </p>
     <p>
       In this post I will show how to use Marpa to search text files for
       arbitrary context-free expressions.
-      The search target that
-      I will use in this example,
-      is one that is clearly beyond a regular
-      expression search: arithmetic expressions.
+      As a search target,
+      The example I will use will be arithmetic expressions.
     </p>
     <p>
       This tutorial builds on earlier tutorials.
-      It is be possible to simply dive into it,
-      following up on unfamiliar aspects
-      in the Marpa documentation,
+      It is possible to simply dive into it,
       but it may be easier
-      to start with those earlier posts.
+      to start with earlier posts
+<a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/error.html">here</a>
+and
+<a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/dsl.html">here</a>.
     </p>
     <h3>The grammar</h3>
     <p>
@@ -91,7 +90,8 @@ expression ::=
     </pre>
     </blockquote>
     <p>
-      This grammar uses Marpa::R2's BNF interface, which is documented here.
+      This grammar uses <a href="https://metacpan.org/module/Marpa::R2::BNF">
+      Marpa::R2's BNF interface</a>.
       It takes considerable advantage of the fact that we are not
       <b>parsing</b>
       these expressions, but
@@ -118,39 +118,35 @@ expression ::=
       symbol (unimaginatively named "<tt>start</tt>")
       and two rules that
       allow the target to have a
-      <tt>prefix</tt>,
-      and use Marpa's ability to do ambiguous parsing.
+      <tt>prefix</tt>.
     </p>
 <h3>Ambiguous parsing</h3>
-<p>This method will make simple use of three advanced techniques.
-Ambiguous parsing is the first of them.
-Some use of ambiguous parsing is not unfamiliar even in
-standard parsing.
-For example, the C grammar contains a small ambiguity,
-</p>
-<p>
-At any where this example has found a target,
-it will have, in effect, at least two parses going.
-One parse, which is always going,
-      extends the prefix.
-      The prefix will never end, because
+<p>To do an anchorless pattern search,
+this example will make use of Marpa'a facility with
+ambiguous parsing.
+This grammar always has at least one parse going,
+representing the prefix of zero or more target that it
+will find in the future.
+The prefix will never end, because
       any token (literally
       <tt>any_token</tt>)
       extends it.
 </p>
 <p>
-In addition, we may be recognizing a
+If we are recognizing a
       <tt>target</tt>,
-      we will have its parses going.
-I say "parses" because the target can be ambiguous,
-although in this case it is not.
+      we will have one or more other parses going.
+I say "one or more" because using this method a target can be ambiguous.
+In this specific example, the target is not ambiguous,
+so at most two parses will be active:
+one for the prefix and another for the target.
     </p>
     <p>
 Ambiguous parsing has a serious potential downside --
       it is not necessarily efficient.
       But Marpa can parse many types of ambiguous grammar in linear time and,
-      as long as the target is unambiguous,
-      this kind of "prefix and pattern" grammar will be one of them.
+      grammars in this
+      this class of "prefix and unambiguous pattern" are one of them.
 Keeping the prefix going requires a tiny constant overhead per token.
     </p>
     <h3>The lexer table</h3>
@@ -179,10 +175,11 @@ my @lexer_table = (
 </pre>
     </blockquote>
     <p>
-      Order is significant here -- in particular
-      two-character operators are checked for first,
-      so that a prefix
-      <tt>--</tt>
+      Order is significant here.
+      In particular
+      two-character operators are checked for first.
+      This guarantees that
+      two consecutive minus signs
       will be seen as an
       increment operator, and not as a double negation.
     </p>
