@@ -237,33 +237,26 @@ my @lexer_table = (
       advance what it is looking for.
       The code that follows uses another method.
       Instead of determining in advance what tokens to read,
-      it simply feeds them to the parser.
-      If the token is rejected, then it tries another one.
-      Marpa is 100% accurate about
-      what tokens can and cannot result in a successful parse.
-      And token rejection is a "soft" error -- it costs
-      little to try, and little to retry.
+      it simply feeds its candidate tokens to the parser.
     </p>
     <p>
-      In short, in the following code, the way the script can
-      determine if an entry in the lexing table is appropriate,
-      simply by trying it.
+      Token rejection is a "soft" error -- it costs
+      little to try, and little to retry.
+      The following code can
+      efficiently determine which entry in the lexing table is appropriate,
+      simply by trying each of them in order.
       If the
       <tt>alternative()</tt>
       method returns a Perl
-      <tt>undef</tt>
-      indicating rejection, then the main loop will try later entries
-      in the lexing table.
-      If the token is accepted,
-      the main loop can safely assume that it is on the right track.
+      <tt>undef</tt>,
+      indicating that a token was rejected,
+      then the main loop will try later entries in the lexing table.
     </p>
     <p>
-      When I developed the Ruby Slippers technique,
-      my most serious problem 
-      was believing that something
-      so simple could work.
-      If the reader is having the same issue,
-      I understand.
+      When a token is accepted,
+      the main loop can safely assume that it is on the right track.
+      Marpa is 100% accurate about
+      what tokens can and cannot result in a successful parse.
     </p>
     <h3>The main loop</h3>
     <p>
@@ -340,7 +333,7 @@ TOKEN: while ( pos $string &lt; $length ) {
       without knowing where you are in the expression,
       you cannot tell whether a minus sign is a unary
       operator or a binary operator.
-      And the parse engines for PPI and for perl itself,
+      And the parse engines for PPI and for Perl itself,
       while quite different in many respects,
       share a property common to traditional parsers --
       in determining context
@@ -360,10 +353,18 @@ TOKEN: while ( pos $string &lt; $length ) {
       always knows whether a minus sign can be
       a unary or binary operator and accepts
       or rejects the token accordingly.
+    </p>
+    <p>
       This is the Ruby Slippers in action --
       a very simple solution to what for the Perl
       interpreter and PPI
       is a very complicated problem.
+      When I developed the Ruby Slippers technique,
+      my most serious problem 
+      was believing that something
+      so simple could really work.
+      If the reader is having the same issue,
+      I understand.
     </p>
     <h3>Finding the targets</h3>
     <p>
