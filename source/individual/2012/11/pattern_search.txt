@@ -149,7 +149,7 @@ my @lexer_table = (
       This guarantees that
       two consecutive minus signs
       will be seen as an
-      increment operator, and not as a double negation.
+      decrement operator, and not as a double negation.
     </p>
     <h3>Ambiguous lexing</h3>
     <p>The very careful reader may have noticed that

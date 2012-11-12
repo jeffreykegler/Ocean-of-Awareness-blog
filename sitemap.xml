@@ -257,7 +257,7 @@
   </url>
   <url>
     <loc>http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/self_parse.html</loc>
-    <lastmod>2012-11-04T16:01:44-08:00</lastmod>
+    <lastmod>2012-11-04T16:08:35-08:00</lastmod>
   </url>
   <url>
     <loc>http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/01/developing-parsers-incrementally-with-marpa.html</loc>
@@ -338,5 +338,9 @@
   <url>
     <loc>http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/08/the-solved-problem-that-isnt-is.html</loc>
     <lastmod>2012-11-04T01:27:24-08:00</lastmod>
+  </url>
+  <url>
+    <loc>http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/11/pattern_search.html</loc>
+    <lastmod>2012-11-11T20:38:24-08:00</lastmod>
   </url>
 </urlset>

@@ -162,7 +162,7 @@ my @lexer_table = (
       This guarantees that
       two consecutive minus signs
       will be seen as an
-      increment operator, and not as a double negation.
+      decrement operator, and not as a double negation.
     &lt;/p&gt;
     &lt;h3&gt;Ambiguous lexing&lt;/h3&gt;
     &lt;p&gt;The very careful reader may have noticed that
@@ -280,7 +280,7 @@ TOKEN: while ( pos $string &amp;lt; $length ) {
     &lt;/p&gt;
     &lt;h3&gt;How to parse without really trying&lt;/h3&gt;
     &lt;p&gt;
-    At this point, I would draw your attention to the code
+    At this point, I want to draw the reader's attention to the code
     that deals with special cases for the minus sign.
     Specifically, to the fact that there is no such code.
     The more familiar you are with PPI and/or
