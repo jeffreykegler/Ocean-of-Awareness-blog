@@ -18,19 +18,15 @@
       marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
       --&gt;
       We use regular expression engines for pattern searching these days.
-      And this works beautifully --
-      as long as the target pattern is a regular expression.
       But what if what you are searching for is not a regular expression?
-    &lt;/p&gt;
-    &lt;p&gt;
       In this post I will show how to use Marpa to search text files for
       arbitrary context-free expressions.
-      I will use arithmetic expressions as
-      the example of a search target.
     &lt;/p&gt;
     &lt;p&gt;
+      I will use arithmetic expressions as
+      the example of a search target.
       This tutorial builds on earlier tutorials.
-      It may be possible to simply dive into it,
+      It is possible to simply dive into it,
       but it may be easier
       to start with two of my earlier posts,
       &lt;a href=&quot;http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/dsl.html&quot;&gt;here&lt;/a&gt;
@@ -100,7 +96,8 @@ expression ::=
     &lt;p&gt;To do an anchorless pattern search,
       this example will use ambiguous parsing.
       This grammar always has at least one parse going,
-      representing the prefix for zero or more targets
+      representing the prefix for
+      the zero or more targets
       that our parser
       expects to find in the future.
       The prefix will never end, because
@@ -285,10 +282,10 @@ TOKEN: while ( pos $string &amp;lt; $length ) {
     &lt;p&gt;
     At this point, I would draw your attention to the code
     that deals with special cases for the minus sign.
-    Specifically, to the fact that there isn't any.
+    Specifically, to the fact that there is no such code.
     The more familiar you are with PPI and/or
       &lt;tt&gt;perly.y&lt;/tt&gt;,
-      the more remarkable this will be seem.
+      the more remarkable this will seem.
       &lt;/p&gt;
       &lt;p&gt;
       To take one example, PPI correctly realizes that the minus
@@ -335,7 +332,7 @@ TOKEN: while ( pos $string &amp;lt; $length ) {
       is a very complicated problem.
       When I developed the Ruby Slippers technique,
       my most serious problem 
-      was believing that something
+      was convincing myself that something
       so simple could really work.
     &lt;/p&gt;
     &lt;h3&gt;Finding the targets&lt;/h3&gt;
