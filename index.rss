@@ -20,7 +20,7 @@
       We use regular expression engines for pattern searching these days.
       And this works beautifully --
       as long as the target pattern is a regular expression.
-      But if what you are searching for is not a regular expression?
+      But what if what you are searching for is not a regular expression?
     &lt;/p&gt;
     &lt;p&gt;
       In this post I will show how to use Marpa to search text files for
@@ -33,15 +33,16 @@
       It may be possible to simply dive into it,
       but it may be easier
       to start with two of my earlier posts,
-      &lt;a href=&quot;http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/error.html&quot;&gt;here&lt;/a&gt;
+      &lt;a href=&quot;http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/dsl.html&quot;&gt;here&lt;/a&gt;
       and
-      &lt;a href=&quot;http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/dsl.html&quot;&gt;here&lt;/a&gt;.
+      &lt;a href=&quot;http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/error.html&quot;&gt;here&lt;/a&gt;.
     &lt;/p&gt;
     &lt;h3&gt;The grammar&lt;/h3&gt;
     &lt;p&gt;
       Even the arithmetic subset of Perl expressions is quite complex,
       but in this case we can get the job done
-      with a dozen or so lines of grammar and a table-driven lexer.
+      with eight lines of grammar and a lexer driven
+      by a table of just over a dozen lines.
       Here is the grammar:
     &lt;/p&gt;
     &lt;blockquote&gt;
@@ -99,10 +100,12 @@ expression ::=
     &lt;p&gt;To do an anchorless pattern search,
       this example will use ambiguous parsing.
       This grammar always has at least one parse going,
-      representing the prefix of zero or more target that it
-      will find in the future.
+      representing the prefix for zero or more targets
+      that our parser
+      expects to find in the future.
       The prefix will never end, because
-      any token (literally
+      any token (as indicated by a token
+      named, literally,
       &lt;tt&gt;any_token&lt;/tt&gt;)
       extends it.
     &lt;/p&gt;
@@ -110,11 +113,14 @@ expression ::=
       If we are in the process of recognizing a
       &lt;tt&gt;target&lt;/tt&gt;,
       we will have one or more other parses going.
-      I say &quot;one or more&quot; because using this method a target is
-      allowed to be ambiguous.
-      In the example in this post,
-      the target is not ambiguous,
-      so at the most two parses will be active at any point:
+      I say &quot;one or more&quot; because the search method
+      described in this post
+      allows &lt;tt&gt;target&lt;/tt&gt; to be ambiguous.
+      But arithmetic expressions,
+      the target pattern used in this example,
+      are not ambiguous.
+      So our example will have
+      at most two parses active at any point:
       one for the prefix and another for the target.
     &lt;/p&gt;
     &lt;p&gt;

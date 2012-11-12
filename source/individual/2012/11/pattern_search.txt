@@ -7,7 +7,7 @@ A Marpa tutorial: pattern searches
       We use regular expression engines for pattern searching these days.
       And this works beautifully --
       as long as the target pattern is a regular expression.
-      But if what you are searching for is not a regular expression?
+      But what if what you are searching for is not a regular expression?
     </p>
     <p>
       In this post I will show how to use Marpa to search text files for
@@ -20,15 +20,16 @@ A Marpa tutorial: pattern searches
       It may be possible to simply dive into it,
       but it may be easier
       to start with two of my earlier posts,
-      <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/error.html">here</a>
+      <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/dsl.html">here</a>
       and
-      <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/dsl.html">here</a>.
+      <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/error.html">here</a>.
     </p>
     <h3>The grammar</h3>
     <p>
       Even the arithmetic subset of Perl expressions is quite complex,
       but in this case we can get the job done
-      with a dozen or so lines of grammar and a table-driven lexer.
+      with eight lines of grammar and a lexer driven
+      by a table of just over a dozen lines.
       Here is the grammar:
     </p>
     <blockquote>
@@ -86,10 +87,12 @@ expression ::=
     <p>To do an anchorless pattern search,
       this example will use ambiguous parsing.
       This grammar always has at least one parse going,
-      representing the prefix of zero or more target that it
-      will find in the future.
+      representing the prefix for zero or more targets
+      that our parser
+      expects to find in the future.
       The prefix will never end, because
-      any token (literally
+      any token (as indicated by a token
+      named, literally,
       <tt>any_token</tt>)
       extends it.
     </p>
@@ -97,11 +100,14 @@ expression ::=
       If we are in the process of recognizing a
       <tt>target</tt>,
       we will have one or more other parses going.
-      I say "one or more" because using this method a target is
-      allowed to be ambiguous.
-      In the example in this post,
-      the target is not ambiguous,
-      so at the most two parses will be active at any point:
+      I say "one or more" because the search method
+      described in this post
+      allows <tt>target</tt> to be ambiguous.
+      But arithmetic expressions,
+      the target pattern used in this example,
+      are not ambiguous.
+      So our example will have
+      at most two parses active at any point:
       one for the prefix and another for the target.
     </p>
     <p>
