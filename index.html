@@ -183,27 +183,77 @@ my @lexer_table = (
       will be seen as an
       increment operator, and not as a double negation.
     </p>
+    <h3>Ambiguous lexing</h3>
+    <p>The very careful reader may have noticed that <tt>any_token</tt>
+    is not in the lexing table.
+    The main loop is written so that every token is read as an
+    <tt>any_token</tt>.
+    If no token from the lexing table is accepted,
+    the next character in the input stream
+    is read as an <tt>any_token</tt>.
+    If a token from the lexing table <b>is</b> accepted,
+    then it gets read twice,
+    once as an <tt>any_token</tt>,
+    and once as the token type taken from the lexing table
+    entry.
+    </p>
+    <p>Ambiguous lexing is a familiar technique to
+    the Natural Language Processing community.
+    Engish, in particular, is a language that abounds
+    in lexemes that can play multiple roles.
+    The word "sort", for example, can easily be
+    an noun, a verb or an adjective.
+    </p>
+    <h3>The Ruby Slippers</h3>
+    <p>The main loop will also be a simple case of the use
+    of the Ruby Slippers.
+    For those unfamiliar,
+      the "Ruby Slippers" parsing technique handles difficult lexing
+      and parsing problems by asking the parser, at the problem point,
+      what it is looking for,
+      and providing it.
+      This seems a fairly obvious approach,
+      but the Ruby Slippers are new with Marpa --
+      traditional parsers could not easily
+      determine where they were in a parse.
+    </p>
+    <p>
+    One way to use the Ruby Slippers is to ask the parser in
+    advance what it is looking for.
+    The code that follows uses another method.
+    Instead of determining in advance what tokens to read,
+    it simply feeds them to the parser.
+    If the token is rejected, then it tries another one.
+    Marpa is 100% accurate about
+      what tokens can and cannot result in a successful parse.
+      And tokens rejection is a very "soft" error -- it costs
+      little to try, and little to retry.
+    </p>
+    <p>
+    In short, in the following code, the way that Marpa
+    determine if any entry in the lexing table is appropriate
+    is by trying it.
+    If the <tt>alternative()</tt> method returns a Perl <tt>undef</tt>
+    indicating rejection, then the main loop will try later entries
+    in the lexing table.
+    If the token is accepted,
+    the main loop can assume it is on the right track.
+    </p>
+    <p>
+    My most serious problem in
+    developing this technique was convincing myself that
+    things could really be this simple.
+    So if you are having the same problem,
+    I understand.
+    </p>
     <h3>The main loop</h3>
     <p>
       The main loop iterates through input looking for tokens.
       Whitespace is skipped.
-      Note that comments are not skipped.
+      Comments are not skipped.
       Finding arithmetic expressions in
-      strings and/or comments can be highly useful,
-      and we will assume that in this case that it is.
-    </p>
-    <p>
-      The most interesting action is inside the
-      <tt>FIND_ALTERNATIVE</tt>
-      block, where the order of the lexing table is combined with
-      "Ruby Slippers" parsing.
-      The "Ruby Slippers" parsing technique solves difficult lexing
-      and parsing problems by asking the parser, at the problem point,
-      what it is looking for.
-      This seems a fairly obvious approach,
-      but the Ruby Slippers is new with Marpa --
-      previous parsers could not provide this information conveniently
-      or efficiently.
+      strings and/or comments can be useful.
+      We will assume that is the case here.
     </p>
     <p>
       As an example,
@@ -239,8 +289,6 @@ my @lexer_table = (
       <tt>undef</tt>,
       it means the token was "rejected".
       This means the parser was not expecting it.
-      Unlike most parsers in use today, Marpa is 100% accurate about
-      what tokens can and cannot result in a successful parse.
     </p>
     <p>
       This means that Marpa knows whether a minus sign can be
@@ -305,6 +353,7 @@ TOKEN: while ( pos $string &lt; $length ) {
       (Marpa's idea of location is called an "earleme", in honor of the great
       parsing theorist, Jay Earley.)
     </p>
+    <h3>How to parse without really trying</h3>
     <h3>Finding the targets</h3>
     <p>
       Once the parse is complete, it remains to find
@@ -322,11 +371,16 @@ TOKEN: while ( pos $string &lt; $length ) {
     <p>
     You may notice that this pattern searcher is also
     a start on a Perl parser.
-    The first priority would have to be restoring proper associativity
+    A first priority would have to be restoring proper associativity
     and precedence to the expressions.
     This can be done by copying the
     table at the beginning of the perlop man page
     into the precedence statement in the grammar.
+    My first draft of this post broke the operators out
+    by precedence
+    and gave them the correct associativity,
+    but they are unnecessary for pattern recognition,
+    and were discarded to keep things simple.
     </p>
     <p>
     From this start, you would adding more and more syntax to the grammar,
@@ -345,9 +399,15 @@ TOKEN: while ( pos $string &lt; $length ) {
     if you can build them incrementally,
     taking advantage of the kind of feedback that Marpa allows.
     </p>
-    <h3>Comments</h3>
-    <p>The example in this post was run with Marpa::R2 2.024000,
-      as of this writing the latest full release.
+    <h3>Code and comments</h3>
+    <p>The example in this post is available as
+    a giithub gist.
+    It was run with Marpa::R2 2.024000,
+      as of this writing the latest full release,
+      and tested with the displays from the
+      <a href="http://perldoc.perl.org/perlop.html">perlop man page</a>.
+      <p>
+      </p>
       Comments can be sent to the Marpa Google Group:
       <code>marpa-parser@googlegroups.com</code>
     </p>
