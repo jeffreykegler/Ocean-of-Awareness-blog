@@ -10,34 +10,29 @@
     <language>en</language>
 
   <item>
-    <title>A Marpa tutorial: Pattern searches</title>
+    <title>A Marpa tutorial: pattern searches</title>
     <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/11/pattern_search.html</link>
     <description>  &lt;h3&gt;Pattern searches&lt;/h3&gt;
     &lt;p&gt;
       &lt;!--
       marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
       --&gt;
-      These days we use regular expression engines for pattern searching.
+      We use regular expression engines for pattern searching these days.
       And this works beautifully --
       as long as the target pattern is a regular expression.
-    &lt;/p&gt;
-    &lt;p&gt;
       But if what you are searching for is not a regular expression?
-      You could approximate with an over-liberal regular expression,
-      and sort out any false positives by other means.
-      Or you could be out of luck.
     &lt;/p&gt;
     &lt;p&gt;
       In this post I will show how to use Marpa to search text files for
       arbitrary context-free expressions.
-      As a search target,
-      The example I will use will be arithmetic expressions.
+      I will use arithmetic expressions as
+      the example of a search target.
     &lt;/p&gt;
     &lt;p&gt;
       This tutorial builds on earlier tutorials.
-      It is possible to simply dive into it,
+      It may be possible to simply dive into it,
       but it may be easier
-      to start with earlier posts
+      to start with two of my earlier posts,
       &lt;a href=&quot;http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/error.html&quot;&gt;here&lt;/a&gt;
       and
       &lt;a href=&quot;http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/dsl.html&quot;&gt;here&lt;/a&gt;.
@@ -77,9 +72,10 @@ expression ::=
       -- binary, prefix unary and postfix unary.
       Similarly, we can ignore the precedence within these large groups.
       This leaves us with numbers, scalars,
-      binary, prefix unary and postfix unary operators
-      and parentheses.
-      (To keep this example simple, this code only deals with Perl scalars.)
+      parentheses,
+      and binary, prefix unary and postfix unary operators.
+      (To keep this example simple, we restrict the primaries
+      to numeric constants and Perl scalars.)
     &lt;/p&gt;
     &lt;p&gt;
       What we are searching for is defined by the
@@ -87,8 +83,10 @@ expression ::=
       symbol.
       For
       &lt;tt&gt;target&lt;/tt&gt;
-      you could substitute any context-free grammar,
-      and the technique of this example would still work.
+      you could substitute
+      the start symbol of
+      any context-free grammar,
+      and the structure of this example will still work.
       To turn a parser for
       &lt;tt&gt;target&lt;/tt&gt;
       into a pattern searcher, we add a new start
@@ -99,8 +97,7 @@ expression ::=
     &lt;/p&gt;
     &lt;h3&gt;Ambiguous parsing&lt;/h3&gt;
     &lt;p&gt;To do an anchorless pattern search,
-      this example will make use of Marpa'a facility with
-      ambiguous parsing.
+      this example will use ambiguous parsing.
       This grammar always has at least one parse going,
       representing the prefix of zero or more target that it
       will find in the future.
@@ -110,20 +107,24 @@ expression ::=
       extends it.
     &lt;/p&gt;
     &lt;p&gt;
-      If we are recognizing a
+      If we are in the process of recognizing a
       &lt;tt&gt;target&lt;/tt&gt;,
       we will have one or more other parses going.
-      I say &quot;one or more&quot; because using this method a target can be ambiguous.
-      In this specific example, the target is not ambiguous,
-      so at most two parses will be active:
+      I say &quot;one or more&quot; because using this method a target is
+      allowed to be ambiguous.
+      In the example in this post,
+      the target is not ambiguous,
+      so at the most two parses will be active at any point:
       one for the prefix and another for the target.
     &lt;/p&gt;
     &lt;p&gt;
       Ambiguous parsing has a serious potential downside --
-      it is not necessarily efficient.
-      But Marpa can parse many types of ambiguous grammar in linear time and,
-      grammars in this
-      this class of &quot;prefix and unambiguous pattern&quot; are one of them.
+      it is not necessarily linear
+      and therefore not necessarily efficient.
+      But Marpa can parse many classes of ambiguous grammar in linear time.
+      Grammars like the one in this post --
+      a prefix and an unambiguous search target --
+      fall into one of the linearly parseable classes.
       Keeping the prefix going requires a tiny constant overhead per token.
     &lt;/p&gt;
     &lt;h3&gt;The lexer table&lt;/h3&gt;
@@ -208,13 +209,13 @@ my @lexer_table = (
       If the token is rejected, then it tries another one.
       Marpa is 100% accurate about
       what tokens can and cannot result in a successful parse.
-      And tokens rejection is a very &quot;soft&quot; error -- it costs
+      And token rejection is a &quot;soft&quot; error -- it costs
       little to try, and little to retry.
     &lt;/p&gt;
     &lt;p&gt;
-      In short, in the following code, the way that Marpa
-      determine if any entry in the lexing table is appropriate
-      is by trying it.
+      In short, in the following code, the way the script can
+      determine if an entry in the lexing table is appropriate,
+      simply by trying it.
       If the
       &lt;tt&gt;alternative()&lt;/tt&gt;
       method returns a Perl
@@ -222,13 +223,14 @@ my @lexer_table = (
       indicating rejection, then the main loop will try later entries
       in the lexing table.
       If the token is accepted,
-      the main loop can assume it is on the right track.
+      the main loop can safely assume that it is on the right track.
     &lt;/p&gt;
     &lt;p&gt;
-      My most serious problem in
-      developing this technique was convincing myself that
-      things could really be this simple.
-      So if you are having the same problem,
+      When I developed the Ruby Slippers technique,
+      my most serious problem 
+      was believing that something
+      so simple could work.
+      If the reader is having the same issue,
       I understand.
     &lt;/p&gt;
     &lt;h3&gt;The main loop&lt;/h3&gt;
@@ -275,7 +277,8 @@ TOKEN: while ( pos $string &amp;lt; $length ) {
       The
       &lt;tt&gt;earleme_complete()&lt;/tt&gt;
       method tells Marpa that all the alternatives
-      for that location have been entered.
+      at one location have been entered,
+      and that the parse should now move on to the next location.
       (Marpa's idea of location is called an &quot;earleme&quot;, in honor of the great
       parsing theorist, Jay Earley.)
     &lt;/p&gt;
@@ -294,32 +297,41 @@ TOKEN: while ( pos $string &amp;lt; $length ) {
       &quot;&lt;tt&gt;1+2-3&lt;/tt&gt;&quot; is a binary operator.
       However PPI fails on &quot;&lt;tt&gt;(1+2)-3&lt;/tt&gt;&quot; --
       it thinks the minus sign is part of the number &quot;-3&quot;.
-      Why don't the authors of PPI just look at &lt;tt&gt;perly.y&lt;/tt&gt;
-      and &lt;tt&gt;toke.c&lt;/tt&gt; and copy the logic there?
-      A glance at those will give you the answer to that question.
+      Why don't the authors of PPI just look at the Perl
+      interpreter and copy the logic there?
+      Take a glance at &lt;tt&gt;perly.y&lt;/tt&gt;
+      and &lt;tt&gt;toke.c&lt;/tt&gt; 
+      and you will know the answer to that question.
       &lt;/p&gt;
-      &lt;p&gt;The problem is that you cannot tell whether a minus sign is a unary
-      operator or a binary operator,
-      without context.
+      &lt;p&gt;What is PPI's problem here?
+      The problem is that,
+      without knowing where you are in the expression,
+      you cannot tell whether a minus sign is a unary
+      operator or a binary operator.
       And the parse engines for PPI and for perl itself,
       while quite different in many respects,
       share a property common to traditional parsers --
+      in determining context
       they offer the lexer, respectively,
-      little or no help, in determining context.
+      little and no help.
       &lt;/p&gt;
       &lt;p&gt;
-      What is happening with Marpa is that
-      the &lt;tt&gt;alternative()&lt;/tt&gt; method is, by accepting
+      In the code in this example,
+      Marpa's &lt;tt&gt;alternative()&lt;/tt&gt; method is, by accepting
       and rejecting tokens, guiding the lexer to the right choice.
-    &lt;/p&gt;
-    &lt;p&gt;
-      This means that Marpa knows whether a minus sign can be
-      a unary or binary operator.
-      (Because of Perl's grammar, it can be one or the other,
-      but never both in the same position.)
+      Because of Perl's grammar, a minus sign at a given position
+      cannot be both a unary operator and a binary operator.
+      And Marpa is 100% accurate in its knowledge of which
+      tokens are possible.
+      So Marpa's
+      &lt;tt&gt;alternative()&lt;/tt&gt; method
+      always knows whether a minus sign can be
+      a unary or binary operator and accepts
+      or rejects the token accordingly.
       This is the Ruby Slippers in action --
-      a very simple solution to what for
-      and PPI is a very complicated problem.
+      a very simple solution to what for the Perl
+      interpreter and PPI
+      is a very complicated problem.
     &lt;/p&gt;
     &lt;h3&gt;Finding the targets&lt;/h3&gt;
     &lt;p&gt;
@@ -342,40 +354,6 @@ TOKEN: while ( pos $string &amp;lt; $length ) {
       &lt;a href=&quot;http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/error.html&quot;&gt;
       the previous post&lt;/a&gt;,
       so I won't repeat them here.
-    &lt;/p&gt;
-    &lt;h3&gt;Pattern searching and incremental development&lt;/h3&gt;
-    &lt;p&gt;
-      You may notice that this pattern searcher is also
-      a start on a Perl parser.
-      A first priority would have to be restoring proper associativity
-      and precedence to the expressions.
-      This can be done by copying the
-      table at the beginning of the perlop man page
-      into the precedence statement in the grammar.
-      My first draft of this post broke the operators out
-      by precedence
-      and gave them the correct associativity,
-      but they are unnecessary for pattern recognition,
-      and were discarded to keep things simple.
-    &lt;/p&gt;
-    &lt;p&gt;
-      From this start, you would adding more and more syntax to the grammar,
-      and more and more recognition to the lexer.
-      As you expanded the pattern searcher, the target would gradually become
-      closer and closer to the entire language.
-    &lt;/p&gt;
-    &lt;p&gt;
-      When, for all valid input files, your pattern searcher always finds
-      a single match that spans the input file, you can remove rules which
-      parse the prefix, and make
-      &lt;tt&gt;target&lt;/tt&gt;
-      the new start symbol.
-      Or you may wish to keep them, as an aid to error reporting.
-      Either way, your parser is finished.
-      My own experience is that parsers are far easier
-      to write
-      if you can build them incrementally,
-      taking advantage of the kind of feedback that Marpa allows.
     &lt;/p&gt;
     &lt;h3&gt;Code and comments&lt;/h3&gt;
     &lt;p&gt;The example in this post is available as
