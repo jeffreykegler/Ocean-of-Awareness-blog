@@ -370,7 +370,8 @@ TOKEN: while ( pos $string &amp;lt; $length ) {
       &lt;a href=&quot;http://perldoc.perl.org/perlop.html&quot;&gt;perlop man page&lt;/a&gt;.
     &lt;/p&gt;
     &lt;p&gt;
-      Comments can be sent to the Marpa Google Group:
+      Comments on this post
+      can be sent to the Marpa Google Group:
       &lt;code&gt;marpa-parser@googlegroups.com&lt;/code&gt;
     &lt;/p&gt;</description>
   </item>
