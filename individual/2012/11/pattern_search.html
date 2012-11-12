@@ -363,8 +363,6 @@ TOKEN: while ( pos $string &lt; $length ) {
       my most serious problem 
       was believing that something
       so simple could really work.
-      If the reader is having the same issue,
-      I understand.
     </p>
     <h3>Finding the targets</h3>
     <p>
@@ -378,7 +376,7 @@ TOKEN: while ( pos $string &lt; $length ) {
       given a symbol name,
       to find the last occurence of the symbol in a Marpa parse.
       That routine needed to be modified to allow repeated searches,
-      but change was straightforward.
+      but the change was straightforward.
       The code is in the
       <a href="https://gist.github.com/4057239">
       gist</a>,
@@ -392,9 +390,12 @@ TOKEN: while ( pos $string &lt; $length ) {
     <p>The example in this post is available as
     <a href="https://gist.github.com/4057239">
       a Github gist</a>.
-      It was run with Marpa::R2 2.024000,
-      as of this writing the latest full release,
-      and tested with the displays from the
+      It was run with
+      <a href="https://metacpan.org/release/JKEGL/Marpa-R2-2.024000/">
+      Marpa::R2 2.024000</a>,
+      as of this writing the latest full release.
+      My main test, which is included in the gist,
+      used displays from the
       <a href="http://perldoc.perl.org/perlop.html">perlop man page</a>.
     </p>
     <p>
