@@ -690,9 +690,8 @@ my @terminals = (
     &lt;/p&gt;
     &lt;h3&gt;Types of parsing error&lt;/h3&gt;
     &lt;p&gt;Before plunging into the error-handling code,
-      I will describe the forms parsing errors take,
-      and show the messages that the code this example
-      DSL's error handling produces.
+      I will describe the forms parsing errors take
+      and the messages they produce.
     &lt;/p&gt;
     &lt;h4&gt;No valid token&lt;/h4&gt;
     &lt;p&gt;The lexer may reach a point in the input
