@@ -141,7 +141,7 @@ END_OF_RULES
     </p>
     <h3>Adding the semantics</h3>
     <p>Our semantics will create a syntax tree.
-      Here is most of the logic.
+      Here is that logic.
       (Note that the first argument is a per-parse "object",
       which we don't use here.)
     </p><blockquote>

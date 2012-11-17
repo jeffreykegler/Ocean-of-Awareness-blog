@@ -154,7 +154,7 @@ END_OF_RULES
     &lt;/p&gt;
     &lt;h3&gt;Adding the semantics&lt;/h3&gt;
     &lt;p&gt;Our semantics will create a syntax tree.
-      Here is most of the logic.
+      Here is that logic.
       (Note that the first argument is a per-parse &quot;object&quot;,
       which we don't use here.)
     &lt;/p&gt;&lt;blockquote&gt;
