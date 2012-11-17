@@ -1,0 +1,235 @@
+A Marpa tutorial: iterative parser development
+  <h3>Developing a parser iteratively</h3>
+    <p>
+      <!--
+      marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
+      -->
+    This post is about how to write a parser complex parser a little bit
+    at a time, testing as you go.
+    You could also call this approach test-driven,
+    or even extreme,
+    although to my mind the term has never fit.
+    The traditional approach, creating a huge mass of code and then one
+    day putting it all together to see if it worked,
+    strikes me as the "extreme" one.
+    </p>
+    <p>
+    This tutorial will "iterative" a parser one development step.
+    The parser we will use is the one from
+    the last tutorial.
+    That parsed a Perl subset.
+    </p>
+    <p>
+    You may recall that previous tutorial was about pattern search.
+    This illustrates another point --
+    pattern search and iterative parser development are
+    essentially the same thing,
+    and the same approach can be used for both.
+    Our first cut at a Perl parser will be doing a pattern search
+    for the Perl subset it parses.
+    This will allow us to check our progress.
+    The subset we are attempting to parse is our "search target".
+    When our "searches" succeed in finding all instances
+    of the target,
+    we have completed that subset,
+    and can move on to the next step of the iteration.
+    </p>
+    <h3>What we need to do</h3>
+    <p>
+    This tutorial is the latest of
+    <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/metapages/annotated.html#TUTORIAL">
+    a series</a>,
+    each of which describes one self-contained template.
+    In this tutorial we will take
+    <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/11/pattern_search.html">
+    the previous tutorial</a>
+    as the first iteration in the iterative development of a Perl parser.
+     In this example, we will add two pieces.
+     <ul>
+     <li><p>The last step was more of a recognizer than a parser.
+     In particular, its grammar was too simplified to support a semantics,
+     even for the Perl subset it recognized.
+     We'll fix that.
+     <li>Having amplified the grammar, we will add a semantics,
+     simple, but quite powerful enough to use in checking our progress
+     in developing the parser.
+     </ul>
+     <h3>The grammar</h3>
+     <p>Here  is our grammar from the previous post, all eight lines of it:
+     <blockquote>
+      <pre>
+    <tt>
+start ::= prefix target
+prefix ::= any_token*
+target ::= expression
+expression ::=
+       number | scalar | scalar postfix_op
+    || op_lparen expression op_rparen assoc =&gt; group
+    || unop expression
+    || expression binop expression`
+    </tt>
+    </pre>
+    </blockquote>
+     These eight lines were enough to descibe arithmetic expressions sufficiently well
+     for a recognizer, as well as to provide the "scaffolding" for the unanchored search.
+     Nice compression, but now that we are talking about supporting a Perl semantics,
+     we will need more.
+     <p>Adding the appropriate grammar is a matter of turning to the
+     <a href="http://perldoc.perl.org/perlop.html#Operator-Precedence-and-Associativity">
+     appropriate section of the <tt>perlop</tt> man page</a>
+     and copying what you see there.
+     I have to change the format and come up with name for all the operators,
+     but the process is pretty much rote, as you can see:
+     <blockquote>
+      <pre>
+    <tt>
+my $perl_grammar = Marpa::R2::Grammar-&gt;new(
+    {   start          =&gt; 'start',
+        actions        =&gt; 'main',
+        default_action =&gt; 'do_what_I_mean',
+        rules          =&gt; [ &lt;&lt;'END_OF_RULES' ]
+start ::= prefix target action =&gt; do_arg1
+prefix ::= any_token* action =&gt; do_undef
+target ::= expression action =&gt; do_target
+expression ::=
+     number
+   | scalar
+   | op_lparen expression op_rparen assoc =&gt; group
+  || op_predecrement expression
+   | op_preincrement expression
+   | expression op_postincrement
+   | expression op_postdecrement
+  || expression op_starstar expression assoc =&gt; right
+  || op_uminus expression
+   | op_uplus expression
+   | op_bang expression
+   | op_tilde expression
+  || expression op_star expression
+   | expression op_slash expression
+   | expression op_percent expression
+   | expression kw_x expression
+  || expression op_plus expression
+   | expression op_minus expression
+  || expression op_ltlt expression
+   | expression op_gtgt expression
+  || expression op_ampersand expression
+  || expression op_vbar expression
+   | expression op_caret expression
+  || expression op_equal expression assoc =&gt; right
+  || expression op_comma expression
+END_OF_RULES
+    }
+);
+    </tt>
+    </pre>
+    </blockquote>
+    <h3>The lexer</h3>
+    <p>
+    The lexer is table-driven.
+    I've used this same approach to lexing in every post
+    in this tutorial series.
+    Those interested in
+    an explanation of how the lexer works can
+    <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/dsl.html">
+    find one in the first tutorial</a>.
+    </p>
+    <p>
+    Having broken out the operators, I had to rewrite
+    the lexing table,
+    but that was even more more rote than the rewriting
+    the grammar.
+    I won't repeat the 
+    lexer table here --
+    it can be found in
+    <a href="https://gist.github.com/4093504">the Github gist</a>.
+    </p>
+    <h3>Adding a semantics</h3>
+
+
+     <blockquote>
+      <pre>
+    <tt>
+## no critic (Subroutines::RequireFinalReturn)
+sub do_undef       { undef; }
+sub do_arg1        { $_[2]; }
+sub do_what_I_mean { shift; return $_[0] if scalar @_ == 1; return \@_ }
+## use critic
+    </tt>
+    </pre>
+    </blockquote>
+
+     <blockquote>
+      <pre>
+    <tt>
+sub do_target {
+    my $origin = ( Marpa::R2::Context::location() )[0];
+    return if $origin != $ORIGIN;
+    return $_[1];
+} ## end sub do_target
+    </tt>
+    </pre>
+    </blockquote>
+
+     <blockquote>
+      <pre>
+    <tt>
+my $end_of_search;
+my @results = ();
+RESULTS: while (1) {
+    my ( $origin, $end ) =
+        $self-&gt;last_completed_range( 'target', $end_of_search );
+    last RESULTS if not defined $origin;
+    push @results, [ $origin, $end ];
+    $end_of_search = $origin;
+} ## end RESULTS: while (1)
+    </tt>
+    </pre>
+    </blockquote>
+
+     <blockquote>
+      <pre>
+    <tt>
+RESULT: for my $result ( reverse @results ) {
+    my ( $origin, $end ) = @{$result};
+
+    <big><b>... Print out the original text ...</b></big>
+
+    $recce-&gt;set( { end =&gt; $end } );
+    my $value;
+    VALUE: while ( not defined $value ) {
+        local $main::ORIGIN = $origin;
+        my $value_ref = $recce-&gt;value();
+        last VALUE if not defined $value_ref;
+        $value = ${$value_ref};
+    } ## end VALUE: while ( not defined $value )
+    if ( not defined $value ) {
+        say 'No parse'
+            or die "say() failed: $ERRNO";
+        next RESULT;
+    }
+    say Data::Dumper::Dumper($value)
+        or die "say() failed: $ERRNO"
+        if not $quiet_flag;
+    $recce-&gt;reset_evaluation();
+} ## end RESULT: for my $result ( reverse @results )
+    </tt>
+    </pre>
+    </blockquote>
+
+
+    <h3>Code and comments</h3>
+    <p>The example in this post is available as
+    <a href="https://gist.github.com/4093504">a Github gist</a>.
+      It was run with
+      <a href="https://metacpan.org/release/JKEGL/Marpa-R2-2.024000/">
+      Marpa::R2 2.024000</a>,
+      as of this writing the latest full release.
+      Its main test, which is included in the gist,
+      used displays from the
+      <a href="http://perldoc.perl.org/perlop.html">perlop man page</a>.
+    </p>
+    <p>
+      Comments on this post
+      can be sent to the Marpa Google Group:
+      <code>marpa-parser@googlegroups.com</code>
+    </p>
