@@ -203,9 +203,8 @@ sub do_target {
       <tt>do_target</tt>
       method,
       involving the "origin", or starting location of the target.
-      This method allows for ambiguous targets.
-      And in fact, perl arithmetic expressions,
-      when the target of an unanchored search,
+      Perl arithmetic expressions,
+      when they are the target of an unanchored search,
       are ambiguous.
       For example, in the string "<tt>abc 1 + 2 + 3 xyz</tt>",
       there are two targets ending at the same position:
@@ -240,7 +239,7 @@ RESULTS: while (1) {
       parsing.
       It is a loop through
       <tt>@results</tt>
-      prints the original text
+      that prints the original text
       and, depending on flags,
       its syntax tree.
     </p>
