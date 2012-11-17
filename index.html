@@ -34,6 +34,253 @@
   </p>
   </div>
   <div style="margin-left:190px;border-left:2px solid #38B0C0;padding:25px;">
+<h3>Fri, 16 Nov 2012</h3>
+<br />
+<center><a name="iterative"> <h2>A Marpa tutorial: iterative parser development</h2> </a>
+</center>
+  <h3>Developing a parser iteratively</h3>
+    <p>
+      <!--
+      marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
+      -->
+    This post is about how to write a parser complex parser a little bit
+    at a time, testing as you go.
+    You could also call this approach test-driven,
+    or even extreme,
+    although to my mind the term has never fit.
+    The traditional approach, creating a huge mass of code and then one
+    day putting it all together to see if it worked,
+    strikes me as the "extreme" one.
+    </p>
+    <p>
+    This tutorial will "iterative" a parser one development step.
+    The parser we will use is the one from
+    the last tutorial.
+    That parsed a Perl subset.
+    </p>
+    <p>
+    You may recall that previous tutorial was about pattern search.
+    This illustrates another point --
+    pattern search and iterative parser development are
+    essentially the same thing,
+    and the same approach can be used for both.
+    Our first cut at a Perl parser will be doing a pattern search
+    for the Perl subset it parses.
+    This will allow us to check our progress.
+    The subset we are attempting to parse is our "search target".
+    When our "searches" succeed in finding all instances
+    of the target,
+    we have completed that subset,
+    and can move on to the next step of the iteration.
+    </p>
+    <h3>What we need to do</h3>
+    <p>
+    This tutorial is the latest of
+    <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/metapages/annotated.html#TUTORIAL">
+    a series</a>,
+    each of which describes one self-contained template.
+    In this tutorial we will take
+    <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/11/pattern_search.html">
+    the previous tutorial</a>
+    as the first iteration in the iterative development of a Perl parser.
+     In this example, we will add two pieces.
+     <ul>
+     <li><p>The last step was more of a recognizer than a parser.
+     In particular, its grammar was too simplified to support a semantics,
+     even for the Perl subset it recognized.
+     We'll fix that.
+     <li>Having amplified the grammar, we will add a semantics,
+     simple, but quite powerful enough to use in checking our progress
+     in developing the parser.
+     </ul>
+     <h3>The grammar</h3>
+     <p>Here  is our grammar from the previous post, all eight lines of it:
+     <blockquote>
+      <pre>
+    <tt>
+start ::= prefix target
+prefix ::= any_token*
+target ::= expression
+expression ::=
+       number | scalar | scalar postfix_op
+    || op_lparen expression op_rparen assoc =&gt; group
+    || unop expression
+    || expression binop expression`
+    </tt>
+    </pre>
+    </blockquote>
+     These eight lines were enough to descibe arithmetic expressions sufficiently well
+     for a recognizer, as well as to provide the "scaffolding" for the unanchored search.
+     Nice compression, but now that we are talking about supporting a Perl semantics,
+     we will need more.
+     <p>Adding the appropriate grammar is a matter of turning to the
+     <a href="http://perldoc.perl.org/perlop.html#Operator-Precedence-and-Associativity">
+     appropriate section of the <tt>perlop</tt> man page</a>
+     and copying what you see there.
+     I have to change the format and come up with name for all the operators,
+     but the process is pretty much rote, as you can see:
+     <blockquote>
+      <pre>
+    <tt>
+my $perl_grammar = Marpa::R2::Grammar-&gt;new(
+    {   start          =&gt; 'start',
+        actions        =&gt; 'main',
+        default_action =&gt; 'do_what_I_mean',
+        rules          =&gt; [ &lt;&lt;'END_OF_RULES' ]
+start ::= prefix target action =&gt; do_arg1
+prefix ::= any_token* action =&gt; do_undef
+target ::= expression action =&gt; do_target
+expression ::=
+     number
+   | scalar
+   | op_lparen expression op_rparen assoc =&gt; group
+  || op_predecrement expression
+   | op_preincrement expression
+   | expression op_postincrement
+   | expression op_postdecrement
+  || expression op_starstar expression assoc =&gt; right
+  || op_uminus expression
+   | op_uplus expression
+   | op_bang expression
+   | op_tilde expression
+  || expression op_star expression
+   | expression op_slash expression
+   | expression op_percent expression
+   | expression kw_x expression
+  || expression op_plus expression
+   | expression op_minus expression
+  || expression op_ltlt expression
+   | expression op_gtgt expression
+  || expression op_ampersand expression
+  || expression op_vbar expression
+   | expression op_caret expression
+  || expression op_equal expression assoc =&gt; right
+  || expression op_comma expression
+END_OF_RULES
+    }
+);
+    </tt>
+    </pre>
+    </blockquote>
+    <h3>The lexer</h3>
+    <p>
+    The lexer is table-driven.
+    I've used this same approach to lexing in every post
+    in this tutorial series.
+    Those interested in
+    an explanation of how the lexer works can
+    <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/dsl.html">
+    find one in the first tutorial</a>.
+    </p>
+    <p>
+    Having broken out the operators, I had to rewrite
+    the lexing table,
+    but that was even more more rote than the rewriting
+    the grammar.
+    I won't repeat the 
+    lexer table here --
+    it can be found in
+    <a href="https://gist.github.com/4093504">the Github gist</a>.
+    </p>
+    <h3>Adding a semantics</h3>
+
+
+     <blockquote>
+      <pre>
+    <tt>
+## no critic (Subroutines::RequireFinalReturn)
+sub do_undef       { undef; }
+sub do_arg1        { $_[2]; }
+sub do_what_I_mean { shift; return $_[0] if scalar @_ == 1; return \@_ }
+## use critic
+    </tt>
+    </pre>
+    </blockquote>
+
+     <blockquote>
+      <pre>
+    <tt>
+sub do_target {
+    my $origin = ( Marpa::R2::Context::location() )[0];
+    return if $origin != $ORIGIN;
+    return $_[1];
+} ## end sub do_target
+    </tt>
+    </pre>
+    </blockquote>
+
+     <blockquote>
+      <pre>
+    <tt>
+my $end_of_search;
+my @results = ();
+RESULTS: while (1) {
+    my ( $origin, $end ) =
+        $self-&gt;last_completed_range( 'target', $end_of_search );
+    last RESULTS if not defined $origin;
+    push @results, [ $origin, $end ];
+    $end_of_search = $origin;
+} ## end RESULTS: while (1)
+    </tt>
+    </pre>
+    </blockquote>
+
+     <blockquote>
+      <pre>
+    <tt>
+RESULT: for my $result ( reverse @results ) {
+    my ( $origin, $end ) = @{$result};
+
+    <big><b>... Print out the original text ...</b></big>
+
+    $recce-&gt;set( { end =&gt; $end } );
+    my $value;
+    VALUE: while ( not defined $value ) {
+        local $main::ORIGIN = $origin;
+        my $value_ref = $recce-&gt;value();
+        last VALUE if not defined $value_ref;
+        $value = ${$value_ref};
+    } ## end VALUE: while ( not defined $value )
+    if ( not defined $value ) {
+        say 'No parse'
+            or die "say() failed: $ERRNO";
+        next RESULT;
+    }
+    say Data::Dumper::Dumper($value)
+        or die "say() failed: $ERRNO"
+        if not $quiet_flag;
+    $recce-&gt;reset_evaluation();
+} ## end RESULT: for my $result ( reverse @results )
+    </tt>
+    </pre>
+    </blockquote>
+
+
+    <h3>Code and comments</h3>
+    <p>The example in this post is available as
+    <a href="https://gist.github.com/4093504">a Github gist</a>.
+      It was run with
+      <a href="https://metacpan.org/release/JKEGL/Marpa-R2-2.024000/">
+      Marpa::R2 2.024000</a>,
+      as of this writing the latest full release.
+      Its main test, which is included in the gist,
+      used displays from the
+      <a href="http://perldoc.perl.org/perlop.html">perlop man page</a>.
+    </p>
+    <p>
+      Comments on this post
+      can be sent to the Marpa Google Group:
+      <code>marpa-parser@googlegroups.com</code>
+    </p>
+<br />
+<p>posted at: 21:10 |
+<a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/11/iterative.html">direct link to this entry</a>
+</p>
+<div style="color:#38B0C0;padding:1px;text-align:center;">
+&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&sect;
+</div>
 <h3>Sun, 11 Nov 2012</h3>
 <br />
 <center><a name="pattern_search"> <h2>A Marpa tutorial: pattern searches</h2> </a>
@@ -1480,273 +1727,6 @@ PCDATA -&gt; @inline_rubies
 <br />
 <p>posted at: 09:48 |
 <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/config_html3.html">direct link to this entry</a>
-</p>
-<div style="color:#38B0C0;padding:1px;text-align:center;">
-&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-&sect;
-</div>
-<h3>Mon, 15 Oct 2012</h3>
-<br />
-<center><a name="config_html2"> <h2>A configurable HTML parser, part 2</h2> </a>
-</center>
-  <p>
-      <!--
-      marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
-      -->
-      <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/config_html.html">
-        My last post</a>
-      introduced Marpa::R2::HTML,
-      a configurable HTML parser.
-      By editing
-      <a href="https://gist.github.com/3901637">
-        a configuration file</a>,
-      the user can change
-      the variant of HTML
-      being parsed.
-      The changes allowed are very wide ranging.
-      The previous post started with simple changes --
-      the ability to specify the contents of new tags,
-      and the context in which they can appear.
-    </p>
-    <p>
-      In this post the changes get more aggressive.
-      I change the contents of an existing HTML element --
-      and not just any element, but
-      one of the HTML's three "structural" elements.
-      Marpa::R2::HTML allows the configuration file to change
-      the contents of all pre-existing
-      elements, with the exception of the highest level of the three
-      structural elements:
-      the
-      <tt>&lt;html&gt;</tt>
-      element itself.
-    </p>
-    <h3>Can text appear directly in an HTML body?</h3>
-    <p>
-      This post will discuss changing the contents of the
-      <tt>&lt;body&gt;</tt>
-      element.
-      Fundamental to the HTML document as this element is,
-      the definition of its contents has been very much in play.
-    </p>
-    <p>
-      Let's start with the question posed in the title of this section:
-      Can text appear directly in an HTML
-      <tt>
-        &lt;body&gt;</tt>
-      element?
-      That is, must text inside an HTML
-      <tt>
-        &lt;body&gt;</tt>
-      be part of one of its child elements,
-      or can it be directly part of the contents
-      of the
-      <tt>
-        &lt;body&gt;</tt>
-      element?
-    </p><p>
-      If you want an
-      answer strictly according to the standards,
-      then you get your choice in the matter.
-      According to the
-      <a href="http://www.w3.org/TR/1999/PR-html40-19990824/sgml/dtd.html#inline">
-        HTML 4.01 Strict DTD</a>,
-      the
-      <tt>&lt;body&gt;</tt>
-      contains a "block flow",
-      which means that
-      the answer is "No, text must be in the contents of a child element".
-      Implementations of HTML were encouraged to be liberal, however,
-      and in practice a lot of the HTML "out there"
-      has text directly
-      in
-      <tt>&lt;body&gt;</tt>
-      elements.
-      Users expect their browsers to render these pages
-      in the way that the writer intended them to look.
-    </p>
-    <p>
-      Recognizing existing practice,
-      HTML 5 changed to require conforming implementations to
-      allow text to be interspersed with the block flow,
-      in what I call a "mixed flow".
-      A mixed flow can directly contain blocks and text,
-      as well as inline elements.
-      (The inline vs. block element distinction is basic to HTML parsing.
-      See my earlier post or
-      <a href="http://en.wikipedia.org/wiki/HTML_element">
-        the well-organized Wikipedia page on HTML elements</a>.)
-    </p>
-    <h3>Block or mixed flow?</h3>
-    <p>
-      When parsing HTML, do you want to the treat contents of the body
-      as a block flow or a mixed flow?
-      Here are some of the factors.
-    </p><ul>
-      <li>
-        Common practice requires accepting a mixed flow.
-      </li><li>
-        Cautious practice suggests writing a block flow.
-      </li><li>
-        HTML 4.01 requires block, but suggests being liberal.
-      </li><li>
-        HTML 5 requires that a mixed flow be accepted.
-      </li><li>
-        But HTML 5 also requires that the mixed flow be displayed as if it was written
-        in blocks and
-        suggests that explicit blocking be used to eliminate
-        ambiguities.
-      </li></ul>
-    <h3>Examples</h3>
-    <h4>Body contains block flow</h4>
-    <p>
-      In this first example,
-      the
-      <tt>&lt;body&gt;</tt>
-      contains a block flow.
-      This is what is specified in
-      <a href="https://gist.github.com/3901637">
-        the default configuration file</a>.
-      Here is the pertinent line:
-    </p><blockquote>
-      <pre><tt>
-&lt;body&gt; is *block
-</tt></pre></blockquote><p>
-      This line says
-      that the
-      <tt>
-        &lt;body&gt;</tt>
-      element contains a block flow (<tt>*block</tt>).
-      Here the star is a sigil which suggests the repetition operator
-      of DTD's and regular expressions.
-      (Readers of my last post will notice I've changed the configuration
-      file syntax and will,
-      I hope,
-      find the new format an improvement.)
-    </p><p>
-      For the examples in this post,
-      the HTML will be
-    </p><blockquote>
-      <pre><tt>
-I cannot wait for a start tag&lt;p&gt;I can
-</tt></pre></blockquote><p>
-      We run this through the
-      <tt>marpa_r2_html_fmt --no-added-tag-comment</tt>.
-      Here is the output:
-    </p><blockquote>
-      <pre><tt>
-&lt;html&gt;
-  &lt;head&gt;
-  &lt;/head&gt;
-  &lt;body&gt;
-    &lt;p&gt;
-      I cannot wait for a start tag&lt;/p&gt;&lt;p>
-      I can&lt;/p&gt;&lt;/body>
-&lt;/html&gt;
-</tt></pre></blockquote><p>
-      The first thing the parser encounters is text,
-      which in this example is not allowed
-      to occur directly in the body.
-      As part of being a highly liberal HTML parser,
-      however, Marpa::R2::HTML will supply a start tag
-      in these situations.
-      (This behavior, by the way, is also configurable --
-      a change to the configuration file can
-      tell Marpa::R2::HTML not to do this.)
-      With its two
-      <tt>&lt;p&gt;</tt>
-      start tags,
-      one of them conjured up by the Ruby Slippers,
-      Marpa::R2::HTML breezes through its input.
-    </p>
-    <h4>Body contains mixed flow</h4>
-    <p>
-      In the second example, we liberalize the contents of
-      the
-      <tt>&lt;body&gt;</tt>
-      to allow a mixed flow:
-    </p><blockquote>
-      <pre><tt>
-&lt;body&gt; is *mixed
-</tt></pre></blockquote><p>
-      Here is the result:
-    </p><blockquote>
-      <pre><tt>
-&lt;html&gt;
-  &lt;head&gt;
-  &lt;/head&gt;
-  &lt;body&gt;
-    I cannot wait for a start tag&lt;p&gt;
-      I can&lt;/p&gt;&lt;/body&gt;
-&lt;/html&gt;
-</tt></pre></blockquote>
-    <p>
-      In a mixed flow, no
-      second
-      <tt>&lt;p&gt;</tt>
-      start tag
-      is needed, and none is created.
-      Its matching end tag
-      (<tt>&lt;/p&gt;</tt>) also does not
-      have to be created.
-      Otherwise, all is as before.
-    </p>
-    <h3>What I decided</h3>
-    <p>
-      Before I made my HTML parser configurable,
-      I was forced to decide the issue of
-      <tt>&lt;body&gt;</tt>
-      contents one way or the other.
-      My first
-      implementation of the
-      <tt>html_fmt</tt>
-      utility was based on Marpa::XS
-      and
-      its grammar specified a mixed flow.
-    </p><p>
-      When I started a new version
-      of the utility
-      based on Marpa::R2,
-      I reopened the issue.
-      I decided that a stricter grammar produced a more precise parse,
-      and that it was best to leave it up
-      to the Ruby Slippers to "loosen things up"
-      when the grammar was too strict.
-      This was close, I hoped, to the best of both worlds,
-      So I changed the grammar to specify a block
-      flow for the contents of
-      <tt>&lt;body&gt;</tt>
-      element.
-      This second choice -- strict block-flow-body grammar and liberal Ruby Slippers --
-      remains the default in the configurable version.
-    </p>
-    <p>
-      In current developer's releases of Marpa::R2,
-      and in its next indexed release,
-      both the grammar and the Ruby Slippers are configurable.
-      The true best of both worlds happens when
-      the user gets to decide.
-    </p>
-    <h3>Code and comments</h3>
-    <p>
-      The examples here were run using Marpa::R2 release 2.021_010.
-      They are part of its test suite and can be found in the
-      <tt>html/t/cfg_fmt.t</tt>
-      file.
-    </p>
-    <p>
-      The configurable Marpa::R2::HTML does considerably more than
-      can be comfortably described in a single post.
-      This post is the second of a series.
-      Comments on this post can be sent to the Marpa Google Group:
-      <code>marpa-parser@googlegroups.com</code>
-    </p>
-  </body>
-</html>
-<br />
-<p>posted at: 18:50 |
-<a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/config_html2.html">direct link to this entry</a>
 </p>
 <div style="color:#38B0C0;padding:1px;text-align:center;">
 &sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;

@@ -10,6 +10,244 @@
     <language>en</language>
 
   <item>
+    <title>A Marpa tutorial: iterative parser development</title>
+    <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/11/iterative.html</link>
+    <description>  &lt;h3&gt;Developing a parser iteratively&lt;/h3&gt;
+    &lt;p&gt;
+      &lt;!--
+      marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
+      --&gt;
+    This post is about how to write a parser complex parser a little bit
+    at a time, testing as you go.
+    You could also call this approach test-driven,
+    or even extreme,
+    although to my mind the term has never fit.
+    The traditional approach, creating a huge mass of code and then one
+    day putting it all together to see if it worked,
+    strikes me as the &quot;extreme&quot; one.
+    &lt;/p&gt;
+    &lt;p&gt;
+    This tutorial will &quot;iterative&quot; a parser one development step.
+    The parser we will use is the one from
+    the last tutorial.
+    That parsed a Perl subset.
+    &lt;/p&gt;
+    &lt;p&gt;
+    You may recall that previous tutorial was about pattern search.
+    This illustrates another point --
+    pattern search and iterative parser development are
+    essentially the same thing,
+    and the same approach can be used for both.
+    Our first cut at a Perl parser will be doing a pattern search
+    for the Perl subset it parses.
+    This will allow us to check our progress.
+    The subset we are attempting to parse is our &quot;search target&quot;.
+    When our &quot;searches&quot; succeed in finding all instances
+    of the target,
+    we have completed that subset,
+    and can move on to the next step of the iteration.
+    &lt;/p&gt;
+    &lt;h3&gt;What we need to do&lt;/h3&gt;
+    &lt;p&gt;
+    This tutorial is the latest of
+    &lt;a href=&quot;http://jeffreykegler.github.com/Ocean-of-Awareness-blog/metapages/annotated.html#TUTORIAL&quot;&gt;
+    a series&lt;/a&gt;,
+    each of which describes one self-contained template.
+    In this tutorial we will take
+    &lt;a href=&quot;http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/11/pattern_search.html&quot;&gt;
+    the previous tutorial&lt;/a&gt;
+    as the first iteration in the iterative development of a Perl parser.
+     In this example, we will add two pieces.
+     &lt;ul&gt;
+     &lt;li&gt;&lt;p&gt;The last step was more of a recognizer than a parser.
+     In particular, its grammar was too simplified to support a semantics,
+     even for the Perl subset it recognized.
+     We'll fix that.
+     &lt;li&gt;Having amplified the grammar, we will add a semantics,
+     simple, but quite powerful enough to use in checking our progress
+     in developing the parser.
+     &lt;/ul&gt;
+     &lt;h3&gt;The grammar&lt;/h3&gt;
+     &lt;p&gt;Here  is our grammar from the previous post, all eight lines of it:
+     &lt;blockquote&gt;
+      &lt;pre&gt;
+    &lt;tt&gt;
+start ::= prefix target
+prefix ::= any_token*
+target ::= expression
+expression ::=
+       number | scalar | scalar postfix_op
+    || op_lparen expression op_rparen assoc =&amp;gt; group
+    || unop expression
+    || expression binop expression`
+    &lt;/tt&gt;
+    &lt;/pre&gt;
+    &lt;/blockquote&gt;
+     These eight lines were enough to descibe arithmetic expressions sufficiently well
+     for a recognizer, as well as to provide the &quot;scaffolding&quot; for the unanchored search.
+     Nice compression, but now that we are talking about supporting a Perl semantics,
+     we will need more.
+     &lt;p&gt;Adding the appropriate grammar is a matter of turning to the
+     &lt;a href=&quot;http://perldoc.perl.org/perlop.html#Operator-Precedence-and-Associativity&quot;&gt;
+     appropriate section of the &lt;tt&gt;perlop&lt;/tt&gt; man page&lt;/a&gt;
+     and copying what you see there.
+     I have to change the format and come up with name for all the operators,
+     but the process is pretty much rote, as you can see:
+     &lt;blockquote&gt;
+      &lt;pre&gt;
+    &lt;tt&gt;
+my $perl_grammar = Marpa::R2::Grammar-&amp;gt;new(
+    {   start          =&amp;gt; 'start',
+        actions        =&amp;gt; 'main',
+        default_action =&amp;gt; 'do_what_I_mean',
+        rules          =&amp;gt; [ &amp;lt;&amp;lt;'END_OF_RULES' ]
+start ::= prefix target action =&amp;gt; do_arg1
+prefix ::= any_token* action =&amp;gt; do_undef
+target ::= expression action =&amp;gt; do_target
+expression ::=
+     number
+   | scalar
+   | op_lparen expression op_rparen assoc =&amp;gt; group
+  || op_predecrement expression
+   | op_preincrement expression
+   | expression op_postincrement
+   | expression op_postdecrement
+  || expression op_starstar expression assoc =&amp;gt; right
+  || op_uminus expression
+   | op_uplus expression
+   | op_bang expression
+   | op_tilde expression
+  || expression op_star expression
+   | expression op_slash expression
+   | expression op_percent expression
+   | expression kw_x expression
+  || expression op_plus expression
+   | expression op_minus expression
+  || expression op_ltlt expression
+   | expression op_gtgt expression
+  || expression op_ampersand expression
+  || expression op_vbar expression
+   | expression op_caret expression
+  || expression op_equal expression assoc =&amp;gt; right
+  || expression op_comma expression
+END_OF_RULES
+    }
+);
+    &lt;/tt&gt;
+    &lt;/pre&gt;
+    &lt;/blockquote&gt;
+    &lt;h3&gt;The lexer&lt;/h3&gt;
+    &lt;p&gt;
+    The lexer is table-driven.
+    I've used this same approach to lexing in every post
+    in this tutorial series.
+    Those interested in
+    an explanation of how the lexer works can
+    &lt;a href=&quot;http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/dsl.html&quot;&gt;
+    find one in the first tutorial&lt;/a&gt;.
+    &lt;/p&gt;
+    &lt;p&gt;
+    Having broken out the operators, I had to rewrite
+    the lexing table,
+    but that was even more more rote than the rewriting
+    the grammar.
+    I won't repeat the 
+    lexer table here --
+    it can be found in
+    &lt;a href=&quot;https://gist.github.com/4093504&quot;&gt;the Github gist&lt;/a&gt;.
+    &lt;/p&gt;
+    &lt;h3&gt;Adding a semantics&lt;/h3&gt;
+
+
+     &lt;blockquote&gt;
+      &lt;pre&gt;
+    &lt;tt&gt;
+## no critic (Subroutines::RequireFinalReturn)
+sub do_undef       { undef; }
+sub do_arg1        { $_[2]; }
+sub do_what_I_mean { shift; return $_[0] if scalar @_ == 1; return \@_ }
+## use critic
+    &lt;/tt&gt;
+    &lt;/pre&gt;
+    &lt;/blockquote&gt;
+
+     &lt;blockquote&gt;
+      &lt;pre&gt;
+    &lt;tt&gt;
+sub do_target {
+    my $origin = ( Marpa::R2::Context::location() )[0];
+    return if $origin != $ORIGIN;
+    return $_[1];
+} ## end sub do_target
+    &lt;/tt&gt;
+    &lt;/pre&gt;
+    &lt;/blockquote&gt;
+
+     &lt;blockquote&gt;
+      &lt;pre&gt;
+    &lt;tt&gt;
+my $end_of_search;
+my @results = ();
+RESULTS: while (1) {
+    my ( $origin, $end ) =
+        $self-&amp;gt;last_completed_range( 'target', $end_of_search );
+    last RESULTS if not defined $origin;
+    push @results, [ $origin, $end ];
+    $end_of_search = $origin;
+} ## end RESULTS: while (1)
+    &lt;/tt&gt;
+    &lt;/pre&gt;
+    &lt;/blockquote&gt;
+
+     &lt;blockquote&gt;
+      &lt;pre&gt;
+    &lt;tt&gt;
+RESULT: for my $result ( reverse @results ) {
+    my ( $origin, $end ) = @{$result};
+
+    &lt;big&gt;&lt;b&gt;... Print out the original text ...&lt;/b&gt;&lt;/big&gt;
+
+    $recce-&amp;gt;set( { end =&amp;gt; $end } );
+    my $value;
+    VALUE: while ( not defined $value ) {
+        local $main::ORIGIN = $origin;
+        my $value_ref = $recce-&amp;gt;value();
+        last VALUE if not defined $value_ref;
+        $value = ${$value_ref};
+    } ## end VALUE: while ( not defined $value )
+    if ( not defined $value ) {
+        say 'No parse'
+            or die &quot;say() failed: $ERRNO&quot;;
+        next RESULT;
+    }
+    say Data::Dumper::Dumper($value)
+        or die &quot;say() failed: $ERRNO&quot;
+        if not $quiet_flag;
+    $recce-&amp;gt;reset_evaluation();
+} ## end RESULT: for my $result ( reverse @results )
+    &lt;/tt&gt;
+    &lt;/pre&gt;
+    &lt;/blockquote&gt;
+
+
+    &lt;h3&gt;Code and comments&lt;/h3&gt;
+    &lt;p&gt;The example in this post is available as
+    &lt;a href=&quot;https://gist.github.com/4093504&quot;&gt;a Github gist&lt;/a&gt;.
+      It was run with
+      &lt;a href=&quot;https://metacpan.org/release/JKEGL/Marpa-R2-2.024000/&quot;&gt;
+      Marpa::R2 2.024000&lt;/a&gt;,
+      as of this writing the latest full release.
+      Its main test, which is included in the gist,
+      used displays from the
+      &lt;a href=&quot;http://perldoc.perl.org/perlop.html&quot;&gt;perlop man page&lt;/a&gt;.
+    &lt;/p&gt;
+    &lt;p&gt;
+      Comments on this post
+      can be sent to the Marpa Google Group:
+      &lt;code&gt;marpa-parser@googlegroups.com&lt;/code&gt;
+    &lt;/p&gt;</description>
+  </item>
+  <item>
     <title>A Marpa tutorial: pattern searches</title>
     <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/11/pattern_search.html</link>
     <description>  &lt;h3&gt;Pattern searches&lt;/h3&gt;
@@ -1424,264 +1662,6 @@ PCDATA -&amp;gt; @inline_rubies
       Comments on this post can be sent to the Marpa Google Group:
       &lt;code&gt;marpa-parser@googlegroups.com&lt;/code&gt;
     &lt;/p&gt;</description>
-  </item>
-  <item>
-    <title>A configurable HTML parser, part 2</title>
-    <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/config_html2.html</link>
-    <description>  &lt;p&gt;
-      &lt;!--
-      marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
-      --&gt;
-      &lt;a href=&quot;http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/config_html.html&quot;&gt;
-        My last post&lt;/a&gt;
-      introduced Marpa::R2::HTML,
-      a configurable HTML parser.
-      By editing
-      &lt;a href=&quot;https://gist.github.com/3901637&quot;&gt;
-        a configuration file&lt;/a&gt;,
-      the user can change
-      the variant of HTML
-      being parsed.
-      The changes allowed are very wide ranging.
-      The previous post started with simple changes --
-      the ability to specify the contents of new tags,
-      and the context in which they can appear.
-    &lt;/p&gt;
-    &lt;p&gt;
-      In this post the changes get more aggressive.
-      I change the contents of an existing HTML element --
-      and not just any element, but
-      one of the HTML's three &quot;structural&quot; elements.
-      Marpa::R2::HTML allows the configuration file to change
-      the contents of all pre-existing
-      elements, with the exception of the highest level of the three
-      structural elements:
-      the
-      &lt;tt&gt;&amp;lt;html&amp;gt;&lt;/tt&gt;
-      element itself.
-    &lt;/p&gt;
-    &lt;h3&gt;Can text appear directly in an HTML body?&lt;/h3&gt;
-    &lt;p&gt;
-      This post will discuss changing the contents of the
-      &lt;tt&gt;&amp;lt;body&amp;gt;&lt;/tt&gt;
-      element.
-      Fundamental to the HTML document as this element is,
-      the definition of its contents has been very much in play.
-    &lt;/p&gt;
-    &lt;p&gt;
-      Let's start with the question posed in the title of this section:
-      Can text appear directly in an HTML
-      &lt;tt&gt;
-        &amp;lt;body&amp;gt;&lt;/tt&gt;
-      element?
-      That is, must text inside an HTML
-      &lt;tt&gt;
-        &amp;lt;body&amp;gt;&lt;/tt&gt;
-      be part of one of its child elements,
-      or can it be directly part of the contents
-      of the
-      &lt;tt&gt;
-        &amp;lt;body&amp;gt;&lt;/tt&gt;
-      element?
-    &lt;/p&gt;&lt;p&gt;
-      If you want an
-      answer strictly according to the standards,
-      then you get your choice in the matter.
-      According to the
-      &lt;a href=&quot;http://www.w3.org/TR/1999/PR-html40-19990824/sgml/dtd.html#inline&quot;&gt;
-        HTML 4.01 Strict DTD&lt;/a&gt;,
-      the
-      &lt;tt&gt;&amp;lt;body&amp;gt;&lt;/tt&gt;
-      contains a &quot;block flow&quot;,
-      which means that
-      the answer is &quot;No, text must be in the contents of a child element&quot;.
-      Implementations of HTML were encouraged to be liberal, however,
-      and in practice a lot of the HTML &quot;out there&quot;
-      has text directly
-      in
-      &lt;tt&gt;&amp;lt;body&amp;gt;&lt;/tt&gt;
-      elements.
-      Users expect their browsers to render these pages
-      in the way that the writer intended them to look.
-    &lt;/p&gt;
-    &lt;p&gt;
-      Recognizing existing practice,
-      HTML 5 changed to require conforming implementations to
-      allow text to be interspersed with the block flow,
-      in what I call a &quot;mixed flow&quot;.
-      A mixed flow can directly contain blocks and text,
-      as well as inline elements.
-      (The inline vs. block element distinction is basic to HTML parsing.
-      See my earlier post or
-      &lt;a href=&quot;http://en.wikipedia.org/wiki/HTML_element&quot;&gt;
-        the well-organized Wikipedia page on HTML elements&lt;/a&gt;.)
-    &lt;/p&gt;
-    &lt;h3&gt;Block or mixed flow?&lt;/h3&gt;
-    &lt;p&gt;
-      When parsing HTML, do you want to the treat contents of the body
-      as a block flow or a mixed flow?
-      Here are some of the factors.
-    &lt;/p&gt;&lt;ul&gt;
-      &lt;li&gt;
-        Common practice requires accepting a mixed flow.
-      &lt;/li&gt;&lt;li&gt;
-        Cautious practice suggests writing a block flow.
-      &lt;/li&gt;&lt;li&gt;
-        HTML 4.01 requires block, but suggests being liberal.
-      &lt;/li&gt;&lt;li&gt;
-        HTML 5 requires that a mixed flow be accepted.
-      &lt;/li&gt;&lt;li&gt;
-        But HTML 5 also requires that the mixed flow be displayed as if it was written
-        in blocks and
-        suggests that explicit blocking be used to eliminate
-        ambiguities.
-      &lt;/li&gt;&lt;/ul&gt;
-    &lt;h3&gt;Examples&lt;/h3&gt;
-    &lt;h4&gt;Body contains block flow&lt;/h4&gt;
-    &lt;p&gt;
-      In this first example,
-      the
-      &lt;tt&gt;&amp;lt;body&amp;gt;&lt;/tt&gt;
-      contains a block flow.
-      This is what is specified in
-      &lt;a href=&quot;https://gist.github.com/3901637&quot;&gt;
-        the default configuration file&lt;/a&gt;.
-      Here is the pertinent line:
-    &lt;/p&gt;&lt;blockquote&gt;
-      &lt;pre&gt;&lt;tt&gt;
-&amp;lt;body&amp;gt; is *block
-&lt;/tt&gt;&lt;/pre&gt;&lt;/blockquote&gt;&lt;p&gt;
-      This line says
-      that the
-      &lt;tt&gt;
-        &amp;lt;body&amp;gt;&lt;/tt&gt;
-      element contains a block flow (&lt;tt&gt;*block&lt;/tt&gt;).
-      Here the star is a sigil which suggests the repetition operator
-      of DTD's and regular expressions.
-      (Readers of my last post will notice I've changed the configuration
-      file syntax and will,
-      I hope,
-      find the new format an improvement.)
-    &lt;/p&gt;&lt;p&gt;
-      For the examples in this post,
-      the HTML will be
-    &lt;/p&gt;&lt;blockquote&gt;
-      &lt;pre&gt;&lt;tt&gt;
-I cannot wait for a start tag&amp;lt;p&amp;gt;I can
-&lt;/tt&gt;&lt;/pre&gt;&lt;/blockquote&gt;&lt;p&gt;
-      We run this through the
-      &lt;tt&gt;marpa_r2_html_fmt --no-added-tag-comment&lt;/tt&gt;.
-      Here is the output:
-    &lt;/p&gt;&lt;blockquote&gt;
-      &lt;pre&gt;&lt;tt&gt;
-&amp;lt;html&amp;gt;
-  &amp;lt;head&amp;gt;
-  &amp;lt;/head&amp;gt;
-  &amp;lt;body&amp;gt;
-    &amp;lt;p&amp;gt;
-      I cannot wait for a start tag&amp;lt;/p&amp;gt;&amp;lt;p&gt;
-      I can&amp;lt;/p&amp;gt;&amp;lt;/body&gt;
-&amp;lt;/html&amp;gt;
-&lt;/tt&gt;&lt;/pre&gt;&lt;/blockquote&gt;&lt;p&gt;
-      The first thing the parser encounters is text,
-      which in this example is not allowed
-      to occur directly in the body.
-      As part of being a highly liberal HTML parser,
-      however, Marpa::R2::HTML will supply a start tag
-      in these situations.
-      (This behavior, by the way, is also configurable --
-      a change to the configuration file can
-      tell Marpa::R2::HTML not to do this.)
-      With its two
-      &lt;tt&gt;&amp;lt;p&amp;gt;&lt;/tt&gt;
-      start tags,
-      one of them conjured up by the Ruby Slippers,
-      Marpa::R2::HTML breezes through its input.
-    &lt;/p&gt;
-    &lt;h4&gt;Body contains mixed flow&lt;/h4&gt;
-    &lt;p&gt;
-      In the second example, we liberalize the contents of
-      the
-      &lt;tt&gt;&amp;lt;body&amp;gt;&lt;/tt&gt;
-      to allow a mixed flow:
-    &lt;/p&gt;&lt;blockquote&gt;
-      &lt;pre&gt;&lt;tt&gt;
-&amp;lt;body&amp;gt; is *mixed
-&lt;/tt&gt;&lt;/pre&gt;&lt;/blockquote&gt;&lt;p&gt;
-      Here is the result:
-    &lt;/p&gt;&lt;blockquote&gt;
-      &lt;pre&gt;&lt;tt&gt;
-&amp;lt;html&amp;gt;
-  &amp;lt;head&amp;gt;
-  &amp;lt;/head&amp;gt;
-  &amp;lt;body&amp;gt;
-    I cannot wait for a start tag&amp;lt;p&amp;gt;
-      I can&amp;lt;/p&amp;gt;&amp;lt;/body&amp;gt;
-&amp;lt;/html&amp;gt;
-&lt;/tt&gt;&lt;/pre&gt;&lt;/blockquote&gt;
-    &lt;p&gt;
-      In a mixed flow, no
-      second
-      &lt;tt&gt;&amp;lt;p&amp;gt;&lt;/tt&gt;
-      start tag
-      is needed, and none is created.
-      Its matching end tag
-      (&lt;tt&gt;&amp;lt;/p&amp;gt;&lt;/tt&gt;) also does not
-      have to be created.
-      Otherwise, all is as before.
-    &lt;/p&gt;
-    &lt;h3&gt;What I decided&lt;/h3&gt;
-    &lt;p&gt;
-      Before I made my HTML parser configurable,
-      I was forced to decide the issue of
-      &lt;tt&gt;&amp;lt;body&amp;gt;&lt;/tt&gt;
-      contents one way or the other.
-      My first
-      implementation of the
-      &lt;tt&gt;html_fmt&lt;/tt&gt;
-      utility was based on Marpa::XS
-      and
-      its grammar specified a mixed flow.
-    &lt;/p&gt;&lt;p&gt;
-      When I started a new version
-      of the utility
-      based on Marpa::R2,
-      I reopened the issue.
-      I decided that a stricter grammar produced a more precise parse,
-      and that it was best to leave it up
-      to the Ruby Slippers to &quot;loosen things up&quot;
-      when the grammar was too strict.
-      This was close, I hoped, to the best of both worlds,
-      So I changed the grammar to specify a block
-      flow for the contents of
-      &lt;tt&gt;&amp;lt;body&amp;gt;&lt;/tt&gt;
-      element.
-      This second choice -- strict block-flow-body grammar and liberal Ruby Slippers --
-      remains the default in the configurable version.
-    &lt;/p&gt;
-    &lt;p&gt;
-      In current developer's releases of Marpa::R2,
-      and in its next indexed release,
-      both the grammar and the Ruby Slippers are configurable.
-      The true best of both worlds happens when
-      the user gets to decide.
-    &lt;/p&gt;
-    &lt;h3&gt;Code and comments&lt;/h3&gt;
-    &lt;p&gt;
-      The examples here were run using Marpa::R2 release 2.021_010.
-      They are part of its test suite and can be found in the
-      &lt;tt&gt;html/t/cfg_fmt.t&lt;/tt&gt;
-      file.
-    &lt;/p&gt;
-    &lt;p&gt;
-      The configurable Marpa::R2::HTML does considerably more than
-      can be comfortably described in a single post.
-      This post is the second of a series.
-      Comments on this post can be sent to the Marpa Google Group:
-      &lt;code&gt;marpa-parser@googlegroups.com&lt;/code&gt;
-    &lt;/p&gt;
-  &lt;/body&gt;
-&lt;/html&gt;</description>
   </item>
   </channel>
 </rss>
