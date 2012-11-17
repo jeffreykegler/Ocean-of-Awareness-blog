@@ -43,53 +43,55 @@
       <!--
       marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
       -->
-    This post is about how to write a parser complex parser a little bit
-    at a time, testing as you go.
-    You could also call this approach test-driven.
-    This tutorial will "iterate" a parser one development step.
-    The parser we will use is the one from
-    <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/11/pattern_search.html">
-    the last tutorial</a>,
-    which parsed a Perl subset.
+      This post is about iterative parser development:
+      how to write a complex parser in a manageable way,
+      by writing it a little bit
+      at a time, testing as you go.
+      You could also call this approach test-driven.
+      This tutorial will "iterate" a parser one development step.
+      The parser we will use is the one from
+      <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/11/pattern_search.html">
+        the last tutorial</a>,
+      which parsed a Perl subset.
     </p>
     <p>
-    You may recall that the topic of that previous tutorial was pattern search.
-    Pattern search and iterative parser development are
-    essentially the same thing,
-    and the same approach can be used for both.
-    Each development stage of our Perl parser will do a pattern search
-    for the Perl subset it parses.
-    We can use the accuracy of this pattern search
-    to check our progress.
-    The subset we are attempting to parse is our "search target".
-    When our "searches" succeed in finding all instances
-    of the target,
-    we have successfully written a parser for that subset,
-    and can move on to the next step of the iteration.
+      You may recall that the topic of that previous tutorial was pattern search.
+      Pattern search and iterative parser development are
+      essentially the same thing,
+      and the same approach can be used for both.
+      Each development stage of our Perl parser will do a pattern search
+      for the Perl subset it parses.
+      We can use the accuracy of this pattern search
+      to check our progress.
+      The subset we are attempting to parse is our "search target".
+      When our "searches" succeed in finding all instances
+      of the target,
+      we have successfully written a parser for that subset,
+      and can move on to the next step of the iteration.
     </p>
     <h3>What we need to do</h3>
     <p>
-    This tutorial is the latest of
-    <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/metapages/annotated.html#TUTORIAL">
-    a series</a>,
-    each of which describes one self-contained template.
-    In this tutorial we will take
-    <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/11/pattern_search.html">
-    the previous tutorial</a>
-    as the first iteration in the iterative development of a Perl parser.
-     In the iteration in this example, we will add two features.
-     <ul>
-     <li><p>The previous iteration was more of a recognizer than a parser.
-     In particular, its grammar was too simplified to support a semantics,
-     even for the Perl subset it recognized.
-     We will fix that.
-     <li>Having amplified the grammar, we will add a semantics,
-     simple, but quite powerful enough to use in checking our progress
-     in developing the parser.
-     </ul>
-     <h3>The grammar</h3>
-     <p>Here  is our grammar from the previous post, all eight lines of it:
-     <blockquote>
+      This tutorial is the latest of
+      <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/metapages/annotated.html#TUTORIAL">
+        a series</a>,
+      each of which describes one self-contained template.
+      In this tutorial we will take
+      <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/11/pattern_search.html">
+        the previous tutorial</a>
+      as the first iteration in the iterative development of a Perl parser.
+      In the iteration in this example, we will add two features.
+    </p><ul>
+      <li><p>The previous iteration was more of a recognizer than a parser.
+          In particular, its grammar was too simplified to support a semantics,
+          even for the Perl subset it recognized.
+          We will fix that.
+        </p></li><li>Having amplified the grammar, we will add a semantics,
+        simple, but quite powerful enough to use in checking our progress
+        in developing the parser.
+      </li></ul>
+    <h3>The grammar</h3>
+    <p>Here is our grammar from the previous post, all eight lines of it:
+    </p><blockquote>
       <pre>
     <tt>
 start ::= prefix target
@@ -102,18 +104,20 @@ expression ::=
     || expression binop expression`
     </tt>
     </pre>
-    </blockquote>
-     These eight lines were enough to descibe arithmetic expressions sufficiently well
-     for a recognizer, as well as to provide the "scaffolding" for the unanchored search.
-     Nice compression, but now that we are talking about supporting a Perl semantics,
-     we will need more.
-     <p>Adding the appropriate grammar is a matter of turning to the
-     <a href="http://perldoc.perl.org/perlop.html#Operator-Precedence-and-Associativity">
-     appropriate section of the <tt>perlop</tt> man page</a>
-     and copying it.
-     I needed to change the format and come up with name for all the operators,
-     but the process is pretty much rote, as you can see:
-     <blockquote>
+    </blockquote><p>
+      These eight lines were enough to descibe arithmetic expressions sufficiently well
+      for a recognizer, as well as to provide the "scaffolding" for the unanchored search.
+      Nice compression, but now that we are talking about supporting a Perl semantics,
+      we will need more.
+    </p><p>Adding the appropriate grammar is a matter of turning to the
+      <a href="http://perldoc.perl.org/perlop.html#Operator-Precedence-and-Associativity">
+        appropriate section of the
+        <tt>perlop</tt>
+        man page</a>
+      and copying it.
+      I needed to change the format and come up with name for all the operators,
+      but the process is pretty much rote, as you can see:
+    </p><blockquote>
       <pre>
     <tt>
 my $perl_grammar = Marpa::R2::Grammar-&gt;new(
@@ -158,28 +162,28 @@ END_OF_RULES
     </blockquote>
     <h3>The lexer</h3>
     <p>
-    The lexer is table-driven.
-    I've used this same approach to lexing in every post
-    in this tutorial series.
-    Those interested in
-    an explanation of how the lexer works can
-    <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/dsl.html">
-    find one in the first tutorial</a>.
-    Having broken out the operators, I had to rewrite
-    the lexing table,
-    but that was even more more rote than the rewriting
-    the grammar.
-    I won't repeat the 
-    lexer table here --
-    it can be found in
-    <a href="https://gist.github.com/4093504">the Github gist</a>.
+      The lexer is table-driven.
+      I've used this same approach to lexing in every post
+      in this tutorial series.
+      Those interested in
+      an explanation of how the lexer works can
+      <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/dsl.html">
+        find one in the first tutorial</a>.
+      Having broken out the operators, I had to rewrite
+      the lexing table,
+      but that was even more more rote than the rewriting
+      the grammar.
+      I won't repeat the
+      lexer table here --
+      it can be found in
+      <a href="https://gist.github.com/4093504">the Github gist</a>.
     </p>
     <h3>Adding the semantics</h3>
     <p>Our semantics will create a syntax tree.
-    Here is most of the logic.
-    (Note that the first argument is a per-parse "object",
-    which we don't use here.)
-     <blockquote>
+      Here is most of the logic.
+      (Note that the first argument is a per-parse "object",
+      which we don't use here.)
+    </p><blockquote>
       <pre>
     <tt>
 sub do_undef       { undef; }
@@ -195,24 +199,28 @@ sub do_target {
     </pre>
     </blockquote>
     <p>
-    There is some special logic in the <tt>do_target</tt> method,
-    involving the "origin", or starting location of the target.
-    This method allows for ambiguous targets,
-    and in fact perl arithmetic expressions,
-    as the target of an unanchored search,
-    are ambiguous.
-    For example, in the string "<tt>abc 1 + 2 + 3 xyz</tt>",
-    there are two targets ending at the same position:
-    "<tt>2 + 3</tt>" and "<tt>1 + 2 + 3</tt>".
-    We are interested only in longest of these.
-    whose beginning is indicated by the "<tt>$ORIGIN</tt>"
-    variable.
-    <p>The next logic will be familiar from our
-    <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/11/pattern_search.html">
-    pattern search tutorial</a>.
-    It repeatedly looks for non-overlapping occurrences of <tt>target</tt>,
-    starting from the end and going back to the beginning of the input.
-     <blockquote>
+      There is some special logic in the
+      <tt>do_target</tt>
+      method,
+      involving the "origin", or starting location of the target.
+      This method allows for ambiguous targets.
+      And in fact, perl arithmetic expressions,
+      when the target of an unanchored search,
+      are ambiguous.
+      For example, in the string "<tt>abc 1 + 2 + 3 xyz</tt>",
+      there are two targets ending at the same position:
+      "<tt>2 + 3</tt>" and "<tt>1 + 2 + 3</tt>".
+      We are interested only in longest of these.
+      whose start location is indicated by the
+      <tt>$ORIGIN</tt>
+      variable.
+    </p><p>The next logic will be familiar from our
+      <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/11/pattern_search.html">
+        pattern search tutorial</a>.
+      It repeatedly looks for non-overlapping occurrences of
+      <tt>target</tt>,
+      starting from the end and going back to the beginning of the input.
+    </p><blockquote>
       <pre>
     <tt>
 my $end_of_search;
@@ -228,26 +236,28 @@ RESULTS: while (1) {
     </pre>
     </blockquote>
     <p>This final code sample is the logic
-    that unites pattern search with incremental 
-    parsing.
-    It is a loop through <tt>@results</tt>
-    prints the original text,
-    and, depending on flags,
-    its syntax tree.
+      that unites pattern search with incremental
+      parsing.
+      It is a loop through
+      <tt>@results</tt>
+      prints the original text
+      and, depending on flags,
+      its syntax tree.
     </p>
     <p>
-    Near the top of the loop,
-    "<tt>$recce-&gt;set( { end =&gt; $end } )</tt>"
-    call sets the end of parse location to the current
-    result.
-    At the bottom of the loop,
-    we call
-    "<tt>$recce-&gt;reset_evaluation()</tt>".
-    This is necessary to allow us to evaluate the
-    input stream again, but with a new
-    <tt>$end</tt> location.
+      Near the top of the loop,
+      the "<tt>$recce-&gt;set( { end =&gt; $end } )</tt>"
+      call sets the end of parse location to the current
+      result.
+      At the bottom of the loop,
+      we call
+      "<tt>$recce-&gt;reset_evaluation()</tt>".
+      This is necessary to allow us to evaluate the
+      input stream again, but with a new
+      <tt>$end</tt>
+      location.
     </p>
-     <blockquote>
+    <blockquote>
       <pre>
     <tt>
 RESULT: for my $result ( reverse @results ) {
@@ -276,27 +286,40 @@ RESULT: for my $result ( reverse @results ) {
     </tt>
     </pre>
     </blockquote>
-    <p>The <tt>VALUE</tt> sub-loop is
-    where the <tt>$ORIGIN</tt> variable
-    was set.
-    In the semantics, <tt>do_target</tt>
-    checks this.
-    In the case of an ambiguous parse,
-    <tt>do_target</tt> turns all those targets which do not
-    cover the full span from <tt>$origin</tt> to <tt>$end</tt>
-    into Perl <tt>undef</tt>'s,
-    which will be passed up as the value of the parse.
-    The logic in the <tt>VALUE</tt> loop
-    catches these, and throws the undefs away,
-    so that only the longest target for each <tt>$end</tt>
-    location is printed.
+    <p>The
+      <tt>VALUE</tt>
+      sub-loop is
+      where the
+      <tt>$ORIGIN</tt>
+      variable
+      was set.
+      In the semantics,
+      <tt>do_target</tt>
+      checks this.
+      In the case of an ambiguous parse,
+      <tt>do_target</tt>
+      turns all those targets which do not
+      cover the full span from
+      <tt>$origin</tt>
+      to
+      <tt>$end</tt>
+      into Perl
+      <tt>undef</tt>'s,
+      which will be passed up as the value of the parse.
+      The logic in the
+      <tt>VALUE</tt>
+      loop
+      catches these, and throws the undefs away,
+      so that only the longest target for each
+      <tt>$end</tt>
+      location is printed.
     </p>
     <h3>Code and comments</h3>
     <p>The example in this post is available as
-    <a href="https://gist.github.com/4093504">a Github gist</a>.
+      <a href="https://gist.github.com/4093504">a Github gist</a>.
       It was run with
       <a href="https://metacpan.org/release/JKEGL/Marpa-R2-2.024000/">
-      Marpa::R2 2.024000</a>,
+        Marpa::R2 2.024000</a>,
       as of this writing the latest full release.
       Its main test, which is included in the gist,
       used displays from the
