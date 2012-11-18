@@ -219,7 +219,7 @@ RESULTS: while (1) {
       It is a loop through
       &lt;tt&gt;@results&lt;/tt&gt;
       that prints the original text
-      and, depending on flags,
+      and, depending on a flag,
       its syntax tree.
     &lt;/p&gt;
     &lt;p&gt;

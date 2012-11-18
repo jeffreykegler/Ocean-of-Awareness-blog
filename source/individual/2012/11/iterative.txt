@@ -206,7 +206,7 @@ RESULTS: while (1) {
       It is a loop through
       <tt>@results</tt>
       that prints the original text
-      and, depending on flags,
+      and, depending on a flag,
       its syntax tree.
     </p>
     <p>
