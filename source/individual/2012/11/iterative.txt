@@ -4,16 +4,15 @@ A Marpa tutorial: iterative parser development
       <!--
       marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
       -->
-      This post is about iterative parser development:
-      how to write a complex parser in a manageable way,
-      by writing it a little bit
-      at a time, testing as you go.
-      You could also call this approach test-driven.
+      This post describes a manageable way
+      to write a complex parser,
+      a little bit at a time, testing as you go.
       This tutorial will "iterate" a parser one development step.
-      The parser we will use is the one from
+      As the first iteration step,
+      we will use the from
       <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/11/pattern_search.html">
-        the last tutorial</a>,
-      which parsed a Perl subset.
+        the previous tutorial in this series</a>.
+      That parsed a Perl subset.
     </p>
     <p>
       You may recall that the topic of that previous tutorial was pattern search.
@@ -35,14 +34,15 @@ A Marpa tutorial: iterative parser development
       This tutorial is the latest of
       <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/metapages/annotated.html#TUTORIAL">
         a series</a>,
-      each of which describes one self-contained template.
-      In this tutorial we will take
+      each of which describes one self-contained example of a Marpa-based parser.
+      In this tutorial we use the example from
       <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/11/pattern_search.html">
         the previous tutorial</a>
-      as the first iteration in the iterative development of a Perl parser.
-      In the iteration in this example, we will add two features.
+      as the first iteration step
+      in the iterative development of a Perl parser.
+      For the iteration step in this example, we will add two features.
     </p><ul>
-      <li><p>The previous iteration was more of a recognizer than a parser.
+      <li><p>The previous iteration step was more of a recognizer than a parser.
           In particular, its grammar was too simplified to support a semantics,
           even for the Perl subset it recognized.
           We will fix that.
@@ -51,7 +51,8 @@ A Marpa tutorial: iterative parser development
         in developing the parser.
       </li></ul>
     <h3>The grammar</h3>
-    <p>Here is our grammar from the previous post, all eight lines of it:
+    <p>
+    Here is our grammar from the previous post:
     </p><blockquote>
       <pre>
     <tt>
@@ -66,6 +67,8 @@ expression ::=
     </tt>
     </pre>
     </blockquote><p>
+    <a href="https://metacpan.org/module/Marpa::R2::BNF">
+      The format is documented here</a>.
       These eight lines were enough to descibe arithmetic expressions sufficiently well
       for a recognizer, as well as to provide the "scaffolding" for the unanchored search.
       Nice compression, but now that we are talking about supporting a Perl semantics,
@@ -76,8 +79,8 @@ expression ::=
         <tt>perlop</tt>
         man page</a>
       and copying it.
-      I needed to change the format and come up with name for all the operators,
-      but the process is pretty much rote, as you can see:
+      I needed to change the format and name the operators,
+      but the process was pretty much rote, as you can see:
     </p><blockquote>
       <pre>
     <tt>
@@ -132,7 +135,7 @@ END_OF_RULES
         find one in the first tutorial</a>.
       Having broken out the operators, I had to rewrite
       the lexing table,
-      but that was even more more rote than the rewriting
+      but that was even more rote than rewriting
       the grammar.
       I won't repeat the
       lexer table here --
@@ -142,7 +145,8 @@ END_OF_RULES
     <h3>Adding the semantics</h3>
     <p>Our semantics will create a syntax tree.
       Here is that logic.
-      (Note that the first argument is a per-parse "object",
+      (Note that the first argument to these semantic closures
+      is a per-parse "object",
       which we don't use here.)
     </p><blockquote>
       <pre>
@@ -161,7 +165,7 @@ sub do_target {
     </blockquote>
     <p>
       There is some special logic in the
-      <tt>do_target</tt>
+      <tt>do_target()</tt>
       method,
       involving the "origin", or starting location of the target.
       Perl arithmetic expressions,
@@ -170,7 +174,7 @@ sub do_target {
       For example, in the string "<tt>abc 1 + 2 + 3 xyz</tt>",
       there are two targets ending at the same position:
       "<tt>2 + 3</tt>" and "<tt>1 + 2 + 3</tt>".
-      We are interested only in longest of these.
+      We are interested only in longest of these,
       whose start location is indicated by the
       <tt>$ORIGIN</tt>
       variable.
@@ -254,22 +258,24 @@ RESULT: for my $result ( reverse @results ) {
       variable
       was set.
       In the semantics,
-      <tt>do_target</tt>
+      <tt>do_target()</tt>
       checks this.
       In the case of an ambiguous parse,
-      <tt>do_target</tt>
-      turns all those targets which do not
+      <tt>do_target()</tt>
+      turns all any targets which does not
       cover the full span from
       <tt>$origin</tt>
       to
       <tt>$end</tt>
-      into Perl
+      into a Perl
       <tt>undef</tt>'s,
-      which will be passed up as the value of the parse.
+      which will
+      eventually become
+      the value of its parse.
       The logic in the
       <tt>VALUE</tt>
       loop
-      catches these, and throws the undefs away,
+      catches ignores parses whose value is a Perl <tt>undef</tt>,
       so that only the longest target for each
       <tt>$end</tt>
       location is printed.
