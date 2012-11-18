@@ -46,12 +46,13 @@
       This post describes a manageable way
       to write a complex parser,
       a little bit at a time, testing as you go.
-      This tutorial will "iterate" a parser one development step.
+      This tutorial will "iterate" a parser
+      through one development step.
       As the first iteration step,
-      we will use the from
+      we will use the example parser from
       <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/11/pattern_search.html">
-        the previous tutorial in this series</a>.
-      That parsed a Perl subset.
+        the previous tutorial in this series</a>,
+      which parsed a Perl subset.
     </p>
     <p>
       You may recall that the topic of that previous tutorial was pattern search.
@@ -301,20 +302,20 @@ RESULT: for my $result ( reverse @results ) {
       checks this.
       In the case of an ambiguous parse,
       <tt>do_target()</tt>
-      turns all any targets which does not
+      turns any target which does not
       cover the full span from
       <tt>$origin</tt>
       to
       <tt>$end</tt>
       into a Perl
-      <tt>undef</tt>'s,
+      <tt>undef</tt>,
       which will
       eventually become
       the value of its parse.
       The logic in the
       <tt>VALUE</tt>
       loop
-      catches ignores parses whose value is a Perl <tt>undef</tt>,
+      ignores parses whose value is a Perl <tt>undef</tt>,
       so that only the longest target for each
       <tt>$end</tt>
       location is printed.
