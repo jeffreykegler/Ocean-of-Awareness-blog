@@ -64,7 +64,7 @@ expression ::=
        number | scalar | scalar postfix_op
     || op_lparen expression op_rparen assoc =&gt; group
     || unop expression
-    || expression binop expression`
+    || expression binop expression
     </tt>
     </pre>
     </blockquote><p>

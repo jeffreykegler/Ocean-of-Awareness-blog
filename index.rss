@@ -77,7 +77,7 @@ expression ::=
        number | scalar | scalar postfix_op
     || op_lparen expression op_rparen assoc =&amp;gt; group
     || unop expression
-    || expression binop expression`
+    || expression binop expression
     &lt;/tt&gt;
     &lt;/pre&gt;
     &lt;/blockquote&gt;&lt;p&gt;
