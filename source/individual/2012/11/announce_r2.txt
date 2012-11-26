@@ -1,44 +1,68 @@
 Announcing a full release of Marpa::R2
   <h3>Announcing Marpa::R2</h3>
-      <!--
+    <!--
       marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
       -->
-  <p>
-  <a href="https://metacpan.org/release/Marpa-R2">
-  Marpa::R2</a> is now in full, official release.
-  For those new to this blog, Marpa::R2 is an efficient, practical general
-  BNF parser, targeted at parsing application too complex for
-  regular expressions.
-  Marpa::R2 is based on
-  <a href="http://jeffreykegler.github.com/Marpa-web-site/">
-  the Marpa parsing algorithm</a>,
-  New but based on the published literature,
-  the Marpa algorithm
-  parses every class of grammar in practical use today
-  in linear time.
-  </p>
-  <p>Marpa::R2 is the successor to Marpa::XS
-  and has these new features:
-  <ul>
-  <li>
-  <p>runs on Windows.
-  </p>
-  <li>
-  <p>has better error reporting.
-  </p>
-  <li>
-  <p>is faster.
-  </p>
-  <li><p>
-  has a cleaner, simpler interface.
-  </p>
-  </ul>
+    <p>
+      <a href="https://metacpan.org/release/Marpa-R2">
+        Marpa::R2</a>
+      is now in full, official release.
+      For those new to this blog, Marpa::R2 is an efficient, practical general
+      BNF parser, targeted at parsing application too complex for
+      regular expressions.
+      Marpa::R2 is based on
+      <a href="http://jeffreykegler.github.com/Marpa-web-site/">
+        the Marpa parsing algorithm</a>.
+      New but based on the published literature,
+      the Marpa algorithm
+      parses every class of grammar in practical use today
+      in linear time.
+    </p>
+    <p>Marpa::R2 is the successor to Marpa::XS and
+    </p>
+    <ul>
+      <li>
+        <p>installs and runs on Windows.
+        </p>
+      </li>
+      <li>
+        <p>has better error reporting.
+        </p>
+      </li>
+      <li>
+        <p>is faster.
+        </p>
+      </li>
+      <li>
+        <p>
+          has a cleaner, simpler interface.
+        </p>
+      </li>
+    </ul>
+    <p>Marpa::XS remains available and,
+      since changes to it are now on a "bug fix only" basis,
+      should be quite stable.
+      While Marpa::R2's interface will have a familiar look
+      to users of Marpa::XS, it is not fully compatible:
+      changes are documented here.
+    </p>
+    <p>
+      Those who have been following this blog may have noticed
+      that a new BNF interface has been added to Marpa::R2.
+      This is growing --
+      I have recently added scannerless parsing to it,
+      which means that applications will be able to run
+      Marpa::R2 without a lexer.
+      Because the BNF interface is new
+      and still under very active development,
+      it is being kept in beta status for the time being.
+    </p>
     <h3>Comments</h3>
     <p>
       The Windows port of Marpa was the work of Jean-Damien Durand,
       who utilized Alberto Sim&otilde;es'
       <a href="http://search.cpan.org/dist/Config-AutoConf/">
-      Config::AutoConf</a>.
+        Config::AutoConf</a>.
       Comments on this post
       can be sent to the Marpa Google Group:
       <code>marpa-parser@googlegroups.com</code>
