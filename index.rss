@@ -59,7 +59,8 @@
       should be quite stable.
       While Marpa::R2's interface will have a familiar look
       to users of Marpa::XS, it is not fully compatible:
-      changes are documented here.
+      &lt;a href=&quot;https://metacpan.org/module/Marpa::R2::Changes&quot;&gt;
+      changes are documented here&lt;/a&gt;.
     &lt;/p&gt;
     &lt;p&gt;
       Those who have been following this blog may have noticed
