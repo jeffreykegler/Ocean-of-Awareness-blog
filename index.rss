@@ -10,6 +10,54 @@
     <language>en</language>
 
   <item>
+    <title>Announcing a full release of Marpa::R2</title>
+    <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/11/announce_r2.html</link>
+    <description>  &lt;h3&gt;Announcing Marpa::R2&lt;/h3&gt;
+      &lt;!--
+      marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
+      --&gt;
+  &lt;p&gt;
+  &lt;a href=&quot;https://metacpan.org/release/Marpa-R2&quot;&gt;
+  Marpa::R2&lt;/a&gt; is now in full, official release.
+  For those new to this blog, Marpa::R2 is an efficient, practical general
+  BNF parser, targeted at parsing application too complex for
+  regular expressions.
+  Marpa::R2 is based on
+  &lt;a href=&quot;http://jeffreykegler.github.com/Marpa-web-site/&quot;&gt;
+  the Marpa parsing algorithm&lt;/a&gt;,
+  New but based on the published literature,
+  the Marpa algorithm
+  parses every class of grammar in practical use today
+  in linear time.
+  &lt;/p&gt;
+  &lt;p&gt;Marpa::R2 is the successor to Marpa::XS
+  and has these new features:
+  &lt;ul&gt;
+  &lt;li&gt;
+  &lt;p&gt;runs on Windows.
+  &lt;/p&gt;
+  &lt;li&gt;
+  &lt;p&gt;has better error reporting.
+  &lt;/p&gt;
+  &lt;li&gt;
+  &lt;p&gt;is faster.
+  &lt;/p&gt;
+  &lt;li&gt;&lt;p&gt;
+  has a cleaner, simpler interface.
+  &lt;/p&gt;
+  &lt;/ul&gt;
+    &lt;h3&gt;Comments&lt;/h3&gt;
+    &lt;p&gt;
+      The Windows port of Marpa was the work of Jean-Damien Durand,
+      who utilized Alberto Sim&amp;otilde;es'
+      &lt;a href=&quot;http://search.cpan.org/dist/Config-AutoConf/&quot;&gt;
+      Config::AutoConf&lt;/a&gt;.
+      Comments on this post
+      can be sent to the Marpa Google Group:
+      &lt;code&gt;marpa-parser@googlegroups.com&lt;/code&gt;
+    &lt;/p&gt;</description>
+  </item>
+  <item>
     <title>A Marpa tutorial: iterative parser development</title>
     <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/11/iterative.html</link>
     <description>  &lt;h3&gt;Developing a parser iteratively&lt;/h3&gt;
@@ -1397,331 +1445,6 @@ EARLEY_SET: while ( $earley_set &amp;gt;= 0 ) {
 &lt;/pre&gt;
     &lt;/blockquote&gt;
     &lt;h3&gt;Comments&lt;/h3&gt;
-    &lt;p&gt;
-      Comments on this post can be sent to the Marpa Google Group:
-      &lt;code&gt;marpa-parser@googlegroups.com&lt;/code&gt;
-    &lt;/p&gt;</description>
-  </item>
-  <item>
-    <title>Configuring the Ruby Slippers for HTML</title>
-    <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/config_html3.html</link>
-    <description>  &lt;p&gt;
-      &lt;!--
-      perl ./marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
-      --&gt;
-      This post is part of
-      &lt;a href=&quot;http://jeffreykegler.github.com/Ocean-of-Awareness-blog/metapages/annotated.html#PARSE_HTML&quot;&gt;
-        a series&lt;/a&gt;
-      describing Marpa::R2::HTML,
-      a configurable HTML parser.
-      The last two posts described how to change
-      the context and contents of the HTML
-      elements, both new and existing.
-      This post describes how to configure
-      optional start tags: how to change 
-      which start tags
-      are optional,
-      and how to specify the circumstances
-      in which they will be supplied.
-    &lt;/p&gt;
-    &lt;h3&gt;How the parser works&lt;/h3&gt;
-    &lt;p&gt;
-      In the first posts in this series I went into some detail describing
-      my Marpa-based approach to HTML parsing.
-      Briefly, it combines a parse engine using a &quot;wishful thinking&quot; grammar
-      with a Ruby Slippers lexer.
-      The &quot;wishful thinking&quot; grammar expects all elements,
-      without exception,
-      to have both start and end tags.
-      This overstrict grammar demands tags even in cases
-      where the
-      &lt;a href=&quot;http://www.w3.org/TR/1999/PR-html40-19990824/sgml/dtd.html#inline&quot;&gt;
-        HTML 4.01 Strict DTD&lt;/a&gt;
-      mandates that they be treated as optional.
-    &lt;/p&gt;
-    &lt;p&gt;
-      The overstrict grammar is liberalized by the Ruby Slippers.
-      Marpa has an unusual property among parsers -- it is fully
-      informed about the state of the parse at all points,
-      and can conveniently and efficiently share that information
-      with the application.
-      In Marpa::R2::HTML, when the parse engine, with its
-      overstrict grammar, grinds to a halt for lack
-      of a tag that does not exist
-      in the physical input,
-      the lexer can ask the parse engine which tag it is looking for.
-      It can then dummy one up, feed it to the parse engine,
-      and start things back up.
-      It's as simple as that.
-    &lt;/p&gt;
-    &lt;p&gt;
-      For HTML end tags,
-      the Ruby Slippers work stunningly well.
-      Only one end tag will be expected at any point.
-      In cases where a stack of elements must be properly terminated,
-      the parse engine will request the end tags, one at a time,
-      in proper order.
-      The grammar can simplify life for itself by demanding a perfect
-      world, and on the lexer's side, things are no harder -- it just
-      has to do what it is told.
-    &lt;/p&gt;
-    &lt;p&gt;
-      For the very few start tags
-      that are optional according to the Strict HTML 4.01 DTD,
-      things are just as simple -- they occur in places where only one
-      at a time will be demanded, and the Ruby Slippers lexer need
-      only do what it is told to.
-      However, if you want to further liberalize HTML, there will be
-      cases where there is a choice between start tags;
-      or between
-      starting one element and ending another.
-    &lt;/p&gt;
-    &lt;h3&gt;Configuring the Ruby Slippers&lt;/h3&gt;
-    &lt;p&gt;
-      In the last post,
-      I showed how to configure Marpa::R2::HTML to allow or disallow
-      text directly in the
-      &lt;tt&gt;&amp;lt;body&amp;gt;&lt;/tt&gt;
-      element.
-      If Marpa::R2::HTML
-      was configured to disallow 
-      text directly in the
-      &lt;tt&gt;&amp;lt;body&amp;gt;&lt;/tt&gt;
-      element,
-      and it encountered such text,
-      Marpa::R2::HTML would start a block.
-      The block was started
-      by supplying a
-      &lt;tt&gt;&amp;lt;p&amp;gt;&lt;/tt&gt;
-      start tag in front of the text.
-      In other words, Marpa::R2::HTML treated
-      the
-      &lt;tt&gt;&amp;lt;p&amp;gt;&lt;/tt&gt;
-      start tag as optional.
-    &lt;/p&gt;
-      Let me give an example.
-      Suppose the HTML document consisted of the string
-    &lt;/p&gt;
-    &lt;blockquote&gt;
-      &lt;pre&gt;&lt;tt&gt;Hello, world&lt;/tt&gt;&lt;/pre&gt;
-    &lt;/blockquote&gt;
-    &lt;p&gt;
-      and that, using the default configuration,
-      we ran &lt;tt&gt;html_fmt&lt;/tt&gt; as  follows:
-    &lt;/p&gt;
-    &lt;blockquote&gt;
-      &lt;pre&gt;&lt;tt&gt;echo 'Hello, world' |
-/Users/jeffreykegler/perl5/bin/marpa_r2_html_fmt --no-added-tag-comment&lt;/tt&gt;&lt;/pre&gt;
-    &lt;/blockquote&gt;
-    &lt;p&gt;
-      This would be our result:
-    &lt;/p&gt;
-    &lt;blockquote&gt;
-      &lt;pre&gt;&lt;tt&gt;&amp;lt;html&amp;gt;
-  &amp;lt;head&amp;gt;
-  &amp;lt;/head&amp;gt;
-  &amp;lt;body&amp;gt;
-    &amp;lt;p&amp;gt;
-      Hello, world
-    &amp;lt;/p&amp;gt;&amp;lt;/body&amp;gt;
-&amp;lt;/html&amp;gt;
-&lt;/tt&gt;&lt;/pre&gt;
-    &lt;/blockquote&gt;
-    &lt;p&gt;
-      This was produced using the default configuration,
-      which resides in
-      &lt;a href=&quot;http://api.metacpan.org/source/JKEGL/Marpa-R2-2.022000/g/config/default.txt&quot;&gt;
-        the
-        &lt;tt&gt;g/config/default.txt&lt;/tt&gt;
-        file&lt;/a&gt;.
-      (All the examples is this post use version 2.022000 of Marpa::R2.)
-    &lt;/p&gt;
-    &lt;h3&gt;First, the results&lt;/h3&gt;
-    &lt;p&gt;
-      Let's change the behavior of 
-      Marpa::R2::HTML so that,
-      instead of starting a new
-      &lt;tt&gt;&amp;lt;p&amp;gt;&lt;/tt&gt;
-      element,
-      it will reject the text as cruft.
-      We create a new configuration,
-      putting it into a file named
-      &lt;tt&gt;g/config/reject_text.txt&lt;/tt&gt;.
-    &lt;p&gt;
-      Creating the
-      configuration will not be difficult,
-      but it will perhaps be easiest to understand
-      if we first see the result
-      that we are aiming at.
-      Again we run &lt;tt&gt;html_fmt&lt;/tt&gt;:
-    &lt;/p&gt;
-    &lt;blockquote&gt;
-      &lt;pre&gt;&lt;tt&gt;echo 'Hello, world' |
-/Users/jeffreykegler/perl5/bin/marpa_r2_html_fmt \
-  --compile reject_pcdata.txt  --no-added-tag-comment&lt;/tt&gt;&lt;/pre&gt;
-    &lt;/blockquote&gt;
-    &lt;p&gt;
-      And this is our new result:
-    &lt;/p&gt;&lt;blockquote&gt;&lt;pre&gt;&lt;tt&gt;&amp;lt;html&amp;gt;
-  &amp;lt;head&amp;gt;
-  &amp;lt;/head&amp;gt;
-  &amp;lt;body&amp;gt;
-    &amp;lt;!-- html_fmt: Next line is cruft --&amp;gt;
-    Hello, world
-&amp;lt;/body&amp;gt;
-&lt;/tt&gt;&lt;/pre&gt;
-    &lt;/blockquote&gt;
-    &lt;p&gt;Note that in this second example, there are no tags
-      for the
-      &lt;tt&gt;&amp;lt;p&amp;gt;&lt;/tt&gt;
-      element,
-      and that the text is now labeled as &quot;cruft&quot;, as desired.
-    &lt;/p&gt;
-    &lt;h3&gt;How it was done&lt;/h3&gt;
-    &lt;p&gt;
-      How would we change the default configuration file to refuse to start a new
-      &lt;tt&gt;&amp;lt;p&amp;gt;&lt;/tt&gt;
-      element in front of text?
-      The three relevant lines are:
-    &lt;/p&gt;
-    &lt;blockquote&gt;
-      &lt;pre&gt;&lt;tt&gt;@block_rubies  = &amp;lt;html&amp;gt; &amp;lt;head&amp;gt; &amp;lt;body&amp;gt;
-@inline_rubies = @block_rubies &amp;lt;tbody&amp;gt; &amp;lt;tr&amp;gt; &amp;lt;td&amp;gt; &amp;lt;p&amp;gt;
-PCDATA -&amp;gt; @inline_rubies
-&lt;/tt&gt;&lt;/pre&gt;
-    &lt;/blockquote&gt;
-    &lt;p&gt;The symbols with an &quot;&lt;tt&gt;@&lt;/tt&gt;&quot; sigil are lists,
-      which the configuration file uses as a convenient shorthand for groups
-      of symbols which occur frequently.
-      For convenience in this discussion,
-      let's expand them, so that relevant extract looks like this
-    &lt;/p&gt;
-    &lt;blockquote&gt;
-      &lt;pre&gt;&lt;tt&gt;PCDATA -&amp;gt; &amp;lt;html&amp;gt; &amp;lt;head&amp;gt; &amp;lt;body&amp;gt; &amp;lt;tbody&amp;gt; &amp;lt;tr&amp;gt; &amp;lt;td&amp;gt; &amp;lt;p&amp;gt;&lt;/tt&gt;&lt;/pre&gt;
-    &lt;/blockquote&gt;
-    &lt;p&gt;
-      In the configuration file,
-      &lt;tt&gt;PCDATA&lt;/tt&gt;
-      can be thought of as non-whitespace text,
-      occurring in a context which is parsed
-      for markup and entities.
-      (Precisely, it is whatever
-      HTML::Parser returns as text that is not whitespace
-      and does not turn on the
-      &lt;tt&gt;is_cdata&lt;/tt&gt;
-      flag.)
-      What this line says is that, whenever
-      a &lt;tt&gt;PCDATA&lt;/tt&gt; token
-      is rejected,
-      Marpa::R2::HTML should try to fix the problem as follows:
-    &lt;/p&gt;
-    &lt;ul&gt;
-      &lt;li&gt;1. If possible, start an
-        &lt;tt&gt;&amp;lt;html&amp;gt;&lt;/tt&gt;
-        element.
-      &lt;/li&gt;
-      &lt;li&gt;2. Otherwise, if possible, start a
-        &lt;tt&gt;&amp;lt;head&amp;gt;&lt;/tt&gt;
-        element.
-      &lt;/li&gt;
-      &lt;li&gt;3. Otherwise, if possible, start a
-        &lt;tt&gt;&amp;lt;body&amp;gt;&lt;/tt&gt;
-        element.
-      &lt;/li&gt;
-      &lt;li&gt;4. Otherwise, if possible, start a
-        &lt;tt&gt;&amp;lt;tbody&amp;gt;&lt;/tt&gt;
-        element.
-      &lt;/li&gt;
-      &lt;li&gt;5. Otherwise, if possible, start a
-        &lt;tt&gt;&amp;lt;tr&amp;gt;&lt;/tt&gt;
-        element.
-      &lt;/li&gt;
-      &lt;li&gt;6. Otherwise, if possible, start a
-        &lt;tt&gt;&amp;lt;td&amp;gt;&lt;/tt&gt;
-        element.
-      &lt;/li&gt;
-      &lt;li&gt;7. Otherwise, if possible, start a
-        &lt;tt&gt;&amp;lt;p&amp;gt;&lt;/tt&gt;
-        element.
-      &lt;/li&gt;
-      &lt;li&gt;8. Otherwise, if it is possible to end
-        a non-structural or a 
-        &lt;tt&gt;&amp;lt;head&amp;gt;&lt;/tt&gt;
-	element at this point, do so.
-	(At any point, it will be possible to end
-	at most one element.)
-      &lt;/li&gt;
-      &lt;li&gt;9. Finally, if nothing else works, mark the &quot;PCDATA&quot; as cruft.
-      &lt;/li&gt;
-    &lt;/ul&gt;
-    &lt;p&gt;
-      Of these alternatives, the first three allow Marpa::R2::HTML to supply missing
-      structural start tags, as required by the standards.
-      Alternatives 4, 5 and 6 allow Marpa::R2::HTML to continue building a table
-      if table-building is in progress.
-      (But note that the line does not allow Marpa::R2::HTML
-      to deal with rejected
-      PCDATA by starting a new table.)
-      Alternative 7 allows Marpa::R2::HTML to start a new
-      &lt;tt&gt;&amp;lt;p&amp;gt;&lt;/tt&gt;
-      element if PCDATA is rejected.
-      &lt;p&gt;
-      Alternatives 8 and 9 are implicit.
-      By default, after all the explicit Ruby Slippers
-      alternatives have been tried,
-      Marpa::R2::HTML will create a Ruby Slippers tags
-      for any end tag that is allowed,
-      with two exceptions:
-      Marpa::R2::HTML will not create
-      &lt;tt&gt;&amp;lt;/body&amp;gt;&lt;/tt&gt; and
-      &lt;tt&gt;&amp;lt;/html&amp;gt;&lt;/tt&gt; end tags except at the end of file.
-      And Marpa::R2::HTML always reserves the possibility of,
-      as a last resort,
-      labeling a token as &quot;cruft&quot; and moving on.
-    &lt;/p&gt;
-    &lt;p&gt;
-      Once you understand how the Ruby Slippers configuration lines work,
-      the fix in this case becomes obvious:
-      In the expanded line,
-      elminate the
-      &lt;tt&gt;&amp;lt;p&amp;gt;&lt;/tt&gt;
-      as one of the alternatives considered for the Ruby Slippers.
-      In terms of the expanded line,
-      this means changing it to
-    &lt;/p&gt;
-    &lt;blockquote&gt;
-      &lt;pre&gt;&lt;tt&gt;PCDATA -&amp;gt; &amp;lt;html&amp;gt; &amp;lt;head&amp;gt; &amp;lt;body&amp;gt; &amp;lt;tbody&amp;gt; &amp;lt;tr&amp;gt; &amp;lt;td&amp;gt;&lt;/tt&gt;&lt;/pre&gt;
-    &lt;/blockquote&gt;
-    &lt;p&gt;
-      In terms of the original set of lines,
-      this means changing the one for the
-      &lt;tt&gt;@inline_rubies&lt;/tt&gt;
-      list:
-    &lt;/p&gt;
-    &lt;blockquote&gt;
-      &lt;pre&gt;&lt;tt&gt;@inline_rubies = @block_rubies &amp;lt;tbody&amp;gt; &amp;lt;tr&amp;gt; &amp;lt;td&amp;gt;&lt;/tt&gt;&lt;/pre&gt;
-    &lt;/blockquote&gt;
-    &lt;p&gt;
-      In the Ruby Slippers configuration lines of
-      the default configuration file,
-      the &lt;tt&gt;@inline_rubies&lt;/tt&gt; list is the only place that
-      the
-      &lt;tt&gt;&amp;lt;p&amp;gt;&lt;/tt&gt; tag is mentioned.
-      So changing
-      &lt;tt&gt;@inline_rubies&lt;/tt&gt;
-      has effect
-      of eliminating
-      &lt;tt&gt;&amp;lt;p&amp;gt;&lt;/tt&gt;
-      as an optional start tag.
-      Only &lt;tt&gt;&amp;lt;p&amp;gt;&lt;/tt&gt; tags actually in the physical
-      input will be recognized.
-      This is what was actually done
-      in
-      &lt;a href=&quot;https://gist.github.com/3925571&quot;&gt;
-        &lt;tt&gt;g/config/reject_text.txt&lt;/tt&gt;,
-        the configuration file used in our example&lt;/a&gt;.
-    &lt;/p&gt;
-    &lt;h3&gt;Code and comments&lt;/h3&gt;
     &lt;p&gt;
       Comments on this post can be sent to the Marpa Google Group:
       &lt;code&gt;marpa-parser@googlegroups.com&lt;/code&gt;

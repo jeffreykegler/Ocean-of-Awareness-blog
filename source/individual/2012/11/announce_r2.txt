@@ -1,0 +1,45 @@
+Announcing a full release of Marpa::R2
+  <h3>Announcing Marpa::R2</h3>
+      <!--
+      marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
+      -->
+  <p>
+  <a href="https://metacpan.org/release/Marpa-R2">
+  Marpa::R2</a> is now in full, official release.
+  For those new to this blog, Marpa::R2 is an efficient, practical general
+  BNF parser, targeted at parsing application too complex for
+  regular expressions.
+  Marpa::R2 is based on
+  <a href="http://jeffreykegler.github.com/Marpa-web-site/">
+  the Marpa parsing algorithm</a>,
+  New but based on the published literature,
+  the Marpa algorithm
+  parses every class of grammar in practical use today
+  in linear time.
+  </p>
+  <p>Marpa::R2 is the successor to Marpa::XS
+  and has these new features:
+  <ul>
+  <li>
+  <p>runs on Windows.
+  </p>
+  <li>
+  <p>has better error reporting.
+  </p>
+  <li>
+  <p>is faster.
+  </p>
+  <li><p>
+  has a cleaner, simpler interface.
+  </p>
+  </ul>
+    <h3>Comments</h3>
+    <p>
+      The Windows port of Marpa was the work of Jean-Damien Durand,
+      who utilized Alberto Sim&otilde;es'
+      <a href="http://search.cpan.org/dist/Config-AutoConf/">
+      Config::AutoConf</a>.
+      Comments on this post
+      can be sent to the Marpa Google Group:
+      <code>marpa-parser@googlegroups.com</code>
+    </p>
