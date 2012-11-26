@@ -8,12 +8,12 @@ Announcing a full release of Marpa::R2
         Marpa::R2</a>
       is now in full, official release.
       For those new to this blog, Marpa::R2 is an efficient, practical general
-      BNF parser, targeted at parsing application too complex for
+      BNF parser, targeted at applications too complex for
       regular expressions.
       Marpa::R2 is based on
       <a href="http://jeffreykegler.github.com/Marpa-web-site/">
         the Marpa parsing algorithm</a>.
-      New but based on the published literature,
+      New, but squarely based on the published literature,
       the Marpa algorithm
       parses every class of grammar in practical use today
       in linear time.
@@ -39,7 +39,9 @@ Announcing a full release of Marpa::R2
         </p>
       </li>
     </ul>
-    <p>Marpa::XS remains available and,
+    <p>
+    <a href="https://metacpan.org/module/Marpa::XS">Marpa::XS</a>
+    remains available and,
       since changes to it are now on a "bug fix only" basis,
       should be quite stable.
       While Marpa::R2's interface will have a familiar look
@@ -48,7 +50,10 @@ Announcing a full release of Marpa::R2
     </p>
     <p>
       Those who have been following this blog may have noticed
-      that a new BNF interface has been added to Marpa::R2.
+      that
+      <a href="https://metacpan.org/module/Marpa::R2::Changes">
+      a new BNF interface</a>
+      has been added to Marpa::R2.
       This is growing --
       I have recently added scannerless parsing to it,
       which means that applications will be able to run
