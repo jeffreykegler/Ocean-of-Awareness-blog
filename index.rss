@@ -68,7 +68,7 @@
       a new BNF interface&lt;/a&gt;
       has been added to Marpa::R2.
       This is growing --
-      I have recently added scannerless parsing to it,
+      I am currenly adding scannerless parsing to it,
       which means that applications will be able to run
       Marpa::R2 without a lexer.
       Because the BNF interface is new
