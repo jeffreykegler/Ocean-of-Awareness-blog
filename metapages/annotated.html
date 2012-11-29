@@ -135,6 +135,26 @@
 	files for arbitrary context-free expressions.
           </p>
 	  </li>
+	  <li>
+	<p><a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/11/iterative.html">
+	A Marpa tutorial: iterative parser development</a>.
+	Unanchored search and error reporting are examples of the same general problem:
+	finding a desired pattern/language,
+	when it is embedded in other, aribitrary, text.
+	This approach can also be used as a test-driven method
+	for parser development.
+	<p>You start with a small subset,
+	and to test how far you've succeeded,
+	you "search" for it in the text you are trying to parse.
+	As you add syntax, you "find" more and larger "targets" in your texts.
+	When all "searches" of valid texts
+	finds a single "target" which spans the entire text,
+	the language is finished.
+	<p>This tutorial gives an example of one iteration in the development
+	cycle of a parser.
+	It takes the language of the previous post
+	(a small subset of Perl expressions)
+	and extends a bit.
       </ul>
       <p>
         These next posts, while not full-fledged tutorials,
