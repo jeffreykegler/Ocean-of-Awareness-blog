@@ -10,6 +10,104 @@
     <language>en</language>
 
   <item>
+    <title>Smart Whitespace and the Ruby Slippers</title>
+    <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/12/whitespace.html</link>
+    <description>  &lt;h3&gt;Scannerless parsing&lt;/h3&gt;
+    &lt;p&gt;
+      &lt;!--
+      marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
+      --&gt;
+      I've been working,
+      (and am quite far along)
+      on a Marpa interface that does not require a lexer (aka scanner).
+      The lexing is included in the parser.
+      Here one example that I have working:
+      the synopsis from
+      &lt;a href=&quot;https://metacpan.org/module/Marpa::R2&quot;&gt;
+      the main Marpa::R2 POD page&lt;/a&gt;,
+      rewritten to do its own lexing.
+    &lt;/p&gt;
+    &lt;blockquote&gt;
+      &lt;pre&gt;
+    &lt;tt&gt;
+:start ::= Expression
+Expression ::=
+       Number
+    || Expression '*' Expression action =&gt; do_multiply
+    || Expression '+' Expression action =&gt; do_add
+Number ~ digits '.' digits action =&gt; do_literal
+Number ~ digits action =&gt; do_literal
+digits ~ [\d]+
+    &lt;/tt&gt;
+      &lt;/pre&gt;
+    &lt;/blockquote&gt;
+    &lt;p&gt;Here the notation is that of my last post,
+    as documented here.
+    New for the scannerless parser is
+    &lt;ul&gt;
+    &lt;li&gt;
+    the &lt;tt&gt;:start&lt;/tt&gt;
+    pseudo-symbol, which indicates the start rule
+    &lt;li&gt;
+    Rules with a tilde (&quot;&lt;tt&gt;~&lt;/tt&gt;&quot;) to separate 
+    LHS from RHS: these indicate rules whose
+    whitespace is to be left as-is.
+    &lt;li&gt;Single-quoted strings, to tell Marpa which
+    character to look for.
+    &lt;li&gt;Square-bracketed character classes, to
+    tell Marpa to look for a class of characters.
+    Their interpretation is done by Perl,
+    and therefore the allowed classes are exactly those
+    accepted by your version of Perl.
+    &lt;/ul&gt;
+    &lt;p&gt;My recent posts has been tutorial.
+    My work on scannerless parsing is well advanced,
+    but not quite ready for a tutorial presentation,
+    so this post will be conceptual.
+    It will discuss an interesting issues that arises in
+    scannerless parsing,
+    one which Perl 6 also had to solve,
+    and which Marpa solves it in a new and different way.
+    That issue is whitespace.
+    &lt;/p&gt;
+    &lt;h3&gt;Dealing with whitespace&lt;/h3&gt;
+    &lt;p&gt;For the statements with a declaration operator of &lt;tt&gt;::=&lt;/tt&gt;,
+    whitespace is handled automatically by Marpa.
+    Valid strings in the above language, are
+    &quot;&lt;tt&gt;42*3+7&lt;/tt&gt;&quot;,
+    &quot;&lt;tt&gt;42 * 3 + 7&lt;/tt&gt;&quot; and
+    &quot;&lt;tt&gt;42 * 3+7&lt;/tt&gt;&quot;,
+    all which yield 133 as the answer.
+    One trick is to, on one hand, allow whitespace to be optional
+    and, on the other hand, recognize that strings like &quot;&lt;tt&gt;42&lt;/tt&gt;&quot;
+    must be a single number.
+    That is the parser should not recognizer optional whitespace
+    between the two digits and decide there are two numbers:
+    &quot;&lt;tt&gt;4&lt;/tt&gt;&quot; and 
+    &quot;&lt;tt&gt;2&lt;/tt&gt;&quot;.
+    &lt;/p&gt;
+    &lt;p&gt;
+    The Perl 6 project has already taken on scannerless parsing,
+    and it can solve problems of this sort using &quot;smart whitespace&quot;.
+    Smart whitespace is whitespace which is optional, except between
+    word characters.
+    Stated another way, smart whitespace is either explicit whitespace,
+    or a word boundary.
+    (The term &quot;smart whitespace&quot; is mine,
+    but the idea is from Perl 6.)
+    In the case of &quot;&lt;tt&gt;42&lt;/tt&gt;&quot;,
+    &quot;&lt;tt&gt;4&lt;/tt&gt;&quot; and 
+    &quot;&lt;tt&gt;2&lt;/tt&gt;&quot; are both word characters, so there is no
+    word boundary between them, and therefore no smart whitespace.
+    &lt;/p&gt;
+    &lt;h3&gt;Code and comments&lt;/h3&gt;
+    &lt;p&gt;
+      Comments on this post
+      can be sent to the Marpa Google Group:
+      &lt;code&gt;marpa-parser@googlegroups.com&lt;/code&gt;
+    &lt;/p&gt;</description>
+  </item>
+  <item>
     <title>Announcing a full release of Marpa::R2</title>
     <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/11/announce_r2.html</link>
     <description>  &lt;h3&gt;Announcing Marpa::R2&lt;/h3&gt;
@@ -887,593 +985,6 @@ reserved_word ::= kw_action | kw_assoc | kw_separator | kw_proper
       to produce improved versions
       of itself.
     &lt;/p&gt;
-    &lt;h3&gt;Comments&lt;/h3&gt;
-    &lt;p&gt;
-      Comments on this post can be sent to the Marpa Google Group:
-      &lt;code&gt;marpa-parser@googlegroups.com&lt;/code&gt;
-    &lt;/p&gt;</description>
-  </item>
-  <item>
-    <title>A Marpa DSL tutorial: Error reporting made easy</title>
-    <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/error.html</link>
-    <description>  &lt;p&gt;
-      &lt;!--
-      marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
-      --&gt;
-      Using
-      Marpa's facilities for error reporting,
-      a quickly written domain-specific language can,
-      as of its first draft,
-      have error reporting whose helpfulness and precision exceeds
-      that of carefully hand-crafted production compilers.
-      This post will show how, with an example.
-    &lt;/p&gt;&lt;p&gt;
-      Two techniques will be used.
-      First and most basic,
-      Marpa's knowledge of the point
-      at which the parse
-      can no longer proceed is 100% accurate and immediate.
-      This is not the case with yacc-derived parsers,
-      and is not the case with most recursive descent parsers.
-    &lt;/p&gt;
-    &lt;p&gt;
-      However, even Marpa's 100% accuracy in pinpointing
-      the problem location is only accuracy
-      in the technical sense -- it cannot take into account what the
-      programmer intended.
-      A second technique allows the programmer to double-check his
-      intentions against what the parser has actually seen.
-      Marpa can tell the programmer exactly how it thinks
-      the input parsed, up to the point at which it could no
-      longer proceed.
-      The Marpa parser can report the answer to questions like
-    &lt;/p&gt;&lt;blockquote&gt;&lt;p&gt;
-        &quot;What was the last statement you successfully parsed?&quot;&lt;br&gt;
-        &quot;What was the last expression you successfully parsed?&quot;&lt;br&gt;
-        &quot;What was the last arithmetic expression you successfully parsed?&quot;&lt;br&gt;
-        &quot;Where did the last successfully parsed block start?  End?&quot;&lt;br&gt;
-      &lt;/p&gt;
-    &lt;/blockquote&gt;
-    &lt;h3&gt;The language&lt;/h3&gt;
-    &lt;p&gt;
-      To focus on the logic of the error reporting,
-      I looked for a language that was error-prone,
-      but extremely simple.
-      For this purpose,
-      prefix arithmetic is like a gift from the dakinis.
-      It is almost trivial in concept,
-      and almost impossible to get right when it is more than a few
-      characters long.
-      Two valid strings in this language are
-      &lt;q&gt;say + 1 2&lt;/q&gt;
-      and
-      &lt;q&gt;+++ 1 2 3 + + 1 2 4&lt;/q&gt;.
-      Their results are, in order, 3 and 13.
-    &lt;/p&gt;&lt;p&gt;
-      I restricted the calculator to addition, because even with one
-      operator, prefix notation is more than confusing enough to serve our purposes.
-      I have included an optional
-      &lt;tt&gt;say&lt;/tt&gt;
-      keyword, in order
-      to illustrate rejection of a token by type.
-      In pure prefix arithmetic, either all tokens are valid or none are.
-      The
-      &lt;tt&gt;say&lt;/tt&gt;
-      keyword is only valid as the first token.
-    &lt;/p&gt;&lt;h3&gt;The grammar&lt;/h3&gt;&lt;p&gt;
-      The full code for this post is in
-      &lt;a href=&quot;https://gist.github.com/3974816&quot;&gt;
-        a Github gist&lt;/a&gt;.
-      It was run using
-      &lt;a href=&quot;https://metacpan.org/release/JKEGL/Marpa-R2-2.023_008&quot;&gt;
-        a release candidate for the full release of Marpa::R2&lt;/a&gt;.
-      Here is the grammar.
-    &lt;/p&gt;&lt;blockquote&gt;&lt;pre&gt;&lt;tt&gt;
-my $prefix_grammar = Marpa::R2::Grammar-&amp;gt;new(
-    {   start          =&amp;gt; 'Script',
-        actions        =&amp;gt; 'My_Actions',
-        default_action =&amp;gt; 'do_arg0',
-        rules          =&amp;gt; [ &amp;lt;&amp;lt;'END_OF_RULES' ]
-Script ::=
-     Expression
-   | kw_say Expression action =&amp;gt; do_arg1
-Expression ::=
-     Number
-   | op_add Expression Expression action =&amp;gt; do_add
-END_OF_RULES
-    }
-);
-&lt;/tt&gt;&lt;/pre&gt;&lt;/blockquote&gt;
-    &lt;p&gt;The rules are specified in another DSL,
-      of the kind I've used
-      &lt;a href=&quot;http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/dsl.html&quot;&gt;
-        in previous posts&lt;/a&gt;.
-      This one is incorporated in Marpa::R2 itself,
-      and is
-      &lt;a href=&quot;https://metacpan.org/module/JKEGL/Marpa-R2-2.023_008/pod/BNF.pod&quot;&gt;
-        documented here&lt;/a&gt;.
-      Here are its features relevant to this example:
-    &lt;/p&gt;&lt;dl&gt;
-      &lt;dt&gt;&lt;strong&gt;&lt;tt&gt;::=&lt;/tt&gt;&lt;/strong&gt;&lt;/dt&gt;
-      &lt;dd&gt;A BNF rule in LHS
-        &lt;tt&gt;::=&lt;/tt&gt;
-        RHS form&lt;/dd&gt;
-      &lt;dt&gt;&lt;strong&gt;&lt;tt&gt;|&lt;/tt&gt;&lt;/strong&gt;&lt;/dt&gt;
-      &lt;dd&gt;Separates alternative RHS's at the
-        &lt;strong&gt;same&lt;/strong&gt;
-        precedence level&lt;/dd&gt;
-      &lt;dt&gt;&lt;strong&gt;&lt;tt&gt;=&amp;gt;&lt;/tt&gt;&lt;/strong&gt;&lt;/dt&gt;
-      &lt;dd&gt;&lt;tt&gt;keyword =&amp;gt; value&lt;/tt&gt;, where
-        &lt;tt&gt;keyword&lt;/tt&gt;
-        is the name of an adverb.&lt;/dd&gt;
-    &lt;/dl&gt;
-    &lt;p&gt;The
-      &quot;&lt;tt&gt;action =&amp;gt; do_add&lt;/tt&gt;&quot;
-      adverb indicates that the semantics for the alternative
-      are in the Perl closure named
-      &lt;tt&gt;do_add&lt;/tt&gt;.
-    &lt;/p&gt;&lt;p&gt;The rest of the grammar's definition will be familiar to Marpa users.
-      &lt;tt&gt;Script&lt;/tt&gt;
-      is the start symbol,
-      the Perl closures implementing semantics are to be found in the
-      &lt;tt&gt;My_Actions&lt;/tt&gt;
-      package,
-      and where no semantics are explicitly specified,
-      the Perl closure
-      &lt;tt&gt;do_arg0&lt;/tt&gt;
-      is the default.
-    &lt;/p&gt;&lt;h3&gt;The semantics&lt;/h3&gt;
-    &lt;p&gt;The semantics for this example are easy.
-    &lt;/p&gt;&lt;blockquote&gt;&lt;pre&gt;&lt;tt&gt;
-sub My_Actions::do_add  { shift; return $_[1] + $_[2] }
-sub My_Actions::do_arg0 { shift; return shift; }
-sub My_Actions::do_arg1 { shift; return $_[1]; }
-&lt;/tt&gt;&lt;/pre&gt;&lt;/blockquote&gt;
-    &lt;p&gt;
-      The first argument to a Marpa semantic closure is a &quot;per-parse variable&quot;,
-      which is not used in this application.
-      The other arguments are the values of the child nodes,
-      as determined recursively and in lexical order.
-    &lt;/p&gt;&lt;h3&gt;The lexing table&lt;/h3&gt;
-    &lt;p&gt;
-      In this post,
-      I am skipping around in the code --
-      &lt;a href=&quot;https://gist.github.com/3974816&quot;&gt;
-        the full code is in the gist&lt;/a&gt;.
-      But lexical analysis is of particular interest to new
-      Marpa users.
-      The lexer I use for this example is overkill --
-      table-driven and using Perl's progressive matching
-      capabilities, it is capable of serving a much more
-      complex language.
-      (I talked about lexing more
-      &lt;a href=&quot;http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/dsl.html&quot;&gt;
-        in a previous example&lt;/a&gt;.)
-      Here is the lexing table:
-    &lt;/p&gt;
-    &lt;blockquote&gt;
-      &lt;pre&gt;
-my @terminals = (
-    [ Number =&amp;gt; qr/\d+/xms,   'Number' ],
-    [ op_add =&amp;gt; qr/[+]/xms,   'Addition operator' ],
-    [ kw_say =&amp;gt; qr/say\b/xms, qq{&quot;say&quot; keyword} ],
-);
-&lt;/pre&gt;&lt;/blockquote&gt;
-    &lt;p&gt;The lexing table is an array of 3-element arrays.
-      Each sub-array contains the symbol name, a regular expression
-      that is used to recognize it, and a &quot;long name&quot;,
-      a human-readable name more appropriate for error messages
-      than the symbol name.
-      For some languages,
-      the order of our lexing tables may be significant,
-      although in the case of this language it makes no difference.
-    &lt;/p&gt;
-    &lt;h3&gt;Types of parsing error&lt;/h3&gt;
-    &lt;p&gt;Before plunging into the error-handling code,
-      I will describe the forms parsing errors take
-      and the messages they produce.
-    &lt;/p&gt;
-    &lt;h4&gt;No valid token&lt;/h4&gt;
-    &lt;p&gt;The lexer may reach a point in the input
-      where it does not find one of the allowed tokens.
-      An example in this language would be an input with an
-      an exclamation point.
-      This is no need to talk much about this kind of error,
-      which has always been relatively easy to diagnose,
-      pinpoint and, usually, to fix.
-    &lt;/p&gt;
-    &lt;h4&gt;The parser rejects a token&lt;/h4&gt;
-    &lt;p&gt;
-      In some cases the lexer finds a token,
-      but it is not one
-      that the parser will accept at that point,
-      so the parser rejects the token.
-      An example for this language would be the input
-      &quot;&lt;tt&gt;+ 1 say 2&lt;/tt&gt;&quot;, which causes the following diagnostic:
-    &lt;/p&gt;
-    &lt;blockquote&gt;
-      &lt;pre&gt;
-Last expression successfully parsed was:  1
-A problem occurred here:  say 2
-Parser rejected token &quot;&quot;say&quot; keyword&quot;
-&lt;/pre&gt;
-    &lt;/blockquote&gt;
-    &lt;p&gt;Marpa successfully determined that
-      &quot;&lt;tt&gt;1&lt;/tt&gt;&quot; is a valid expression of the language, but
-      &quot;&lt;tt&gt;+ 1&lt;/tt&gt;&quot; is not.
-    &lt;/p&gt;
-    &lt;h4&gt;The parser becomes exhausted&lt;/h4&gt;
-    &lt;p&gt;
-      In other cases, the parser may &quot;dead end&quot; -- reach a point
-      where no more input can be accepted.
-      One example is with the input
-      &quot;&lt;tt&gt;+ 1 2 3 + + 1 2 4&lt;/tt&gt;&quot;.
-      This causes the following diagnostic:
-    &lt;/p&gt;&lt;blockquote&gt;&lt;pre&gt;
-Last expression successfully parsed was: + 1 2
-The parse became exhausted here: &quot; 3 + + 1 2 4&quot;
-&lt;/pre&gt;&lt;/blockquote&gt;
-    &lt;p&gt;The parser has completed a prefix expression.
-      Unlike infix and postfix expressions, once a prefix
-      expression has been
-      allowed to end
-      there is no way to &quot;extend&quot; or &quot;restart&quot; it.
-      The parse is &quot;exhausted&quot;.
-    &lt;/p&gt;&lt;p&gt;A second example of an exhausted parse
-      occurs with the the input
-      &quot;&lt;tt&gt;1 + 2 +3  4 + 5 + 6 + 7&lt;/tt&gt;&quot;.
-      Here is the diagnostic:
-    &lt;/p&gt;&lt;blockquote&gt;&lt;pre&gt;
-Last expression successfully parsed was: 1
-The parse became exhausted here: &quot; + 2 +3  4 + 5 + 6 + 7&quot;
-&lt;/pre&gt;&lt;/blockquote&gt;
-    &lt;h4&gt;The input is fully accepted, but there is no parse&lt;/h4&gt;&lt;p&gt;
-      Finally, it may happen that lexer and parser read and accept
-      the entire input, but do not find a valid parse in it.
-      For example, if the input is
-      &quot;&lt;tt&gt;+++&lt;/tt&gt;&quot;, the diagnostic will be:
-    &lt;/p&gt;&lt;blockquote&gt;&lt;pre&gt;
-No expression was successfully parsed
-No parse was found, after reading the entire input
-&lt;/pre&gt;&lt;/blockquote&gt;
-    &lt;p&gt;The input was a good start for a prefix expression,
-      but no numbers were ever found,
-      and our DSL reports that it never recognized any
-      prefix expressions.
-    &lt;/p&gt;&lt;p&gt;A more complicated case is this input:
-      &quot;&lt;tt&gt;++1 2++&lt;/tt&gt;&quot;.
-      Here is what our DSL tells us:
-    &lt;/p&gt;&lt;blockquote&gt;&lt;pre&gt;
-Last expression successfully parsed was: +1 2
-No parse was found, after reading the entire input
-&lt;/pre&gt;&lt;/blockquote&gt;
-    &lt;p&gt;
-      Our DSL did find a good expression, and tells us where it was.
-      If there is more than one good expression, our DSL tells us
-      the most recent.
-      With input &quot;&lt;tt&gt;++1 2++3 4++&lt;/tt&gt;&quot;,
-      the diagnostic becomes
-    &lt;/p&gt;&lt;blockquote&gt;&lt;pre&gt;
-Last expression successfully parsed was: +3 4
-No parse was found, after reading the entire input
-&lt;/pre&gt;&lt;/blockquote&gt;
-    &lt;p&gt;In fact, if we thought it would be helpful
-      our DSL could show all the expressions found,
-      or the last
-      &lt;i&gt;N&lt;/i&gt;
-      expressions for some
-      &lt;i&gt;N&lt;/i&gt;.
-      This is a simple language with nothing but expressions
-      involving a single operator.
-      More interesting languages will have statements and blocks,
-      and layers of subexpressions.
-      The logic below can be straightforwardly modified to show us
-      as much about these as we think will be helpful.
-    &lt;/p&gt;&lt;h3&gt;Parsing the DSL&lt;/h3&gt;
-    &lt;blockquote&gt;&lt;pre&gt;
-sub my_parser {
-    my ( $grammar, $string ) = @_;
-    my @positions = (0);
-    my $recce = Marpa::R2::Recognizer-&amp;gt;new( { grammar =&amp;gt; $grammar } );
-
-    my $self = bless {
-        grammar   =&amp;gt; $grammar,
-        input     =&amp;gt; \$string,
-        recce     =&amp;gt; $recce,
-        positions =&amp;gt; \@positions
-        },
-        'My_Error';
-
-    my $length = length $string;
-    pos $string = $positions[-1];
-
-    &lt;big&gt;&lt;b&gt;... &quot;Reading the tokens&quot; goes here ...&lt;/b&gt;&lt;/big&gt;
-
-    my $value_ref = $recce-&amp;gt;value;
-    if ( not defined $value_ref ) {
-        die $self-&amp;gt;show_last_expression(), &quot;\n&quot;,
-            &quot;No parse was found, after reading the entire input\n&quot;;
-    }
-    return ${$value_ref};
-} ## end sub my_parser
-&lt;/pre&gt;&lt;/blockquote&gt;
-    &lt;p&gt;The above closure takes a grammar and an input string, and either produces a parse
-      value,
-      or a diagnostic telling us exactly why it could not.
-      For truly helpful diagnostics, I find it necessary to be able to quote
-      the input exactly.
-      The
-      &lt;tt&gt;@positions&lt;/tt&gt;
-      array will be used to map the locations that the Marpa
-      parser uses back to positions in the original input string.
-      Marpa location 0 is always before any input symbol, so it is initialized
-      to string position 0.
-    &lt;/p&gt;
-    &lt;p&gt;
-      The
-      &lt;tt&gt;$self&lt;/tt&gt;
-      object is a convenience.
-      It collects the information the error handler needs,
-      and allows an elegant syntax for the error-handling calls.
-    &lt;/p&gt;
-    &lt;p&gt;The loop for reading tokens will be described below.
-      After it, but before the
-      &lt;tt&gt;return&lt;/tt&gt;,
-      is our first error check.
-      &quot;No parse&quot; errors show up after all the tokens have been read,
-      when the
-      &lt;tt&gt;$recce-&amp;gt;value()&lt;/tt&gt;
-      call returns a Perl
-      &lt;tt&gt;undef&lt;/tt&gt;.
-      In that case,
-      we produce the message we showed above.
-      The tricky details are hidden in the
-      &lt;tt&gt;show_last_expression()&lt;/tt&gt;
-      method,
-      which we will come to.
-    &lt;/p&gt;&lt;h3&gt;Reading the tokens&lt;/h3&gt;
-    &lt;blockquote&gt;
-      &lt;pre&gt;
-TOKEN: while ( pos $string &amp;lt; $length ) {
-    next TOKEN if $string =~ m/\G\s+/gcxms;    # skip whitespace
-    if ( $recce-&amp;gt;exhausted() ) {
-	die $self-&amp;gt;show_last_expression(), &quot;\n&quot;,
-	    q{The parse became exhausted here: &quot;},
-	    $self-&amp;gt;show_position( $positions[-1] ), qq{&quot;\n},
-	    ;
-    } ## end if ( $recce-&amp;gt;exhausted() )
-
-    &lt;big&gt;&lt;b&gt;...  &quot;Looping through the lexing table&quot; goes here ...&lt;/b&gt;&lt;/big&gt;
-
-    die 'A problem occurred here: ',
-	$self-&amp;gt;show_position( $positions[-1] ), &quot;\n&quot;,
-	q{No valid token was found};
-} ## end TOKEN: while ( pos $string &amp;lt; $length )
-&lt;/pre&gt;
-    &lt;/blockquote&gt;
-    &lt;p&gt;This loop implements part of our progressive matching
-      within
-      &lt;tt&gt;$string&lt;/tt&gt;,
-      and contains two of our four error checks.
-      The
-      &lt;tt&gt;exhausted()&lt;/tt&gt;
-      method check if the parse is
-      exhausted,
-      and again the hard work is done by the
-      &lt;tt&gt;show_last_expression()&lt;/tt&gt;
-      method.
-    &lt;/p&gt;&lt;p&gt;If we get through the lexing table without finding a token,
-      we produce an invalid token message
-      and report the position using the
-      &lt;tt&gt;show_position()&lt;/tt&gt;
-      method.
-      For invalid tokens, position should be all that
-      the user needs to know.
-      Position is also reported in the case of an exhausted parse.
-      Implementation of the
-      &lt;tt&gt;show_position()&lt;/tt&gt;
-      method presents
-      no difficulties -- the code can be found in the gist.
-    &lt;/p&gt;&lt;h3&gt;Looping through the lexing table&lt;/h3&gt;
-    &lt;blockquote&gt;&lt;pre&gt;
-TOKEN_TYPE: for my $t (@terminals) {
-    my ( $token_name, $regex, $long_name ) = @{$t};
-    next TOKEN_TYPE if not $string =~ m/\G($regex)/gcxms;
-    if ( defined $recce-&amp;gt;read( $token_name, $1 ) ) {
-	my $latest_earley_set_ID = $recce-&amp;gt;latest_earley_set();
-	$positions[$latest_earley_set_ID] = pos $string;
-	next TOKEN;
-    }
-    die $self-&amp;gt;show_last_expression(), &quot;\n&quot;,
-	'A problem occurred here: ',
-	$self-&amp;gt;show_position( $positions[-1] ), &quot;\n&quot;,
-	qq{Parser rejected token &quot;$long_name&quot;\n};
-} ## end TOKEN_TYPE: for my $t (@terminals)
-&lt;/pre&gt;&lt;/blockquote&gt;
-    &lt;p&gt;
-      Our innermost loop is through the lexing table,
-      checking each table entry against the input string.
-      If a match is found, the Marpa recognizer's
-      &lt;tt&gt;read()&lt;/tt&gt;
-      method is called.
-      This may fail due to our fourth and last type of error:
-      a rejected token.
-      Again,
-      &lt;tt&gt;show_position()&lt;/tt&gt;
-      reports position
-      and
-      &lt;tt&gt;show_last_expression()&lt;/tt&gt;
-      does the interesting stuff.
-    &lt;/p&gt;&lt;h3&gt;Showing the last expression&lt;/h3&gt;
-    &lt;blockquote&gt;&lt;pre&gt;&lt;tt&gt;
-sub My_Error::show_last_expression {
-    my ($self) = @_;
-    my $last_expression =
-        $self-&amp;gt;input_slice( $self-&amp;gt;last_completed_range('Expression') );
-    return
-        defined $last_expression
-        ? &quot;Last expression successfully parsed was: $last_expression&quot;
-        : 'No expression was successfully parsed';
-} ## end sub My_Error::show_last_expression
-&lt;/tt&gt;&lt;/pre&gt;&lt;/blockquote&gt;
-    &lt;p&gt;At its top level,
-      &lt;tt&gt;show_last_expression()&lt;/tt&gt;
-      finds the parse locations of the last completed
-      &lt;tt&gt;Expression&lt;/tt&gt;
-      symbol,
-      using the
-      &lt;tt&gt;last_completed_range()&lt;/tt&gt;
-      method.
-      (In Marpa,
-      as in other Earley parsers, a symbol or rule that has been recognized
-      from start to finish is said to be &quot;completed&quot;.)
-      The parse locations are passed to the
-      &lt;tt&gt;input_slice()&lt;/tt&gt;
-      method,
-      which translates them into the corresponding substring of the input
-      string.
-    &lt;/p&gt;&lt;blockquote&gt;
-      &lt;pre&gt;
-sub My_Error::input_slice {
-    my ( $self, $start, $end ) = @_;
-    my $positions = $self-&amp;gt;{positions};
-    return if not defined $start;
-    my $start_position = $positions-&amp;gt;[$start];
-    my $length         = $positions-&amp;gt;[$end] - $start_position;
-    return substr ${ $self-&amp;gt;{input} }, $start_position, $length;
-} ## end sub My_Error::input_slice
-&lt;/pre&gt;
-    &lt;/blockquote&gt;
-    &lt;h3&gt;Finding the last successful parse of a symbol&lt;/h3&gt;
-    &lt;p&gt;The
-      &lt;tt&gt;last_completed_range()&lt;/tt&gt;
-      method does the
-      complicated part of the error handling -- finding the last
-      successfully recognized (&quot;completed&quot;)
-      occurrence of a symbol.
-      The
-      &lt;tt&gt;last_completed_range()&lt;/tt&gt;
-      method does not use
-      any internals, but it certainly gets technical
-      in its use of the external methods.
-      It or something like it
-      is a prime candidate to be folded into the Marpa
-      interface someday.
-    &lt;/p&gt;&lt;p&gt;
-      Successful recognitions of a symbol are called,
-      again following standard Earley parsing terminology,
-      &quot;completions&quot;.
-      Completions are recorded by rule,
-      so the first thing that must be done is to turn the
-      symbol name into a list of those rules which have
-      that symbol on their left hand side.
-      These are called the
-      &lt;tt&gt;@sought_rules&lt;/tt&gt;.
-      We also need to initialize the loop by
-      recording the last parse location (&quot;latest Earley set&quot;).
-      &lt;tt&gt;$earley_set&lt;/tt&gt;
-      will be our loop variable.
-    &lt;/p&gt;
-    &lt;blockquote&gt;&lt;pre&gt;
-sub My_Error::last_completed_range {
-    my ( $self, $symbol_name ) = @_;
-    my $grammar      = $self-&amp;gt;{grammar};
-    my $recce        = $self-&amp;gt;{recce};
-    my @sought_rules = ();
-    for my $rule_id ( $grammar-&amp;gt;rule_ids() ) {
-        my ($lhs) = $grammar-&amp;gt;rule($rule_id);
-        push @sought_rules, $rule_id if $lhs eq $symbol_name;
-    }
-    die &quot;Looking for completion of non-existent rule lhs: $symbol_name&quot;
-        if not scalar @sought_rules;
-    my $latest_earley_set = $recce-&amp;gt;latest_earley_set();
-    my $earley_set        = $latest_earley_set;
-
-    &lt;big&gt;&lt;b&gt;... &quot;Traversing the Earley sets&quot; goes here ...&lt;/b&gt;&lt;/big&gt;
-
-    return if $earley_set &amp;lt; 0;
-    return ( $first_origin, $earley_set );
-} ## end sub My_Error::last_completed_range
-&lt;/pre&gt;&lt;/blockquote&gt;
-    &lt;p&gt;
-      Once we have traversed the Earley sets, we need only return
-      the appropriate value.
-      If the Earley set number fell below 0, we never found any completions
-      of the &quot;sought rules&quot;,
-      a circumstance which we report with a bare
-      &lt;tt&gt;return&lt;/tt&gt;
-      statement.
-      Otherwise,
-      &lt;tt&gt;$first_origin&lt;/tt&gt;
-      and
-      &lt;tt&gt;$earley_set&lt;/tt&gt;
-      will be set to the first and last parse locations of the completion,
-      and we return them.
-    &lt;/p&gt;
-    &lt;h3&gt;Traversing the Earley sets&lt;/h3&gt;
-    &lt;p&gt;This is our final code sample, and the buck stops here.
-      Marpa::R2 introduced more detailed user access to the progress reporting
-      information, and
-      &lt;a href=&quot;https://metacpan.org/module/JKEGL/Marpa-R2-2.023_008/pod/Progress.pod&quot;&gt;
-        that interface&lt;/a&gt;
-      is used here.
-    &lt;/p&gt;
-    &lt;p&gt;We traverse the Earley sets in reverse order,
-      beginning with the latest and going back, if necessary to Earley set 0.
-      For each Earley sets, there are &quot;progress items&quot;, reports of the progress
-      as of that Earley set.
-      Of these, we are only interested in completions,
-      which have a &quot;dot position&quot; of -1.
-      (Those interested in a fuller explanation of &quot;dot positions&quot;,
-      progress items, and
-      progress reports, can look in
-      &lt;a href=&quot;https://metacpan.org/module/JKEGL/Marpa-R2-2.023_008/pod/Progress.pod&quot;&gt;
-        the documentation for progress reports&lt;/a&gt;.)
-      Of the completions, we are interested only in those for one of
-      the
-      &lt;tt&gt;@sought_rules&lt;/tt&gt;.
-    &lt;/p&gt;
-    &lt;p&gt;
-      For any given set of sought rules, more than one might end at
-      an given Earley set.
-      Usually we are most interested in the longest of these,
-      and this logic assumes that we are only interested in the
-      longest completion.
-      We check if the start of the completion (its &quot;origin&quot;) is prior to
-      our current match, and if so its becomes our new
-      &lt;tt&gt;$first_origin&lt;/tt&gt;.
-    &lt;/p&gt;
-    &lt;p&gt;&lt;tt&gt;$first_origin&lt;/tt&gt;
-      was initialized to an non-existent Earley set,
-      higher in number than any actual one.
-      Once out of the loop through the progress items, we check if
-      &lt;tt&gt;$first_origin&lt;/tt&gt;
-      is still at its initialized value.
-      If so, we need to iterate backward one more Earley set.
-      If not, we are done, and
-      &lt;tt&gt;$first_origin&lt;/tt&gt;
-      and
-      &lt;tt&gt;$earley_set&lt;/tt&gt;
-      contain the information that we were looking for -- the start and end
-      locations of the most recent longest completion of one of the
-      &lt;tt&gt;@sought_rules&lt;/tt&gt;.
-    &lt;/p&gt;&lt;blockquote&gt;
-      &lt;pre&gt;
-my $first_origin = $latest_earley_set + 1;
-EARLEY_SET: while ( $earley_set &amp;gt;= 0 ) {
-    my $report_items = $recce-&amp;gt;progress($earley_set);
-    ITEM: for my $report_item ( @{$report_items} ) {
-	my ( $rule_id, $dot_position, $origin ) = @{$report_item};
-	next ITEM if $dot_position != -1;
-	next ITEM if not scalar grep { $_ == $rule_id } @sought_rules;
-	next ITEM if $origin &amp;gt;= $first_origin;
-	$first_origin = $origin;
-    } ## end ITEM: for my $report_item ( @{$report_items} )
-    last EARLEY_SET if $first_origin &amp;lt;= $latest_earley_set;
-    $earley_set--;
-} ## end EARLEY_SET: while ( $earley_set &amp;gt;= 0 )
-&lt;/pre&gt;
-    &lt;/blockquote&gt;
     &lt;h3&gt;Comments&lt;/h3&gt;
     &lt;p&gt;
       Comments on this post can be sent to the Marpa Google Group:

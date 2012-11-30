@@ -1,5 +1,5 @@
-Smart Whitespace and the Ruby Slipper
-  <h3>Whitespace and scannerless parsing</h3>
+Smart Whitespace and the Ruby Slippers
+  <h3>Scannerless parsing</h3>
     <p>
       <!--
       marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
@@ -8,9 +8,11 @@ Smart Whitespace and the Ruby Slipper
       (and am quite far along)
       on a Marpa interface that does not require a lexer (aka scanner).
       The lexing is included in the parser.
-      Here the example in the Marpa::R2 synopsis, rewritten for Marpa's
-      scannerless interface:
-      <blockquote>
+      Here one example that I have working:
+      the synopsis from
+      <a href="https://metacpan.org/module/Marpa::R2">
+      the main Marpa::R2 POD page</a>,
+      rewritten to do its own lexing.
     </p>
     <blockquote>
       <pre>
@@ -25,8 +27,66 @@ Number ~ digits action => do_literal
 digits ~ [\d]+
     </tt>
       </pre>
-      </blockquote>
-      <p>
+    </blockquote>
+    <p>Here the notation is that of my last post,
+    as documented here.
+    New for the scannerless parser is
+    <ul>
+    <li>
+    the <tt>:start</tt>
+    pseudo-symbol, which indicates the start rule
+    <li>
+    Rules with a tilde ("<tt>~</tt>") to separate 
+    LHS from RHS: these indicate rules whose
+    whitespace is to be left as-is.
+    <li>Single-quoted strings, to tell Marpa which
+    character to look for.
+    <li>Square-bracketed character classes, to
+    tell Marpa to look for a class of characters.
+    Their interpretation is done by Perl,
+    and therefore the allowed classes are exactly those
+    accepted by your version of Perl.
+    </ul>
+    <p>My recent posts has been tutorial.
+    My work on scannerless parsing is well advanced,
+    but not quite ready for a tutorial presentation,
+    so this post will be conceptual.
+    It will discuss an interesting issues that arises in
+    scannerless parsing,
+    one which Perl 6 also had to solve,
+    and which Marpa solves it in a new and different way.
+    That issue is whitespace.
+    </p>
+    <h3>Dealing with whitespace</h3>
+    <p>For the statements with a declaration operator of <tt>::=</tt>,
+    whitespace is handled automatically by Marpa.
+    Valid strings in the above language, are
+    "<tt>42*3+7</tt>",
+    "<tt>42 * 3 + 7</tt>" and
+    "<tt>42 * 3+7</tt>",
+    all which yield 133 as the answer.
+    One trick is to, on one hand, allow whitespace to be optional
+    and, on the other hand, recognize that strings like "<tt>42</tt>"
+    must be a single number.
+    That is the parser should not recognizer optional whitespace
+    between the two digits and decide there are two numbers:
+    "<tt>4</tt>" and 
+    "<tt>2</tt>".
+    </p>
+    <p>
+    The Perl 6 project has already taken on scannerless parsing,
+    and it can solve problems of this sort using "smart whitespace".
+    Smart whitespace is whitespace which is optional, except between
+    word characters.
+    Stated another way, smart whitespace is either explicit whitespace,
+    or a word boundary.
+    (The term "smart whitespace" is mine,
+    but the idea is from Perl 6.)
+    In the case of "<tt>42</tt>",
+    "<tt>4</tt>" and 
+    "<tt>2</tt>" are both word characters, so there is no
+    word boundary between them, and therefore no smart whitespace.
+    </p>
     <h3>Code and comments</h3>
     <p>
       Comments on this post
