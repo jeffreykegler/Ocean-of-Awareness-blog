@@ -1,0 +1,35 @@
+Smart Whitespace and the Ruby Slipper
+  <h3>Whitespace and scannerless parsing</h3>
+    <p>
+      <!--
+      marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
+      -->
+      I've been working,
+      (and am quite far along)
+      on a Marpa interface that does not require a lexer (aka scanner).
+      The lexing is included in the parser.
+      Here the example in the Marpa::R2 synopsis, rewritten for Marpa's
+      scannerless interface:
+      <blockquote>
+    </p>
+    <blockquote>
+      <pre>
+    <tt>
+:start ::= Expression
+Expression ::=
+       Number
+    || Expression '*' Expression action => do_multiply
+    || Expression '+' Expression action => do_add
+Number ~ digits '.' digits action => do_literal
+Number ~ digits action => do_literal
+digits ~ [\d]+
+    </tt>
+      </pre>
+      </blockquote>
+      <p>
+    <h3>Code and comments</h3>
+    <p>
+      Comments on this post
+      can be sent to the Marpa Google Group:
+      <code>marpa-parser@googlegroups.com</code>
+    </p>
