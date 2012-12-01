@@ -87,8 +87,9 @@ digits ~ [\d]+
     The Perl 6 project has already taken on scannerless parsing.
     Central to its solution is
     <a href="http://perlcabal.org/syn/S05.html">
-    the concept "smart whitespace"</a>.
-    ("Smart whitespace" is my term for the Perl 6 idea.)
+    the concept of "smart whitespace"</a>.
+    ("Smart whitespace" is my term --
+    the Perl 6 docs are more matter-of-fact in their terminology.)
     Smart whitespace is whitespace which is optional, except between
     word characters.
     Stated another way, smart whitespace is either explicit whitespace,
