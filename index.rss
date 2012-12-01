@@ -47,28 +47,34 @@ digits ~ [\d]+
     as
     &lt;a href=&quot;https://metacpan.org/module/Marpa::R2::BNF&quot;&gt;
     documented here&lt;/a&gt;.
-    New for the scannerless parser is
+    New for the scannerless parser are
     &lt;ul&gt;
     &lt;li&gt;
     the &lt;tt&gt;:start&lt;/tt&gt;
-    pseudo-symbol, which indicates the start rule
+    pseudo-symbol, which indicates the start rule;
     &lt;li&gt;
-    Rules with a tilde (&quot;&lt;tt&gt;~&lt;/tt&gt;&quot;) to separate 
+    rules with a tilde (&quot;&lt;tt&gt;~&lt;/tt&gt;&quot;) to separate 
     LHS from RHS: these indicate rules whose
-    whitespace is to be left as-is.
-    &lt;li&gt;Single-quoted strings, to tell Marpa which
-    character to look for.
-    &lt;li&gt;Square-bracketed character classes, to
+    whitespace is to be left as-is'
+    &lt;li&gt;single-quoted strings, to tell Marpa which
+    character to look for; and
+    &lt;li&gt;square-bracketed character classes, to
     tell Marpa to look for a class of characters.
     Their interpretation is done by Perl,
     and therefore the allowed classes are exactly those
     accepted by your version of Perl.
     &lt;/ul&gt;
-    &lt;p&gt;My recent posts has been tutorial.
-    My work on scannerless parsing is well advanced,
-    but not quite ready for a tutorial presentation,
+    &lt;p&gt;
+    Valid strings in this language are &quot;&lt;tt&gt;15329 + 42 * 290 * 711&lt;/tt&gt;&quot;,
+    &quot;&lt;tt&gt;42*3+7&lt;/tt&gt;&quot;,
+    &quot;&lt;tt&gt;3*3+4* 4&lt;/tt&gt;&quot;,
+    along with all their whitespace variants.
+    &lt;/p&gt;
+    &lt;p&gt;My recent posts have been tutorial.
+    My work on scannerless parsing is
+    not quite ready for a tutorial presentation,
     so this post will be conceptual.
-    It will discuss an interesting issues that arises in
+    It will be about an interesting issue that arises in
     scannerless parsing,
     one which Perl 6 also had to solve,
     and which Marpa solves it in a new and different way.

@@ -34,28 +34,34 @@ digits ~ [\d]+
     as
     <a href="https://metacpan.org/module/Marpa::R2::BNF">
     documented here</a>.
-    New for the scannerless parser is
+    New for the scannerless parser are
     <ul>
     <li>
     the <tt>:start</tt>
-    pseudo-symbol, which indicates the start rule
+    pseudo-symbol, which indicates the start rule;
     <li>
-    Rules with a tilde ("<tt>~</tt>") to separate 
+    rules with a tilde ("<tt>~</tt>") to separate 
     LHS from RHS: these indicate rules whose
-    whitespace is to be left as-is.
-    <li>Single-quoted strings, to tell Marpa which
-    character to look for.
-    <li>Square-bracketed character classes, to
+    whitespace is to be left as-is'
+    <li>single-quoted strings, to tell Marpa which
+    character to look for; and
+    <li>square-bracketed character classes, to
     tell Marpa to look for a class of characters.
     Their interpretation is done by Perl,
     and therefore the allowed classes are exactly those
     accepted by your version of Perl.
     </ul>
-    <p>My recent posts has been tutorial.
-    My work on scannerless parsing is well advanced,
-    but not quite ready for a tutorial presentation,
+    <p>
+    Valid strings in this language are "<tt>15329 + 42 * 290 * 711</tt>",
+    "<tt>42*3+7</tt>",
+    "<tt>3*3+4* 4</tt>",
+    along with all their whitespace variants.
+    </p>
+    <p>My recent posts have been tutorial.
+    My work on scannerless parsing is
+    not quite ready for a tutorial presentation,
     so this post will be conceptual.
-    It will discuss an interesting issues that arises in
+    It will be about an interesting issue that arises in
     scannerless parsing,
     one which Perl 6 also had to solve,
     and which Marpa solves it in a new and different way.
