@@ -45,13 +45,13 @@
       -->
       I've been working,
       (and am quite far along)
-      on a Marpa interface that does not require a lexer (aka scanner).
-      The lexing is included in the parser.
-      Here one example that I have working:
+      on a "scannerless" Marpa interface.
+      That is, the lexer (scanner) is included in the parser.
+      One of my working examples is
       the synopsis from
       <a href="https://metacpan.org/module/Marpa::R2">
       the main Marpa::R2 POD page</a>,
-      rewritten to do its own lexing.
+      rewritten to do its own lexing:
     </p>
     <blockquote>
       <pre>
@@ -67,8 +67,12 @@ digits ~ [\d]+
     </tt>
       </pre>
     </blockquote>
-    <p>Here the notation is that of my last post,
-    as documented here.
+    <p>Here the notation is that of
+    <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/11/iterative.html">
+    my last post</a>,
+    as
+    <a href="https://metacpan.org/module/Marpa::R2::BNF">
+    documented here</a>.
     New for the scannerless parser is
     <ul>
     <li>

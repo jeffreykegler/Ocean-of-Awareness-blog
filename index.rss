@@ -19,13 +19,13 @@
       --&gt;
       I've been working,
       (and am quite far along)
-      on a Marpa interface that does not require a lexer (aka scanner).
-      The lexing is included in the parser.
-      Here one example that I have working:
+      on a &quot;scannerless&quot; Marpa interface.
+      That is, the lexer (scanner) is included in the parser.
+      One of my working examples is
       the synopsis from
       &lt;a href=&quot;https://metacpan.org/module/Marpa::R2&quot;&gt;
       the main Marpa::R2 POD page&lt;/a&gt;,
-      rewritten to do its own lexing.
+      rewritten to do its own lexing:
     &lt;/p&gt;
     &lt;blockquote&gt;
       &lt;pre&gt;
@@ -41,8 +41,12 @@ digits ~ [\d]+
     &lt;/tt&gt;
       &lt;/pre&gt;
     &lt;/blockquote&gt;
-    &lt;p&gt;Here the notation is that of my last post,
-    as documented here.
+    &lt;p&gt;Here the notation is that of
+    &lt;a href=&quot;http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/11/iterative.html&quot;&gt;
+    my last post&lt;/a&gt;,
+    as
+    &lt;a href=&quot;https://metacpan.org/module/Marpa::R2::BNF&quot;&gt;
+    documented here&lt;/a&gt;.
     New for the scannerless parser is
     &lt;ul&gt;
     &lt;li&gt;
