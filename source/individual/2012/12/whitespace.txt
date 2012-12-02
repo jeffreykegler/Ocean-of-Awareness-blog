@@ -1,11 +1,10 @@
-Smart Whitespace and the Ruby Slippers
+Smart whitespace and the Ruby Slippers
   <h3>Scannerless parsing</h3>
     <p>
       <!--
       marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
       -->
-      I've been working,
-      (and am quite far along)
+      I've been working
       on a "scannerless" Marpa interface.
       That is, the lexer (scanner) is included in the parser.
       One of my working examples is
@@ -61,7 +60,7 @@ digits ~ [\d]+
     My work on scannerless parsing is
     not quite ready for a tutorial presentation,
     so this post will be conceptual.
-    It will be about an interesting issue that arises in
+    It is about an interesting issue that arises in
     scannerless parsing,
     one which Perl 6 also had to solve,
     and which Marpa solves it in a new and different way.
@@ -78,16 +77,17 @@ digits ~ [\d]+
     One trick is to, on one hand, allow whitespace to be optional
     and, on the other hand, recognize that strings like "<tt>42</tt>"
     must be a single number.
-    That is the parser should not recognizer optional whitespace
+    That is, the parser should not recognizer optional whitespace
     between the two digits and decide there are two numbers:
     "<tt>4</tt>" and 
     "<tt>2</tt>".
     </p>
     <p>
-    The Perl 6 project has already taken on scannerless parsing.
-    Central to its solution is
+    The Perl 6 project has already taken on scannerless parsing,
+    and my methods for dealing with whitespace are based on theirs.
+    Central to their solution is
     <a href="http://perlcabal.org/syn/S05.html">
-    the concept of "smart whitespace"</a>.
+    "smart whitespace"</a>.
     ("Smart whitespace" is my term --
     the Perl 6 docs are more matter-of-fact.)
     Smart whitespace is whitespace which is optional, except between
@@ -101,38 +101,26 @@ digits ~ [\d]+
     </p>
     <h3>Implementing smart whitespace</h3>
     <p>
-    Perl 6 is based on traditional left parsing.
-    The parser is deterministic.
-    Compared to Marpa, left parsers of this type knows very little
-    context.
-    This limits the kind of grammars they can parse,
-    and the kind of error reporting they can do,
-    but left parsers do know what the current character was,
-    and what the previous character was.
-    So implementing smart whitespace is straightforward.
+    Left parsers (like that which Perl 6 uses)
+    often know very little about the context of the parse.
+    But left parsers they do know what the current "character transition" --
+    what the previous character was,
+    and what the current character is.
+    In a left parser, finding word boundaries for the
+    purpose of detecting smart whitespace fits in
+    nicely with the way it works in general.
     </p>
-    <p>
-    Marpa, of course, also knows its location,
-    and therefore what the current and previous characters
-    are, and could implement smart whitespace in the traditional
-    way.
-    But there's an issue from the Marpa point of view.
-    A left parser is looking at the character transition
-    as a matter of course -- that and some concept of
-    current state are often all it is aware of.
-    Making a parsing decision based on a character transition
-    is essentially the way it works.
-    If the parse is state-driven (and Perl 6's often is)
-    then the word-boundary detection can be just made part of the state.
-    </p>
-    <p>For Marpa, on the other hand, to look for word boundaries,
-    would take it "out of its game".
-    It would be an additional overhead, just to cover this one case.
-    It'd be nicer if we could do this in a cool Marpa-ish way,
-    and preferably one that has efficiency advantages.
+    <p>Marpa, of course,
+    also knows the previous and current characters.
+    It is certainly possible for
+    Marpa to check every transition for a word boundary.
+    But in Marpa's case, this check would
+    be an additional overhead, covering just one special case.
+    It'd be nice if we could look for word boundaries in a cool Marpa-ish way,
+    preferably one with efficiency advantages.
     </p>
     <h3>Out come the Ruby Slippers</h3>
-    <p>"Ruby Slippers" parsing, as a reminder, is new to Marpa,
+    <p>"Ruby Slippers" parsing, as a reminder, is new with Marpa,
     despite seeming a very obvious concept.
     It amounts to adjusting the input to the parser based on what
     the parser wants.
@@ -152,7 +140,7 @@ digits ~ [\d]+
     At that point we ask the parser if it is looking for one
     of the virtual word boundary tokens.
     If so, we give it one and continue.
-    Why does life have to be hard?
+    Why does life have to be difficult?
     </p>
     <h3>Code and comments</h3>
     <p>
