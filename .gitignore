@@ -1,4 +1,5 @@
 *.swp
+[.]DS_store
 /errs
 /hide/
 /google_ping[.]out

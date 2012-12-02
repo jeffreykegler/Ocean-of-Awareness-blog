@@ -45,7 +45,9 @@
       -->
       I've been working
       on a "scannerless" Marpa interface.
-      That is, the lexer (scanner) is included in the parser.
+      "Scannerless" means that the user does not need to write
+      a separate lexer --
+      the lexer (scanner) is included in the parser.
       One of my working examples is
       the synopsis from
       <a href="https://metacpan.org/module/Marpa::R2">
@@ -113,20 +115,23 @@ digits ~ [\d]+
     "<tt>42 * 3 + 7</tt>" and
     "<tt>42 * 3+7</tt>",
     all which yield 133 as the answer.
-    One trick is to, on one hand, allow whitespace to be optional
+    The trick is to, on one hand, allow whitespace to be optional
     and, on the other hand, recognize that strings like "<tt>42</tt>"
     must be a single number.
-    That is, the parser should not recognizer optional whitespace
-    between the two digits and decide there are two numbers:
+    That is, the parser should not recognize optional whitespace
+    between the two digits and decide that
+    "<tt>42</tt>",
+    is actually two numbers:
     "<tt>4</tt>" and 
     "<tt>2</tt>".
     </p>
     <p>
-    The Perl 6 project has already taken on scannerless parsing,
-    and my methods for dealing with whitespace are based on theirs.
-    Central to their solution is
+    The Perl 6 project has already taken on scannerless parsing.
+    My methods for dealing with whitespace are based on theirs.
+    Central to
     <a href="http://perlcabal.org/syn/S05.html">
-    "smart whitespace"</a>.
+    their solution</a>
+    is "smart whitespace".
     ("Smart whitespace" is my term --
     the Perl 6 docs are more matter-of-fact.)
     Smart whitespace is whitespace which is optional, except between
@@ -142,7 +147,7 @@ digits ~ [\d]+
     <p>
     Left parsers (like that which Perl 6 uses)
     often know very little about the context of the parse.
-    But left parsers they do know what the current "character transition" --
+    But left parsers do know the current "character transition" --
     what the previous character was,
     and what the current character is.
     In a left parser, finding word boundaries for the

@@ -19,7 +19,9 @@
       --&gt;
       I've been working
       on a &quot;scannerless&quot; Marpa interface.
-      That is, the lexer (scanner) is included in the parser.
+      &quot;Scannerless&quot; means that the user does not need to write
+      a separate lexer --
+      the lexer (scanner) is included in the parser.
       One of my working examples is
       the synopsis from
       &lt;a href=&quot;https://metacpan.org/module/Marpa::R2&quot;&gt;
@@ -87,20 +89,23 @@ digits ~ [\d]+
     &quot;&lt;tt&gt;42 * 3 + 7&lt;/tt&gt;&quot; and
     &quot;&lt;tt&gt;42 * 3+7&lt;/tt&gt;&quot;,
     all which yield 133 as the answer.
-    One trick is to, on one hand, allow whitespace to be optional
+    The trick is to, on one hand, allow whitespace to be optional
     and, on the other hand, recognize that strings like &quot;&lt;tt&gt;42&lt;/tt&gt;&quot;
     must be a single number.
-    That is, the parser should not recognizer optional whitespace
-    between the two digits and decide there are two numbers:
+    That is, the parser should not recognize optional whitespace
+    between the two digits and decide that
+    &quot;&lt;tt&gt;42&lt;/tt&gt;&quot;,
+    is actually two numbers:
     &quot;&lt;tt&gt;4&lt;/tt&gt;&quot; and 
     &quot;&lt;tt&gt;2&lt;/tt&gt;&quot;.
     &lt;/p&gt;
     &lt;p&gt;
-    The Perl 6 project has already taken on scannerless parsing,
-    and my methods for dealing with whitespace are based on theirs.
-    Central to their solution is
+    The Perl 6 project has already taken on scannerless parsing.
+    My methods for dealing with whitespace are based on theirs.
+    Central to
     &lt;a href=&quot;http://perlcabal.org/syn/S05.html&quot;&gt;
-    &quot;smart whitespace&quot;&lt;/a&gt;.
+    their solution&lt;/a&gt;
+    is &quot;smart whitespace&quot;.
     (&quot;Smart whitespace&quot; is my term --
     the Perl 6 docs are more matter-of-fact.)
     Smart whitespace is whitespace which is optional, except between
@@ -116,7 +121,7 @@ digits ~ [\d]+
     &lt;p&gt;
     Left parsers (like that which Perl 6 uses)
     often know very little about the context of the parse.
-    But left parsers they do know what the current &quot;character transition&quot; --
+    But left parsers do know the current &quot;character transition&quot; --
     what the previous character was,
     and what the current character is.
     In a left parser, finding word boundaries for the
