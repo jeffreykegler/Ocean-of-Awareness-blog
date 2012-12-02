@@ -90,11 +90,12 @@ digits ~ [\d]+
     The Perl 6 project has already taken on scannerless parsing.
     My methods for dealing with whitespace are based on theirs.
     Central to
-    <a href="http://perlcabal.org/syn/S05.html">
-    their solution</a>
-    is "smart whitespace".
+    their solution is "smart whitespace".
     ("Smart whitespace" is my term --
-    the Perl 6 docs are more matter-of-fact.)
+    the
+    <a href="http://perlcabal.org/syn/S05.html">
+    Perl 6 doc</a>
+    is more matter-of-fact.)
     Smart whitespace is whitespace which is optional, except between
     word characters.
     Stated another way, smart whitespace is either explicit whitespace,
