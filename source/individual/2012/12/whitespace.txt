@@ -12,7 +12,7 @@ Smart whitespace and the Ruby Slippers
       One of my working examples is
       the synopsis from
       <a href="https://metacpan.org/module/Marpa::R2">
-      the main Marpa::R2 POD page</a>,
+        the main Marpa::R2 POD page</a>,
       rewritten to do its own lexing:
     </p>
     <blockquote>
@@ -30,128 +30,132 @@ digits ~ [\d]+
       </pre>
     </blockquote>
     <p>Here the notation is that of
-    <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/11/iterative.html">
-    my last post</a>,
-    as
-    <a href="https://metacpan.org/module/Marpa::R2::BNF">
-    documented here</a>.
-    New for the scannerless parser are
-    <ul>
-    <li>
-    the <tt>:start</tt>
-    pseudo-symbol, which indicates the start rule;
-    <li>
-    rules with a tilde ("<tt>~</tt>") to separate 
-    LHS from RHS: these indicate rules whose
-    whitespace is to be left as-is
-    <li>single-quoted strings, to tell Marpa which
-    character to look for; and
-    <li>square-bracketed character classes, to
-    tell Marpa to look for a class of characters.
-    Their interpretation is done by Perl,
-    and therefore the allowed classes are exactly those
-    accepted by your version of Perl.
-    </ul>
+      <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/11/iterative.html">
+        my last post</a>,
+      as
+      <a href="https://metacpan.org/module/Marpa::R2::BNF">
+        documented here</a>.
+      New for the scannerless parser are
+    </p><ul>
+      <li>
+        the
+        <tt>:start</tt>
+        pseudo-symbol, which indicates the start rule;
+      </li><li>
+        rules with a tilde ("<tt>~</tt>") to separate
+        LHS from RHS: these indicate rules whose
+        whitespace is to be left as-is
+      </li><li>single-quoted strings, to tell Marpa which
+        character to look for; and
+      </li><li>square-bracketed character classes, to
+        tell Marpa to look for a class of characters.
+        Their interpretation is done by Perl,
+        and therefore the allowed classes are exactly those
+        accepted by your version of Perl.
+      </li></ul>
     <p>
-    Valid strings in this language are "<tt>15329 + 42 * 290 * 711</tt>",
-    "<tt>42*3+7</tt>",
-    "<tt>3*3+4* 4</tt>",
-    along with all their whitespace variants.
+      Valid strings in this language are "<tt>15329 + 42 * 290 * 711</tt>",
+      "<tt>42*3+7</tt>",
+      "<tt>3*3+4* 4</tt>",
+      along with all their whitespace variants.
     </p>
     <p>My recent posts have been tutorial.
-    My work on scannerless parsing is
-    not quite ready for a tutorial presentation,
-    so this post will be conceptual.
-    It is about an interesting issue that arises in
-    scannerless parsing,
-    one which Perl 6 also had to solve,
-    and which Marpa solves in a new and different way.
-    That issue is whitespace.
+      My work on scannerless parsing is
+      not quite ready for a tutorial presentation,
+      so this post will be conceptual.
+      It is about an interesting issue that arises in
+      scannerless parsing,
+      one which Perl 6 also had to solve,
+      and which Marpa solves in a new and different way.
+      That issue is whitespace.
     </p>
     <h3>Dealing with whitespace</h3>
-    <p>For the statements with a declaration operator of <tt>::=</tt>,
-    whitespace is handled automatically by Marpa.
-    Valid strings in the above language are
-    "<tt>42*3+7</tt>",
-    "<tt>42 * 3 + 7</tt>" and
-    "<tt>42 * 3+7</tt>",
-    all of which yield 133 as the answer.
-    The trick is to, on one hand, allow whitespace to be optional
-    and, on the other hand, recognize that strings like "<tt>42</tt>"
-    must be a single number.
-    That is, the parser should not recognize optional whitespace
-    between the two digits and decide that
-    "<tt>42</tt>",
-    is actually two numbers:
-    "<tt>4</tt>" and 
-    "<tt>2</tt>".
+    <p>For the statements with a declaration operator of
+      <tt>::=</tt>,
+      whitespace is handled automatically by Marpa.
+      Valid strings in the above language are
+      "<tt>42*3+7</tt>",
+      "<tt>42 * 3 + 7</tt>" and
+      "<tt>42 * 3+7</tt>",
+      all of which yield 133 as the answer.
+      The trick is to, on one hand, allow whitespace to be optional
+      and, on the other hand, recognize that strings like "<tt>42</tt>"
+      must be a single number.
+      That is, the parser should not recognize optional whitespace
+      between the two digits and decide that
+      "<tt>42</tt>",
+      is actually two numbers:
+      "<tt>4</tt>" and
+      "<tt>2</tt>".
     </p>
     <p>
-    The Perl 6 project has already taken on scannerless parsing.
-    My methods for dealing with whitespace are based on theirs.
-    Central to
-    their solution is "smart whitespace".
-    ("Smart whitespace" is my term --
-    the
-    <a href="http://perlcabal.org/syn/S05.html">
-    Perl 6 doc</a>
-    is more matter-of-fact.)
-    Smart whitespace is whitespace which is optional, except between
-    word characters.
-    Stated another way, smart whitespace is either explicit whitespace,
-    or a word boundary.
-    In the case of "<tt>42</tt>",
-    "<tt>4</tt>" and 
-    "<tt>2</tt>" are both word characters, so there is no
-    word boundary between them, and therefore no smart whitespace.
+      The Perl 6 project has already taken on scannerless parsing.
+      My methods for dealing with whitespace are based on theirs.
+      Central to
+      their solution is "smart whitespace".
+      ("Smart whitespace" is my term --
+      the
+      <a href="http://perlcabal.org/syn/S05.html">
+        Perl 6 doc</a>
+      is more matter-of-fact.)
+      Smart whitespace is whitespace which is optional, except between
+      word characters.
+      Stated another way, smart whitespace is either explicit whitespace,
+      or a word boundary.
+      In the case of "<tt>42</tt>",
+      "<tt>4</tt>" and
+      "<tt>2</tt>" are both word characters, so there is no
+      word boundary between them, and therefore no smart whitespace.
     </p>
     <h3>Implementing smart whitespace</h3>
     <p>
-    Left parsers (like that which Perl 6 uses)
-    often know very little about the context of the parse.
-    But left parsers do know the current "character transition" --
-    what the previous character was,
-    and what the current character is.
-    In a left parser, finding word boundaries for the
-    purpose of detecting smart whitespace fits in
-    nicely with the way it works in general.
+      Left parsers (like that which Perl 6 uses)
+      often know very little about the context of the parse.
+      But left parsers do know the current "character transition" --
+      what the previous character was,
+      and what the current character is.
+      In a left parser, finding word boundaries for the
+      purpose of detecting smart whitespace fits in
+      nicely with the way it works in general.
     </p>
     <p>Marpa, of course,
-    also knows the previous and current characters.
-    It is certainly possible for
-    Marpa to check every transition for a word boundary.
-    But in Marpa's case, this check would
-    be an additional overhead, handling just one special case.
-    It'd be nice if we could look for word boundaries in a cool Marpa-ish way,
-    preferably one with efficiency advantages.
+      also knows the previous and current characters.
+      It is certainly possible for
+      Marpa to check every transition for a word boundary.
+      But in Marpa's case, this check would
+      be an additional overhead, handling just one special case.
+      It'd be nice if we could look for word boundaries in a cool Marpa-ish way,
+      preferably one with efficiency advantages.
     </p>
     <h3>Out come the Ruby Slippers</h3>
     <p>"Ruby Slippers" parsing, as a reminder, is new with Marpa,
-    despite seeming a very obvious concept.
-    It amounts to adjusting the input to the parser based on what
-    the parser wants.
-    This can be seen as assuring the parser that whatever it wishes
-    for will happen, the same power that was conferred on Dorothy
-    in <em>Wizard of Oz</em> by a happy choice of footware.
+      despite seeming a very obvious concept.
+      It amounts to adjusting the input to the parser based on what
+      the parser wants.
+      This can be seen as assuring the parser that whatever it wishes
+      for will happen, the same power that was conferred on Dorothy
+      in
+      <em>Wizard of Oz</em>
+      by a happy choice of footware.
     </p>
     <p>
-    To make the Ruby Slippers work in this case,
-    we make a word boundary a special kind of virtual token,
-    and we define smart whitespace to be one of two things:
-    <ul>
-    <li>
-    A sequence of one or more characters of
-    real, physical whitespace.
-    <li>
-    A virtual word-boundary token.
-    </ul>
-    We then proceed normally with the parse,
-    until there's a problem.
-    When the parser reports a problem,
-    we ask it if it is looking for one
-    of the virtual word boundary tokens.
-    If so, we give it one and continue.
-    Why does life have to be difficult?
+      To make the Ruby Slippers work in this case,
+      we make a word boundary a special kind of virtual token,
+      and we define smart whitespace to be one of two things:
+    </p><ul>
+      <li>
+        A sequence of one or more characters of
+        real, physical whitespace.
+      </li><li>
+        A virtual word-boundary token.
+      </li></ul><p>
+      We then proceed normally with the parse,
+      until there's a problem.
+      When the parser reports a problem,
+      we ask it if it is looking for one
+      of the virtual word boundary tokens.
+      If so, we give it one and continue.
+      Why does life have to be difficult?
     </p>
     <p>
       Comments on this post
