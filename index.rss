@@ -78,17 +78,17 @@ digits ~ [\d]+
     It is about an interesting issue that arises in
     scannerless parsing,
     one which Perl 6 also had to solve,
-    and which Marpa solves it in a new and different way.
+    and which Marpa solves in a new and different way.
     That issue is whitespace.
     &lt;/p&gt;
     &lt;h3&gt;Dealing with whitespace&lt;/h3&gt;
     &lt;p&gt;For the statements with a declaration operator of &lt;tt&gt;::=&lt;/tt&gt;,
     whitespace is handled automatically by Marpa.
-    Valid strings in the above language, are
+    Valid strings in the above language are
     &quot;&lt;tt&gt;42*3+7&lt;/tt&gt;&quot;,
     &quot;&lt;tt&gt;42 * 3 + 7&lt;/tt&gt;&quot; and
     &quot;&lt;tt&gt;42 * 3+7&lt;/tt&gt;&quot;,
-    all which yield 133 as the answer.
+    all of which yield 133 as the answer.
     The trick is to, on one hand, allow whitespace to be optional
     and, on the other hand, recognize that strings like &quot;&lt;tt&gt;42&lt;/tt&gt;&quot;
     must be a single number.
@@ -134,7 +134,7 @@ digits ~ [\d]+
     It is certainly possible for
     Marpa to check every transition for a word boundary.
     But in Marpa's case, this check would
-    be an additional overhead, covering just one special case.
+    be an additional overhead, handling just one special case.
     It'd be nice if we could look for word boundaries in a cool Marpa-ish way,
     preferably one with efficiency advantages.
     &lt;/p&gt;
@@ -143,25 +143,29 @@ digits ~ [\d]+
     despite seeming a very obvious concept.
     It amounts to adjusting the input to the parser based on what
     the parser wants.
-    This can be seen as telling the parser that whatever it wishes
+    This can be seen as assuring the parser that whatever it wishes
     for will happen, the same power that was conferred on Dorothy
     in &lt;em&gt;Wizard of Oz&lt;/em&gt; by a happy choice of footware.
     &lt;/p&gt;
     &lt;p&gt;
     To make the Ruby Slippers work in this case,
     we make a word boundary a special kind of virtual token,
-    and we define smart whitespace as either real, physical whitespace
-    or that virtual token.
-    We then proceed normally with the parse.
-    &lt;/p&gt;
-    &lt;p&gt;
-    We continue with the parse until there's a problem.
-    At that point we ask the parser if it is looking for one
+    and we define smart whitespace to be one of two things:
+    &lt;ul&gt;
+    &lt;li&gt;
+    A sequence of one or more characters of
+    real, physical whitespace.
+    &lt;li&gt;
+    A virtual word-boundary token.
+    &lt;/ul&gt;
+    We then proceed normally with the parse,
+    until there's a problem.
+    When the parser reports a problem,
+    we ask it if it is looking for one
     of the virtual word boundary tokens.
     If so, we give it one and continue.
     Why does life have to be difficult?
     &lt;/p&gt;
-    &lt;h3&gt;Code and comments&lt;/h3&gt;
     &lt;p&gt;
       Comments on this post
       can be sent to the Marpa Google Group:

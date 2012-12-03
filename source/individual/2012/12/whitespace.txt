@@ -65,17 +65,17 @@ digits ~ [\d]+
     It is about an interesting issue that arises in
     scannerless parsing,
     one which Perl 6 also had to solve,
-    and which Marpa solves it in a new and different way.
+    and which Marpa solves in a new and different way.
     That issue is whitespace.
     </p>
     <h3>Dealing with whitespace</h3>
     <p>For the statements with a declaration operator of <tt>::=</tt>,
     whitespace is handled automatically by Marpa.
-    Valid strings in the above language, are
+    Valid strings in the above language are
     "<tt>42*3+7</tt>",
     "<tt>42 * 3 + 7</tt>" and
     "<tt>42 * 3+7</tt>",
-    all which yield 133 as the answer.
+    all of which yield 133 as the answer.
     The trick is to, on one hand, allow whitespace to be optional
     and, on the other hand, recognize that strings like "<tt>42</tt>"
     must be a single number.
@@ -121,7 +121,7 @@ digits ~ [\d]+
     It is certainly possible for
     Marpa to check every transition for a word boundary.
     But in Marpa's case, this check would
-    be an additional overhead, covering just one special case.
+    be an additional overhead, handling just one special case.
     It'd be nice if we could look for word boundaries in a cool Marpa-ish way,
     preferably one with efficiency advantages.
     </p>
@@ -130,25 +130,29 @@ digits ~ [\d]+
     despite seeming a very obvious concept.
     It amounts to adjusting the input to the parser based on what
     the parser wants.
-    This can be seen as telling the parser that whatever it wishes
+    This can be seen as assuring the parser that whatever it wishes
     for will happen, the same power that was conferred on Dorothy
     in <em>Wizard of Oz</em> by a happy choice of footware.
     </p>
     <p>
     To make the Ruby Slippers work in this case,
     we make a word boundary a special kind of virtual token,
-    and we define smart whitespace as either real, physical whitespace
-    or that virtual token.
-    We then proceed normally with the parse.
-    </p>
-    <p>
-    We continue with the parse until there's a problem.
-    At that point we ask the parser if it is looking for one
+    and we define smart whitespace to be one of two things:
+    <ul>
+    <li>
+    A sequence of one or more characters of
+    real, physical whitespace.
+    <li>
+    A virtual word-boundary token.
+    </ul>
+    We then proceed normally with the parse,
+    until there's a problem.
+    When the parser reports a problem,
+    we ask it if it is looking for one
     of the virtual word boundary tokens.
     If so, we give it one and continue.
     Why does life have to be difficult?
     </p>
-    <h3>Code and comments</h3>
     <p>
       Comments on this post
       can be sent to the Marpa Google Group:
