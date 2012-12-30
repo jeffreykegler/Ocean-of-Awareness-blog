@@ -232,7 +232,7 @@ digits ~ [\d]+
     &lt;p&gt;
       Those who have been following this blog may have noticed
       that
-      &lt;a href=&quot;https://metacpan.org/module/Marpa::R2::Changes&quot;&gt;
+      &lt;a href=&quot;https://metacpan.org/module/Marpa::R2::BNF&quot;&gt;
       a new BNF interface&lt;/a&gt;
       has been added to Marpa::R2.
       This is growing --

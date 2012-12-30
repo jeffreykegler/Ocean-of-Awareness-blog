@@ -52,7 +52,7 @@ Announcing a full release of Marpa::R2
     <p>
       Those who have been following this blog may have noticed
       that
-      <a href="https://metacpan.org/module/Marpa::R2::Changes">
+      <a href="https://metacpan.org/module/Marpa::R2::BNF">
       a new BNF interface</a>
       has been added to Marpa::R2.
       This is growing --
