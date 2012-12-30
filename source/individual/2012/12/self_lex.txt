@@ -13,7 +13,7 @@ Self-parsing and self-lexing
       but from the response to the previous past I know
       there are others who see the fascination of
       self-description and self-exemplification.
-      <p>
+    </p><p>
       The previous self-parsing grammar,
       following the tradition, cheated a bit.
       It required, but did not include, a lexer to make a prepass over
@@ -25,7 +25,7 @@ Self-parsing and self-lexing
       but even a self-describing Turing machine has to be written
       assuming the semantics of a Turing machine.
       So that's one limit that is probably going to stand.
-      <p>
+    </p><p>
       In terms of being a practical example, this is as practical
       as they come.
       This grammar I will describe is the one actually used not
@@ -41,17 +41,20 @@ Self-parsing and self-lexing
       with the exception that it is over-liberal.
       (Constructs allowed in the Scanless interface, but prohibited
       in the BNF interface are caught when the semantics are processed.)
-      <p>
+    </p><p>
       The grammar in this blog post is abridged a bit,
       and rearranged for ease of explanation.
       The original that is actually used for self-parsing can be
       found here.
-    <blockquote>
+    </p><blockquote>
       <pre>
 # Copyright 2012 Jeffrey Kegler
       </pre>
     </blockquote>
     <p>The file starts with legalese -- it goes on to say that it is LGPL 3.0.
+    Note the hash comment -- since they is a self-describing self-lexer,
+    it is eventually going to have to tell us how it deals with comments.
+    </p>
     <blockquote>
       <pre>
 :start ::= rules
@@ -59,45 +62,97 @@ rules ::= rule+
 rule ::= &lt;start rule&gt; | &lt;empty rule&gt; | &lt;priority rule&gt; | &lt;quantified rule&gt; | &lt;discard rule&gt;
       </pre>
     </blockquote>
-    <p>Next it tells us that the <tt>rules</tt> symbol is the start symbol,
-    that file consists of a series of one or more rules,
-    and that rules fall into one of five types.
-    The last rule, with the LHS <tt>rule</tt> is self-describing -- among the
-    options it lists, it is a
-    <tt>&lt;priority rule&gt;</tt>.
-    In the previous two lines are two of the other possibilities:
-    a
-    <tt>&lt;start rule&gt;</tt> and a
-    <tt>&lt;quantified rule&gt;</tt>.
-    <blockquote>
+    <p>Next it tells us that the
+      <tt>rules</tt>
+      symbol is the start symbol,
+      that file consists of a series of one or more rules,
+      and that rules fall into one of five types.
+      The last rule, with the LHS
+      <tt>rule</tt>
+      is self-describing -- among the
+      options it lists, it is a
+      <tt>&lt;priority rule&gt;</tt>.
+      In the previous two lines are two of the other possibilities:
+      a
+      <tt>&lt;start rule&gt;</tt>
+      and a
+      <tt>&lt;quantified rule&gt;</tt>.
+    </p><blockquote>
       <pre>
 &lt;start rule&gt; ::= (':start' &lt;op declare bnf&gt;) symbol
 &lt;op declare bnf&gt; ~ '::='
       </pre>
-    </blockquote>
-    The parentheses can be ignored -- they are to help out the semantics.
-    (Symbols inside parentheses can be ignored by the semantics.)
-    Here we see the description of a start rule:
-    the <tt>:start</tt> pseudo-symbol,
-    and an <tt>::=</tt> operator,
-    followed by a <tt>symbol</tt>.
+    </blockquote><p>
+      The parentheses can be ignored -- they are to help out the semantics.
+      (Symbols inside parentheses can be ignored by the semantics.)
+      Here we see the description of a start rule:
+      the
+      <tt>:start</tt>
+      pseudo-symbol,
+      and an
+      <tt>::=</tt>
+      operator,
+      followed by a
+      <tt>symbol</tt>.
+    </p>
     <blockquote>
       <pre>
 &lt;quantified rule&gt; ::= lhs &lt;op declare&gt; &lt;single symbol&gt; quantifier &lt;adverb list&gt;
+lhs ::= &lt;symbol name&gt;
+&lt;op declare&gt; ::= &lt;op declare bnf&gt; | &lt;op declare match&gt;
+&lt;op declare match&gt; ~ '~'
+quantifier ::= '*' | '+'
       </pre>
     </blockquote>
-    <p>The next rule we saw was a quantified rule.
+    <p>Above we saw a quantified rule: "<tt>rules ::= rule+</tt>"
+    It contains a left hand side (LHS) symbol name
+    one of the two declaration operators,
+    a <tt>single symbol<tt>,
+    a plus or minus "quantifier",
+    and an adverb list.
+    The adverb list can be empty, which it was in that case.
+    <p>
+    Next come two rules we've yet to see:
+    </p>
+    <blockquote>
+      <pre>
+&lt;discard rule&gt; ::= (':discard' &lt;op declare match&gt;) &lt;single symbol&gt;
+&lt;empty rule&gt; ::= lhs &lt;op declare&gt; &lt;adverb list&gt;
+      </pre>
+    </blockquote>
+<p>
+We'll explain what a "discard rule" is when we encounter one.
+An empty rule is what is sounds like.
+Note that an empty rule can have an adverb list.
+</p>
     <blockquote>
       <pre>
 &lt;priority rule&gt; ::= lhs &lt;op declare&gt; priorities
-&lt;empty rule&gt; ::= lhs &lt;op declare&gt; &lt;adverb list&gt;
-&lt;discard rule&gt; ::= (':discard' &lt;op declare match&gt;) &lt;single symbol&gt;
-&lt;op declare&gt; ::= &lt;op declare bnf&gt; | &lt;op declare match&gt;
 priorities ::= alternatives+
     separator =&gt; &lt;op loosen&gt; proper =&gt; 1
+&lt;op loosen&gt; ~ '||'
 alternatives ::= alternative+
     separator =&gt; &lt;op equal priority&gt; proper =&gt; 1
 alternative ::= rhs &lt;adverb list&gt;
+&lt;op equal priority&gt; ~ '|'
+      </pre>
+    </blockquote>
+<p>
+Most rules, including most of the rules we've already seen,
+are priority rules,
+so-called because in their most complicated form they can express
+a precedence scheme.
+The typical rule in a grammar is a priority rule with only
+one priority -- we've yet to see anything else.
+Within priorities, there can be alternatives, 
+and we have seen example of this.
+When <tt>rule</tt> was defined as being one of a set of possible
+rule types, priority rule being among those types,
+the different types of rule were alternatives within a single
+priority.
+</p>
+    <blockquote>
+      <pre>
 &lt;adverb list&gt; ::= &lt;adverb item&gt;*
 &lt;adverb item&gt; ::=
       action
@@ -111,7 +166,6 @@ action ::= ('action' '=&gt;') &lt;action name&gt;
 &lt;separator specification&gt; ::= ('separator' '=&gt;') &lt;single symbol&gt;
 &lt;proper specification&gt; ::= ('proper' '=&gt;') boolean
 
-lhs ::= &lt;symbol name&gt;
 rhs ::= &lt;rhs primary&gt;+
 &lt;rhs primary&gt; ::= &lt;single symbol&gt;
 &lt;rhs primary&gt; ::= &lt;kwc ws star&gt;
@@ -143,10 +197,6 @@ whitespace ~ [\s]+
 &lt;vertical space char&gt; ~ [\x{A}\x{B}\x{C}\x{D}\x{2028}\x{2029}]
 &lt;hash comment char&gt; ~ [^\x{A}\x{B}\x{C}\x{D}\x{2028}\x{2029}]
 
-&lt;op declare match&gt; ~ '~'
-&lt;op loosen&gt; ~ '||'
-&lt;op equal priority&gt; ~ '|'
-quantifier ::= '*' | '+'
 
 boolean ~ [01]
 &lt;bare name&gt; ~ [\w]+
