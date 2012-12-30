@@ -65,8 +65,8 @@
       &lt;/pre&gt;
     &lt;/blockquote&gt;
     &lt;p&gt;The file starts with legalese -- it goes on to say that it is LGPL 3.0.
-    Note the hash comment -- since they is a self-describing self-lexer,
-    it is eventually going to have to tell us how it deals with comments.
+      Note the hash comment -- since they is a self-describing self-lexer,
+      it is eventually going to have to tell us how it deals with comments.
     &lt;/p&gt;
     &lt;blockquote&gt;
       &lt;pre&gt;
@@ -118,14 +118,15 @@ quantifier ::= '*' | '+'
       &lt;/pre&gt;
     &lt;/blockquote&gt;
     &lt;p&gt;Above we saw a quantified rule: &quot;&lt;tt&gt;rules ::= rule+&lt;/tt&gt;&quot;
-    It contains a left hand side (LHS) symbol name
-    one of the two declaration operators,
-    a &lt;tt&gt;single symbol&lt;tt&gt;,
-    a plus or minus &quot;quantifier&quot;,
-    and an adverb list.
-    The adverb list can be empty, which it was in that case.
-    &lt;p&gt;
-    Next come two rules we've yet to see:
+      It contains a left hand side (LHS) symbol name
+      one of the two declaration operators,
+      a
+      &lt;tt&gt;single symbol&lt;/tt&gt;,
+      a plus or minus &quot;quantifier&quot;,
+      and an adverb list.
+      The adverb list can be empty, which it was in that case.
+    &lt;/p&gt;&lt;p&gt;
+      Next come two rules we've yet to see:
     &lt;/p&gt;
     &lt;blockquote&gt;
       &lt;pre&gt;
@@ -133,11 +134,11 @@ quantifier ::= '*' | '+'
 &amp;lt;empty rule&amp;gt; ::= lhs &amp;lt;op declare&amp;gt; &amp;lt;adverb list&amp;gt;
       &lt;/pre&gt;
     &lt;/blockquote&gt;
-&lt;p&gt;
-We'll explain what a &quot;discard rule&quot; is when we encounter one.
-An empty rule is what is sounds like.
-Note that an empty rule can have an adverb list.
-&lt;/p&gt;
+    &lt;p&gt;
+      We'll explain what a &quot;discard rule&quot; is when we encounter one.
+      An empty rule is what is sounds like.
+      Note that an empty rule can have an adverb list.
+    &lt;/p&gt;
     &lt;blockquote&gt;
       &lt;pre&gt;
 &amp;lt;priority rule&amp;gt; ::= lhs &amp;lt;op declare&amp;gt; priorities
@@ -150,20 +151,22 @@ alternative ::= rhs &amp;lt;adverb list&amp;gt;
 &amp;lt;op equal priority&amp;gt; ~ '|'
       &lt;/pre&gt;
     &lt;/blockquote&gt;
-&lt;p&gt;
-Most rules, including most of the rules we've already seen,
-are priority rules,
-so-called because in their most complicated form they can express
-a precedence scheme.
-The typical rule in a grammar is a priority rule with only
-one priority -- we've yet to see anything else.
-Within priorities, there can be alternatives, 
-and we have seen example of this.
-When &lt;tt&gt;rule&lt;/tt&gt; was defined as being one of a set of possible
-rule types, priority rule being among those types,
-the different types of rule were alternatives within a single
-priority.
-&lt;/p&gt;
+    &lt;p&gt;
+      Most rules, including most of the rules we've already seen,
+      are priority rules,
+      so-called because in their most complicated form they can express
+      a precedence scheme.
+      The typical rule in a grammar is a priority rule with only
+      one priority -- we've yet to see anything else.
+      Within priorities, there can be alternatives,
+      and we have seen example of this.
+      When
+      &lt;tt&gt;rule&lt;/tt&gt;
+      was defined as being one of a set of possible
+      rule types, priority rule being among those types,
+      the different types of rule were alternatives within a single
+      priority.
+    &lt;/p&gt;
     &lt;blockquote&gt;
       &lt;pre&gt;
 &amp;lt;adverb list&amp;gt; ::= &amp;lt;adverb item&amp;gt;*

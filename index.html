@@ -91,8 +91,8 @@
       </pre>
     </blockquote>
     <p>The file starts with legalese -- it goes on to say that it is LGPL 3.0.
-    Note the hash comment -- since they is a self-describing self-lexer,
-    it is eventually going to have to tell us how it deals with comments.
+      Note the hash comment -- since they is a self-describing self-lexer,
+      it is eventually going to have to tell us how it deals with comments.
     </p>
     <blockquote>
       <pre>
@@ -144,14 +144,15 @@ quantifier ::= '*' | '+'
       </pre>
     </blockquote>
     <p>Above we saw a quantified rule: "<tt>rules ::= rule+</tt>"
-    It contains a left hand side (LHS) symbol name
-    one of the two declaration operators,
-    a <tt>single symbol<tt>,
-    a plus or minus "quantifier",
-    and an adverb list.
-    The adverb list can be empty, which it was in that case.
-    <p>
-    Next come two rules we've yet to see:
+      It contains a left hand side (LHS) symbol name
+      one of the two declaration operators,
+      a
+      <tt>single symbol</tt>,
+      a plus or minus "quantifier",
+      and an adverb list.
+      The adverb list can be empty, which it was in that case.
+    </p><p>
+      Next come two rules we've yet to see:
     </p>
     <blockquote>
       <pre>
@@ -159,11 +160,11 @@ quantifier ::= '*' | '+'
 &lt;empty rule&gt; ::= lhs &lt;op declare&gt; &lt;adverb list&gt;
       </pre>
     </blockquote>
-<p>
-We'll explain what a "discard rule" is when we encounter one.
-An empty rule is what is sounds like.
-Note that an empty rule can have an adverb list.
-</p>
+    <p>
+      We'll explain what a "discard rule" is when we encounter one.
+      An empty rule is what is sounds like.
+      Note that an empty rule can have an adverb list.
+    </p>
     <blockquote>
       <pre>
 &lt;priority rule&gt; ::= lhs &lt;op declare&gt; priorities
@@ -176,20 +177,22 @@ alternative ::= rhs &lt;adverb list&gt;
 &lt;op equal priority&gt; ~ '|'
       </pre>
     </blockquote>
-<p>
-Most rules, including most of the rules we've already seen,
-are priority rules,
-so-called because in their most complicated form they can express
-a precedence scheme.
-The typical rule in a grammar is a priority rule with only
-one priority -- we've yet to see anything else.
-Within priorities, there can be alternatives, 
-and we have seen example of this.
-When <tt>rule</tt> was defined as being one of a set of possible
-rule types, priority rule being among those types,
-the different types of rule were alternatives within a single
-priority.
-</p>
+    <p>
+      Most rules, including most of the rules we've already seen,
+      are priority rules,
+      so-called because in their most complicated form they can express
+      a precedence scheme.
+      The typical rule in a grammar is a priority rule with only
+      one priority -- we've yet to see anything else.
+      Within priorities, there can be alternatives,
+      and we have seen example of this.
+      When
+      <tt>rule</tt>
+      was defined as being one of a set of possible
+      rule types, priority rule being among those types,
+      the different types of rule were alternatives within a single
+      priority.
+    </p>
     <blockquote>
       <pre>
 &lt;adverb list&gt; ::= &lt;adverb item&gt;*
