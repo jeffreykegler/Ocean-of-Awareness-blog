@@ -10,6 +10,192 @@
     <language>en</language>
 
   <item>
+    <title>Self-parsing and self-lexing</title>
+    <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/12/self_lex.html</link>
+    <description>  &lt;p&gt;
+      &lt;!--
+      marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
+      --&gt;
+      In a previous post, I showed a self-parsing grammar,
+      written in Marpa's new BNF interface.
+      This post does the same for Marpa's forthcoming
+      Scanless interface.
+      Many readers will no doubt
+      prefer to be introduced to the Scanless interface
+      via a simpler example,
+      but from the response to the previous past I know
+      there are others who see the fascination of
+      self-description and self-exemplification.
+      &lt;p&gt;
+      The previous self-parsing grammar,
+      following the tradition, cheated a bit.
+      It required, but did not include, a lexer to make a prepass over
+      its input.
+      This self-parsing scannerless grammar is as completely self-contained
+      as it can get.
+      It is the complete and ultimate authority on its own syntax.
+      It does not describe its own semantics,
+      but even a self-describing Turing machine has to be written
+      assuming the semantics of a Turing machine.
+      So that's one limit that is probably going to stand.
+      &lt;p&gt;
+      In terms of being a practical example, this is as practical
+      as they come.
+      This grammar I will describe is the one actually used not
+      only to parse itself and all other grammars written in the
+      Scanless language,
+      but also to parse the strings written
+      in the BNF interface,
+      it non-scannerless predecessor.
+      So this grammar is an
+      authority, if an over-liberal one,
+      on the syntax
+      of the BNF interface as well,
+      with the exception that it is over-liberal.
+      (Constructs allowed in the Scanless interface, but prohibited
+      in the BNF interface are caught when the semantics are processed.)
+      &lt;p&gt;
+      The grammar in this blog post is abridged a bit,
+      and rearranged for ease of explanation.
+      The original that is actually used for self-parsing can be
+      found here.
+    &lt;blockquote&gt;
+      &lt;pre&gt;
+# Copyright 2012 Jeffrey Kegler
+      &lt;pre&gt;
+    &lt;blockquote&gt;
+    &lt;p&gt;The file starts with legalese -- it goes on to say that it is LGPL 3.0.
+    &lt;blockquote&gt;
+      &lt;pre&gt;
+:start ::= rules
+rules ::= rule+
+rule ::= &amp;lt;start rule&amp;gt; | &amp;lt;empty rule&amp;gt; | &amp;lt;priority rule&amp;gt; | &amp;lt;quantified rule&amp;gt; | &amp;lt;discard rule&amp;gt;
+      &lt;pre&gt;
+    &lt;blockquote&gt;
+    &lt;p&gt;Next it tells us that the &lt;tt&gt;rules&lt;/tt&gt; symbol is the start symbol,
+    that file consists of a series of one or more rules,
+    and that rules fall into one of five types.
+    The last rule, with the LHS &lt;tt&gt;rule&lt;/tt&gt; is self-describing -- among the
+    options it lists, it is a
+    &lt;tt&gt;&amp;lt;priority rule&amp;gt;&lt;/tt&gt;.
+    In the previous two lines are two of the other possibilities:
+    a
+    &lt;tt&gt;&amp;lt;start rule&amp;gt;&lt;/tt&gt; and a
+    &lt;tt&gt;&amp;lt;quantified rule&amp;gt;&lt;/tt&gt;.
+    &lt;blockquote&gt;
+      &lt;pre&gt;
+&amp;lt;start rule&amp;gt; ::= (':start' &amp;lt;op declare bnf&amp;gt;) symbol
+&amp;lt;op declare bnf&amp;gt; ~ '::='
+      &lt;pre&gt;
+    &lt;blockquote&gt;
+    The parentheses can be ignored -- they are to help out the semantics.
+    (Symbols inside parentheses can be ignored by the semantics.)
+    Here we see the description of a start rule:
+    the &lt;tt&gt;:start&lt;/tt&gt; pseudo-symbol,
+    and an &lt;tt&gt;::=&lt;/tt&gt; operator,
+    followed by a &lt;tt&gt;symbol&lt;/tt&gt;.
+    &lt;blockquote&gt;
+      &lt;pre&gt;
+&amp;lt;quantified rule&amp;gt; ::= lhs &amp;lt;op declare&amp;gt; &amp;lt;single symbol&amp;gt; quantifier &amp;lt;adverb list&amp;gt;
+      &lt;pre&gt;
+    &lt;blockquote&gt;
+    &lt;p&gt;The next rule we saw was a quantified rule.
+    &lt;blockquote&gt;
+      &lt;pre&gt;
+&amp;lt;priority rule&amp;gt; ::= lhs &amp;lt;op declare&amp;gt; priorities
+&amp;lt;empty rule&amp;gt; ::= lhs &amp;lt;op declare&amp;gt; &amp;lt;adverb list&amp;gt;
+&amp;lt;discard rule&amp;gt; ::= (':discard' &amp;lt;op declare match&amp;gt;) &amp;lt;single symbol&amp;gt;
+&amp;lt;op declare&amp;gt; ::= &amp;lt;op declare bnf&amp;gt; | &amp;lt;op declare match&amp;gt;
+priorities ::= alternatives+
+    separator =&amp;gt; &amp;lt;op loosen&amp;gt; proper =&amp;gt; 1
+alternatives ::= alternative+
+    separator =&amp;gt; &amp;lt;op equal priority&amp;gt; proper =&amp;gt; 1
+alternative ::= rhs &amp;lt;adverb list&amp;gt;
+&amp;lt;adverb list&amp;gt; ::= &amp;lt;adverb item&amp;gt;*
+&amp;lt;adverb item&amp;gt; ::=
+      action
+    | &amp;lt;left association&amp;gt; | &amp;lt;right association&amp;gt; | &amp;lt;group association&amp;gt;
+    | &amp;lt;separator specification&amp;gt; | &amp;lt;proper specification&amp;gt;
+
+action ::= ('action' '=&amp;gt;') &amp;lt;action name&amp;gt;
+&amp;lt;left association&amp;gt; ::= ('assoc' '=&amp;gt;' 'left')
+&amp;lt;right association&amp;gt; ::= ('assoc' '=&amp;gt;' 'right')
+&amp;lt;group association&amp;gt; ::= ('assoc' '=&amp;gt;' 'group')
+&amp;lt;separator specification&amp;gt; ::= ('separator' '=&amp;gt;') &amp;lt;single symbol&amp;gt;
+&amp;lt;proper specification&amp;gt; ::= ('proper' '=&amp;gt;') boolean
+
+lhs ::= &amp;lt;symbol name&amp;gt;
+rhs ::= &amp;lt;rhs primary&amp;gt;+
+&amp;lt;rhs primary&amp;gt; ::= &amp;lt;single symbol&amp;gt;
+&amp;lt;rhs primary&amp;gt; ::= &amp;lt;kwc ws star&amp;gt;
+&amp;lt;rhs primary&amp;gt; ::= &amp;lt;kwc ws plus&amp;gt;
+&amp;lt;rhs primary&amp;gt; ::= &amp;lt;kwc ws&amp;gt;
+&amp;lt;rhs primary&amp;gt; ::= &amp;lt;kwc any&amp;gt;
+&amp;lt;rhs primary&amp;gt; ::= &amp;lt;single quoted string&amp;gt;
+&amp;lt;rhs primary&amp;gt; ::= &amp;lt;parenthesized rhs primary list&amp;gt;
+&amp;lt;parenthesized rhs primary list&amp;gt; ::= ('(') &amp;lt;rhs primary list&amp;gt; (')')
+&amp;lt;rhs primary list&amp;gt; ::= &amp;lt;rhs primary&amp;gt;+
+&amp;lt;single symbol&amp;gt; ::=
+    symbol
+  | &amp;lt;character class&amp;gt;
+symbol ::= &amp;lt;symbol name&amp;gt;
+&amp;lt;symbol name&amp;gt; ::= &amp;lt;bare name&amp;gt;
+&amp;lt;symbol name&amp;gt; ::= &amp;lt;bracketed name&amp;gt;
+&amp;lt;action name&amp;gt; ::= &amp;lt;bare name&amp;gt;
+
+:discard ~ whitespace
+whitespace ~ [\s]+
+
+# allow comments
+:discard ~ &amp;lt;hash comment&amp;gt;
+&amp;lt;hash comment&amp;gt; ~ &amp;lt;terminated hash comment&amp;gt; | &amp;lt;unterminated
+   final hash comment&amp;gt;
+&amp;lt;terminated hash comment&amp;gt; ~ '#' &amp;lt;hash comment body&amp;gt; &amp;lt;vertical space char&amp;gt;
+&amp;lt;unterminated final hash comment&amp;gt; ~ '#' &amp;lt;hash comment body&amp;gt;
+&amp;lt;hash comment body&amp;gt; ~ &amp;lt;hash comment char&amp;gt;*
+&amp;lt;vertical space char&amp;gt; ~ [\x{A}\x{B}\x{C}\x{D}\x{2028}\x{2029}]
+&amp;lt;hash comment char&amp;gt; ~ [^\x{A}\x{B}\x{C}\x{D}\x{2028}\x{2029}]
+
+&amp;lt;op declare match&amp;gt; ~ '~'
+&amp;lt;op loosen&amp;gt; ~ '||'
+&amp;lt;op equal priority&amp;gt; ~ '|'
+quantifier ::= '*' | '+'
+
+boolean ~ [01]
+&amp;lt;bare name&amp;gt; ~ [\w]+
+&amp;lt;bracketed name&amp;gt; ~ '&amp;lt;' &amp;lt;bracketed name string&amp;gt; '&amp;gt;'
+&amp;lt;bracketed name string&amp;gt; ~ [\s\w]+
+&amp;lt;kwc ws star&amp;gt; ~ ':ws*'
+&amp;lt;kwc ws plus&amp;gt; ~ ':ws+'
+&amp;lt;kwc ws&amp;gt; ~ ':ws'
+&amp;lt;kwc any&amp;gt; ~ ':any'
+
+# In single quotes strings and character classes
+# no escaping or internal newlines, and disallow empty string
+
+&amp;lt;single quoted string&amp;gt; ~ ['] &amp;lt;string without single quote or vertical space&amp;gt; [']
+&amp;lt;string without single quote or vertical space&amp;gt; ~ [^'\x{0A}\x{0B}\x{0C}\x{0D}\x{0085}\x{2028}\x{2029}]+
+
+&amp;lt;character class&amp;gt; ~ '[' &amp;lt;cc string&amp;gt; ']'
+&amp;lt;cc string&amp;gt; ~ &amp;lt;cc character&amp;gt;+
+&amp;lt;cc character&amp;gt; ~ &amp;lt;escaped cc character&amp;gt; | &amp;lt;safe cc character&amp;gt;
+&amp;lt;escaped cc character&amp;gt; ~ '\' &amp;lt;horizontal character&amp;gt;
+# hex 5d is right square bracket
+&amp;lt;safe cc character&amp;gt; ~ [^\x{5d}\x{0A}\x{0B}\x{0C}\x{0D}\x{0085}\x{2028}\x{2029}]
+
+# a horizontal character is any character that is not vertical space
+&amp;lt;horizontal character&amp;gt; ~ [^\x{A}\x{B}\x{C}\x{D}\x{2028}\x{2029}]
+&lt;/pre&gt;
+    &lt;/blockquote&gt;
+    &lt;p&gt;
+    &lt;/p&gt;
+    &lt;h3&gt;Comments&lt;/h3&gt;
+    &lt;p&gt;
+      Comments on this post can be sent to the Marpa Google Group:
+      &lt;code&gt;marpa-parser@googlegroups.com&lt;/code&gt;
+    &lt;/p&gt;</description>
+  </item>
+  <item>
     <title>Smart whitespace and the Ruby Slippers</title>
     <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/12/whitespace.html</link>
     <description>  &lt;h3&gt;Scannerless parsing&lt;/h3&gt;
@@ -919,144 +1105,6 @@ TOKEN: while ( pos $string &amp;lt; $length ) {
     &lt;p&gt;
       Comments on this post
       can be sent to the Marpa Google Group:
-      &lt;code&gt;marpa-parser@googlegroups.com&lt;/code&gt;
-    &lt;/p&gt;</description>
-  </item>
-  <item>
-    <title>A grammar that exemplifies, describes and parses itself</title>
-    <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/self_parse.html</link>
-    <description>  &lt;p&gt;
-      &lt;!--
-      marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
-      --&gt;
-      I've written a grammar in Marpa's new BNF interface,
-      to parse Marpa's new BNF interface.
-      In the 70's, when I learned parsing theory,
-      this was a very fashionable thing to do, perhaps because
-      yacc had done it,
-      in Appendix B of
-      &lt;a href=&quot;http://dinosaur.compilertools.net/yacc/&quot;&gt;
-        the original 1975 paper&lt;/a&gt;.
-      By 1979, Hoftstadter's book Godel-Escher-Bach (GEB) was out,
-      and the next year it took the Pulitzer for
-      General Nonfiction.
-      Self-description, recursion, self-reference, self-embedding,
-      you
-      (preferably
-      &lt;a href=&quot;http://en.wikipedia.org/wiki/Autological_word&quot;&gt;autologically&lt;/a&gt;)
-      name it,
-      these things were all the rage.
-    &lt;/p&gt;
-    &lt;p&gt;Reading code
-    that is at once both self-example and self-description
-    still holds a certain magic for me.
-      Regular expressions cannot describe themselves.
-      Recursive descent parsers are hand-written
-      in another general-purpose language,
-      so there can be no concise self-description.
-      Ironically, yacc actually cannot parse its own description language.
-      (&quot;Ironically&quot; is the word used in the paper.)
-      Like almost all useful grammars, yacc's description language
-      goes beyond the capabilities of yacc's LALR parser,
-      and a lexer hack is needed to make the code in Appendix B work.
-    &lt;/p&gt;
-    &lt;p&gt;Marpa is a general BNF parser and requires no special hacks
-    to parse the following efficiently:
-    &lt;/p&gt;
-    &lt;blockquote&gt;
-      &lt;pre&gt;
-rules ::= rule+ action =&gt; do_rules
-rule ::= empty_rule | priority_rule | quantified_rule
-priority_rule ::= lhs op_declare priorities
-  action =&gt; do_priority_rule
-empty_rule ::= lhs op_declare adverb_list
-  action =&gt; do_empty_rule
-quantified_rule ::= lhs op_declare name quantifier adverb_list
-    action =&gt; do_quantified_rule
-priorities ::= alternatives+
-    separator =&gt; op_tighter proper =&gt; 1
-    action =&gt; do_discard_separators
-alternatives ::= alternative+
-    separator =&gt; op_eq_pri proper =&gt; 1
-    action =&gt; do_discard_separators
-alternative ::= rhs adverb_list action =&gt; do_alternative
-adverb_list ::= adverb_item* action =&gt; do_adverb_list
-adverb_item ::=
-      action
-    | left_association | right_association | group_association
-    | separator_specification | proper_specification
-
-action ::= kw_action op_arrow name action =&gt; do_action
-left_association ::= kw_assoc op_arrow kw_left
-  action =&gt; do_left_association
-right_association ::= kw_assoc op_arrow kw_right
-  action =&gt; do_right_association
-group_association ::= kw_assoc op_arrow kw_group
-  action =&gt; do_group_association
-separator_specification ::= kw_separator op_arrow name
-  action =&gt; do_separator_specification
-proper_specification ::= kw_proper op_arrow boolean
-action =&gt; do_proper_specification
-
-lhs ::= name action =&gt; do_lhs
-rhs ::= names
-quantifier ::= op_star | op_plus
-names ::= name+ action =&gt; do_array
-name ::= bare_name | reserved_word | quoted_name
-name ::= bracketed_name action =&gt; do_bracketed_name
-
-reserved_word ::= kw_action | kw_assoc | kw_separator | kw_proper
-  | kw_left | kw_right | kw_group
-&lt;/pre&gt;
-    &lt;/blockquote&gt;
-    &lt;p&gt;
-    The conventions are standard or transparent.
-    The &quot;&lt;tt&gt;::=&lt;/tt&gt;&quot; symbol separates the left and right hand sides of rules.
-    The &quot;&lt;tt&gt;|&lt;/tt&gt;&quot; symbol separates alternative right hand sides.
-    The &quot;&lt;tt&gt;*&lt;/tt&gt;&quot; and
-    &quot;&lt;tt&gt;+&lt;/tt&gt;&quot; are quantifiers, similar to those in regular expressions,
-    and indicate, respectively, zero or more repetitions and one or more repetitions
-    of the preceding symbol.
-    Adverbs take the form &quot;&lt;tt&gt;keyword =&gt; value&lt;/tt&gt;&quot;,
-    and indicate semantics or the style of sequence separation.
-    Full documentation can be found
-    &lt;a href=&quot;https://metacpan.org/module/JKEGL/Marpa-R2-2.023_010/pod/BNF.pod&quot;&gt;
-    here&lt;/a&gt;.
-    &lt;p&gt;
-      Self-parsing compiler compilers ruled the earth
-      in the age of bellbottoms.
-      Self-parsing has lasted better, but not by much.
-      When some years I wrote a self-describing language as an interface to
-      Marpa, it seemed to confuse people.
-      They wondered what Marpa did --
-      parsing your own description did not seem to be
-      about &lt;b&gt;doing&lt;/b&gt; anything.
-      These days my examples feature a lot of calculators.
-      (&quot;Ironically&quot;, Hofstadter seems to have had the same problem with
-      GEB -- he felt that
-      people did not understand what his book was saying --
-      even those who liked it.)
-    &lt;/p&gt;
-    &lt;p&gt;
-      But ideas from Larry Wall and Peter Stuifzand
-      have re-ignited my interest in self-parsing.
-      And this time the self-parsing parser was written
-      with a specific purpose.
-      I plan to enhance this language.
-      I have found that the convenience of this interface
-      more than compensates for the circular
-      dependency issues.
-      The BNF source in this post is
-      &lt;a href=&quot;https://metacpan.org/source/JKEGL/Marpa-R2-2.023_010/lib/Marpa/R2/meta/Stuifzand.bnf&quot;&gt;
-      the source&lt;/a&gt;
-      for its own parser,
-      and I plan to use it
-      to produce improved versions
-      of itself.
-    &lt;/p&gt;
-    &lt;h3&gt;Comments&lt;/h3&gt;
-    &lt;p&gt;
-      Comments on this post can be sent to the Marpa Google Group:
       &lt;code&gt;marpa-parser@googlegroups.com&lt;/code&gt;
     &lt;/p&gt;</description>
   </item>

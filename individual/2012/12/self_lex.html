@@ -1,0 +1,256 @@
+<html>
+<head>
+<link rel="alternate" title="Ocean of Awareness RSS" type="application/rss+xml" title="RSS" href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/index.rss" />
+<title>Ocean of Awareness</title>
+<style type="text/css">
+   strong {font-weight: 700;}
+</style>
+</head>
+<body>
+<div
+  style="color:white;background-color:#38B0C0;padding:1em;clear:left;text-align:center;">
+<h1>Ocean of Awareness</h1>
+</div>
+  <div style="margin:0;padding:10px 30px 10px 10px;width:150px;float:left;border-right:2px solid #38B0C0">
+  <p>
+  <strong>Jeffrey Kegler's blog</strong>
+  about Marpa, his new parsing algorithm,
+    and other topics of interest</p>
+  <p><a href="http://www.jeffreykegler.com/">Jeffrey's personal website</a></p>
+      <p>
+	<a href="https://twitter.com/jeffreykegler" class="twitter-follow-button" data-show-count="false">Follow @jeffreykegler</a>
+      </p>
+      <p style="text-align:center">
+	<!-- Place this code where you want the badge to render. -->
+	<a href="//plus.google.com/101567692867247957860?prsrc=3" rel="publisher" style="text-decoration:none;">
+	<img src="//ssl.gstatic.com/images/icons/gplus-32.png" alt="Google+" style="border:0;width:32px;height:32px;"/></a>
+      </p>
+  <h3>Marpa resources</h3>
+  <p><a href="http://jeffreykegler.github.com/Marpa-web-site/">The Marpa website</a></p>
+  <p>The Ocean of Awareness blog: <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog">home page</a>,
+  <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/metapages/chronological.html">chronological index</a>,
+  and
+  <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/metapages/annotated.html">annotated index</a>.
+  </p>
+  </div>
+  <div style="margin-left:190px;border-left:2px solid #38B0C0;padding:25px;">
+<h3>Sat, 29 Dec 2012</h3>
+<br />
+<center><a name="self_lex"> <h2>Self-parsing and self-lexing</h2> </a>
+</center>
+  <p>
+      <!--
+      marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
+      -->
+      In a previous post, I showed a self-parsing grammar,
+      written in Marpa's new BNF interface.
+      This post does the same for Marpa's forthcoming
+      Scanless interface.
+      Many readers will no doubt
+      prefer to be introduced to the Scanless interface
+      via a simpler example,
+      but from the response to the previous past I know
+      there are others who see the fascination of
+      self-description and self-exemplification.
+      <p>
+      The previous self-parsing grammar,
+      following the tradition, cheated a bit.
+      It required, but did not include, a lexer to make a prepass over
+      its input.
+      This self-parsing scannerless grammar is as completely self-contained
+      as it can get.
+      It is the complete and ultimate authority on its own syntax.
+      It does not describe its own semantics,
+      but even a self-describing Turing machine has to be written
+      assuming the semantics of a Turing machine.
+      So that's one limit that is probably going to stand.
+      <p>
+      In terms of being a practical example, this is as practical
+      as they come.
+      This grammar I will describe is the one actually used not
+      only to parse itself and all other grammars written in the
+      Scanless language,
+      but also to parse the strings written
+      in the BNF interface,
+      it non-scannerless predecessor.
+      So this grammar is an
+      authority, if an over-liberal one,
+      on the syntax
+      of the BNF interface as well,
+      with the exception that it is over-liberal.
+      (Constructs allowed in the Scanless interface, but prohibited
+      in the BNF interface are caught when the semantics are processed.)
+      <p>
+      The grammar in this blog post is abridged a bit,
+      and rearranged for ease of explanation.
+      The original that is actually used for self-parsing can be
+      found here.
+    <blockquote>
+      <pre>
+# Copyright 2012 Jeffrey Kegler
+      <pre>
+    <blockquote>
+    <p>The file starts with legalese -- it goes on to say that it is LGPL 3.0.
+    <blockquote>
+      <pre>
+:start ::= rules
+rules ::= rule+
+rule ::= &lt;start rule&gt; | &lt;empty rule&gt; | &lt;priority rule&gt; | &lt;quantified rule&gt; | &lt;discard rule&gt;
+      <pre>
+    <blockquote>
+    <p>Next it tells us that the <tt>rules</tt> symbol is the start symbol,
+    that file consists of a series of one or more rules,
+    and that rules fall into one of five types.
+    The last rule, with the LHS <tt>rule</tt> is self-describing -- among the
+    options it lists, it is a
+    <tt>&lt;priority rule&gt;</tt>.
+    In the previous two lines are two of the other possibilities:
+    a
+    <tt>&lt;start rule&gt;</tt> and a
+    <tt>&lt;quantified rule&gt;</tt>.
+    <blockquote>
+      <pre>
+&lt;start rule&gt; ::= (':start' &lt;op declare bnf&gt;) symbol
+&lt;op declare bnf&gt; ~ '::='
+      <pre>
+    <blockquote>
+    The parentheses can be ignored -- they are to help out the semantics.
+    (Symbols inside parentheses can be ignored by the semantics.)
+    Here we see the description of a start rule:
+    the <tt>:start</tt> pseudo-symbol,
+    and an <tt>::=</tt> operator,
+    followed by a <tt>symbol</tt>.
+    <blockquote>
+      <pre>
+&lt;quantified rule&gt; ::= lhs &lt;op declare&gt; &lt;single symbol&gt; quantifier &lt;adverb list&gt;
+      <pre>
+    <blockquote>
+    <p>The next rule we saw was a quantified rule.
+    <blockquote>
+      <pre>
+&lt;priority rule&gt; ::= lhs &lt;op declare&gt; priorities
+&lt;empty rule&gt; ::= lhs &lt;op declare&gt; &lt;adverb list&gt;
+&lt;discard rule&gt; ::= (':discard' &lt;op declare match&gt;) &lt;single symbol&gt;
+&lt;op declare&gt; ::= &lt;op declare bnf&gt; | &lt;op declare match&gt;
+priorities ::= alternatives+
+    separator =&gt; &lt;op loosen&gt; proper =&gt; 1
+alternatives ::= alternative+
+    separator =&gt; &lt;op equal priority&gt; proper =&gt; 1
+alternative ::= rhs &lt;adverb list&gt;
+&lt;adverb list&gt; ::= &lt;adverb item&gt;*
+&lt;adverb item&gt; ::=
+      action
+    | &lt;left association&gt; | &lt;right association&gt; | &lt;group association&gt;
+    | &lt;separator specification&gt; | &lt;proper specification&gt;
+
+action ::= ('action' '=&gt;') &lt;action name&gt;
+&lt;left association&gt; ::= ('assoc' '=&gt;' 'left')
+&lt;right association&gt; ::= ('assoc' '=&gt;' 'right')
+&lt;group association&gt; ::= ('assoc' '=&gt;' 'group')
+&lt;separator specification&gt; ::= ('separator' '=&gt;') &lt;single symbol&gt;
+&lt;proper specification&gt; ::= ('proper' '=&gt;') boolean
+
+lhs ::= &lt;symbol name&gt;
+rhs ::= &lt;rhs primary&gt;+
+&lt;rhs primary&gt; ::= &lt;single symbol&gt;
+&lt;rhs primary&gt; ::= &lt;kwc ws star&gt;
+&lt;rhs primary&gt; ::= &lt;kwc ws plus&gt;
+&lt;rhs primary&gt; ::= &lt;kwc ws&gt;
+&lt;rhs primary&gt; ::= &lt;kwc any&gt;
+&lt;rhs primary&gt; ::= &lt;single quoted string&gt;
+&lt;rhs primary&gt; ::= &lt;parenthesized rhs primary list&gt;
+&lt;parenthesized rhs primary list&gt; ::= ('(') &lt;rhs primary list&gt; (')')
+&lt;rhs primary list&gt; ::= &lt;rhs primary&gt;+
+&lt;single symbol&gt; ::=
+    symbol
+  | &lt;character class&gt;
+symbol ::= &lt;symbol name&gt;
+&lt;symbol name&gt; ::= &lt;bare name&gt;
+&lt;symbol name&gt; ::= &lt;bracketed name&gt;
+&lt;action name&gt; ::= &lt;bare name&gt;
+
+:discard ~ whitespace
+whitespace ~ [\s]+
+
+# allow comments
+:discard ~ &lt;hash comment&gt;
+&lt;hash comment&gt; ~ &lt;terminated hash comment&gt; | &lt;unterminated
+   final hash comment&gt;
+&lt;terminated hash comment&gt; ~ '#' &lt;hash comment body&gt; &lt;vertical space char&gt;
+&lt;unterminated final hash comment&gt; ~ '#' &lt;hash comment body&gt;
+&lt;hash comment body&gt; ~ &lt;hash comment char&gt;*
+&lt;vertical space char&gt; ~ [\x{A}\x{B}\x{C}\x{D}\x{2028}\x{2029}]
+&lt;hash comment char&gt; ~ [^\x{A}\x{B}\x{C}\x{D}\x{2028}\x{2029}]
+
+&lt;op declare match&gt; ~ '~'
+&lt;op loosen&gt; ~ '||'
+&lt;op equal priority&gt; ~ '|'
+quantifier ::= '*' | '+'
+
+boolean ~ [01]
+&lt;bare name&gt; ~ [\w]+
+&lt;bracketed name&gt; ~ '&lt;' &lt;bracketed name string&gt; '&gt;'
+&lt;bracketed name string&gt; ~ [\s\w]+
+&lt;kwc ws star&gt; ~ ':ws*'
+&lt;kwc ws plus&gt; ~ ':ws+'
+&lt;kwc ws&gt; ~ ':ws'
+&lt;kwc any&gt; ~ ':any'
+
+# In single quotes strings and character classes
+# no escaping or internal newlines, and disallow empty string
+
+&lt;single quoted string&gt; ~ ['] &lt;string without single quote or vertical space&gt; [']
+&lt;string without single quote or vertical space&gt; ~ [^'\x{0A}\x{0B}\x{0C}\x{0D}\x{0085}\x{2028}\x{2029}]+
+
+&lt;character class&gt; ~ '[' &lt;cc string&gt; ']'
+&lt;cc string&gt; ~ &lt;cc character&gt;+
+&lt;cc character&gt; ~ &lt;escaped cc character&gt; | &lt;safe cc character&gt;
+&lt;escaped cc character&gt; ~ '\' &lt;horizontal character&gt;
+# hex 5d is right square bracket
+&lt;safe cc character&gt; ~ [^\x{5d}\x{0A}\x{0B}\x{0C}\x{0D}\x{0085}\x{2028}\x{2029}]
+
+# a horizontal character is any character that is not vertical space
+&lt;horizontal character&gt; ~ [^\x{A}\x{B}\x{C}\x{D}\x{2028}\x{2029}]
+</pre>
+    </blockquote>
+    <p>
+    </p>
+    <h3>Comments</h3>
+    <p>
+      Comments on this post can be sent to the Marpa Google Group:
+      <code>marpa-parser@googlegroups.com</code>
+    </p>
+<br />
+<p>posted at: 19:03 |
+<a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/12/self_lex.html">direct link to this entry</a>
+</p>
+<div style="color:#38B0C0;padding:1px;text-align:center;">
+&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&sect;
+</div>
+</div>
+</div>
+<div id="footer" style="border-top:thick solid #38B0C0;clear:left;padding:1em;">
+<p>This is Ocean of Awareness's
+  new home.  This blog has been hosted at
+  <a href="http://blogs.perl.org/users/jeffrey_kegler/">blogs.perl.org</a>
+  but I have succumbed to the lure of static blogging.
+  I have not yet decided how to deal with comments at this new blog location.
+If the post is Marpa-related,
+<a href="https://groups.google.com/forum/?hl=en&fromgroups#%21forum/marpa-parser">
+the Marpa mailing list</a>
+is a good place to comment.
+</div>
+	<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+              <script type="text/javascript">
+            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+          </script>
+          <script type="text/javascript">
+            try {
+              var pageTracker = _gat._getTracker("UA-33430331-1");
+            pageTracker._trackPageview();
+            } catch(err) {}
+          </script>
+</body></html>
