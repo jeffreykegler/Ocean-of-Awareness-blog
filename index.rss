@@ -62,16 +62,16 @@
     &lt;blockquote&gt;
       &lt;pre&gt;
 # Copyright 2012 Jeffrey Kegler
-      &lt;pre&gt;
-    &lt;blockquote&gt;
+      &lt;/pre&gt;
+    &lt;/blockquote&gt;
     &lt;p&gt;The file starts with legalese -- it goes on to say that it is LGPL 3.0.
     &lt;blockquote&gt;
       &lt;pre&gt;
 :start ::= rules
 rules ::= rule+
 rule ::= &amp;lt;start rule&amp;gt; | &amp;lt;empty rule&amp;gt; | &amp;lt;priority rule&amp;gt; | &amp;lt;quantified rule&amp;gt; | &amp;lt;discard rule&amp;gt;
-      &lt;pre&gt;
-    &lt;blockquote&gt;
+      &lt;/pre&gt;
+    &lt;/blockquote&gt;
     &lt;p&gt;Next it tells us that the &lt;tt&gt;rules&lt;/tt&gt; symbol is the start symbol,
     that file consists of a series of one or more rules,
     and that rules fall into one of five types.
@@ -86,8 +86,8 @@ rule ::= &amp;lt;start rule&amp;gt; | &amp;lt;empty rule&amp;gt; | &amp;lt;prior
       &lt;pre&gt;
 &amp;lt;start rule&amp;gt; ::= (':start' &amp;lt;op declare bnf&amp;gt;) symbol
 &amp;lt;op declare bnf&amp;gt; ~ '::='
-      &lt;pre&gt;
-    &lt;blockquote&gt;
+      &lt;/pre&gt;
+    &lt;/blockquote&gt;
     The parentheses can be ignored -- they are to help out the semantics.
     (Symbols inside parentheses can be ignored by the semantics.)
     Here we see the description of a start rule:
@@ -97,8 +97,8 @@ rule ::= &amp;lt;start rule&amp;gt; | &amp;lt;empty rule&amp;gt; | &amp;lt;prior
     &lt;blockquote&gt;
       &lt;pre&gt;
 &amp;lt;quantified rule&amp;gt; ::= lhs &amp;lt;op declare&amp;gt; &amp;lt;single symbol&amp;gt; quantifier &amp;lt;adverb list&amp;gt;
-      &lt;pre&gt;
-    &lt;blockquote&gt;
+      &lt;/pre&gt;
+    &lt;/blockquote&gt;
     &lt;p&gt;The next rule we saw was a quantified rule.
     &lt;blockquote&gt;
       &lt;pre&gt;

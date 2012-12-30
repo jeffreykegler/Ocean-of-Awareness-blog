@@ -88,16 +88,16 @@
     <blockquote>
       <pre>
 # Copyright 2012 Jeffrey Kegler
-      <pre>
-    <blockquote>
+      </pre>
+    </blockquote>
     <p>The file starts with legalese -- it goes on to say that it is LGPL 3.0.
     <blockquote>
       <pre>
 :start ::= rules
 rules ::= rule+
 rule ::= &lt;start rule&gt; | &lt;empty rule&gt; | &lt;priority rule&gt; | &lt;quantified rule&gt; | &lt;discard rule&gt;
-      <pre>
-    <blockquote>
+      </pre>
+    </blockquote>
     <p>Next it tells us that the <tt>rules</tt> symbol is the start symbol,
     that file consists of a series of one or more rules,
     and that rules fall into one of five types.
@@ -112,8 +112,8 @@ rule ::= &lt;start rule&gt; | &lt;empty rule&gt; | &lt;priority rule&gt; | &lt;q
       <pre>
 &lt;start rule&gt; ::= (':start' &lt;op declare bnf&gt;) symbol
 &lt;op declare bnf&gt; ~ '::='
-      <pre>
-    <blockquote>
+      </pre>
+    </blockquote>
     The parentheses can be ignored -- they are to help out the semantics.
     (Symbols inside parentheses can be ignored by the semantics.)
     Here we see the description of a start rule:
@@ -123,8 +123,8 @@ rule ::= &lt;start rule&gt; | &lt;empty rule&gt; | &lt;priority rule&gt; | &lt;q
     <blockquote>
       <pre>
 &lt;quantified rule&gt; ::= lhs &lt;op declare&gt; &lt;single symbol&gt; quantifier &lt;adverb list&gt;
-      <pre>
-    <blockquote>
+      </pre>
+    </blockquote>
     <p>The next rule we saw was a quantified rule.
     <blockquote>
       <pre>
