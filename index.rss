@@ -178,6 +178,9 @@ alternative ::= rhs &amp;lt;adverb list&amp;gt;
 symbol ::= &amp;lt;symbol name&amp;gt;
 &amp;lt;symbol name&amp;gt; ::= &amp;lt;bare name&amp;gt;
 &amp;lt;symbol name&amp;gt; ::= &amp;lt;bracketed name&amp;gt;
+&amp;lt;bare name&amp;gt; ~ [\w]+
+&amp;lt;bracketed name&amp;gt; ~ '&amp;lt;' &amp;lt;bracketed name string&amp;gt; '&amp;gt;'
+&amp;lt;bracketed name string&amp;gt; ~ [\s\w]+
 &lt;/pre&gt;&lt;/blockquote&gt;
     &lt;p&gt;At this point,
       &lt;tt&gt;symbol&lt;/tt&gt;
@@ -205,6 +208,10 @@ rhs ::= &amp;lt;rhs primary&amp;gt;+
 &amp;lt;parenthesized rhs primary list&amp;gt; ::= ('(') &amp;lt;rhs primary list&amp;gt; (')')
 &amp;lt;rhs primary list&amp;gt; ::= &amp;lt;rhs primary&amp;gt;+
 &lt;/pre&gt;&lt;/blockquote&gt;
+&lt;p&gt;A right hand side (RHS) is a sequence of one or more RHS &quot;primaryies&quot;.
+These can be single symbols, strings in single quotes,
+or a sublist of RHS primaries in parentheses.
+&lt;p&gt;And here is the syntax for adverb lists:
     &lt;blockquote&gt;
       &lt;pre&gt;
 &amp;lt;adverb list&amp;gt; ::= &amp;lt;adverb item&amp;gt;*
@@ -212,16 +219,31 @@ rhs ::= &amp;lt;rhs primary&amp;gt;+
       action
     | &amp;lt;left association&amp;gt; | &amp;lt;right association&amp;gt; | &amp;lt;group association&amp;gt;
     | &amp;lt;separator specification&amp;gt; | &amp;lt;proper specification&amp;gt;
-
-action ::= ('action' '=&amp;gt;') &amp;lt;action name&amp;gt;
+&lt;/pre&gt;&lt;/blockquote&gt;
+&lt;p&gt;Adverb lists are lists of zero or more adverbs, which can be of one of five kinds.
+Some of the adverbs have to do with the associativity (right/left/group)
+of priorities.
+Since all our &quot;prioritized&quot; rules are trivial (have only one priority),
+this grammar does not include any of the following:
+    &lt;blockquote&gt;
+      &lt;pre&gt;
 &amp;lt;left association&amp;gt; ::= ('assoc' '=&amp;gt;' 'left')
 &amp;lt;right association&amp;gt; ::= ('assoc' '=&amp;gt;' 'right')
 &amp;lt;group association&amp;gt; ::= ('assoc' '=&amp;gt;' 'group')
+action ::= ('action' '=&amp;gt;') &amp;lt;action name&amp;gt;
+&amp;lt;action name&amp;gt; ::= &amp;lt;bare name&amp;gt;
+&lt;/pre&gt;&lt;/blockquote&gt;
+&lt;p&gt;We also will not see &lt;tt&gt;action&lt;/tt&gt; adverbs in this grammar,
+for reasons explained below.
+Here are two adverbs the we do see:
+    &lt;blockquote&gt;
+      &lt;pre&gt;
 &amp;lt;separator specification&amp;gt; ::= ('separator' '=&amp;gt;') &amp;lt;single symbol&amp;gt;
 &amp;lt;proper specification&amp;gt; ::= ('proper' '=&amp;gt;') boolean
-
-&amp;lt;action name&amp;gt; ::= &amp;lt;bare name&amp;gt;
-
+boolean ~ [01]
+&lt;/pre&gt;&lt;/blockquote&gt;
+    &lt;blockquote&gt;
+      &lt;pre&gt;
 :discard ~ whitespace
 whitespace ~ [\s]+
 
@@ -236,10 +258,6 @@ whitespace ~ [\s]+
 &amp;lt;hash comment char&amp;gt; ~ [^\x{A}\x{B}\x{C}\x{D}\x{2028}\x{2029}]
 
 
-boolean ~ [01]
-&amp;lt;bare name&amp;gt; ~ [\w]+
-&amp;lt;bracketed name&amp;gt; ~ '&amp;lt;' &amp;lt;bracketed name string&amp;gt; '&amp;gt;'
-&amp;lt;bracketed name string&amp;gt; ~ [\s\w]+
 
 # In single quotes strings and character classes
 # no escaping or internal newlines, and disallow empty string

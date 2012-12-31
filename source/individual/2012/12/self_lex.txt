@@ -165,6 +165,9 @@ alternative ::= rhs &lt;adverb list&gt;
 symbol ::= &lt;symbol name&gt;
 &lt;symbol name&gt; ::= &lt;bare name&gt;
 &lt;symbol name&gt; ::= &lt;bracketed name&gt;
+&lt;bare name&gt; ~ [\w]+
+&lt;bracketed name&gt; ~ '&lt;' &lt;bracketed name string&gt; '&gt;'
+&lt;bracketed name string&gt; ~ [\s\w]+
 </pre></blockquote>
     <p>At this point,
       <tt>symbol</tt>
@@ -192,6 +195,10 @@ rhs ::= &lt;rhs primary&gt;+
 &lt;parenthesized rhs primary list&gt; ::= ('(') &lt;rhs primary list&gt; (')')
 &lt;rhs primary list&gt; ::= &lt;rhs primary&gt;+
 </pre></blockquote>
+<p>A right hand side (RHS) is a sequence of one or more RHS "primaryies".
+These can be single symbols, strings in single quotes,
+or a sublist of RHS primaries in parentheses.
+<p>And here is the syntax for adverb lists:
     <blockquote>
       <pre>
 &lt;adverb list&gt; ::= &lt;adverb item&gt;*
@@ -199,16 +206,31 @@ rhs ::= &lt;rhs primary&gt;+
       action
     | &lt;left association&gt; | &lt;right association&gt; | &lt;group association&gt;
     | &lt;separator specification&gt; | &lt;proper specification&gt;
-
-action ::= ('action' '=&gt;') &lt;action name&gt;
+</pre></blockquote>
+<p>Adverb lists are lists of zero or more adverbs, which can be of one of five kinds.
+Some of the adverbs have to do with the associativity (right/left/group)
+of priorities.
+Since all our "prioritized" rules are trivial (have only one priority),
+this grammar does not include any of the following:
+    <blockquote>
+      <pre>
 &lt;left association&gt; ::= ('assoc' '=&gt;' 'left')
 &lt;right association&gt; ::= ('assoc' '=&gt;' 'right')
 &lt;group association&gt; ::= ('assoc' '=&gt;' 'group')
+action ::= ('action' '=&gt;') &lt;action name&gt;
+&lt;action name&gt; ::= &lt;bare name&gt;
+</pre></blockquote>
+<p>We also will not see <tt>action</tt> adverbs in this grammar,
+for reasons explained below.
+Here are two adverbs the we do see:
+    <blockquote>
+      <pre>
 &lt;separator specification&gt; ::= ('separator' '=&gt;') &lt;single symbol&gt;
 &lt;proper specification&gt; ::= ('proper' '=&gt;') boolean
-
-&lt;action name&gt; ::= &lt;bare name&gt;
-
+boolean ~ [01]
+</pre></blockquote>
+    <blockquote>
+      <pre>
 :discard ~ whitespace
 whitespace ~ [\s]+
 
@@ -223,10 +245,6 @@ whitespace ~ [\s]+
 &lt;hash comment char&gt; ~ [^\x{A}\x{B}\x{C}\x{D}\x{2028}\x{2029}]
 
 
-boolean ~ [01]
-&lt;bare name&gt; ~ [\w]+
-&lt;bracketed name&gt; ~ '&lt;' &lt;bracketed name string&gt; '&gt;'
-&lt;bracketed name string&gt; ~ [\s\w]+
 
 # In single quotes strings and character classes
 # no escaping or internal newlines, and disallow empty string
