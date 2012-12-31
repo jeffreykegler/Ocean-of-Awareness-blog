@@ -452,11 +452,12 @@ But when Unicode support is added, the grammar won't need to be changed.
 &lt;horizontal character&gt; ~ [^\x{A}\x{B}\x{C}\x{D}\x{2028}\x{2029}]
 </pre></blockquote>
 <p>These are Perl character classes,
-to be passed straight to Perl for intrepretation.
-The grammar need only recognize strings enclosed by square brackets.
-But it must deal with escaped square brackets,
-and this is enough to make character
-classes the most
+and are passed unaltered to Perl for interpretation.
+Marpa needs to recognize that they start and end with square brackets.
+And it also must recognize enough of their internals
+to deal with escaped square brackets,
+which makes
+them the most
 complicated lexeme of the grammar.
     </p>
 <h3>Longest tokens matching</h3>
