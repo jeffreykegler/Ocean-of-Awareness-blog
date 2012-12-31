@@ -88,8 +88,7 @@
     </p><blockquote>
       <pre>
 # Copyright 2012 Jeffrey Kegler
-      </pre>
-    </blockquote>
+</pre></blockquote>
     <p>The file starts with legalese -- it goes on to say that it is LGPL 3.0.
       Note the hash comment -- since they is a self-describing self-lexer,
       it is eventually going to have to tell us how it deals with comments.
@@ -99,8 +98,7 @@
 :start ::= rules
 rules ::= rule+
 rule ::= &lt;start rule&gt; | &lt;empty rule&gt; | &lt;priority rule&gt; | &lt;quantified rule&gt; | &lt;discard rule&gt;
-      </pre>
-    </blockquote>
+</pre></blockquote>
     <p>Next it tells us that the
       <tt>rules</tt>
       symbol is the start symbol,
@@ -120,8 +118,8 @@ rule ::= &lt;start rule&gt; | &lt;empty rule&gt; | &lt;priority rule&gt; | &lt;q
       <pre>
 &lt;start rule&gt; ::= (':start' &lt;op declare bnf&gt;) symbol
 &lt;op declare bnf&gt; ~ '::='
-      </pre>
-    </blockquote><p>
+</pre></blockquote>
+<p>
       The parentheses can be ignored -- they are to help out the semantics.
       (Symbols inside parentheses can be ignored by the semantics.)
       Here we see the description of a start rule:
@@ -141,8 +139,7 @@ lhs ::= &lt;symbol name&gt;
 &lt;op declare&gt; ::= &lt;op declare bnf&gt; | &lt;op declare match&gt;
 &lt;op declare match&gt; ~ '~'
 quantifier ::= '*' | '+'
-      </pre>
-    </blockquote>
+</pre></blockquote>
     <p>Above we saw a quantified rule: "<tt>rules ::= rule+</tt>"
       It contains a left hand side (LHS) symbol name
       one of the two declaration operators,
@@ -158,8 +155,7 @@ quantifier ::= '*' | '+'
       <pre>
 &lt;discard rule&gt; ::= (':discard' &lt;op declare match&gt;) &lt;single symbol&gt;
 &lt;empty rule&gt; ::= lhs &lt;op declare&gt; &lt;adverb list&gt;
-      </pre>
-    </blockquote>
+</pre></blockquote>
     <p>
       We'll explain what a "discard rule" is when we encounter one.
       An empty rule is what is sounds like.
@@ -175,8 +171,7 @@ alternatives ::= alternative+
     separator =&gt; &lt;op equal priority&gt; proper =&gt; 1
 alternative ::= rhs &lt;adverb list&gt;
 &lt;op equal priority&gt; ~ '|'
-      </pre>
-    </blockquote>
+</pre></blockquote>
     <p>
       Most rules, including most of the rules we've already seen,
       are priority rules,
@@ -193,6 +188,49 @@ alternative ::= rhs &lt;adverb list&gt;
       the different types of rule were alternatives within a single
       priority.
     </p>
+    <p>We've used
+      <tt>symbol</tt>,
+      <tt>&lt;symbol name&gt;</tt>,
+      and
+      <tt>&lt;single symbol&gt;</tt>
+      a few times.
+      It's time to see how they are defined:
+    </p>
+    <blockquote>
+      <pre>
+&lt;single symbol&gt; ::=
+    symbol
+  | &lt;character class&gt;
+symbol ::= &lt;symbol name&gt;
+&lt;symbol name&gt; ::= &lt;bare name&gt;
+&lt;symbol name&gt; ::= &lt;bracketed name&gt;
+</pre></blockquote>
+    <p>At this point,
+      <tt>symbol</tt>
+      and
+      <tt>&lt;symbol name&gt;</tt>
+      are
+      essentially the same thing:
+      someday there may be another way to specify symbols
+      except by name.
+      <tt>&lt;single symbol&gt;</tt>
+      means any expression guaranteed
+      to produce a single symbol.
+      <tt>symbol</tt>
+      is obviously one;
+      a character class is the other.
+    </p><p>Now that we know what a symbol can be,
+      let's look at how right hand sides are built up:
+    </p>
+    <blockquote>
+      <pre>
+rhs ::= &lt;rhs primary&gt;+
+&lt;rhs primary&gt; ::= &lt;single symbol&gt;
+&lt;rhs primary&gt; ::= &lt;single quoted string&gt;
+&lt;rhs primary&gt; ::= &lt;parenthesized rhs primary list&gt;
+&lt;parenthesized rhs primary list&gt; ::= ('(') &lt;rhs primary list&gt; (')')
+&lt;rhs primary list&gt; ::= &lt;rhs primary&gt;+
+</pre></blockquote>
     <blockquote>
       <pre>
 &lt;adverb list&gt; ::= &lt;adverb item&gt;*
@@ -208,18 +246,6 @@ action ::= ('action' '=&gt;') &lt;action name&gt;
 &lt;separator specification&gt; ::= ('separator' '=&gt;') &lt;single symbol&gt;
 &lt;proper specification&gt; ::= ('proper' '=&gt;') boolean
 
-rhs ::= &lt;rhs primary&gt;+
-&lt;rhs primary&gt; ::= &lt;single symbol&gt;
-&lt;rhs primary&gt; ::= &lt;single quoted string&gt;
-&lt;rhs primary&gt; ::= &lt;parenthesized rhs primary list&gt;
-&lt;parenthesized rhs primary list&gt; ::= ('(') &lt;rhs primary list&gt; (')')
-&lt;rhs primary list&gt; ::= &lt;rhs primary&gt;+
-&lt;single symbol&gt; ::=
-    symbol
-  | &lt;character class&gt;
-symbol ::= &lt;symbol name&gt;
-&lt;symbol name&gt; ::= &lt;bare name&gt;
-&lt;symbol name&gt; ::= &lt;bracketed name&gt;
 &lt;action name&gt; ::= &lt;bare name&gt;
 
 :discard ~ whitespace
@@ -262,23 +288,29 @@ boolean ~ [01]
     </p>
     <h3>Semantics</h3>
     <p>The Scanless interface's meta-grammar, is unusual in its semantics
-    because it serves a dual purpose -- it is also the grammar for Marpa's
-    BNF interface, which has a different semantics.
-    In practice, a grammar is usually tied tightly to one semantics,
-    but this is an exception.
-    <p>
-    For most grammars in either the Marpa's BNF or Scanless interface,
-    the semantics would be specified using <tt>action</tt> adverbs.
-    For this grammar, there are no <tt>action</tt> adverbs -- internally,
-    Marpa waits until it knows which interface the grammar will be used for,
-    then uses the symbol names to determine the actions on a "just in time"
-    basis.
-    <p>
-    Standard applications will
-    labeling rules and alternatives with <tt>action</tt> adverbs.
-    Example of this are in the documentation for the BNF
-    and Scanless interfaces.
-    <h3>Comments</h3>
+      because it serves a dual purpose -- it is also the grammar for Marpa's
+      BNF interface, which has a different semantics.
+      In practice, a grammar is usually tied tightly to one semantics,
+      but this is an exception.
+    </p><p>
+      For most grammars in either the Marpa's BNF or Scanless interface,
+      the semantics would be specified using
+      <tt>action</tt>
+      adverbs.
+      For this grammar, there are no
+      <tt>action</tt>
+      adverbs -- internally,
+      Marpa waits until it knows which interface the grammar will be used for,
+      then uses the symbol names to determine the actions on a "just in time"
+      basis.
+    </p><p>
+      Standard applications will
+      labeling rules and alternatives with
+      <tt>action</tt>
+      adverbs.
+      Example of this are in the documentation for the BNF
+      and Scanless interfaces.
+    </p><h3>Comments</h3>
     <p>
       Comments on this post can be sent to the Marpa Google Group:
       <code>marpa-parser@googlegroups.com</code>

@@ -62,8 +62,7 @@
     &lt;/p&gt;&lt;blockquote&gt;
       &lt;pre&gt;
 # Copyright 2012 Jeffrey Kegler
-      &lt;/pre&gt;
-    &lt;/blockquote&gt;
+&lt;/pre&gt;&lt;/blockquote&gt;
     &lt;p&gt;The file starts with legalese -- it goes on to say that it is LGPL 3.0.
       Note the hash comment -- since they is a self-describing self-lexer,
       it is eventually going to have to tell us how it deals with comments.
@@ -73,8 +72,7 @@
 :start ::= rules
 rules ::= rule+
 rule ::= &amp;lt;start rule&amp;gt; | &amp;lt;empty rule&amp;gt; | &amp;lt;priority rule&amp;gt; | &amp;lt;quantified rule&amp;gt; | &amp;lt;discard rule&amp;gt;
-      &lt;/pre&gt;
-    &lt;/blockquote&gt;
+&lt;/pre&gt;&lt;/blockquote&gt;
     &lt;p&gt;Next it tells us that the
       &lt;tt&gt;rules&lt;/tt&gt;
       symbol is the start symbol,
@@ -94,8 +92,8 @@ rule ::= &amp;lt;start rule&amp;gt; | &amp;lt;empty rule&amp;gt; | &amp;lt;prior
       &lt;pre&gt;
 &amp;lt;start rule&amp;gt; ::= (':start' &amp;lt;op declare bnf&amp;gt;) symbol
 &amp;lt;op declare bnf&amp;gt; ~ '::='
-      &lt;/pre&gt;
-    &lt;/blockquote&gt;&lt;p&gt;
+&lt;/pre&gt;&lt;/blockquote&gt;
+&lt;p&gt;
       The parentheses can be ignored -- they are to help out the semantics.
       (Symbols inside parentheses can be ignored by the semantics.)
       Here we see the description of a start rule:
@@ -115,8 +113,7 @@ lhs ::= &amp;lt;symbol name&amp;gt;
 &amp;lt;op declare&amp;gt; ::= &amp;lt;op declare bnf&amp;gt; | &amp;lt;op declare match&amp;gt;
 &amp;lt;op declare match&amp;gt; ~ '~'
 quantifier ::= '*' | '+'
-      &lt;/pre&gt;
-    &lt;/blockquote&gt;
+&lt;/pre&gt;&lt;/blockquote&gt;
     &lt;p&gt;Above we saw a quantified rule: &quot;&lt;tt&gt;rules ::= rule+&lt;/tt&gt;&quot;
       It contains a left hand side (LHS) symbol name
       one of the two declaration operators,
@@ -132,8 +129,7 @@ quantifier ::= '*' | '+'
       &lt;pre&gt;
 &amp;lt;discard rule&amp;gt; ::= (':discard' &amp;lt;op declare match&amp;gt;) &amp;lt;single symbol&amp;gt;
 &amp;lt;empty rule&amp;gt; ::= lhs &amp;lt;op declare&amp;gt; &amp;lt;adverb list&amp;gt;
-      &lt;/pre&gt;
-    &lt;/blockquote&gt;
+&lt;/pre&gt;&lt;/blockquote&gt;
     &lt;p&gt;
       We'll explain what a &quot;discard rule&quot; is when we encounter one.
       An empty rule is what is sounds like.
@@ -149,8 +145,7 @@ alternatives ::= alternative+
     separator =&amp;gt; &amp;lt;op equal priority&amp;gt; proper =&amp;gt; 1
 alternative ::= rhs &amp;lt;adverb list&amp;gt;
 &amp;lt;op equal priority&amp;gt; ~ '|'
-      &lt;/pre&gt;
-    &lt;/blockquote&gt;
+&lt;/pre&gt;&lt;/blockquote&gt;
     &lt;p&gt;
       Most rules, including most of the rules we've already seen,
       are priority rules,
@@ -167,6 +162,49 @@ alternative ::= rhs &amp;lt;adverb list&amp;gt;
       the different types of rule were alternatives within a single
       priority.
     &lt;/p&gt;
+    &lt;p&gt;We've used
+      &lt;tt&gt;symbol&lt;/tt&gt;,
+      &lt;tt&gt;&amp;lt;symbol name&amp;gt;&lt;/tt&gt;,
+      and
+      &lt;tt&gt;&amp;lt;single symbol&amp;gt;&lt;/tt&gt;
+      a few times.
+      It's time to see how they are defined:
+    &lt;/p&gt;
+    &lt;blockquote&gt;
+      &lt;pre&gt;
+&amp;lt;single symbol&amp;gt; ::=
+    symbol
+  | &amp;lt;character class&amp;gt;
+symbol ::= &amp;lt;symbol name&amp;gt;
+&amp;lt;symbol name&amp;gt; ::= &amp;lt;bare name&amp;gt;
+&amp;lt;symbol name&amp;gt; ::= &amp;lt;bracketed name&amp;gt;
+&lt;/pre&gt;&lt;/blockquote&gt;
+    &lt;p&gt;At this point,
+      &lt;tt&gt;symbol&lt;/tt&gt;
+      and
+      &lt;tt&gt;&amp;lt;symbol name&amp;gt;&lt;/tt&gt;
+      are
+      essentially the same thing:
+      someday there may be another way to specify symbols
+      except by name.
+      &lt;tt&gt;&amp;lt;single symbol&amp;gt;&lt;/tt&gt;
+      means any expression guaranteed
+      to produce a single symbol.
+      &lt;tt&gt;symbol&lt;/tt&gt;
+      is obviously one;
+      a character class is the other.
+    &lt;/p&gt;&lt;p&gt;Now that we know what a symbol can be,
+      let's look at how right hand sides are built up:
+    &lt;/p&gt;
+    &lt;blockquote&gt;
+      &lt;pre&gt;
+rhs ::= &amp;lt;rhs primary&amp;gt;+
+&amp;lt;rhs primary&amp;gt; ::= &amp;lt;single symbol&amp;gt;
+&amp;lt;rhs primary&amp;gt; ::= &amp;lt;single quoted string&amp;gt;
+&amp;lt;rhs primary&amp;gt; ::= &amp;lt;parenthesized rhs primary list&amp;gt;
+&amp;lt;parenthesized rhs primary list&amp;gt; ::= ('(') &amp;lt;rhs primary list&amp;gt; (')')
+&amp;lt;rhs primary list&amp;gt; ::= &amp;lt;rhs primary&amp;gt;+
+&lt;/pre&gt;&lt;/blockquote&gt;
     &lt;blockquote&gt;
       &lt;pre&gt;
 &amp;lt;adverb list&amp;gt; ::= &amp;lt;adverb item&amp;gt;*
@@ -182,18 +220,6 @@ action ::= ('action' '=&amp;gt;') &amp;lt;action name&amp;gt;
 &amp;lt;separator specification&amp;gt; ::= ('separator' '=&amp;gt;') &amp;lt;single symbol&amp;gt;
 &amp;lt;proper specification&amp;gt; ::= ('proper' '=&amp;gt;') boolean
 
-rhs ::= &amp;lt;rhs primary&amp;gt;+
-&amp;lt;rhs primary&amp;gt; ::= &amp;lt;single symbol&amp;gt;
-&amp;lt;rhs primary&amp;gt; ::= &amp;lt;single quoted string&amp;gt;
-&amp;lt;rhs primary&amp;gt; ::= &amp;lt;parenthesized rhs primary list&amp;gt;
-&amp;lt;parenthesized rhs primary list&amp;gt; ::= ('(') &amp;lt;rhs primary list&amp;gt; (')')
-&amp;lt;rhs primary list&amp;gt; ::= &amp;lt;rhs primary&amp;gt;+
-&amp;lt;single symbol&amp;gt; ::=
-    symbol
-  | &amp;lt;character class&amp;gt;
-symbol ::= &amp;lt;symbol name&amp;gt;
-&amp;lt;symbol name&amp;gt; ::= &amp;lt;bare name&amp;gt;
-&amp;lt;symbol name&amp;gt; ::= &amp;lt;bracketed name&amp;gt;
 &amp;lt;action name&amp;gt; ::= &amp;lt;bare name&amp;gt;
 
 :discard ~ whitespace
@@ -236,23 +262,29 @@ boolean ~ [01]
     &lt;/p&gt;
     &lt;h3&gt;Semantics&lt;/h3&gt;
     &lt;p&gt;The Scanless interface's meta-grammar, is unusual in its semantics
-    because it serves a dual purpose -- it is also the grammar for Marpa's
-    BNF interface, which has a different semantics.
-    In practice, a grammar is usually tied tightly to one semantics,
-    but this is an exception.
-    &lt;p&gt;
-    For most grammars in either the Marpa's BNF or Scanless interface,
-    the semantics would be specified using &lt;tt&gt;action&lt;/tt&gt; adverbs.
-    For this grammar, there are no &lt;tt&gt;action&lt;/tt&gt; adverbs -- internally,
-    Marpa waits until it knows which interface the grammar will be used for,
-    then uses the symbol names to determine the actions on a &quot;just in time&quot;
-    basis.
-    &lt;p&gt;
-    Standard applications will
-    labeling rules and alternatives with &lt;tt&gt;action&lt;/tt&gt; adverbs.
-    Example of this are in the documentation for the BNF
-    and Scanless interfaces.
-    &lt;h3&gt;Comments&lt;/h3&gt;
+      because it serves a dual purpose -- it is also the grammar for Marpa's
+      BNF interface, which has a different semantics.
+      In practice, a grammar is usually tied tightly to one semantics,
+      but this is an exception.
+    &lt;/p&gt;&lt;p&gt;
+      For most grammars in either the Marpa's BNF or Scanless interface,
+      the semantics would be specified using
+      &lt;tt&gt;action&lt;/tt&gt;
+      adverbs.
+      For this grammar, there are no
+      &lt;tt&gt;action&lt;/tt&gt;
+      adverbs -- internally,
+      Marpa waits until it knows which interface the grammar will be used for,
+      then uses the symbol names to determine the actions on a &quot;just in time&quot;
+      basis.
+    &lt;/p&gt;&lt;p&gt;
+      Standard applications will
+      labeling rules and alternatives with
+      &lt;tt&gt;action&lt;/tt&gt;
+      adverbs.
+      Example of this are in the documentation for the BNF
+      and Scanless interfaces.
+    &lt;/p&gt;&lt;h3&gt;Comments&lt;/h3&gt;
     &lt;p&gt;
       Comments on this post can be sent to the Marpa Google Group:
       &lt;code&gt;marpa-parser@googlegroups.com&lt;/code&gt;
