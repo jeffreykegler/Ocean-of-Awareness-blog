@@ -42,56 +42,57 @@
       <!--
       marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
       -->
-      In a previous post, I showed a self-parsing grammar,
+      <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/self_parse.html">In
+      a previous post</a>, I showed a self-parsing grammar,
       written in Marpa's new BNF interface.
-      This post does the same for Marpa's forthcoming
-      Scanless interface.
-      Many readers will no doubt
+      That grammar was in a tradition going back to the 70's and,
+      following the tradition, I cheated a bit.
+      The grammar required,
+      but did not include, a lexer to make a prepass over
+      its input.
+      <p>
+      This post contains a self-parsing
+      and self-lexing grammar,
+      the one for Marpa's forthcoming Scanless interface.
+      This grammar is about as self-contained as a grammar can get,
+      short of being encoded into a
+      <a href="http://en.wikipedia.org/wiki/Universal_Turing_machine">Universal
+      Turing machine</a>.
+    </p>
+    <p>
+      Many readers will
       prefer to be introduced to the Scanless interface
       via a simpler example,
-      but from the response to the previous past I know
-      there are others who see the fascination of
+      but based on the response to the previous past I know
+      there are others who share my fascination with
       self-description and self-exemplification.
-    </p><p>
-      The previous self-parsing grammar,
-      following the tradition, cheated a bit.
-      It required, but did not include, a lexer to make a prepass over
-      its input.
-      This self-parsing scannerless grammar is as completely self-contained
-      as it can get.
-      It is the complete and ultimate authority on its own syntax.
-      It does not describe its own semantics,
-      but even a self-describing Turing machine has to be written
-      assuming the semantics of a Turing machine.
-      So that's one limit that is probably going to stand.
-    </p><p>
-      In terms of being a practical example, this is as practical
-      as they come.
-      This grammar I will describe is the one actually used not
-      only to parse itself and all other grammars written in the
-      Scanless language,
+      And there is something to be said for reading an example
+      that is a final authority on itself.
+    </p>
+    <p>
+      As far as being a practical example,
+      this one is certainly as practical as they come.
+      This grammar that follows is the one actually used,
+      not only to parse itself and all other grammars written for the
+      Marpa's Scanless interface,
       but also to parse the strings written
-      in the BNF interface,
-      it non-scannerless predecessor.
-      So this grammar is an
-      authority, if an over-liberal one,
-      on the syntax
-      of the BNF interface as well,
-      with the exception that it is over-liberal.
-      (Constructs allowed in the Scanless interface, but prohibited
-      in the BNF interface are caught when the semantics are processed.)
-    </p><p>
+      for Marpa's BNF interface,
+      the Scanless interface's predecessor.
+    </p>
+    <p>
       The grammar in this blog post is abridged a bit,
       and rearranged for ease of explanation.
-      The original that is actually used for self-parsing can be
-      found here.
+      The original is
+      <a href="https://metacpan.org/source/JKEGL/Marpa-R2-2.035_003/lib/Marpa/R2/meta/metag.bnf">
+      here</a>.
     </p><blockquote>
       <pre>
 # Copyright 2012 Jeffrey Kegler
 </pre></blockquote>
-    <p>The file starts with legalese -- it goes on to say that it is LGPL 3.0.
-      Note the hash comment -- since they is a self-describing self-lexer,
-      it is eventually going to have to tell us how it deals with comments.
+    <p>The file starts with legalese, which I've cut.
+    (It is under GNU's LGPL 3.0.)
+      Note the hash comment -- since this is a self-describing self-lexer,
+      the grammar will eventually tell us how it deals with hash comments.
     </p>
     <blockquote>
       <pre>
@@ -106,18 +107,16 @@ rule ::= &lt;start rule&gt;
     <p>Next it tells us that the
       <tt>rules</tt>
       symbol is the start symbol,
-      that file consists of a series of one or more rules,
-      and that rules fall into one of five types.
-      The last rule, with the LHS
-      <tt>rule</tt>
-      is self-describing -- among the
-      options it lists, it is a
-      <tt>&lt;priority rule&gt;</tt>.
-      In the previous two lines are two of the other possibilities:
-      a
-      <tt>&lt;start rule&gt;</tt>
-      and a
-      <tt>&lt;quantified rule&gt;</tt>.
+      that our grammar consists of a series of one or more rules,
+      and that these rules fall into one of five types.
+      A few of the rules is our self-describing grammar are
+      themselves self-describing.
+      The last rule above is one of them: 
+      it is a <tt>&lt;priority rule&gt;</tt>,
+      one of the 5 types it allows.
+      The previous two lines exemplify two of the other possibilities:
+      the first is a <tt>&lt;start rule&gt;</tt>
+      and the second is a <tt>&lt;quantified rule&gt;</tt>.
     </p><blockquote>
       <pre>
 &lt;start rule&gt; ::= (':start' &lt;op declare bnf&gt;) symbol
