@@ -422,19 +422,23 @@ them the most
 complicated lexeme of the grammar.
     </p>
 <h3>Longest tokens matching</h3>
-<p>When there is a choice of lexicals, Marpa follows a longest tokens match strategy.
-This means that it mostly does what you mean.
+<p>When there is a choice of lexicals, Marpa follows a longest tokens matching strategy.
+The effect is usually that it does what you mean.
 (In part this is because longest token match
 is the usual default for regular expressions and
-lexical analyzers, which means that programmers have been trained by their tools
-to expect it.)
-<p>This means that Marpa's Scanless interface will do that obvious stuff, like recognizing
-that in "<tt>weeknights ~ 'Mon' | 'Tue' | 'Wed' | 'Thu' | 'Fri'</tt>", that
-<tt>weeknights</tt> is one symbol and not, for example, two symbols like
+lexical analyzers, so that programmers are trained by their tools
+to really mean a longest match
+whenever they specify a match.)
+<p>Most of what longest token match does is obvious.
+For example,
+in the rule "<tt>weeknights ~ 'Mon' | 'Tue' | 'Wed' | 'Thu' | 'Fri'</tt>",
+it recognizes that
+<tt>weeknights</tt> is one symbol and not two symbols like
 "<tt>wee</tt>" and "<tt>knights</tt>".
-It also means that if you have a grammar where you specify both <tt>++</tt>
+Longest tokens match
+means that if you have a grammar where you specify both <tt>++</tt>
 and <tt>+</tt> as operators, Marpa will always prefer
-the longer <tt>++</tt>.
+the longer operator: <tt>++</tt>.
 <p>Because this is Marpa, there is a slight difference from the traditional longest
 <b>token</b> matching.
 Note that in Marpa's matching strategy, "tokens" is plural.
@@ -445,30 +449,35 @@ But it is also a valid symbol name.
 Marpa allows it to be both, and figures out which is meant at the
 structural level, based on context.
     <h3>Semantics</h3>
-    <p>The Scanless interface's meta-grammar, is unusual in its semantics
-      because it serves a dual purpose -- it is also the grammar for Marpa's
-      BNF interface, which has a different semantics.
-      In practice, a grammar is usually tied tightly to one semantics,
-      but this is an exception.
-    </p><p>
-      For most grammars in either the Marpa's BNF or Scanless interface,
+    <p>
+      In practice, a grammar is usually tied tightly to a single semantics.
+      This is an exception.
+    The Scanless interface's meta-grammar is also the grammar for Marpa's
+      BNF interface, and the BNF interface has a different semantics.
+    </p>
+    <p>
+      For most grammars in Marpa's BNF or Scanless interface,
       the semantics would be specified using
       <tt>action</tt>
       adverbs.
-      For this grammar, there are no
-      <tt>action</tt>
-      adverbs -- internally,
-      Marpa waits until it knows which interface the grammar will be used for,
-      then uses the symbol names to determine the actions on a "just in time"
-      basis.
-    </p><p>
-      Standard applications will
-      labeling rules and alternatives with
-      <tt>action</tt>
+      Examples of the normal method of specifying
+      semantics are in the documentation for
+      <a href="https://metacpan.org/module/Marpa::R2::BNF">
+      the BNF interface</a>
+      and for
+      <a href="https://metacpan.org/module/JKEGL/Marpa-R2-2.035_003/pod/Scanless.pod">
+      the Scanless interface</a>.
+      </p>
+      <p>
+      In this special-case grammar,
+      there are no <tt>action</tt>
       adverbs.
-      Example of this are in the documentation for the BNF
-      and Scanless interfaces.
-    </p><h3>Comments</h3>
+      Marpa waits until it knows which interface the grammar will be used for.
+      At that point the internals use the symbol names to map rules to
+      actions on a "just in time"
+      basis.
+    </p>
+    <h3>Comments</h3>
     <p>
       Comments on this post can be sent to the Marpa Google Group:
       <code>marpa-parser@googlegroups.com</code>
