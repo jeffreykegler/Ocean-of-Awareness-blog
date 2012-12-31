@@ -289,7 +289,6 @@ rhs ::= &lt;rhs primary&gt;+
 A RHS primary can be a single symbol, a string in single quotes,
 or a sublist of one or more RHS primaries in parentheses.
 <h3>Adverbs</h3>
-<p>And here is the syntax for adverb lists:
     <blockquote>
       <pre>
 &lt;adverb list&gt; ::= &lt;adverb item&gt;*
@@ -301,11 +300,8 @@ or a sublist of one or more RHS primaries in parentheses.
     | &lt;separator specification&gt;
     | &lt;proper specification&gt;
 </pre></blockquote>
-<p>Adverb lists are lists of zero or more adverbs, which can be of one of five kinds.
-Some of the adverbs have to do with the associativity (right/left/group)
-of priorities.
-Since all our "prioritized" rules are trivial (have only one priority),
-this grammar does not include any of the following:
+<p>Adverb lists are lists of zero or more adverbs, which can be of one of six kinds.
+Of these six, four do not occur in this grammar:
     <blockquote>
       <pre>
 &lt;left association&gt; ::= ('assoc' '=&gt;' 'left')
@@ -314,9 +310,19 @@ this grammar does not include any of the following:
 action ::= ('action' '=&gt;') &lt;action name&gt;
 &lt;action name&gt; ::= &lt;bare name&gt;
 </pre></blockquote>
-<p>We also will not see <tt>action</tt> adverbs in this grammar,
+<p>
+Three of the adverbs have to do with the associativity (right/left/group)
+of priorities.
+Since all our "prioritized" rules are trivial (have only one priority),
+this grammar does not use them.
+(Their use is described in
+<a href="https://metacpan.org/module/Marpa::R2::BNF">
+the documentation of Marpa's BNF interface</a>.)
+We also will not see <tt>action</tt> adverbs in this grammar,
 for reasons explained below.
-Here are two adverbs the we do see:
+</p>
+<p>
+Here are two adverbs that we do see:
     <blockquote>
       <pre>
 &lt;separator specification&gt;
@@ -324,6 +330,13 @@ Here are two adverbs the we do see:
 &lt;proper specification&gt; ::= ('proper' '=&gt;') boolean
 boolean ~ [01]
 </pre></blockquote>
+<p>These adverbs are used for quantified rules.
+One specifies a "separator" that can go between items of the series.
+The other specifies whether separation is "proper" or not.
+(When <tt>proper</tt> is 0, a separator is allowed after the last item of a series.
+When that is the case,
+the separator does not really always separate two items
+and in that sense the separator is not "proper".)
 <h3>Discarded tokens</h3>
 <p>Next, the rules that deal with whitespace.
     <blockquote>

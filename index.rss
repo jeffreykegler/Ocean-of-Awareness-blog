@@ -302,7 +302,6 @@ rhs ::= &amp;lt;rhs primary&amp;gt;+
 A RHS primary can be a single symbol, a string in single quotes,
 or a sublist of one or more RHS primaries in parentheses.
 &lt;h3&gt;Adverbs&lt;/h3&gt;
-&lt;p&gt;And here is the syntax for adverb lists:
     &lt;blockquote&gt;
       &lt;pre&gt;
 &amp;lt;adverb list&amp;gt; ::= &amp;lt;adverb item&amp;gt;*
@@ -314,11 +313,8 @@ or a sublist of one or more RHS primaries in parentheses.
     | &amp;lt;separator specification&amp;gt;
     | &amp;lt;proper specification&amp;gt;
 &lt;/pre&gt;&lt;/blockquote&gt;
-&lt;p&gt;Adverb lists are lists of zero or more adverbs, which can be of one of five kinds.
-Some of the adverbs have to do with the associativity (right/left/group)
-of priorities.
-Since all our &quot;prioritized&quot; rules are trivial (have only one priority),
-this grammar does not include any of the following:
+&lt;p&gt;Adverb lists are lists of zero or more adverbs, which can be of one of six kinds.
+Of these six, four do not occur in this grammar:
     &lt;blockquote&gt;
       &lt;pre&gt;
 &amp;lt;left association&amp;gt; ::= ('assoc' '=&amp;gt;' 'left')
@@ -327,9 +323,19 @@ this grammar does not include any of the following:
 action ::= ('action' '=&amp;gt;') &amp;lt;action name&amp;gt;
 &amp;lt;action name&amp;gt; ::= &amp;lt;bare name&amp;gt;
 &lt;/pre&gt;&lt;/blockquote&gt;
-&lt;p&gt;We also will not see &lt;tt&gt;action&lt;/tt&gt; adverbs in this grammar,
+&lt;p&gt;
+Three of the adverbs have to do with the associativity (right/left/group)
+of priorities.
+Since all our &quot;prioritized&quot; rules are trivial (have only one priority),
+this grammar does not use them.
+(Their use is described in
+&lt;a href=&quot;https://metacpan.org/module/Marpa::R2::BNF&quot;&gt;
+the documentation of Marpa's BNF interface&lt;/a&gt;.)
+We also will not see &lt;tt&gt;action&lt;/tt&gt; adverbs in this grammar,
 for reasons explained below.
-Here are two adverbs the we do see:
+&lt;/p&gt;
+&lt;p&gt;
+Here are two adverbs that we do see:
     &lt;blockquote&gt;
       &lt;pre&gt;
 &amp;lt;separator specification&amp;gt;
@@ -337,6 +343,13 @@ Here are two adverbs the we do see:
 &amp;lt;proper specification&amp;gt; ::= ('proper' '=&amp;gt;') boolean
 boolean ~ [01]
 &lt;/pre&gt;&lt;/blockquote&gt;
+&lt;p&gt;These adverbs are used for quantified rules.
+One specifies a &quot;separator&quot; that can go between items of the series.
+The other specifies whether separation is &quot;proper&quot; or not.
+(When &lt;tt&gt;proper&lt;/tt&gt; is 0, a separator is allowed after the last item of a series.
+When that is the case,
+the separator does not really always separate two items
+and in that sense the separator is not &quot;proper&quot;.)
 &lt;h3&gt;Discarded tokens&lt;/h3&gt;
 &lt;p&gt;Next, the rules that deal with whitespace.
     &lt;blockquote&gt;
