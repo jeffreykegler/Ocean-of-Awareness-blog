@@ -294,14 +294,24 @@ symbol ::= &lt;symbol name&gt;
       are
       essentially the same thing:
       someday there may be another way to specify symbols
-      except by name.
+      other than by name.
       <tt>&lt;single symbol&gt;</tt>
       means any expression guaranteed
       to produce a single symbol.
       <tt>symbol</tt>
       is obviously one;
       a character class is the other.
-    </p><p>Now that we know what a symbol can be,
+    </p>
+    <p>The rules above contain our first mention
+    of character classes and,
+    by coincidence,
+    our first use of character classes.
+    Character classes are enclosed in square brackets,
+    and look exactly like Perl character classes.
+    In fact, they are implemented as Perl character classes, memoized for
+    efficiency.
+    </p>
+    <p>Now that we know what a symbol can be,
       let's look at how right hand sides are built up:
     </p>
     <blockquote>
@@ -314,9 +324,9 @@ rhs ::= &lt;rhs primary&gt;+
   ::= ('(') &lt;rhs primary list&gt; (')')
 &lt;rhs primary list&gt; ::= &lt;rhs primary&gt;+
 </pre></blockquote>
-<p>A right hand side (RHS) is a sequence of one or more RHS "primaryies".
-These can be single symbols, strings in single quotes,
-or a sublist of RHS primaries in parentheses.
+<p>A right hand side (RHS) is a sequence of one or more RHS "primaries".
+A RHS primary can be a single symbol, a string in single quotes,
+or a sublist of one or more RHS primaries in parentheses.
 <h3>Adverbs</h3>
 <p>And here is the syntax for adverb lists:
     <blockquote>

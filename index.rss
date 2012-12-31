@@ -268,14 +268,24 @@ symbol ::= &amp;lt;symbol name&amp;gt;
       are
       essentially the same thing:
       someday there may be another way to specify symbols
-      except by name.
+      other than by name.
       &lt;tt&gt;&amp;lt;single symbol&amp;gt;&lt;/tt&gt;
       means any expression guaranteed
       to produce a single symbol.
       &lt;tt&gt;symbol&lt;/tt&gt;
       is obviously one;
       a character class is the other.
-    &lt;/p&gt;&lt;p&gt;Now that we know what a symbol can be,
+    &lt;/p&gt;
+    &lt;p&gt;The rules above contain our first mention
+    of character classes and,
+    by coincidence,
+    our first use of character classes.
+    Character classes are enclosed in square brackets,
+    and look exactly like Perl character classes.
+    In fact, they are implemented as Perl character classes, memoized for
+    efficiency.
+    &lt;/p&gt;
+    &lt;p&gt;Now that we know what a symbol can be,
       let's look at how right hand sides are built up:
     &lt;/p&gt;
     &lt;blockquote&gt;
@@ -288,9 +298,9 @@ rhs ::= &amp;lt;rhs primary&amp;gt;+
   ::= ('(') &amp;lt;rhs primary list&amp;gt; (')')
 &amp;lt;rhs primary list&amp;gt; ::= &amp;lt;rhs primary&amp;gt;+
 &lt;/pre&gt;&lt;/blockquote&gt;
-&lt;p&gt;A right hand side (RHS) is a sequence of one or more RHS &quot;primaryies&quot;.
-These can be single symbols, strings in single quotes,
-or a sublist of RHS primaries in parentheses.
+&lt;p&gt;A right hand side (RHS) is a sequence of one or more RHS &quot;primaries&quot;.
+A RHS primary can be a single symbol, a string in single quotes,
+or a sublist of one or more RHS primaries in parentheses.
 &lt;h3&gt;Adverbs&lt;/h3&gt;
 &lt;p&gt;And here is the syntax for adverb lists:
     &lt;blockquote&gt;
