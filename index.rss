@@ -39,19 +39,18 @@
       by way of
       &lt;a href=&quot;https://metacpan.org/module/JKEGL/Marpa-R2-2.035_003/pod/Scanless.pod&quot;&gt;
       a simpler example&lt;/a&gt;,
-      but based on the response to the previous past I know
+      but based on the response to the previous post I know
       there are others who share my fascination with
       self-description and self-exemplification.
       And there is something to be said for reading an example
       that is a final authority on itself.
     &lt;/p&gt;
     &lt;p&gt;
-      As far as being a practical example,
-      this one is certainly as practical as they come.
-      This grammar that follows is the one actually used,
-      not only to parse itself and all other grammars written for the
-      Marpa's Scanless interface,
-      but also to parse the strings written
+      This is certainly a practical example.
+      Thk grammar that follows is used
+      to parse itself and all other grammars written for the
+      Marpa's Scanless interface.
+      It is also used to parse the strings written
       for Marpa's BNF interface,
       the Scanless interface's predecessor.
     &lt;/p&gt;
@@ -81,12 +80,14 @@ rule ::= &amp;lt;start rule&amp;gt;
   | &amp;lt;quantified rule&amp;gt;
   | &amp;lt;discard rule&amp;gt;
 &lt;/pre&gt;&lt;/blockquote&gt;
-    &lt;p&gt;Next it tells us that the
-      &lt;tt&gt;rules&lt;/tt&gt;
-      symbol is the start symbol,
-      that our grammar consists of a series of one or more rules,
-      and that these rules fall into one of five types.
-      A few of the rules is our self-describing grammar are
+    &lt;p&gt;The &lt;tt&gt;rules&lt;/tt&gt;
+      symbol is the start symbol.
+      Our grammar consists of a series of one or more rules,
+      each one of which falls into one of five types.
+      &lt;/p&gt;
+      &lt;p&gt;
+      &lt;/p&gt;
+      A few of the rules in our self-describing grammar are
       themselves self-describing.
       The last rule above is one of them: 
       it is a &lt;tt&gt;&amp;lt;priority rule&amp;gt;&lt;/tt&gt;,
@@ -94,24 +95,27 @@ rule ::= &amp;lt;start rule&amp;gt;
       The previous two lines exemplify two of the other possibilities:
       the first is a &lt;tt&gt;&amp;lt;start rule&amp;gt;&lt;/tt&gt;
       and the second is a &lt;tt&gt;&amp;lt;quantified rule&amp;gt;&lt;/tt&gt;.
-    &lt;/p&gt;&lt;blockquote&gt;
+      &lt;/p&gt;
+      &lt;p&gt;
+      A start rule is defined as
+      consisting of the
+      &lt;tt&gt;:start&lt;/tt&gt;
+      pseudo-symbol,
+      followed by a &lt;tt&gt;::=&lt;/tt&gt;
+      operator,
+      followed by a
+      &lt;tt&gt;symbol&lt;/tt&gt;:
+    &lt;/p&gt;
+    &lt;blockquote&gt;
       &lt;pre&gt;
 &amp;lt;start rule&amp;gt; ::= (':start' &amp;lt;op declare bnf&amp;gt;) symbol
 &amp;lt;op declare bnf&amp;gt; ~ '::='
 &lt;/pre&gt;&lt;/blockquote&gt;
 &lt;p&gt;
-      The parentheses can be ignored -- they surround symbols
+      The parentheses can be ignored.
+      Their purpose is to make life easier on the semantics
+      -- they surround symbols
       that are hidden from the semantics.
-      (This allows a simpler semantics.)
-      Here we see the description of a start rule:
-      the
-      &lt;tt&gt;:start&lt;/tt&gt;
-      pseudo-symbol,
-      and an
-      &lt;tt&gt;::=&lt;/tt&gt;
-      operator,
-      followed by a
-      &lt;tt&gt;symbol&lt;/tt&gt;.
     &lt;/p&gt;
     &lt;h3&gt;&quot;What I say&quot; versus &quot;what I mean&quot;&lt;/h3&gt;
     &lt;p&gt;Sometimes in defining a grammar rule, we are asking Marpa to do exactly what
