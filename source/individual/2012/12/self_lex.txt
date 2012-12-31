@@ -6,9 +6,9 @@ A self-parsing and self-lexing grammar
       <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/self_parse.html">In
       a previous post</a>, I showed a self-parsing grammar,
       written in Marpa's new BNF interface.
-      That grammar was in a tradition going back to the 70's and,
-      following the tradition, I cheated a bit.
-      The grammar required,
+      That grammar was in a tradition going back to the 70's.
+      Following the tradition, I cheated a bit.
+      That grammar required,
       but did not include, a lexer to make a prepass over
       its input.
       <p>
@@ -23,7 +23,9 @@ A self-parsing and self-lexing grammar
     <p>
       Many readers will
       prefer to be introduced to the Scanless interface
-      via a simpler example,
+      by way of
+      <a href="https://metacpan.org/module/JKEGL/Marpa-R2-2.035_003/pod/Scanless.pod">
+      a simpler example</a>,
       but based on the response to the previous past I know
       there are others who share my fascination with
       self-description and self-exemplification.
