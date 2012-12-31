@@ -65,7 +65,7 @@
 # Copyright 2012 Jeffrey Kegler
 &lt;/pre&gt;&lt;/blockquote&gt;
     &lt;p&gt;The file starts with legalese, which I've cut.
-    (It is under GNU's LGPL 3.0.)
+    (The grammar is under GNU's LGPL 3.0.)
       Note the hash comment -- since this is a self-describing self-lexer,
       the grammar will eventually tell us how it deals with hash comments.
     &lt;/p&gt;
@@ -112,6 +112,50 @@ rule ::= &amp;lt;start rule&amp;gt;
       &lt;tt&gt;symbol&lt;/tt&gt;.
     &lt;/p&gt;
     &lt;h3&gt;&quot;What I say&quot; versus &quot;what I mean&quot;&lt;/h3&gt;
+    &lt;p&gt;Sometimes in defining a grammar rule, we are asking Marpa to do exactly what
+    we say, character for character.
+    For example, in the 
+&quot;&lt;tt&gt;&amp;lt;op declare bnf&amp;gt; ~ '::='&lt;/tt&gt;&quot; rule above,
+we meant that the symbol
+&lt;tt&gt;&amp;lt;op declare bnf&amp;gt;&lt;/tt&gt; is exactly the string '::=' -- nothing more and nothing less.
+&quot;Do exactly what I say&quot; rules are called lexical rules,
+and for them we use the match operator (&quot;&lt;tt&gt;~&lt;/tt&gt;&quot;).
+&lt;/p&gt;
+&lt;p&gt;In other cases, we are asking Marpa to &quot;do what I mean&quot;.
+That is, we are saying that &quot;the rule consists of these symbols, plus I want you
+to do reasonable stuff with whitespace and comments.&quot;
+An example of that kind of rule was
+&quot;&lt;tt&gt;rules ::= rule+&lt;/tt&gt;&quot;.
+Within, between, before and after the &lt;tt&gt;rule&lt;/tt&gt;'s,
+there will be comments and whitespace.
+The whitespace is sometimes optional, sometimes required.
+Spelling all this out would be very tedious.
+So we want a type of rule that &quot;does what we mean&quot;.
+That kind of rule is called a &quot;structural&quot; rule,
+and identified by the BNF operator (&quot;&lt;tt&gt;::=&lt;/tt&gt;&quot;).
+    &lt;p&gt;Some structural rules have lexical content within them.
+    An example was
+&quot;&lt;tt&gt;&amp;lt;start rule&amp;gt; ::= (':start' &amp;lt;op declare bnf&amp;gt;) symbol&lt;/tt&gt;&quot;.
+That is basically a structural rule, where Marpa should &quot;do what I mean&quot;
+with whitespace and comments.
+But it contains a string, &lt;tt&gt;':start'&lt;/tt&gt;, which must be handled on a
+&quot;do exactly what I say&quot; basis.
+For example, in &quot;&lt;tt&gt;:st art ::= rules&lt;/tt&gt;&quot;,
+For example, in &quot;&lt;tt&gt;:st art&lt;/tt&gt;&quot; is not a valid way to specify
+the &lt;tt&gt;:start&lt;/tt&gt; pseudo-symbol -- interior whitespace is not allowed
+inside a symbol.
+Whenever a structural rule contains lexical content,
+like a string or a character class,
+Marpa knows that it should treat the lexical content on a
+lexical, &quot;do exactly what I say&quot;, basis.
+&lt;/p&gt;
+    &lt;p&gt;
+    The &quot;what I mean&quot; versus &quot;what I say&quot; distinction
+    corresponds very closely to the distinction in Perl 6 grammars
+    between the &quot;rule&quot; and &quot;token&quot;.
+    It also corresponds to the traditional division of labor in compilers,
+    between lexer and the parser proper.
+    &lt;/p&gt;
     &lt;h3&gt;Rules&lt;/h3&gt;
     &lt;p&gt;Above we saw an example of a quantified rule: &quot;&lt;tt&gt;rules ::= rule+&lt;/tt&gt;&quot;.
     Here is the definition:
@@ -136,26 +180,6 @@ quantifier ::= '*' | '+'
       and an adverb list.
       The adverb list can be empty, as it was in our example,
       and in fact has been in every rule so far.
-    &lt;/p&gt;
-    &lt;p&gt;The two rule declaration operators
-    (&quot;&lt;tt&gt;::=&lt;/tt&gt;&quot; and &quot;&lt;tt&gt;~&lt;/tt&gt;&quot;)
-    are for two different kinds of rule.
-    The BNF operator (&quot;&lt;tt&gt;::=&lt;/tt&gt;&quot;) is for rules at the higher level -- &quot;structural rules&quot;.
-    The match operator (&quot;&lt;tt&gt;~&lt;/tt&gt;&quot;) is lower-level rules == &quot;lexical rules&quot;.
-    &lt;/p&gt;
-    &lt;p&gt;
-    There are two easy quidelines as to which rule to use.
-    If you want the RHS exactly as you've stated it, character-for-character,
-    it is a lexical rules and you should use the match operator: &quot;&lt;tt&gt;~&lt;/tt&gt;&quot;.
-    If you want Marpa to &quot;do what you mean&quot; about whitespace and comments when it comes
-    to interpreting the RHS, it is a strutural rule,
-    and you should use the BNF operator &quot;&lt;tt&gt;::=&lt;/tt&gt;&quot;.
-    &lt;/p&gt;
-    &lt;p&gt;
-    This structural/lexical division corresponds very closely to Perl 6's
-    distinction between the &quot;rule&quot; and &quot;token&quot;.
-    It also corresponds closely to the lexer/parser division of labor,
-    as used in compilers.
     &lt;/p&gt;
     &lt;p&gt;
       Next come the two rule types that we've yet to see:

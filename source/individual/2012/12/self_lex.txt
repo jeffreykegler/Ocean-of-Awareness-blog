@@ -52,7 +52,7 @@ A self-parsing and self-lexing grammar
 # Copyright 2012 Jeffrey Kegler
 </pre></blockquote>
     <p>The file starts with legalese, which I've cut.
-    (It is under GNU's LGPL 3.0.)
+    (The grammar is under GNU's LGPL 3.0.)
       Note the hash comment -- since this is a self-describing self-lexer,
       the grammar will eventually tell us how it deals with hash comments.
     </p>
@@ -99,6 +99,50 @@ rule ::= &lt;start rule&gt;
       <tt>symbol</tt>.
     </p>
     <h3>"What I say" versus "what I mean"</h3>
+    <p>Sometimes in defining a grammar rule, we are asking Marpa to do exactly what
+    we say, character for character.
+    For example, in the 
+"<tt>&lt;op declare bnf&gt; ~ '::='</tt>" rule above,
+we meant that the symbol
+<tt>&lt;op declare bnf&gt;</tt> is exactly the string '::=' -- nothing more and nothing less.
+"Do exactly what I say" rules are called lexical rules,
+and for them we use the match operator ("<tt>~</tt>").
+</p>
+<p>In other cases, we are asking Marpa to "do what I mean".
+That is, we are saying that "the rule consists of these symbols, plus I want you
+to do reasonable stuff with whitespace and comments."
+An example of that kind of rule was
+"<tt>rules ::= rule+</tt>".
+Within, between, before and after the <tt>rule</tt>'s,
+there will be comments and whitespace.
+The whitespace is sometimes optional, sometimes required.
+Spelling all this out would be very tedious.
+So we want a type of rule that "does what we mean".
+That kind of rule is called a "structural" rule,
+and identified by the BNF operator ("<tt>::=</tt>").
+    <p>Some structural rules have lexical content within them.
+    An example was
+"<tt>&lt;start rule&gt; ::= (':start' &lt;op declare bnf&gt;) symbol</tt>".
+That is basically a structural rule, where Marpa should "do what I mean"
+with whitespace and comments.
+But it contains a string, <tt>':start'</tt>, which must be handled on a
+"do exactly what I say" basis.
+For example, in "<tt>:st art ::= rules</tt>",
+For example, in "<tt>:st art</tt>" is not a valid way to specify
+the <tt>:start</tt> pseudo-symbol -- interior whitespace is not allowed
+inside a symbol.
+Whenever a structural rule contains lexical content,
+like a string or a character class,
+Marpa knows that it should treat the lexical content on a
+lexical, "do exactly what I say", basis.
+</p>
+    <p>
+    The "what I mean" versus "what I say" distinction
+    corresponds very closely to the distinction in Perl 6 grammars
+    between the "rule" and "token".
+    It also corresponds to the traditional division of labor in compilers,
+    between lexer and the parser proper.
+    </p>
     <h3>Rules</h3>
     <p>Above we saw an example of a quantified rule: "<tt>rules ::= rule+</tt>".
     Here is the definition:
@@ -123,26 +167,6 @@ quantifier ::= '*' | '+'
       and an adverb list.
       The adverb list can be empty, as it was in our example,
       and in fact has been in every rule so far.
-    </p>
-    <p>The two rule declaration operators
-    ("<tt>::=</tt>" and "<tt>~</tt>")
-    are for two different kinds of rule.
-    The BNF operator ("<tt>::=</tt>") is for rules at the higher level -- "structural rules".
-    The match operator ("<tt>~</tt>") is lower-level rules == "lexical rules".
-    </p>
-    <p>
-    There are two easy quidelines as to which rule to use.
-    If you want the RHS exactly as you've stated it, character-for-character,
-    it is a lexical rules and you should use the match operator: "<tt>~</tt>".
-    If you want Marpa to "do what you mean" about whitespace and comments when it comes
-    to interpreting the RHS, it is a strutural rule,
-    and you should use the BNF operator "<tt>::=</tt>".
-    </p>
-    <p>
-    This structural/lexical division corresponds very closely to Perl 6's
-    distinction between the "rule" and "token".
-    It also corresponds closely to the lexer/parser division of labor,
-    as used in compilers.
     </p>
     <p>
       Next come the two rule types that we've yet to see:
