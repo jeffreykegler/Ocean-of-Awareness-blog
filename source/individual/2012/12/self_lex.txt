@@ -84,8 +84,9 @@ rule ::= &lt;start rule&gt;
 &lt;op declare bnf&gt; ~ '::='
 </pre></blockquote>
 <p>
-      The parentheses can be ignored -- they are to help out the semantics.
-      (Symbols inside parentheses can be ignored by the semantics.)
+      The parentheses can be ignored -- they surround symbols
+      that are hidden from the semantics.
+      (This allows a simpler semantics.)
       Here we see the description of a start rule:
       the
       <tt>:start</tt>
@@ -95,6 +96,9 @@ rule ::= &lt;start rule&gt;
       operator,
       followed by a
       <tt>symbol</tt>.
+    </p>
+    <p>Above we saw an example of a quantified rule: "<tt>rules ::= rule+</tt>".
+    Here is the definition:
     </p>
     <blockquote>
       <pre>
@@ -107,16 +111,38 @@ lhs ::= &lt;symbol name&gt;
 &lt;op declare match&gt; ~ '~'
 quantifier ::= '*' | '+'
 </pre></blockquote>
-    <p>Above we saw a quantified rule: "<tt>rules ::= rule+</tt>"
-      It contains a left hand side (LHS) symbol name
+    <p>
+      A quantified rule contains a left hand side (LHS) symbol name,
       one of the two declaration operators,
       a
       <tt>single symbol</tt>,
       a plus or minus "quantifier",
       and an adverb list.
-      The adverb list can be empty, which it was in that case.
-    </p><p>
-      Next come two rules we've yet to see:
+      The adverb list can be empty, as it was in our example,
+      and in fact has been in every rule so far.
+    </p>
+    <p>The two rule declaration operators
+    ("<tt>::=</tt>" and "<tt>~</tt>")
+    are for two different kinds of rule.
+    The BNF operator ("<tt>::=</tt>") is for rules at the higher level -- "structural rules".
+    The match operator ("<tt>~</tt>") is lower-level rules == "lexical rules".
+    </p>
+    <p>
+    There are two easy quidelines as to which rule to use.
+    If you want the RHS exactly as you've stated it, character-for-character,
+    it is a lexical rules and you should use the match operator: "<tt>~</tt>".
+    If you want Marpa to "do what you mean" about whitespace and comments when it comes
+    to interpreting the RHS, it is a strutural rule,
+    and you should use the BNF operator "<tt>::=</tt>".
+    </p>
+    <p>
+    This structural/lexical division corresponds very closely to Perl 6's
+    distinction between the "rule" and "token".
+    It also corresponds closely to the lexer/parser division of labor,
+    as used in compilers.
+    </p>
+    <p>
+      Next come the two rules we've yet to see:
     </p>
     <blockquote>
       <pre>
@@ -126,7 +152,8 @@ quantifier ::= '*' | '+'
 </pre></blockquote>
     <p>
       We'll explain what a "discard rule" is when we encounter one.
-      An empty rule is what is sounds like.
+      We won't encounter an empty rule in this grammar.
+      An empty rule indicates that its LHS symbol is nullable.
       Note that an empty rule can have an adverb list.
     </p>
     <blockquote>

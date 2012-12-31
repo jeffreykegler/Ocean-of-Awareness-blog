@@ -97,8 +97,9 @@ rule ::= &amp;lt;start rule&amp;gt;
 &amp;lt;op declare bnf&amp;gt; ~ '::='
 &lt;/pre&gt;&lt;/blockquote&gt;
 &lt;p&gt;
-      The parentheses can be ignored -- they are to help out the semantics.
-      (Symbols inside parentheses can be ignored by the semantics.)
+      The parentheses can be ignored -- they surround symbols
+      that are hidden from the semantics.
+      (This allows a simpler semantics.)
       Here we see the description of a start rule:
       the
       &lt;tt&gt;:start&lt;/tt&gt;
@@ -108,6 +109,9 @@ rule ::= &amp;lt;start rule&amp;gt;
       operator,
       followed by a
       &lt;tt&gt;symbol&lt;/tt&gt;.
+    &lt;/p&gt;
+    &lt;p&gt;Above we saw an example of a quantified rule: &quot;&lt;tt&gt;rules ::= rule+&lt;/tt&gt;&quot;.
+    Here is the definition:
     &lt;/p&gt;
     &lt;blockquote&gt;
       &lt;pre&gt;
@@ -120,16 +124,38 @@ lhs ::= &amp;lt;symbol name&amp;gt;
 &amp;lt;op declare match&amp;gt; ~ '~'
 quantifier ::= '*' | '+'
 &lt;/pre&gt;&lt;/blockquote&gt;
-    &lt;p&gt;Above we saw a quantified rule: &quot;&lt;tt&gt;rules ::= rule+&lt;/tt&gt;&quot;
-      It contains a left hand side (LHS) symbol name
+    &lt;p&gt;
+      A quantified rule contains a left hand side (LHS) symbol name,
       one of the two declaration operators,
       a
       &lt;tt&gt;single symbol&lt;/tt&gt;,
       a plus or minus &quot;quantifier&quot;,
       and an adverb list.
-      The adverb list can be empty, which it was in that case.
-    &lt;/p&gt;&lt;p&gt;
-      Next come two rules we've yet to see:
+      The adverb list can be empty, as it was in our example,
+      and in fact has been in every rule so far.
+    &lt;/p&gt;
+    &lt;p&gt;The two rule declaration operators
+    (&quot;&lt;tt&gt;::=&lt;/tt&gt;&quot; and &quot;&lt;tt&gt;~&lt;/tt&gt;&quot;)
+    are for two different kinds of rule.
+    The BNF operator (&quot;&lt;tt&gt;::=&lt;/tt&gt;&quot;) is for rules at the higher level -- &quot;structural rules&quot;.
+    The match operator (&quot;&lt;tt&gt;~&lt;/tt&gt;&quot;) is lower-level rules == &quot;lexical rules&quot;.
+    &lt;/p&gt;
+    &lt;p&gt;
+    There are two easy quidelines as to which rule to use.
+    If you want the RHS exactly as you've stated it, character-for-character,
+    it is a lexical rules and you should use the match operator: &quot;&lt;tt&gt;~&lt;/tt&gt;&quot;.
+    If you want Marpa to &quot;do what you mean&quot; about whitespace and comments when it comes
+    to interpreting the RHS, it is a strutural rule,
+    and you should use the BNF operator &quot;&lt;tt&gt;::=&lt;/tt&gt;&quot;.
+    &lt;/p&gt;
+    &lt;p&gt;
+    This structural/lexical division corresponds very closely to Perl 6's
+    distinction between the &quot;rule&quot; and &quot;token&quot;.
+    It also corresponds closely to the lexer/parser division of labor,
+    as used in compilers.
+    &lt;/p&gt;
+    &lt;p&gt;
+      Next come the two rules we've yet to see:
     &lt;/p&gt;
     &lt;blockquote&gt;
       &lt;pre&gt;
@@ -139,7 +165,8 @@ quantifier ::= '*' | '+'
 &lt;/pre&gt;&lt;/blockquote&gt;
     &lt;p&gt;
       We'll explain what a &quot;discard rule&quot; is when we encounter one.
-      An empty rule is what is sounds like.
+      We won't encounter an empty rule in this grammar.
+      An empty rule indicates that its LHS symbol is nullable.
       Note that an empty rule can have an adverb list.
     &lt;/p&gt;
     &lt;blockquote&gt;
