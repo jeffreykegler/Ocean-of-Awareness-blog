@@ -113,16 +113,21 @@ rule ::= &lt;start rule&gt;
       </p>
       <p>
       </p>
-      A few of the rules in our self-describing grammar are
+      By my count,
+      three of the rules in our self-describing grammar are
       themselves self-describing.
-      The last rule above is one of them: 
-      it is a <tt>&lt;priority rule&gt;</tt>,
-      one of the 5 types it allows.
-      The previous two lines exemplify two of the other possibilities:
-      the first is a <tt>&lt;start rule&gt;</tt>
-      and the second is a <tt>&lt;quantified rule&gt;</tt>.
+      The first and last rule above are two of them.
+      The definition of <tt>rules</tt> is itself a series
+      of one or more <tt>rule</tt>'s.
+      And the definition of <tt>rule</tt>
+      is a <tt>&lt;priority rule&gt;</tt>,
+      which is
+      one of the 5 type of rule that it allows.
       </p>
       <p>
+      The first two rules exemplify two of the other rule types:
+      the first is a <tt>&lt;start rule&gt;</tt>
+      and the second is a <tt>&lt;quantified rule&gt;</tt>.
       A start rule is defined as
       consisting of the
       <tt>:start</tt>
@@ -150,39 +155,41 @@ rule ::= &lt;start rule&gt;
     For example, in the 
 "<tt>&lt;op declare bnf&gt; ~ '::='</tt>" rule above,
 we are saying that the symbol
-<tt>&lt;op declare bnf&gt;</tt> is exactly the string '::=' -- nothing more and nothing less.
+<tt>&lt;op declare bnf&gt;</tt> is exactly the string '::=',
+nothing more and nothing less.
 "Do exactly what I say" rules are called lexical rules,
 and for them we use the match operator ("<tt>~</tt>").
 </p>
 <p>In other cases, we are asking Marpa to "do what I mean".
-That is, we are saying that "the rule consists of these symbols, plus I want you
+That is, we are saying that "the rule essentially consists of these symbols,
+but I also want you
 to do what is reasonable with whitespace and comments."
-An example of that kind of rule was
+An example of a "do what I mean" rule was
 "<tt>rules ::= rule+</tt>".
-Within, between, before and after the <tt>rule</tt>'s,
+Within, between, before and after the <tt>rule</tt> symbols,
 there will be comments and whitespace.
-The whitespace is sometimes optional, sometimes required.
-Spelling all this out would be very tedious.
-So we want a type of rule that "does what we mean".
-That kind of rule is called a "structural" rule,
-and identified by the BNF operator ("<tt>::=</tt>").
+The whitespace will sometimes be optional,
+and will sometimes be required.
+</p>
+<p>
+Spelling all the comment and whitespace handline
+out would be very tedious and error-prone.
+We want there to be rules of a kind that "do what we mean",
+and Marpa has them.
+Marpa's "do what I mean" rules are called "structural" rules,
+and are identified by the BNF operator ("<tt>::=</tt>").
     <p>Some structural rules have lexical content within them.
     An example was
 "<tt>&lt;start rule&gt; ::= (':start' &lt;op declare bnf&gt;) symbol</tt>".
 That is basically a structural rule, where Marpa should "do what I mean"
 with whitespace and comments.
-But it contains a string, <tt>':start'</tt>, which must be handled on a
-"do exactly what I say" basis.
-</p>
-<p>
-For example, in "<tt>:st art ::= rules</tt>",
-"<tt>:st art</tt>" is not a valid way to specify
-the <tt>:start</tt> pseudo-symbol -- interior whitespace is not allowed
-inside a symbol.
-Whenever a structural rule contains lexical content,
-like a string or a character class,
-Marpa knows that it should treat the lexical content on a
-lexical, "do exactly what I say", basis.
+But it also contains a string, <tt>':start'</tt>.
+When a string or a character class
+occurs inside a structural rule,
+Marpa knows how to treat them properly.
+Marpa knows, for example,
+that whitespace is not OK
+between the "<tt>a</tt>" and the "<tt>r</tt>" of "<tt>:start</tt>".
 </p>
     <p>
     The "what I mean" versus "what I say" distinction
