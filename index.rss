@@ -155,7 +155,7 @@ quantifier ::= '*' | '+'
     as used in compilers.
     &lt;/p&gt;
     &lt;p&gt;
-      Next come the two rules we've yet to see:
+      Next come the two rule types that we've yet to see:
     &lt;/p&gt;
     &lt;blockquote&gt;
       &lt;pre&gt;
