@@ -404,8 +404,8 @@ that in &quot;&lt;tt&gt;weeknights ~ 'Mon' | 'Tue' | 'Wed' | 'Thu' | 'Fri'&lt;/t
 It also means that if you have a grammar where you specify both &lt;tt&gt;++&lt;/tt&gt;
 and &lt;tt&gt;+&lt;/tt&gt; as operators, Marpa will always prefer
 the longer &lt;tt&gt;++&lt;/tt&gt;.
-&lt;p&gt;Because this is Marpa, there is a slight difference from the usual longest
-tokens matching.
+&lt;p&gt;Because this is Marpa, there is a slight difference from the traditional longest
+&lt;b&gt;token&lt;/b&gt; matching.
 Note that in Marpa's matching strategy, &quot;tokens&quot; is plural.
 If more than one possibility has the same length, Marpa will try them all.
 This does play a rule in our grammar.

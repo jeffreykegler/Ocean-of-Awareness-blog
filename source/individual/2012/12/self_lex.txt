@@ -391,8 +391,8 @@ that in "<tt>weeknights ~ 'Mon' | 'Tue' | 'Wed' | 'Thu' | 'Fri'</tt>", that
 It also means that if you have a grammar where you specify both <tt>++</tt>
 and <tt>+</tt> as operators, Marpa will always prefer
 the longer <tt>++</tt>.
-<p>Because this is Marpa, there is a slight difference from the usual longest
-tokens matching.
+<p>Because this is Marpa, there is a slight difference from the traditional longest
+<b>token</b> matching.
 Note that in Marpa's matching strategy, "tokens" is plural.
 If more than one possibility has the same length, Marpa will try them all.
 This does play a rule in our grammar.
