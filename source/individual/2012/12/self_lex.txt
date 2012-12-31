@@ -338,7 +338,6 @@ When that is the case,
 the separator does not really always separate two items
 and in that sense the separator is not "proper".)
 <h3>Discarded tokens</h3>
-<p>Next, the rules that deal with whitespace.
     <blockquote>
       <pre>
 :discard ~ whitespace
@@ -346,7 +345,6 @@ whitespace ~ [\s]+
 </pre></blockquote>
 <p>The two rules say that sequences of whitespace are recognized
 as tokens, then discarded.
-It is as simple as that.
 Perl-style comments are handled in the same way:
     <blockquote>
       <pre>
@@ -366,18 +364,23 @@ Perl-style comments are handled in the same way:
 case of hash comments at the end of a file that is not properly
 terminated with a newline.
 The <tt>&lt;unterminated final hash comment&gt;</tt> symbol is an example of how
-long angle bracketed symbol name can make things clearer.
+a long angle bracketed symbol name can make things clearer.
 Without the long name, it might not be evident what that rule and symbol
 were trying to accomplish.
-Comments, of course, can accomplish the same thing, but the long names can
-be cleaner.
-Their special advantage (and, in some contexts, disadvantage)
-is that their fuller description
-is propagated to wherever that symbol is used.
+</p>
+<p>
+Long symbol names
+have a cleaner look than comments,
+but they are not a panacea.
+They have
+the special advantage that the description goes wherever the symbol
+name goes.
+But when the description is too long,
+that advantage becomes a disadvantage.
 <h3>Strings</h3>
 <p>In the next snippet, defining single-quoted strings,
 the description is clearly too long for the symbol name,
-so much of does go into a comment.
+so much of it does go into a comment.
     <blockquote>
       <pre>
 # In single quotes strings and character classes
@@ -387,10 +390,10 @@ so much of does go into a comment.
 &lt;string without single quote or vertical space&gt;
   ~ [^'\x{0A}\x{0B}\x{0C}\x{0D}\x{0085}\x{2028}\x{2029}]+
 </pre></blockquote>
-<p>Note the two Unicode vertical whitespace codepoints
-U+2028 and U+2029 are included.
-For the moment, the implementation only supports 7-bit ASCII,
-so these are superfluous.
+<p>Note two Unicode vertical whitespace codepoints,
+U+2028 and U+2029, are included.
+The implementation only supports 7-bit ASCII,
+so for the moment these accomplish nothing.
 But when Unicode support is added, the grammar won't need to be changed.
 <h3>Character classes</h3>
 <p>Finally, there are character classes:
