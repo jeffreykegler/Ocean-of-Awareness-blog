@@ -398,7 +398,7 @@ is the usual default for regular expressions and
 lexical analyzers, which means that programmers have been trained by their tools
 to expect it.)
 &lt;p&gt;This means that Marpa's Scanless interface will do that obvious stuff, like recognizing
-that in &quot;&lt;tt&gt;weeknights&lt;/tt&gt; ~ 'Mon' | 'Tue' | 'Wed' | 'Thu' | 'Fri'&lt;/tt&gt;&quot;, that
+that in &quot;&lt;tt&gt;weeknights ~ 'Mon' | 'Tue' | 'Wed' | 'Thu' | 'Fri'&lt;/tt&gt;&quot;, that
 &lt;tt&gt;weeknights&lt;/tt&gt; is one symbol and not, for example, two symbols like
 &quot;&lt;tt&gt;wee&lt;/tt&gt;&quot; and &quot;&lt;tt&gt;knights&lt;/tt&gt;&quot;.
 It also means that if you have a grammar where you specify both &lt;tt&gt;++&lt;/tt&gt;
