@@ -144,18 +144,19 @@ rule ::= &lt;start rule&gt;
       that are hidden from the semantics.
     </p>
     <h3>"What I say" versus "what I mean"</h3>
-    <p>Sometimes in defining a grammar rule, we are asking Marpa to do exactly what
+    <p>When we define a grammar rule,
+    sometimes we are asking Marpa to do exactly what
     we say, character for character.
     For example, in the 
 "<tt>&lt;op declare bnf&gt; ~ '::='</tt>" rule above,
-we meant that the symbol
+we are saying that the symbol
 <tt>&lt;op declare bnf&gt;</tt> is exactly the string '::=' -- nothing more and nothing less.
 "Do exactly what I say" rules are called lexical rules,
 and for them we use the match operator ("<tt>~</tt>").
 </p>
 <p>In other cases, we are asking Marpa to "do what I mean".
 That is, we are saying that "the rule consists of these symbols, plus I want you
-to do reasonable stuff with whitespace and comments."
+to do what is reasonable with whitespace and comments."
 An example of that kind of rule was
 "<tt>rules ::= rule+</tt>".
 Within, between, before and after the <tt>rule</tt>'s,
@@ -172,6 +173,8 @@ That is basically a structural rule, where Marpa should "do what I mean"
 with whitespace and comments.
 But it contains a string, <tt>':start'</tt>, which must be handled on a
 "do exactly what I say" basis.
+</p>
+<p>
 For example, in "<tt>:st art ::= rules</tt>",
 "<tt>:st art</tt>" is not a valid way to specify
 the <tt>:start</tt> pseudo-symbol -- interior whitespace is not allowed
@@ -186,7 +189,7 @@ lexical, "do exactly what I say", basis.
     corresponds very closely to the distinction in Perl 6 grammars
     between the "rule" and "token".
     It also corresponds to the traditional division of labor in compilers,
-    between lexer and the parser proper.
+    between the lexer and the parser proper.
     </p>
     <h3>Rules</h3>
     <p>Above we saw an example of a quantified rule: "<tt>rules ::= rule+</tt>".
