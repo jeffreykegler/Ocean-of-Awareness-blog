@@ -10,7 +10,7 @@
     <language>en</language>
 
   <item>
-    <title>Self-parsing and self-lexing</title>
+    <title>A self-parsing and self-lexing grammar</title>
     <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/12/self_lex.html</link>
     <description>  &lt;p&gt;
       &lt;!--
@@ -184,10 +184,6 @@ action ::= ('action' '=&amp;gt;') &amp;lt;action name&amp;gt;
 
 rhs ::= &amp;lt;rhs primary&amp;gt;+
 &amp;lt;rhs primary&amp;gt; ::= &amp;lt;single symbol&amp;gt;
-&amp;lt;rhs primary&amp;gt; ::= &amp;lt;kwc ws star&amp;gt;
-&amp;lt;rhs primary&amp;gt; ::= &amp;lt;kwc ws plus&amp;gt;
-&amp;lt;rhs primary&amp;gt; ::= &amp;lt;kwc ws&amp;gt;
-&amp;lt;rhs primary&amp;gt; ::= &amp;lt;kwc any&amp;gt;
 &amp;lt;rhs primary&amp;gt; ::= &amp;lt;single quoted string&amp;gt;
 &amp;lt;rhs primary&amp;gt; ::= &amp;lt;parenthesized rhs primary list&amp;gt;
 &amp;lt;parenthesized rhs primary list&amp;gt; ::= ('(') &amp;lt;rhs primary list&amp;gt; (')')
@@ -218,10 +214,6 @@ boolean ~ [01]
 &amp;lt;bare name&amp;gt; ~ [\w]+
 &amp;lt;bracketed name&amp;gt; ~ '&amp;lt;' &amp;lt;bracketed name string&amp;gt; '&amp;gt;'
 &amp;lt;bracketed name string&amp;gt; ~ [\s\w]+
-&amp;lt;kwc ws star&amp;gt; ~ ':ws*'
-&amp;lt;kwc ws plus&amp;gt; ~ ':ws+'
-&amp;lt;kwc ws&amp;gt; ~ ':ws'
-&amp;lt;kwc any&amp;gt; ~ ':any'
 
 # In single quotes strings and character classes
 # no escaping or internal newlines, and disallow empty string
@@ -242,6 +234,24 @@ boolean ~ [01]
     &lt;/blockquote&gt;
     &lt;p&gt;
     &lt;/p&gt;
+    &lt;h3&gt;Semantics&lt;/h3&gt;
+    &lt;p&gt;The Scanless interface's meta-grammar, is unusual in its semantics
+    because it serves a dual purpose -- it is also the grammar for Marpa's
+    BNF interface, which has a different semantics.
+    In practice, a grammar is usually tied tightly to one semantics,
+    but this is an exception.
+    &lt;p&gt;
+    For most grammars in either the Marpa's BNF or Scanless interface,
+    the semantics would be specified using &lt;tt&gt;action&lt;/tt&gt; adverbs.
+    For this grammar, there are no &lt;tt&gt;action&lt;/tt&gt; adverbs -- internally,
+    Marpa waits until it knows which interface the grammar will be used for,
+    then uses the symbol names to determine the actions on a &quot;just in time&quot;
+    basis.
+    &lt;p&gt;
+    Standard applications will
+    labeling rules and alternatives with &lt;tt&gt;action&lt;/tt&gt; adverbs.
+    Example of this are in the documentation for the BNF
+    and Scanless interfaces.
     &lt;h3&gt;Comments&lt;/h3&gt;
     &lt;p&gt;
       Comments on this post can be sent to the Marpa Google Group:

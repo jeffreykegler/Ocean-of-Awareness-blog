@@ -36,7 +36,7 @@
   <div style="margin-left:190px;border-left:2px solid #38B0C0;padding:25px;">
 <h3>Sat, 29 Dec 2012</h3>
 <br />
-<center><a name="self_lex"> <h2>Self-parsing and self-lexing</h2> </a>
+<center><a name="self_lex"> <h2>A self-parsing and self-lexing grammar</h2> </a>
 </center>
   <p>
       <!--
@@ -210,10 +210,6 @@ action ::= ('action' '=&gt;') &lt;action name&gt;
 
 rhs ::= &lt;rhs primary&gt;+
 &lt;rhs primary&gt; ::= &lt;single symbol&gt;
-&lt;rhs primary&gt; ::= &lt;kwc ws star&gt;
-&lt;rhs primary&gt; ::= &lt;kwc ws plus&gt;
-&lt;rhs primary&gt; ::= &lt;kwc ws&gt;
-&lt;rhs primary&gt; ::= &lt;kwc any&gt;
 &lt;rhs primary&gt; ::= &lt;single quoted string&gt;
 &lt;rhs primary&gt; ::= &lt;parenthesized rhs primary list&gt;
 &lt;parenthesized rhs primary list&gt; ::= ('(') &lt;rhs primary list&gt; (')')
@@ -244,10 +240,6 @@ boolean ~ [01]
 &lt;bare name&gt; ~ [\w]+
 &lt;bracketed name&gt; ~ '&lt;' &lt;bracketed name string&gt; '&gt;'
 &lt;bracketed name string&gt; ~ [\s\w]+
-&lt;kwc ws star&gt; ~ ':ws*'
-&lt;kwc ws plus&gt; ~ ':ws+'
-&lt;kwc ws&gt; ~ ':ws'
-&lt;kwc any&gt; ~ ':any'
 
 # In single quotes strings and character classes
 # no escaping or internal newlines, and disallow empty string
@@ -268,6 +260,24 @@ boolean ~ [01]
     </blockquote>
     <p>
     </p>
+    <h3>Semantics</h3>
+    <p>The Scanless interface's meta-grammar, is unusual in its semantics
+    because it serves a dual purpose -- it is also the grammar for Marpa's
+    BNF interface, which has a different semantics.
+    In practice, a grammar is usually tied tightly to one semantics,
+    but this is an exception.
+    <p>
+    For most grammars in either the Marpa's BNF or Scanless interface,
+    the semantics would be specified using <tt>action</tt> adverbs.
+    For this grammar, there are no <tt>action</tt> adverbs -- internally,
+    Marpa waits until it knows which interface the grammar will be used for,
+    then uses the symbol names to determine the actions on a "just in time"
+    basis.
+    <p>
+    Standard applications will
+    labeling rules and alternatives with <tt>action</tt> adverbs.
+    Example of this are in the documentation for the BNF
+    and Scanless interfaces.
     <h3>Comments</h3>
     <p>
       Comments on this post can be sent to the Marpa Google Group:
