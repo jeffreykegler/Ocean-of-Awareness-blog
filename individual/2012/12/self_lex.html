@@ -79,6 +79,7 @@
       for Marpa's BNF interface,
       the Scanless interface's predecessor.
     </p>
+    <h3>Starting out</h3>
     <p>
       The grammar in this blog post is abridged a bit,
       and rearranged for ease of explanation.
@@ -136,6 +137,8 @@ rule ::= &lt;start rule&gt;
       followed by a
       <tt>symbol</tt>.
     </p>
+    <h3>"What I say" versus "what I mean"</h3>
+    <h3>Rules</h3>
     <p>Above we saw an example of a quantified rule: "<tt>rules ::= rule+</tt>".
     Here is the definition:
     </p>
@@ -222,6 +225,7 @@ alternative ::= rhs &lt;adverb list&gt;
       the different types of rule were alternatives within a single
       priority.
     </p>
+    <h3>Symbols</h3>
     <p>We've used
       <tt>symbol</tt>,
       <tt>&lt;symbol name&gt;</tt>,
@@ -272,6 +276,7 @@ rhs ::= &lt;rhs primary&gt;+
 <p>A right hand side (RHS) is a sequence of one or more RHS "primaryies".
 These can be single symbols, strings in single quotes,
 or a sublist of RHS primaries in parentheses.
+<h3>Adverbs</h3>
 <p>And here is the syntax for adverb lists:
     <blockquote>
       <pre>
@@ -307,6 +312,7 @@ Here are two adverbs the we do see:
 &lt;proper specification&gt; ::= ('proper' '=&gt;') boolean
 boolean ~ [01]
 </pre></blockquote>
+<h3>Discarded tokens</h3>
 <p>Next, the rules that deal with whitespace.
     <blockquote>
       <pre>
@@ -343,6 +349,7 @@ be cleaner.
 Their special advantage (and, in some contexts, disadvantage)
 is that their fuller description
 is propagated to wherever that symbol is used.
+<h3>Strings</h3>
 <p>In the next snippet, defining single-quoted strings,
 the description is clearly too long for the symbol name,
 so much of does go into a comment.
@@ -360,6 +367,7 @@ U+2028 and U+2029 are included.
 For the moment, the implementation only supports 7-bit ASCII,
 so these are superfluous.
 But when Unicode support is added, the grammar won't need to be changed.
+<h3>Character classes</h3>
 <p>Finally, there are character classes:
     <blockquote>
       <pre>
@@ -384,6 +392,7 @@ and this is enough to make character
 classes the most
 complicated lexeme of the grammar.
     </p>
+<h3>Longest tokens matching</h3>
     <h3>Semantics</h3>
     <p>The Scanless interface's meta-grammar, is unusual in its semantics
       because it serves a dual purpose -- it is also the grammar for Marpa's
