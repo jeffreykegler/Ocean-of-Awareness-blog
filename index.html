@@ -227,9 +227,8 @@ quantifier ::= '*' | '+'
 </pre></blockquote>
     <p>
       We'll explain what a "discard rule" is when we encounter one.
-      We won't encounter an empty rule in this grammar.
       An empty rule indicates that its LHS symbol is nullable.
-      Note that an empty rule can have an adverb list.
+      We won't encounter an empty rule in this grammar.
     </p>
     <blockquote>
       <pre>
@@ -244,19 +243,28 @@ alternative ::= rhs &lt;adverb list&gt;
 </pre></blockquote>
     <p>
       Most rules, including most of the rules we've already seen,
-      are priority rules,
+      are priority rules.
+      Priority rules are
       so-called because in their most complicated form they can express
       a precedence scheme.
       The typical rule in a grammar is a priority rule with only
-      one priority -- we've yet to see anything else.
+      one priority -- a "simple" priority rule.
+      All priority rules in this grammar will be of the simple kind.
+      </p>
+      <p>
       Within priorities, there can be alternatives,
-      and we have seen example of this.
-      When
-      <tt>rule</tt>
-      was defined as being one of a set of possible
-      rule types, priority rule being among those types,
+      and we have seen examples of these.
+      The self-defining rule that defined a <tt>rule</tt>
+      stated that it was one of a set of 5 possible
+      rule types (priority rule being among those types).
+      In that self-defining rule,
       the different types of rule were alternatives within a single
       priority.
+      <p>And, as long as we are on the subject of self-defining rules,
+      there are two of them in this grammar.
+      We have just seen the second of these.
+      The definition of 
+<tt>&lt;priority rule&gt;</tt> is itself a priority rule.
     </p>
     <h3>Symbols</h3>
     <p>We've used

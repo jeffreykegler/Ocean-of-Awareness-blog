@@ -201,9 +201,8 @@ quantifier ::= '*' | '+'
 &lt;/pre&gt;&lt;/blockquote&gt;
     &lt;p&gt;
       We'll explain what a &quot;discard rule&quot; is when we encounter one.
-      We won't encounter an empty rule in this grammar.
       An empty rule indicates that its LHS symbol is nullable.
-      Note that an empty rule can have an adverb list.
+      We won't encounter an empty rule in this grammar.
     &lt;/p&gt;
     &lt;blockquote&gt;
       &lt;pre&gt;
@@ -218,19 +217,28 @@ alternative ::= rhs &amp;lt;adverb list&amp;gt;
 &lt;/pre&gt;&lt;/blockquote&gt;
     &lt;p&gt;
       Most rules, including most of the rules we've already seen,
-      are priority rules,
+      are priority rules.
+      Priority rules are
       so-called because in their most complicated form they can express
       a precedence scheme.
       The typical rule in a grammar is a priority rule with only
-      one priority -- we've yet to see anything else.
+      one priority -- a &quot;simple&quot; priority rule.
+      All priority rules in this grammar will be of the simple kind.
+      &lt;/p&gt;
+      &lt;p&gt;
       Within priorities, there can be alternatives,
-      and we have seen example of this.
-      When
-      &lt;tt&gt;rule&lt;/tt&gt;
-      was defined as being one of a set of possible
-      rule types, priority rule being among those types,
+      and we have seen examples of these.
+      The self-defining rule that defined a &lt;tt&gt;rule&lt;/tt&gt;
+      stated that it was one of a set of 5 possible
+      rule types (priority rule being among those types).
+      In that self-defining rule,
       the different types of rule were alternatives within a single
       priority.
+      &lt;p&gt;And, as long as we are on the subject of self-defining rules,
+      there are two of them in this grammar.
+      We have just seen the second of these.
+      The definition of 
+&lt;tt&gt;&amp;lt;priority rule&amp;gt;&lt;/tt&gt; is itself a priority rule.
     &lt;/p&gt;
     &lt;h3&gt;Symbols&lt;/h3&gt;
     &lt;p&gt;We've used
