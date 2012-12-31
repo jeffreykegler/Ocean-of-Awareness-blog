@@ -128,7 +128,7 @@ with whitespace and comments.
 But it contains a string, <tt>':start'</tt>, which must be handled on a
 "do exactly what I say" basis.
 For example, in "<tt>:st art ::= rules</tt>",
-For example, in "<tt>:st art</tt>" is not a valid way to specify
+"<tt>:st art</tt>" is not a valid way to specify
 the <tt>:start</tt> pseudo-symbol -- interior whitespace is not allowed
 inside a symbol.
 Whenever a structural rule contains lexical content,
@@ -378,6 +378,28 @@ classes the most
 complicated lexeme of the grammar.
     </p>
 <h3>Longest tokens matching</h3>
+<p>When there is a choice of lexicals, Marpa follows a longest tokens match strategy.
+This means that it mostly does what you mean.
+(In part this is because longest token match
+is the usual default for regular expressions and
+lexical analyzers, which means that programmers have been trained by their tools
+to expect it.)
+<p>This means that Marpa's Scanless interface will do that obvious stuff, like recognizing
+that in "<tt>weeknights</tt> ~ 'Mon' | 'Tue' | 'Wed' | 'Thu' | 'Fri'</tt>", that
+<tt>weeknights</tt> is one symbol and not, for example, two symbols like
+"<tt>wee</tt>" and "<tt>knights</tt>".
+It also means that if you have a grammar where you specify both <tt>++</tt>
+and <tt>+</tt> as operators, Marpa will always prefer
+the longer <tt>++</tt>.
+<p>Because this is Marpa, there is a slight difference from the usual longest
+tokens matching.
+Note that in Marpa's matching strategy, "tokens" is plural.
+If more than one possibility has the same length, Marpa will try them all.
+This does play a rule in our grammar.
+For example, <tt>separator</tt> is a keyword.
+But it is also a valid symbol name.
+Marpa allows it to be both, and figures out which is meant at the
+structural level, based on context.
     <h3>Semantics</h3>
     <p>The Scanless interface's meta-grammar, is unusual in its semantics
       because it serves a dual purpose -- it is also the grammar for Marpa's
