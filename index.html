@@ -268,11 +268,18 @@ Here are two adverbs the we do see:
 &lt;proper specification&gt; ::= ('proper' '=&gt;') boolean
 boolean ~ [01]
 </pre></blockquote>
+<p>Next, the rules that deal with whitespace.
     <blockquote>
       <pre>
 :discard ~ whitespace
 whitespace ~ [\s]+
-
+</pre></blockquote>
+<p>The two rules say that sequences of whitespace are recognized
+as tokens, then discarded.
+It is as simple as that.
+Perl-style comments are handled in the same way:
+    <blockquote>
+      <pre>
 # allow comments
 :discard ~ &lt;hash comment&gt;
 &lt;hash comment&gt; ~ &lt;terminated hash comment&gt; | &lt;unterminated
@@ -282,27 +289,51 @@ whitespace ~ [\s]+
 &lt;hash comment body&gt; ~ &lt;hash comment char&gt;*
 &lt;vertical space char&gt; ~ [\x{A}\x{B}\x{C}\x{D}\x{2028}\x{2029}]
 &lt;hash comment char&gt; ~ [^\x{A}\x{B}\x{C}\x{D}\x{2028}\x{2029}]
-
-
-
+</pre></blockquote>
+<p>"Unterminated final hash comments" deal with the special
+case of hash comments at the end of a file that is not properly
+terminated with a newline.
+The <tt>&lt;unterminated final hash comment&gt;</tt> symbol is an example of how
+long angle bracketed symbol name can make things clearer.
+Without the long name, it might not be evident what that rule and symbol
+were trying to accomplish.
+Comments, of course, can accomplish the same thing, but the long names can
+be cleaner.
+Their special advantage (and, in some contexts, disadvantage) is that their fuller description
+is propagated to wherever that symbol is used.
+<p>In the next snippet, defining single-quoted strings,
+the description is clearly too long for the symbol name,
+so much of does go into a comment.
+    <blockquote>
+      <pre>
 # In single quotes strings and character classes
 # no escaping or internal newlines, and disallow empty string
-
 &lt;single quoted string&gt; ~ ['] &lt;string without single quote or vertical space&gt; [']
 &lt;string without single quote or vertical space&gt; ~ [^'\x{0A}\x{0B}\x{0C}\x{0D}\x{0085}\x{2028}\x{2029}]+
-
+</pre></blockquote>
+<p>Note the two Unicode vertical whitespace codepoints U+2028 and U+2029 are included.
+For the moment, the implementation only supports 7-bit ASCII, so these are superfluous.
+But when Unicode support is added, the grammar won't need to be changed.
+<p>Finally, there are character classes:
+    <blockquote>
+      <pre>
 &lt;character class&gt; ~ '[' &lt;cc string&gt; ']'
 &lt;cc string&gt; ~ &lt;cc character&gt;+
 &lt;cc character&gt; ~ &lt;escaped cc character&gt; | &lt;safe cc character&gt;
 &lt;escaped cc character&gt; ~ '\' &lt;horizontal character&gt;
+
 # hex 5d is right square bracket
 &lt;safe cc character&gt; ~ [^\x{5d}\x{0A}\x{0B}\x{0C}\x{0D}\x{0085}\x{2028}\x{2029}]
 
 # a horizontal character is any character that is not vertical space
 &lt;horizontal character&gt; ~ [^\x{A}\x{B}\x{C}\x{D}\x{2028}\x{2029}]
-</pre>
-    </blockquote>
-    <p>
+</pre></blockquote>
+<p>These are Perl character classes, to be passed straight to Perl for intrepretation.
+The grammar need only recognize strings enclosed by square brackets.
+But it must deal with escaped square brackets,
+and this is enough to make character
+classes the most
+complicated lexeme of the grammar.
     </p>
     <h3>Semantics</h3>
     <p>The Scanless interface's meta-grammar, is unusual in its semantics
