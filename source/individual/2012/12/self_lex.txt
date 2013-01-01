@@ -181,8 +181,8 @@ quantifier ::= '*' | '+'
       <tt>single symbol</tt>,
       a plus or minus "quantifier",
       and an adverb list.
-      The adverb list can be empty, as it was in our example,
-      and in fact has been in every rule so far.
+      The adverb list can be empty, as it was in our example.
+      (In fact the adverb list has been empty in every rule so far.)
     </p>
     <p>
       Next come the two rule types that we've yet to see:
@@ -229,10 +229,11 @@ alternative ::= rhs &lt;adverb list&gt;
       the different types of rule were alternatives within a single
       priority.
       <p>And, as long as we are on the subject of self-defining rules,
-      there are two of them in this grammar.
-      We have just seen the second of these.
+      there are three of them in this grammar, of which we have previously
+      identified two.
       The definition of 
-<tt>&lt;priority rule&gt;</tt> is itself a priority rule.
+<tt>&lt;priority rule&gt;</tt> is the third and last self-defining rule --
+it is itself a priority rule.
     </p>
     <h3>Symbols</h3>
     <p>We've used
@@ -450,7 +451,7 @@ the longer operator: <tt>++</tt>.
 <b>token</b> matching.
 Note that in Marpa's matching strategy, "tokens" is plural.
 If more than one possibility has the same length, Marpa will try them all.
-This does play a rule in our grammar.
+This plays a role in our meta-grammar.
 For example, <tt>separator</tt> is a keyword.
 But it is also a valid symbol name.
 Marpa allows it to be both, and figures out which is meant at the
