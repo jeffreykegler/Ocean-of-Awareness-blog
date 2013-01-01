@@ -17,28 +17,28 @@
       marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
       --&gt;
       &lt;a href=&quot;http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/self_parse.html&quot;&gt;In
-      a previous post&lt;/a&gt;, I showed a self-parsing grammar,
+        a previous post&lt;/a&gt;, I showed a self-parsing grammar,
       written in Marpa's new BNF interface.
       That grammar was in a tradition going back to the 70's.
       Following the tradition, I cheated a bit.
       That grammar required,
       but did not include, a lexer to make a prepass over
       its input.
-      &lt;p&gt;
+    &lt;/p&gt;&lt;p&gt;
       This post contains a self-parsing
       and self-lexing grammar,
       the one for Marpa's forthcoming Scanless interface.
       This grammar is about as self-contained as a grammar can get,
       short of being encoded into a
       &lt;a href=&quot;http://en.wikipedia.org/wiki/Universal_Turing_machine&quot;&gt;Universal
-      Turing machine&lt;/a&gt;.
+        Turing machine&lt;/a&gt;.
     &lt;/p&gt;
     &lt;p&gt;
       Many readers will
       prefer to be introduced to the Scanless interface
       by way of
       &lt;a href=&quot;https://metacpan.org/module/JKEGL/Marpa-R2-2.035_003/pod/Scanless.pod&quot;&gt;
-      a simpler example&lt;/a&gt;,
+        a simpler example&lt;/a&gt;,
       but based on the response to the previous post I know
       there are others who share my fascination with
       self-description and self-exemplification.
@@ -60,13 +60,13 @@
       and rearranged for ease of explanation.
       The original is
       &lt;a href=&quot;https://metacpan.org/source/JKEGL/Marpa-R2-2.035_003/lib/Marpa/R2/meta/metag.bnf&quot;&gt;
-      here&lt;/a&gt;.
+        here&lt;/a&gt;.
     &lt;/p&gt;&lt;blockquote&gt;
       &lt;pre&gt;
 # Copyright 2012 Jeffrey Kegler
 &lt;/pre&gt;&lt;/blockquote&gt;
     &lt;p&gt;The file starts with legalese, which I've cut.
-    (The grammar is under GNU's LGPL 3.0.)
+      (The grammar is under GNU's LGPL 3.0.)
       Note the hash comment -- since this is a self-describing self-lexer,
       the grammar will eventually tell us how it deals with hash comments.
     &lt;/p&gt;
@@ -80,33 +80,44 @@ rule ::= &amp;lt;start rule&amp;gt;
   | &amp;lt;quantified rule&amp;gt;
   | &amp;lt;discard rule&amp;gt;
 &lt;/pre&gt;&lt;/blockquote&gt;
-    &lt;p&gt;The &lt;tt&gt;rules&lt;/tt&gt;
+    &lt;p&gt;The
+      &lt;tt&gt;rules&lt;/tt&gt;
       symbol is the start symbol.
       Our grammar consists of a series of one or more rules,
       each one of which falls into one of five types.
-      &lt;/p&gt;
-      &lt;p&gt;
-      &lt;/p&gt;
+    &lt;/p&gt;
+    &lt;p&gt;
+    &lt;/p&gt;&lt;p&gt;
       By my count,
       three of the rules in our self-describing grammar are
       themselves self-describing.
       The first and last rule above are two of them.
-      The definition of &lt;tt&gt;rules&lt;/tt&gt; is itself a series
-      of one or more &lt;tt&gt;rule&lt;/tt&gt;'s.
-      And the definition of &lt;tt&gt;rule&lt;/tt&gt;
-      is a &lt;tt&gt;&amp;lt;priority rule&amp;gt;&lt;/tt&gt;,
+      The definition of
+      &lt;tt&gt;rules&lt;/tt&gt;
+      is itself a series
+      of one or more
+      &lt;tt&gt;rule&lt;/tt&gt;'s.
+      And the definition of
+      &lt;tt&gt;rule&lt;/tt&gt;
+      is a
+      &lt;tt&gt;&amp;lt;priority rule&amp;gt;&lt;/tt&gt;,
       which is
-      one of the 5 types of &lt;tt&gt;rule&lt;/tt&gt; that are allowed.
-      &lt;/p&gt;
-      &lt;p&gt;
+      one of the 5 types of
+      &lt;tt&gt;rule&lt;/tt&gt;
+      that are allowed.
+    &lt;/p&gt;
+    &lt;p&gt;
       The first two rules exemplify two of the other rule types:
-      the first is a &lt;tt&gt;&amp;lt;start rule&amp;gt;&lt;/tt&gt;
-      and the second is a &lt;tt&gt;&amp;lt;quantified rule&amp;gt;&lt;/tt&gt;.
+      the first is a
+      &lt;tt&gt;&amp;lt;start rule&amp;gt;&lt;/tt&gt;
+      and the second is a
+      &lt;tt&gt;&amp;lt;quantified rule&amp;gt;&lt;/tt&gt;.
       A start rule is defined as
       consisting of the
       &lt;tt&gt;:start&lt;/tt&gt;
       pseudo-symbol,
-      followed by a &lt;tt&gt;::=&lt;/tt&gt;
+      followed by a
+      &lt;tt&gt;::=&lt;/tt&gt;
       operator,
       followed by a
       &lt;tt&gt;symbol&lt;/tt&gt;:
@@ -116,7 +127,7 @@ rule ::= &amp;lt;start rule&amp;gt;
 &amp;lt;start rule&amp;gt; ::= (':start' &amp;lt;op declare bnf&amp;gt;) symbol
 &amp;lt;op declare bnf&amp;gt; ~ '::='
 &lt;/pre&gt;&lt;/blockquote&gt;
-&lt;p&gt;
+    &lt;p&gt;
       The parentheses can be ignored.
       Their purpose is to make life easier on the semantics
       -- they surround symbols
@@ -124,56 +135,60 @@ rule ::= &amp;lt;start rule&amp;gt;
     &lt;/p&gt;
     &lt;h3&gt;&quot;What I say&quot; versus &quot;what I mean&quot;&lt;/h3&gt;
     &lt;p&gt;When we define a grammar rule,
-    sometimes we are asking Marpa to do exactly what
-    we say, character for character.
-    For example, in the 
-&quot;&lt;tt&gt;&amp;lt;op declare bnf&amp;gt; ~ '::='&lt;/tt&gt;&quot; rule above,
-we are saying that the symbol
-&lt;tt&gt;&amp;lt;op declare bnf&amp;gt;&lt;/tt&gt; is exactly the string '::=',
-nothing more and nothing less.
-&quot;Do exactly what I say&quot; rules are called lexical rules,
-and for them we use the match operator (&quot;&lt;tt&gt;~&lt;/tt&gt;&quot;).
-&lt;/p&gt;
-&lt;p&gt;In other cases, we are asking Marpa to &quot;do what I mean&quot;.
-That is, we are saying that &quot;the rule essentially consists of these symbols,
-but I also want you
-to do what is reasonable with whitespace and comments.&quot;
-An example of a &quot;do what I mean&quot; rule was
-&quot;&lt;tt&gt;rules ::= rule+&lt;/tt&gt;&quot;.
-Within, between, before and after the &lt;tt&gt;rule&lt;/tt&gt; symbols,
-there will be comments and whitespace.
-The whitespace will sometimes be optional,
-and will sometimes be required.
-&lt;/p&gt;
-&lt;p&gt;
-Spelling all the comment and whitespace handling
-out would be very tedious and error-prone.
-We want there to be rules of a kind that &quot;do what we mean&quot;.
-Marpa's &quot;do what I mean&quot; rules are called &quot;structural&quot; rules,
-and are identified by the BNF operator (&quot;&lt;tt&gt;::=&lt;/tt&gt;&quot;).
-    &lt;p&gt;Some structural rules have lexical content within them.
-    An example was
-&quot;&lt;tt&gt;&amp;lt;start rule&amp;gt; ::= (':start' &amp;lt;op declare bnf&amp;gt;) symbol&lt;/tt&gt;&quot;.
-That is basically a structural rule, where Marpa should &quot;do what I mean&quot;
-with whitespace and comments.
-But it also contains a string, &lt;tt&gt;':start'&lt;/tt&gt;.
-When a string or a character class
-occurs inside a structural rule,
-Marpa knows how to treat them properly.
-Marpa knows, for example,
-that whitespace is not OK
-between the &quot;&lt;tt&gt;a&lt;/tt&gt;&quot; and the &quot;&lt;tt&gt;r&lt;/tt&gt;&quot; of &quot;&lt;tt&gt;:start&lt;/tt&gt;&quot;.
-&lt;/p&gt;
+      sometimes we are asking Marpa to do exactly what
+      we say, character for character.
+      For example, in the
+      &quot;&lt;tt&gt;&amp;lt;op declare bnf&amp;gt; ~ '::='&lt;/tt&gt;&quot; rule above,
+      we are saying that the symbol
+      &lt;tt&gt;&amp;lt;op declare bnf&amp;gt;&lt;/tt&gt;
+      is exactly the string '::=',
+      nothing more and nothing less.
+      &quot;Do exactly what I say&quot; rules are called lexical rules,
+      and for them we use the match operator (&quot;&lt;tt&gt;~&lt;/tt&gt;&quot;).
+    &lt;/p&gt;
+    &lt;p&gt;In other cases, we are asking Marpa to &quot;do what I mean&quot;.
+      That is, we are saying that &quot;the rule essentially consists of these symbols,
+      but I also want you
+      to do what is reasonable with whitespace and comments.&quot;
+      An example of a &quot;do what I mean&quot; rule was
+      &quot;&lt;tt&gt;rules ::= rule+&lt;/tt&gt;&quot;.
+      Within, between, before and after the
+      &lt;tt&gt;rule&lt;/tt&gt;
+      symbols,
+      there will be comments and whitespace.
+      The whitespace will sometimes be optional,
+      and will sometimes be required.
+    &lt;/p&gt;
     &lt;p&gt;
-    The &quot;what I mean&quot; versus &quot;what I say&quot; distinction
-    corresponds very closely to the distinction in Perl 6 grammars
-    between the &quot;rule&quot; and &quot;token&quot;.
-    It also corresponds to the traditional division of labor in compilers,
-    between the lexer and the parser proper.
+      Spelling all the comment and whitespace handling
+      out would be very tedious and error-prone.
+      We want there to be rules of a kind that &quot;do what we mean&quot;.
+      Marpa's &quot;do what I mean&quot; rules are called &quot;structural&quot; rules,
+      and are identified by the BNF operator (&quot;&lt;tt&gt;::=&lt;/tt&gt;&quot;).
+    &lt;/p&gt;&lt;p&gt;Some structural rules have lexical content within them.
+      An example was
+      &quot;&lt;tt&gt;&amp;lt;start rule&amp;gt; ::= (':start' &amp;lt;op declare bnf&amp;gt;) symbol&lt;/tt&gt;&quot;.
+      That is basically a structural rule, where Marpa should &quot;do what I mean&quot;
+      with whitespace and comments.
+      But it also contains a string,
+      &lt;tt&gt;':start'&lt;/tt&gt;.
+      When a string or a character class
+      occurs inside a structural rule,
+      Marpa knows how to treat them properly.
+      Marpa knows, for example,
+      that whitespace is not OK
+      between the &quot;&lt;tt&gt;a&lt;/tt&gt;&quot; and the &quot;&lt;tt&gt;r&lt;/tt&gt;&quot; of &quot;&lt;tt&gt;:start&lt;/tt&gt;&quot;.
+    &lt;/p&gt;
+    &lt;p&gt;
+      The &quot;what I mean&quot; versus &quot;what I say&quot; distinction
+      corresponds very closely to the distinction in Perl 6 grammars
+      between the &quot;rule&quot; and &quot;token&quot;.
+      It also corresponds to the traditional division of labor in compilers,
+      between the lexer and the parser proper.
     &lt;/p&gt;
     &lt;h3&gt;Rules&lt;/h3&gt;
     &lt;p&gt;Above we saw an example of a quantified rule: &quot;&lt;tt&gt;rules ::= rule+&lt;/tt&gt;&quot;.
-    Here is the definition:
+      Here is the definition:
     &lt;/p&gt;
     &lt;blockquote&gt;
       &lt;pre&gt;
@@ -230,22 +245,24 @@ alternative ::= rhs &amp;lt;adverb list&amp;gt;
       The typical rule in a grammar is a priority rule with only
       one priority -- a &quot;simple&quot; priority rule.
       All priority rules in this grammar will be of the simple kind.
-      &lt;/p&gt;
-      &lt;p&gt;
+    &lt;/p&gt;
+    &lt;p&gt;
       Within priorities, there can be alternatives,
       and we have seen examples of these.
-      The self-defining rule that defined a &lt;tt&gt;rule&lt;/tt&gt;
+      The self-defining rule that defined a
+      &lt;tt&gt;rule&lt;/tt&gt;
       stated that it was one of a set of 5 possible
       rule types (priority rule being among those types).
       In that self-defining rule,
       the different types of rule were alternatives within a single
       priority.
-      &lt;p&gt;And, as long as we are on the subject of self-defining rules,
+    &lt;/p&gt;&lt;p&gt;And, as long as we are on the subject of self-defining rules,
       there are three of them in this grammar, of which we have previously
       identified two.
-      The definition of 
-&lt;tt&gt;&amp;lt;priority rule&amp;gt;&lt;/tt&gt; is the third and last self-defining rule --
-it is itself a priority rule.
+      The definition of
+      &lt;tt&gt;&amp;lt;priority rule&amp;gt;&lt;/tt&gt;
+      is the third and last self-defining rule --
+      it is itself a priority rule.
     &lt;/p&gt;
     &lt;h3&gt;Symbols&lt;/h3&gt;
     &lt;p&gt;We've used
@@ -284,13 +301,13 @@ symbol ::= &amp;lt;symbol name&amp;gt;
       a character class is the other.
     &lt;/p&gt;
     &lt;p&gt;The rules above contain our first mention
-    of character classes and,
-    by coincidence,
-    our first use of character classes.
-    Character classes are enclosed in square brackets,
-    and look exactly like Perl character classes.
-    In fact, they are implemented as Perl character classes, memoized for
-    efficiency.
+      of character classes and,
+      by coincidence,
+      our first use of character classes.
+      Character classes are enclosed in square brackets,
+      and look exactly like Perl character classes.
+      In fact, they are implemented as Perl character classes, memoized for
+      efficiency.
     &lt;/p&gt;
     &lt;p&gt;Now that we know what a symbol can be,
       let's look at how right hand sides are built up:
@@ -305,10 +322,10 @@ rhs ::= &amp;lt;rhs primary&amp;gt;+
   ::= ('(') &amp;lt;rhs primary list&amp;gt; (')')
 &amp;lt;rhs primary list&amp;gt; ::= &amp;lt;rhs primary&amp;gt;+
 &lt;/pre&gt;&lt;/blockquote&gt;
-&lt;p&gt;A right hand side (RHS) is a sequence of one or more RHS &quot;primaries&quot;.
-A RHS primary can be a single symbol, a string in single quotes,
-or a sublist of one or more RHS primaries in parentheses.
-&lt;h3&gt;Adverbs&lt;/h3&gt;
+    &lt;p&gt;A right hand side (RHS) is a sequence of one or more RHS &quot;primaries&quot;.
+      A RHS primary can be a single symbol, a string in single quotes,
+      or a sublist of one or more RHS primaries in parentheses.
+    &lt;/p&gt;&lt;h3&gt;Adverbs&lt;/h3&gt;
     &lt;blockquote&gt;
       &lt;pre&gt;
 &amp;lt;adverb list&amp;gt; ::= &amp;lt;adverb item&amp;gt;*
@@ -320,9 +337,9 @@ or a sublist of one or more RHS primaries in parentheses.
     | &amp;lt;separator specification&amp;gt;
     | &amp;lt;proper specification&amp;gt;
 &lt;/pre&gt;&lt;/blockquote&gt;
-&lt;p&gt;Adverb lists are lists of zero or more adverbs, which can be of one of six kinds.
-Of these six, four do not occur in this grammar:
-    &lt;blockquote&gt;
+    &lt;p&gt;Adverb lists are lists of zero or more adverbs, which can be of one of six kinds.
+      Of these six, four do not occur in this grammar:
+    &lt;/p&gt;&lt;blockquote&gt;
       &lt;pre&gt;
 &amp;lt;left association&amp;gt; ::= ('assoc' '=&amp;gt;' 'left')
 &amp;lt;right association&amp;gt; ::= ('assoc' '=&amp;gt;' 'right')
@@ -330,44 +347,48 @@ Of these six, four do not occur in this grammar:
 action ::= ('action' '=&amp;gt;') &amp;lt;action name&amp;gt;
 &amp;lt;action name&amp;gt; ::= &amp;lt;bare name&amp;gt;
 &lt;/pre&gt;&lt;/blockquote&gt;
-&lt;p&gt;
-Three of the unused
-adverbs have to do with the associativity (right/left/group)
-of priorities.
-Since all our &quot;prioritized&quot; rules are trivial (have only one priority),
-this grammar does not use them.
-(Their use is described in
-&lt;a href=&quot;https://metacpan.org/module/Marpa::R2::BNF&quot;&gt;
-the documentation of Marpa's BNF interface&lt;/a&gt;.)
-We also will not see &lt;tt&gt;action&lt;/tt&gt; adverbs in this grammar,
-for reasons explained below.
-&lt;/p&gt;
-&lt;p&gt;
-Here are the two adverbs that we do see:
-    &lt;blockquote&gt;
+    &lt;p&gt;
+      Three of the unused
+      adverbs have to do with the associativity (right/left/group)
+      of priorities.
+      Since all our &quot;prioritized&quot; rules are trivial (have only one priority),
+      this grammar does not use them.
+      (Their use is described in
+      &lt;a href=&quot;https://metacpan.org/module/Marpa::R2::BNF&quot;&gt;
+        the documentation of Marpa's BNF interface&lt;/a&gt;.)
+      We also will not see
+      &lt;tt&gt;action&lt;/tt&gt;
+      adverbs in this grammar,
+      for reasons explained below.
+    &lt;/p&gt;
+    &lt;p&gt;
+      Here are the two adverbs that we do see:
+    &lt;/p&gt;&lt;blockquote&gt;
       &lt;pre&gt;
 &amp;lt;separator specification&amp;gt;
   ::= ('separator' '=&amp;gt;') &amp;lt;single symbol&amp;gt;
 &amp;lt;proper specification&amp;gt; ::= ('proper' '=&amp;gt;') boolean
 boolean ~ [01]
 &lt;/pre&gt;&lt;/blockquote&gt;
-&lt;p&gt;These adverbs are used for quantified rules.
-One specifies a &quot;separator&quot; that can go between items of the series.
-The other specifies whether separation is &quot;proper&quot; or not.
-(When &lt;tt&gt;proper&lt;/tt&gt; is 0, a separator is allowed after the last item of a series.
-When that is the case,
-the separator does not really always separate two items
-and in that sense the separator is not &quot;proper&quot;.)
-&lt;h3&gt;Discarded tokens&lt;/h3&gt;
+    &lt;p&gt;These adverbs are used for quantified rules.
+      One specifies a &quot;separator&quot; that can go between items of the series.
+      The other specifies whether separation is &quot;proper&quot; or not.
+      (When
+      &lt;tt&gt;proper&lt;/tt&gt;
+      is 0, a separator is allowed after the last item of a series.
+      When that is the case,
+      the separator does not really always separate two items
+      and in that sense the separator is not &quot;proper&quot;.)
+    &lt;/p&gt;&lt;h3&gt;Discarded tokens&lt;/h3&gt;
     &lt;blockquote&gt;
       &lt;pre&gt;
 :discard ~ whitespace
 whitespace ~ [\s]+
 &lt;/pre&gt;&lt;/blockquote&gt;
-&lt;p&gt;The two rules say that sequences of whitespace are recognized
-as tokens, then discarded.
-Perl-style comments are handled in the same way:
-    &lt;blockquote&gt;
+    &lt;p&gt;The two rules say that sequences of whitespace are recognized
+      as tokens, then discarded.
+      Perl-style comments are handled in the same way:
+    &lt;/p&gt;&lt;blockquote&gt;
       &lt;pre&gt;
 # allow comments
 :discard ~ &amp;lt;hash comment&amp;gt;
@@ -381,29 +402,31 @@ Perl-style comments are handled in the same way:
 &amp;lt;vertical space char&amp;gt; ~ [\x{A}\x{B}\x{C}\x{D}\x{2028}\x{2029}]
 &amp;lt;hash comment char&amp;gt; ~ [^\x{A}\x{B}\x{C}\x{D}\x{2028}\x{2029}]
 &lt;/pre&gt;&lt;/blockquote&gt;
-&lt;p&gt;&quot;Unterminated final hash comments&quot; deal with the special
-case of hash comments at the end of a file,
-when that file is not properly
-terminated with a newline.
-The &lt;tt&gt;&amp;lt;unterminated final hash comment&amp;gt;&lt;/tt&gt; symbol is an example of how
-a long angle bracketed symbol name can make things clearer.
-Without the long name, it might not be evident what that rule and symbol
-were trying to accomplish.
-&lt;/p&gt;
-&lt;p&gt;
-Long symbol names
-have a cleaner look than comments,
-but they are not a panacea.
-They have
-the special advantage that the description goes wherever the symbol
-name goes.
-But when the description is too long,
-that advantage becomes a disadvantage.
-&lt;h3&gt;Strings&lt;/h3&gt;
-&lt;p&gt;In the next snippet, defining single-quoted strings,
-the description is clearly too long for the symbol name,
-so much of it does go into a comment.
-    &lt;blockquote&gt;
+    &lt;p&gt;&quot;Unterminated final hash comments&quot; deal with the special
+      case of hash comments at the end of a file,
+      when that file is not properly
+      terminated with a newline.
+      The
+      &lt;tt&gt;&amp;lt;unterminated final hash comment&amp;gt;&lt;/tt&gt;
+      symbol is an example of how
+      a long angle bracketed symbol name can make things clearer.
+      Without the long name, it might not be evident what that rule and symbol
+      were trying to accomplish.
+    &lt;/p&gt;
+    &lt;p&gt;
+      Long symbol names
+      have a cleaner look than comments,
+      but they are not a panacea.
+      They have
+      the special advantage that the description goes wherever the symbol
+      name goes.
+      But when the description is too long,
+      that advantage becomes a disadvantage.
+    &lt;/p&gt;&lt;h3&gt;Strings&lt;/h3&gt;
+    &lt;p&gt;In the next snippet, defining single-quoted strings,
+      the description is clearly too long for the symbol name,
+      so much of it does go into a comment.
+    &lt;/p&gt;&lt;blockquote&gt;
       &lt;pre&gt;
 # In single quotes strings and character classes
 # no escaping or internal newlines, and disallow empty string
@@ -412,14 +435,14 @@ so much of it does go into a comment.
 &amp;lt;string without single quote or vertical space&amp;gt;
   ~ [^'\x{0A}\x{0B}\x{0C}\x{0D}\x{0085}\x{2028}\x{2029}]+
 &lt;/pre&gt;&lt;/blockquote&gt;
-&lt;p&gt;Note two Unicode vertical whitespace codepoints,
-U+2028 and U+2029, are included.
-The implementation only supports 7-bit ASCII,
-so for the moment these accomplish nothing.
-But when Unicode support is added, the grammar won't need to be changed.
-&lt;h3&gt;Character classes&lt;/h3&gt;
-&lt;p&gt;Finally, there are character classes:
-    &lt;blockquote&gt;
+    &lt;p&gt;Note two Unicode vertical whitespace codepoints,
+      U+2028 and U+2029, are included.
+      The implementation only supports 7-bit ASCII,
+      so for the moment these accomplish nothing.
+      But when Unicode support is added, the grammar won't need to be changed.
+    &lt;/p&gt;&lt;h3&gt;Character classes&lt;/h3&gt;
+    &lt;p&gt;Finally, there are character classes:
+    &lt;/p&gt;&lt;blockquote&gt;
       &lt;pre&gt;
 &amp;lt;character class&amp;gt; ~ '[' &amp;lt;cc string&amp;gt; ']'
 &amp;lt;cc string&amp;gt; ~ &amp;lt;cc character&amp;gt;+
@@ -434,47 +457,55 @@ But when Unicode support is added, the grammar won't need to be changed.
 # a horizontal character is any character that is not vertical space
 &amp;lt;horizontal character&amp;gt; ~ [^\x{A}\x{B}\x{C}\x{D}\x{2028}\x{2029}]
 &lt;/pre&gt;&lt;/blockquote&gt;
-&lt;p&gt;These are Perl character classes,
-and are passed unaltered to Perl for interpretation.
-Marpa needs to recognize that they start and end with square brackets.
-And it also must recognize enough of their internals
-to deal with escaped square brackets,
-which makes
-them the most
-complicated lexeme of the grammar.
+    &lt;p&gt;These are Perl character classes,
+      and are passed unaltered to Perl for interpretation.
+      Marpa needs to recognize that they start and end with square brackets.
+      And it also must recognize enough of their internals
+      to deal with escaped square brackets,
+      which makes
+      them the most
+      complicated lexeme of the grammar.
     &lt;/p&gt;
-&lt;h3&gt;Longest tokens matching&lt;/h3&gt;
-&lt;p&gt;When there is a choice of lexicals, Marpa follows a longest tokens matching strategy.
-The effect is usually that it does what you mean.
-(In part this is because longest token match
-is the usual default for regular expressions and
-lexical analyzers, so that programmers are trained by their tools
-to really mean a longest match
-whenever they specify a match.)
-&lt;p&gt;Most of what longest-token-match does is obvious.
-For example,
-in the rule &quot;&lt;tt&gt;weeknights ~ 'Mon' | 'Tue' | 'Wed' | 'Thu'&lt;/tt&gt;&quot;,
-it recognizes that
-&lt;tt&gt;weeknights&lt;/tt&gt; is one symbol and not two symbols like
-&quot;&lt;tt&gt;wee&lt;/tt&gt;&quot; and &quot;&lt;tt&gt;knights&lt;/tt&gt;&quot;.
-Longest tokens match
-means that if you have a grammar where you specify both &lt;tt&gt;++&lt;/tt&gt;
-and &lt;tt&gt;+&lt;/tt&gt; as operators, Marpa will always prefer
-the longer operator: &lt;tt&gt;++&lt;/tt&gt;.
-&lt;p&gt;Because this is Marpa, there is a slight difference from the traditional longest
-&lt;b&gt;token&lt;/b&gt; matching.
-Note that in Marpa's matching strategy, &quot;tokens&quot; is plural.
-If more than one possibility has the same length, Marpa will try them all.
-This plays a role in our meta-grammar.
-For example, &lt;tt&gt;separator&lt;/tt&gt; is a keyword.
-But it is also a valid symbol name.
-Marpa allows it to be both, and figures out which is meant at the
-structural level, based on context.
-    &lt;h3&gt;Semantics&lt;/h3&gt;
+    &lt;h3&gt;Longest tokens matching&lt;/h3&gt;
+    &lt;p&gt;When there is a choice of lexicals, Marpa follows a longest tokens matching strategy.
+      The effect is usually that it does what you mean.
+      (In part this is because longest token match
+      is the usual default for regular expressions and
+      lexical analyzers, so that programmers are trained by their tools
+      to really mean a longest match
+      whenever they specify a match.)
+    &lt;/p&gt;&lt;p&gt;Most of what longest-token-match does is obvious.
+      For example,
+      in the rule &quot;&lt;tt&gt;weeknights ~ 'Mon' | 'Tue' | 'Wed' | 'Thu'&lt;/tt&gt;&quot;,
+      it recognizes that
+      &lt;tt&gt;weeknights&lt;/tt&gt;
+      is one symbol and not two symbols like
+      &quot;&lt;tt&gt;wee&lt;/tt&gt;&quot; and &quot;&lt;tt&gt;knights&lt;/tt&gt;&quot;.
+      Longest tokens match
+      means that if you have a grammar where you specify both
+      &lt;tt&gt;++&lt;/tt&gt;
+      and
+      &lt;tt&gt;+&lt;/tt&gt;
+      as operators, Marpa will always prefer
+      the longer operator:
+      &lt;tt&gt;++&lt;/tt&gt;.
+    &lt;/p&gt;&lt;p&gt;Because this is Marpa, there is a slight difference from the traditional longest
+      &lt;b&gt;token&lt;/b&gt;
+      matching.
+      Note that in Marpa's matching strategy, &quot;tokens&quot; is plural.
+      If more than one possibility has the same length, Marpa will try them all.
+      This plays a role in our meta-grammar.
+      For example,
+      &lt;tt&gt;separator&lt;/tt&gt;
+      is a keyword.
+      But it is also a valid symbol name.
+      Marpa allows it to be both, and figures out which is meant at the
+      structural level, based on context.
+    &lt;/p&gt;&lt;h3&gt;Semantics&lt;/h3&gt;
     &lt;p&gt;
       In practice, a grammar is usually tied tightly to a single semantics.
       This is an exception.
-    The Scanless interface's meta-grammar is also the grammar for Marpa's
+      The Scanless interface's meta-grammar is also the grammar for Marpa's
       BNF interface, and the BNF interface has a different semantics.
     &lt;/p&gt;
     &lt;p&gt;
@@ -485,14 +516,15 @@ structural level, based on context.
       Examples of the normal method of specifying
       semantics are in the documentation for
       &lt;a href=&quot;https://metacpan.org/module/Marpa::R2::BNF&quot;&gt;
-      the BNF interface&lt;/a&gt;
+        the BNF interface&lt;/a&gt;
       and for
       &lt;a href=&quot;https://metacpan.org/module/JKEGL/Marpa-R2-2.035_003/pod/Scanless.pod&quot;&gt;
-      the Scanless interface&lt;/a&gt;.
-      &lt;/p&gt;
-      &lt;p&gt;
+        the Scanless interface&lt;/a&gt;.
+    &lt;/p&gt;
+    &lt;p&gt;
       In this special-case grammar,
-      there are no &lt;tt&gt;action&lt;/tt&gt;
+      there are no
+      &lt;tt&gt;action&lt;/tt&gt;
       adverbs.
       Marpa waits until it knows which interface the grammar will be used for.
       At that point the internals use the symbol names to map rules to
