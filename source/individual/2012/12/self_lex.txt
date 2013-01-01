@@ -34,7 +34,7 @@ A self-parsing and self-lexing grammar
     </p>
     <p>
       This is certainly a practical example.
-      Thk grammar that follows is used
+      The grammar that follows is used
       to parse itself and all other grammars written for the
       Marpa's Scanless interface.
       It is also used to parse the strings written
@@ -83,7 +83,7 @@ rule ::= &lt;start rule&gt;
       And the definition of <tt>rule</tt>
       is a <tt>&lt;priority rule&gt;</tt>,
       which is
-      one of the 5 type of rule that it allows.
+      one of the 5 types of <tt>rule</tt> that are allowed.
       </p>
       <p>
       The first two rules exemplify two of the other rule types:
@@ -133,10 +133,9 @@ The whitespace will sometimes be optional,
 and will sometimes be required.
 </p>
 <p>
-Spelling all the comment and whitespace handline
+Spelling all the comment and whitespace handling
 out would be very tedious and error-prone.
-We want there to be rules of a kind that "do what we mean",
-and Marpa has them.
+We want there to be rules of a kind that "do what we mean".
 Marpa's "do what I mean" rules are called "structural" rules,
 and are identified by the BNF operator ("<tt>::=</tt>").
     <p>Some structural rules have lexical content within them.
@@ -319,7 +318,8 @@ action ::= ('action' '=&gt;') &lt;action name&gt;
 &lt;action name&gt; ::= &lt;bare name&gt;
 </pre></blockquote>
 <p>
-Three of the adverbs have to do with the associativity (right/left/group)
+Three of the unused
+adverbs have to do with the associativity (right/left/group)
 of priorities.
 Since all our "prioritized" rules are trivial (have only one priority),
 this grammar does not use them.
@@ -330,7 +330,7 @@ We also will not see <tt>action</tt> adverbs in this grammar,
 for reasons explained below.
 </p>
 <p>
-Here are two adverbs that we do see:
+Here are the two adverbs that we do see:
     <blockquote>
       <pre>
 &lt;separator specification&gt;
@@ -369,7 +369,8 @@ Perl-style comments are handled in the same way:
 &lt;hash comment char&gt; ~ [^\x{A}\x{B}\x{C}\x{D}\x{2028}\x{2029}]
 </pre></blockquote>
 <p>"Unterminated final hash comments" deal with the special
-case of hash comments at the end of a file that is not properly
+case of hash comments at the end of a file,
+when that file is not properly
 terminated with a newline.
 The <tt>&lt;unterminated final hash comment&gt;</tt> symbol is an example of how
 a long angle bracketed symbol name can make things clearer.
@@ -437,9 +438,9 @@ is the usual default for regular expressions and
 lexical analyzers, so that programmers are trained by their tools
 to really mean a longest match
 whenever they specify a match.)
-<p>Most of what longest token match does is obvious.
+<p>Most of what longest-token-match does is obvious.
 For example,
-in the rule "<tt>weeknights ~ 'Mon' | 'Tue' | 'Wed' | 'Thu' | 'Fri'</tt>",
+in the rule "<tt>weeknights ~ 'Mon' | 'Tue' | 'Wed' | 'Thu'</tt>",
 it recognizes that
 <tt>weeknights</tt> is one symbol and not two symbols like
 "<tt>wee</tt>" and "<tt>knights</tt>".
