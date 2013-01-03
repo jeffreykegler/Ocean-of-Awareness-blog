@@ -10,21 +10,21 @@
     <language>en</language>
 
   <item>
-    <title>Announcing Marpa's Scanless and BNF interfaces</title>
+    <title>Announcing Marpa's Scanless interface</title>
     <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2013/01/announce_scanless.html</link>
-    <description>  &lt;h3&gt;Announcing Marpa::R2&lt;/h3&gt;
-    &lt;!--
+    <description>&lt;!--
       marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
       --&gt;
-    &lt;p&gt;
-    &lt;a href=&quot;https://metacpan.org/release/Marpa-R2&quot;&gt;
+  &lt;p&gt;
+      &lt;a href=&quot;https://metacpan.org/release/Marpa-R2&quot;&gt;
         Marpa::R2&lt;/a&gt;'s
-      Scanless interface is now out of beta and in full release.
+      Scanless interface is now out of beta and
+      available in full release on CPAN.
       This interface allows Marpa to be used without the need to create
       a separate lexer (scanner),
       and increases Marpa's level of &quot;whipitupitude&quot;.
       Here's what a simple calculator looks like in the Scanless interface:
-      &lt;blockquote&gt;
+    &lt;/p&gt;&lt;blockquote&gt;
       &lt;pre&gt;
 :start ::= Script
 Script ::= Expression+ separator =&amp;gt; comma action =&amp;gt; do_script
@@ -52,32 +52,35 @@ whitespace ~ [\s]+
 &amp;lt;hash comment char&amp;gt; ~ [^\x{A}\x{B}\x{C}\x{D}\x{2028}\x{2029}]
 &lt;/pre&gt;&lt;/blockquote&gt;
     &lt;p&gt;The full example, with semantics,
-    is in &lt;a href=&quot;https://gist.github.com/4440418&quot;&gt;
-    a Github gist&lt;/a&gt;.
-     It is almost identical to the example in
-    the Scanless interface documents, and to a test in Marpa::R2's test suite.
-    &lt;p&gt;
-    Simultaneously,
-    &lt;a href=&quot;https://metacpan.org/module/JKEGL/Marpa-R2-2.038000/pod/BNF.pod&quot;&gt;
-    Marpa's BNF interface&lt;/a&gt;
-    is coming out of beta and into full release.
-    Like the Scanless interface,
-    the BNF interface allows you to write your grammar in a BNF variant.
-    Unlike the Scanless interface, it requires you to do your own lexing.
-    &lt;p&gt;The Scanless interface is a superset of the BNF interface, so its documentation
-    is the best place to start for learning both.
-    However, to work with either, you probably should already
-    have at least some familiarity with
-    &lt;a href=&quot;https://metacpan.org/module/JKEGL/Marpa-R2-2.038000/pod/Marpa_R2.pod&quot;&gt;Marpa's
-    standard interface&lt;/a&gt;.
+      is in
+      &lt;a href=&quot;https://gist.github.com/4440418&quot;&gt;
+        a Github gist&lt;/a&gt;.
+      It is almost identical to the example in
+      the Scanless interface documents, and to a test in Marpa::R2's test suite.
+    &lt;/p&gt;&lt;p&gt;
+      &lt;a href=&quot;https://metacpan.org/module/JKEGL/Marpa-R2-2.038000/pod/BNF.pod&quot;&gt;
+        Marpa's BNF interface&lt;/a&gt;
+	came out of beta and into full release at the same time as the Scanless interface.
+      Like the Scanless interface,
+      the BNF interface allows you to write your grammar in a BNF variant.
+      Unlike the Scanless interface, it requires you to do your own lexing.
+    &lt;/p&gt;&lt;p&gt;The Scanless interface is a superset of the BNF interface, so
+      &lt;a href=&quot;https://metacpan.org/module/JKEGL/Marpa-R2-2.038000/pod/BNF.pod&quot;&gt;
+    the documentation of the BNF interface&lt;/a&gt;
+      is the best place to start for learning both.
+      However, to work with either, you probably should already
+      have at least some familiarity with
+      &lt;a href=&quot;https://metacpan.org/module/JKEGL/Marpa-R2-2.038000/pod/Marpa_R2.pod&quot;&gt;Marpa's
+        standard interface&lt;/a&gt;.
     &lt;/p&gt;
     &lt;p&gt;
-      Not long ago, my work on Marpa was very much a lone endeavour.
-      A sign of Marpa's emergence is my uses and extensions of Marpa
-      now are often based on insights and advances from others.
-      The BNF interface is based on ideas pioneered by Peter Stuifzand.
-      Any the approach to scannerless parsing that I finally settled on
+      Not long ago, my work on Marpa was a lone endeavour.
+      One sign of Marpa's emergence is that my work
+      now is often based on insights gained by others who have used Marpa.
+      The BNF interface is based on one written by Peter Stuifzand.
+      And the approach to scannerless parsing that I finally settled on
       was suggested to me by Andrew Rodland's prior work on pairing Marpa grammars.
+    &lt;/p&gt;
     &lt;h3&gt;Comments&lt;/h3&gt;
     &lt;p&gt;
       Comments on this post

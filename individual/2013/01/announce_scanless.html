@@ -36,21 +36,21 @@
   <div style="margin-left:190px;border-left:2px solid #38B0C0;padding:25px;">
 <h3>Wed, 02 Jan 2013</h3>
 <br />
-<center><a name="announce_scanless"> <h2>Announcing Marpa's Scanless and BNF interfaces</h2> </a>
+<center><a name="announce_scanless"> <h2>Announcing Marpa's Scanless interface</h2> </a>
 </center>
-  <h3>Announcing Marpa::R2</h3>
-    <!--
+<!--
       marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
       -->
-    <p>
-    <a href="https://metacpan.org/release/Marpa-R2">
+  <p>
+      <a href="https://metacpan.org/release/Marpa-R2">
         Marpa::R2</a>'s
-      Scanless interface is now out of beta and in full release.
+      Scanless interface is now out of beta and
+      available in full release on CPAN.
       This interface allows Marpa to be used without the need to create
       a separate lexer (scanner),
       and increases Marpa's level of "whipitupitude".
       Here's what a simple calculator looks like in the Scanless interface:
-      <blockquote>
+    </p><blockquote>
       <pre>
 :start ::= Script
 Script ::= Expression+ separator =&gt; comma action =&gt; do_script
@@ -78,32 +78,35 @@ whitespace ~ [\s]+
 &lt;hash comment char&gt; ~ [^\x{A}\x{B}\x{C}\x{D}\x{2028}\x{2029}]
 </pre></blockquote>
     <p>The full example, with semantics,
-    is in <a href="https://gist.github.com/4440418">
-    a Github gist</a>.
-     It is almost identical to the example in
-    the Scanless interface documents, and to a test in Marpa::R2's test suite.
-    <p>
-    Simultaneously,
-    <a href="https://metacpan.org/module/JKEGL/Marpa-R2-2.038000/pod/BNF.pod">
-    Marpa's BNF interface</a>
-    is coming out of beta and into full release.
-    Like the Scanless interface,
-    the BNF interface allows you to write your grammar in a BNF variant.
-    Unlike the Scanless interface, it requires you to do your own lexing.
-    <p>The Scanless interface is a superset of the BNF interface, so its documentation
-    is the best place to start for learning both.
-    However, to work with either, you probably should already
-    have at least some familiarity with
-    <a href="https://metacpan.org/module/JKEGL/Marpa-R2-2.038000/pod/Marpa_R2.pod">Marpa's
-    standard interface</a>.
+      is in
+      <a href="https://gist.github.com/4440418">
+        a Github gist</a>.
+      It is almost identical to the example in
+      the Scanless interface documents, and to a test in Marpa::R2's test suite.
+    </p><p>
+      <a href="https://metacpan.org/module/JKEGL/Marpa-R2-2.038000/pod/BNF.pod">
+        Marpa's BNF interface</a>
+	came out of beta and into full release at the same time as the Scanless interface.
+      Like the Scanless interface,
+      the BNF interface allows you to write your grammar in a BNF variant.
+      Unlike the Scanless interface, it requires you to do your own lexing.
+    </p><p>The Scanless interface is a superset of the BNF interface, so
+      <a href="https://metacpan.org/module/JKEGL/Marpa-R2-2.038000/pod/BNF.pod">
+    the documentation of the BNF interface</a>
+      is the best place to start for learning both.
+      However, to work with either, you probably should already
+      have at least some familiarity with
+      <a href="https://metacpan.org/module/JKEGL/Marpa-R2-2.038000/pod/Marpa_R2.pod">Marpa's
+        standard interface</a>.
     </p>
     <p>
-      Not long ago, my work on Marpa was very much a lone endeavour.
-      A sign of Marpa's emergence is my uses and extensions of Marpa
-      now are often based on insights and advances from others.
-      The BNF interface is based on ideas pioneered by Peter Stuifzand.
-      Any the approach to scannerless parsing that I finally settled on
+      Not long ago, my work on Marpa was a lone endeavour.
+      One sign of Marpa's emergence is that my work
+      now is often based on insights gained by others who have used Marpa.
+      The BNF interface is based on one written by Peter Stuifzand.
+      And the approach to scannerless parsing that I finally settled on
       was suggested to me by Andrew Rodland's prior work on pairing Marpa grammars.
+    </p>
     <h3>Comments</h3>
     <p>
       Comments on this post
