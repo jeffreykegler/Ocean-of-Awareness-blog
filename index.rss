@@ -10,6 +10,82 @@
     <language>en</language>
 
   <item>
+    <title>Announcing Marpa's Scanless and BNF interfaces</title>
+    <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2013/01/announce_scanless.html</link>
+    <description>  &lt;h3&gt;Announcing Marpa::R2&lt;/h3&gt;
+    &lt;!--
+      marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
+      --&gt;
+    &lt;p&gt;
+    &lt;a href=&quot;https://metacpan.org/release/Marpa-R2&quot;&gt;
+        Marpa::R2&lt;/a&gt;'s
+      Scanless interface is now out of beta and in full release.
+      This interface allows Marpa to be used without the need to create
+      a separate lexer (scanner),
+      and increases Marpa's level of &quot;whipitupitude&quot;.
+      Here's what a simple calculator looks like in the Scanless interface:
+      &lt;blockquote&gt;
+      &lt;pre&gt;
+:start ::= Script
+Script ::= Expression+ separator =&amp;gt; comma action =&amp;gt; do_script
+comma ~ [,]
+Expression ::=
+    Number
+    | '(' Expression ')' action =&amp;gt; do_parens assoc =&amp;gt; group
+   || Expression '**' Expression action =&amp;gt; do_pow assoc =&amp;gt; right
+   || Expression '*' Expression action =&amp;gt; do_multiply
+    | Expression '/' Expression action =&amp;gt; do_divide
+   || Expression '+' Expression action =&amp;gt; do_add
+    | Expression '-' Expression action =&amp;gt; do_subtract
+Number ~ [\d]+
+ 
+:discard ~ whitespace
+whitespace ~ [\s]+
+# allow comments
+:discard ~ &amp;lt;hash comment&amp;gt;
+&amp;lt;hash comment&amp;gt; ~ &amp;lt;terminated hash comment&amp;gt; | &amp;lt;unterminated
+   final hash comment&amp;gt;
+&amp;lt;terminated hash comment&amp;gt; ~ '#' &amp;lt;hash comment body&amp;gt; &amp;lt;vertical space char&amp;gt;
+&amp;lt;unterminated final hash comment&amp;gt; ~ '#' &amp;lt;hash comment body&amp;gt;
+&amp;lt;hash comment body&amp;gt; ~ &amp;lt;hash comment char&amp;gt;*
+&amp;lt;vertical space char&amp;gt; ~ [\x{A}\x{B}\x{C}\x{D}\x{2028}\x{2029}]
+&amp;lt;hash comment char&amp;gt; ~ [^\x{A}\x{B}\x{C}\x{D}\x{2028}\x{2029}]
+&lt;/pre&gt;&lt;/blockquote&gt;
+    &lt;p&gt;The full example, with semantics,
+    is in &lt;a href=&quot;https://gist.github.com/4440418&quot;&gt;
+    a Github gist&lt;/a&gt;.
+     It is almost identical to the example in
+    the Scanless interface documents, and to a test in Marpa::R2's test suite.
+    &lt;p&gt;
+    Simultaneously,
+    &lt;a href=&quot;https://metacpan.org/module/JKEGL/Marpa-R2-2.038000/pod/BNF.pod&quot;&gt;
+    Marpa's BNF interface&lt;/a&gt;
+    is coming out of beta and into full release.
+    Like the Scanless interface,
+    the BNF interface allows you to write your grammar in a BNF variant.
+    Unlike the Scanless interface, it requires you to do your own lexing.
+    &lt;p&gt;The Scanless interface is a superset of the BNF interface, so its documentation
+    is the best place to start for learning both.
+    However, to work with either, you probably should already
+    have at least some familiarity with
+    &lt;a href=&quot;https://metacpan.org/module/JKEGL/Marpa-R2-2.038000/pod/Marpa_R2.pod&quot;&gt;Marpa's
+    standard interface&lt;/a&gt;.
+    &lt;/p&gt;
+    &lt;p&gt;
+      Not long ago, my work on Marpa was very much a lone endeavour.
+      A sign of Marpa's emergence is my uses and extensions of Marpa
+      now are often based on insights and advances from others.
+      The BNF interface is based on ideas pioneered by Peter Stuifzand.
+      Any the approach to scannerless parsing that I finally settled on
+      was suggested to me by Andrew Rodland's prior work on pairing Marpa grammars.
+    &lt;h3&gt;Comments&lt;/h3&gt;
+    &lt;p&gt;
+      Comments on this post
+      can be sent to the Marpa Google Group:
+      &lt;code&gt;marpa-parser@googlegroups.com&lt;/code&gt;
+    &lt;/p&gt;</description>
+  </item>
+  <item>
     <title>A self-parsing and self-lexing grammar</title>
     <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/12/self_lex.html</link>
     <description>  &lt;p&gt;
@@ -1075,372 +1151,6 @@ RESULT: for my $result ( reverse @results ) {
         Marpa::R2 2.024000&lt;/a&gt;,
       as of this writing the latest full release.
       Its main test, which is included in the gist,
-      used displays from the
-      &lt;a href=&quot;http://perldoc.perl.org/perlop.html&quot;&gt;perlop man page&lt;/a&gt;.
-    &lt;/p&gt;
-    &lt;p&gt;
-      Comments on this post
-      can be sent to the Marpa Google Group:
-      &lt;code&gt;marpa-parser@googlegroups.com&lt;/code&gt;
-    &lt;/p&gt;</description>
-  </item>
-  <item>
-    <title>A Marpa tutorial: pattern searches</title>
-    <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/11/pattern_search.html</link>
-    <description>  &lt;h3&gt;Pattern searches&lt;/h3&gt;
-    &lt;p&gt;
-      &lt;!--
-      marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
-      --&gt;
-      We use regular expressions for pattern searching these days.
-      But what if your search target is not a regular expression?
-      In this post I will show how to use Marpa to search text files for
-      arbitrary context-free expressions.
-    &lt;/p&gt;
-    &lt;p&gt;
-      This tutorial builds on earlier tutorials.
-      It is possible to simply dive into it,
-      but it may be easier
-      to start with two of my earlier posts,
-      &lt;a href=&quot;http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/dsl.html&quot;&gt;here&lt;/a&gt;
-      and
-      &lt;a href=&quot;http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/error.html&quot;&gt;here&lt;/a&gt;.
-    &lt;/p&gt;
-    &lt;h3&gt;The grammar&lt;/h3&gt;
-    &lt;p&gt;
-      I will use arithmetic expressions as
-      the example of a search target.
-      Even the arithmetic subset of Perl expressions is quite complex,
-      but in this case we can get the job done
-      with eight lines of grammar and a lexer driven
-      by a table of just over a dozen lines.
-      Here is the grammar:
-    &lt;/p&gt;
-    &lt;blockquote&gt;
-      &lt;pre&gt;
-    &lt;tt&gt;
-start ::= prefix target
-prefix ::= any_token*
-target ::= expression
-expression ::=
-       number | scalar | scalar postfix_op
-    || op_lparen expression op_rparen assoc =&amp;gt; group
-    || unop expression
-    || expression binop expression`
-    &lt;/tt&gt;
-    &lt;/pre&gt;
-    &lt;/blockquote&gt;
-    &lt;p&gt;
-      This grammar uses
-      &lt;a href=&quot;https://metacpan.org/module/Marpa::R2::BNF&quot;&gt;
-        Marpa::R2's BNF interface&lt;/a&gt;.
-      It takes considerable advantage of the fact that we are not
-      &lt;b&gt;parsing&lt;/b&gt;
-      these expressions, but
-      &lt;b&gt;recognizing&lt;/b&gt;
-      them.
-      Because of this, we don't have to specify whether expressions left- or right-associate.
-      We can also ignore what operators mean and group them according to syntax only
-      -- binary, prefix unary and postfix unary.
-      Similarly, we can ignore the precedence within these large groups.
-      This leaves us with numbers, scalars,
-      parentheses,
-      and binary, prefix unary and postfix unary operators.
-      (To keep this example simple, we restrict the primaries
-      to numeric constants and Perl scalars.)
-    &lt;/p&gt;
-    &lt;p&gt;
-      What we are searching for is defined by the
-      &lt;tt&gt;target&lt;/tt&gt;
-      symbol.
-      For
-      &lt;tt&gt;target&lt;/tt&gt;
-      you could substitute
-      the start symbol of
-      any context-free grammar,
-      and the structure of this example will still work.
-      To turn a parser for
-      &lt;tt&gt;target&lt;/tt&gt;
-      into a pattern searcher, we add a new start
-      symbol (unimaginatively named &quot;&lt;tt&gt;start&lt;/tt&gt;&quot;)
-      and two rules that
-      allow the target to have a
-      &lt;tt&gt;prefix&lt;/tt&gt;.
-    &lt;/p&gt;
-    &lt;h3&gt;Ambiguous parsing&lt;/h3&gt;
-    &lt;p&gt;To do an anchorless pattern search,
-      this example will use ambiguous parsing.
-      This grammar always has at least one parse going,
-      representing the prefix for
-      the zero or more targets
-      that our parser
-      expects to find in the future.
-      The prefix will never end, because
-      any token (as indicated by a token
-      named, literally,
-      &lt;tt&gt;any_token&lt;/tt&gt;)
-      extends it.
-    &lt;/p&gt;
-    &lt;p&gt;
-      If we are in the process of recognizing a
-      &lt;tt&gt;target&lt;/tt&gt;,
-      we will have one or more other parses going.
-      I say &quot;one or more&quot; because the search method
-      described in this post
-      allows &lt;tt&gt;target&lt;/tt&gt; to be ambiguous.
-      But arithmetic expressions,
-      the target pattern used in this example,
-      are not ambiguous.
-      So our example will have
-      at most two parses active at any point:
-      one for the prefix and another for the target.
-    &lt;/p&gt;
-    &lt;p&gt;
-      Ambiguous parsing has a serious potential downside --
-      it is not necessarily linear
-      and therefore not necessarily efficient.
-      But Marpa can parse many classes of ambiguous grammar in linear time.
-      Grammars like the one in this post --
-      a prefix and an unambiguous search target --
-      fall into one of the linearly parseable classes.
-      Keeping the prefix going requires a tiny constant overhead per token.
-    &lt;/p&gt;
-    &lt;h3&gt;The lexer table&lt;/h3&gt;
-    &lt;p&gt;
-      The lexer is driven by a table of pairs: token name and regex.
-    &lt;/p&gt;&lt;blockquote&gt;
-      &lt;pre&gt;
-&lt;tt&gt;
-my @lexer_table = (
-    [ number     =&amp;gt; qr/(?:\d+(?:\.\d*)?|\.\d+)/xms ],
-    [ scalar     =&amp;gt; qr/ [\$] \w+ \b/xms ],
-    [ postfix_op =&amp;gt; qr/ [-][-] | [+][+] /xms ],
-    [ unop       =&amp;gt; qr/ [-][-] | [+][+] /xms ],
-    [   binop =&amp;gt; qr/
-          [*][*] | [&amp;gt;][&amp;gt;] | [&amp;lt;][&amp;lt;]
-        | [*] | [\/] | [%] | [x] \b
-        | [+] | [-] | [&amp;amp;] | [|] | [=] | [,]
-    /xms
-    ],
-    [   unop =&amp;gt; qr/ [-] | [+] | [!] | [~] /xms
-    ],
-    [ op_lparen =&amp;gt; qr/[(]/xms ],
-    [ op_rparen =&amp;gt; qr/[)]/xms ],
-);
-&lt;/tt&gt;
-&lt;/pre&gt;
-    &lt;/blockquote&gt;
-    &lt;p&gt;
-      Order is significant here.
-      In particular
-      two-character operators are checked for first.
-      This guarantees that
-      two consecutive minus signs
-      will be seen as an
-      decrement operator, and not as a double negation.
-    &lt;/p&gt;
-    &lt;h3&gt;Ambiguous lexing&lt;/h3&gt;
-    &lt;p&gt;The very careful reader may have noticed that
-      &lt;tt&gt;any_token&lt;/tt&gt;
-      is not in the lexing table.
-      The main loop is written so that every token is read as an
-      &lt;tt&gt;any_token&lt;/tt&gt;.
-      If no token from the lexing table is accepted,
-      the next character in the input stream
-      is read as an
-      &lt;tt&gt;any_token&lt;/tt&gt;.
-      If a token from the lexing table
-      &lt;b&gt;is&lt;/b&gt;
-      accepted,
-      then it gets read twice,
-      once as an
-      &lt;tt&gt;any_token&lt;/tt&gt;,
-      and once as the token type taken from the lexing table
-      entry.
-    &lt;/p&gt;
-    &lt;p&gt;Ambiguous lexing is a familiar technique to
-      the Natural Language Processing community.
-      Engish, in particular, is a language that abounds
-      in lexemes that can play multiple roles.
-      The word &quot;sort&quot;, for example, can easily be
-      an noun, a verb or an adjective.
-    &lt;/p&gt;
-    &lt;h3&gt;The Ruby Slippers&lt;/h3&gt;
-    &lt;p&gt;The main loop will also be a simple case of the use
-      of the Ruby Slippers.
-      For those unfamiliar,
-      the &quot;Ruby Slippers&quot; parsing technique handles difficult lexing
-      and parsing problems by asking the parser, at the problem point,
-      what it is looking for,
-      and providing it.
-      This seems a fairly obvious approach,
-      but the Ruby Slippers are new with Marpa --
-      traditional parsers could not easily
-      determine where they were in a parse.
-    &lt;/p&gt;
-    &lt;p&gt;
-      One way to use the Ruby Slippers is to ask the parser in
-      advance what it is looking for.
-      The code that follows uses another method.
-      Instead of determining in advance what tokens to read,
-      it simply feeds tokens to the parser.
-    &lt;/p&gt;
-    &lt;p&gt;
-      Token rejection is a &quot;soft&quot; error -- it costs
-      little to try, and little to retry.
-      The following code can
-      efficiently determine which entry in the lexing table is appropriate,
-      simply by trying each of them in order.
-      If the
-      &lt;tt&gt;alternative()&lt;/tt&gt;
-      method returns a Perl
-      &lt;tt&gt;undef&lt;/tt&gt;,
-      indicating that a token was rejected,
-      then the main loop will try later entries in the lexing table.
-    &lt;/p&gt;
-    &lt;p&gt;
-      When a token is accepted,
-      the main loop can safely assume that it is on the right track.
-      Marpa is 100% accurate about
-      which tokens can and cannot result in a successful parse.
-    &lt;/p&gt;
-    &lt;h3&gt;The main loop&lt;/h3&gt;
-    &lt;p&gt;
-      The main loop iterates through input looking for tokens.
-      Whitespace is skipped.
-      Comments are not skipped.
-      Finding arithmetic expressions in
-      strings and/or comments can be useful.
-      We will assume that is the case here.
-    &lt;/p&gt;
-    &lt;blockquote&gt;
-      &lt;pre&gt;
-&lt;tt&gt;
-my $length = length $string;
-pos $string = $positions[-1];
-TOKEN: while ( pos $string &amp;lt; $length ) {
-    next TOKEN if $string =~ m/\G\s+/gcxms;    # skip whitespace
-    my $position = pos $string;
-    FIND_ALTERNATIVE: {
-        TOKEN_TYPE: for my $t (@lexer_table) {
-            my ( $token_name, $regex ) = @{$t};
-            next TOKEN_TYPE if not $string =~ m/\G($regex)/gcxms;
-            if ( not defined $recce-&amp;gt;alternative($token_name) ) {
-                pos $string = $position;       # reset position for matching
-                next TOKEN_TYPE;
-            }
-            $recce-&amp;gt;alternative('any_token');
-            last FIND_ALTERNATIVE;
-        } ## end TOKEN_TYPE: for my $t (@lexer_table)
-        ## Nothing in the lexer table matched
-        ## Just read the currrent character as an 'any_token'
-        pos $string = $position + 1;
-        $recce-&amp;gt;alternative('any_token');
-    } ## end FIND_ALTERNATIVE:
-    $recce-&amp;gt;earleme_complete();
-    my $latest_earley_set_ID = $recce-&amp;gt;latest_earley_set();
-    $positions[$latest_earley_set_ID] = pos $string;
-} ## end TOKEN: while ( pos $string &amp;lt; $length )
-&lt;/tt&gt;
-&lt;/pre&gt;
-    &lt;/blockquote&gt;
-    &lt;p&gt;
-      The
-      &lt;tt&gt;earleme_complete()&lt;/tt&gt;
-      method tells Marpa that all the alternatives
-      at one location have been entered,
-      and that the parse should now move on to the next location.
-      (Marpa's idea of location is called an &quot;earleme&quot;, in honor of the great
-      parsing theorist, Jay Earley.)
-    &lt;/p&gt;
-    &lt;h3&gt;How to parse without really trying&lt;/h3&gt;
-    &lt;p&gt;
-    At this point, I want to draw the reader's attention to the code
-    that deals with special cases for the minus sign.
-    Specifically, to the fact that there is no such code.
-    The more familiar you are with PPI and/or
-      &lt;tt&gt;perly.y&lt;/tt&gt;,
-      the more remarkable this will seem.
-      &lt;/p&gt;
-      &lt;p&gt;
-      To take one example, PPI correctly realizes that the minus
-      sign in
-      &quot;&lt;tt&gt;1+2-3&lt;/tt&gt;&quot; is a binary operator.
-      However PPI fails on &quot;&lt;tt&gt;(1+2)-3&lt;/tt&gt;&quot; --
-      it thinks the minus sign is part of the number &quot;-3&quot;.
-      Why don't the authors of PPI just look at the Perl
-      interpreter and copy the logic there?
-      Take a glance at &lt;tt&gt;perly.y&lt;/tt&gt;
-      and &lt;tt&gt;toke.c&lt;/tt&gt; 
-      and you will know the answer to that question.
-      &lt;/p&gt;
-      &lt;p&gt;What is PPI's problem here?
-      The problem is that,
-      without knowing where you are in the expression,
-      you cannot tell whether a minus sign is a unary
-      operator or a binary operator.
-      And the parse engines for PPI and for Perl itself,
-      while quite different in many respects,
-      share a property common to traditional parsers --
-      in determining context
-      they offer the lexer, respectively,
-      little and no help.
-      &lt;/p&gt;
-      &lt;p&gt;
-      In the code in this example,
-      Marpa's &lt;tt&gt;alternative()&lt;/tt&gt; method is, by accepting
-      and rejecting tokens, guiding the lexer to the right choice.
-      Because of Perl's grammar, a minus sign at a given position
-      cannot be both a unary operator and a binary operator.
-      And Marpa is 100% accurate in its knowledge of which
-      tokens are possible.
-      So Marpa's
-      &lt;tt&gt;alternative()&lt;/tt&gt; method
-      always knows whether a minus sign can be
-      a unary or binary operator and accepts
-      or rejects the token accordingly.
-    &lt;/p&gt;
-    &lt;p&gt;
-      This is the Ruby Slippers in action --
-      a very simple solution to what for the Perl
-      interpreter and PPI
-      is a very complicated problem.
-      When I developed the Ruby Slippers technique,
-      my most serious problem 
-      was convincing myself that something
-      so simple could really work.
-    &lt;/p&gt;
-    &lt;h3&gt;Finding the targets&lt;/h3&gt;
-    &lt;p&gt;
-      Once the parse is complete, it remains to find
-      and print the &quot;targets&quot; found
-      by the search.
-      In
-      &lt;a href=&quot;http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/error.html&quot;&gt;
-      a previous post&lt;/a&gt;,
-      I showed how, 
-      given a symbol name,
-      to find the last occurrence of the symbol in a Marpa parse.
-      That routine needed to be modified to allow repeated searches,
-      but the change was straightforward.
-      The code is in the
-      &lt;a href=&quot;https://gist.github.com/4057239&quot;&gt;
-      gist&lt;/a&gt;,
-      and the ideas behind it were explained
-      in
-      &lt;a href=&quot;http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/error.html&quot;&gt;
-      the previous post&lt;/a&gt;,
-      so I won't repeat them here.
-    &lt;/p&gt;
-    &lt;h3&gt;Code and comments&lt;/h3&gt;
-    &lt;p&gt;The example in this post is available as
-    &lt;a href=&quot;https://gist.github.com/4057239&quot;&gt;
-      a Github gist&lt;/a&gt;.
-      It was run with
-      &lt;a href=&quot;https://metacpan.org/release/JKEGL/Marpa-R2-2.024000/&quot;&gt;
-      Marpa::R2 2.024000&lt;/a&gt;,
-      as of this writing the latest full release.
-      My main test, which is included in the gist,
       used displays from the
       &lt;a href=&quot;http://perldoc.perl.org/perlop.html&quot;&gt;perlop man page&lt;/a&gt;.
     &lt;/p&gt;
