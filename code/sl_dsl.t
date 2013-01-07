@@ -26,12 +26,12 @@ use Marpa::R2 2.040000;
 my $rules = <<'END_OF_GRAMMAR';
 :start ::= script
 script ::= expression
-script ::= (script ';') expression
+script ::= script ';' expression action => do_arg2
 reduce_op ::= '+' | '-' | '/' | '*'
 expression ::=
-     NUM
-   | VAR action => do_is_var
-   | ('(') expression (')') assoc => group
+     number
+   | variable action => do_is_var
+   | '(' expression ')' assoc => group action => do_arg1
   || '-' expression action => do_negate
   || expression '^' expression action => do_caret assoc => right
   || expression '*' expression action => do_star
@@ -40,10 +40,10 @@ expression ::=
    | expression '-' expression action => do_minus
   || expression ',' expression action => do_array
   || reduce_op 'reduce' expression action => do_reduce
-  || VAR '=' expression action => do_set_var
+  || variable '=' expression action => do_set_var
 
-NUM ~ [\d]+
-VAR ~ [\w]+
+number ~ [\d]+
+variable ~ [\w]+
 :discard ~ whitespace
 whitespace ~ [\s]+
 # allow comments
