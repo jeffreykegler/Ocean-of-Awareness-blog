@@ -34,6 +34,38 @@
   </p>
   </div>
   <div style="margin-left:190px;border-left:2px solid #38B0C0;padding:25px;">
+<h3>Sun, 06 Jan 2013</h3>
+<br />
+<center><a name="dsl_simpler2"> <h2>Making DSL's even simpler</h2> </a>
+</center>
+<!--
+      marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
+      -->
+  <p>In a previous post, I talked about making domain-specific languages
+  easier to write -- so easy they become a common approach to problem solving.
+  No tool is as powerful and targeted for dealing with a problem as a custom
+  language.
+  The obstacle has been that DSL's have been very difficult to write.
+  <p>Recently, another Marpa user, Peter Stuifzand, set out to write a JSON
+  parser using Marpa::R2's new Scanless interface.
+  Thirty minutes and 152 lines of code later, he was finished.
+  <p>Peter's effort has what is, by many criteria, superior competition.
+  JSON::PP is more polished and faster.
+  But JSON::PP is 2917 lines of code, and presumably took weeks to write.
+  JSON::XS is even faster, but it is 50% longer and half in C,
+  and it is safe to say took much longer to write and is harder to
+  maintain than JSON::PP.
+  <p>The initial version of Marpa's Scanless interface was written
+  to optimize whip-it-upitude.
+<br />
+<p>posted at: 19:04 |
+<a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2013/01/dsl_simpler2.html">direct link to this entry</a>
+</p>
+<div style="color:#38B0C0;padding:1px;text-align:center;">
+&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&sect;
+</div>
 <h3>Wed, 02 Jan 2013</h3>
 <br />
 <center><a name="announce_scanless"> <h2>Announcing Marpa's Scanless interface</h2> </a>
@@ -916,317 +948,6 @@ digits ~ [\d]+
 <br />
 <p>posted at: 16:38 |
 <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/11/announce_r2.html">direct link to this entry</a>
-</p>
-<div style="color:#38B0C0;padding:1px;text-align:center;">
-&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-&sect;
-</div>
-<h3>Sun, 18 Nov 2012</h3>
-<br />
-<center><a name="iterative"> <h2>A Marpa tutorial: iterative parser development</h2> </a>
-</center>
-  <h3>Developing a parser iteratively</h3>
-    <p>
-      <!--
-      marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
-      -->
-      This post describes a manageable way
-      to write a complex parser,
-      a little bit at a time, testing as you go.
-      This tutorial will "iterate" a parser
-      through one development step.
-      As the first iteration step,
-      we will use the example parser from
-      <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/11/pattern_search.html">
-        the previous tutorial in this series</a>,
-      which parsed a Perl subset.
-    </p>
-    <p>
-      You may recall that the topic of that previous tutorial was pattern search.
-      Pattern search and iterative parser development are
-      essentially the same thing,
-      and the same approach can be used for both.
-      Each development stage of our Perl parser will do a pattern search
-      for the Perl subset it parses.
-      We can use the accuracy of this pattern search
-      to check our progress.
-      The subset we are attempting to parse is our "search target".
-      When our "searches" succeed in finding all instances
-      of the target,
-      we have successfully written a parser for that subset,
-      and can move on to the next step of the iteration.
-    </p>
-    <h3>What we need to do</h3>
-    <p>
-      This tutorial is the latest of
-      <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/metapages/annotated.html#TUTORIAL">
-        a series</a>,
-      each of which describes one self-contained example of a Marpa-based parser.
-      In this tutorial we use the example from
-      <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/11/pattern_search.html">
-        the previous tutorial</a>
-      as the first iteration step
-      in the iterative development of a Perl parser.
-      For the iteration step in this example, we will add two features.
-    </p><ul>
-      <li><p>The previous iteration step was more of a recognizer than a parser.
-          In particular, its grammar was too simplified to support a semantics,
-          even for the Perl subset it recognized.
-          We will fix that.
-        </p></li><li>Having amplified the grammar, we will add a semantics,
-        simple, but quite powerful enough to use in checking our progress
-        in developing the parser.
-      </li></ul>
-    <h3>The grammar</h3>
-    <p>
-    Here is our grammar from the previous post:
-    </p><blockquote>
-      <pre>
-    <tt>
-start ::= prefix target
-prefix ::= any_token*
-target ::= expression
-expression ::=
-       number | scalar | scalar postfix_op
-    || op_lparen expression op_rparen assoc =&gt; group
-    || unop expression
-    || expression binop expression
-    </tt>
-    </pre>
-    </blockquote><p>
-    <a href="https://metacpan.org/module/Marpa::R2::BNF">
-      The format is documented here</a>.
-      These eight lines were enough to descibe arithmetic expressions sufficiently well
-      for a recognizer, as well as to provide the "scaffolding" for the unanchored search.
-      Nice compression, but now that we are talking about supporting a Perl semantics,
-      we will need more.
-    </p><p>Adding the appropriate grammar is a matter of turning to the
-      <a href="http://perldoc.perl.org/perlop.html#Operator-Precedence-and-Associativity">
-        appropriate section of the
-        <tt>perlop</tt>
-        man page</a>
-      and copying it.
-      I needed to change the format and name the operators,
-      but the process was pretty much rote, as you can see:
-    </p><blockquote>
-      <pre>
-    <tt>
-my $perl_grammar = Marpa::R2::Grammar-&gt;new(
-    {   start          =&gt; 'start',
-        actions        =&gt; 'main',
-        default_action =&gt; 'do_what_I_mean',
-        rules          =&gt; [ &lt;&lt;'END_OF_RULES' ]
-start ::= prefix target action =&gt; do_arg1
-prefix ::= any_token* action =&gt; do_undef
-target ::= expression action =&gt; do_target
-expression ::=
-     number
-   | scalar
-   | op_lparen expression op_rparen assoc =&gt; group
-  || op_predecrement expression
-   | op_preincrement expression
-   | expression op_postincrement
-   | expression op_postdecrement
-  || expression op_starstar expression assoc =&gt; right
-  || op_uminus expression
-   | op_uplus expression
-   | op_bang expression
-   | op_tilde expression
-  || expression op_star expression
-   | expression op_slash expression
-   | expression op_percent expression
-   | expression kw_x expression
-  || expression op_plus expression
-   | expression op_minus expression
-  || expression op_ltlt expression
-   | expression op_gtgt expression
-  || expression op_ampersand expression
-  || expression op_vbar expression
-   | expression op_caret expression
-  || expression op_equal expression assoc =&gt; right
-  || expression op_comma expression
-END_OF_RULES
-    }
-);
-    </tt>
-    </pre>
-    </blockquote>
-    <h3>The lexer</h3>
-    <p>
-      The lexer is table-driven.
-      I've used this same approach to lexing in every post
-      in this tutorial series.
-      Those interested in
-      an explanation of how the lexer works can
-      <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/dsl.html">
-        find one in the first tutorial</a>.
-      Having broken out the operators, I had to rewrite
-      the lexing table,
-      but that was even more rote than rewriting
-      the grammar.
-      I won't repeat the
-      lexer table here --
-      it can be found in
-      <a href="https://gist.github.com/4093504">the Github gist</a>.
-    </p>
-    <h3>Adding the semantics</h3>
-    <p>Our semantics will create a syntax tree.
-      Here is that logic.
-      (Note that the first argument to these semantic closures
-      is a per-parse "object",
-      which we don't use here.)
-    </p><blockquote>
-      <pre>
-    <tt>
-sub do_undef       { undef; }
-sub do_arg1        { $_[2]; }
-sub do_what_I_mean { shift; return $_[0] if scalar @_ == 1; return \@_ }
-
-sub do_target {
-    my $origin = ( Marpa::R2::Context::location() )[0];
-    return if $origin != $ORIGIN;
-    return $_[1];
-} ## end sub do_target
-    </tt>
-    </pre>
-    </blockquote>
-    <p>
-      There is some special logic in the
-      <tt>do_target()</tt>
-      method,
-      involving the "origin", or starting location of the target.
-      Perl arithmetic expressions,
-      when they are the target of an unanchored search,
-      are ambiguous.
-      For example, in the string "<tt>abc 1 + 2 + 3 xyz</tt>",
-      there are two targets ending at the same position:
-      "<tt>2 + 3</tt>" and "<tt>1 + 2 + 3</tt>".
-      We are interested only in longest of these,
-      whose start location is indicated by the
-      <tt>$ORIGIN</tt>
-      variable.
-    </p><p>The next logic will be familiar from our
-      <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/11/pattern_search.html">
-        pattern search tutorial</a>.
-      It repeatedly looks for non-overlapping occurrences of
-      <tt>target</tt>,
-      starting from the end and going back to the beginning of the input.
-    </p><blockquote>
-      <pre>
-    <tt>
-my $end_of_search;
-my @results = ();
-RESULTS: while (1) {
-    my ( $origin, $end ) =
-        $self-&gt;last_completed_range( 'target', $end_of_search );
-    last RESULTS if not defined $origin;
-    push @results, [ $origin, $end ];
-    $end_of_search = $origin;
-} ## end RESULTS: while (1)
-    </tt>
-    </pre>
-    </blockquote>
-    <p>This final code sample is the logic
-      that unites pattern search with incremental
-      parsing.
-      It is a loop through
-      <tt>@results</tt>
-      that prints the original text
-      and, depending on a flag,
-      its syntax tree.
-    </p>
-    <p>
-      Near the top of the loop,
-      the "<tt>$recce-&gt;set( { end =&gt; $end } )</tt>"
-      call sets the end of parse location to the current
-      result.
-      At the bottom of the loop,
-      we call
-      "<tt>$recce-&gt;reset_evaluation()</tt>".
-      This is necessary to allow us to evaluate the
-      input stream again, but with a new
-      <tt>$end</tt>
-      location.
-    </p>
-    <blockquote>
-      <pre>
-    <tt>
-RESULT: for my $result ( reverse @results ) {
-    my ( $origin, $end ) = @{$result};
-
-    <big><b>... Print out the original text ...</b></big>
-
-    $recce-&gt;set( { end =&gt; $end } );
-    my $value;
-    VALUE: while ( not defined $value ) {
-        local $main::ORIGIN = $origin;
-        my $value_ref = $recce-&gt;value();
-        last VALUE if not defined $value_ref;
-        $value = ${$value_ref};
-    } ## end VALUE: while ( not defined $value )
-    if ( not defined $value ) {
-        say 'No parse'
-            or die "say() failed: $ERRNO";
-        next RESULT;
-    }
-    say Data::Dumper::Dumper($value)
-        or die "say() failed: $ERRNO"
-        if not $quiet_flag;
-    $recce-&gt;reset_evaluation();
-} ## end RESULT: for my $result ( reverse @results )
-    </tt>
-    </pre>
-    </blockquote>
-    <p>The
-      <tt>VALUE</tt>
-      sub-loop is
-      where the
-      <tt>$ORIGIN</tt>
-      variable
-      was set.
-      In the semantics,
-      <tt>do_target()</tt>
-      checks this.
-      In the case of an ambiguous parse,
-      <tt>do_target()</tt>
-      turns any target which does not
-      cover the full span from
-      <tt>$origin</tt>
-      to
-      <tt>$end</tt>
-      into a Perl
-      <tt>undef</tt>,
-      which will
-      eventually become
-      the value of its parse.
-      The logic in the
-      <tt>VALUE</tt>
-      loop
-      ignores parses whose value is a Perl <tt>undef</tt>,
-      so that only the longest target for each
-      <tt>$end</tt>
-      location is printed.
-    </p>
-    <h3>Code and comments</h3>
-    <p>The example in this post is available as
-      <a href="https://gist.github.com/4093504">a Github gist</a>.
-      It was run with
-      <a href="https://metacpan.org/release/JKEGL/Marpa-R2-2.024000/">
-        Marpa::R2 2.024000</a>,
-      as of this writing the latest full release.
-      Its main test, which is included in the gist,
-      used displays from the
-      <a href="http://perldoc.perl.org/perlop.html">perlop man page</a>.
-    </p>
-    <p>
-      Comments on this post
-      can be sent to the Marpa Google Group:
-      <code>marpa-parser@googlegroups.com</code>
-    </p>
-<br />
-<p>posted at: 08:56 |
-<a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/11/iterative.html">direct link to this entry</a>
 </p>
 <div style="color:#38B0C0;padding:1px;text-align:center;">
 &sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
