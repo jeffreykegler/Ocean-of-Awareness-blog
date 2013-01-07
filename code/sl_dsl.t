@@ -175,7 +175,7 @@ for my $test_data (@tests_data) {
     my $actual_value = report_calculation($test_string);
     say '-' x 40;
     say qq{Input: "$test_string"};
-    print qq{Value is:\n$actual_value\n};
+    say $actual_value;
     if ( $actual_value ne $expected_value ) {
         say qq{   FAIL: Value should be: "$expected_value"\n};
         $failed_tests++;
