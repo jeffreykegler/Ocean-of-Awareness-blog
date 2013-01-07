@@ -9,6 +9,12 @@ Making DSL's even simpler
   The obstacle has been that DSL's have been very difficult to write.
   <p>Recently, another Marpa user, Peter Stuifzand, set out to write a JSON
   parser using Marpa::R2's new Scanless interface.
-  Thirty minutes and 3 generously-spaced pages of code later, he was finished.
-  <p>By comparison, JSON::PP and JSON::XS are more polished and faster.
-  But 
+  Thirty minutes and 152 lines of code later, he was finished.
+  <p>Peter's effort has what is, by many criteria, superior competition.
+  JSON::PP is more polished and faster.
+  But JSON::PP is 2917 lines of code, and presumably took weeks to write.
+  JSON::XS is even faster, but it is 50% longer and half in C,
+  and it is safe to say took much longer to write and is harder to
+  maintain than JSON::PP.
+  <p>The initial version of Marpa's Scanless interface was written
+  to optimize whip-it-upitude.
