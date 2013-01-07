@@ -14,14 +14,34 @@
 # General Public License along with Marpa::R2.  If not, see
 # http://www.gnu.org/licenses/.
 
-# Test of scannerless parsing -- a DSL
+# Demo of scannerless parsing -- a calculator DSL
 
 use 5.010;
 use strict;
 use warnings;
 use English qw( -no_match_vars );
+use GetOpt::Long;
 
 use Marpa::R2 2.040000;
+
+sub usage {
+
+    die <<"END_OF_USAGE_MESSAGE";
+    $PROGRAM_NAME
+    $PROGRAM_NAME --demo < file
+With no args, reads standard input.
+With --demo arg, runs a test.
+END_OF_USAGE_MESSAGE
+} ## end sub usage
+
+my $demo_flag = 0;
+my $getopt_result = Getopt::Long::GetOptions( 'demo!' => \$demo_flag, );
+usage() if not $getopt_result;
+
+my $input;
+if ( !$demo_flag ) {
+    $input = do { local $INPUT_RECORD_SEPARATOR = undef; <> };
+}
 
 my $rules = <<'END_OF_GRAMMAR';
 :start ::= script
@@ -60,7 +80,7 @@ END_OF_GRAMMAR
 my $grammar = Marpa::R2::Scanless::G->new(
     {   action_object  => 'My_Actions',
         default_action => 'do_arg0',
-        source          => \$rules,
+        source         => \$rules,
     }
 );
 
@@ -104,7 +124,7 @@ sub calculate {
         my $eval_error = $EVAL_ERROR;
         chomp $eval_error;
         die $self->show_last_expression(), "\n", $eval_error, "\n";
-    } ## end if ( not defined eval { $event_count = $recce->read...})
+    } ## end if ( not defined eval { $recce->read($p_string); 1 })
     my $value_ref = $recce->value();
     if ( not defined $value_ref ) {
         die $self->show_last_expression(), "\n",
@@ -116,11 +136,12 @@ sub calculate {
 
 sub report_calculation {
     my ($string) = @_;
-    my $result   = calculate(\$string);
+    my $result = calculate( \$string );
     $result = join q{,}, @{$result} if ref $result eq 'ARRAY';
     my $output = "result = $result\n";
     for my $symbol ( sort keys %symbol_table ) {
-        $output .= qq{value of "$symbol" = "} . $symbol_table{$symbol} . qq{"\n};
+        $output
+            .= qq{value of "$symbol" = "} . $symbol_table{$symbol} . qq{"\n};
     }
     chomp $output;
     return $output;
@@ -132,20 +153,30 @@ my @tests_data = (
             qq{result = 43.4\nvalue of "a" = "5"\nvalue of "b" = "5"}
     ],
     [ "4 * 3 /  5 - - - 3 + 42 - 1" => 'result = 40.4' ],
-    [ "a=1;b = 5;  - a - b"         => qq{result = -6\nvalue of "a" = "1"\nvalue of "b" = "5"} ],
+    [   "a=1;b = 5;  - a - b" =>
+            qq{result = -6\nvalue of "a" = "1"\nvalue of "b" = "5"}
+    ],
     [ "1 * 2 + 3 * 4 ^ 2 ^ 2 ^ 2 * 42 + 1" => 'result = 541165879299' ],
     [ "+ reduce 1 + 2, 3,4*2 , 5"          => 'result = 19' ]
 );
+
+if ( !$demo_flag ) {
+    my $actual_value = report_calculation($input);
+    if ( !defined $actual_value ) {
+        die 'NO PARSE!';
+    }
+    say $actual_value;
+    exit 0;
+} ## end if ( !$demo_flag )
 
 my $failed_tests = 0;
 for my $test_data (@tests_data) {
     my ( $test_string, $expected_value ) = @{$test_data};
     my $actual_value = report_calculation($test_string);
-    $actual_value //= 'NO PARSE!';
     say '-' x 40;
     say qq{Input: "$test_string"};
     print qq{Value is:\n$actual_value\n};
-    if ($actual_value ne $expected_value) {
+    if ( $actual_value ne $expected_value ) {
         say qq{   FAIL: Value should be: "$expected_value"\n};
         $failed_tests++;
     }
