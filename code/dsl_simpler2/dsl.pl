@@ -28,18 +28,20 @@ sub usage {
 
     die <<"END_OF_USAGE_MESSAGE";
     $PROGRAM_NAME
-    $PROGRAM_NAME --demo < file
-With no args, reads standard input.
-With --demo arg, runs a test.
+    $PROGRAM_NAME --stdin < file
+With --stdin arg, reads expression from standard input.
+By default, runs a test.
 END_OF_USAGE_MESSAGE
 } ## end sub usage
 
-my $demo_flag = 0;
-my $getopt_result = Getopt::Long::GetOptions( 'demo!' => \$demo_flag, );
+my $stdin_flag = 0;
+my $getopt_result = Getopt::Long::GetOptions(
+    'stdin!'  => \$stdin_flag,
+);
 usage() if not $getopt_result;
 
 my $input;
-if ( !$demo_flag ) {
+if ( $stdin_flag ) {
     $input = do { local $INPUT_RECORD_SEPARATOR = undef; <> };
 }
 
@@ -131,14 +133,14 @@ sub report_calculation {
     return $output;
 } ## end sub report_calculation
 
-if ( !$demo_flag ) {
+if ($stdin_flag) {
     my $actual_value = report_calculation($input);
     if ( !defined $actual_value ) {
         die 'NO PARSE!';
     }
     say $actual_value;
     exit 0;
-} ## end if ( !$demo_flag )
+} ## end if ($stdin_flag)
 
 my @tests_data = (
     [ "4 * 3 + 42 / 1" => 'result = 54' ],
