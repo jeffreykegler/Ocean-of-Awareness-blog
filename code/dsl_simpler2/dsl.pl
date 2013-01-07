@@ -35,13 +35,11 @@ END_OF_USAGE_MESSAGE
 } ## end sub usage
 
 my $stdin_flag = 0;
-my $getopt_result = Getopt::Long::GetOptions(
-    'stdin!'  => \$stdin_flag,
-);
+my $getopt_result = Getopt::Long::GetOptions( 'stdin!' => \$stdin_flag, );
 usage() if not $getopt_result;
 
 my $input;
-if ( $stdin_flag ) {
+if ($stdin_flag) {
     $input = do { local $INPUT_RECORD_SEPARATOR = undef; <> };
 }
 
@@ -100,7 +98,7 @@ sub calculate {
     my $recce = Marpa::R2::Scanless::R->new( { grammar => $grammar } );
 
     my $self = bless { grammar => $grammar }, 'My_Actions';
-    $self->{recce} = $recce;
+    $self->{recce}        = $recce;
     $self->{symbol_table} = {};
     local $My_Actions::SELF = $self;
 
@@ -122,12 +120,12 @@ sub calculate {
 
 sub report_calculation {
     my ($string) = @_;
-    my ($result, $symbol_table) = calculate( \$string );
+    my ( $result, $symbol_table ) = calculate( \$string );
     $result = join q{,}, @{$result} if ref $result eq 'ARRAY';
     my $output = "result = $result\n";
     for my $symbol ( sort keys %{$symbol_table} ) {
-        $output
-            .= qq{value of "$symbol" = "} . $symbol_table->{$symbol} . qq{"\n};
+        $output .= qq{value of "$symbol" = "}
+            . $symbol_table->{$symbol} . qq{"\n};
     }
     chomp $output;
     return $output;
@@ -218,6 +216,7 @@ sub do_array {
 } ## end sub do_array
 
 our %BINOP_CLOSURE;
+
 BEGIN {
     %BINOP_CLOSURE = (
         '*' => sub { $_[0] * $_[1] },
