@@ -1,0 +1,14 @@
+Making DSL's even simpler
+<!--
+      marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
+      -->
+  <p>In a previous post, I talked about making domain-specific languages
+  easier to write -- so easy they become a common approach to problem solving.
+  No tool is as powerful and targeted for dealing with a problem as a custom
+  language.
+  The obstacle has been that DSL's have been very difficult to write.
+  <p>Recently, another Marpa user, Peter Stuifzand, set out to write a JSON
+  parser using Marpa::R2's new Scanless interface.
+  Thirty minutes and 3 generously-spaced pages of code later, he was finished.
+  <p>By comparison, JSON::PP and JSON::XS are more polished and faster.
+  But 
