@@ -84,21 +84,6 @@ my $grammar = Marpa::R2::Scanless::G->new(
     }
 );
 
-my %binop_closure = (
-    '*' => sub { $_[0] * $_[1] },
-    '/' => sub {
-        Marpa::R2::Context::bail('Division by zero') if not $_[1];
-        $_[0] / $_[1];
-    },
-    '+' => sub { $_[0] + $_[1] },
-    '-' => sub { $_[0] - $_[1] },
-    '^' => sub { $_[0]**$_[1] },
-);
-
-my %symbol_table = ();
-
-package main;
-
 # For debugging
 sub add_brackets {
     my ( undef, @children ) = @_;
@@ -110,12 +95,11 @@ sub add_brackets {
 sub calculate {
     my ($p_string) = @_;
 
-    %symbol_table = ();
-
     my $recce = Marpa::R2::Scanless::R->new( { grammar => $grammar } );
 
     my $self = bless { grammar => $grammar }, 'My_Actions';
     $self->{recce} = $recce;
+    $self->{symbol_table} = {};
     local $My_Actions::SELF = $self;
 
     if ( not defined eval { $recce->read($p_string); 1 } ) {
@@ -130,18 +114,18 @@ sub calculate {
         die $self->show_last_expression(), "\n",
             "No parse was found, after reading the entire input\n";
     }
-    return ${$value_ref};
+    return ${$value_ref}, $self->{symbol_table};
 
 } ## end sub calculate
 
 sub report_calculation {
     my ($string) = @_;
-    my $result = calculate( \$string );
+    my ($result, $symbol_table) = calculate( \$string );
     $result = join q{,}, @{$result} if ref $result eq 'ARRAY';
     my $output = "result = $result\n";
-    for my $symbol ( sort keys %symbol_table ) {
+    for my $symbol ( sort keys %{$symbol_table} ) {
         $output
-            .= qq{value of "$symbol" = "} . $symbol_table{$symbol} . qq{"\n};
+            .= qq{value of "$symbol" = "} . $symbol_table->{$symbol} . qq{"\n};
     }
     chomp $output;
     return $output;
@@ -188,16 +172,16 @@ our $SELF;
 sub new { return $SELF }
 
 sub do_is_var {
-    my ( undef, $var ) = @_;
-    my $value = $symbol_table{$var};
+    my ( $self, $var ) = @_;
+    my $value = $self->{symbol_table}->{$var};
     Marpa::R2::Context::bail(qq{Undefined variable "$var"})
         if not defined $value;
     return $value;
 } ## end sub do_is_var
 
 sub do_set_var {
-    my ( undef, $var, undef, $value ) = @_;
-    return $symbol_table{$var} = $value;
+    my ( $self, $var, undef, $value ) = @_;
+    return $self->{symbol_table}->{$var} = $value;
 }
 
 sub do_negate {
@@ -231,9 +215,23 @@ sub do_array {
     return \@value;
 } ## end sub do_array
 
+our %BINOP_CLOSURE;
+BEGIN {
+    %BINOP_CLOSURE = (
+        '*' => sub { $_[0] * $_[1] },
+        '/' => sub {
+            Marpa::R2::Context::bail('Division by zero') if not $_[1];
+            $_[0] / $_[1];
+        },
+        '+' => sub { $_[0] + $_[1] },
+        '-' => sub { $_[0] - $_[1] },
+        '^' => sub { $_[0]**$_[1] },
+    );
+} ## end BEGIN
+
 sub do_binop {
     my ( $op, $left, $right ) = @_;
-    my $closure = $binop_closure{$op};
+    my $closure = $BINOP_CLOSURE{$op};
     Marpa::R2::Context::bail(
         qq{Do not know how to perform binary operation "$op"})
         if not defined $closure;
@@ -267,7 +265,7 @@ sub do_minus {
 
 sub do_reduce {
     my ( undef, $op, undef, $args ) = @_;
-    my $closure = $binop_closure{$op};
+    my $closure = $BINOP_CLOSURE{$op};
     Marpa::R2::Context::bail(
         qq{Do not know how to perform binary operation "$op"})
         if not defined $closure;
