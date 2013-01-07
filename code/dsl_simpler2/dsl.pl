@@ -131,6 +131,15 @@ sub report_calculation {
     return $output;
 } ## end sub report_calculation
 
+if ( !$demo_flag ) {
+    my $actual_value = report_calculation($input);
+    if ( !defined $actual_value ) {
+        die 'NO PARSE!';
+    }
+    say $actual_value;
+    exit 0;
+} ## end if ( !$demo_flag )
+
 my @tests_data = (
     [ "4 * 3 + 42 / 1" => 'result = 54' ],
     [   "4 * 3 / (a = b = 5) + 42 - 1" =>
@@ -143,15 +152,6 @@ my @tests_data = (
     [ "1 * 2 + 3 * 4 ^ 2 ^ 2 ^ 2 * 42 + 1" => 'result = 541165879299' ],
     [ "+ reduce 1 + 2, 3,4*2 , 5"          => 'result = 19' ]
 );
-
-if ( !$demo_flag ) {
-    my $actual_value = report_calculation($input);
-    if ( !defined $actual_value ) {
-        die 'NO PARSE!';
-    }
-    say $actual_value;
-    exit 0;
-} ## end if ( !$demo_flag )
 
 my $failed_tests = 0;
 for my $test_data (@tests_data) {
