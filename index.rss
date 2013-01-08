@@ -108,6 +108,7 @@ whitespace ~ [\s]+
 &amp;lt;vertical space char&amp;gt; ~ [\x{A}\x{B}\x{C}\x{D}\x{2028}\x{2029}]
 &amp;lt;hash comment char&amp;gt; ~ [^\x{A}\x{B}\x{C}\x{D}\x{2028}\x{2029}]
 END_OF_GRAMMAR
+&lt;/pre&gt;&lt;/blockquote&gt;
 &lt;p&gt;
 This second set of rules take the same form as rules in the earlier set,
 but instead of the BNF operator (&lt;tt&gt;::=&lt;/tt&gt;),
@@ -121,7 +122,18 @@ The first two lines indicate how &lt;tt&gt;number&lt;/tt&gt;'s and &lt;tt&gt;var
 The square bracketed character classes accept anything acceptable to Perl.
 &lt;tt&gt;:discard&lt;/tt&gt; is another pseudo-symbol -- any lexeme recognized as a &lt;tt&gt;:discard&lt;/tt&gt;
 symbol is thrown away.
+&lt;p&gt;
 This is how whitespace and comments are dealt with.
+Note that our calculator recognizes &quot;hash comments&quot;,
+and takes some care to do the right thing even when the hash comment is at
+the end of a string which does not end in vertical whitespace.
+It is interesting to compare the representation of hash comments here with
+the usual regular expression notation.
+Regular expressions are much more concise, but the BNF-ish form is
+easier to read and,
+with long desciptive angle-bracketed symbol names,
+the reader can be saved from having to
+guess the purpose of some of the more obscure cases.
 &lt;/pre&gt;&lt;/blockquote&gt;</description>
   </item>
   <item>
