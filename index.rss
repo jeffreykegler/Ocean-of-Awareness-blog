@@ -58,8 +58,8 @@
     &lt;/p&gt;
     &lt;h3&gt;The Grammar&lt;/h3&gt;
     &lt;p&gt;
-      Let's start right in, by showing the grammar for our calculator.
-      It divides naturally into two parts.  Here is the first:
+      The grammar for our calculator
+      divides naturally into two parts.  Here is the first:
     &lt;/p&gt;&lt;blockquote&gt;
       &lt;pre&gt;
 :start ::= script
@@ -83,8 +83,13 @@ expression ::=
     &lt;p&gt;The format of the grammar is documented
       &lt;a href=&quot;https://metacpan.org/module/JKEGL/Marpa-R2-2.040000/pod/Scanless.pod&quot;&gt;
         here&lt;/a&gt;.
-      It consists of BNF rules, whose left hand side (LHS) and right hand side (RHS)
-      can be separated by the BNF operator (&lt;tt&gt;::=&lt;/tt&gt;).
+      It consists of a series of rules.
+      Each rule has a
+      left hand side (LHS)
+      and a right hand side (RHS),
+      which are separated by a rule operator.
+      In the rules above, the rule operator is the BNF operator (&lt;tt&gt;::=&lt;/tt&gt;).
+      &lt;p&gt;
       The first rule is a pseudo-rule -- its LHS is the pseudo-symbol
       &lt;tt&gt;:start&lt;/tt&gt;,
       and indicates that
@@ -151,7 +156,7 @@ END_OF_GRAMMAR
       The match operator tells Marpa to &quot;Do exactly what I
       &lt;b&gt;say&lt;/b&gt;
       on a literal,
-      character-by-characcter basis.&quot;
+      character-by-character basis.&quot;
     &lt;/p&gt;&lt;p&gt;
       The first two lines indicate how
       &lt;tt&gt;number&lt;/tt&gt;'s and
@@ -248,7 +253,6 @@ sub calculate {
       This calculator allows variables, whose values it keeps in a symbol table.
       Since these can be important side effects, the symbol table is returned
       as part of the results.
-      &lt;tt&gt;calculate()&lt;/tt&gt;.
     &lt;/p&gt;
     &lt;h3&gt;Dealing with errors&lt;/h3&gt;
     &lt;p&gt;This calculator has error reporting that compares favorably with

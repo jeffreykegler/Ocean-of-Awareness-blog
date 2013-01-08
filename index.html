@@ -84,8 +84,8 @@
     </p>
     <h3>The Grammar</h3>
     <p>
-      Let's start right in, by showing the grammar for our calculator.
-      It divides naturally into two parts.  Here is the first:
+      The grammar for our calculator
+      divides naturally into two parts.  Here is the first:
     </p><blockquote>
       <pre>
 :start ::= script
@@ -109,8 +109,13 @@ expression ::=
     <p>The format of the grammar is documented
       <a href="https://metacpan.org/module/JKEGL/Marpa-R2-2.040000/pod/Scanless.pod">
         here</a>.
-      It consists of BNF rules, whose left hand side (LHS) and right hand side (RHS)
-      can be separated by the BNF operator (<tt>::=</tt>).
+      It consists of a series of rules.
+      Each rule has a
+      left hand side (LHS)
+      and a right hand side (RHS),
+      which are separated by a rule operator.
+      In the rules above, the rule operator is the BNF operator (<tt>::=</tt>).
+      <p>
       The first rule is a pseudo-rule -- its LHS is the pseudo-symbol
       <tt>:start</tt>,
       and indicates that
@@ -177,7 +182,7 @@ END_OF_GRAMMAR
       The match operator tells Marpa to "Do exactly what I
       <b>say</b>
       on a literal,
-      character-by-characcter basis."
+      character-by-character basis."
     </p><p>
       The first two lines indicate how
       <tt>number</tt>'s and
@@ -274,7 +279,6 @@ sub calculate {
       This calculator allows variables, whose values it keeps in a symbol table.
       Since these can be important side effects, the symbol table is returned
       as part of the results.
-      <tt>calculate()</tt>.
     </p>
     <h3>Dealing with errors</h3>
     <p>This calculator has error reporting that compares favorably with
