@@ -157,28 +157,25 @@ END_OF_GRAMMAR
       the end of a string which does not end in vertical whitespace.
       It is interesting to compare the representation of hash comments here with
       the usual regular expression notation.
-      Regular expressions are much more concise, but the BNF-ish form is
-      easier to read and,
-      with long desciptive angle-bracketed symbol names,
-      the reader can be saved from having to
-      guess the purpose of some of the more obscure cases.
-    &lt;/p&gt;&lt;p&gt;
+      Regular expressions are much more concise, but the BNF-ish form
+      can be easier to read.
+      In this example,
+      long descriptive angle-bracketed symbol names
+      save the reader the trouble of
+      puzzling out the purpose of some of the more obscure cases.
+    &lt;/p&gt;
+    &lt;p&gt;
       Now that we have defined the grammar, we need to pre-process it:
-    &lt;/p&gt;&lt;pre&gt;
-&lt;!--
-        html_fmt: An missing end tag was added to close the preceding &lt;pre&gt; element
-      --&gt;&lt;blockquote&gt;
+    &lt;/p&gt;
+    &lt;blockquote&gt;
+    &lt;pre&gt;
       my $grammar = Marpa::R2::Scanless::G-&amp;gt;new(
-      { action_object  =&amp;gt; 'My_Actions',
-      default_action =&amp;gt; 'do_arg0',
-      source =&amp;gt; \$rules,
-      }
+	{ action_object  =&amp;gt; 'My_Actions',
+	  default_action =&amp;gt; 'do_arg0',
+	  source =&amp;gt; \$rules,
+	}
       );
-    &lt;/blockquote&gt;&lt;!--
-        html_fmt: Next end tag is cruft
-      --&gt;&lt;/pre&gt;&lt;!--
-        html_fmt: Next end tag is cruft
-      --&gt;&lt;/blockquote&gt;
+&lt;/pre&gt;&lt;/blockquote&gt;
     &lt;p&gt;
       The
       &lt;tt&gt;action_object&lt;/tt&gt;
@@ -195,35 +192,36 @@ END_OF_GRAMMAR
     &lt;h3&gt;Running a parse&lt;/h3&gt;
     &lt;p&gt;
       The next closure shows how to use the grammar to parse a string:
-    &lt;/p&gt;&lt;pre&gt;
-&lt;!--
-        html_fmt: An missing end tag was added to close the preceding &lt;pre&gt; element
-      --&gt;&lt;blockquote&gt;
-      sub calculate {
-      my ($p_string) = @_;
-      my $recce = Marpa::R2::Scanless::R-&amp;gt;new( { grammar =&amp;gt; $grammar } );
-      my $self = bless { grammar =&amp;gt; $grammar }, 'My_Actions';
-      $self-&amp;gt;{recce} = $recce;
-      $self-&amp;gt;{symbol_table} = {};
-      local $My_Actions::SELF = $self;
-      if ( not defined eval { $recce-&amp;gt;read($p_string); 1 } ) {
-      # Add last expression found, and rethrow
-      my $eval_error = $EVAL_ERROR;
-      chomp $eval_error;
-      die $self-&amp;gt;show_last_expression(), &quot;\n&quot;, $eval_error, &quot;\n&quot;;
-      } ## end if ( not defined eval { $recce-&amp;gt;read($p_string); 1 })
-      my $value_ref = $recce-&amp;gt;value();
-      if ( not defined $value_ref ) {
-      die $self-&amp;gt;show_last_expression(), &quot;\n&quot;,
-      &quot;No parse was found, after reading the entire input\n&quot;;
-      }
-      return ${$value_ref}, $self-&amp;gt;{symbol_table};
-      } ## end sub calculate
-    &lt;/blockquote&gt;&lt;!--
-        html_fmt: Next end tag is cruft
-      --&gt;&lt;/pre&gt;&lt;!--
-        html_fmt: Next end tag is cruft
-      --&gt;&lt;/blockquote&gt;
+    &lt;/p&gt;
+    &lt;blockquote&gt;
+    &lt;pre&gt;
+sub calculate {
+    my ($p_string) = @_;
+
+    my $recce = Marpa::R2::Scanless::R-&amp;gt;new( { grammar =&amp;gt; $grammar } );
+
+    my $self = bless { grammar =&amp;gt; $grammar }, 'My_Actions';
+    $self-&amp;gt;{recce}        = $recce;
+    $self-&amp;gt;{symbol_table} = {};
+    local $My_Actions::SELF = $self;
+
+    if ( not defined eval { $recce-&amp;gt;read($p_string); 1 } ) {
+
+        # Add last expression found, and rethrow
+        my $eval_error = $EVAL_ERROR;
+        chomp $eval_error;
+        die $self-&amp;gt;show_last_expression(), &quot;\n&quot;, $eval_error, &quot;\n&quot;;
+    } ## end if ( not defined eval { $recce-&amp;gt;read($p_string); 1 })
+    my $value_ref = $recce-&amp;gt;value();
+    if ( not defined $value_ref ) {
+        die $self-&amp;gt;show_last_expression(), &quot;\n&quot;,
+            &quot;No parse was found, after reading the entire input\n&quot;;
+    }
+    return ${$value_ref}, $self-&amp;gt;{symbol_table};
+
+} ## end sub calculate
+
+&lt;/pre&gt;&lt;/blockquote&gt;
     &lt;p&gt;First we create a recognizer (aka a &quot;recce&quot;) from our grammar.
       Next we defined a parse object named &quot;&lt;tt&gt;$self&lt;/tt&gt;&quot;.
       (Object enthusiasts will, I hope, forgive a certain awkwardness at this stage.)

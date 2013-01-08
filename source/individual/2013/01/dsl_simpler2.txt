@@ -144,28 +144,25 @@ END_OF_GRAMMAR
       the end of a string which does not end in vertical whitespace.
       It is interesting to compare the representation of hash comments here with
       the usual regular expression notation.
-      Regular expressions are much more concise, but the BNF-ish form is
-      easier to read and,
-      with long desciptive angle-bracketed symbol names,
-      the reader can be saved from having to
-      guess the purpose of some of the more obscure cases.
-    </p><p>
+      Regular expressions are much more concise, but the BNF-ish form
+      can be easier to read.
+      In this example,
+      long descriptive angle-bracketed symbol names
+      save the reader the trouble of
+      puzzling out the purpose of some of the more obscure cases.
+    </p>
+    <p>
       Now that we have defined the grammar, we need to pre-process it:
-    </p><pre>
-<!--
-        html_fmt: An missing end tag was added to close the preceding <pre> element
-      --><blockquote>
+    </p>
+    <blockquote>
+    <pre>
       my $grammar = Marpa::R2::Scanless::G-&gt;new(
-      { action_object  =&gt; 'My_Actions',
-      default_action =&gt; 'do_arg0',
-      source =&gt; \$rules,
-      }
+	{ action_object  =&gt; 'My_Actions',
+	  default_action =&gt; 'do_arg0',
+	  source =&gt; \$rules,
+	}
       );
-    </blockquote><!--
-        html_fmt: Next end tag is cruft
-      --></pre><!--
-        html_fmt: Next end tag is cruft
-      --></blockquote>
+</pre></blockquote>
     <p>
       The
       <tt>action_object</tt>
@@ -182,35 +179,36 @@ END_OF_GRAMMAR
     <h3>Running a parse</h3>
     <p>
       The next closure shows how to use the grammar to parse a string:
-    </p><pre>
-<!--
-        html_fmt: An missing end tag was added to close the preceding <pre> element
-      --><blockquote>
-      sub calculate {
-      my ($p_string) = @_;
-      my $recce = Marpa::R2::Scanless::R-&gt;new( { grammar =&gt; $grammar } );
-      my $self = bless { grammar =&gt; $grammar }, 'My_Actions';
-      $self-&gt;{recce} = $recce;
-      $self-&gt;{symbol_table} = {};
-      local $My_Actions::SELF = $self;
-      if ( not defined eval { $recce-&gt;read($p_string); 1 } ) {
-      # Add last expression found, and rethrow
-      my $eval_error = $EVAL_ERROR;
-      chomp $eval_error;
-      die $self-&gt;show_last_expression(), "\n", $eval_error, "\n";
-      } ## end if ( not defined eval { $recce-&gt;read($p_string); 1 })
-      my $value_ref = $recce-&gt;value();
-      if ( not defined $value_ref ) {
-      die $self-&gt;show_last_expression(), "\n",
-      "No parse was found, after reading the entire input\n";
-      }
-      return ${$value_ref}, $self-&gt;{symbol_table};
-      } ## end sub calculate
-    </blockquote><!--
-        html_fmt: Next end tag is cruft
-      --></pre><!--
-        html_fmt: Next end tag is cruft
-      --></blockquote>
+    </p>
+    <blockquote>
+    <pre>
+sub calculate {
+    my ($p_string) = @_;
+
+    my $recce = Marpa::R2::Scanless::R-&gt;new( { grammar =&gt; $grammar } );
+
+    my $self = bless { grammar =&gt; $grammar }, 'My_Actions';
+    $self-&gt;{recce}        = $recce;
+    $self-&gt;{symbol_table} = {};
+    local $My_Actions::SELF = $self;
+
+    if ( not defined eval { $recce-&gt;read($p_string); 1 } ) {
+
+        # Add last expression found, and rethrow
+        my $eval_error = $EVAL_ERROR;
+        chomp $eval_error;
+        die $self-&gt;show_last_expression(), "\n", $eval_error, "\n";
+    } ## end if ( not defined eval { $recce-&gt;read($p_string); 1 })
+    my $value_ref = $recce-&gt;value();
+    if ( not defined $value_ref ) {
+        die $self-&gt;show_last_expression(), "\n",
+            "No parse was found, after reading the entire input\n";
+    }
+    return ${$value_ref}, $self-&gt;{symbol_table};
+
+} ## end sub calculate
+
+</pre></blockquote>
     <p>First we create a recognizer (aka a "recce") from our grammar.
       Next we defined a parse object named "<tt>$self</tt>".
       (Object enthusiasts will, I hope, forgive a certain awkwardness at this stage.)
