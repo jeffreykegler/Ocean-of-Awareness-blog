@@ -15,34 +15,42 @@
     <description>&lt;!--
       marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
       --&gt;
-  &lt;p&gt;In a previous post, I showed how to make it easier to write
-  domain-specific languages (DSLs).
-  This post takes things one step further --
-  using Marpa's new Scanless interface, it eliminates the need to
-  write a separate scanner (lexer).
-  &lt;p&gt;
-  When it comes to dealing with a programming problem,
-  no tool is as powerful and flexible as
-  a custom language targeted at the problem domain.
-  But writing a domain specific language (DSL) is among the
-  least used approaches,
-  and for what has been a very good reason --
-  DSL's have been very difficult to write.
-  &lt;p&gt;This post takes a tutorial approach.
-  It does &lt;b&gt;not&lt;/b&gt; assume any knowledge of the previous tutorials
-  on this blog.
-  The full code for this post is in a Github gist.
-  A very similar example is part of Marpa::R2's test suite.
-  Our example DSL is a calculator.
-  This calculator is designed to make a good example,
-  more than as something you'd want to use.
-  But it goes beyond the requirement for a &quot;toy&quot; example
-  -- its 300 lines include good diagnostics and a test suite.
-  &lt;h3&gt;The Grammar&lt;/h3&gt;
-  Let's start right in, by showing the grammar for our calculator.
-  It natural divides into two parts.  Here is the first:
-  &lt;blockquote&gt;
-  &lt;pre&gt;
+  &lt;p&gt;&lt;a href=&quot;http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/dsl.html&quot;&gt;
+  In a previous post&lt;/a&gt;, I showed how to make it easier to write
+      domain-specific languages (DSLs).
+      This post takes things one step further.
+      With Marpa's new Scanless interface, the programmer does not
+      need to write a separate lexer.
+    &lt;/p&gt;&lt;p&gt;
+      When it comes to dealing with a programming problem,
+      no tool is as powerful and flexible as
+      a custom language targeted to the problem domain.
+      But writing a domain specific language (DSL) is among the
+      least used approaches,
+      and for what has been a very good reason --
+      DSL's have been very difficult to write.
+    &lt;/p&gt;
+    &lt;p&gt;This post takes a tutorial approach.
+      It does
+      &lt;b&gt;not&lt;/b&gt;
+      assume any knowledge of the previous tutorials
+      on this blog.
+      &lt;p&gt;
+      The full code for this post is in a Github gist.
+      A very similar example is part of Marpa::R2's test suite.
+      Our example DSL is a calculator.
+      While better than shell arithmetic,
+      this calculator is designed to more to act as a good example,
+      more than as something you'd want to use.
+      But it is not a &quot;toy&quot; example
+      -- its 300 lines include good error reporting and a test suite.
+    &lt;/p&gt;
+    &lt;h3&gt;The Grammar&lt;/h3&gt;
+    &lt;p&gt;
+      Let's start right in, by showing the grammar for our calculator.
+      It natural divides into two parts.  Here is the first:
+    &lt;/p&gt;&lt;blockquote&gt;
+      &lt;pre&gt;
 :start ::= script
 script ::= expression
 script ::= script ';' expression action =&amp;gt; do_arg2
@@ -61,39 +69,48 @@ expression ::=
   || &amp;lt;reduce op&amp;gt; 'reduce' expression action =&amp;gt; do_reduce
   || variable '=' expression action =&amp;gt; do_set_var
 &lt;/pre&gt;&lt;/blockquote&gt;
-&lt;p&gt;The format of the grammar is documented
-&lt;a href=&quot;https://metacpan.org/module/JKEGL/Marpa-R2-2.040000/pod/Scanless.pod&quot;&gt;
-here&lt;/a&gt;.
-It consists of BNF rules, whose left hand side (LHS) and right hand side (RHS)
-can be separated by the BNF operator (&lt;tt&gt;::=&lt;/tt&gt;).
-The first rule is a pseudo-rule -- its LHS is the psuedo-symbol &lt;tt&gt;:start&lt;/tt&gt;,
-and it indicates that &lt;tt&gt;script&lt;/tt&gt; is that start symbol.
-The next two rules indicate that &lt;tt&gt;script&lt;/tt&gt; is a series of one
-or more &lt;tt&gt;expression&lt;/tt&gt;, separated by semicolon.
-&lt;p&gt;
-Rules can have action &quot;adverbs&quot;
-to describe the semantics.
-For example, the adverb &quot;&lt;tt&gt;action =&amp;gt; do_args&lt;/tt&gt; says that the semantics for
-the preceding RHS are implemented by a Perl closure named &lt;tt&gt;do_args&lt;/tt&gt;.
-&lt;p&gt;The rules for
-&lt;tt&gt;&amp;lt;reduce op&amp;gt;&lt;/tt&gt; introduces two new features: symbols names
-in angle brackets, and alternatives,
-separated by a veritcal bar, (&quot;&lt;tt&gt;|&lt;/tt&gt;&quot;).
-&lt;p&gt;The last statement is a precedence rule.
-It is a series of alternatives, some separated by 
-a single vertical bar,
-but others separated by a double vertical (&quot;&lt;tt&gt;||&lt;/tt&gt;&quot;).
-The double vertical bar indicates that the alternatives after it
-are at a looser (&quot;lower&quot;) precedence than the alternatives before it.
-The single vertical bar separates alternatives as the same precedence level.
-&lt;p&gt;
-So far, we have been assuming that Marpa will &quot;do the right
-thing&quot; about whitespace in our calculator.
-The next set of rules deal with lexical issues, and specify
-how this works.
-&lt;/p&gt;
-  &lt;blockquote&gt;
-  &lt;pre&gt;
+    &lt;p&gt;The format of the grammar is documented
+      &lt;a href=&quot;https://metacpan.org/module/JKEGL/Marpa-R2-2.040000/pod/Scanless.pod&quot;&gt;
+        here&lt;/a&gt;.
+      It consists of BNF rules, whose left hand side (LHS) and right hand side (RHS)
+      can be separated by the BNF operator (&lt;tt&gt;::=&lt;/tt&gt;).
+      The first rule is a pseudo-rule -- its LHS is the psuedo-symbol
+      &lt;tt&gt;:start&lt;/tt&gt;,
+      and it indicates that
+      &lt;tt&gt;script&lt;/tt&gt;
+      is that start symbol.
+      The next two rules indicate that
+      &lt;tt&gt;script&lt;/tt&gt;
+      is a series of one
+      or more
+      &lt;tt&gt;expression&lt;/tt&gt;, separated by semicolon.
+    &lt;/p&gt;&lt;p&gt;
+      Rules can have action &quot;adverbs&quot;
+      to describe the semantics.
+      For example, the adverb &quot;&lt;tt&gt;action =&amp;gt; do_args&lt;/tt&gt;
+      says that the semantics for
+      the preceding RHS are implemented by a Perl closure named
+      &lt;tt&gt;do_args&lt;/tt&gt;.
+    &lt;/p&gt;&lt;p&gt;The rules for
+      &lt;tt&gt;&amp;lt;reduce op&amp;gt;&lt;/tt&gt;
+      introduces two new features: symbols names
+      in angle brackets, and alternatives,
+      separated by a veritcal bar, (&quot;&lt;tt&gt;|&lt;/tt&gt;&quot;).
+    &lt;/p&gt;&lt;p&gt;The last statement is a precedence rule.
+      It is a series of alternatives, some separated by
+      a single vertical bar,
+      but others separated by a double vertical (&quot;&lt;tt&gt;||&lt;/tt&gt;&quot;).
+      The double vertical bar indicates that the alternatives after it
+      are at a looser (&quot;lower&quot;) precedence than the alternatives before it.
+      The single vertical bar separates alternatives as the same precedence level.
+    &lt;/p&gt;&lt;p&gt;
+      So far, we have been assuming that Marpa will &quot;do the right
+      thing&quot; about whitespace in our calculator.
+      The next set of rules deal with lexical issues, and specify
+      how this works.
+    &lt;/p&gt;
+    &lt;blockquote&gt;
+      &lt;pre&gt;
 number ~ [\d]+
 variable ~ [\w]+
 :discard ~ whitespace
@@ -109,32 +126,171 @@ whitespace ~ [\s]+
 &amp;lt;hash comment char&amp;gt; ~ [^\x{A}\x{B}\x{C}\x{D}\x{2028}\x{2029}]
 END_OF_GRAMMAR
 &lt;/pre&gt;&lt;/blockquote&gt;
-&lt;p&gt;
-This second set of rules take the same form as rules in the earlier set,
-but instead of the BNF operator (&lt;tt&gt;::=&lt;/tt&gt;),
-they have a match operator (&lt;tt&gt;~&lt;/tt&gt;) separating the LHS and RHS.
-The BNF operator can be seen as telling Marpa, &quot;When it comes to whitespace and comments,
-do what I &lt;b&gt;mean&lt;/b&gt;&quot;.
-The match operator instead tells Marpa to &quot;Do exactly what I &lt;b&gt;say&lt;/b&gt; on a literal,
-character-by-characcter basis.&quot;
-&lt;p&gt;
-The first two lines indicate how &lt;tt&gt;number&lt;/tt&gt;'s and &lt;tt&gt;variable&lt;/tt&gt; are formed.
-The square bracketed character classes accept anything acceptable to Perl.
-&lt;tt&gt;:discard&lt;/tt&gt; is another pseudo-symbol -- any lexeme recognized as a &lt;tt&gt;:discard&lt;/tt&gt;
-symbol is thrown away.
-&lt;p&gt;
-This is how whitespace and comments are dealt with.
-Note that our calculator recognizes &quot;hash comments&quot;,
-and takes some care to do the right thing even when the hash comment is at
-the end of a string which does not end in vertical whitespace.
-It is interesting to compare the representation of hash comments here with
-the usual regular expression notation.
-Regular expressions are much more concise, but the BNF-ish form is
-easier to read and,
-with long desciptive angle-bracketed symbol names,
-the reader can be saved from having to
-guess the purpose of some of the more obscure cases.
-&lt;/pre&gt;&lt;/blockquote&gt;</description>
+    &lt;p&gt;
+      This second set of rules take the same form as rules in the earlier set,
+      but instead of the BNF operator (&lt;tt&gt;::=&lt;/tt&gt;),
+      they have a match operator (&lt;tt&gt;~&lt;/tt&gt;) separating the LHS and RHS.
+      The BNF operator can be seen as telling Marpa, &quot;When it comes to whitespace and comments,
+      do what I
+      &lt;b&gt;mean&lt;/b&gt;&quot;.
+      The match operator instead tells Marpa to &quot;Do exactly what I
+      &lt;b&gt;say&lt;/b&gt;
+      on a literal,
+      character-by-characcter basis.&quot;
+    &lt;/p&gt;&lt;p&gt;
+      The first two lines indicate how
+      &lt;tt&gt;number&lt;/tt&gt;'s and
+      &lt;tt&gt;variable&lt;/tt&gt;
+      are formed.
+      The square bracketed character classes accept anything acceptable to Perl.
+      &lt;tt&gt;:discard&lt;/tt&gt;
+      is another pseudo-symbol -- any lexeme recognized as a
+      &lt;tt&gt;:discard&lt;/tt&gt;
+      symbol is thrown away.
+    &lt;/p&gt;&lt;p&gt;
+      This is how whitespace and comments are dealt with.
+      Note that our calculator recognizes &quot;hash comments&quot;,
+      and takes some care to do the right thing even when the hash comment is at
+      the end of a string which does not end in vertical whitespace.
+      It is interesting to compare the representation of hash comments here with
+      the usual regular expression notation.
+      Regular expressions are much more concise, but the BNF-ish form is
+      easier to read and,
+      with long desciptive angle-bracketed symbol names,
+      the reader can be saved from having to
+      guess the purpose of some of the more obscure cases.
+    &lt;/p&gt;&lt;p&gt;
+      Now that we have defined the grammar, we need to pre-process it:
+    &lt;/p&gt;&lt;pre&gt;
+&lt;!--
+        html_fmt: An missing end tag was added to close the preceding &lt;pre&gt; element
+      --&gt;&lt;blockquote&gt;
+      my $grammar = Marpa::R2::Scanless::G-&amp;gt;new(
+      { action_object  =&amp;gt; 'My_Actions',
+      default_action =&amp;gt; 'do_arg0',
+      source =&amp;gt; \$rules,
+      }
+      );
+    &lt;/blockquote&gt;&lt;!--
+        html_fmt: Next end tag is cruft
+      --&gt;&lt;/pre&gt;&lt;!--
+        html_fmt: Next end tag is cruft
+      --&gt;&lt;/blockquote&gt;
+    &lt;p&gt;
+      The
+      &lt;tt&gt;action_object&lt;/tt&gt;
+      named argument specifies a package to implement
+      the semantics -- Marpa will look up the names of the Perl closures in that
+      package.
+      The
+      &lt;tt&gt;default_action&lt;/tt&gt;
+      named argument specified the action name for RHS's
+      which do not explicitly specify one with an
+      &lt;tt&gt;action&lt;/tt&gt;
+      adverb.
+    &lt;/p&gt;
+    &lt;h3&gt;Running a parse&lt;/h3&gt;
+    &lt;p&gt;
+      The next closure shows how to use the grammar to parse a string:
+    &lt;/p&gt;&lt;pre&gt;
+&lt;!--
+        html_fmt: An missing end tag was added to close the preceding &lt;pre&gt; element
+      --&gt;&lt;blockquote&gt;
+      sub calculate {
+      my ($p_string) = @_;
+      my $recce = Marpa::R2::Scanless::R-&amp;gt;new( { grammar =&amp;gt; $grammar } );
+      my $self = bless { grammar =&amp;gt; $grammar }, 'My_Actions';
+      $self-&amp;gt;{recce} = $recce;
+      $self-&amp;gt;{symbol_table} = {};
+      local $My_Actions::SELF = $self;
+      if ( not defined eval { $recce-&amp;gt;read($p_string); 1 } ) {
+      # Add last expression found, and rethrow
+      my $eval_error = $EVAL_ERROR;
+      chomp $eval_error;
+      die $self-&amp;gt;show_last_expression(), &quot;\n&quot;, $eval_error, &quot;\n&quot;;
+      } ## end if ( not defined eval { $recce-&amp;gt;read($p_string); 1 })
+      my $value_ref = $recce-&amp;gt;value();
+      if ( not defined $value_ref ) {
+      die $self-&amp;gt;show_last_expression(), &quot;\n&quot;,
+      &quot;No parse was found, after reading the entire input\n&quot;;
+      }
+      return ${$value_ref}, $self-&amp;gt;{symbol_table};
+      } ## end sub calculate
+    &lt;/blockquote&gt;&lt;!--
+        html_fmt: Next end tag is cruft
+      --&gt;&lt;/pre&gt;&lt;!--
+        html_fmt: Next end tag is cruft
+      --&gt;&lt;/blockquote&gt;
+    &lt;p&gt;First we create a recognizer (aka a &quot;recce&quot;) from our grammar.
+      Next we defined a parse object named &quot;&lt;tt&gt;$self&lt;/tt&gt;&quot;.
+      (Object enthusiasts will, I hope, forgive a certain awkwardness at this stage.)
+    &lt;/p&gt;&lt;p&gt;We call the
+      &lt;tt&gt;read()&lt;/tt&gt;
+      method on the recognizer with our string as
+      its argument, check for errors,
+      and then return the result.
+      The calculator allows variables, whose values it keeps in a symbol table.
+      These can be important side effect, so the symbol table is also returned
+      by
+      &lt;tt&gt;calculate()&lt;/tt&gt;.
+    &lt;/p&gt;
+    &lt;h3&gt;Dealing with errors&lt;/h3&gt;
+    &lt;p&gt;This calculator has error reporting that compares favorably with
+      production languages.
+      (Unfortunately, they often do not set the bar very high.)
+      The Scanless interface, in its diagnostics will pinpoint where things
+      went wrong from the technical point of view,
+      and what it saw as the problem.
+      This is often adequate as a diagnostic, but not always --
+      the parsing may have ceased to reflect the programmer's intent before
+      there was an actual parse error.
+    &lt;/p&gt;&lt;p&gt;To help the programmer sync his intent with what Marpa saw,
+      this calculator also prints the last
+      &lt;tt&gt;expression&lt;/tt&gt;
+      successfully
+      recognized.
+      Here's the code that finds it:
+    &lt;/p&gt;&lt;blockquote&gt;
+      &lt;pre&gt;
+sub show_last_expression {
+    my ($self) = @_;
+    my $recce = $self-&amp;gt;{recce};
+    my ( $start, $end ) = $recce-&amp;gt;last_completed_range('expression');
+    return 'No expression was successfully parsed' if not defined $start;
+    my $last_expression = $recce-&amp;gt;range_to_string( $start, $end );
+    return &quot;Last expression successfully parsed was: $last_expression&quot;;
+} ## end sub show_last_expression
+&lt;/pre&gt;&lt;/blockquote&gt;
+    &lt;h3&gt;The semantics&lt;/h3&gt;
+    &lt;p&gt;Here are a few of the simpler semantic closures:
+    &lt;/p&gt;&lt;blockquote&gt;
+      &lt;pre&gt;
+sub do_set_var {
+    my ( $self, $var, undef, $value ) = @_;
+    return $self-&amp;gt;{symbol_table}-&amp;gt;{$var} = $value;
+}
+
+sub do_negate {
+    return -$_[2];
+}
+
+sub do_arg0 { return $_[1]; }
+sub do_arg1 { return $_[2]; }
+sub do_arg2 { return $_[3]; }
+&lt;/pre&gt;&lt;/blockquote&gt;
+    &lt;p&gt;I have found modern programmers
+      are usually very comfortable with procedural coding.
+      (As an aside, this accounts for the popularity of recursive descent
+      and left parsing in general -- it makes parsing look procedural.)
+      Things get more complicated than examples above,
+      but the full code can be found in the gist.
+    &lt;/p&gt;
+    &lt;h3&gt;Comments&lt;/h3&gt;
+    &lt;p&gt;
+      Comments on this post
+      can be sent to the Marpa Google Group:
+      &lt;code&gt;marpa-parser@googlegroups.com&lt;/code&gt;
+    &lt;/p&gt;</description>
   </item>
   <item>
     <title>Announcing Marpa's Scanless interface</title>
