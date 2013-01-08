@@ -84,14 +84,6 @@ my $grammar = Marpa::R2::Scanless::G->new(
     }
 );
 
-# For debugging
-sub add_brackets {
-    my ( undef, @children ) = @_;
-    return $children[0] if 1 == scalar @children;
-    my $original = join q{}, grep {defined} @children;
-    return '[' . $original . ']';
-} ## end sub add_brackets
-
 sub calculate {
     my ($p_string) = @_;
 
