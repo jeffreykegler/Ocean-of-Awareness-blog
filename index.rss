@@ -23,7 +23,8 @@
 	than previous approaches.
       This post takes things significantly further.
       &lt;p&gt;
-      The approach described in the previous post was not itself DSL based,
+      The approach described in the previous post was not itself directly
+      DSL-based,
       and it required the programmer to write a separate lexer.
       This post uses
       &lt;a href=&quot;https://metacpan.org/module/Marpa::R2&quot;&gt;Marpa::R2&lt;/a&gt;'s

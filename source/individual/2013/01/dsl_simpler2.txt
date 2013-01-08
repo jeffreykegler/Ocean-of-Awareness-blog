@@ -10,7 +10,8 @@ Making DSL's even simpler
 	than previous approaches.
       This post takes things significantly further.
       <p>
-      The approach described in the previous post was not itself DSL based,
+      The approach described in the previous post was not itself directly
+      DSL-based,
       and it required the programmer to write a separate lexer.
       This post uses
       <a href="https://metacpan.org/module/Marpa::R2">Marpa::R2</a>'s
