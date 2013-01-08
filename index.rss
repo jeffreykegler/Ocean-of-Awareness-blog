@@ -15,22 +15,67 @@
     <description>&lt;!--
       marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
       --&gt;
-  &lt;p&gt;In a previous post, I talked about making domain-specific languages
-  easier to write -- so easy they become a common approach to problem solving.
-  No tool is as powerful and targeted for dealing with a problem as a custom
-  language.
-  The obstacle has been that DSL's have been very difficult to write.
-  &lt;p&gt;Recently, another Marpa user, Peter Stuifzand, set out to write a JSON
-  parser using Marpa::R2's new Scanless interface.
-  Thirty minutes and 152 lines of code later, he was finished.
-  &lt;p&gt;Peter's effort has what is, by many criteria, superior competition.
-  JSON::PP is more polished and faster.
-  But JSON::PP is 2917 lines of code, and presumably took weeks to write.
-  JSON::XS is even faster, but it is 50% longer and half in C,
-  and it is safe to say took much longer to write and is harder to
-  maintain than JSON::PP.
-  &lt;p&gt;The initial version of Marpa's Scanless interface was written
-  to optimize whip-it-upitude.</description>
+  &lt;p&gt;In a previous post, I showed how to make it easier to write
+  domain-specific languages (DSLs).
+  This post takes things one step further --
+  using Marpa's new Scanless interface, it eliminates the need to
+  write a separate scanner (lexer).
+  &lt;p&gt;
+  When it comes to dealing with a programming problem,
+  no tool is as powerful and flexible as
+  a custom language targeted at the problem domain.
+  But writing a domain specific language (DSL) is among the
+  least used approaches,
+  and for what has been a very good reason --
+  they have been very difficult to write.
+  &lt;p&gt;This post takes a tutorial approach.
+  It does &lt;b&gt;not&lt;/b&gt; assume any knowledge of the previous tutorials
+  on this blog.
+  The full code for this post is in a Github gist.
+  A very similar example is part of Marpa::R2's test suite.
+  Our example DSL is a calculator.
+  This calculator is designed to make a good example,
+  more than as something you'd want to use.
+  But it goes beyond the requirement for a &quot;toy&quot; example
+  -- its 300 lines include good diagnostics and a test suite.
+  &lt;h3&gt;The Grammar&lt;/h3&gt;
+  Let's start right in, by showing the grammar for our calculator:
+  &lt;blockquote&gt;
+  &lt;pre&gt;
+my $rules = &lt;&lt;'END_OF_GRAMMAR';
+:start ::= script
+script ::= expression
+script ::= script ';' expression action =&gt; do_arg2
+reduce_op ::= '+' | '-' | '/' | '*'
+expression ::=
+     number
+   | variable action =&gt; do_is_var
+   | '(' expression ')' assoc =&gt; group action =&gt; do_arg1
+  || '-' expression action =&gt; do_negate
+  || expression '^' expression action =&gt; do_caret assoc =&gt; right
+  || expression '*' expression action =&gt; do_star
+   | expression '/' expression action =&gt; do_slash
+  || expression '+' expression action =&gt; do_plus
+   | expression '-' expression action =&gt; do_minus
+  || expression ',' expression action =&gt; do_array
+  || reduce_op 'reduce' expression action =&gt; do_reduce
+  || variable '=' expression action =&gt; do_set_var
+
+number ~ [\d]+
+variable ~ [\w]+
+:discard ~ whitespace
+whitespace ~ [\s]+
+# allow comments
+:discard ~ &lt;hash comment&gt;
+&lt;hash comment&gt; ~ &lt;terminated hash comment&gt; | &lt;unterminated
+   final hash comment&gt;
+&lt;terminated hash comment&gt; ~ '#' &lt;hash comment body&gt; &lt;vertical space char&gt;
+&lt;unterminated final hash comment&gt; ~ '#' &lt;hash comment body&gt;
+&lt;hash comment body&gt; ~ &lt;hash comment char&gt;*
+&lt;vertical space char&gt; ~ [\x{A}\x{B}\x{C}\x{D}\x{2028}\x{2029}]
+&lt;hash comment char&gt; ~ [^\x{A}\x{B}\x{C}\x{D}\x{2028}\x{2029}]
+END_OF_GRAMMAR
+&lt;/pre&gt;&lt;/blockquote&gt;</description>
   </item>
   <item>
     <title>Announcing Marpa's Scanless interface</title>

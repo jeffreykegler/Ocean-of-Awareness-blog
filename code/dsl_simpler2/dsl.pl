@@ -47,7 +47,7 @@ my $rules = <<'END_OF_GRAMMAR';
 :start ::= script
 script ::= expression
 script ::= script ';' expression action => do_arg2
-reduce_op ::= '+' | '-' | '/' | '*'
+<reduce op> ::= '+' | '-' | '/' | '*'
 expression ::=
      number
    | variable action => do_is_var
@@ -59,7 +59,7 @@ expression ::=
   || expression '+' expression action => do_plus
    | expression '-' expression action => do_minus
   || expression ',' expression action => do_array
-  || reduce_op 'reduce' expression action => do_reduce
+  || <reduce op> 'reduce' expression action => do_reduce
   || variable '=' expression action => do_set_var
 
 number ~ [\d]+
