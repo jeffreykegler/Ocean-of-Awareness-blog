@@ -181,7 +181,7 @@ END_OF_GRAMMAR
     </p>
     <h3>Running a parse</h3>
     <p>
-      The next closure shows how to use the grammar to parse a string:
+      The <tt>calculate()</tt> closure uses our grammar to parse a string.
     </p>
     <blockquote>
       <pre>
@@ -212,33 +212,40 @@ sub calculate {
 } ## end sub calculate
 
 </pre></blockquote>
-    <p>First we create a recognizer (aka a "recce") from our grammar.
-      Next we defined a parse object named "<tt>$self</tt>".
+    <p>Walking through the code,
+    we first create a recognizer ("recce" for short) from our grammar.
+      Next, we define a parse object named "<tt>$self</tt>".
       (Object enthusiasts will, I hope, forgive a certain awkwardness at this stage.)
-    </p><p>We call the
+    <p>
+    Next, we call the
       <tt>read()</tt>
-      method on the recognizer with our string as
-      its argument, check for errors,
-      and then return the result.
-      The calculator allows variables, whose values it keeps in a symbol table.
-      These can be important side effect, so the symbol table is also returned
-      by
+      method on the recognizer with our string.
+      We check the result of the <tt>read()</tt> method for errors.
+      <p>
+      Finally, we return our results.
+      This calculator allows variables, whose values it keeps in a symbol table.
+      Since these can be important side effects, the symbol table is returned
+      as part of the results.
       <tt>calculate()</tt>.
     </p>
     <h3>Dealing with errors</h3>
     <p>This calculator has error reporting that compares favorably with
       production languages.
-      (Unfortunately, they often do not set the bar very high.)
-      The Scanless interface, in its diagnostics will pinpoint where things
+      (Unfortunately, these often do not set the bar very high.)
+      The methods of the Scanless interface return diagnostics that
+      pinpoint where things
       went wrong from the technical point of view,
-      and what it saw as the problem.
-      This is often adequate as a diagnostic, but not always --
+      and what the problem was from the technical point of view.
+      As a diagnostic, this is often adequate, but not always.
+      Marpa's diagnostics have 100% technical accuracy, but
       the parsing may have ceased to reflect the programmer's intent before
-      there was an actual parse error.
-    </p><p>To help the programmer sync his intent with what Marpa saw,
-      this calculator also prints the last
+      there is a technical problem.
+    </p>
+    <p>To help the programmer sync his intent to what Marpa is seeing,
+    when there is a problem,
+      this calculator reports to the user the text for the last
       <tt>expression</tt>
-      successfully
+      that was successfully
       recognized.
       Here's the code that finds it:
     </p><blockquote>
@@ -253,29 +260,24 @@ sub show_last_expression {
 } ## end sub show_last_expression
 </pre></blockquote>
     <h3>The semantics</h3>
-    <p>Here are a few of the simpler semantic closures:
+    <p>Here is a snippet of the semantics, with a few of the simpler semantic closures.
+      Again, full code can be found in
+      <a href="https://gist.github.com/4480523">
+      the gist</a>.
     </p><blockquote>
       <pre>
+package My_Actions;
+our $SELF;
+sub new { return $SELF }
 sub do_set_var {
     my ( $self, $var, undef, $value ) = @_;
     return $self-&gt;{symbol_table}-&gt;{$var} = $value;
 }
-
-sub do_negate {
-    return -$_[2];
-}
-
+sub do_negate { return -$_[2]; }
 sub do_arg0 { return $_[1]; }
 sub do_arg1 { return $_[2]; }
 sub do_arg2 { return $_[3]; }
 </pre></blockquote>
-    <p>I have found modern programmers
-      are usually very comfortable with procedural coding.
-      (As an aside, this accounts for the popularity of recursive descent
-      and left parsing in general -- it makes parsing look procedural.)
-      Things get more complicated than examples above,
-      but the full code can be found in the gist.
-    </p>
     <h3>Comments</h3>
     <p>
       Comments on this post

@@ -194,7 +194,7 @@ END_OF_GRAMMAR
     &lt;/p&gt;
     &lt;h3&gt;Running a parse&lt;/h3&gt;
     &lt;p&gt;
-      The next closure shows how to use the grammar to parse a string:
+      The &lt;tt&gt;calculate()&lt;/tt&gt; closure uses our grammar to parse a string.
     &lt;/p&gt;
     &lt;blockquote&gt;
       &lt;pre&gt;
@@ -225,33 +225,40 @@ sub calculate {
 } ## end sub calculate
 
 &lt;/pre&gt;&lt;/blockquote&gt;
-    &lt;p&gt;First we create a recognizer (aka a &quot;recce&quot;) from our grammar.
-      Next we defined a parse object named &quot;&lt;tt&gt;$self&lt;/tt&gt;&quot;.
+    &lt;p&gt;Walking through the code,
+    we first create a recognizer (&quot;recce&quot; for short) from our grammar.
+      Next, we define a parse object named &quot;&lt;tt&gt;$self&lt;/tt&gt;&quot;.
       (Object enthusiasts will, I hope, forgive a certain awkwardness at this stage.)
-    &lt;/p&gt;&lt;p&gt;We call the
+    &lt;p&gt;
+    Next, we call the
       &lt;tt&gt;read()&lt;/tt&gt;
-      method on the recognizer with our string as
-      its argument, check for errors,
-      and then return the result.
-      The calculator allows variables, whose values it keeps in a symbol table.
-      These can be important side effect, so the symbol table is also returned
-      by
+      method on the recognizer with our string.
+      We check the result of the &lt;tt&gt;read()&lt;/tt&gt; method for errors.
+      &lt;p&gt;
+      Finally, we return our results.
+      This calculator allows variables, whose values it keeps in a symbol table.
+      Since these can be important side effects, the symbol table is returned
+      as part of the results.
       &lt;tt&gt;calculate()&lt;/tt&gt;.
     &lt;/p&gt;
     &lt;h3&gt;Dealing with errors&lt;/h3&gt;
     &lt;p&gt;This calculator has error reporting that compares favorably with
       production languages.
-      (Unfortunately, they often do not set the bar very high.)
-      The Scanless interface, in its diagnostics will pinpoint where things
+      (Unfortunately, these often do not set the bar very high.)
+      The methods of the Scanless interface return diagnostics that
+      pinpoint where things
       went wrong from the technical point of view,
-      and what it saw as the problem.
-      This is often adequate as a diagnostic, but not always --
+      and what the problem was from the technical point of view.
+      As a diagnostic, this is often adequate, but not always.
+      Marpa's diagnostics have 100% technical accuracy, but
       the parsing may have ceased to reflect the programmer's intent before
-      there was an actual parse error.
-    &lt;/p&gt;&lt;p&gt;To help the programmer sync his intent with what Marpa saw,
-      this calculator also prints the last
+      there is a technical problem.
+    &lt;/p&gt;
+    &lt;p&gt;To help the programmer sync his intent to what Marpa is seeing,
+    when there is a problem,
+      this calculator reports to the user the text for the last
       &lt;tt&gt;expression&lt;/tt&gt;
-      successfully
+      that was successfully
       recognized.
       Here's the code that finds it:
     &lt;/p&gt;&lt;blockquote&gt;
@@ -266,29 +273,24 @@ sub show_last_expression {
 } ## end sub show_last_expression
 &lt;/pre&gt;&lt;/blockquote&gt;
     &lt;h3&gt;The semantics&lt;/h3&gt;
-    &lt;p&gt;Here are a few of the simpler semantic closures:
+    &lt;p&gt;Here is a snippet of the semantics, with a few of the simpler semantic closures.
+      Again, full code can be found in
+      &lt;a href=&quot;https://gist.github.com/4480523&quot;&gt;
+      the gist&lt;/a&gt;.
     &lt;/p&gt;&lt;blockquote&gt;
       &lt;pre&gt;
+package My_Actions;
+our $SELF;
+sub new { return $SELF }
 sub do_set_var {
     my ( $self, $var, undef, $value ) = @_;
     return $self-&amp;gt;{symbol_table}-&amp;gt;{$var} = $value;
 }
-
-sub do_negate {
-    return -$_[2];
-}
-
+sub do_negate { return -$_[2]; }
 sub do_arg0 { return $_[1]; }
 sub do_arg1 { return $_[2]; }
 sub do_arg2 { return $_[3]; }
 &lt;/pre&gt;&lt;/blockquote&gt;
-    &lt;p&gt;I have found modern programmers
-      are usually very comfortable with procedural coding.
-      (As an aside, this accounts for the popularity of recursive descent
-      and left parsing in general -- it makes parsing look procedural.)
-      Things get more complicated than examples above,
-      but the full code can be found in the gist.
-    &lt;/p&gt;
     &lt;h3&gt;Comments&lt;/h3&gt;
     &lt;p&gt;
       Comments on this post
