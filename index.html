@@ -45,16 +45,19 @@
       <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/dsl.html">
         In a previous post</a>, I described a method of writing
 	powerful domain-specific languages (DSLs),
-	one that was much simpler and faster
+	one that was simpler and faster
 	than previous approaches.
-      This post takes things further.
+      This post takes things significantly further.
+      <p>
       The approach described in the previous post was not itself DSL based,
       and it required the programmer to write a separate lexer.
       This post uses
       <a href="https://metacpan.org/module/Marpa::R2">Marpa::R2</a>'s
       new Scanless interface.
-      The Scanless interface is a DSL for writing DSL's
-      that incorporates the specification of the lexer into
+      <a href="https://metacpan.org/module/JKEGL/Marpa-R2-2.040000/pod/Scanless.pod">
+      The Scanless interface</a>
+      is a DSL for writing DSL's
+      and it incorporates the specification of the lexer into
       the language description.
     </p>
     <p>
@@ -276,7 +279,7 @@ sub calculate {
     Next, we call the
       <tt>read()</tt>
       method on the recognizer with our string.
-      We check the result of the <tt>read()</tt> method for errors.
+      We then check the result of the <tt>read()</tt> method for errors.
       <p>
       Finally, we return our results.
       This calculator allows variables, whose values it keeps in a symbol table.
