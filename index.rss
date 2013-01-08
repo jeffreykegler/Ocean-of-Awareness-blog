@@ -12,11 +12,12 @@
   <item>
     <title>Making DSL's even simpler</title>
     <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2013/01/dsl_simpler2.html</link>
-    <description>&lt;!--
+    <description>  &lt;p&gt;
+      &lt;!--
       marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
       --&gt;
-  &lt;p&gt;&lt;a href=&quot;http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/dsl.html&quot;&gt;
-  In a previous post&lt;/a&gt;, I showed how to make it easier to write
+      &lt;a href=&quot;http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/dsl.html&quot;&gt;
+        In a previous post&lt;/a&gt;, I showed how to make it easier to write
       domain-specific languages (DSLs).
       This post takes things one step further.
       With Marpa's new Scanless interface, the programmer does not
@@ -35,9 +36,10 @@
       &lt;b&gt;not&lt;/b&gt;
       assume any knowledge of the previous tutorials
       on this blog.
-      &lt;p&gt;
-      The full code for this post is in &lt;a href=&quot;https://gist.github.com/4480523&quot;&gt;
-      a Github gist&lt;/a&gt;.
+    &lt;/p&gt;&lt;p&gt;
+      The full code for this post is in
+      &lt;a href=&quot;https://gist.github.com/4480523&quot;&gt;
+        a Github gist&lt;/a&gt;.
       Our example DSL is a calculator.
       While better than shell arithmetic,
       this calculator is designed to more to act as a good example,
@@ -97,8 +99,9 @@ expression ::=
       in angle brackets, and alternatives,
       separated by a veritcal bar, (&quot;&lt;tt&gt;|&lt;/tt&gt;&quot;).
     &lt;/p&gt;
-    &lt;p&gt;The last and longest rule, defined an &lt;tt&gt;expression&lt;/tt&gt;,
-    is a precedence rule.
+    &lt;p&gt;The last and longest rule, defined an
+      &lt;tt&gt;expression&lt;/tt&gt;,
+      is a precedence rule.
       It is a series of alternatives, some separated by
       a single vertical bar,
       and others separated by a double vertical bar (&quot;&lt;tt&gt;||&lt;/tt&gt;&quot;).
@@ -168,7 +171,7 @@ END_OF_GRAMMAR
       Now that we have defined the grammar, we need to pre-process it:
     &lt;/p&gt;
     &lt;blockquote&gt;
-    &lt;pre&gt;
+      &lt;pre&gt;
       my $grammar = Marpa::R2::Scanless::G-&amp;gt;new(
 	{ action_object  =&amp;gt; 'My_Actions',
 	  default_action =&amp;gt; 'do_arg0',
@@ -194,7 +197,7 @@ END_OF_GRAMMAR
       The next closure shows how to use the grammar to parse a string:
     &lt;/p&gt;
     &lt;blockquote&gt;
-    &lt;pre&gt;
+      &lt;pre&gt;
 sub calculate {
     my ($p_string) = @_;
 

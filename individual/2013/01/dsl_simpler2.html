@@ -38,11 +38,12 @@
 <br />
 <center><a name="dsl_simpler2"> <h2>Making DSL's even simpler</h2> </a>
 </center>
-<!--
+  <p>
+      <!--
       marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
       -->
-  <p><a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/dsl.html">
-  In a previous post</a>, I showed how to make it easier to write
+      <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/dsl.html">
+        In a previous post</a>, I showed how to make it easier to write
       domain-specific languages (DSLs).
       This post takes things one step further.
       With Marpa's new Scanless interface, the programmer does not
@@ -61,9 +62,10 @@
       <b>not</b>
       assume any knowledge of the previous tutorials
       on this blog.
-      <p>
-      The full code for this post is in <a href="https://gist.github.com/4480523">
-      a Github gist</a>.
+    </p><p>
+      The full code for this post is in
+      <a href="https://gist.github.com/4480523">
+        a Github gist</a>.
       Our example DSL is a calculator.
       While better than shell arithmetic,
       this calculator is designed to more to act as a good example,
@@ -123,8 +125,9 @@ expression ::=
       in angle brackets, and alternatives,
       separated by a veritcal bar, ("<tt>|</tt>").
     </p>
-    <p>The last and longest rule, defined an <tt>expression</tt>,
-    is a precedence rule.
+    <p>The last and longest rule, defined an
+      <tt>expression</tt>,
+      is a precedence rule.
       It is a series of alternatives, some separated by
       a single vertical bar,
       and others separated by a double vertical bar ("<tt>||</tt>").
@@ -194,7 +197,7 @@ END_OF_GRAMMAR
       Now that we have defined the grammar, we need to pre-process it:
     </p>
     <blockquote>
-    <pre>
+      <pre>
       my $grammar = Marpa::R2::Scanless::G-&gt;new(
 	{ action_object  =&gt; 'My_Actions',
 	  default_action =&gt; 'do_arg0',
@@ -220,7 +223,7 @@ END_OF_GRAMMAR
       The next closure shows how to use the grammar to parse a string:
     </p>
     <blockquote>
-    <pre>
+      <pre>
 sub calculate {
     my ($p_string) = @_;
 
