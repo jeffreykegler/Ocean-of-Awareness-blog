@@ -17,16 +17,19 @@
       marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
       --&gt;
       &lt;a href=&quot;http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/dsl.html&quot;&gt;
-        In a previous post&lt;/a&gt;, I described a Marpa-based approach that makes
-	writing a powerful domain-specific language (DSL) much simpler and faster
-	than has been the case.
-      This post takes things still further.
-      The approach described in the previous post required the programmer to write
-      a separate lexer -- Marpa did not provide one.
+        In a previous post&lt;/a&gt;, I described a method of writing
+	powerful domain-specific languages (DSLs),
+	one that was much simpler and faster
+	than previous approaches.
+      This post takes things further.
+      The approach described in the previous post was not itself DSL based,
+      and it required the programmer to write a separate lexer.
       This post uses
       &lt;a href=&quot;https://metacpan.org/module/Marpa::R2&quot;&gt;Marpa::R2&lt;/a&gt;'s
-      new Scanless interface, eliminating the need
-      for a separate lexer.
+      new Scanless interface.
+      The Scanless interface is a DSL for writing DSL's
+      that incorporates the specification of the lexer into
+      the language description.
     &lt;/p&gt;
     &lt;p&gt;
       When it comes to dealing with a programming problem,
