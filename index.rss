@@ -27,7 +27,7 @@
   But writing a domain specific language (DSL) is among the
   least used approaches,
   and for what has been a very good reason --
-  they have been very difficult to write.
+  DSL's have been very difficult to write.
   &lt;p&gt;This post takes a tutorial approach.
   It does &lt;b&gt;not&lt;/b&gt; assume any knowledge of the previous tutorials
   on this blog.
@@ -39,42 +39,89 @@
   But it goes beyond the requirement for a &quot;toy&quot; example
   -- its 300 lines include good diagnostics and a test suite.
   &lt;h3&gt;The Grammar&lt;/h3&gt;
-  Let's start right in, by showing the grammar for our calculator:
+  Let's start right in, by showing the grammar for our calculator.
+  It natural divides into two parts.  Here is the first:
   &lt;blockquote&gt;
   &lt;pre&gt;
-my $rules = &lt;&lt;'END_OF_GRAMMAR';
 :start ::= script
 script ::= expression
-script ::= script ';' expression action =&gt; do_arg2
-reduce_op ::= '+' | '-' | '/' | '*'
+script ::= script ';' expression action =&amp;gt; do_arg2
+&amp;lt;reduce op&amp;gt; ::= '+' | '-' | '/' | '*'
 expression ::=
      number
-   | variable action =&gt; do_is_var
-   | '(' expression ')' assoc =&gt; group action =&gt; do_arg1
-  || '-' expression action =&gt; do_negate
-  || expression '^' expression action =&gt; do_caret assoc =&gt; right
-  || expression '*' expression action =&gt; do_star
-   | expression '/' expression action =&gt; do_slash
-  || expression '+' expression action =&gt; do_plus
-   | expression '-' expression action =&gt; do_minus
-  || expression ',' expression action =&gt; do_array
-  || reduce_op 'reduce' expression action =&gt; do_reduce
-  || variable '=' expression action =&gt; do_set_var
-
+   | variable action =&amp;gt; do_is_var
+   | '(' expression ')' assoc =&amp;gt; group action =&amp;gt; do_arg1
+  || '-' expression action =&amp;gt; do_negate
+  || expression '^' expression action =&amp;gt; do_caret assoc =&amp;gt; right
+  || expression '*' expression action =&amp;gt; do_star
+   | expression '/' expression action =&amp;gt; do_slash
+  || expression '+' expression action =&amp;gt; do_plus
+   | expression '-' expression action =&amp;gt; do_minus
+  || expression ',' expression action =&amp;gt; do_array
+  || &amp;lt;reduce op&amp;gt; 'reduce' expression action =&amp;gt; do_reduce
+  || variable '=' expression action =&amp;gt; do_set_var
+&lt;/pre&gt;&lt;/blockquote&gt;
+&lt;p&gt;The format of the grammar is documented
+&lt;a href=&quot;https://metacpan.org/module/JKEGL/Marpa-R2-2.040000/pod/Scanless.pod&quot;&gt;
+here&lt;/a&gt;.
+It consists of BNF rules, whose left hand side (LHS) and right hand side (RHS)
+can be separated by the BNF operator (&lt;tt&gt;::=&lt;/tt&gt;).
+The first rule is a pseudo-rule -- its LHS is the psuedo-symbol &lt;tt&gt;:start&lt;/tt&gt;,
+and it indicates that &lt;tt&gt;script&lt;/tt&gt; is that start symbol.
+The next two rules indicate that &lt;tt&gt;script&lt;/tt&gt; is a series of one
+or more &lt;tt&gt;expression&lt;/tt&gt;, separated by semicolon.
+&lt;p&gt;
+Rules can have action &quot;adverbs&quot;
+to describe the semantics.
+For example, the adverb &quot;&lt;tt&gt;action =&amp;gt; do_args&lt;/tt&gt; says that the semantics for
+the preceding RHS are implemented by a Perl closure named &lt;tt&gt;do_args&lt;/tt&gt;.
+&lt;p&gt;The rules for
+&lt;tt&gt;&amp;lt;reduce op&amp;gt;&lt;/tt&gt; introduces two new features: symbols names
+in angle brackets, and alternatives,
+separated by a veritcal bar, (&quot;&lt;tt&gt;|&lt;/tt&gt;&quot;).
+&lt;p&gt;The last statement is a precedence rule.
+It is a series of alternatives, some separated by 
+a single vertical bar,
+but others separated by a double vertical (&quot;&lt;tt&gt;||&lt;/tt&gt;&quot;).
+The double vertical bar indicates that the alternatives after it
+are at a looser (&quot;lower&quot;) precedence than the alternatives before it.
+The single vertical bar separates alternatives as the same precedence level.
+&lt;p&gt;
+So far, we have been assuming that Marpa will &quot;do the right
+thing&quot; about whitespace in our calculator.
+The next set of rules deal with lexical issues, and specify
+how this works.
+&lt;/p&gt;
+  &lt;blockquote&gt;
+  &lt;pre&gt;
 number ~ [\d]+
 variable ~ [\w]+
 :discard ~ whitespace
 whitespace ~ [\s]+
 # allow comments
-:discard ~ &lt;hash comment&gt;
-&lt;hash comment&gt; ~ &lt;terminated hash comment&gt; | &lt;unterminated
-   final hash comment&gt;
-&lt;terminated hash comment&gt; ~ '#' &lt;hash comment body&gt; &lt;vertical space char&gt;
-&lt;unterminated final hash comment&gt; ~ '#' &lt;hash comment body&gt;
-&lt;hash comment body&gt; ~ &lt;hash comment char&gt;*
-&lt;vertical space char&gt; ~ [\x{A}\x{B}\x{C}\x{D}\x{2028}\x{2029}]
-&lt;hash comment char&gt; ~ [^\x{A}\x{B}\x{C}\x{D}\x{2028}\x{2029}]
+:discard ~ &amp;lt;hash comment&amp;gt;
+&amp;lt;hash comment&amp;gt; ~ &amp;lt;terminated hash comment&amp;gt; | &amp;lt;unterminated
+   final hash comment&amp;gt;
+&amp;lt;terminated hash comment&amp;gt; ~ '#' &amp;lt;hash comment body&amp;gt; &amp;lt;vertical space char&amp;gt;
+&amp;lt;unterminated final hash comment&amp;gt; ~ '#' &amp;lt;hash comment body&amp;gt;
+&amp;lt;hash comment body&amp;gt; ~ &amp;lt;hash comment char&amp;gt;*
+&amp;lt;vertical space char&amp;gt; ~ [\x{A}\x{B}\x{C}\x{D}\x{2028}\x{2029}]
+&amp;lt;hash comment char&amp;gt; ~ [^\x{A}\x{B}\x{C}\x{D}\x{2028}\x{2029}]
 END_OF_GRAMMAR
+&lt;p&gt;
+This second set of rules take the same form as rules in the earlier set,
+but instead of the BNF operator (&lt;tt&gt;::=&lt;/tt&gt;),
+they have a match operator (&lt;tt&gt;~&lt;/tt&gt;) separating the LHS and RHS.
+The BNF operator can be seen as telling Marpa, &quot;When it comes to whitespace and comments,
+do what I &lt;b&gt;mean&lt;/b&gt;&quot;.
+The match operator instead tells Marpa to &quot;Do exactly what I &lt;b&gt;say&lt;/b&gt; on a literal,
+character-by-characcter basis.&quot;
+&lt;p&gt;
+The first two lines indicate how &lt;tt&gt;number&lt;/tt&gt;'s and &lt;tt&gt;variable&lt;/tt&gt; are formed.
+The square bracketed character classes accept anything acceptable to Perl.
+&lt;tt&gt;:discard&lt;/tt&gt; is another pseudo-symbol -- any lexeme recognized as a &lt;tt&gt;:discard&lt;/tt&gt;
+symbol is thrown away.
+This is how whitespace and comments are dealt with.
 &lt;/pre&gt;&lt;/blockquote&gt;</description>
   </item>
   <item>
