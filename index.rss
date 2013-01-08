@@ -36,8 +36,8 @@
       assume any knowledge of the previous tutorials
       on this blog.
       &lt;p&gt;
-      The full code for this post is in a Github gist.
-      A very similar example is part of Marpa::R2's test suite.
+      The full code for this post is in &lt;a href=&quot;https://gist.github.com/4480523&quot;&gt;
+      a Github gist&lt;/a&gt;.
       Our example DSL is a calculator.
       While better than shell arithmetic,
       this calculator is designed to more to act as a good example,
@@ -48,7 +48,7 @@
     &lt;h3&gt;The Grammar&lt;/h3&gt;
     &lt;p&gt;
       Let's start right in, by showing the grammar for our calculator.
-      It natural divides into two parts.  Here is the first:
+      It divides naturally into two parts.  Here is the first:
     &lt;/p&gt;&lt;blockquote&gt;
       &lt;pre&gt;
 :start ::= script
@@ -74,40 +74,42 @@ expression ::=
         here&lt;/a&gt;.
       It consists of BNF rules, whose left hand side (LHS) and right hand side (RHS)
       can be separated by the BNF operator (&lt;tt&gt;::=&lt;/tt&gt;).
-      The first rule is a pseudo-rule -- its LHS is the psuedo-symbol
+      The first rule is a pseudo-rule -- its LHS is the pseudo-symbol
       &lt;tt&gt;:start&lt;/tt&gt;,
-      and it indicates that
+      and indicates that
       &lt;tt&gt;script&lt;/tt&gt;
-      is that start symbol.
+      is the grammar's start symbol.
       The next two rules indicate that
       &lt;tt&gt;script&lt;/tt&gt;
       is a series of one
       or more
-      &lt;tt&gt;expression&lt;/tt&gt;, separated by semicolon.
+      &lt;tt&gt;expression&lt;/tt&gt;'s, separated by a semicolon.
     &lt;/p&gt;&lt;p&gt;
       Rules can have action &quot;adverbs&quot;
       to describe the semantics.
-      For example, the adverb &quot;&lt;tt&gt;action =&amp;gt; do_args&lt;/tt&gt;
+      For example, the adverb &quot;&lt;tt&gt;action =&amp;gt; do_args&lt;/tt&gt;&quot;
       says that the semantics for
       the preceding RHS are implemented by a Perl closure named
       &lt;tt&gt;do_args&lt;/tt&gt;.
-    &lt;/p&gt;&lt;p&gt;The rules for
+    &lt;/p&gt;&lt;p&gt;The rule for
       &lt;tt&gt;&amp;lt;reduce op&amp;gt;&lt;/tt&gt;
       introduces two new features: symbols names
       in angle brackets, and alternatives,
       separated by a veritcal bar, (&quot;&lt;tt&gt;|&lt;/tt&gt;&quot;).
-    &lt;/p&gt;&lt;p&gt;The last statement is a precedence rule.
+    &lt;/p&gt;
+    &lt;p&gt;The last and longest rule, defined an &lt;tt&gt;expression&lt;/tt&gt;,
+    is a precedence rule.
       It is a series of alternatives, some separated by
       a single vertical bar,
-      but others separated by a double vertical (&quot;&lt;tt&gt;||&lt;/tt&gt;&quot;).
+      and others separated by a double vertical bar (&quot;&lt;tt&gt;||&lt;/tt&gt;&quot;).
       The double vertical bar indicates that the alternatives after it
       are at a looser (&quot;lower&quot;) precedence than the alternatives before it.
-      The single vertical bar separates alternatives as the same precedence level.
+      The single vertical bar separates alternatives at the same precedence level.
     &lt;/p&gt;&lt;p&gt;
-      So far, we have been assuming that Marpa will &quot;do the right
-      thing&quot; about whitespace in our calculator.
-      The next set of rules deal with lexical issues, and specify
-      how this works.
+      While Marpa's Scanless interface allows lexical and structural rules
+      to be intermixed,
+      it is usually convenient to have the lexical rules come after
+      the structural rules:
     &lt;/p&gt;
     &lt;blockquote&gt;
       &lt;pre&gt;
@@ -127,20 +129,21 @@ whitespace ~ [\s]+
 END_OF_GRAMMAR
 &lt;/pre&gt;&lt;/blockquote&gt;
     &lt;p&gt;
-      This second set of rules take the same form as rules in the earlier set,
+      Rules in this second set of rules have
+      the same syntax as rules in the first set,
       but instead of the BNF operator (&lt;tt&gt;::=&lt;/tt&gt;),
       they have a match operator (&lt;tt&gt;~&lt;/tt&gt;) separating the LHS and RHS.
       The BNF operator can be seen as telling Marpa, &quot;When it comes to whitespace and comments,
       do what I
       &lt;b&gt;mean&lt;/b&gt;&quot;.
-      The match operator instead tells Marpa to &quot;Do exactly what I
+      The match operator tells Marpa to &quot;Do exactly what I
       &lt;b&gt;say&lt;/b&gt;
       on a literal,
       character-by-characcter basis.&quot;
     &lt;/p&gt;&lt;p&gt;
       The first two lines indicate how
       &lt;tt&gt;number&lt;/tt&gt;'s and
-      &lt;tt&gt;variable&lt;/tt&gt;
+      &lt;tt&gt;variable&lt;/tt&gt;'s
       are formed.
       The square bracketed character classes accept anything acceptable to Perl.
       &lt;tt&gt;:discard&lt;/tt&gt;

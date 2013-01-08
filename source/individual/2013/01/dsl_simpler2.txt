@@ -23,8 +23,8 @@ Making DSL's even simpler
       assume any knowledge of the previous tutorials
       on this blog.
       <p>
-      The full code for this post is in a Github gist.
-      A very similar example is part of Marpa::R2's test suite.
+      The full code for this post is in <a href="https://gist.github.com/4480523">
+      a Github gist</a>.
       Our example DSL is a calculator.
       While better than shell arithmetic,
       this calculator is designed to more to act as a good example,
@@ -35,7 +35,7 @@ Making DSL's even simpler
     <h3>The Grammar</h3>
     <p>
       Let's start right in, by showing the grammar for our calculator.
-      It natural divides into two parts.  Here is the first:
+      It divides naturally into two parts.  Here is the first:
     </p><blockquote>
       <pre>
 :start ::= script
@@ -61,40 +61,42 @@ expression ::=
         here</a>.
       It consists of BNF rules, whose left hand side (LHS) and right hand side (RHS)
       can be separated by the BNF operator (<tt>::=</tt>).
-      The first rule is a pseudo-rule -- its LHS is the psuedo-symbol
+      The first rule is a pseudo-rule -- its LHS is the pseudo-symbol
       <tt>:start</tt>,
-      and it indicates that
+      and indicates that
       <tt>script</tt>
-      is that start symbol.
+      is the grammar's start symbol.
       The next two rules indicate that
       <tt>script</tt>
       is a series of one
       or more
-      <tt>expression</tt>, separated by semicolon.
+      <tt>expression</tt>'s, separated by a semicolon.
     </p><p>
       Rules can have action "adverbs"
       to describe the semantics.
-      For example, the adverb "<tt>action =&gt; do_args</tt>
+      For example, the adverb "<tt>action =&gt; do_args</tt>"
       says that the semantics for
       the preceding RHS are implemented by a Perl closure named
       <tt>do_args</tt>.
-    </p><p>The rules for
+    </p><p>The rule for
       <tt>&lt;reduce op&gt;</tt>
       introduces two new features: symbols names
       in angle brackets, and alternatives,
       separated by a veritcal bar, ("<tt>|</tt>").
-    </p><p>The last statement is a precedence rule.
+    </p>
+    <p>The last and longest rule, defined an <tt>expression</tt>,
+    is a precedence rule.
       It is a series of alternatives, some separated by
       a single vertical bar,
-      but others separated by a double vertical ("<tt>||</tt>").
+      and others separated by a double vertical bar ("<tt>||</tt>").
       The double vertical bar indicates that the alternatives after it
       are at a looser ("lower") precedence than the alternatives before it.
-      The single vertical bar separates alternatives as the same precedence level.
+      The single vertical bar separates alternatives at the same precedence level.
     </p><p>
-      So far, we have been assuming that Marpa will "do the right
-      thing" about whitespace in our calculator.
-      The next set of rules deal with lexical issues, and specify
-      how this works.
+      While Marpa's Scanless interface allows lexical and structural rules
+      to be intermixed,
+      it is usually convenient to have the lexical rules come after
+      the structural rules:
     </p>
     <blockquote>
       <pre>
@@ -114,20 +116,21 @@ whitespace ~ [\s]+
 END_OF_GRAMMAR
 </pre></blockquote>
     <p>
-      This second set of rules take the same form as rules in the earlier set,
+      Rules in this second set of rules have
+      the same syntax as rules in the first set,
       but instead of the BNF operator (<tt>::=</tt>),
       they have a match operator (<tt>~</tt>) separating the LHS and RHS.
       The BNF operator can be seen as telling Marpa, "When it comes to whitespace and comments,
       do what I
       <b>mean</b>".
-      The match operator instead tells Marpa to "Do exactly what I
+      The match operator tells Marpa to "Do exactly what I
       <b>say</b>
       on a literal,
       character-by-characcter basis."
     </p><p>
       The first two lines indicate how
       <tt>number</tt>'s and
-      <tt>variable</tt>
+      <tt>variable</tt>'s
       are formed.
       The square bracketed character classes accept anything acceptable to Perl.
       <tt>:discard</tt>
