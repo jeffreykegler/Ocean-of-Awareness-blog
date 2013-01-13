@@ -11,7 +11,7 @@ A Language for writing languages
       but already there are completed applications.
       Significantly, two of them are for work.
       <h3>A JSON Parser</h3>
-      <p>The non work-related application is
+      <p>The non-work-related application is
       <a href="https://gist.github.com/4447349">
       a JSON parser</a>.
       Given what it does,
