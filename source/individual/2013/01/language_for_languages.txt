@@ -16,8 +16,8 @@ A Language for writing languages
       a JSON parser</a>.
       Given what it does,
       it easily could have been work-related.
-      And given it's been available for a few days as a gist,
-      it could well be in production use somewhere.
+      (It's been available for a few days as a gist,
+      so it may well be in production use somewhere.)
       It was written by Peter Stuifzand,
       runs 185 lines
       and took him less than 30 minutes to write.
@@ -73,20 +73,19 @@ A Language for writing languages
       were spread out over 3 days.
       Paul reports that his language is on the job already,
       but that
-      needs some clean-up before going in CPAN.
-      I look forward to seeing it
-      -- the snippets he shows are enticing.
+      needs some clean-up before going onto CPAN.
+      The snippets he shows are enticing.
       The language seems to include 
       strings, integers and timestamps as supported types;
       regexes;
-      and the standard comparision and boolean operators,
-      plus "any", "between" and "one" operators.
+      a full set of comparison and boolean operators;
+      and helpful new "any", "between" and "one" operators.
       <p>
       Pretty good for 3 days.
       A lot of nasty problems snuggled away
       in log files may find their
       hiding places are not nearly as safe 
-      as they have come to expect.
+      as they have been able to expect.
     <h3>Comments</h3>
     <p>
       Comments on this post
