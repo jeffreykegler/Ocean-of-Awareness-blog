@@ -53,7 +53,9 @@ A Language for writing languages
       no learning curve.
       Paul apparently was able to teach himself to use Marpa's Scanless
       interface starting from a gist.
-      (He doesn't say, but it could have been this one.)
+      (He doesn't say, but it could have been the one for
+      <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2013/01/dsl_simpler2.html">
+      this post</a>.)
       <p>Paul took a similar approach to the one Peter used for
       printer escapes -- his log query language compiles to Perl.
       Its writing and debugging

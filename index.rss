@@ -37,6 +37,57 @@
       and development time is a consideration,
       the Marpa-based solution may be the one for you.
       &lt;h3&gt;Printer escape codes&lt;/h3&gt;
+      Peter also did
+      &lt;a href=&quot;https://groups.google.com/d/msg/marpa-parser/n4ouLW0e6P8/vdrku9fczZEJ&quot;&gt;
+      a Marpa-based language for work&lt;/a&gt; --
+      a solution to the problem of printer escape codes.
+      For those unfamilar, a printer's special features can often be invoked
+      by &quot;escape sequences&quot; --
+      byte sequences which control things like cursor motion, color, character sets,
+      graphics, etc., etc.
+      These can get quite fancy, but are usually very repetitive, and it's nice
+      to wrap them in conveniently named functions.
+      &lt;p&gt;Escape sequences can get quite fancy, but they're usually repetitive,
+      and even when complex typically aren't very interesting.
+      They can be programmed with regex or eval hacks,
+      but Peter chose Marpa-based grammar-driven programming because he thought it
+      would be faster.
+      He was done in a hour.
+      &lt;h3&gt;A more complicated example: A log file query language&lt;/h3&gt;
+      &lt;p&gt;Meanwhile, on the other side of the Atlantic, Paul Bennett
+      was having to analyze a lot of nginx log files.
+      For both of Peter's languages, he was able to start with
+      them not only fully designed,
+      but which with a formal specification
+      that he could put in front of him as he typed.
+      Paul needed to design his own.
+      Peter had written Marpa-based languages prior to my release
+      of the Scanless interface, so his times I have to assume include
+      no learning curve.
+      Paul apparently was able to teach himself to use Marpa's Scanless
+      interface starting from a gist.
+      (He doesn't say, but it could have been the one for
+      &lt;a href=&quot;http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2013/01/dsl_simpler2.html&quot;&gt;
+      this post&lt;/a&gt;.)
+      &lt;p&gt;Paul took a similar approach to the one Peter used for
+      printer escapes -- his log query language compiles to Perl.
+      Its writing and debugging
+      spread out over 3 days that sound
+      like they included a lot of log file analysis.
+      &lt;p&gt;
+      Paul reports that his language is on the job already,
+      but that
+      needs some clean-up before going in CPAN.
+      I look forward to seeing it
+      -- the snippets he shows seem to include 
+      strings, integers and timestamps as supported types;
+      regexes;
+      adn the standard comparision and boolean operators,
+      plus &quot;any&quot;, &quot;between&quot; and &quot;one&quot; operators.
+      Pretty good for 3 days.
+      Perhaps a lot of nasty problems that think they have
+      safely buried themselves in
+      log files may soon be toast.
     &lt;h3&gt;Comments&lt;/h3&gt;
     &lt;p&gt;
       Comments on this post
