@@ -73,17 +73,10 @@
       faced with analyzing lots of nginx log files,
       decided a powerful custom log query language was
       just what his issue needed&lt;/a&gt;.
-      Where Peter has started with two languages that were already
-      fully designed and formally specified,
-      Paul needed to design his language from scratch.
-      Peter had written Marpa-based languages prior to my release
-      of the Scanless interface, and I have to believe his development
-      times include
-      no learning curve.
-      Paul apparently was able to teach himself what he needed
-      to know about
-      Marpa's Scanless
-      interface starting from a gist.
+      Paul needed to design and specify his language from scratch.
+      Paul was also facing a learning curve,
+      but he read the gist for a Scanless interface example,
+      and apparently was able to teach himself quickly from there.
       (He doesn't say, but it might have been the one for
       &lt;a href=&quot;http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2013/01/dsl_simpler2.html&quot;&gt;
       this post&lt;/a&gt;.)
@@ -95,16 +88,18 @@
       but that
       needs some clean-up before going in CPAN.
       I look forward to seeing it
-      -- the snippets he shows seem to include 
+      -- the snippets he shows are enticing.
+      The language seems to include 
       strings, integers and timestamps as supported types;
       regexes;
-      adn the standard comparision and boolean operators,
+      and the standard comparision and boolean operators,
       plus &quot;any&quot;, &quot;between&quot; and &quot;one&quot; operators.
+      &lt;p&gt;
       Pretty good for 3 days.
-      Perhaps a lot of nasty problems snuggled away
-      in log files may soon find their
-      hiding places not nearly as safe 
-      as they've come to expect.
+      A lot of nasty problems snuggled away
+      in log files may find their
+      hiding places are not nearly as safe 
+      as they have come to expect.
     &lt;h3&gt;Comments&lt;/h3&gt;
     &lt;p&gt;
       Comments on this post
