@@ -16,22 +16,28 @@
       &lt;!--
       marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
       --&gt;
-      The Scanless interface is not yet two weeks old, but at this point
-      I have reports from its users of completed applications.
+      &lt;a href=&quot;https://metacpan.org/release/Marpa-R2&quot;&gt;
+      Marpa::R2&lt;/a&gt;'s
+      &lt;a href=&quot;http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2013/01/announce_scanless.html&quot;&gt;
+      Scanless interface&lt;/a&gt;
+      is not yet two weeks old,
+      but there are already completed applications.
       Significantly, two of them are for work.
       &lt;h3&gt;A JSON Parser&lt;/h3&gt;
-      The non work-related application is a JSON parser.
-      Obviously, it easily &lt;b&gt;could&lt;/b&gt; be work-related,
-      and given it's available as gist,
-      it may well be in production use by someone somewhere.
+      &lt;p&gt;The non work-related application is a JSON parser.
+      Given what it does,
+      it easily could have been work-related.
+      And given it's been available for a few days as a gist,
+      it may well be in production use somewhere.
       It was written by Peter Stuifzand,
       runs 185 lines
       and took him less than 30 minutes to write.
-      With Marpa's Scanless interface, it was a matter of
+      Peter reports that it was a matter of
       typing in the grammar,
-      and add a few Perl functions to provide the semantics.
-      &lt;p&gt;There are, of course, other JSON parsers out there,
-      and many of which run faster.
+      and adding a few Perl functions to provide the semantics.
+      &lt;p&gt;
+      There are, of course, other JSON parsers out there,
+      many of which run faster.
       These, however, took weeks to write.
       If you are, for example, thinking of extending JSON,
       and development time is a consideration,
@@ -52,15 +58,17 @@
       They can be programmed with regex or eval hacks,
       but Peter chose Marpa-based grammar-driven programming because he thought it
       would be faster.
+      His program compiles from
+      a mini-language that specifies 
+      escape sequences to Perl.
       He was done in a hour.
-      &lt;h3&gt;A more complicated example: A log file query language&lt;/h3&gt;
-      &lt;p&gt;Meanwhile, on the other side of the Atlantic, Paul Bennett
-      was having to analyze a lot of nginx log files.
-      For both of Peter's languages, he was able to start with
-      them not only fully designed,
-      but which with a formal specification
-      that he could put in front of him as he typed.
-      Paul needed to design his own.
+      &lt;h3&gt;A log file query language&lt;/h3&gt;
+      &lt;p&gt;The most adventurous language of the three comes from
+      the other side of the Atlantic, where Paul Bennett
+      was faced with analyzing lots of nginx log files.
+      Both of Peter's languages were already
+      fully designed and formally specified.
+      Paul designed his own language from scratch.
       Peter had written Marpa-based languages prior to my release
       of the Scanless interface, so his times I have to assume include
       no learning curve.
@@ -85,9 +93,10 @@
       adn the standard comparision and boolean operators,
       plus &quot;any&quot;, &quot;between&quot; and &quot;one&quot; operators.
       Pretty good for 3 days.
-      Perhaps a lot of nasty problems that think they have
-      safely buried themselves in
-      log files may soon be toast.
+      Perhaps a lot of nasty problems snuggled away
+      in log files may soon find their
+      hiding places not nearly as safe 
+      as they've come to expect.
     &lt;h3&gt;Comments&lt;/h3&gt;
     &lt;p&gt;
       Comments on this post
