@@ -10,7 +10,7 @@
     <language>en</language>
 
   <item>
-    <title>A Language for writing languages</title>
+    <title>A language for writing languages</title>
     <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2013/01/language_for_languages.html</link>
     <description>  &lt;p&gt;
       &lt;!--
@@ -60,19 +60,21 @@
       &lt;p&gt;Escape sequences are usually repetitive,
       and when complex, are usually not complex in an interesting way.
       They can be programmed with regex or eval hacks.
-      But this time Peter chose to use Marpa to write 
+      But this time
+      Peter chose to write 
       a mini-language that specifies 
-      escape sequences and compiles into Perl code,
-      in the hope it would be faster.
+      escape sequences,
+      and to use Marpa to
+      compile the mini-language into Perl code.
       He was done in a hour.
       &lt;h3&gt;A log file query language&lt;/h3&gt;
       &lt;p&gt;Meanwhile, an interesting and adventurous language effort
       was underway on
       the other side of the Atlantic, where Paul Bennett,
-      &lt;a href=&quot;https://plus.google.com/u/0/110360907592575381901/posts/XdTPRHvbA8w#110360907592575381901/posts/XdTPRHvbA8w&quot;&gt;
       faced with analyzing lots of nginx log files,
+      &lt;a href=&quot;https://plus.google.com/u/0/110360907592575381901/posts/XdTPRHvbA8w#110360907592575381901/posts/XdTPRHvbA8w&quot;&gt;
       decided a powerful custom log query language was
-      just what his issue needed&lt;/a&gt;.
+      the best way to address his issue&lt;/a&gt;.
       Paul needed to design and specify his language from scratch.
       Paul was also facing a learning curve,
       but he read the gist for a Scanless interface example,
@@ -87,18 +89,27 @@
       Paul reports that his language is on the job already,
       but that
       it needs some clean-up before going onto CPAN.
-      The snippets he shows are enticing.
+      &lt;p&gt;
+      The snippets Paul shows are enticing.
       The language seems to include 
       strings, integers and timestamps as supported types;
       regexes;
       a full set of comparison and boolean operators;
       and helpful new &quot;any&quot;, &quot;between&quot; and &quot;one&quot; operators.
-      &lt;p&gt;
-      Pretty good for 3 days.
+      Pretty good for three days.
       A lot of nasty problems snuggled away
       in log files may find their
       hiding places are not nearly as safe 
       as they have been able to expect.
+    &lt;h3&gt;Where to start&lt;/h3&gt;
+    &lt;p&gt;If you're interested in learning more about Marpa's Scanless
+    interface, there is
+      &lt;a href=&quot;http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2013/01/dsl_simpler2.html&quot;&gt;
+      a tutorial&lt;/a&gt;.
+      Additionally,
+      the announcement of the Scanless interface contained
+      &lt;a href=&quot;http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2013/01/announce_scanless.html&quot;&gt;a
+      mini-tutorial&lt;/a&gt;.
     &lt;h3&gt;Comments&lt;/h3&gt;
     &lt;p&gt;
       Comments on this post
