@@ -10,6 +10,41 @@
     <language>en</language>
 
   <item>
+    <title>A Language for writing languages</title>
+    <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2013/01/language_for_languages.html</link>
+    <description>  &lt;p&gt;
+      &lt;!--
+      marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
+      --&gt;
+      The Scanless interface is not yet two weeks old, but at this point
+      I have reports from its users of completed applications.
+      Significantly, two of them are for work.
+      &lt;h3&gt;A JSON Parser&lt;/h3&gt;
+      The non work-related application is a JSON parser.
+      Obviously, it easily &lt;b&gt;could&lt;/b&gt; be work-related,
+      and given it's available as gist,
+      it may well be in production use by someone somewhere.
+      It was written by Peter Stuifzand,
+      runs 185 lines
+      and took him less than 30 minutes to write.
+      With Marpa's Scanless interface, it was a matter of
+      typing in the grammar,
+      and add a few Perl functions to provide the semantics.
+      &lt;p&gt;There are, of course, other JSON parsers out there,
+      and many of which run faster.
+      These, however, took weeks to write.
+      If you are, for example, thinking of extending JSON,
+      and development time is a consideration,
+      the Marpa-based solution may be the one for you.
+      &lt;h3&gt;Printer escape codes&lt;/h3&gt;
+    &lt;h3&gt;Comments&lt;/h3&gt;
+    &lt;p&gt;
+      Comments on this post
+      can be sent to the Marpa Google Group:
+      &lt;code&gt;marpa-parser@googlegroups.com&lt;/code&gt;
+    &lt;/p&gt;</description>
+  </item>
+  <item>
     <title>Making DSL's even simpler</title>
     <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2013/01/dsl_simpler2.html</link>
     <description>  &lt;p&gt;
@@ -1093,84 +1128,6 @@ digits ~ [\d]+
       Why does life have to be difficult?
     &lt;/p&gt;
     &lt;p&gt;
-      Comments on this post
-      can be sent to the Marpa Google Group:
-      &lt;code&gt;marpa-parser@googlegroups.com&lt;/code&gt;
-    &lt;/p&gt;</description>
-  </item>
-  <item>
-    <title>Announcing a full release of Marpa::R2</title>
-    <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/11/announce_r2.html</link>
-    <description>  &lt;h3&gt;Announcing Marpa::R2&lt;/h3&gt;
-    &lt;!--
-      marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
-      --&gt;
-    &lt;p&gt;
-      &lt;a href=&quot;https://metacpan.org/release/Marpa-R2&quot;&gt;
-        Marpa::R2&lt;/a&gt;
-      is now in full, official release.
-      For those new to this blog, Marpa::R2 is an efficient, practical general
-      BNF parser, targeted at applications too complex for
-      regular expressions.
-      Marpa::R2 is based on
-      &lt;a href=&quot;http://jeffreykegler.github.com/Marpa-web-site/&quot;&gt;
-        the Marpa parsing algorithm&lt;/a&gt;.
-      New, but squarely based on the published literature,
-      the Marpa algorithm
-      parses every class of grammar in practical use today
-      in linear time.
-    &lt;/p&gt;
-    &lt;p&gt;Marpa::R2 is the successor to Marpa::XS and
-    &lt;/p&gt;
-    &lt;ul&gt;
-      &lt;li&gt;
-        &lt;p&gt;installs and runs on Windows.
-        &lt;/p&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;p&gt;has better error reporting.
-        &lt;/p&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;p&gt;is faster.
-        &lt;/p&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;p&gt;
-          has a cleaner, simpler interface.
-        &lt;/p&gt;
-      &lt;/li&gt;
-    &lt;/ul&gt;
-    &lt;p&gt;
-    &lt;a href=&quot;https://metacpan.org/module/Marpa::XS&quot;&gt;Marpa::XS&lt;/a&gt;
-    remains available and,
-      since changes to it are now on a &quot;bug fix only&quot; basis,
-      should be quite stable.
-      While Marpa::R2's interface will have a familiar look
-      to users of Marpa::XS, it is not fully compatible:
-      &lt;a href=&quot;https://metacpan.org/module/Marpa::R2::Changes&quot;&gt;
-      changes are documented here&lt;/a&gt;.
-    &lt;/p&gt;
-    &lt;p&gt;
-      Those who have been following this blog may have noticed
-      that
-      &lt;a href=&quot;https://metacpan.org/module/Marpa::R2::BNF&quot;&gt;
-      a new BNF interface&lt;/a&gt;
-      has been added to Marpa::R2.
-      This is growing --
-      I am currently adding scannerless parsing to it,
-      which means that applications will be able to run
-      Marpa::R2 without a lexer.
-      Because the BNF interface is new
-      and still under very active development,
-      it is being kept in beta status for the time being.
-    &lt;/p&gt;
-    &lt;h3&gt;Comments&lt;/h3&gt;
-    &lt;p&gt;
-      The Windows port of Marpa was the work of Jean-Damien Durand,
-      who utilized Alberto Sim&amp;otilde;es'
-      &lt;a href=&quot;http://search.cpan.org/dist/Config-AutoConf/&quot;&gt;
-        Config::AutoConf&lt;/a&gt;.
       Comments on this post
       can be sent to the Marpa Google Group:
       &lt;code&gt;marpa-parser@googlegroups.com&lt;/code&gt;

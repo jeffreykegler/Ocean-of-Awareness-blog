@@ -1,0 +1,32 @@
+A Language for writing languages
+  <p>
+      <!--
+      marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
+      -->
+      The Scanless interface is not yet two weeks old, but at this point
+      I have reports from its users of completed applications.
+      Significantly, two of them are for work.
+      <h3>A JSON Parser</h3>
+      The non work-related application is a JSON parser.
+      Obviously, it easily <b>could</b> be work-related,
+      and given it's available as gist,
+      it may well be in production use by someone somewhere.
+      It was written by Peter Stuifzand,
+      runs 185 lines
+      and took him less than 30 minutes to write.
+      With Marpa's Scanless interface, it was a matter of
+      typing in the grammar,
+      and add a few Perl functions to provide the semantics.
+      <p>There are, of course, other JSON parsers out there,
+      and many of which run faster.
+      These, however, took weeks to write.
+      If you are, for example, thinking of extending JSON,
+      and development time is a consideration,
+      the Marpa-based solution may be the one for you.
+      <h3>Printer escape codes</h3>
+    <h3>Comments</h3>
+    <p>
+      Comments on this post
+      can be sent to the Marpa Google Group:
+      <code>marpa-parser@googlegroups.com</code>
+    </p>
