@@ -54,19 +54,20 @@
       by &quot;escape sequences&quot; --
       byte sequences which control things like cursor motion, color, character sets,
       graphics, etc., etc.
-      These can get quite fancy, but are usually very repetitive, and it's nice
-      to wrap them in conveniently named functions.
-      &lt;p&gt;Escape sequences can get quite fancy, but they're usually repetitive,
-      and even when complex typically aren't very interesting.
+      It's nice to invoke them with a set of well-named functions.
+      &lt;p&gt;Escape sequences are usually repetitive,
+      and when complex, are usually not complex in an interesting way.
       They can be programmed with regex or eval hacks,
-      but Peter chose Marpa-based grammar-driven programming because he thought it
+      but this time Peter chose Marpa-based grammar-driven programming in the hope
+      that it
       would be faster.
-      His program compiles from
+      His program, which compiles
       a mini-language that specifies 
-      escape sequences to Perl.
-      He was done in a hour.
+      escape sequences into Perl code,
+      was done in a hour.
       &lt;h3&gt;A log file query language&lt;/h3&gt;
-      &lt;p&gt;The most adventurous language of the three comes from
+      &lt;p&gt;Meanwhile, an intereting and adventurous language effort
+      was underway on
       the other side of the Atlantic, where Paul Bennett
       was faced with analyzing lots of nginx log files.
       Both of Peter's languages were already
@@ -80,12 +81,10 @@
       (He doesn't say, but it could have been the one for
       &lt;a href=&quot;http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2013/01/dsl_simpler2.html&quot;&gt;
       this post&lt;/a&gt;.)
-      &lt;p&gt;Paul took a similar approach to the one Peter used for
-      printer escapes -- his log query language compiles to Perl.
+      &lt;p&gt;Like Peter's escape sequence language,
+      Paul's log query language program compiles to Perl.
       Its writing and debugging
-      spread out over 3 days that sound
-      like they included a lot of log file analysis.
-      &lt;p&gt;
+      were spread out over 3 days.
       Paul reports that his language is on the job already,
       but that
       needs some clean-up before going in CPAN.
