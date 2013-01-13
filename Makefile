@@ -4,12 +4,8 @@ dummy:
 all:
 	perl work/blosxom.cgi
 
-full: all sitemap.xml metapages/chronological.html
-
-sitemap.xml:
+full: all
 	perl work/gen_sitemap.pl > sitemap.xml
-
-metapages/chronological.html:
 	perl work/gen_chronological.pl > metapages/chronological.html
 
 ping:
