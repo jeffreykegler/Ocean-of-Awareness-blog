@@ -108,19 +108,26 @@ my $recce = Marpa::R2::Scanless::R->new( { grammar => $grammar, trace_terminals 
 $recce->read(\$quotation);
 
 sub unimplemented_count {
-    return 0 if scalar @_ != 2;
-    if ($_[0] eq 'unimplemented') {
-        return scalar @{$_[1]};
-    }
-    return List::Util::sum 0, map { unimplemented_count($_) } @_;
+    my ($arg) = @_;
+    return 0 if ref $arg ne 'ARRAY';
+    my ($type, @rest) = @{$arg};
+    return scalar @rest if $type eq 'unimplemented';
+    return List::Util::sum 0, map { unimplemented_count($_) } @rest;
 }
 
 my $parse_count = 0;
+my $best_so_far;
+my $best_result;
+
 while ( my $value_ref = $recce->value() ) {
     $parse_count++;
-    say "Unimplemented: ", unimplemented_count(${$value_ref});
-    say Data::Dumper::Dumper( ${$value_ref} );
+    my $unimplemented_count = unimplemented_count(${$value_ref});
+    if (not defined $best_so_far or $unimplemented_count < $best_so_far) {
+        $best_so_far = $unimplemented_count;
+        $best_result = $value_ref;
+    }
 }
+say Data::Dumper::Dumper( ${$best_result} );
 say 'Parse count: ', $parse_count;
 
 package My_Actions;
@@ -129,9 +136,20 @@ sub new { return $SELF }
 
 sub do_what_i_mean {
     my $self = shift;
-    return undef if not scalar @_;
+    my @children = grep { defined } @_;
+    my $child_count = scalar @children;
+    my $raw_child_count = scalar @_;
+    return undef if not $child_count;
+    if ($raw_child_count == 1 and $child_count == 1 and not ref $children[0]) {
+        my (undef, $rhs) = $Marpa::R2::Context::grammar->rule($Marpa::R2::Context::rule);
+        return [ $rhs =>
+         [$Marpa::R2::Context::grammar->rule($Marpa::R2::Context::rule)],
+        $children[0] ];
+    }
     my ($lhs) = $Marpa::R2::Context::grammar->rule($Marpa::R2::Context::rule);
-    return [ $lhs => [grep { defined } @_] ];
+    return [ $lhs, 
+         [$Marpa::R2::Context::grammar->rule($Marpa::R2::Context::rule)],
+     @children ];
 }
 
 # vim: expandtab shiftwidth=4:
