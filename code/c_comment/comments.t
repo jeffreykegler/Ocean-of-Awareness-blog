@@ -32,14 +32,18 @@ sub usage {
 END_OF_USAGE_MESSAGE
 } ## end sub usage
 
-my $random_flag = 0;
-my $getopt_result = Getopt::Long::GetOptions( 'random!' => \$random_flag, );
+my $random_flag   = 0;
+my $test_size     = 80;
+my $getopt_result = Getopt::Long::GetOptions(
+    'random!' => \$random_flag,
+    'size=i'  => \$test_size
+);
 usage() if not $getopt_result;
 usage() if scalar @ARGV;
 
 my $input;
 if ($random_flag) {
-    my @chars = map { substr "/*x ", int(rand(4)), 1 } 0 .. 80;
+    my @chars = map { substr "/*x ", int(rand(4)), 1 } 0 .. $test_size;
     $input = join "", @chars;
     say "Input: ", $input;
 } else {
@@ -107,15 +111,19 @@ sub calculate {
 
 my $marpa_value = calculate(\$input);
 if ( !defined $marpa_value ) {
-    $marpa_value = '';
+    $marpa_value = [];
 }
-say Data::Dumper::Dumper(\$marpa_value);
 
 my @regex_value = ($input =~ m/
   (?:(?:\/\*)(?:(?:[^\*]+|\*(?!\/))*)(?:\*\/))
 /gxms);
 
-Test::More::is_deeply($marpa_value, \@regex_value, 'Compare Marpa to Regex');
+say Data::Dumper::Dumper(\$marpa_value);
+
+if (!Test::More::is_deeply($marpa_value, \@regex_value, 'Compare Marpa to Regex'))
+{
+    say Data::Dumper::Dumper(\@regex_value);
+}
 
 package My_Actions;
 our $SELF;
