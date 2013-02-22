@@ -48,17 +48,23 @@ my $rules = <<'END_OF_GRAMMAR';
 text ::= <text segment>*
 <text segment> ::= <C style comment>
 
-:discard ~ <comment free text>
-<comment free text> ~ <slash free text>
-<comment free text> ~ '/'
-<C style comment> ~ '/*' <comment interior> '*/'
-<comment interior> ~ <comment interior segment>
-<comment interior segment> ~ <star free text>
-<comment interior segment> ~ <non terminating star sequence>
-<star free text> ~ [^*]*
+:discard ~ <slash free text>
 <slash free text> ~ [^/]+
-<non terminating star sequence> ~ <star sequence> [^/]
-<star sequence> ~ [*]+
+:discard ~ <lone slash>
+<lone slash> ~ '/'
+:discard ~ <unmatched comment start>
+<unmatched comment start> ~ '/*'
+<C style comment> ~ '/*' <comment interior> '*/'
+<comment interior> ~
+    <optional non stars>
+    <optional star prefixed segments>
+    <optional pre final stars>
+<optional non stars> ~ [^*]*
+<optional star prefixed segments> ~ <star prefixed segment>*
+<star prefixed segment> ~ <stars> [^/*] <star free text>
+<stars> ~ [*]+
+<star free text> ~ [^*]+
+<optional pre final stars> ~ [*]*
 END_OF_GRAMMAR
 
 my $grammar = Marpa::R2::Scanless::G->new(
@@ -71,21 +77,26 @@ my $grammar = Marpa::R2::Scanless::G->new(
 sub calculate {
     my ($p_string) = @_;
 
-    my $recce = Marpa::R2::Scanless::R->new( { grammar => $grammar } );
+    my $recce = Marpa::R2::Scanless::R->new( { grammar => $grammar,
+    # trace_lexemes => 99,
+    # trace_g0 => 99
+    } );
 
     my $self = bless { grammar => $grammar }, 'My_Actions';
     $self->{recce}        = $recce;
     local $My_Actions::SELF = $self;
 
-    if ( not defined eval { $recce->read($p_string); 1 } ) {
+    my $eval_result = eval { $recce->read($p_string); 1 };
+    if (not defined $eval_result) {
 
         # Add last expression found, and rethrow
         my $eval_error = $EVAL_ERROR;
+        say $EVAL_ERROR;
         chomp $eval_error;
+        say $recce->show_progress();
         die $self->show_last('C style comment'), "\n", $eval_error, "\n";
     } ## end if ( not defined eval { $recce->read($p_string); 1 })
     my $value_ref = $recce->value();
-    say STDERR "r->value() = ", Data::Dumper::Dumper($value_ref);
     if ( not defined $value_ref ) {
         die $self->show_last('C style comment'), "\n",
             "No parse was found, after reading the entire input\n";
@@ -99,7 +110,7 @@ if ($stdin_flag) {
     if ( !defined $actual_value ) {
         die 'NO PARSE!';
     }
-    say $actual_value;
+    say Data::Dumper::Dumper($actual_value);
     exit 0;
 } ## end if ($stdin_flag)
 
@@ -108,8 +119,10 @@ our $SELF;
 sub new { return $SELF }
 
 sub do_dwim {
-   # say STDERR Data::Dumper::Dumper(\@_);
    shift;
+   my $rule_id = $Marpa::R2::Context::rule;
+   my ($lhs) = $Marpa::R2::Context::grammar->rule($rule_id);
+   # say STDERR "=== $lhs = ", join " ", @_;
    return undef if not scalar @_;
    return $_[0] if scalar @_ == 1;
    return \@_;
