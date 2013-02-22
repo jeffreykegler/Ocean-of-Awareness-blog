@@ -22,31 +22,22 @@ use warnings;
 use English qw( -no_match_vars );
 use GetOpt::Long;
 
-use Marpa::R2 2.040000;
+use Marpa::R2 2.046000;
 
 sub usage {
-
     die <<"END_OF_USAGE_MESSAGE";
-    $PROGRAM_NAME
-    $PROGRAM_NAME --stdin < file
-With --stdin arg, reads expression from standard input.
-By default, runs a test.
+    $PROGRAM_NAME < file
 END_OF_USAGE_MESSAGE
 } ## end sub usage
 
-my $stdin_flag = 0;
-my $getopt_result = Getopt::Long::GetOptions( 'stdin!' => \$stdin_flag, );
-usage() if not $getopt_result;
+usage() if scalar @ARGV;
 
-my $input;
-if ($stdin_flag) {
-    $input = do { local $INPUT_RECORD_SEPARATOR = undef; <> };
-}
+my $input = do { local $INPUT_RECORD_SEPARATOR = undef; <> };
 
 my $rules = <<'END_OF_GRAMMAR';
 :start ::= text
 text ::= <text segment>*
-<text segment> ::= <C style comment>
+<text segment> ::= <C style comment> action => do_comment
 
 :discard ~ <slash free text>
 <slash free text> ~ [^/]+
@@ -77,17 +68,13 @@ my $grammar = Marpa::R2::Scanless::G->new(
 sub calculate {
     my ($p_string) = @_;
 
-    my $recce = Marpa::R2::Scanless::R->new( { grammar => $grammar,
-    # trace_lexemes => 99,
-    # trace_g0 => 99
-    } );
-
+    my $recce = Marpa::R2::Scanless::R->new( { grammar => $grammar, } );
     my $self = bless { grammar => $grammar }, 'My_Actions';
     $self->{recce}        = $recce;
     local $My_Actions::SELF = $self;
 
     my $eval_result = eval { $recce->read($p_string); 1 };
-    if (not defined $eval_result) {
+    if ( not defined $eval_result ) {
 
         # Add last expression found, and rethrow
         my $eval_error = $EVAL_ERROR;
@@ -95,7 +82,7 @@ sub calculate {
         chomp $eval_error;
         say $recce->show_progress();
         die $self->show_last('C style comment'), "\n", $eval_error, "\n";
-    } ## end if ( not defined eval { $recce->read($p_string); 1 })
+    } ## end if ( not defined $eval_result )
     my $value_ref = $recce->value();
     if ( not defined $value_ref ) {
         die $self->show_last('C style comment'), "\n",
@@ -105,18 +92,22 @@ sub calculate {
 
 } ## end sub calculate
 
-if ($stdin_flag) {
-    my $actual_value = calculate(\$input);
-    if ( !defined $actual_value ) {
-        die 'NO PARSE!';
-    }
-    say Data::Dumper::Dumper($actual_value);
-    exit 0;
-} ## end if ($stdin_flag)
+my $actual_value = calculate(\$input);
+if ( !defined $actual_value ) {
+    die 'NO PARSE!';
+}
 
 package My_Actions;
 our $SELF;
 sub new { return $SELF }
+
+sub do_comment {
+    my ($self, $comment) = @_;
+    my $comment_number = ++$self->{count};
+    say "Comment $comment_number:";
+    say $comment;
+    return undef;
+}
 
 sub do_dwim {
    shift;
