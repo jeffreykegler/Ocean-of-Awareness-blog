@@ -21,31 +21,42 @@ use strict;
 use warnings;
 use English qw( -no_match_vars );
 use GetOpt::Long;
+use Test::More tests => 1;
 
 use Marpa::R2 2.046000;
 
 sub usage {
     die <<"END_OF_USAGE_MESSAGE";
     $PROGRAM_NAME < file
+    $PROGRAM_NAME --rand
 END_OF_USAGE_MESSAGE
 } ## end sub usage
 
+my $random_flag = 0;
+my $getopt_result = Getopt::Long::GetOptions( 'random!' => \$random_flag, );
+usage() if not $getopt_result;
 usage() if scalar @ARGV;
 
-my $input = do { local $INPUT_RECORD_SEPARATOR = undef; <> };
+my $input;
+if ($random_flag) {
+    my @chars = map { substr "/*x ", int(rand(4)), 1 } 0 .. 80;
+    $input = join "", @chars;
+    say "Input: ", $input;
+} else {
+    $input = do { local $INPUT_RECORD_SEPARATOR = undef; <STDIN> };
+}
 
 my $rules = <<'END_OF_GRAMMAR';
 :start ::= text
-<text> ::= <well formed text>
-<text> ::= <well formed text> <unmatched comment start>
-<well formed text> ::= <text segment>*
+text ::= <text segment>* action => do_array
 <text segment> ::= <C style comment> action => do_comment
 
 :discard ~ <slash free text>
 <slash free text> ~ [^/]+
+:discard ~ <lone slash>
+<lone slash> ~ '/'
+:discard ~ <unmatched comment start>
 <unmatched comment start> ~ '/*'
-:discard ~ <any single character>
-<any single character> ~ [\D\d]
 <C style comment> ~ '/*' <comment interior> '*/'
 <comment interior> ~
     <optional non stars>
@@ -61,7 +72,6 @@ END_OF_GRAMMAR
 
 my $grammar = Marpa::R2::Scanless::G->new(
     {   action_object  => 'My_Actions',
-        default_action => 'do_dwim',
         source         => \$rules,
     }
 );
@@ -93,36 +103,30 @@ sub calculate {
 
 } ## end sub calculate
 
-my $actual_value = calculate(\$input);
-if ( !defined $actual_value ) {
+my $marpa_value = calculate(\$input);
+if ( !defined $marpa_value ) {
     die 'NO PARSE!';
 }
+say Data::Dumper::Dumper(\$marpa_value);
+
+my @regex_value = ($input =~ m/
+  (?:(?:\/\*)(?:(?:[^\*]+|\*(?!\/))*)(?:\*\/))
+/gxms);
+
+Test::More::is_deeply($marpa_value, \@regex_value, 'Compare Marpa to Regex');
 
 package My_Actions;
 our $SELF;
 sub new { return $SELF }
 
-sub do_unterminated {
-    say "Unterminated comment_number start";
-    return undef;
-}
-
 sub do_comment {
     my ($self, $comment) = @_;
-    my $comment_number = ++$self->{count};
-    say "Comment $comment_number:";
-    say $comment;
-    return undef;
+    return $comment;
 }
 
-sub do_dwim {
+sub do_array {
    shift;
-   my $rule_id = $Marpa::R2::Context::rule;
-   my ($lhs) = $Marpa::R2::Context::grammar->rule($rule_id);
-   # say STDERR "=== $lhs = ", join " ", @_;
-   return undef if not scalar @_;
-   return $_[0] if scalar @_ == 1;
-   return \@_;
+   return [@_];
 }
 
 sub show_last {
