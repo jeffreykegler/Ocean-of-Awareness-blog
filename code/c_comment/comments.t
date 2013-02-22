@@ -48,15 +48,16 @@ if ($random_flag) {
 
 my $rules = <<'END_OF_GRAMMAR';
 :start ::= text
-text ::= <text segment>* action => do_array
+<text> ::= <well formed text>
+<well formed text> ::= <text segment>* action => do_array
 <text segment> ::= <C style comment> action => do_comment
 
 :discard ~ <slash free text>
 <slash free text> ~ [^/]+
-:discard ~ <lone slash>
-<lone slash> ~ '/'
 :discard ~ <unmatched comment start>
 <unmatched comment start> ~ '/*'
+:discard ~ <any single character>
+<any single character> ~ [\D\d]
 <C style comment> ~ '/*' <comment interior> '*/'
 <comment interior> ~
     <optional non stars>
@@ -72,6 +73,7 @@ END_OF_GRAMMAR
 
 my $grammar = Marpa::R2::Scanless::G->new(
     {   action_object  => 'My_Actions',
+        default_action => 'do_dwim',
         source         => \$rules,
     }
 );
@@ -105,7 +107,7 @@ sub calculate {
 
 my $marpa_value = calculate(\$input);
 if ( !defined $marpa_value ) {
-    die 'NO PARSE!';
+    $marpa_value = '';
 }
 say Data::Dumper::Dumper(\$marpa_value);
 
@@ -127,6 +129,16 @@ sub do_comment {
 sub do_array {
    shift;
    return [@_];
+}
+
+sub do_dwim {
+   shift;
+   my $rule_id = $Marpa::R2::Context::rule;
+   my ($lhs) = $Marpa::R2::Context::grammar->rule($rule_id);
+   # say STDERR "=== $lhs = ", join " ", @_;
+   return undef if not scalar @_;
+   return $_[0] if scalar @_ == 1;
+   return \@_;
 }
 
 sub show_last {
