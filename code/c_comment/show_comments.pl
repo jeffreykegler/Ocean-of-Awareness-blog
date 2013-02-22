@@ -1,5 +1,5 @@
 #!perl
-# Copyright 2012 Jeffrey Kegler
+# Copyright 2013 Jeffrey Kegler
 # This file is part of Marpa::R2.  Marpa::R2 is free software: you can
 # redistribute it and/or modify it under the terms of the GNU Lesser
 # General Public License as published by the Free Software Foundation,
@@ -14,7 +14,7 @@
 # General Public License along with Marpa::R2.  If not, see
 # http://www.gnu.org/licenses/.
 
-# Go the a file and print the C-style comments
+# Read a file and print the C-style comments
 
 use 5.010;
 use strict;
@@ -52,9 +52,9 @@ text ::= <text segment>*
     <optional pre final stars>
 <optional non stars> ~ [^*]*
 <optional star prefixed segments> ~ <star prefixed segment>*
-<star prefixed segment> ~ <stars> [^/*] <star free text>
+<star prefixed segment> ~ <stars> [^/*] <optional star free text>
 <stars> ~ [*]+
-<star free text> ~ [^*]+
+<optional star free text> ~ [^*]*
 <optional pre final stars> ~ [*]*
 END_OF_GRAMMAR
 
