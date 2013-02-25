@@ -21,7 +21,7 @@ use strict;
 use warnings;
 use English qw( -no_match_vars );
 use GetOpt::Long;
-use Test::More tests => 1;
+use Test::More;
 
 use Marpa::R2 2.046000;
 
@@ -34,21 +34,16 @@ END_OF_USAGE_MESSAGE
 
 my $random_flag   = 0;
 my $test_size     = 80;
+my $test_count = 1;
 my $getopt_result = Getopt::Long::GetOptions(
     'random!' => \$random_flag,
-    'size=i'  => \$test_size
+    'size=i'  => \$test_size,
+    'count=i'  => \$test_count
 );
 usage() if not $getopt_result;
 usage() if scalar @ARGV;
 
-my $input;
-if ($random_flag) {
-    my @chars = map { substr "/*x ", int(rand(4)), 1 } 0 .. $test_size;
-    $input = join "", @chars;
-    say "Input: ", $input;
-} else {
-    $input = do { local $INPUT_RECORD_SEPARATOR = undef; <STDIN> };
-}
+Test::More::plan tests => $test_count;
 
 my $rules = <<'END_OF_GRAMMAR';
 :start ::= text
@@ -63,6 +58,8 @@ my $rules = <<'END_OF_GRAMMAR';
 :discard ~ <any single character>
 <any single character> ~ [\D\d]
 <C style comment> ~ '/*' <comment interior> '*/'
+:discard ~ <unterminated C style comment>
+<unterminated C style comment> ~ '/*' <comment interior>
 <comment interior> ~
     <optional non stars>
     <optional star prefixed segments>
@@ -109,21 +106,41 @@ sub calculate {
 
 } ## end sub calculate
 
-my $marpa_value = calculate(\$input);
-if ( !defined $marpa_value ) {
-    $marpa_value = [];
-}
+for my $i ( 1 .. $test_count ) {
+    my $input;
+    if ($random_flag) {
+        my @chars = map { substr "/*x ", int( rand(4) ), 1 } 0 .. $test_size;
+        $input = join "", @chars;
+    }
+    else {
+        die "Test count > 1 for test from STDIN";
+        $input = do { local $INPUT_RECORD_SEPARATOR = undef; <STDIN> };
+    }
 
-my @regex_value = ($input =~ m/
+    my $marpa_value = calculate( \$input );
+    if ( !defined $marpa_value ) {
+        $marpa_value = [];
+    }
+
+    my @regex_value = (
+        $input =~ m/
   (?:(?:\/\*)(?:(?:[^\*]+|\*(?!\/))*)(?:\*\/))
-/gxms);
+/gxms
+    );
 
-say Data::Dumper::Dumper(\$marpa_value);
+        say "Input: ", $input, "\n", Data::Dumper::Dumper( \$marpa_value )
+        if $random_flag and $test_count <= 1;
 
-if (!Test::More::is_deeply($marpa_value, \@regex_value, 'Compare Marpa to Regex'))
-{
-    say Data::Dumper::Dumper(\@regex_value);
-}
+    if (!Test::More::is_deeply(
+            $marpa_value, \@regex_value, 'Compare Marpa to Regex'
+        )
+        )
+    {
+        say Data::Dumper::Dumper( \$marpa_value );
+        say Data::Dumper::Dumper( \@regex_value );
+    } ## end if ( !Test::More::is_deeply( $marpa_value, \@regex_value...))
+} ## end for my $i ( 1 .. $test_count )
+
 
 package My_Actions;
 our $SELF;
