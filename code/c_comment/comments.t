@@ -34,11 +34,11 @@ END_OF_USAGE_MESSAGE
 
 my $random_flag   = 0;
 my $test_size     = 80;
-my $test_count = 1;
+my $test_count    = 1;
 my $getopt_result = Getopt::Long::GetOptions(
     'random!' => \$random_flag,
     'size=i'  => \$test_size,
-    'count=i'  => \$test_count
+    'count=i' => \$test_count
 );
 usage() if not $getopt_result;
 usage() if scalar @ARGV;
@@ -84,7 +84,7 @@ sub calculate {
 
     my $recce = Marpa::R2::Scanless::R->new( { grammar => $grammar, } );
     my $self = bless { grammar => $grammar }, 'My_Actions';
-    $self->{recce}        = $recce;
+    $self->{recce} = $recce;
     local $My_Actions::SELF = $self;
 
     my $eval_result = eval { $recce->read($p_string); 1 };
@@ -128,7 +128,7 @@ for my $i ( 1 .. $test_count ) {
 /gxms
     );
 
-        say "Input: ", $input, "\n", Data::Dumper::Dumper( \$marpa_value )
+    say "Input: ", $input, "\n", Data::Dumper::Dumper( \$marpa_value )
         if $random_flag and $test_count <= 1;
 
     if (!Test::More::is_deeply(
@@ -141,38 +141,38 @@ for my $i ( 1 .. $test_count ) {
     } ## end if ( !Test::More::is_deeply( $marpa_value, \@regex_value...))
 } ## end for my $i ( 1 .. $test_count )
 
-
 package My_Actions;
 our $SELF;
 sub new { return $SELF }
 
 sub do_comment {
-    my ($self, $comment) = @_;
+    my ( $self, $comment ) = @_;
     return $comment;
 }
 
 sub do_array {
-   shift;
-   return [@_];
+    shift;
+    return [@_];
 }
 
 sub do_dwim {
-   shift;
-   my $rule_id = $Marpa::R2::Context::rule;
-   my ($lhs) = $Marpa::R2::Context::grammar->rule($rule_id);
-   # say STDERR "=== $lhs = ", join " ", @_;
-   return undef if not scalar @_;
-   return $_[0] if scalar @_ == 1;
-   return \@_;
-}
+    shift;
+    my $rule_id = $Marpa::R2::Context::rule;
+    my ($lhs) = $Marpa::R2::Context::grammar->rule($rule_id);
+
+    # say STDERR "=== $lhs = ", join " ", @_;
+    return undef if not scalar @_;
+    return $_[0] if scalar @_ == 1;
+    return \@_;
+} ## end sub do_dwim
 
 sub show_last {
-    my ($self, $symbol) = @_;
+    my ( $self, $symbol ) = @_;
     my $recce = $self->{recce};
     my ( $start, $end ) = $recce->last_completed_range($symbol);
     return 'No expression was successfully parsed' if not defined $start;
     my $last_expression = $recce->range_to_string( $start, $end );
     return "Last expression successfully parsed was: $last_expression";
-} ## end sub show_last_expression
+} ## end sub show_last
 
 # vim: expandtab shiftwidth=4:
