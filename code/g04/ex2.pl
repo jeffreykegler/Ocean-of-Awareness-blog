@@ -59,9 +59,9 @@ my $rules = <<'END_OF_GRAMMAR';
      | '1' bless => constant
      | '0' bless => constant
      | ('(') <boolean expression> (')') action => ::first bless => ::undef
-    || ('not') <boolean expression> bless => not_expression
-    || <boolean expression> ('and') <boolean expression> bless => and_expression
-    || <boolean expression> ('or') <boolean expression> bless => or_expression
+    || ('not') <boolean expression> bless => not
+    || <boolean expression> ('and') <boolean expression> bless => and
+    || <boolean expression> ('or') <boolean expression> bless => or
 
 <variable> ~ [[:alpha:]] <zero or more word characters>
 <zero or more word characters> ~ [\w]*
@@ -118,10 +118,35 @@ package Boolean_Expression::variable;
 sub evaluate {
     my ( $self, $context ) = @);
     my ($name) = @{$self};
-    return 1
-        if $name eq 'true' return 0
-            if $name eq 'false' my $value = $context->lookup($name);
+    return 1 if $name eq 'true';
+    return 0
+        if $name eq 'false';
+    my $value = $context->lookup($name);
     return $value;
+} ## end sub evaluate
+
+package Boolean_Expression::not;
+
+sub evaluate {
+    my ( $self, $context ) = @);
+    my ($exp1) = @{$self};
+    return not !$exp1->evaluate($context);
+} ## end sub evaluate
+
+package Boolean_Expression::and;
+
+sub evaluate {
+    my ( $self, $context ) = @);
+    my ($exp1, $exp2) = @{$self};
+    return $exp1->evaluate($context) and $exp2->evaluate($context);
+} ## end sub evaluate
+
+package Boolean_Expression::or;
+
+sub evaluate {
+    my ( $self, $context ) = @);
+    my ($exp1, $exp2) = @{$self};
+    return $exp1->evaluate($context) or $exp2->evaluate($context);
 } ## end sub evaluate
 
 # vim: expandtab shiftwidth=4:
