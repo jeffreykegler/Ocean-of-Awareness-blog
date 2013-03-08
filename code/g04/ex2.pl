@@ -52,20 +52,18 @@ GET_INPUT: {
 # Note Go4 ignores precedence
 my $rules = <<'END_OF_GRAMMAR';
 :default ::= action => ::array bless => ::lhs
-lexeme default = action => ::array bless => ::name
 
 :start ::= <boolean expression>
 <boolean expression> ::=
-       <variable> 
-     | <constant>
-     | '(' <boolean expression> ')'
-    || 'not' <boolean expression>
-    || <boolean expression> 'and' <boolean expression>
-    || <boolean expression> 'or' <boolean expression>
-<constant> ::= '1' | '0'
-<variable> ::= <standard name>
+       <variable> bless => variable
+     | <constant> bless => constant
+     | ('(') <boolean expression> (')') action => ::first bless => ::undef
+    || 'not' <boolean expression> bless => not_expression
+    || <boolean expression> 'and' <boolean expression> bless => and_expression
+    || <boolean expression> 'or' <boolean expression> bless => or_expression
+<constant> ::= '1' | '0' action => ::first bless => ::undef
 
-<standard name> ~ [[:alnum:]] <zero or more word characters>
+<variable> ~ [[:alpha:]] <zero or more word characters>
 <zero or more word characters> ~ [\w]*
 
 :discard ~ whitespace
@@ -82,7 +80,7 @@ whitespace ~ [\s]+
 END_OF_GRAMMAR
 
 my $grammar = Marpa::R2::Scanless::G->new(
-    {   bless_package => 'My_Nodes',
+    {   bless_package => 'Boolean_Expression',
         source         => \$rules,
     }
 );
