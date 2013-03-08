@@ -56,27 +56,18 @@ my $rules = <<'END_OF_GRAMMAR';
 :start ::= <boolean expression>
 <boolean expression> ::=
        <variable> bless => variable
-     | <constant> bless => constant
+     | '1' bless => constant
+     | '0' bless => constant
      | ('(') <boolean expression> (')') action => ::first bless => ::undef
-    || 'not' <boolean expression> bless => not_expression
-    || <boolean expression> 'and' <boolean expression> bless => and_expression
-    || <boolean expression> 'or' <boolean expression> bless => or_expression
-<constant> ::= '1' | '0' action => ::first bless => ::undef
+    || ('not') <boolean expression> bless => not_expression
+    || <boolean expression> ('and') <boolean expression> bless => and_expression
+    || <boolean expression> ('or') <boolean expression> bless => or_expression
 
 <variable> ~ [[:alpha:]] <zero or more word characters>
 <zero or more word characters> ~ [\w]*
 
 :discard ~ whitespace
 whitespace ~ [\s]+
-# allow comments
-:discard ~ <hash comment>
-<hash comment> ~ <terminated hash comment> | <unterminated
-   final hash comment>
-<terminated hash comment> ~ '#' <hash comment body> <vertical space char>
-<unterminated final hash comment> ~ '#' <hash comment body>
-<hash comment body> ~ <hash comment char>*
-<vertical space char> ~ [\x{A}\x{B}\x{C}\x{D}\x{2028}\x{2029}]
-<hash comment char> ~ [^\x{A}\x{B}\x{C}\x{D}\x{2028}\x{2029}]
 END_OF_GRAMMAR
 
 my $grammar = Marpa::R2::Scanless::G->new(
