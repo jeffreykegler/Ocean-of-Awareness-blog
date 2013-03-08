@@ -83,13 +83,15 @@ my $value_ref = $recce->value();
 if ( not defined $value_ref ) {
     die "No parse";
 }
+my $value = ${$value_ref};
 
 my $context = Context->new();
 $context->assign( x => 0 );
 $context->assign( y => 1 );
-say ${$value_ref}->evaluate($context);
 
-# say Data::Dumper::Dumper($value_ref);
+say $value->evaluate($context);
+say Data::Dumper::Dumper($value);
+say Data::Dumper::Dumper($value->copy());
 
 package Context;
 
@@ -118,6 +120,12 @@ sub evaluate {
     return $value;
 }
 
+sub copy {
+    my ( $self ) = @_;
+    my ($value) = @{$self};
+    return bless [$value], ref $self;
+}
+
 package Boolean_Expression::variable;
 
 sub evaluate {
@@ -130,6 +138,12 @@ sub evaluate {
     return $value;
 } ## end sub evaluate
 
+sub copy {
+    my ( $self ) = @_;
+    my ($name) = @{$self};
+    return bless [$name], ref $self;
+}
+
 package Boolean_Expression::not;
 
 sub evaluate {
@@ -137,6 +151,11 @@ sub evaluate {
     my ($exp1) = @{$self};
     return !$exp1->evaluate($context);
 } ## end sub evaluate
+
+sub copy {
+    my ( $self ) = @_;
+    return bless [map { $_->copy() } @{$self}], ref $self;
+}
 
 package Boolean_Expression::and;
 
@@ -146,6 +165,11 @@ sub evaluate {
     return $exp1->evaluate($context) && $exp2->evaluate($context);
 } ## end sub evaluate
 
+sub copy {
+    my ( $self ) = @_;
+    return bless [map { $_->copy() } @{$self}], ref $self;
+}
+
 package Boolean_Expression::or;
 
 sub evaluate {
@@ -153,5 +177,10 @@ sub evaluate {
     my ($exp1, $exp2) = @{$self};
     return $exp1->evaluate($context) || $exp2->evaluate($context);
 } ## end sub evaluate
+
+sub copy {
+    my ( $self ) = @_;
+    return bless [map { $_->copy() } @{$self}], ref $self;
+}
 
 # vim: expandtab shiftwidth=4:
