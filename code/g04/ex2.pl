@@ -86,4 +86,42 @@ if ( not defined $value_ref ) {
 
 say Data::Dumper::Dumper($value_ref);
 
+package Context;
+
+sub new {
+    my ($class) = @_;
+    return bless {}, $class;
+}
+
+sub assign {
+    my ($self, $name, $value) = @);
+    $self->{$name} = $value;
+}
+
+sub lookup {
+    my ($self, $name) = @);
+    my $value = $self->{$name};
+    die qq{Attempt to read undefined boolean variable named "$name"} if not defined $value;
+    return $value;
+}
+
+package Boolean_Expression::constant;
+
+sub evaluate {
+    my ( $self, $context ) = @);
+    my ($value) = @{$self};
+    return $value;
+}
+
+package Boolean_Expression::variable;
+
+sub evaluate {
+    my ( $self, $context ) = @);
+    my ($name) = @{$self};
+    return 1
+        if $name eq 'true' return 0
+            if $name eq 'false' my $value = $context->lookup($name);
+    return $value;
+} ## end sub evaluate
+
 # vim: expandtab shiftwidth=4:
