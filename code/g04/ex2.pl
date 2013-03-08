@@ -24,30 +24,7 @@ use GetOpt::Long;
 
 use Marpa::R2 2.047_012;
 
-sub usage {
-    die <<"END_OF_USAGE_MESSAGE";
-    $PROGRAM_NAME --demo
-    $PROGRAM_NAME < file
-With --stdin arg, reads expression from standard input.
-By default, runs a demo.
-END_OF_USAGE_MESSAGE
-} ## end sub usage
-
-my $demo_flag = 0;
-my $getopt_result = Getopt::Long::GetOptions( 'demo!' => \$demo_flag, );
-usage() if not $getopt_result;
-
-my $input;
-GET_INPUT: {
-    if ($demo_flag) {
-
-        # eliminate Marpa does precedence
-        $input = q{1 and x or y and not x};
-    }
-    if ( not $demo_flag ) {
-        $input = do { local $INPUT_RECORD_SEPARATOR = undef; <> };
-    }
-} ## end GET_INPUT:
+die "$PROGRAM_NAME does not take arguments -- it simply runs a demo\n" if scalar @ARGV;
 
 # Note Go4 ignores precedence
 my $rules = <<'END_OF_GRAMMAR';
@@ -76,22 +53,29 @@ my $grammar = Marpa::R2::Scanless::G->new(
     }
 );
 
-
-my $recce = Marpa::R2::Scanless::R->new( { grammar => $grammar, } );
-$recce->read(\$input);
-my $value_ref = $recce->value();
-if ( not defined $value_ref ) {
-    die "No parse";
+sub bnf_to_ast {
+    my ($bnf) = @_;
+    my $recce = Marpa::R2::Scanless::R->new( { grammar => $grammar } );
+    $recce->read(\ $bnf );
+    my $value_ref = $recce->value();
+    if ( not defined $value_ref ) {
+        die "No parse for $bnf";
+    }
+    return ${$value_ref};
 }
-my $value = ${$value_ref};
 
+
+my $ast1 = bnf_to_ast( q{1 and x or y and not x} );
 my $context = Context->new();
 $context->assign( x => 0 );
 $context->assign( y => 1 );
 
-say $value->evaluate($context);
-say Data::Dumper::Dumper($value);
-say Data::Dumper::Dumper($value->copy());
+say $ast1->evaluate($context);
+
+exit 0;
+
+# say Data::Dumper::Dumper($value);
+# say Data::Dumper::Dumper($value->copy());
 
 package Context;
 
@@ -126,6 +110,11 @@ sub copy {
     return bless [$value], ref $self;
 }
 
+sub replace {
+    my ( $self) = @_;
+    return $self->copy();
+}
+
 package Boolean_Expression::variable;
 
 sub evaluate {
@@ -144,6 +133,13 @@ sub copy {
     return bless [$name], ref $self;
 }
 
+sub replace {
+    my ( $self, $name_to_replace, $expression ) = @_;
+    my ( $my_name ) = @{ $self };
+    return $expression->copy() if $my_name eq $name_to_replace;
+    return $self->copy();
+}
+
 package Boolean_Expression::not;
 
 sub evaluate {
@@ -155,6 +151,11 @@ sub evaluate {
 sub copy {
     my ( $self ) = @_;
     return bless [map { $_->copy() } @{$self}], ref $self;
+}
+
+sub replace {
+    my ( $self, $name, $expression ) = @_;
+    return bless [map { $_->replace($name, $expression) } @{$self}], ref $self;
 }
 
 package Boolean_Expression::and;
@@ -170,6 +171,11 @@ sub copy {
     return bless [map { $_->copy() } @{$self}], ref $self;
 }
 
+sub replace {
+    my ( $self, $name, $expression ) = @_;
+    return bless [map { $_->replace($name, $expression) } @{$self}], ref $self;
+}
+
 package Boolean_Expression::or;
 
 sub evaluate {
@@ -181,6 +187,11 @@ sub evaluate {
 sub copy {
     my ( $self ) = @_;
     return bless [map { $_->copy() } @{$self}], ref $self;
+}
+
+sub replace {
+    my ( $self, $name, $expression ) = @_;
+    return bless [map { $_->replace($name, $expression) } @{$self}], ref $self;
 }
 
 # vim: expandtab shiftwidth=4:
