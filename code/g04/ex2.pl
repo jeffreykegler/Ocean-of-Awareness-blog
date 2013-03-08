@@ -84,7 +84,12 @@ if ( not defined $value_ref ) {
     die "No parse";
 }
 
-say Data::Dumper::Dumper($value_ref);
+my $context = Context->new();
+$context->assign( x => 0 );
+$context->assign( y => 1 );
+say ${$value_ref}->evaluate($context);
+
+# say Data::Dumper::Dumper($value_ref);
 
 package Context;
 
@@ -94,12 +99,12 @@ sub new {
 }
 
 sub assign {
-    my ($self, $name, $value) = @);
+    my ($self, $name, $value) = @_;
     $self->{$name} = $value;
 }
 
 sub lookup {
-    my ($self, $name) = @);
+    my ($self, $name) = @_;
     my $value = $self->{$name};
     die qq{Attempt to read undefined boolean variable named "$name"} if not defined $value;
     return $value;
@@ -108,7 +113,7 @@ sub lookup {
 package Boolean_Expression::constant;
 
 sub evaluate {
-    my ( $self, $context ) = @);
+    my ( $self, $context ) = @_;
     my ($value) = @{$self};
     return $value;
 }
@@ -116,7 +121,7 @@ sub evaluate {
 package Boolean_Expression::variable;
 
 sub evaluate {
-    my ( $self, $context ) = @);
+    my ( $self, $context ) = @_;
     my ($name) = @{$self};
     return 1 if $name eq 'true';
     return 0
@@ -128,25 +133,25 @@ sub evaluate {
 package Boolean_Expression::not;
 
 sub evaluate {
-    my ( $self, $context ) = @);
+    my ( $self, $context ) = @_;
     my ($exp1) = @{$self};
-    return not !$exp1->evaluate($context);
+    return !$exp1->evaluate($context);
 } ## end sub evaluate
 
 package Boolean_Expression::and;
 
 sub evaluate {
-    my ( $self, $context ) = @);
+    my ( $self, $context ) = @_;
     my ($exp1, $exp2) = @{$self};
-    return $exp1->evaluate($context) and $exp2->evaluate($context);
+    return $exp1->evaluate($context) && $exp2->evaluate($context);
 } ## end sub evaluate
 
 package Boolean_Expression::or;
 
 sub evaluate {
-    my ( $self, $context ) = @);
+    my ( $self, $context ) = @_;
     my ($exp1, $exp2) = @{$self};
-    return $exp1->evaluate($context) or $exp2->evaluate($context);
+    return $exp1->evaluate($context) || $exp2->evaluate($context);
 } ## end sub evaluate
 
 # vim: expandtab shiftwidth=4:
