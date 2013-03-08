@@ -76,37 +76,14 @@ my $grammar = Marpa::R2::Scanless::G->new(
     }
 );
 
-sub calculate {
-    my ($p_string) = @_;
 
-    my $recce = Marpa::R2::Scanless::R->new( { grammar => $grammar, } );
-    my $self = bless { grammar => $grammar }, 'My_Actions';
-    $self->{recce}        = $recce;
-    local $My_Actions::SELF = $self;
-
-    my $eval_result = eval { $recce->read($p_string); 1 };
-    if ( not defined $eval_result ) {
-
-        # Add last expression found, and rethrow
-        my $eval_error = $EVAL_ERROR;
-        say $EVAL_ERROR;
-        chomp $eval_error;
-        say $recce->show_progress();
-        die $self->show_last('C style comment'), "\n", $eval_error, "\n";
-    } ## end if ( not defined $eval_result )
-    my $value_ref = $recce->value();
-    if ( not defined $value_ref ) {
-        die $self->show_last('C style comment'), "\n",
-            "No parse was found, after reading the entire input\n";
-    }
-    die Data::Dumper::Dumper($value_ref);
-    return ${$value_ref};
-
-} ## end sub calculate
-
-my $actual_value = calculate(\$input);
-if ( !defined $actual_value ) {
-    die 'NO PARSE!';
+my $recce = Marpa::R2::Scanless::R->new( { grammar => $grammar, } );
+$recce->read(\$input);
+my $value_ref = $recce->value();
+if ( not defined $value_ref ) {
+    die "No parse";
 }
+
+say Data::Dumper::Dumper($value_ref);
 
 # vim: expandtab shiftwidth=4:
