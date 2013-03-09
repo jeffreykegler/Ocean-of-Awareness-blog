@@ -75,6 +75,9 @@ my $ast2 = bnf_to_ast( 'not z');
 $context->assign( z => 1 );
 say $ast2->evaluate($context) ? 'true' : 'false';
 
+my $ast3 = $ast1->replace( 'y', $ast2 );
+say $ast3->evaluate($context) ? 'true' : 'false';
+
 exit 0;
 
 # say Data::Dumper::Dumper($value);
