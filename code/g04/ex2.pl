@@ -84,7 +84,7 @@ $context->assign( y => 1 );
 $context->assign( z => 1 );
 say $context->dump();
 
-my $bnf = q{1 and x or y and not x};
+my $bnf = q{true and x or y and not x};
 my $ast1 = bnf_to_ast($bnf);
 say qq{Boolean 1 is "$bnf"};
 say "Value is ", $ast1->evaluate($context) ? 'true' : 'false';
