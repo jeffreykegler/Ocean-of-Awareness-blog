@@ -1,0 +1,19 @@
+This sounds pretty complicated
+and you may be saying this something, "this would be a crazy
+way to add two numbers."
+But, in fact, for most of us most of the time,
+the Interpreter Pattern is <b>exactly</b>
+the way we add two numbers,
+and this includes not most of those modern situations
+where efficiency is the priority.
+In C language for example, "x+2" is parsed into an AST
+and converted to machine instructions which are eventually
+run to produce the answer.
+
+In those languages,
+So in many situations you are using the interpreter pattern
+you fit your problem into a pre-determined general-purpose language.
+With the Interpreter Pattern you create a language targeted at your
+problem.
+
+<a href="https://sites.google.com/site/steveyegge2/ten-great-books">Yegge's blog post</a>
