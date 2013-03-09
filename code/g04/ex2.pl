@@ -78,27 +78,28 @@ sub bnf_to_ast {
     return ${$value_ref};
 } ## end sub bnf_to_ast
 
-my $bnf = q{1 and x or y and not x};
-my $ast1 = bnf_to_ast($bnf);
-say qq{Boolean 1: "$bnf"};
-say Data::Dumper::Dumper($ast1) if $verbose_flag;
-say Data::Dumper->Dump([$ast1], ['ast1']) if $verbose_flag;
 my $context = Context->new();
 $context->assign( x => 0 );
 $context->assign( y => 1 );
-say $ast1->evaluate($context) ? 'true' : 'false';
+$context->assign( z => 1 );
+say $context->dump();
+
+my $bnf = q{1 and x or y and not x};
+my $ast1 = bnf_to_ast($bnf);
+say qq{Boolean 1 is "$bnf"};
+say "Value is ", $ast1->evaluate($context) ? 'true' : 'false';
+say Data::Dumper::Dumper($ast1) if $verbose_flag;
 
 $bnf = 'not z';
 my $ast2 = bnf_to_ast($bnf);
-say qq{Boolean 2: "$bnf"};
+say qq{Boolean 2 is "$bnf"};
+say "Value is ", $ast2->evaluate($context) ? 'true' : 'false';
 say Data::Dumper->Dump([$ast2], ['ast2']) if $verbose_flag;
-$context->assign( z => 1 );
-say $ast2->evaluate($context) ? 'true' : 'false';
 
 my $ast3 = $ast1->replace( 'y', $ast2 );
-say q{Boolean 1, with "y" replaced by Boolean 2};
+say q{Boolean 3 is Boolean 1, with "y" replaced by Boolean 2};
+say "Value is ", $ast3->evaluate($context) ? 'true' : 'false';
 say Data::Dumper->Dump([$ast3], ['ast3']) if $verbose_flag;
-say $ast3->evaluate($context) ? 'true' : 'false';
 
 exit 0;
 
@@ -121,6 +122,11 @@ sub lookup {
         if not defined $value;
     return $value;
 } ## end sub lookup
+
+sub dump {
+    my ( $self ) = @_;
+    return join q{ }, map { join q{=}, $_, $self->{$_} } keys %{$self};
+}
 
 package Boolean_Expression::constant;
 
