@@ -82,6 +82,7 @@ my $bnf = q{1 and x or y and not x};
 my $ast1 = bnf_to_ast($bnf);
 say qq{Boolean 1: "$bnf"};
 say Data::Dumper::Dumper($ast1) if $verbose_flag;
+say Data::Dumper->Dump([$ast1], ['ast1']) if $verbose_flag;
 my $context = Context->new();
 $context->assign( x => 0 );
 $context->assign( y => 1 );
@@ -90,13 +91,13 @@ say $ast1->evaluate($context) ? 'true' : 'false';
 $bnf = 'not z';
 my $ast2 = bnf_to_ast($bnf);
 say qq{Boolean 2: "$bnf"};
-say Data::Dumper::Dumper($ast2) if $verbose_flag;
+say Data::Dumper->Dump([$ast2], ['ast2']) if $verbose_flag;
 $context->assign( z => 1 );
 say $ast2->evaluate($context) ? 'true' : 'false';
 
 my $ast3 = $ast1->replace( 'y', $ast2 );
 say q{Boolean 1, with "y" replaced by Boolean 2};
-say Data::Dumper::Dumper($ast3) if $verbose_flag;
+say Data::Dumper->Dump([$ast3], ['ast3']) if $verbose_flag;
 say $ast3->evaluate($context) ? 'true' : 'false';
 
 exit 0;
