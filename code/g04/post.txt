@@ -1,19 +1,64 @@
+The Gang of Four Interpreter Pattern
+
+The influential book <a href="http://en.wikipedia.org/wiki/Design_Patterns">
+contains 23 design patterns or,
+according to
+<a href="https://sites.google.com/site/steveyegge2/ten-great-books">
+Steve Yegge's review of it</a>,
+22 design patterns and a practical joke: the Interpreter Pattern.
+
+Of all the patterns,
+the Interpreter Pattern is the most powerful and flexible.
+And Yegge either changed his mind or (more likely) was being
+facetious himself, because in
+<a href="http://steve-yegge.blogspot.com/2007/12/codes-worst-enemy.html">
+a later post</a>
+he points out that
+<blockquote>
+patterns in the "Gang of Four" book [...] make code bases get bigger.
+Tragically, the only GoF pattern that can help code
+get smaller (Interpreter) is utterly ignored.
+</blockquote>
+
+In the Interpreter Pattern, you start with a language for your
+problem domain.  From this, you produce an Abstract Syntax Tree,
+which is also an object in the very versatile Composite Pattern.
+You then "interpret" the Abstract Syntax Tree.
+
 This sounds pretty complicated
 and you may be saying this something, "this would be a crazy
 way to add two numbers."
-But, in fact, for most of us most of the time,
+But in fact, most of the time,
 the Interpreter Pattern is <b>exactly</b>
-the way we add two numbers,
-and this includes not most of those modern situations
-where efficiency is the priority.
-In C language for example, "x+2" is parsed into an AST
-and converted to machine instructions which are eventually
+the way two numbers get added,
+and the higher the priority that is placed on speed,
+the more likely it is that the Interpreter Pattern is
+being used.
+When written, for example,
+in C language "x+2" is parsed into an AST
+and then converted to machine instructions.
+The machine instructions are eventually
 run to produce the answer.
 
-In those languages,
-So in many situations you are using the interpreter pattern
-you fit your problem into a pre-determined general-purpose language.
-With the Interpreter Pattern you create a language targeted at your
-problem.
+In fact, to avoid
+questions about the precise definition of
+"AST", we can define
+the Interpreter pattern
+ as a process that
+<ul>
+<li>Starts with a string that contains a language;
+<li>Converts that string into an
+intermediate representation,
+(bytecode, AST, etc.).
+<li>Optionally manipulates the intermediate representation; and finally
+<li>Executes (or converts into executable form) the intermediate representation.
+<ul>
+By this definition programmers are almost always using the Interpreter Pattern,
+and the choice is creating one tailoring to your problem domain ("domain-specific")
+or fitting your problem domain to a general-purpose Interpreter.
+<a href="http://www.modernperlbooks.com/mt/2011/08/everything-is-a-compiler.html">
+Or as chromatic more succintly puts it</a>
+<blockquote>
+Everything is a compiler
+</blockquote>
 
-<a href="https://sites.google.com/site/steveyegge2/ten-great-books">Yegge's blog post</a>
