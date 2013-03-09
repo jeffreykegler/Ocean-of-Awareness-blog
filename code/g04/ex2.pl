@@ -32,8 +32,8 @@ sub usage {
     $PROGRAM_NAME
     $PROGRAM_NAME --verbose
 Runs a demo.
-By default, prints the only the result AST evaluation.
-With --verbose, dumps the AST.
+By default, prints the only the results of AST evaluation.
+With --verbose, dumps each AST.
 END_OF_USAGE_MESSAGE
 } ## end sub usage
 
