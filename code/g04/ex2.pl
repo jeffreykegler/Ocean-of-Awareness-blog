@@ -69,8 +69,11 @@ my $ast1 = bnf_to_ast( q{1 and x or y and not x} );
 my $context = Context->new();
 $context->assign( x => 0 );
 $context->assign( y => 1 );
+say $ast1->evaluate($context) ? 'true' : 'false';
 
-say $ast1->evaluate($context);
+my $ast2 = bnf_to_ast( 'not z');
+$context->assign( z => 1 );
+say $ast2->evaluate($context) ? 'true' : 'false';
 
 exit 0;
 
