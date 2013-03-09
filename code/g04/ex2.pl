@@ -22,6 +22,7 @@ use warnings;
 use English qw( -no_match_vars );
 use Data::Dumper;
 use GetOpt::Long;
+use autodie;
 
 use Marpa::R2 2.047_012;
 
@@ -78,28 +79,28 @@ sub bnf_to_ast {
     return ${$value_ref};
 } ## end sub bnf_to_ast
 
-my $context = Context->new();
-$context->assign( x => 0 );
-$context->assign( y => 1 );
-$context->assign( z => 1 );
-say $context->dump();
+my $demo_context = Context->new();
+$demo_context->assign( x => 0 );
+$demo_context->assign( y => 1 );
+$demo_context->assign( z => 1 );
+say $demo_context->show();
 
-my $bnf = q{true and x or y and not x};
+my $bnf  = q{true and x or y and not x};
 my $ast1 = bnf_to_ast($bnf);
 say qq{Boolean 1 is "$bnf"};
-say "Value is ", $ast1->evaluate($context) ? 'true' : 'false';
+say 'Value is ', $ast1->evaluate($demo_context) ? 'true' : 'false';
 say Data::Dumper::Dumper($ast1) if $verbose_flag;
 
 $bnf = 'not z';
 my $ast2 = bnf_to_ast($bnf);
 say qq{Boolean 2 is "$bnf"};
-say "Value is ", $ast2->evaluate($context) ? 'true' : 'false';
-say Data::Dumper->Dump([$ast2], ['ast2']) if $verbose_flag;
+say 'Value is ', $ast2->evaluate($demo_context) ? 'true' : 'false';
+say Data::Dumper->Dump( [$ast2], ['ast2'] ) if $verbose_flag;
 
 my $ast3 = $ast1->replace( 'y', $ast2 );
 say q{Boolean 3 is Boolean 1, with "y" replaced by Boolean 2};
-say "Value is ", $ast3->evaluate($context) ? 'true' : 'false';
-say Data::Dumper->Dump([$ast3], ['ast3']) if $verbose_flag;
+say 'Value is ', $ast3->evaluate($demo_context) ? 'true' : 'false';
+say Data::Dumper->Dump( [$ast3], ['ast3'] ) if $verbose_flag;
 
 exit 0;
 
@@ -112,7 +113,7 @@ sub new {
 
 sub assign {
     my ( $self, $name, $value ) = @_;
-    $self->{$name} = $value;
+    return $self->{$name} = $value;
 }
 
 sub lookup {
@@ -123,8 +124,8 @@ sub lookup {
     return $value;
 } ## end sub lookup
 
-sub dump {
-    my ( $self ) = @_;
+sub show {
+    my ($self) = @_;
     return join q{ }, map { join q{=}, $_, $self->{$_} } keys %{$self};
 }
 
