@@ -11,20 +11,20 @@ BNF to AST
     in the Gang of Four's chapter on the Interpreter pattern:
     <blockquote>
 <pre>
-:default ::= action => ::array bless => ::lhs
+:default ::= action =&gt; ::array bless =&gt; ::lhs
 
-:start ::= <boolean expression>
-<boolean expression> ::=
-       <variable> bless => variable
-     | '1' bless => constant
-     | '0' bless => constant
-     | ('(') <boolean expression> (')') action => ::first bless => ::undef
-    || ('not') <boolean expression> bless => not
-    || <boolean expression> ('and') <boolean expression> bless => and
-    || <boolean expression> ('or') <boolean expression> bless => or
+:start ::= &lt;boolean expression&gt;
+&lt;boolean expression&gt; ::=
+       &lt;variable&gt; bless =&gt; variable
+     | '1' bless =&gt; constant
+     | '0' bless =&gt; constant
+     | ('(') &lt;boolean expression&gt; (')') action =&gt; ::first bless =&gt; ::undef
+    || ('not') &lt;boolean expression&gt; bless =&gt; not
+    || &lt;boolean expression&gt; ('and') &lt;boolean expression&gt; bless =&gt; and
+    || &lt;boolean expression&gt; ('or') &lt;boolean expression&gt; bless =&gt; or
 
-<variable> ~ [[:alpha:]] <zero or more word characters>
-<zero or more word characters> ~ [\w]*
+&lt;variable&gt; ~ [[:alpha:]] &lt;zero or more word characters&gt;
+&lt;zero or more word characters&gt; ~ [\w]*
 
 :discard ~ whitespace
 whitespace ~ [\s]+

@@ -10,6 +10,88 @@
     <language>en</language>
 
   <item>
+    <title>BNF to AST</title>
+    <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2013/03/bnf_to_ast.html</link>
+    <description>  &lt;p&gt;
+      &lt;!--
+      marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
+      --&gt;
+      The latest version of Marpa takes its &quot;whipitupitude&quot; one step further.
+      You can now go directly from the BNF description of a grammar,
+      (and of course your input string)
+    to an abstract syntax tree (AST).
+    &lt;p&gt;Here's BNF for an example which is essentially the 2nd example
+    in the Gang of Four's chapter on the Interpreter pattern:
+    &lt;blockquote&gt;
+&lt;pre&gt;
+:default ::= action =&amp;gt; ::array bless =&amp;gt; ::lhs
+
+:start ::= &amp;lt;boolean expression&amp;gt;
+&amp;lt;boolean expression&amp;gt; ::=
+       &amp;lt;variable&amp;gt; bless =&amp;gt; variable
+     | '1' bless =&amp;gt; constant
+     | '0' bless =&amp;gt; constant
+     | ('(') &amp;lt;boolean expression&amp;gt; (')') action =&amp;gt; ::first bless =&amp;gt; ::undef
+    || ('not') &amp;lt;boolean expression&amp;gt; bless =&amp;gt; not
+    || &amp;lt;boolean expression&amp;gt; ('and') &amp;lt;boolean expression&amp;gt; bless =&amp;gt; and
+    || &amp;lt;boolean expression&amp;gt; ('or') &amp;lt;boolean expression&amp;gt; bless =&amp;gt; or
+
+&amp;lt;variable&amp;gt; ~ [[:alpha:]] &amp;lt;zero or more word characters&amp;gt;
+&amp;lt;zero or more word characters&amp;gt; ~ [\w]*
+
+:discard ~ whitespace
+whitespace ~ [\s]+
+&lt;/pre&gt;
+    &lt;/blockquote&gt;
+    &lt;p&gt;
+    Marpa can take this and the input
+&lt;blockquote&gt;
+&lt;pre&gt;
+true and x or y and not x
+&lt;/pre&gt;
+&lt;/blockquote&gt;
+The result (as displayed via Data::Dumper) is this AST:
+&lt;blockquote&gt;
+&lt;pre&gt;
+$VAR1 = bless( [
+                 bless( [
+                          bless( [
+                                   'true'
+                                 ], 'Boolean_Expression::variable' ),
+                          bless( [
+                                   'x'
+                                 ], 'Boolean_Expression::variable' )
+                        ], 'Boolean_Expression::and' ),
+                 bless( [
+                          bless( [
+                                   'y'
+                                 ], 'Boolean_Expression::variable' ),
+                          bless( [
+                                   bless( [
+                                            'x'
+                                          ], 'Boolean_Expression::variable' )
+                                 ], 'Boolean_Expression::not' )
+                        ], 'Boolean_Expression::and' )
+               ], 'Boolean_Expression::or' );
+&lt;/pre&gt;
+&lt;/blockquote&gt;
+    &lt;h3&gt;Where to start&lt;/h3&gt;
+    &lt;p&gt;If you're interested in learning more about Marpa's Scanless
+    interface, there is
+      &lt;a href=&quot;http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2013/01/dsl_simpler2.html&quot;&gt;
+      a tutorial&lt;/a&gt;.
+      Additionally,
+      the announcement of the Scanless interface contained
+      &lt;a href=&quot;http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2013/01/announce_scanless.html&quot;&gt;a
+      mini-tutorial&lt;/a&gt;.
+    &lt;h3&gt;Comments&lt;/h3&gt;
+    &lt;p&gt;
+      Comments on this post
+      can be sent to the Marpa Google Group:
+      &lt;code&gt;marpa-parser@googlegroups.com&lt;/code&gt;
+    &lt;/p&gt;</description>
+  </item>
+  <item>
     <title>A language for writing languages</title>
     <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2013/01/language_for_languages.html</link>
     <description>  &lt;p&gt;
@@ -1036,173 +1118,6 @@ whitespace ~ [\s]+
     &lt;h3&gt;Comments&lt;/h3&gt;
     &lt;p&gt;
       Comments on this post can be sent to the Marpa Google Group:
-      &lt;code&gt;marpa-parser@googlegroups.com&lt;/code&gt;
-    &lt;/p&gt;</description>
-  </item>
-  <item>
-    <title>Smart whitespace and the Ruby Slippers</title>
-    <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/12/whitespace.html</link>
-    <description>  &lt;h3&gt;Scannerless parsing&lt;/h3&gt;
-    &lt;p&gt;
-      &lt;!--
-      marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
-      --&gt;
-      I've been working
-      on a &quot;scannerless&quot; Marpa interface.
-      &quot;Scannerless&quot; means that the user does not need to write
-      a separate lexer --
-      the lexer (scanner) is included in the parser.
-      One of my working examples is
-      the synopsis from
-      &lt;a href=&quot;https://metacpan.org/module/Marpa::R2&quot;&gt;
-        the main Marpa::R2 POD page&lt;/a&gt;,
-      rewritten to do its own lexing:
-    &lt;/p&gt;
-    &lt;blockquote&gt;
-      &lt;pre&gt;
-    &lt;tt&gt;
-:start ::= Expression
-Expression ::=
-       Number
-    || Expression '*' Expression action =&gt; do_multiply
-    || Expression '+' Expression action =&gt; do_add
-Number ~ digits '.' digits action =&gt; do_literal
-Number ~ digits action =&gt; do_literal
-digits ~ [\d]+
-    &lt;/tt&gt;
-      &lt;/pre&gt;
-    &lt;/blockquote&gt;
-    &lt;p&gt;Here the notation is that of
-      &lt;a href=&quot;http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/11/iterative.html&quot;&gt;
-        my last post&lt;/a&gt;,
-      as
-      &lt;a href=&quot;https://metacpan.org/module/Marpa::R2::BNF&quot;&gt;
-        documented here&lt;/a&gt;.
-      New for the scannerless parser are
-    &lt;/p&gt;&lt;ul&gt;
-      &lt;li&gt;
-        the
-        &lt;tt&gt;:start&lt;/tt&gt;
-        pseudo-symbol, which indicates the start rule;
-      &lt;/li&gt;&lt;li&gt;
-        rules with a tilde (&quot;&lt;tt&gt;~&lt;/tt&gt;&quot;) to separate
-        LHS from RHS: these indicate rules whose
-        whitespace is to be left as-is
-      &lt;/li&gt;&lt;li&gt;single-quoted strings, to tell Marpa which
-        character to look for; and
-      &lt;/li&gt;&lt;li&gt;square-bracketed character classes, to
-        tell Marpa to look for a class of characters.
-        Their interpretation is done by Perl,
-        and therefore the allowed classes are exactly those
-        accepted by your version of Perl.
-      &lt;/li&gt;&lt;/ul&gt;
-    &lt;p&gt;
-      Valid strings in this language are &quot;&lt;tt&gt;15329 + 42 * 290 * 711&lt;/tt&gt;&quot;,
-      &quot;&lt;tt&gt;42*3+7&lt;/tt&gt;&quot;,
-      &quot;&lt;tt&gt;3*3+4* 4&lt;/tt&gt;&quot;,
-      along with all their whitespace variants.
-    &lt;/p&gt;
-    &lt;p&gt;My recent posts have been tutorial.
-      My work on scannerless parsing is
-      not quite ready for a tutorial presentation,
-      so this post will be conceptual.
-      It is about an interesting issue that arises in
-      scannerless parsing,
-      one which Perl 6 also had to solve,
-      and which Marpa solves in a new and different way.
-      That issue is whitespace.
-    &lt;/p&gt;
-    &lt;h3&gt;Dealing with whitespace&lt;/h3&gt;
-    &lt;p&gt;For the statements with a declaration operator of
-      &lt;tt&gt;::=&lt;/tt&gt;,
-      whitespace is handled automatically by Marpa.
-      Valid strings in the above language are
-      &quot;&lt;tt&gt;42*3+7&lt;/tt&gt;&quot;,
-      &quot;&lt;tt&gt;42 * 3 + 7&lt;/tt&gt;&quot; and
-      &quot;&lt;tt&gt;42 * 3+7&lt;/tt&gt;&quot;,
-      all of which yield 133 as the answer.
-      The trick is to, on one hand, allow whitespace to be optional
-      and, on the other hand, recognize that strings like &quot;&lt;tt&gt;42&lt;/tt&gt;&quot;
-      must be a single number.
-      That is, the parser should not recognize optional whitespace
-      between the two digits and decide that
-      &quot;&lt;tt&gt;42&lt;/tt&gt;&quot;,
-      is actually two numbers:
-      &quot;&lt;tt&gt;4&lt;/tt&gt;&quot; and
-      &quot;&lt;tt&gt;2&lt;/tt&gt;&quot;.
-    &lt;/p&gt;
-    &lt;p&gt;
-      The Perl 6 project has already taken on scannerless parsing.
-      My methods for dealing with whitespace are based on theirs.
-      Central to
-      their solution is &quot;smart whitespace&quot;.
-      (&quot;Smart whitespace&quot; is my term --
-      the
-      &lt;a href=&quot;http://perlcabal.org/syn/S05.html&quot;&gt;
-        Perl 6 doc&lt;/a&gt;
-      is more matter-of-fact.)
-      Smart whitespace is whitespace which is optional, except between
-      word characters.
-      Stated another way, smart whitespace is either explicit whitespace,
-      or a word boundary.
-      In the case of &quot;&lt;tt&gt;42&lt;/tt&gt;&quot;,
-      &quot;&lt;tt&gt;4&lt;/tt&gt;&quot; and
-      &quot;&lt;tt&gt;2&lt;/tt&gt;&quot; are both word characters, so there is no
-      word boundary between them, and therefore no smart whitespace.
-    &lt;/p&gt;
-    &lt;h3&gt;Implementing smart whitespace&lt;/h3&gt;
-    &lt;p&gt;
-      Left parsers (like that which Perl 6 uses)
-      often know very little about the context of the parse.
-      But left parsers do know the current &quot;character transition&quot; --
-      what the previous character was,
-      and what the current character is.
-      In a left parser, finding word boundaries for the
-      purpose of detecting smart whitespace fits in
-      nicely with the way it works in general.
-    &lt;/p&gt;
-    &lt;p&gt;Marpa, of course,
-      also knows the previous and current characters.
-      It is certainly possible for
-      Marpa to check every transition for a word boundary.
-      But in Marpa's case, this check would
-      be an additional overhead, handling just one special case.
-      It'd be nice if we could look for word boundaries in a cool Marpa-ish way,
-      preferably one with efficiency advantages.
-    &lt;/p&gt;
-    &lt;h3&gt;Out come the Ruby Slippers&lt;/h3&gt;
-    &lt;p&gt;&quot;Ruby Slippers&quot; parsing, as a reminder, is new with Marpa,
-      despite seeming a very obvious concept.
-      It amounts to adjusting the input to the parser based on what
-      the parser wants.
-      This can be seen as assuring the parser that whatever it wishes
-      for will happen, the same power that was conferred on Dorothy
-      in
-      &lt;em&gt;Wizard of Oz&lt;/em&gt;
-      by a happy choice of footware.
-    &lt;/p&gt;
-    &lt;p&gt;
-      To make the Ruby Slippers work in this case,
-      we make a word boundary a special kind of virtual token,
-      and we define smart whitespace to be one of two things:
-    &lt;/p&gt;&lt;ul&gt;
-      &lt;li&gt;
-        A sequence of one or more characters of
-        real, physical whitespace.
-      &lt;/li&gt;&lt;li&gt;
-        A virtual word-boundary token.
-      &lt;/li&gt;&lt;/ul&gt;&lt;p&gt;
-      We then proceed normally with the parse,
-      until there's a problem.
-      When the parser reports a problem,
-      we ask it if it is looking for one
-      of the virtual word boundary tokens.
-      If so, we give it one and continue.
-      Why does life have to be difficult?
-    &lt;/p&gt;
-    &lt;p&gt;
-      Comments on this post
-      can be sent to the Marpa Google Group:
       &lt;code&gt;marpa-parser@googlegroups.com&lt;/code&gt;
     &lt;/p&gt;</description>
   </item>
