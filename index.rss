@@ -41,7 +41,7 @@ true and x or y and not x
       together with specifications to tell Marpa how to build the AST:
     &lt;/p&gt;&lt;blockquote&gt;
       &lt;pre&gt;
-:default ::= action =&amp;gt; ::array bless =&amp;gt; ::lhs
+:default ::= action =&amp;gt; ::array
 
 :start ::= &amp;lt;boolean expression&amp;gt;
 &amp;lt;boolean expression&amp;gt; ::=
