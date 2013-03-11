@@ -43,13 +43,30 @@
       marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
       -->
       The latest version of Marpa takes its "whipitupitude" one step further.
-      You can now go directly from the BNF description of a grammar,
-      (and of course your input string)
-    to an abstract syntax tree (AST).
-    <p>Here's BNF for an example which is essentially the 2nd example
-    in the Gang of Four's chapter on the Interpreter pattern:
+      You can now go straight from your input string,
+      and a BNF description of the language it is in,
+      to an abstract syntax tree (AST).
+    </p>
+    <p>To illustrate, I'll use an example from the
+      Gang of Four's (Go4) chapter on the Interpreter pattern.
+      The G04 had no easy generally-applicable way to go from BNF to AST,
+      a problem they dealt with by punting.
+      Instead of parsing the input string,
+      they just built the AST they needed it to produce in the their code.
+    </p>
+    <p>In this post, Marpa will take us from input string and BNF to AST.
+      The Go4's example was a simple boolean expression language,
+      and their primary example was
+    </p>
     <blockquote>
-<pre>
+      <pre>
+true and x or y and not x
+</pre>
+    </blockquote>
+    <p>Here, in full, is the BNF,
+      together with specifications to tell Marpa how to build the AST:
+    </p><blockquote>
+      <pre>
 :default ::= action =&gt; ::array bless =&gt; ::lhs
 
 :start ::= &lt;boolean expression&gt;
@@ -69,16 +86,60 @@
 whitespace ~ [\s]+
 </pre>
     </blockquote>
-    <p>
-    Marpa can take this and the input
-<blockquote>
-<pre>
-true and x or y and not x
-</pre>
-</blockquote>
-The result (as displayed via Data::Dumper) is this AST:
-<blockquote>
-<pre>
+    <p>This syntax should be fairly transparent.
+    In previous posts I've given
+      <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2013/01/dsl_simpler2.html">
+        a tutorial</a>,
+	and a
+      <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2013/01/announce_scanless.html">a
+        mini-tutorial</a>.
+	And of course, the interface is <a href="https://metacpan.org/module/JKEGL/Marpa-R2-2.048000/pod/Scanless/DSL.pod">
+	documented</a>.
+    </p>
+    <p>For those skimming, here are a few quick comments on the less-obvious features.
+      To guide Marpa in building the AST,
+      the BNF statements have
+      <tt>action</tt>
+      and
+      <tt>bless</tt>
+      adverbs.
+      The
+      <tt>bless</tt>
+      adverbs indicate a Perl class into which the node should be
+      blessed.
+      This is convenient for using an object-oriented approach with the AST.
+      The
+      <tt>action</tt>
+      adverb tells Marpa how to build the nodes.
+      "<tt>action =&gt; ::array</tt>" means the result of the rule should
+      be an array containing its child nodes.
+      "<tt>action =&gt; ::first</tt>" means the result of the rule should just be
+      its first child.
+      Many of the child symbols, especially literal strings of a structural
+      nature are in parentheses.
+      This indicates that the semantics should ignore them.
+    </p>
+    <p>A <tt>:default</tt>
+      pseudo-rule specifies the defaults -- in this case the
+      important one is the
+      "<tt>action =&gt; ::array</tt>" adverb setting.
+      The
+      <tt>:start</tt>
+      pseudo-rule specified the start symbol.
+      And the
+      <tt>:discard</tt>
+      indicated that whitespace is to be discarded.
+    </p>
+    <p>Finally, I should mention that the Go4 did not deal with precedence,
+    and so in their book the input string has parentheses.
+    I've implemented the standard precedence in the grammar above.
+    the double vertical bar ("<tt>||</tt>") is a "loosen" operator --
+    the alternative after it is at a looser precedence than the one before.
+    Alternatives separated by a single bar are at the same precedence.
+    <h3>The AST</h3>
+    <p>Here is the AST that results:
+    </p><blockquote>
+      <pre>
 $VAR1 = bless( [
                  bless( [
                           bless( [
@@ -100,16 +161,7 @@ $VAR1 = bless( [
                         ], 'Boolean_Expression::and' )
                ], 'Boolean_Expression::or' );
 </pre>
-</blockquote>
-    <h3>Where to start</h3>
-    <p>If you're interested in learning more about Marpa's Scanless
-    interface, there is
-      <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2013/01/dsl_simpler2.html">
-      a tutorial</a>.
-      Additionally,
-      the announcement of the Scanless interface contained
-      <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2013/01/announce_scanless.html">a
-      mini-tutorial</a>.
+    </blockquote>
     <h3>Comments</h3>
     <p>
       Comments on this post

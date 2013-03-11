@@ -17,13 +17,30 @@
       marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
       --&gt;
       The latest version of Marpa takes its &quot;whipitupitude&quot; one step further.
-      You can now go directly from the BNF description of a grammar,
-      (and of course your input string)
-    to an abstract syntax tree (AST).
-    &lt;p&gt;Here's BNF for an example which is essentially the 2nd example
-    in the Gang of Four's chapter on the Interpreter pattern:
+      You can now go straight from your input string,
+      and a BNF description of the language it is in,
+      to an abstract syntax tree (AST).
+    &lt;/p&gt;
+    &lt;p&gt;To illustrate, I'll use an example from the
+      Gang of Four's (Go4) chapter on the Interpreter pattern.
+      The G04 had no easy generally-applicable way to go from BNF to AST,
+      a problem they dealt with by punting.
+      Instead of parsing the input string,
+      they just built the AST they needed it to produce in the their code.
+    &lt;/p&gt;
+    &lt;p&gt;In this post, Marpa will take us from input string and BNF to AST.
+      The Go4's example was a simple boolean expression language,
+      and their primary example was
+    &lt;/p&gt;
     &lt;blockquote&gt;
-&lt;pre&gt;
+      &lt;pre&gt;
+true and x or y and not x
+&lt;/pre&gt;
+    &lt;/blockquote&gt;
+    &lt;p&gt;Here, in full, is the BNF,
+      together with specifications to tell Marpa how to build the AST:
+    &lt;/p&gt;&lt;blockquote&gt;
+      &lt;pre&gt;
 :default ::= action =&amp;gt; ::array bless =&amp;gt; ::lhs
 
 :start ::= &amp;lt;boolean expression&amp;gt;
@@ -43,16 +60,60 @@
 whitespace ~ [\s]+
 &lt;/pre&gt;
     &lt;/blockquote&gt;
-    &lt;p&gt;
-    Marpa can take this and the input
-&lt;blockquote&gt;
-&lt;pre&gt;
-true and x or y and not x
-&lt;/pre&gt;
-&lt;/blockquote&gt;
-The result (as displayed via Data::Dumper) is this AST:
-&lt;blockquote&gt;
-&lt;pre&gt;
+    &lt;p&gt;This syntax should be fairly transparent.
+    In previous posts I've given
+      &lt;a href=&quot;http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2013/01/dsl_simpler2.html&quot;&gt;
+        a tutorial&lt;/a&gt;,
+	and a
+      &lt;a href=&quot;http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2013/01/announce_scanless.html&quot;&gt;a
+        mini-tutorial&lt;/a&gt;.
+	And of course, the interface is &lt;a href=&quot;https://metacpan.org/module/JKEGL/Marpa-R2-2.048000/pod/Scanless/DSL.pod&quot;&gt;
+	documented&lt;/a&gt;.
+    &lt;/p&gt;
+    &lt;p&gt;For those skimming, here are a few quick comments on the less-obvious features.
+      To guide Marpa in building the AST,
+      the BNF statements have
+      &lt;tt&gt;action&lt;/tt&gt;
+      and
+      &lt;tt&gt;bless&lt;/tt&gt;
+      adverbs.
+      The
+      &lt;tt&gt;bless&lt;/tt&gt;
+      adverbs indicate a Perl class into which the node should be
+      blessed.
+      This is convenient for using an object-oriented approach with the AST.
+      The
+      &lt;tt&gt;action&lt;/tt&gt;
+      adverb tells Marpa how to build the nodes.
+      &quot;&lt;tt&gt;action =&amp;gt; ::array&lt;/tt&gt;&quot; means the result of the rule should
+      be an array containing its child nodes.
+      &quot;&lt;tt&gt;action =&amp;gt; ::first&lt;/tt&gt;&quot; means the result of the rule should just be
+      its first child.
+      Many of the child symbols, especially literal strings of a structural
+      nature are in parentheses.
+      This indicates that the semantics should ignore them.
+    &lt;/p&gt;
+    &lt;p&gt;A &lt;tt&gt;:default&lt;/tt&gt;
+      pseudo-rule specifies the defaults -- in this case the
+      important one is the
+      &quot;&lt;tt&gt;action =&amp;gt; ::array&lt;/tt&gt;&quot; adverb setting.
+      The
+      &lt;tt&gt;:start&lt;/tt&gt;
+      pseudo-rule specified the start symbol.
+      And the
+      &lt;tt&gt;:discard&lt;/tt&gt;
+      indicated that whitespace is to be discarded.
+    &lt;/p&gt;
+    &lt;p&gt;Finally, I should mention that the Go4 did not deal with precedence,
+    and so in their book the input string has parentheses.
+    I've implemented the standard precedence in the grammar above.
+    the double vertical bar (&quot;&lt;tt&gt;||&lt;/tt&gt;&quot;) is a &quot;loosen&quot; operator --
+    the alternative after it is at a looser precedence than the one before.
+    Alternatives separated by a single bar are at the same precedence.
+    &lt;h3&gt;The AST&lt;/h3&gt;
+    &lt;p&gt;Here is the AST that results:
+    &lt;/p&gt;&lt;blockquote&gt;
+      &lt;pre&gt;
 $VAR1 = bless( [
                  bless( [
                           bless( [
@@ -74,16 +135,7 @@ $VAR1 = bless( [
                         ], 'Boolean_Expression::and' )
                ], 'Boolean_Expression::or' );
 &lt;/pre&gt;
-&lt;/blockquote&gt;
-    &lt;h3&gt;Where to start&lt;/h3&gt;
-    &lt;p&gt;If you're interested in learning more about Marpa's Scanless
-    interface, there is
-      &lt;a href=&quot;http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2013/01/dsl_simpler2.html&quot;&gt;
-      a tutorial&lt;/a&gt;.
-      Additionally,
-      the announcement of the Scanless interface contained
-      &lt;a href=&quot;http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2013/01/announce_scanless.html&quot;&gt;a
-      mini-tutorial&lt;/a&gt;.
+    &lt;/blockquote&gt;
     &lt;h3&gt;Comments&lt;/h3&gt;
     &lt;p&gt;
       Comments on this post
