@@ -116,7 +116,7 @@ whitespace ~ [\s]+
       The <tt>:discard</tt> pseudo-rule
       indicates that whitespace is to be discarded.
     </p>
-    <p>The Go4 did not deal with precedence,
+    <p>The Go4 did not deal with precedence.
       In their example, the input string is fully parenthesized,
       even though its priorities are the standard ones.
       I've eliminated the parentheses, because

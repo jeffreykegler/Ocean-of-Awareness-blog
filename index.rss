@@ -129,7 +129,7 @@ whitespace ~ [\s]+
       The &lt;tt&gt;:discard&lt;/tt&gt; pseudo-rule
       indicates that whitespace is to be discarded.
     &lt;/p&gt;
-    &lt;p&gt;The Go4 did not deal with precedence,
+    &lt;p&gt;The Go4 did not deal with precedence.
       In their example, the input string is fully parenthesized,
       even though its priorities are the standard ones.
       I've eliminated the parentheses, because
