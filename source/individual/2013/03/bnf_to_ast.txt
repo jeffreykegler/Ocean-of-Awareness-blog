@@ -109,10 +109,13 @@ whitespace ~ [\s]+
       indicated that whitespace is to be discarded.
     </p>
     <p>Finally, I should mention that the Go4 did not deal with precedence,
-      and so in their book the input string has parentheses.
-      I've implemented the standard precedence in the grammar above.
-      the double vertical bar ("<tt>||</tt>") is a "loosen" operator --
-      the alternative after it is at a looser precedence than the one before.
+      and so in their book the input string is fully parenthesized,
+      even though its priorities are the standard ones.
+      I've eliminated the parentheses, because
+      standard precedence is implemented in SLIF grammar.
+      The double vertical bar ("<tt>||</tt>") is a "loosen" operator --
+      an alternative after "loosen" operator will be
+      at a looser precedence than the one before.
       Alternatives separated by a single bar are at the same precedence.
     </p><h3>Creating the AST</h3><p>
       Creating the AST is simple.
