@@ -7,7 +7,8 @@ BNF to AST
       <a href="https://metacpan.org/module/Marpa::R2">
       Marpa</a> takes parsing "whipitupitude" one step further.
       You can now go straight from
-      a BNF description of your language and an input string,
+      a BNF description of your language,
+      and an input string,
       to an abstract syntax tree (AST).
     </p>
     <p>To illustrate, I'll use an example from the
@@ -15,15 +16,16 @@ BNF to AST
       on the Interpreter pattern.
       (It's pages 243-255 of the
       <a href="http://en.wikipedia.org/wiki/Design_Patterns">
-      <em>Design Patterns</em> book</a>.
+      <em>Design Patterns</em> book</a>.)
       The Go4 knew of no easy general way to go from BNF to AST,
       so they dealt with that part of the interpreter problem
       by punting --
-      they did not even try to parse the input string,
+      they did not even try to parse the input string.
       Instead they constructed the BNF they'd just presented and
       constructed an AST directly in their code.
     </p>
-    <p>The reason the Go4 didn't know of an easy generally-applicable way
+    <p>The reason the Go4 didn't know of an easy,
+    generally-applicable way
       to parse their example was that
       there was none.
       Now there is.
@@ -45,8 +47,8 @@ true and x or y and not x
     </blockquote>
     <p>Here, in full, is the BNF for an slight elaboration of the
       Go4 example.
-      It is written in the DSL for Marpa's Scanless interface (SLIF),
-      together with some specifications for building the AST.
+      It is written in the DSL for Marpa's Scanless interface (SLIF DSL),
+      and includes specifications for building the AST.
     </p><blockquote>
       <pre>
 :default ::= action =&gt; ::array
@@ -79,7 +81,7 @@ whitespace ~ [\s]+
       <a href="https://metacpan.org/module/JKEGL/Marpa-R2-2.048000/pod/Scanless/DSL.pod">
         documented</a>.
     </p>
-    <p>For those skimming, here are a few quick comments on the less-obvious features.
+    <p>For those skimming, here are a few quick comments on less-obvious features.
       To guide Marpa in building the AST,
       the BNF statements have
       <tt>action</tt>
@@ -118,7 +120,7 @@ whitespace ~ [\s]+
       In their example, the input string is fully parenthesized,
       even though its priorities are the standard ones.
       I've eliminated the parentheses, because
-      standard precedence is implemented in SLIF grammar.
+      the standard precedence is implemented in SLIF grammar.
       The double vertical bar ("<tt>||</tt>") is a "loosen" operator --
       an alternative after "loosen" operator will be
       at a looser precedence than the one before.
@@ -138,7 +140,7 @@ my $grammar = Marpa::R2::Scanless::G->new(
 );  
 </pre>
     </blockquote>
-    <p>Now we'll define a closure that uses
+    <p>Next we define a closure that uses
       <tt>$grammar</tt>
       to turn
       BNF into AST's.
@@ -208,10 +210,10 @@ $VAR1 = bless( [
     </p>
     <p>
       AST creation via Marpa's SLIF is self-hosting --
-      the SLIF DSL is parsed its own AST's,
+      the SLIF DSL is parsed into an AST,
       and a parser created by interpreting the AST.
       The Marpa SLIF DSL source file in this post,
-      describing boolean expressions,
+      that describes boolean expressions,
       was itself turned into an AST on its way to becoming a parser
       that turns boolean expressions into AST's.
     </p><h3>Comments</h3>
