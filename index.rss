@@ -31,12 +31,15 @@
       constructed an AST directly in their code.
     &lt;/p&gt;
     &lt;p&gt;The reason the Go4 didn't know of an easy generally-applicable way
-    to parse their example was simple --
-    there was none.
-    Now there is.
-    In this post, Marpa will take us
-    quickly and easily
-    from BNF to AST.
+      to parse their example was simple --
+      there was none.
+      Now there is.
+      In this post, Marpa will take us
+      quickly and easily
+      from BNF to AST.
+      (The full version of the code in this post can
+      be found in
+      &lt;a href=&quot;https://gist.github.com/jeffreykegler/5121769&quot;&gt;a Github gist&lt;/a&gt;.)
     &lt;/p&gt;
     &lt;p&gt;
       The Go4's example was a simple boolean expression language,
@@ -48,8 +51,8 @@ true and x or y and not x
 &lt;/pre&gt;
     &lt;/blockquote&gt;
     &lt;p&gt;Here, in full, is the BNF for an slight elaboration of the
-    Go4 example.
-    It is written in the DSL for Marpa's Scanless interface (SLIF),
+      Go4 example.
+      It is written in the DSL for Marpa's Scanless interface (SLIF),
       together with some specifications for building the AST.
     &lt;/p&gt;&lt;blockquote&gt;
       &lt;pre&gt;
@@ -73,14 +76,15 @@ whitespace ~ [\s]+
 &lt;/pre&gt;
     &lt;/blockquote&gt;
     &lt;p&gt;This syntax should be fairly transparent.
-    In previous posts I've given
+      In previous posts I've given
       &lt;a href=&quot;http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2013/01/dsl_simpler2.html&quot;&gt;
         a tutorial&lt;/a&gt;,
-	and a
+      and a
       &lt;a href=&quot;http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2013/01/announce_scanless.html&quot;&gt;a
         mini-tutorial&lt;/a&gt;.
-	And of course, the interface is &lt;a href=&quot;https://metacpan.org/module/JKEGL/Marpa-R2-2.048000/pod/Scanless/DSL.pod&quot;&gt;
-	documented&lt;/a&gt;.
+      And of course, the interface is
+      &lt;a href=&quot;https://metacpan.org/module/JKEGL/Marpa-R2-2.048000/pod/Scanless/DSL.pod&quot;&gt;
+        documented&lt;/a&gt;.
     &lt;/p&gt;
     &lt;p&gt;For those skimming, here are a few quick comments on the less-obvious features.
       To guide Marpa in building the AST,
@@ -105,7 +109,8 @@ whitespace ~ [\s]+
       nature are in parentheses.
       This indicates that the semantics should ignore them.
     &lt;/p&gt;
-    &lt;p&gt;A &lt;tt&gt;:default&lt;/tt&gt;
+    &lt;p&gt;A
+      &lt;tt&gt;:default&lt;/tt&gt;
       pseudo-rule specifies the defaults -- in this case the
       important one is the
       &quot;&lt;tt&gt;action =&amp;gt; ::array&lt;/tt&gt;&quot; adverb setting.
@@ -117,29 +122,32 @@ whitespace ~ [\s]+
       indicated that whitespace is to be discarded.
     &lt;/p&gt;
     &lt;p&gt;Finally, I should mention that the Go4 did not deal with precedence,
-    and so in their book the input string has parentheses.
-    I've implemented the standard precedence in the grammar above.
-    the double vertical bar (&quot;&lt;tt&gt;||&lt;/tt&gt;&quot;) is a &quot;loosen&quot; operator --
-    the alternative after it is at a looser precedence than the one before.
-    Alternatives separated by a single bar are at the same precedence.
-    &lt;h3&gt;Creating the AST&lt;/h3&gt;
-Creating the AST is simple.
-First, we use Marpa to turn the above DSL for boolean expressions
-into a parser.
-(We'd saved the grammar in the string &lt;tt&gt;$rules&lt;/tt&gt;.)
-&lt;blockquote&gt;
-&lt;pre&gt;
+      and so in their book the input string has parentheses.
+      I've implemented the standard precedence in the grammar above.
+      the double vertical bar (&quot;&lt;tt&gt;||&lt;/tt&gt;&quot;) is a &quot;loosen&quot; operator --
+      the alternative after it is at a looser precedence than the one before.
+      Alternatives separated by a single bar are at the same precedence.
+    &lt;/p&gt;&lt;h3&gt;Creating the AST&lt;/h3&gt;&lt;p&gt;
+      Creating the AST is simple.
+      First, we use Marpa to turn the above DSL for boolean expressions
+      into a parser.
+      (We'd saved the grammar in the string
+      &lt;tt&gt;$rules&lt;/tt&gt;.)
+    &lt;/p&gt;&lt;blockquote&gt;
+      &lt;pre&gt;
 my $grammar = Marpa::R2::Scanless::G-&gt;new(
     {   bless_package =&gt; 'Boolean_Expression',
         source        =&gt; \$rules,
     }   
 );  
 &lt;/pre&gt;
-&lt;/blockquote&gt;
-&lt;p&gt;Now we'll define a closure that uses &lt;tt&gt;$grammar&lt;tt&gt; to turn
-BNF into AST's.
-&lt;blockquote&gt;
-&lt;pre&gt;
+    &lt;/blockquote&gt;
+    &lt;p&gt;Now we'll define a closure that uses
+      &lt;tt&gt;$grammar&lt;/tt&gt;
+      to turn
+      BNF into AST's.
+    &lt;/p&gt;&lt;blockquote&gt;
+      &lt;pre&gt;
 sub bnf_to_ast {
     my ($bnf) = @_;
     my $recce = Marpa::R2::Scanless::R-&gt;new( { grammar =&gt; $grammar } );
@@ -151,21 +159,21 @@ sub bnf_to_ast {
     return ${$value_ref};
 } ## end sub bnf_to_ast
 &lt;/pre&gt;
-&lt;/blockquote&gt;
-We run it as follows:
-&lt;blockquote&gt;
-&lt;pre&gt;
+    &lt;/blockquote&gt;&lt;p&gt;
+      We run it as follows:
+    &lt;/p&gt;&lt;blockquote&gt;
+      &lt;pre&gt;
 my $ast1 = bnf_to_ast($bnf);
 &lt;/pre&gt;
-&lt;/blockquote&gt;
+    &lt;/blockquote&gt;
     &lt;h3&gt;The AST&lt;/h3&gt;
     &lt;p&gt;If we use Data::Dumper to examine the AST,
-&lt;blockquote&gt;
-&lt;pre&gt;
+    &lt;/p&gt;&lt;blockquote&gt;
+      &lt;pre&gt;
 say Data::Dumper::Dumper($ast1) if $verbose_flag;
 &lt;/pre&gt;
-&lt;/blockquote&gt;
-we see this:
+    &lt;/blockquote&gt;&lt;p&gt;
+      we see this:
     &lt;/p&gt;&lt;blockquote&gt;
       &lt;pre&gt;
 $VAR1 = bless( [
@@ -191,24 +199,25 @@ $VAR1 = bless( [
 &lt;/pre&gt;
     &lt;/blockquote&gt;
     &lt;h3&gt;Processing the AST&lt;/h3&gt;
-    &lt;p&gt;What the G04 did do was process the AST in several ways -- straight
-    evaluation, copying,
-    and substitution of the occurrences of a variable in one boolean expression
-    by another boolean expression.
-    While it is obvious that the AST above is the computational
-    equivalent of the Go4's, 
-    for the sake of completeness I carry out the same operations
-    in the gist.
+    &lt;p&gt;What the G04 did do in their example,
+      was to process their AST in several ways -- straight
+      evaluation, copying,
+      and substitution of the occurrences of a variable in one boolean expression
+      by another boolean expression.
+      While it is obvious that the AST above is the computational
+      equivalent of the Go4's AST,
+      for the sake of completeness I carry out the same operations
+      &lt;a href=&quot;https://gist.github.com/jeffreykegler/5121769&quot;&gt;in the Github gist&lt;/a&gt;.
+    &lt;/p&gt;
     &lt;p&gt;
-    Marpa is self-hosting --
-    it parses its own DSL using its own AST's.
-    So, for example, the Marpa source file in this post,
-    describing boolean expressions,
-    was itself turned into an AST on its way to becoming a parser
-    that turns boolean expressions into AST's.
-    And &lt;a href=&quot;https://gist.github.com/jddurand/5052023&quot;&gt;a project to produce AST's from C code&lt;/a&gt;
-    is currently under development.
-    &lt;h3&gt;Comments&lt;/h3&gt;
+      AST creation via Marpa's SLIF is self-hosting --
+      the SLIF DSL is parsed its own AST's,
+      and a parser created by interpreting the AST.
+      So, for example, the Marpa SLIF source file in this post,
+      describing boolean expressions,
+      was itself turned into an AST on its way to becoming a parser
+      that turns boolean expressions into AST's.
+    &lt;/p&gt;&lt;h3&gt;Comments&lt;/h3&gt;
     &lt;p&gt;
       Comments on this post
       can be sent to the Marpa Google Group:
