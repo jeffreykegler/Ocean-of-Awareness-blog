@@ -1,0 +1,79 @@
+BNF to AST
+  <p>
+      <!--
+      marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
+      -->
+      The latest version of Marpa takes its "whipitupitude" one step further.
+      You can now go directly from the BNF description of a grammar,
+      (and of course your input string)
+    to an abstract syntax tree (AST).
+    <p>Here's BNF for an example which is essentially the 2nd example
+    in the Gang of Four's chapter on the Interpreter pattern:
+    <blockquote>
+<pre>
+:default ::= action => ::array bless => ::lhs
+
+:start ::= <boolean expression>
+<boolean expression> ::=
+       <variable> bless => variable
+     | '1' bless => constant
+     | '0' bless => constant
+     | ('(') <boolean expression> (')') action => ::first bless => ::undef
+    || ('not') <boolean expression> bless => not
+    || <boolean expression> ('and') <boolean expression> bless => and
+    || <boolean expression> ('or') <boolean expression> bless => or
+
+<variable> ~ [[:alpha:]] <zero or more word characters>
+<zero or more word characters> ~ [\w]*
+
+:discard ~ whitespace
+whitespace ~ [\s]+
+</pre>
+    </blockquote>
+    <p>
+    Marpa can take this and the input
+<blockquote>
+<pre>
+true and x or y and not x
+</pre>
+</blockquote>
+The result (as displayed via Data::Dumper) is this AST:
+<blockquote>
+<pre>
+$VAR1 = bless( [
+                 bless( [
+                          bless( [
+                                   'true'
+                                 ], 'Boolean_Expression::variable' ),
+                          bless( [
+                                   'x'
+                                 ], 'Boolean_Expression::variable' )
+                        ], 'Boolean_Expression::and' ),
+                 bless( [
+                          bless( [
+                                   'y'
+                                 ], 'Boolean_Expression::variable' ),
+                          bless( [
+                                   bless( [
+                                            'x'
+                                          ], 'Boolean_Expression::variable' )
+                                 ], 'Boolean_Expression::not' )
+                        ], 'Boolean_Expression::and' )
+               ], 'Boolean_Expression::or' );
+</pre>
+</blockquote>
+    <h3>Where to start</h3>
+    <p>If you're interested in learning more about Marpa's Scanless
+    interface, there is
+      <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2013/01/dsl_simpler2.html">
+      a tutorial</a>.
+      Additionally,
+      the announcement of the Scanless interface contained
+      <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2013/01/announce_scanless.html">a
+      mini-tutorial</a>.
+    <h3>Comments</h3>
+    <p>
+      Comments on this post
+      can be sent to the Marpa Google Group:
+      <code>marpa-parser@googlegroups.com</code>
+    </p>
