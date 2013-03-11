@@ -163,7 +163,9 @@ sub bnf_to_ast {
 } ## end sub bnf_to_ast
 &lt;/pre&gt;
     &lt;/blockquote&gt;&lt;p&gt;
-      We run it as follows:
+      And,
+    where &lt;tt&gt;$bnf&lt;/tt&gt; is our input string,
+      we run it as follows:
     &lt;/p&gt;&lt;blockquote&gt;
       &lt;pre&gt;
 my $ast1 = bnf_to_ast($bnf);

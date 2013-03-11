@@ -150,7 +150,9 @@ sub bnf_to_ast {
 } ## end sub bnf_to_ast
 </pre>
     </blockquote><p>
-      We run it as follows:
+      And,
+    where <tt>$bnf</tt> is our input string,
+      we run it as follows:
     </p><blockquote>
       <pre>
 my $ast1 = bnf_to_ast($bnf);
