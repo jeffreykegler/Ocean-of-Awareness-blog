@@ -136,6 +136,24 @@ $VAR1 = bless( [
                ], 'Boolean_Expression::or' );
 &lt;/pre&gt;
     &lt;/blockquote&gt;
+    &lt;h3&gt;Processing the AST&lt;/h3&gt;
+    &lt;p&gt;What the G04 did do was process the AST in several ways -- straight
+    evaluation, copying,
+    and substitution of the occurrences of a variable in one boolean expression
+    by another boolean expression.
+    While it is obvious that the AST above is the computational
+    equivalent of the Go4's, 
+    for the sake of completeness I carry out the same operations
+    in the gist.
+    &lt;p&gt;
+    Marpa is self-hosting --
+    it parses its own DSL using its own AST's.
+    So, for example, the Marpa source file in this post,
+    describing boolean expressions,
+    was itself turned into an AST on its way to becoming a parser
+    that turns boolean expressions into AST's.
+    And &lt;a href=&quot;https://gist.github.com/jddurand/5052023&quot;&gt;a project to produce AST's from C code&lt;/a&gt;
+    is currently under development.
     &lt;h3&gt;Comments&lt;/h3&gt;
     &lt;p&gt;
       Comments on this post
