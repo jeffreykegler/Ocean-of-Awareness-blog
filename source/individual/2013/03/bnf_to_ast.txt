@@ -10,16 +10,16 @@ BNF to AST
     </p>
     <p>To illustrate, I'll use an example from the
       Gang of Four's (Go4) chapter on the Interpreter pattern.
-      The G04 knew of easy way generally-applicable way to go from BNF to AST,
+      The G04 knew of no easy general way to go from BNF to AST,
       so they dealt with that part of the interpreter problem
       by punting.
       They did not even try to parse the input string,
-      Instead they just typed the AST they needed
-      into their code.
+      Instead they constructed the BNF they'd just presented and
+      constructed an AST directly in their code.
     </p>
-    <p>The reason the Go4 didn't know of any reasonable way to parse
-    their example was simple --
-    there was no easy generally-applicable way to go from BNF to AST,
+    <p>The reason the Go4 didn't know of an easy generally-applicable way
+    to parse their example was simple --
+    there was none.
     Now there is.
     In this post, Marpa will take us
     quickly and easily
@@ -34,8 +34,10 @@ BNF to AST
 true and x or y and not x
 </pre>
     </blockquote>
-    <p>Here, in full, is the BNF,
-      together with specifications to tell Marpa how to build the AST:
+    <p>Here, in full, is the BNF for an slight elaboration of the
+    Go4 example.
+    It is written in the DSL for Marpa's Scanless interface (SLIF),
+      together with some specifications for building the AST.
     </p><blockquote>
       <pre>
 :default ::= action =&gt; ::array
@@ -107,8 +109,50 @@ whitespace ~ [\s]+
     the double vertical bar ("<tt>||</tt>") is a "loosen" operator --
     the alternative after it is at a looser precedence than the one before.
     Alternatives separated by a single bar are at the same precedence.
+    <h3>Creating the AST</h3>
+Creating the AST is simple.
+First, we use Marpa to turn the above DSL for boolean expressions
+into a parser.
+(We'd saved the grammar in the string <tt>$rules</tt>.)
+<blockquote>
+<pre>
+my $grammar = Marpa::R2::Scanless::G->new(
+    {   bless_package => 'Boolean_Expression',
+        source        => \$rules,
+    }   
+);  
+</pre>
+</blockquote>
+<p>Now we'll define a closure that uses <tt>$grammar<tt> to turn
+BNF into AST's.
+<blockquote>
+<pre>
+sub bnf_to_ast {
+    my ($bnf) = @_;
+    my $recce = Marpa::R2::Scanless::R->new( { grammar => $grammar } );
+    $recce->read( \$bnf );
+    my $value_ref = $recce->value();
+    if ( not defined $value_ref ) {
+        die "No parse for $bnf";
+    }
+    return ${$value_ref};
+} ## end sub bnf_to_ast
+</pre>
+</blockquote>
+We run it as follows:
+<blockquote>
+<pre>
+my $ast1 = bnf_to_ast($bnf);
+</pre>
+</blockquote>
     <h3>The AST</h3>
-    <p>Here is the AST that results:
+    <p>If we use Data::Dumper to examine the AST,
+<blockquote>
+<pre>
+say Data::Dumper::Dumper($ast1) if $verbose_flag;
+</pre>
+</blockquote>
+we see this:
     </p><blockquote>
       <pre>
 $VAR1 = bless( [

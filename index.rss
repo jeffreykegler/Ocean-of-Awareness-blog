@@ -23,16 +23,16 @@
     &lt;/p&gt;
     &lt;p&gt;To illustrate, I'll use an example from the
       Gang of Four's (Go4) chapter on the Interpreter pattern.
-      The G04 knew of easy way generally-applicable way to go from BNF to AST,
+      The G04 knew of no easy general way to go from BNF to AST,
       so they dealt with that part of the interpreter problem
       by punting.
       They did not even try to parse the input string,
-      Instead they just typed the AST they needed
-      into their code.
+      Instead they constructed the BNF they'd just presented and
+      constructed an AST directly in their code.
     &lt;/p&gt;
-    &lt;p&gt;The reason the Go4 didn't know of any reasonable way to parse
-    their example was simple --
-    there was no easy generally-applicable way to go from BNF to AST,
+    &lt;p&gt;The reason the Go4 didn't know of an easy generally-applicable way
+    to parse their example was simple --
+    there was none.
     Now there is.
     In this post, Marpa will take us
     quickly and easily
@@ -47,8 +47,10 @@
 true and x or y and not x
 &lt;/pre&gt;
     &lt;/blockquote&gt;
-    &lt;p&gt;Here, in full, is the BNF,
-      together with specifications to tell Marpa how to build the AST:
+    &lt;p&gt;Here, in full, is the BNF for an slight elaboration of the
+    Go4 example.
+    It is written in the DSL for Marpa's Scanless interface (SLIF),
+      together with some specifications for building the AST.
     &lt;/p&gt;&lt;blockquote&gt;
       &lt;pre&gt;
 :default ::= action =&amp;gt; ::array
@@ -120,8 +122,50 @@ whitespace ~ [\s]+
     the double vertical bar (&quot;&lt;tt&gt;||&lt;/tt&gt;&quot;) is a &quot;loosen&quot; operator --
     the alternative after it is at a looser precedence than the one before.
     Alternatives separated by a single bar are at the same precedence.
+    &lt;h3&gt;Creating the AST&lt;/h3&gt;
+Creating the AST is simple.
+First, we use Marpa to turn the above DSL for boolean expressions
+into a parser.
+(We'd saved the grammar in the string &lt;tt&gt;$rules&lt;/tt&gt;.)
+&lt;blockquote&gt;
+&lt;pre&gt;
+my $grammar = Marpa::R2::Scanless::G-&gt;new(
+    {   bless_package =&gt; 'Boolean_Expression',
+        source        =&gt; \$rules,
+    }   
+);  
+&lt;/pre&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;Now we'll define a closure that uses &lt;tt&gt;$grammar&lt;tt&gt; to turn
+BNF into AST's.
+&lt;blockquote&gt;
+&lt;pre&gt;
+sub bnf_to_ast {
+    my ($bnf) = @_;
+    my $recce = Marpa::R2::Scanless::R-&gt;new( { grammar =&gt; $grammar } );
+    $recce-&gt;read( \$bnf );
+    my $value_ref = $recce-&gt;value();
+    if ( not defined $value_ref ) {
+        die &quot;No parse for $bnf&quot;;
+    }
+    return ${$value_ref};
+} ## end sub bnf_to_ast
+&lt;/pre&gt;
+&lt;/blockquote&gt;
+We run it as follows:
+&lt;blockquote&gt;
+&lt;pre&gt;
+my $ast1 = bnf_to_ast($bnf);
+&lt;/pre&gt;
+&lt;/blockquote&gt;
     &lt;h3&gt;The AST&lt;/h3&gt;
-    &lt;p&gt;Here is the AST that results:
+    &lt;p&gt;If we use Data::Dumper to examine the AST,
+&lt;blockquote&gt;
+&lt;pre&gt;
+say Data::Dumper::Dumper($ast1) if $verbose_flag;
+&lt;/pre&gt;
+&lt;/blockquote&gt;
+we see this:
     &lt;/p&gt;&lt;blockquote&gt;
       &lt;pre&gt;
 $VAR1 = bless( [
