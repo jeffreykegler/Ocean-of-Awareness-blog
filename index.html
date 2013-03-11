@@ -42,34 +42,40 @@
       <!--
       marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
       -->
-      The latest version of Marpa takes its "whipitupitude" one step further.
+      The latest version of
+      <a href="https://metacpan.org/module/Marpa::R2">
+      Marpa</a> takes parsing "whipitupitude" one step further.
       You can now go straight from
       a BNF description of your language and an input string,
       to an abstract syntax tree (AST).
     </p>
     <p>To illustrate, I'll use an example from the
-      Gang of Four's (Go4) chapter on the Interpreter pattern.
-      The G04 knew of no easy general way to go from BNF to AST,
+      Gang of Four's (Go4's) chapter
+      on the Interpreter pattern.
+      (It's pages 243-255 of the
+      <a href="http://en.wikipedia.org/wiki/Design_Patterns">
+      <em>Design Patterns</em> book</a>.
+      The Go4 knew of no easy general way to go from BNF to AST,
       so they dealt with that part of the interpreter problem
-      by punting.
-      They did not even try to parse the input string,
+      by punting --
+      they did not even try to parse the input string,
       Instead they constructed the BNF they'd just presented and
       constructed an AST directly in their code.
     </p>
     <p>The reason the Go4 didn't know of an easy generally-applicable way
-      to parse their example was simple --
+      to parse their example was that
       there was none.
       Now there is.
       In this post, Marpa will take us
       quickly and easily
       from BNF to AST.
-      (The full version of the code in this post can
+      (Full code for this post can
       be found in
       <a href="https://gist.github.com/jeffreykegler/5121769">a Github gist</a>.)
     </p>
     <p>
       The Go4's example was a simple boolean expression language,
-      and their primary example was
+      whose primary input was
     </p>
     <blockquote>
       <pre>
@@ -131,24 +137,24 @@ whitespace ~ [\s]+
       be an array containing its child nodes.
       "<tt>action =&gt; ::first</tt>" means the result of the rule should just be
       its first child.
-      Many of the child symbols, especially literal strings of a structural
-      nature are in parentheses.
-      This indicates that the semantics should ignore them.
+      Many of the child symbols,
+      especially literal strings of a structural nature,
+      are in parentheses.
+      This makes them invisible to
+      the semantics.
     </p>
     <p>A
       <tt>:default</tt>
       pseudo-rule specifies the defaults -- in this case the
-      important one is the
       "<tt>action =&gt; ::array</tt>" adverb setting.
       The
       <tt>:start</tt>
       pseudo-rule specified the start symbol.
-      And the
-      <tt>:discard</tt>
-      indicated that whitespace is to be discarded.
+      The <tt>:discard</tt> pseudo-rule
+      indicates that whitespace is to be discarded.
     </p>
-    <p>Finally, I should mention that the Go4 did not deal with precedence,
-      and so in their book the input string is fully parenthesized,
+    <p>The Go4 did not deal with precedence,
+      In their example, the input string is fully parenthesized,
       even though its priorities are the standard ones.
       I've eliminated the parentheses, because
       standard precedence is implemented in SLIF grammar.
@@ -160,7 +166,7 @@ whitespace ~ [\s]+
       Creating the AST is simple.
       First, we use Marpa to turn the above DSL for boolean expressions
       into a parser.
-      (We'd saved the grammar in the string
+      (We'd saved the SLIF DSL source in the string
       <tt>$rules</tt>.)
     </p><blockquote>
       <pre>
@@ -189,9 +195,8 @@ sub bnf_to_ast {
 } ## end sub bnf_to_ast
 </pre>
     </blockquote><p>
-      And,
-    where <tt>$bnf</tt> is our input string,
-      we run it as follows:
+Where <tt>$bnf</tt> is our input string,
+we run it as follows:
     </p><blockquote>
       <pre>
 my $ast1 = bnf_to_ast($bnf);
@@ -230,21 +235,21 @@ $VAR1 = bless( [
 </pre>
     </blockquote>
     <h3>Processing the AST</h3>
-    <p>What the G04 did do in their example,
-      was to process their AST in several ways -- straight
-      evaluation, copying,
+    <p>In their example,
+    the Go4 processed their AST in several ways:
+    straight evaluation, copying,
       and substitution of the occurrences of a variable in one boolean expression
       by another boolean expression.
-      While it is obvious that the AST above is the computational
+      It is obvious that the AST above is the computational
       equivalent of the Go4's AST,
-      for the sake of completeness I carry out the same operations
+      but for the sake of completeness I carry out the same operations
       <a href="https://gist.github.com/jeffreykegler/5121769">in the Github gist</a>.
     </p>
     <p>
       AST creation via Marpa's SLIF is self-hosting --
       the SLIF DSL is parsed its own AST's,
       and a parser created by interpreting the AST.
-      So, for example, the Marpa SLIF source file in this post,
+      The Marpa SLIF DSL source file in this post,
       describing boolean expressions,
       was itself turned into an AST on its way to becoming a parser
       that turns boolean expressions into AST's.
