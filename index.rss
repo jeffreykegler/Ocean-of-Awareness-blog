@@ -17,18 +17,28 @@
       marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
       --&gt;
       The latest version of Marpa takes its &quot;whipitupitude&quot; one step further.
-      You can now go straight from your input string,
-      and a BNF description of the language it is in,
+      You can now go straight from
+      a BNF description of your language and an input string,
       to an abstract syntax tree (AST).
     &lt;/p&gt;
     &lt;p&gt;To illustrate, I'll use an example from the
       Gang of Four's (Go4) chapter on the Interpreter pattern.
-      The G04 had no easy generally-applicable way to go from BNF to AST,
-      a problem they dealt with by punting.
-      Instead of parsing the input string,
-      they just built the AST they needed it to produce in the their code.
+      The G04 knew of easy way generally-applicable way to go from BNF to AST,
+      so they dealt with that part of the interpreter problem
+      by punting.
+      They did not even try to parse the input string,
+      Instead they just typed the AST they needed
+      into their code.
     &lt;/p&gt;
-    &lt;p&gt;In this post, Marpa will take us from input string and BNF to AST.
+    &lt;p&gt;The reason the Go4 didn't know of any reasonable way to parse
+    their example was simple --
+    there was no easy generally-applicable way to go from BNF to AST,
+    Now there is.
+    In this post, Marpa will take us
+    quickly and easily
+    from BNF to AST.
+    &lt;/p&gt;
+    &lt;p&gt;
       The Go4's example was a simple boolean expression language,
       and their primary example was
     &lt;/p&gt;
