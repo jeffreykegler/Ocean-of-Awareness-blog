@@ -43,7 +43,7 @@ usage() if not $getopt_result;
 
 # Note Go4 ignores precedence
 my $rules = <<'END_OF_GRAMMAR';
-:default ::= action => ::array bless => ::lhs
+:default ::= action => ::array
 
 :start ::= <boolean expression>
 <boolean expression> ::=
