@@ -1,0 +1,8 @@
+AST's are pretty boring, huh?  Just parse, get a tree?  Nuh-uh.  My
+compilers prof a college at the University of Washington started
+off with the statement that parsing was completely solved problem
+and was boring and that nobody was looking at it any more and, boy
+oh boy, was he ever wrong.  We have found some really interesting
+parsing problems.  I mean when you get into multi-language of course
+it gets pretty crazy but, uh, even the representation of the parsed
+code -- everyone has a completely different idea of what it means.
