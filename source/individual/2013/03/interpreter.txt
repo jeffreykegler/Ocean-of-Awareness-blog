@@ -1,0 +1,62 @@
+The Interpreter Design Pattern
+  <p>
+      <!--
+      marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
+      -->
+    <p>The very influential
+      <a href="http://en.wikipedia.org/wiki/Design_Patterns">
+      <em>Design Patterns</em> book</a>lays out 23 patterns for programming.
+      One of them, the Interpreter Pattern, is rarely used.
+      Steve Yegge, as usual, puts it a bit more strikingly -- he says
+      that the book  contain 22 patterns and a practical joke.
+      </p>
+      <p>
+      But elsewhere Yegge says that of the 23, the Interpreter pattern is
+      the only one likely to shrink the size of your code,
+      all the others tend to increase the amount of code it takes to solve
+      the problem.
+      Less code is a good thing when you're dealing with a few pages.
+      When, as many of you are, you're talking about millions of lines
+      of code, it seems more like a matter of survival.
+      </p>
+      <p>
+      High praise as this is for the Interpreter Pattern,
+      others speak even highly of it.
+      It is, in fact, the ideal design pattern, one that includes
+      all the others, and goes beyond them.
+      A language can include all, and only, the concepts relevent
+      to your domain,
+      and it can allow you to relate them in all, and only, the appropriate ways.
+      It can identify errors with pinpoint precision,
+      hide implementation details,
+      allow invisible "drop-in" enhancements,
+      and for protecting forward and backward compatibiity is unsurpassed.
+      </p>
+      <p>
+      So powerful and flexible, in fact, is the Interpreter Pattern,
+      it is almost universal.
+      When you are not using a language fitted to your domain,
+      you are using a general-purpose language,
+      In other words, you are either using a language fitted
+      to your domain or one that is not.
+      </p>
+      <p>
+      Why then, is the Interpreter Pattern so little used?
+      </p>
+    <p>
+      <a href="https://gist.github.com/jeffreykegler/5121769">in the Github gist</a>.
+    </p>
+    <p>
+      AST creation via Marpa's SLIF is self-hosting --
+      the SLIF DSL is parsed into an AST,
+      and a parser created by interpreting the AST.
+      The Marpa SLIF DSL source file in this post,
+      that describes boolean expressions,
+      was itself turned into an AST on its way to becoming a parser
+      that turns boolean expressions into AST's.
+    <h3>Comments</h3>
+    <p>
+      Comments on this post
+      can be sent to the Marpa Google Group:
+      <code>marpa-parser@googlegroups.com</code>
+    </p>

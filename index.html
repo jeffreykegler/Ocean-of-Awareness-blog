@@ -34,6 +34,80 @@
   </p>
   </div>
   <div style="margin-left:190px;border-left:2px solid #38B0C0;padding:25px;">
+<h3>Tue, 19 Mar 2013</h3>
+<br />
+<center><a name="interpreter"> <h2>The Interpreter Design Pattern</h2> </a>
+</center>
+  <p>
+      <!--
+      marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
+      -->
+    <p>The very influential
+      <a href="http://en.wikipedia.org/wiki/Design_Patterns">
+      <em>Design Patterns</em> book</a>lays out 23 patterns for programming.
+      One of them, the Interpreter Pattern, is rarely used.
+      Steve Yegge, as usual, puts it a bit more strikingly -- he says
+      that the book  contain 22 patterns and a practical joke.
+      </p>
+      <p>
+      But elsewhere Yegge says that of the 23, the Interpreter pattern is
+      the only one likely to shrink the size of your code,
+      all the others tend to increase the amount of code it takes to solve
+      the problem.
+      Less code is a good thing when you're dealing with a few pages.
+      When, as many of you are, you're talking about millions of lines
+      of code, it seems more like a matter of survival.
+      </p>
+      <p>
+      High praise as this is for the Interpreter Pattern,
+      others speak even highly of it.
+      It is, in fact, the ideal design pattern, one that includes
+      all the others, and goes beyond them.
+      A language can include all, and only, the concepts relevent
+      to your domain,
+      and it can allow you to relate them in all, and only, the appropriate ways.
+      It can identify errors with pinpoint precision,
+      hide implementation details,
+      allow invisible "drop-in" enhancements,
+      and for protecting forward and backward compatibiity is unsurpassed.
+      </p>
+      <p>
+      So powerful and flexible, in fact, is the Interpreter Pattern,
+      it is almost universal.
+      When you are not using a language fitted to your domain,
+      you are using a general-purpose language,
+      In other words, you are either using a language fitted
+      to your domain or one that is not.
+      </p>
+      <p>
+      Why then, is the Interpreter Pattern so little used?
+      </p>
+    <p>
+      <a href="https://gist.github.com/jeffreykegler/5121769">in the Github gist</a>.
+    </p>
+    <p>
+      AST creation via Marpa's SLIF is self-hosting --
+      the SLIF DSL is parsed into an AST,
+      and a parser created by interpreting the AST.
+      The Marpa SLIF DSL source file in this post,
+      that describes boolean expressions,
+      was itself turned into an AST on its way to becoming a parser
+      that turns boolean expressions into AST's.
+    <h3>Comments</h3>
+    <p>
+      Comments on this post
+      can be sent to the Marpa Google Group:
+      <code>marpa-parser@googlegroups.com</code>
+    </p>
+<br />
+<p>posted at: 10:52 |
+<a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2013/03/interpreter.html">direct link to this entry</a>
+</p>
+<div style="color:#38B0C0;padding:1px;text-align:center;">
+&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&sect;
+</div>
 <h3>Mon, 11 Mar 2013</h3>
 <br />
 <center><a name="bnf_to_ast"> <h2>BNF to AST</h2> </a>
@@ -793,543 +867,6 @@ whitespace ~ [\s]+
 <br />
 <p>posted at: 16:42 |
 <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2013/01/announce_scanless.html">direct link to this entry</a>
-</p>
-<div style="color:#38B0C0;padding:1px;text-align:center;">
-&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-&sect;
-</div>
-<h3>Mon, 31 Dec 2012</h3>
-<br />
-<center><a name="self_lex"> <h2>A self-parsing and self-lexing grammar</h2> </a>
-</center>
-  <p>
-      <!--
-      marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
-      -->
-      <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/self_parse.html">In
-        a previous post</a>, I showed a self-parsing grammar,
-      written in Marpa's new BNF interface.
-      That grammar was in a tradition going back to the 70's.
-      Following the tradition, I cheated a bit.
-      That grammar required,
-      but did not include, a lexer to make a prepass over
-      its input.
-    </p><p>
-      This post contains a self-parsing
-      and self-lexing grammar,
-      the one for Marpa's forthcoming Scanless interface.
-      This grammar is about as self-contained as a grammar can get,
-      short of being encoded into a
-      <a href="http://en.wikipedia.org/wiki/Universal_Turing_machine">Universal
-        Turing machine</a>.
-    </p>
-    <p>
-      Many readers will
-      prefer to be introduced to the Scanless interface
-      by way of
-      <a href="https://metacpan.org/module/JKEGL/Marpa-R2-2.035_003/pod/Scanless.pod">
-        a simpler example</a>,
-      but based on the response to the previous post I know
-      there are others who share my fascination with
-      self-description and self-exemplification.
-      And there is something to be said for reading an example
-      that is a final authority on itself.
-    </p>
-    <p>
-      This is certainly a practical example.
-      The grammar that follows is used
-      to parse itself and all other grammars written for the
-      Marpa's Scanless interface.
-      It is also used to parse the strings written
-      for Marpa's BNF interface,
-      the Scanless interface's predecessor.
-    </p>
-    <h3>Starting out</h3>
-    <p>
-      The grammar in this blog post is abridged a bit,
-      and rearranged for ease of explanation.
-      The original is
-      <a href="https://metacpan.org/source/JKEGL/Marpa-R2-2.035_003/lib/Marpa/R2/meta/metag.bnf">
-        here</a>.
-    </p><blockquote>
-      <pre>
-# Copyright 2012 Jeffrey Kegler
-</pre></blockquote>
-    <p>The file starts with legalese, which I've cut.
-      (The grammar is under GNU's LGPL 3.0.)
-      Note the hash comment -- since this is a self-describing self-lexer,
-      the grammar will eventually tell us how it deals with hash comments.
-    </p>
-    <blockquote>
-      <pre>
-:start ::= rules
-rules ::= rule+
-rule ::= &lt;start rule&gt;
-  | &lt;empty rule&gt;
-  | &lt;priority rule&gt;
-  | &lt;quantified rule&gt;
-  | &lt;discard rule&gt;
-</pre></blockquote>
-    <p>The
-      <tt>rules</tt>
-      symbol is the start symbol.
-      Our grammar consists of a series of one or more rules,
-      each one of which falls into one of five types.
-    </p>
-    <p>
-    </p><p>
-      By my count,
-      three of the rules in our self-describing grammar are
-      themselves self-describing.
-      The first and last rule above are two of them.
-      The definition of
-      <tt>rules</tt>
-      is itself a series
-      of one or more
-      <tt>rule</tt>'s.
-      And the definition of
-      <tt>rule</tt>
-      is a
-      <tt>&lt;priority rule&gt;</tt>,
-      which is
-      one of the 5 types of
-      <tt>rule</tt>
-      that are allowed.
-    </p>
-    <p>
-      The first two rules exemplify two of the other rule types:
-      the first is a
-      <tt>&lt;start rule&gt;</tt>
-      and the second is a
-      <tt>&lt;quantified rule&gt;</tt>.
-      A start rule is defined as
-      consisting of the
-      <tt>:start</tt>
-      pseudo-symbol,
-      followed by a
-      <tt>::=</tt>
-      operator,
-      followed by a
-      <tt>symbol</tt>:
-    </p>
-    <blockquote>
-      <pre>
-&lt;start rule&gt; ::= (':start' &lt;op declare bnf&gt;) symbol
-&lt;op declare bnf&gt; ~ '::='
-</pre></blockquote>
-    <p>
-      The parentheses can be ignored.
-      Their purpose is to make life easier on the semantics
-      -- they surround symbols
-      that are hidden from the semantics.
-    </p>
-    <h3>"What I say" versus "what I mean"</h3>
-    <p>When we define a grammar rule,
-      sometimes we are asking Marpa to do exactly what
-      we say, character for character.
-      For example, in the
-      "<tt>&lt;op declare bnf&gt; ~ '::='</tt>" rule above,
-      we are saying that the symbol
-      <tt>&lt;op declare bnf&gt;</tt>
-      is exactly the string '::=',
-      nothing more and nothing less.
-      "Do exactly what I say" rules are called lexical rules,
-      and for them we use the match operator ("<tt>~</tt>").
-    </p>
-    <p>In other cases, we are asking Marpa to "do what I mean".
-      That is, we are saying that "the rule essentially consists of these symbols,
-      but I also want you
-      to do what is reasonable with whitespace and comments."
-      An example of a "do what I mean" rule was
-      "<tt>rules ::= rule+</tt>".
-      Within, between, before and after the
-      <tt>rule</tt>
-      symbols,
-      there will be comments and whitespace.
-      The whitespace will sometimes be optional,
-      and will sometimes be required.
-    </p>
-    <p>
-      Spelling all the comment and whitespace handling
-      out would be very tedious and error-prone.
-      We want there to be rules of a kind that "do what we mean".
-      Marpa's "do what I mean" rules are called "structural" rules,
-      and are identified by the BNF operator ("<tt>::=</tt>").
-    </p><p>Some structural rules have lexical content within them.
-      An example was
-      "<tt>&lt;start rule&gt; ::= (':start' &lt;op declare bnf&gt;) symbol</tt>".
-      That is basically a structural rule, where Marpa should "do what I mean"
-      with whitespace and comments.
-      But it also contains a string,
-      <tt>':start'</tt>.
-      When a string or a character class
-      occurs inside a structural rule,
-      Marpa knows how to treat them properly.
-      Marpa knows, for example,
-      that whitespace is not OK
-      between the "<tt>a</tt>" and the "<tt>r</tt>" of "<tt>:start</tt>".
-    </p>
-    <p>
-      The "what I mean" versus "what I say" distinction
-      corresponds very closely to the distinction in Perl 6 grammars
-      between the "rule" and "token".
-      It also corresponds to the traditional division of labor in compilers,
-      between the lexer and the parser proper.
-    </p>
-    <h3>Rules</h3>
-    <p>Above we saw an example of a quantified rule: "<tt>rules ::= rule+</tt>".
-      Here is the definition:
-    </p>
-    <blockquote>
-      <pre>
-&lt;quantified rule&gt;
-  ::= lhs &lt;op declare&gt;
-    &lt;single symbol&gt; quantifier &lt;adverb list&gt;
-lhs ::= &lt;symbol name&gt;
-&lt;op declare&gt;
-  ::= &lt;op declare bnf&gt; | &lt;op declare match&gt;
-&lt;op declare match&gt; ~ '~'
-quantifier ::= '*' | '+'
-</pre></blockquote>
-    <p>
-      A quantified rule contains a left hand side (LHS) symbol name,
-      one of the two declaration operators,
-      a
-      <tt>single symbol</tt>,
-      a plus or minus "quantifier",
-      and an adverb list.
-      The adverb list can be empty, as it was in our example.
-      (In fact the adverb list has been empty in every rule so far.)
-    </p>
-    <p>
-      Next come the two rule types that we've yet to see:
-    </p>
-    <blockquote>
-      <pre>
-&lt;discard rule&gt;
-  ::= (':discard' &lt;op declare match&gt;) &lt;single symbol&gt;
-&lt;empty rule&gt; ::= lhs &lt;op declare&gt; &lt;adverb list&gt;
-</pre></blockquote>
-    <p>
-      We'll explain what a "discard rule" is when we encounter one.
-      An empty rule indicates that its LHS symbol is nullable.
-      We won't encounter an empty rule in this grammar.
-    </p>
-    <blockquote>
-      <pre>
-&lt;priority rule&gt; ::= lhs &lt;op declare&gt; priorities
-priorities ::= alternatives+
-    separator =&gt; &lt;op loosen&gt; proper =&gt; 1
-&lt;op loosen&gt; ~ '||'
-alternatives ::= alternative+
-    separator =&gt; &lt;op equal priority&gt; proper =&gt; 1
-alternative ::= rhs &lt;adverb list&gt;
-&lt;op equal priority&gt; ~ '|'
-</pre></blockquote>
-    <p>
-      Most rules, including most of the rules we've already seen,
-      are priority rules.
-      Priority rules are
-      so-called because in their most complicated form they can express
-      a precedence scheme.
-      The typical rule in a grammar is a priority rule with only
-      one priority -- a "simple" priority rule.
-      All priority rules in this grammar will be of the simple kind.
-    </p>
-    <p>
-      Within priorities, there can be alternatives,
-      and we have seen examples of these.
-      The self-defining rule that defined a
-      <tt>rule</tt>
-      stated that it was one of a set of 5 possible
-      rule types (priority rule being among those types).
-      In that self-defining rule,
-      the different types of rule were alternatives within a single
-      priority.
-    </p><p>And, as long as we are on the subject of self-defining rules,
-      there are three of them in this grammar, of which we have previously
-      identified two.
-      The definition of
-      <tt>&lt;priority rule&gt;</tt>
-      is the third and last self-defining rule --
-      it is itself a priority rule.
-    </p>
-    <h3>Symbols</h3>
-    <p>We've used
-      <tt>symbol</tt>,
-      <tt>&lt;symbol name&gt;</tt>,
-      and
-      <tt>&lt;single symbol&gt;</tt>
-      a few times.
-      It's time to see how they are defined:
-    </p>
-    <blockquote>
-      <pre>
-&lt;single symbol&gt; ::=
-    symbol
-  | &lt;character class&gt;
-symbol ::= &lt;symbol name&gt;
-&lt;symbol name&gt; ::= &lt;bare name&gt;
-&lt;symbol name&gt; ::= &lt;bracketed name&gt;
-&lt;bare name&gt; ~ [\w]+
-&lt;bracketed name&gt; ~ '&lt;' &lt;bracketed name string&gt; '&gt;'
-&lt;bracketed name string&gt; ~ [\s\w]+
-</pre></blockquote>
-    <p>At this point,
-      <tt>symbol</tt>
-      and
-      <tt>&lt;symbol name&gt;</tt>
-      are
-      essentially the same thing:
-      someday there may be another way to specify symbols
-      other than by name.
-      <tt>&lt;single symbol&gt;</tt>
-      means any expression guaranteed
-      to produce a single symbol.
-      <tt>symbol</tt>
-      is obviously one;
-      a character class is the other.
-    </p>
-    <p>The rules above contain our first mention
-      of character classes and,
-      by coincidence,
-      our first use of character classes.
-      Character classes are enclosed in square brackets,
-      and look exactly like Perl character classes.
-      In fact, they are implemented as Perl character classes, memoized for
-      efficiency.
-    </p>
-    <p>Now that we know what a symbol can be,
-      let's look at how right hand sides are built up:
-    </p>
-    <blockquote>
-      <pre>
-rhs ::= &lt;rhs primary&gt;+
-&lt;rhs primary&gt; ::= &lt;single symbol&gt;
-&lt;rhs primary&gt; ::= &lt;single quoted string&gt;
-&lt;rhs primary&gt; ::= &lt;parenthesized rhs primary list&gt;
-&lt;parenthesized rhs primary list&gt;
-  ::= ('(') &lt;rhs primary list&gt; (')')
-&lt;rhs primary list&gt; ::= &lt;rhs primary&gt;+
-</pre></blockquote>
-    <p>A right hand side (RHS) is a sequence of one or more RHS "primaries".
-      A RHS primary can be a single symbol, a string in single quotes,
-      or a sublist of one or more RHS primaries in parentheses.
-    </p><h3>Adverbs</h3>
-    <blockquote>
-      <pre>
-&lt;adverb list&gt; ::= &lt;adverb item&gt;*
-&lt;adverb item&gt; ::=
-      action
-    | &lt;left association&gt;
-    | &lt;right association&gt;
-    | &lt;group association&gt;
-    | &lt;separator specification&gt;
-    | &lt;proper specification&gt;
-</pre></blockquote>
-    <p>Adverb lists are lists of zero or more adverbs, which can be of one of six kinds.
-      Of these six, four do not occur in this grammar:
-    </p><blockquote>
-      <pre>
-&lt;left association&gt; ::= ('assoc' '=&gt;' 'left')
-&lt;right association&gt; ::= ('assoc' '=&gt;' 'right')
-&lt;group association&gt; ::= ('assoc' '=&gt;' 'group')
-action ::= ('action' '=&gt;') &lt;action name&gt;
-&lt;action name&gt; ::= &lt;bare name&gt;
-</pre></blockquote>
-    <p>
-      Three of the unused
-      adverbs have to do with the associativity (right/left/group)
-      of priorities.
-      Since all our "prioritized" rules are trivial (have only one priority),
-      this grammar does not use them.
-      (Their use is described in
-      <a href="https://metacpan.org/module/Marpa::R2::BNF">
-        the documentation of Marpa's BNF interface</a>.)
-      We also will not see
-      <tt>action</tt>
-      adverbs in this grammar,
-      for reasons explained below.
-    </p>
-    <p>
-      Here are the two adverbs that we do see:
-    </p><blockquote>
-      <pre>
-&lt;separator specification&gt;
-  ::= ('separator' '=&gt;') &lt;single symbol&gt;
-&lt;proper specification&gt; ::= ('proper' '=&gt;') boolean
-boolean ~ [01]
-</pre></blockquote>
-    <p>These adverbs are used for quantified rules.
-      One specifies a "separator" that can go between items of the series.
-      The other specifies whether separation is "proper" or not.
-      (When
-      <tt>proper</tt>
-      is 0, a separator is allowed after the last item of a series.
-      When that is the case,
-      the separator does not really always separate two items
-      and in that sense the separator is not "proper".)
-    </p><h3>Discarded tokens</h3>
-    <blockquote>
-      <pre>
-:discard ~ whitespace
-whitespace ~ [\s]+
-</pre></blockquote>
-    <p>The two rules say that sequences of whitespace are recognized
-      as tokens, then discarded.
-      Perl-style comments are handled in the same way:
-    </p><blockquote>
-      <pre>
-# allow comments
-:discard ~ &lt;hash comment&gt;
-&lt;hash comment&gt; ~ &lt;terminated hash comment&gt;
-  | &lt;unterminated final hash comment&gt;
-&lt;terminated hash comment&gt;
-  ~ '#' &lt;hash comment body&gt; &lt;vertical space char&gt;
-&lt;unterminated final hash comment&gt;
-  ~ '#' &lt;hash comment body&gt;
-&lt;hash comment body&gt; ~ &lt;hash comment char&gt;*
-&lt;vertical space char&gt; ~ [\x{A}\x{B}\x{C}\x{D}\x{2028}\x{2029}]
-&lt;hash comment char&gt; ~ [^\x{A}\x{B}\x{C}\x{D}\x{2028}\x{2029}]
-</pre></blockquote>
-    <p>"Unterminated final hash comments" deal with the special
-      case of hash comments at the end of a file,
-      when that file is not properly
-      terminated with a newline.
-      The
-      <tt>&lt;unterminated final hash comment&gt;</tt>
-      symbol is an example of how
-      a long angle bracketed symbol name can make things clearer.
-      Without the long name, it might not be evident what that rule and symbol
-      were trying to accomplish.
-    </p>
-    <p>
-      Long symbol names
-      have a cleaner look than comments,
-      but they are not a panacea.
-      They have
-      the special advantage that the description goes wherever the symbol
-      name goes.
-      But when the description is too long,
-      that advantage becomes a disadvantage.
-    </p><h3>Strings</h3>
-    <p>In the next snippet, defining single-quoted strings,
-      the description is clearly too long for the symbol name,
-      so much of it does go into a comment.
-    </p><blockquote>
-      <pre>
-# In single quotes strings and character classes
-# no escaping or internal newlines, and disallow empty string
-&lt;single quoted string&gt;
-  ~ ['] &lt;string without single quote or vertical space&gt; [']
-&lt;string without single quote or vertical space&gt;
-  ~ [^'\x{0A}\x{0B}\x{0C}\x{0D}\x{0085}\x{2028}\x{2029}]+
-</pre></blockquote>
-    <p>Note two Unicode vertical whitespace codepoints,
-      U+2028 and U+2029, are included.
-      The implementation only supports 7-bit ASCII,
-      so for the moment these accomplish nothing.
-      But when Unicode support is added, the grammar won't need to be changed.
-    </p><h3>Character classes</h3>
-    <p>Finally, there are character classes:
-    </p><blockquote>
-      <pre>
-&lt;character class&gt; ~ '[' &lt;cc string&gt; ']'
-&lt;cc string&gt; ~ &lt;cc character&gt;+
-&lt;cc character&gt; ~ &lt;escaped cc character&gt;
-  | &lt;safe cc character&gt;
-&lt;escaped cc character&gt; ~ '\' &lt;horizontal character&gt;
-
-# hex 5d is right square bracket
-&lt;safe cc character&gt;
-  ~ [^\x{5d}\x{0A}\x{0B}\x{0C}\x{0D}\x{0085}\x{2028}\x{2029}]
-
-# a horizontal character is any character that is not vertical space
-&lt;horizontal character&gt; ~ [^\x{A}\x{B}\x{C}\x{D}\x{2028}\x{2029}]
-</pre></blockquote>
-    <p>These are Perl character classes,
-      and are passed unaltered to Perl for interpretation.
-      Marpa needs to recognize that they start and end with square brackets.
-      And it also must recognize enough of their internals
-      to deal with escaped square brackets,
-      which makes
-      them the most
-      complicated lexeme of the grammar.
-    </p>
-    <h3>Longest tokens matching</h3>
-    <p>When there is a choice of lexicals, Marpa follows a longest tokens matching strategy.
-      The effect is usually that it does what you mean.
-      (In part this is because longest token match
-      is the usual default for regular expressions and
-      lexical analyzers, so that programmers are trained by their tools
-      to really mean a longest match
-      whenever they specify a match.)
-    </p><p>Most of what longest-token-match does is obvious.
-      For example,
-      in the rule "<tt>weeknights ~ 'Mon' | 'Tue' | 'Wed' | 'Thu'</tt>",
-      it recognizes that
-      <tt>weeknights</tt>
-      is one symbol and not two symbols like
-      "<tt>wee</tt>" and "<tt>knights</tt>".
-      Longest tokens match
-      means that if you have a grammar where you specify both
-      <tt>++</tt>
-      and
-      <tt>+</tt>
-      as operators, Marpa will always prefer
-      the longer operator:
-      <tt>++</tt>.
-    </p><p>Because this is Marpa, there is a slight difference from the traditional longest
-      <b>token</b>
-      matching.
-      Note that in Marpa's matching strategy, "tokens" is plural.
-      If more than one possibility has the same length, Marpa will try them all.
-      This plays a role in our meta-grammar.
-      For example,
-      <tt>separator</tt>
-      is a keyword.
-      But it is also a valid symbol name.
-      Marpa allows it to be both, and figures out which is meant at the
-      structural level, based on context.
-    </p><h3>Semantics</h3>
-    <p>
-      In practice, a grammar is usually tied tightly to a single semantics.
-      This is an exception.
-      The Scanless interface's meta-grammar is also the grammar for Marpa's
-      BNF interface, and the BNF interface has a different semantics.
-    </p>
-    <p>
-      For most grammars in Marpa's BNF or Scanless interface,
-      the semantics would be specified using
-      <tt>action</tt>
-      adverbs.
-      Examples of the normal method of specifying
-      semantics are in the documentation for
-      <a href="https://metacpan.org/module/Marpa::R2::BNF">
-        the BNF interface</a>
-      and for
-      <a href="https://metacpan.org/module/JKEGL/Marpa-R2-2.035_003/pod/Scanless.pod">
-        the Scanless interface</a>.
-    </p>
-    <p>
-      In this special-case grammar,
-      there are no
-      <tt>action</tt>
-      adverbs.
-      Marpa waits until it knows which interface the grammar will be used for.
-      At that point the internals use the symbol names to map rules to
-      actions on a "just in time"
-      basis.
-    </p>
-    <h3>Comments</h3>
-    <p>
-      Comments on this post can be sent to the Marpa Google Group:
-      <code>marpa-parser@googlegroups.com</code>
-    </p>
-<br />
-<p>posted at: 17:00 |
-<a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/12/self_lex.html">direct link to this entry</a>
 </p>
 <div style="color:#38B0C0;padding:1px;text-align:center;">
 &sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
