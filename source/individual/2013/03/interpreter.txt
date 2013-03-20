@@ -5,9 +5,10 @@ The Interpreter Design Pattern
       -->
     <p>The very influential
       <a href="http://en.wikipedia.org/wiki/Design_Patterns">
-      <em>Design Patterns</em> book</a>lays out 23 patterns for programming.
+      <em>Design Patterns</em> book</a>
+      lays out 23 patterns for programming.
       One of them, the Interpreter Pattern, is rarely used.
-      Steve Yegge, as usual, puts it a bit more strikingly -- he says
+      Steve Yegge puts it a bit more strikingly -- he says
       that the book  contain 22 patterns and a practical joke.
       </p>
       <p>
@@ -16,36 +17,77 @@ The Interpreter Design Pattern
       all the others tend to increase the amount of code it takes to solve
       the problem.
       Less code is a good thing when you're dealing with a few pages.
-      When, as many of you are, you're talking about millions of lines
-      of code, it seems more like a matter of survival.
+      If you're talking about lines of code in the 100's of thousands,
+      or the millions,
+      it seems more like a matter of survival.
       </p>
       <p>
       High praise as this is for the Interpreter Pattern,
       others speak even highly of it.
-      It is, in fact, the ideal design pattern, one that includes
-      all the others, and goes beyond them.
       A language can include all, and only, the concepts relevent
-      to your domain,
-      and it can allow you to relate them in all, and only, the appropriate ways.
-      It can identify errors with pinpoint precision,
+      to your domain.
+      A language can allow you to relate them in all, and only, the appropriate ways.
+      A language can identify errors with pinpoint precision,
       hide implementation details,
-      allow invisible "drop-in" enhancements,
-      and for protecting forward and backward compatibiity is unsurpassed.
+      and allow invisible "drop-in" enhancements.
       </p>
       <p>
-      So powerful and flexible, in fact, is the Interpreter Pattern,
-      it is almost universal.
-      When you are not using a language fitted to your domain,
-      you are using a general-purpose language,
-      In other words, you are either using a language fitted
-      to your domain or one that is not.
+      A language can go wrong, and in present practice, a lot do.
+      Many more simply don't get off the ground.
+      But because languages are so powerful and flexible,
+      their use is in fact pretty much universal.
+      The choice is not whether or not to use a language to solve
+      the problem,
+      but whether to use
+      a general-purpose language,
+      and a domain-specific language.
+      That is, if you decide not to use a language specifically fitted
+      to your domain,
+      usually it means that you
+      are choosing to use one that is not.
       </p>
       <p>
       Why then, is the Interpreter Pattern so little used?
+      Why does Yegge call it a practical joke?
       </p>
+      <h3>But there's a problem</h3>
+      <p>The problem with the Interpreter Pattern is that you must
+      turn your language into an AST -- you must parse it somehow.
+      Simplifying the language can help here,
+      but if the point is to simple at the expense of power
+      and flexibility,
+      why not just stick with the other 22 patterns?
+      But creating a parser for a complex language
+      has been a time-consuming effort,
+      and one which has a high risk of disappointing results.
+      Worse, it was an effort
+      that had a very real risk of total failure.
+      </p>
+      <p>How did the Go4 deal with this?
+      (The <i>Design Patterns</i> book has four authors,
+      who are often called the Gang of Four, or Go4.)
+      They defined the problem away.
+      They stated that the parsing issue was separate from the
+      Interpret Pattern, which was about what you did with the AST
+      once you'd somehow come up with one.
+      </p>
+    <p>
+      But AST's don't (so to speak) grow on trees.
+      You have to get one from somewhere.
+      In their example, the Go4 simply created one in their code.
+      In doing this, they bypassed the BNF, and the problem parsing,
+      but also the whole point of having a language.
+      </p>
+      <p>
+      Which is why Yegge characterized the chapter as a practical joke.
+      And why less ideal programming techniques and patterns are almost
+      always preferred to the Interpreter Pattern.
+      </p>
+      <h3>That one missing piece>/h3>
     <p>
       <a href="https://gist.github.com/jeffreykegler/5121769">in the Github gist</a>.
     </p>
+    <h
     <p>
       AST creation via Marpa's SLIF is self-hosting --
       the SLIF DSL is parsed into an AST,
@@ -54,7 +96,7 @@ The Interpreter Design Pattern
       that describes boolean expressions,
       was itself turned into an AST on its way to becoming a parser
       that turns boolean expressions into AST's.
-    <h3>Comments</h3>
+    <h3>More about Marpa</h3>
     <p>
       Comments on this post
       can be sent to the Marpa Google Group:
