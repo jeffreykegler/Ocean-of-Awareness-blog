@@ -83,22 +83,66 @@ The Interpreter Design Pattern
       And why less ideal programming techniques and patterns are almost
       always preferred to the Interpreter Pattern.
       </p>
-      <h3>That one missing piece>/h3>
-    <p>
-      <a href="https://gist.github.com/jeffreykegler/5121769">in the Github gist</a>.
+      <h3>That one missing piece</h3>
+    <p>So that's how the Go4 left things.
+    A potentially great programming technique made almost useless because
+    of a missing piece.
+    There was no easy, general and practical way to generate AST's.
     </p>
-    <h
     <p>
-      AST creation via Marpa's SLIF is self-hosting --
-      the SLIF DSL is parsed into an AST,
-      and a parser created by interpreting the AST.
-      The Marpa SLIF DSL source file in this post,
-      that describes boolean expressions,
-      was itself turned into an AST on its way to becoming a parser
-      that turns boolean expressions into AST's.
+    Few expected that to change.
+    I was more optimistic than most,
+    and in 2007 I embarked on a project to create an Earley-based
+    parser that I was sure would fulfill two of the criteria --
+    it would be easy to use, and general.
+    As far as practical, well, a lot of parsing problems
+    are small, and a lot of applications don't require a lot
+    of speed, and for these I expected the result to be good enough.
+    </p>
+    <p>What I didn't realize was that
+    the obstacles to Earley's practical use
+    has been solved.
+    Neither apparently did anyone else,
+    including the people who had solved the problems.
+    because they'd each tackled a different set of problems.
+    In Canada, Aycock and Horspool had cleaned up Earley's algorithm, but their version
+    was still too slow for grammars with right recursion.
+    Ten years earlier, in the Netherlands,
+    the mathematican Joop Leo had ignored the issues Aycock and Horspool had solved,
+    drilled in on right recursion,
+    and arrived at a brilliant solution.
+    Apparently neither knew of the other's work.
+    </p>
+    <p>
+    Because of Leo's work, Marpa is fast.
+    For any grammar in any class currently in practical use, Marpa parses in linear time.
+    That includes regular expressions,
+    the LL(k) grammars on which recursive descent and PEG
+    are based for all <i>k</i>, and the LR(k) grammars on which yacc and bison are based,
+    again for all <i>k</i>.
+    Because of Aycock and Horspool, Leo's speed can be harnessed in practice.
+    <p>There was still work to do.
+    The Aycock-Horspool and Leo algorithms had branched off in different directions --
+    it was not obvious that the two approaches could be combined, much less how,
+    and the solution was not simple.
+    In the course of combining the two, I reordered the Earley parse engine,
+    in a way that has some very nice properties for,
+    among other things, error reporting.
+    <h3>Eureka and all that</h3>
+    <p>The result from all this is an algorithm which parses anything
+    you can write in BNF and
+    does it in times which are now considered optimal in practice.
+    And, unlike recursive descent, you don't have to write it --
+    Marpa takes the BNF and creates the parser for you.
+    It's the easy, "drop-in" solution that the Go4 needed and did not have.
+    For the example in the Go4 book, I've done exactly than and put it into a gist.
+    </p>
     <h3>More about Marpa</h3>
     <p>
+      Marpa's latest version is Marpa::R2, which is on CPAN.
+      Marpa has a web page,
+      and of course is the focus of the this blog.
       Comments on this post
-      can be sent to the Marpa Google Group:
+      can be sent to the Marpa's Google Group:
       <code>marpa-parser@googlegroups.com</code>
     </p>
