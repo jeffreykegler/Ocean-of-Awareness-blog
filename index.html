@@ -53,8 +53,10 @@
       that the book contains
       <a href="https://sites.google.com/site/steveyegge2/ten-great-books">22
         patterns and a practical joke</a>.
-	</p>
-	<p>That sounds (and in fact is) negative, but elsewhere
+    </p>
+    <p>That sounds (and in fact is) negative, but
+      <a href="http://steve-yegge.blogspot.com/2007/12/codes-worst-enemy.html">
+        elsewhere</a>
       Yegge says that
       "[t]ragically, the only [Go4] pattern that can help code get smaller
       (Interpreter) is utterly ignored by programmers".
@@ -65,18 +67,18 @@
     </p>
     <p>
       In fact, under various names and definitions, the
-      Interpreter Pattern and its close relatives and/or identical twins 
+      Interpreter Pattern and its close relatives and/or identical twins
       are widely cited,
       much argued and highly praised<a href="#NOTE1">[1]<a>.
-      As they should be.
-      Languages are the most powerful and flexible design pattern of all.
-      A language can include all, and only, the concepts relevent
-      to your domain.
-      A language can allow you to relate them in all, and only, the appropriate ways.
-      A language can identify errors with pinpoint precision,
-      hide implementation details,
-      allow invisible "drop-in" enhancements, etc., etc., etc.
-    </p>
+          As they should be.
+          Languages are the most powerful and flexible design pattern of all.
+          A language can include all, and only, the concepts relevent
+          to your domain.
+          A language can allow you to relate them in all, and only, the appropriate ways.
+          A language can identify errors with pinpoint precision,
+          hide implementation details,
+          allow invisible "drop-in" enhancements, etc., etc., etc.
+        </a></a></p>
     <p>
       In fact languages are so powerful and flexible,
       that their use is pretty much universal.
@@ -104,8 +106,8 @@
       and flexibility,
       you usually might as well
       stick with the other 22 design patterns.
-      </p>
-      <p>
+    </p>
+    <p>
       On the other hand,
       creating a parser for anything but the simplest languages
       has been a time-consuming effort,
@@ -164,7 +166,8 @@
       the mathematican Joop Leo had
       arrived at an astounding result --
       he showed how to make Earley's run in linear time for a vast class of grammars
-      including, as a subset, LR(k) for all <i>k</i>.
+      including, as a subset, LR(k) for all
+      <i>k</i>.
       Ten years later in Canada,
       Aycock and Horspool focused on some nagging practical issues,
       including the size of Earley's parse tables
@@ -182,11 +185,11 @@
       <i>k</i>, and the LR(k) grammars on which yacc and bison are based,
       again for all
       <i>k</i>.
-    I realized that,
-    if only it could be combined with the approach
+      I realized that,
+      if only it could be combined with the approach
       of Aycock and Horspool, Leo's speed could be harnessed in practice.
-      <p>
-      </p>
+    </p><p>
+    </p><p>
       But the Aycock-Horspool and Leo algorithms had branched off in different directions --
       it was not obvious that their approaches could be combined, much less how.
       In fact, the solution was not simple.
@@ -201,20 +204,21 @@
       Unlike recursive descent, you don't have to write out the parser --
       Marpa generates a parser for you, from the BNF.
       It's the easy, "drop-in" solution that the Go4 needed and did not have.
-      </p>
-      <p>
+    </p>
+    <p>
       I've redone the Go4 example, adding the missing parser.
       I described the fully worked out version in
       <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2013/03/bnf_to_ast.html">a
-      previous blog post</a>.
+        previous blog post</a>.
       The full code is in
       <a href="https://gist.github.com/jeffreykegler/5121769">
-      a Github gist</a>.
+        a Github gist</a>.
     </p>
     <h3>More about Marpa</h3>
     <p>
-      Marpa's latest version is <a href="https://metacpan.org/module/Marpa::R2">Marpa::R2,
-      which is available on CPAN</a>.
+      Marpa's latest version is
+      <a href="https://metacpan.org/module/Marpa::R2">Marpa::R2,
+        which is available on CPAN</a>.
       Recently, it has gained immensely in "whipitupitude" with
       <a href="https://metacpan.org/module/JKEGL/Marpa-R2-2.048000/pod/Scanless/DSL.pod">
         a new interface</a>,
@@ -223,25 +227,26 @@
       </a>
       and
       <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2013/01/announce_scanless.html">
-      here</a>.
-      Marpa has <a href="http://jeffreykegler.github.com/Marpa-web-site/">a web page</a>,
+        here</a>.
+      Marpa has
+      <a href="http://jeffreykegler.github.com/Marpa-web-site/">a web page</a>,
       and of course it is the focus of
       <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/">
-      my "Ocean of Awareness" blog</a>.
-      </p>
-      <p>
+        my "Ocean of Awareness" blog</a>.
+    </p>
+    <p>
       Comments on this post
       can be sent to the Marpa's Google Group:
       <code>marpa-parser@googlegroups.com</code>
     </p>
     <h3>Notes</h3>
     <p><a name="NOTE1">Note 1</a>:
-    Just skimming the surface, there is
-    <a href="http://en.wikipedia.org/wiki/Domain-specific_language">the Wikipedia article on DSL's</a>;
-    <a href="http://www.faqs.org/docs/artu/minilanguageschapter.html">Eric Raymond discussing mini-languages</a>;
-    <a href="http://www.dmst.aueb.gr/dds/pubs/jrnl/2000-JSS-DSLPatterns/html/dslpat.html">
-    "Notable Design Patterns for Domain-Specific Languages"</a>, Diomidis Spinellis; and
-    <a href="http://www.c2.com/cgi/wiki?DomainSpecificLanguage">the c2.com wiki</a>.
+      For example,
+      <a href="http://en.wikipedia.org/wiki/Domain-specific_language">the Wikipedia article on DSL's</a>;
+      <a href="http://www.faqs.org/docs/artu/minilanguageschapter.html">Eric Raymond discussing mini-languages</a>;
+      <a href="http://www.dmst.aueb.gr/dds/pubs/jrnl/2000-JSS-DSLPatterns/html/dslpat.html">
+        "Notable Design Patterns for Domain-Specific Languages"</a>, Diomidis Spinellis; and
+      <a href="http://www.c2.com/cgi/wiki?DomainSpecificLanguage">the c2.com wiki</a>.
     </p>
 <br />
 <p>posted at: 10:52 |
