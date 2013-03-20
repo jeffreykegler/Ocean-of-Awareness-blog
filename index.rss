@@ -43,7 +43,7 @@
       In fact, under various names and definitions, the
       Interpreter Pattern and its close relatives and/or identical twins
       are widely cited,
-      much argued and highly praised&lt;a href=&quot;#NOTE1&quot;&gt;[1]&lt;a&gt;.
+      much argued and highly praised&lt;a href=&quot;#NOTE1&quot;&gt;[1]&lt;/a&gt;.
           As they should be.
           Languages are the most powerful and flexible design pattern of all.
           A language can include all, and only, the concepts relevent
@@ -52,7 +52,7 @@
           A language can identify errors with pinpoint precision,
           hide implementation details,
           allow invisible &quot;drop-in&quot; enhancements, etc., etc., etc.
-        &lt;/a&gt;&lt;/a&gt;&lt;/p&gt;
+        &lt;/p&gt;
     &lt;p&gt;
       In fact languages are so powerful and flexible,
       that their use is pretty much universal.
