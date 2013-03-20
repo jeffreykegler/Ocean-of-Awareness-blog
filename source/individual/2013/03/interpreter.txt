@@ -61,9 +61,11 @@ The Interpreter Design Pattern
     </p>
     <h3>There's a problem</h3>
     <p>The problem with the Interpreter Pattern is that you must
-      turn your language into an AST -- you must parse it somehow.
-      Simplifying the language can help here,
-      but if the point is to be simple at the expense of power
+      turn your language into an AST --
+      that is,
+      you must parse it somehow.
+      Simplifying the language can help here.
+      But if the point is to be simple at the expense of power
       and flexibility,
       you usually might as well
       stick with the other 22 design patterns.
@@ -88,8 +90,8 @@ The Interpreter Design Pattern
       You have to get one from somewhere.
       In their example, the Go4 simply built one in their code,
       node by node.
-      In doing this, they bypassed the BNF, and the problem of parsing,
-      but also their language and therefore the whole point
+      In doing this, they bypassed the BNF and the problem of parsing.
+      But they also bypassed their language and the whole point
       of the Interpreter Pattern.
     </p>
     <p>
@@ -107,8 +109,8 @@ The Interpreter Design Pattern
       Few expected that to change.
       I was more optimistic than most.
       In 2007 I embarked on a full-time project:
-      to create an Earley-based
-      parser that I was sure would fulfill two of the criteria --
+      to create a parser based on Earley's algorithm.
+      I was sure that it would fulfill two of the criteria --
       it would be easy to use, and it would be general.
       As for practical -- well, a lot of parsing problems
       are small, and a lot of applications don't require a lot
@@ -126,37 +128,44 @@ The Interpreter Design Pattern
       In 1991, in the Netherlands,
       the mathematican Joop Leo had
       arrived at an astounding result --
-      he showed how to make Earley's run in linear time for a vast class of grammars
-      including, as a subset, LR(k) for all
-      <i>k</i>.
-      Ten years later in Canada,
-      Aycock and Horspool focused on some nagging practical issues,
-      including the size of Earley's parse tables
-      and the handling of nullable rules and symbols.
-      But the Aycock-Horspool speeds were essentially that of
-      Earley's original algorithm --
-      they seem to have been unaware of Leo's earlier result.
+      he showed how to make Earley's run in linear time for LR-regular grammars.
+      LR-regular is a vast class of grammars.
+      It easily includes, as a proper subset, every class of grammar now
+      in practical use -- regular expressions, PEG, recursive descent,
+      the LALR on which yacc and bison are based, you name it.
+      (For those into the math LR-regular include LR(k) for a
+      <i>k</i>, and therefore LL(k) for a <i>k</i>.)
+      </p>
+      <p>
+      Leo's mathematical approach did not address some nagging practical issues,
+      foremost among them the handling of nullable rules and symbols.
+      But ten years later in Canada,
+      Aycock and Horspool focused on exactly these issues,
+      and solved them.
+      But Aycock-Horspool
+      seem to have been unaware of Leo's earlier result.
+      The time complexity of the Aycock-Horspool
+      algorithm was essentially that of
+      Earley's original algorithm.
     </p>
     <p>
-      Because of Leo's work, Marpa is fast.
-      For any grammar in any class currently in practical use, Marpa parses in linear time.
-      That includes regular expressions,
-      the LL(k) grammars on which recursive descent and PEG
-      are based for all
-      <i>k</i>, and the LR(k) grammars on which yacc and bison are based,
-      again for all
-      <i>k</i>.
-      I realized that,
-      if only it could be combined with the approach
-      of Aycock and Horspool, Leo's speed could be harnessed in practice.
-    </p><p>
-    </p><p>
-      But the Aycock-Horspool and Leo algorithms had branched off in different directions --
-      it was not obvious that their approaches could be combined, much less how.
-      In fact, the solution was not simple.
-      In the course of combining the two, I reordered the Earley parse engine
-      in a way that has some very nice properties for,
-      among other things, error reporting.
+      Because of Leo's work,
+      for any grammar in any class currently in practical use,
+      Marpa is fast.
+      If only it could be combined with the approach
+      of Aycock and Horspool, I realized,
+      Leo's speeds could be available in an everyday programming tool.
+    </p>
+    <p>
+      In changing the Earley parse engine,
+      Aycock-Horspool and Leo had branched off in different directions.
+      It was not obvious that their approaches could be combined, much less how.
+      And in fact, the combination of the two is not a simple algorithm.
+      But it is fast,
+      and the new Marpa parse engine makes full imformation
+      about the state of the parse (rules recognized, symbols expected, etc.)
+      available as it proceeds.
+      This is very convenient for, among other things, error reporting.
     </p>
     <h3>Eureka and all that</h3>
     <p>The result is an algorithm which parses anything
@@ -165,13 +174,10 @@ The Interpreter Design Pattern
       Unlike recursive descent, you don't have to write out the parser --
       Marpa generates a parser for you, from the BNF.
       It's the easy, "drop-in" solution that the Go4 needed and did not have.
-    </p>
-    <p>
-      I've redone the Go4 example, adding the missing parser.
-      I described the fully worked out version in
+      A reworking of the Go4 example, with the missing parser added,
+      is in
       <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2013/03/bnf_to_ast.html">a
-        previous blog post</a>.
-      The full code is in
+        previous blog post</a>, and the code for the reworking is in
       <a href="https://gist.github.com/jeffreykegler/5121769">
         a Github gist</a>.
     </p>
