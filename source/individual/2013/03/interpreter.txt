@@ -95,7 +95,7 @@ The Interpreter Design Pattern
       And why other programming techniques and patterns are almost
       always preferred to the Interpreter Pattern.
     </p>
-    <h3>That one missing piece</h3>
+    <h3>Finding that one missing piece</h3>
     <p>So that's how the Go4 left things.
       A potentially great programming technique made almost useless because
       of a missing piece.
@@ -113,7 +113,7 @@ The Interpreter Design Pattern
       of speed, and for these I expected the result to be good enough.
     </p>
     <p>What I didn't realize was that
-      all the problems preventing
+      all of the problems preventing
       Earley's from seeing real, practical use
       has already been solved in the academic literature.
       I was not alone in not having put the picture together.
@@ -123,13 +123,13 @@ The Interpreter Design Pattern
       work.
       In 1991, in the Netherlands,
       the mathematican Joop Leo had
-      and arrived at an astounding result --
+      arrived at an astounding result --
       he showed how to make Earley's run in linear time for a vast class of grammars
-      including, as a subset, LR(k) for all k.
+      including, as a subset, LR(k) for all <i>k</i>.
       Ten years later in Canada,
       Aycock and Horspool focused on some nagging practical issues,
-      including the size of Earley's parse tables,
-      the handling of nullable rules and symbols.
+      including the size of Earley's parse tables
+      and the handling of nullable rules and symbols.
       But the Aycock-Horspool speeds were essentially that of
       Earley's original algorithm --
       they seem to have been unaware of Leo's earlier result.
@@ -143,27 +143,34 @@ The Interpreter Design Pattern
       <i>k</i>, and the LR(k) grammars on which yacc and bison are based,
       again for all
       <i>k</i>.
-    </p>
-    <p>If it could be combined with the approach
+    I realized that,
+    if only it could be combined with the approach
       of Aycock and Horspool, Leo's speed could be harnessed in practice.
+      <p>
+      </p>
       But the Aycock-Horspool and Leo algorithms had branched off in different directions --
       it was not obvious that their approaches could be combined, much less how.
       In fact, the solution was not simple.
-      In the course of combining the two, I reordered the Earley parse engine,
+      In the course of combining the two, I reordered the Earley parse engine
       in a way that has some very nice properties for,
       among other things, error reporting.
     </p>
     <h3>Eureka and all that</h3>
-    <p>The result from all this is an algorithm which parses anything
+    <p>The result is an algorithm which parses anything
       you can write in BNF and
-      does it in times which are now considered optimal in practice.
-      And, unlike recursive descent, you don't have to write it --
-      Marpa takes the BNF and creates the parser for you.
+      does it in times considered optimal in practice.
+      Unlike recursive descent, you don't have to write out the parser --
+      Marpa generates a parser for you, from the BNF.
       It's the easy, "drop-in" solution that the Go4 needed and did not have.
-      I detailed my
-      fully worked version of the Go4 example in
+      </p>
+      <p>
+      I've redone the Go4 example, adding the missing parser.
+      I described the fully worked out version in
       <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2013/03/bnf_to_ast.html">a
       previous blog post</a>.
+      The full code is in
+      <a href="https://gist.github.com/jeffreykegler/5121769">
+      a Github gist</a>.
     </p>
     <h3>More about Marpa</h3>
     <p>
@@ -181,7 +188,7 @@ The Interpreter Design Pattern
       Marpa has <a href="http://jeffreykegler.github.com/Marpa-web-site/">a web page</a>,
       and of course it is the focus of
       <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/">
-      this "Ocean of Awareness" blog</a>.
+      my "Ocean of Awareness" blog</a>.
       </p>
       <p>
       Comments on this post

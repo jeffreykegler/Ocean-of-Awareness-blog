@@ -108,7 +108,7 @@
       And why other programming techniques and patterns are almost
       always preferred to the Interpreter Pattern.
     &lt;/p&gt;
-    &lt;h3&gt;That one missing piece&lt;/h3&gt;
+    &lt;h3&gt;Finding that one missing piece&lt;/h3&gt;
     &lt;p&gt;So that's how the Go4 left things.
       A potentially great programming technique made almost useless because
       of a missing piece.
@@ -126,7 +126,7 @@
       of speed, and for these I expected the result to be good enough.
     &lt;/p&gt;
     &lt;p&gt;What I didn't realize was that
-      all the problems preventing
+      all of the problems preventing
       Earley's from seeing real, practical use
       has already been solved in the academic literature.
       I was not alone in not having put the picture together.
@@ -136,13 +136,13 @@
       work.
       In 1991, in the Netherlands,
       the mathematican Joop Leo had
-      and arrived at an astounding result --
+      arrived at an astounding result --
       he showed how to make Earley's run in linear time for a vast class of grammars
-      including, as a subset, LR(k) for all k.
+      including, as a subset, LR(k) for all &lt;i&gt;k&lt;/i&gt;.
       Ten years later in Canada,
       Aycock and Horspool focused on some nagging practical issues,
-      including the size of Earley's parse tables,
-      the handling of nullable rules and symbols.
+      including the size of Earley's parse tables
+      and the handling of nullable rules and symbols.
       But the Aycock-Horspool speeds were essentially that of
       Earley's original algorithm --
       they seem to have been unaware of Leo's earlier result.
@@ -156,27 +156,34 @@
       &lt;i&gt;k&lt;/i&gt;, and the LR(k) grammars on which yacc and bison are based,
       again for all
       &lt;i&gt;k&lt;/i&gt;.
-    &lt;/p&gt;
-    &lt;p&gt;If it could be combined with the approach
+    I realized that,
+    if only it could be combined with the approach
       of Aycock and Horspool, Leo's speed could be harnessed in practice.
+      &lt;p&gt;
+      &lt;/p&gt;
       But the Aycock-Horspool and Leo algorithms had branched off in different directions --
       it was not obvious that their approaches could be combined, much less how.
       In fact, the solution was not simple.
-      In the course of combining the two, I reordered the Earley parse engine,
+      In the course of combining the two, I reordered the Earley parse engine
       in a way that has some very nice properties for,
       among other things, error reporting.
     &lt;/p&gt;
     &lt;h3&gt;Eureka and all that&lt;/h3&gt;
-    &lt;p&gt;The result from all this is an algorithm which parses anything
+    &lt;p&gt;The result is an algorithm which parses anything
       you can write in BNF and
-      does it in times which are now considered optimal in practice.
-      And, unlike recursive descent, you don't have to write it --
-      Marpa takes the BNF and creates the parser for you.
+      does it in times considered optimal in practice.
+      Unlike recursive descent, you don't have to write out the parser --
+      Marpa generates a parser for you, from the BNF.
       It's the easy, &quot;drop-in&quot; solution that the Go4 needed and did not have.
-      I detailed my
-      fully worked version of the Go4 example in
+      &lt;/p&gt;
+      &lt;p&gt;
+      I've redone the Go4 example, adding the missing parser.
+      I described the fully worked out version in
       &lt;a href=&quot;http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2013/03/bnf_to_ast.html&quot;&gt;a
       previous blog post&lt;/a&gt;.
+      The full code is in
+      &lt;a href=&quot;https://gist.github.com/jeffreykegler/5121769&quot;&gt;
+      a Github gist&lt;/a&gt;.
     &lt;/p&gt;
     &lt;h3&gt;More about Marpa&lt;/h3&gt;
     &lt;p&gt;
@@ -194,7 +201,7 @@
       Marpa has &lt;a href=&quot;http://jeffreykegler.github.com/Marpa-web-site/&quot;&gt;a web page&lt;/a&gt;,
       and of course it is the focus of
       &lt;a href=&quot;http://jeffreykegler.github.com/Ocean-of-Awareness-blog/&quot;&gt;
-      this &quot;Ocean of Awareness&quot; blog&lt;/a&gt;.
+      my &quot;Ocean of Awareness&quot; blog&lt;/a&gt;.
       &lt;/p&gt;
       &lt;p&gt;
       Comments on this post
