@@ -4,7 +4,7 @@ The Interpreter Design Pattern
       marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
       -->
     </p>
-    <p>The very influential
+    <p>The influential
       <a href="http://en.wikipedia.org/wiki/Design_Patterns">
         <em>Design Patterns</em>
         book</a>
@@ -14,7 +14,8 @@ The Interpreter Design Pattern
       that the book contains
       <a href="https://sites.google.com/site/steveyegge2/ten-great-books">22
         patterns and a practical joke</a>.
-      That sounds (and in fact is) negative, but elsewhere
+	</p>
+	<p>That sounds (and in fact is) negative, but elsewhere
       Yegge says that
       "[t]ragically, the only [Go4] pattern that can help code get smaller
       (Interpreter) is utterly ignored by programmers".
@@ -25,7 +26,10 @@ The Interpreter Design Pattern
     </p>
     <p>
       In fact, under various names and definitions, the
-      Interpreter Pattern is widely cited and highly praised.
+      Interpreter Pattern and its close relatives and/or identical twins 
+      are widely cited,
+      much argued and highly praised<a href="#NOTE1">[1]<a>.
+      As they should be.
       Languages are the most powerful and flexible design pattern of all.
       A language can include all, and only, the concepts relevent
       to your domain.
@@ -41,7 +45,7 @@ The Interpreter Design Pattern
       the problem,
       but whether to use
       a general-purpose language,
-      and a domain-specific language.
+      or a domain-specific language.
       Put another way,
       if you decide not to use a language targeted
       to your domain,
@@ -61,33 +65,34 @@ The Interpreter Design Pattern
       and flexibility,
       you usually might as well
       stick with the other 22 design patterns.
+      </p>
+      <p>
       On the other hand,
       creating a parser for anything but the simplest languages
       has been a time-consuming effort,
       and one of a kind known for disappointing results.
-      Since software development is a field known
-      for disappointing results,
-      this is not a reputation easily gained.
       In fact,
       language development efforts run
-      a very real risk of total failure.
+      a real risk of total failure.
     </p>
     <p>How did the Go4 deal with this?
       They defined the problem away.
       They stated that the parsing issue was separate from the
-      Interpret Pattern, which was about what you did with the AST
+      Interpreter Pattern, which was limited to what you did with the AST
       once you'd somehow come up with one.
     </p>
     <p>
       But AST's don't (so to speak) grow on trees.
       You have to get one from somewhere.
-      In their example, the Go4 simply created one in their code.
-      In doing this, they bypassed the BNF, and the problem parsing,
-      but also the whole point of having a language.
+      In their example, the Go4 simply built one in their code,
+      node by node.
+      In doing this, they bypassed the BNF, and the problem of parsing,
+      but also their language and therefore the whole point
+      of the Interpreter Pattern.
     </p>
     <p>
       Which is why Yegge characterized the chapter as a practical joke.
-      And why less ideal programming techniques and patterns are almost
+      And why other programming techniques and patterns are almost
       always preferred to the Interpreter Pattern.
     </p>
     <h3>That one missing piece</h3>
@@ -98,27 +103,36 @@ The Interpreter Design Pattern
     </p>
     <p>
       Few expected that to change.
-      I was more optimistic than most,
-      and in 2007 I embarked on a project to create an Earley-based
+      I was more optimistic than most.
+      In 2007 I embarked on a full-time project:
+      to create an Earley-based
       parser that I was sure would fulfill two of the criteria --
-      it would be easy to use, and general.
-      As far as practical, well, a lot of parsing problems
+      it would be easy to use, and it would be general.
+      As for practical -- well, a lot of parsing problems
       are small, and a lot of applications don't require a lot
       of speed, and for these I expected the result to be good enough.
     </p>
     <p>What I didn't realize was that
-      the obstacles to Earley's practical use
-      has been solved.
-      Neither apparently did anyone else,
-      including the people who had solved the problems.
-      because they'd each tackled a different set of problems.
-      In Canada, Aycock and Horspool had cleaned up Earley's algorithm, but their version
-      was still too slow for grammars with right recursion.
-      Ten years earlier, in the Netherlands,
-      the mathematican Joop Leo had ignored the issues Aycock and Horspool had solved,
-      drilled in on right recursion,
-      and arrived at a brilliant solution.
-      Apparently neither knew of the other's work.
+      all the problems preventing
+      Earley's from seeing real, practical use
+      has already been solved in the academic literature.
+      I was not alone in not having put the picture together.
+      The people who had solved the problems
+      had focused on two disjoint sets of issues,
+      and were unaware of each other's
+      work.
+      In 1991, in the Netherlands,
+      the mathematican Joop Leo had
+      and arrived at an astounding result --
+      he showed how to make Earley's run in linear time for a vast class of grammars
+      including, as a subset, LR(k) for all k.
+      Ten years later in Canada,
+      Aycock and Horspool focused on some nagging practical issues,
+      including the size of Earley's parse tables,
+      the handling of nullable rules and symbols.
+      But the Aycock-Horspool speeds were essentially that of
+      Earley's original algorithm --
+      they seem to have been unaware of Leo's earlier result.
     </p>
     <p>
       Because of Leo's work, Marpa is fast.
@@ -129,12 +143,12 @@ The Interpreter Design Pattern
       <i>k</i>, and the LR(k) grammars on which yacc and bison are based,
       again for all
       <i>k</i>.
-      Because of Aycock and Horspool, Leo's speed can be harnessed in practice.
     </p>
-    <p>There was still work to do.
-      The Aycock-Horspool and Leo algorithms had branched off in different directions --
-      it was not obvious that the two approaches could be combined, much less how,
-      and the solution was not simple.
+    <p>If it could be combined with the approach
+      of Aycock and Horspool, Leo's speed could be harnessed in practice.
+      But the Aycock-Horspool and Leo algorithms had branched off in different directions --
+      it was not obvious that their approaches could be combined, much less how.
+      In fact, the solution was not simple.
       In the course of combining the two, I reordered the Earley parse engine,
       in a way that has some very nice properties for,
       among other things, error reporting.
@@ -146,14 +160,40 @@ The Interpreter Design Pattern
       And, unlike recursive descent, you don't have to write it --
       Marpa takes the BNF and creates the parser for you.
       It's the easy, "drop-in" solution that the Go4 needed and did not have.
-      For the example in the Go4 book, I've done exactly than and put it into a gist.
+      I detailed my
+      fully worked version of the Go4 example in
+      <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2013/03/bnf_to_ast.html">a
+      previous blog post</a>.
     </p>
     <h3>More about Marpa</h3>
     <p>
-      Marpa's latest version is Marpa::R2, which is on CPAN.
-      Marpa has a web page,
-      and of course is the focus of the this blog.
+      Marpa's latest version is <a href="https://metacpan.org/module/Marpa::R2">Marpa::R2,
+      which is available on CPAN</a>.
+      Recently, it has gained immensely in "whipitupitude" with
+      <a href="https://metacpan.org/module/JKEGL/Marpa-R2-2.048000/pod/Scanless/DSL.pod">
+        a new interface</a>,
+      which has tutorials
+      <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2013/01/dsl_simpler2.html">here
+      </a>
+      and
+      <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2013/01/announce_scanless.html">
+      here</a>.
+      Marpa has <a href="http://jeffreykegler.github.com/Marpa-web-site/">a web page</a>,
+      and of course it is the focus of
+      <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/">
+      this "Ocean of Awareness" blog</a>.
+      </p>
+      <p>
       Comments on this post
       can be sent to the Marpa's Google Group:
       <code>marpa-parser@googlegroups.com</code>
+    </p>
+    <h3>Notes</h3>
+    <p><a name="NOTE1">Note 1</a>:
+    Just skimming the surface, there is
+    <a href="http://en.wikipedia.org/wiki/Domain-specific_language">the Wikipedia article on DSL's</a>;
+    <a href="http://www.faqs.org/docs/artu/minilanguageschapter.html">Eric Raymond discussing mini-languages</a>;
+    <a href="http://www.dmst.aueb.gr/dds/pubs/jrnl/2000-JSS-DSLPatterns/html/dslpat.html">
+    "Notable Design Patterns for Domain-Specific Languages"</a>, Diomidis Spinellis; and
+    <a href="http://www.c2.com/cgi/wiki?DomainSpecificLanguage">the c2.com wiki</a>.
     </p>
