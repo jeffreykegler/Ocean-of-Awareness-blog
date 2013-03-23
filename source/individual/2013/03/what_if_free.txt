@@ -1,0 +1,126 @@
+What if languages were free?
+  <p>
+      <!--
+      marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
+      -->
+    </p>
+    <p>In 1980, George Copeland wrote an
+      about article titled "What if Mass Storage were Free?".
+      (It's behind a paywall
+      <a href="http://dl.acm.org/citation.cfm?id=802685">here</a>.)
+      Costs of mass storage were showing signs
+      that they might fall dramatically.
+      Copeland, as a thought exercise, took this trend to its extreme.
+      Among other things, he predicted that deletion would become
+      unnecessary, and in fact, undesirable.
+    </p>
+    <p>Copeland's
+      thought experiment has proved prophetic.
+      For many purposes, mass storage is treated as if it were free.
+      For example, you probably retrieved this blog post from a server
+      provided to me at no charge, in the hope
+      that I might write and upload something interesting.
+    </p>
+    <p>
+      Until now languages were high-cost efforts.
+      Worse, language projects ran a high risk of disappointment,
+      up to and often including total failure.
+      I believe those days will soon
+      be gone -- in fact that to a large extent they already are gone.
+    </p>
+    <h3>Small languages, shaped to the problem domain</h3>
+    <p>What if whenever you needed a new language, poof, it was there?
+      You would be encourage to solve problems with a new language,
+      one precisely shaped to the problem domain.
+      Since it was no larger than the problem domain,
+      learning it would be essentially the same as learning
+      the problem domain.
+      The incremental effort required to learn a new language
+      would head toward zero.
+    </p>
+    <h3>No more language bloat</h3>
+    <p>Language bloat would end.
+      Currently, the risk and cost of developing languages
+      makes it imperative to extend the ones we have.
+      Free languages mean little or no reason to add features
+      to the ones we have.
+    </p>
+    <h3>No more search for THE perfect language</h3>
+    <p>
+      No language is perfect for all tasks.
+      But because the cost of languages imposes
+      the need to use large, general-purpose languages,
+      we are compelled to try for perfection anyway.
+      Ironically, we are often making the language worse,
+      and we know it.
+    </p>
+    <h3>A world full of perfect languages</h3>
+    <p>An older sense of the word perfect is
+      "having all the properties or qualities requisite to its nature and kind".
+      The C language can be called perfect in this sense.
+      C lacks a lot of features that are highly desirable in most contexts.
+      But for programming close to the hardware, but portably,
+      the C language is perfect or close to it.
+    </p>
+    <p>If languages were free, this is the kind of perfection
+      that we would seek --
+      languages so precisely fitted suited to their domain,
+      that adding to them is sure to make them worse instead
+      of better.
+    </p>
+    <h3>Moving toward free</h3>
+    <p>
+      It was many years after I read Copeland before his vision was
+      anything but a pleasant daydream.
+      But the plummet in the cost of languages is already underway.
+      My own effort to contribute to this, the Marpa parser,
+      produces a reasonable parser for every language you can write in BNF,
+      from the BNF, and without futher effort.
+      If the BNF is for a grammar in any of the classes currently in practical
+      use, the parser Marpa produces will be have linear speed.
+    </p>
+    <p>
+      In one case, using Marpa,
+      <a href="https://gist.github.com/4447349">a targeted language</a>
+      was written
+      in less than an hour.
+      <a href="http://blogs.perl.org/users/jeffrey_kegler/2013/01/a-language-for-writing-languages.html">
+        More typically</a>, Marpa users create new languages in hours,
+      instead of weeks.
+    </p>
+    <p>As one example of going from "impossible" to "easy",
+      I have tossed off a drop-in solution to an example in the
+      Gang of Four book.
+      The Gang of Four were talked about language
+      interpretation, but they did not include a parser.
+      Creating a parser
+      that would fit their example would have been impossibly hard.
+      Now it is easy.
+      The parser can be found in
+      <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2013/03/bnf_to_ast.html">this
+        earlier blog post</a>.
+    </p>
+    <p>
+      Marpa's latest version is
+      <a href="https://metacpan.org/module/Marpa::R2">Marpa::R2,
+        which is available on CPAN</a>.
+      Recently, it has gained immensely in "whipitupitude" with
+      <a href="https://metacpan.org/module/JKEGL/Marpa-R2-2.048000/pod/Scanless/DSL.pod">
+        a new interface</a>,
+      which has tutorials
+      <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2013/01/dsl_simpler2.html">here
+      </a>
+      and
+      <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2013/01/announce_scanless.html">
+        here</a>.
+      Marpa has
+      <a href="http://jeffreykegler.github.com/Marpa-web-site/">a web page</a>,
+      and of course it is the focus of
+      <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/">
+        my "Ocean of Awareness" blog</a>.
+    </p>
+    <p>
+      Comments on this post
+      can be sent to the Marpa's Google Group:
+      <code>marpa-parser@googlegroups.com</code>
+    </p>

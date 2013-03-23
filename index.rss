@@ -10,6 +10,135 @@
     <language>en</language>
 
   <item>
+    <title>What if languages were free?</title>
+    <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2013/03/what_if_free.html</link>
+    <description>  &lt;p&gt;
+      &lt;!--
+      marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
+      --&gt;
+    &lt;/p&gt;
+    &lt;p&gt;In 1980, George Copeland wrote an
+      about article titled &quot;What if Mass Storage were Free?&quot;.
+      (It's behind a paywall
+      &lt;a href=&quot;http://dl.acm.org/citation.cfm?id=802685&quot;&gt;here&lt;/a&gt;.)
+      Costs of mass storage were showing signs
+      that they might fall dramatically.
+      Copeland, as a thought exercise, took this trend to its extreme.
+      Among other things, he predicted that deletion would become
+      unnecessary, and in fact, undesirable.
+    &lt;/p&gt;
+    &lt;p&gt;Copeland's
+      thought experiment has proved prophetic.
+      For many purposes, mass storage is treated as if it were free.
+      For example, you probably retrieved this blog post from a server
+      provided to me at no charge, in the hope
+      that I might write and upload something interesting.
+    &lt;/p&gt;
+    &lt;p&gt;
+      Until now languages were high-cost efforts.
+      Worse, language projects ran a high risk of disappointment,
+      up to and often including total failure.
+      I believe those days will soon
+      be gone -- in fact that to a large extent they already are gone.
+    &lt;/p&gt;
+    &lt;h3&gt;Small languages, shaped to the problem domain&lt;/h3&gt;
+    &lt;p&gt;What if whenever you needed a new language, poof, it was there?
+      You would be encourage to solve problems with a new language,
+      one precisely shaped to the problem domain.
+      Since it was no larger than the problem domain,
+      learning it would be essentially the same as learning
+      the problem domain.
+      The incremental effort required to learn a new language
+      would head toward zero.
+    &lt;/p&gt;
+    &lt;h3&gt;No more language bloat&lt;/h3&gt;
+    &lt;p&gt;Language bloat would end.
+      Currently, the risk and cost of developing languages
+      makes it imperative to extend the ones we have.
+      Free languages mean little or no reason to add features
+      to the ones we have.
+    &lt;/p&gt;
+    &lt;h3&gt;No more search for THE perfect language&lt;/h3&gt;
+    &lt;p&gt;
+      No language is perfect for all tasks.
+      But because the cost of languages imposes
+      the need to use large, general-purpose languages,
+      we are compelled to try for perfection anyway.
+      Ironically, we are often making the language worse,
+      and we know it.
+    &lt;/p&gt;
+    &lt;h3&gt;A world full of perfect languages&lt;/h3&gt;
+    &lt;p&gt;An older sense of the word perfect is
+      &quot;having all the properties or qualities requisite to its nature and kind&quot;.
+      The C language can be called perfect in this sense.
+      C lacks a lot of features that are highly desirable in most contexts.
+      But for programming close to the hardware, but portably,
+      the C language is perfect or close to it.
+    &lt;/p&gt;
+    &lt;p&gt;If languages were free, this is the kind of perfection
+      that we would seek --
+      languages so precisely fitted suited to their domain,
+      that adding to them is sure to make them worse instead
+      of better.
+    &lt;/p&gt;
+    &lt;h3&gt;Moving toward free&lt;/h3&gt;
+    &lt;p&gt;
+      It was many years after I read Copeland before his vision was
+      anything but a pleasant daydream.
+      But the plummet in the cost of languages is already underway.
+      My own effort to contribute to this, the Marpa parser,
+      produces a reasonable parser for every language you can write in BNF,
+      from the BNF, and without futher effort.
+      If the BNF is for a grammar in any of the classes currently in practical
+      use, the parser Marpa produces will be have linear speed.
+    &lt;/p&gt;
+    &lt;p&gt;
+      In one case, using Marpa,
+      &lt;a href=&quot;https://gist.github.com/4447349&quot;&gt;a targeted language&lt;/a&gt;
+      was written
+      in less than an hour.
+      &lt;a href=&quot;http://blogs.perl.org/users/jeffrey_kegler/2013/01/a-language-for-writing-languages.html&quot;&gt;
+        More typically&lt;/a&gt;, Marpa users create new languages in hours,
+      instead of weeks.
+    &lt;/p&gt;
+    &lt;p&gt;As one example of going from &quot;impossible&quot; to &quot;easy&quot;,
+      I have tossed off a drop-in solution to an example in the
+      Gang of Four book.
+      The Gang of Four were talked about language
+      interpretation, but they did not include a parser.
+      Creating a parser
+      that would fit their example would have been impossibly hard.
+      Now it is easy.
+      The parser can be found in
+      &lt;a href=&quot;http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2013/03/bnf_to_ast.html&quot;&gt;this
+        earlier blog post&lt;/a&gt;.
+    &lt;/p&gt;
+    &lt;p&gt;
+      Marpa's latest version is
+      &lt;a href=&quot;https://metacpan.org/module/Marpa::R2&quot;&gt;Marpa::R2,
+        which is available on CPAN&lt;/a&gt;.
+      Recently, it has gained immensely in &quot;whipitupitude&quot; with
+      &lt;a href=&quot;https://metacpan.org/module/JKEGL/Marpa-R2-2.048000/pod/Scanless/DSL.pod&quot;&gt;
+        a new interface&lt;/a&gt;,
+      which has tutorials
+      &lt;a href=&quot;http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2013/01/dsl_simpler2.html&quot;&gt;here
+      &lt;/a&gt;
+      and
+      &lt;a href=&quot;http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2013/01/announce_scanless.html&quot;&gt;
+        here&lt;/a&gt;.
+      Marpa has
+      &lt;a href=&quot;http://jeffreykegler.github.com/Marpa-web-site/&quot;&gt;a web page&lt;/a&gt;,
+      and of course it is the focus of
+      &lt;a href=&quot;http://jeffreykegler.github.com/Ocean-of-Awareness-blog/&quot;&gt;
+        my &quot;Ocean of Awareness&quot; blog&lt;/a&gt;.
+    &lt;/p&gt;
+    &lt;p&gt;
+      Comments on this post
+      can be sent to the Marpa's Google Group:
+      &lt;code&gt;marpa-parser@googlegroups.com&lt;/code&gt;
+    &lt;/p&gt;</description>
+  </item>
+  <item>
     <title>The Interpreter Design Pattern</title>
     <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2013/03/interpreter.html</link>
     <description>  &lt;p&gt;
@@ -876,85 +1005,6 @@ sub do_arg2 { return $_[3]; }
     of &lt;a href=&quot;https://metacpan.org/module/Marpa::R2&quot;&gt;Marpa::R2&lt;/a&gt;.
     Marpa also has &lt;a href=&quot;http://jeffreykegler.github.com/Marpa-web-site/&quot;&gt;
     a web page&lt;/a&gt;.
-    &lt;h3&gt;Comments&lt;/h3&gt;
-    &lt;p&gt;
-      Comments on this post
-      can be sent to the Marpa Google Group:
-      &lt;code&gt;marpa-parser@googlegroups.com&lt;/code&gt;
-    &lt;/p&gt;</description>
-  </item>
-  <item>
-    <title>Announcing Marpa's Scanless interface</title>
-    <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2013/01/announce_scanless.html</link>
-    <description>&lt;!--
-      marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
-      --&gt;
-  &lt;p&gt;
-      &lt;a href=&quot;https://metacpan.org/release/Marpa-R2&quot;&gt;
-        Marpa::R2&lt;/a&gt;'s
-      Scanless interface is now out of beta and
-      available in full release on CPAN.
-      This interface allows Marpa to be used without the need to create
-      a separate lexer (scanner),
-      and increases Marpa's level of &quot;whipitupitude&quot;.
-      Here's what a simple calculator looks like in the Scanless interface:
-    &lt;/p&gt;&lt;blockquote&gt;
-      &lt;pre&gt;
-:start ::= Script
-Script ::= Expression+ separator =&amp;gt; comma action =&amp;gt; do_script
-comma ~ [,]
-Expression ::=
-    Number
-    | '(' Expression ')' action =&amp;gt; do_parens assoc =&amp;gt; group
-   || Expression '**' Expression action =&amp;gt; do_pow assoc =&amp;gt; right
-   || Expression '*' Expression action =&amp;gt; do_multiply
-    | Expression '/' Expression action =&amp;gt; do_divide
-   || Expression '+' Expression action =&amp;gt; do_add
-    | Expression '-' Expression action =&amp;gt; do_subtract
-Number ~ [\d]+
- 
-:discard ~ whitespace
-whitespace ~ [\s]+
-# allow comments
-:discard ~ &amp;lt;hash comment&amp;gt;
-&amp;lt;hash comment&amp;gt; ~ &amp;lt;terminated hash comment&amp;gt; | &amp;lt;unterminated
-   final hash comment&amp;gt;
-&amp;lt;terminated hash comment&amp;gt; ~ '#' &amp;lt;hash comment body&amp;gt; &amp;lt;vertical space char&amp;gt;
-&amp;lt;unterminated final hash comment&amp;gt; ~ '#' &amp;lt;hash comment body&amp;gt;
-&amp;lt;hash comment body&amp;gt; ~ &amp;lt;hash comment char&amp;gt;*
-&amp;lt;vertical space char&amp;gt; ~ [\x{A}\x{B}\x{C}\x{D}\x{2028}\x{2029}]
-&amp;lt;hash comment char&amp;gt; ~ [^\x{A}\x{B}\x{C}\x{D}\x{2028}\x{2029}]
-&lt;/pre&gt;&lt;/blockquote&gt;
-    &lt;p&gt;The full example, with semantics,
-      is in
-      &lt;a href=&quot;https://gist.github.com/4440418&quot;&gt;
-        a Github gist&lt;/a&gt;.
-      It is almost identical to the example in
-      the Scanless interface documents, and to a test in Marpa::R2's test suite.
-    &lt;/p&gt;&lt;p&gt;
-      &lt;a href=&quot;https://metacpan.org/module/JKEGL/Marpa-R2-2.038000/pod/BNF.pod&quot;&gt;
-        Marpa's BNF interface&lt;/a&gt;
-	came out of beta and into full release at the same time as the Scanless interface.
-      Like the Scanless interface,
-      the BNF interface allows you to write your grammar in a BNF variant.
-      Unlike the Scanless interface, it requires you to do your own lexing.
-    &lt;/p&gt;&lt;p&gt;The Scanless interface is a superset of the BNF interface, so
-      &lt;a href=&quot;https://metacpan.org/module/JKEGL/Marpa-R2-2.038000/pod/BNF.pod&quot;&gt;
-    the documentation of the BNF interface&lt;/a&gt;
-      is the best place to start for learning both.
-      However, to work with either, you probably should already
-      have at least some familiarity with
-      &lt;a href=&quot;https://metacpan.org/module/JKEGL/Marpa-R2-2.038000/pod/Marpa_R2.pod&quot;&gt;Marpa's
-        standard interface&lt;/a&gt;.
-    &lt;/p&gt;
-    &lt;p&gt;
-      Not long ago, my work on Marpa was a lone endeavour.
-      One sign of Marpa's emergence is that my work
-      now is often based on insights gained by others who have used Marpa.
-      The BNF interface is based on one written by Peter Stuifzand.
-      And the approach to scannerless parsing that I finally settled on
-      was suggested to me by Andrew Rodland's prior work on pairing Marpa grammars.
-    &lt;/p&gt;
     &lt;h3&gt;Comments&lt;/h3&gt;
     &lt;p&gt;
       Comments on this post
