@@ -38,24 +38,23 @@
       Until now languages were high-cost efforts.
       Worse, language projects ran a high risk of disappointment,
       up to and including total failure.
-      I believe those days will soon
-      be gone -- in fact that to a large extent they already are gone.
+      I believe those days are coming to an end.
     &lt;/p&gt;
     &lt;h3&gt;Small languages, shaped to the problem domain&lt;/h3&gt;
     &lt;p&gt;What if whenever you needed a new language, poof, it was there?
-      You would be encouraged to solve problems with a new language,
-      one precisely shaped to the problem domain.
-      Since it was no larger than the problem domain,
-      learning it would be essentially the same as learning
+      You would be encouraged to solve problems with new languages
+      precisely shaped to the problem domain.
+      Since each language is no larger than its problem domain,
+      learning a language would be essentially the same as learning
       the problem domain.
-      The incremental effort required to learn a new language
-      would head toward zero.
+      The incremental effort required to learn the language
+      itself would head toward zero.
     &lt;/p&gt;
     &lt;h3&gt;No more language bloat&lt;/h3&gt;
     &lt;p&gt;Language bloat would end.
       Currently, the risk and cost of developing languages
-      makes it imperative to extend the ones we have.
-      Free languages mean less reason to add features
+      make it imperative to extend the ones we have.
+      Free languages mean fewer reasons to add features
       to existing languages.
     &lt;/p&gt;
     &lt;h3&gt;No more search for THE perfect language&lt;/h3&gt;
@@ -70,7 +69,7 @@
     &lt;h3&gt;A world full of perfect languages&lt;/h3&gt;
     &lt;p&gt;An older sense of the word perfect is
       &quot;having all the properties or qualities requisite to its nature and kind&quot;.
-      The C language can be called perfect in this sense.
+      The C language might be called perfect in this sense.
       C lacks a lot of features that are highly desirable in most contexts.
       But for programming close to the hardware, but portably,
       the C language is perfect or close to it.
@@ -96,17 +95,19 @@
       was written
       in less than an hour.
       &lt;a href=&quot;http://blogs.perl.org/users/jeffrey_kegler/2013/01/a-language-for-writing-languages.html&quot;&gt;
-        More typically&lt;/a&gt;, Marpa users create new languages in hours,
-      instead of weeks.
+        More typically&lt;/a&gt;, Marpa reduce the time needed to create new languages to hours.
     &lt;/p&gt;
     &lt;p&gt;As one example of going from &quot;impossible&quot; to &quot;easy&quot;,
       I have written a drop-in solution to an example in the
-      Gang of Four book.
-      The Gang of Four talked about language
-      interpretation, but they did not include a parser.
+      &lt;a href=&quot;http://en.wikipedia.org/wiki/Design_Patterns&quot;&gt;Gang
+      of Four book&lt;/a&gt;.
+      The Gang of Four described a language
+      and its interpretation,
+      but they did not include a parser.
       Creating a parser
-      that would fit their example would have been impossibly hard.
-      Now it is easy.
+      to fit their example would have been
+      impossibly hard when the Gang of Four wrote.
+      Using Marpa, it is easy.
       The parser can be found in
       &lt;a href=&quot;http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2013/03/bnf_to_ast.html&quot;&gt;this
         earlier blog post&lt;/a&gt;.
