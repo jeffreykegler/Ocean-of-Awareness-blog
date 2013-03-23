@@ -73,7 +73,7 @@
       C lacks a lot of features that are highly desirable in most contexts.
       But for programming close to the hardware, but portably,
       the C language is perfect or close to it.
-    If languages were free, this is the kind of perfection
+      If languages were free, this is the kind of perfection
       that we would seek --
       languages precisely fitted to their domain,
       so that adding to them cannot make them better.
@@ -100,7 +100,7 @@
     &lt;p&gt;As one example of going from &quot;impossible&quot; to &quot;easy&quot;,
       I have written a drop-in solution to an example in the
       &lt;a href=&quot;http://en.wikipedia.org/wiki/Design_Patterns&quot;&gt;Gang
-      of Four book&lt;/a&gt;.
+        of Four book&lt;/a&gt;.
       The Gang of Four described a language
       and its interpretation,
       but they did not include a parser.
