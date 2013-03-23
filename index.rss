@@ -74,11 +74,10 @@
       C lacks a lot of features that are highly desirable in most contexts.
       But for programming close to the hardware, but portably,
       the C language is perfect or close to it.
-    &lt;/p&gt;
-    &lt;p&gt;If languages were free, this is the kind of perfection
+    If languages were free, this is the kind of perfection
       that we would seek --
-      languages so precisely fitted to their domain
-      that adding to them cannot make them better.
+      languages precisely fitted to their domain,
+      so that adding to them cannot make them better.
     &lt;/p&gt;
     &lt;h3&gt;Moving toward free&lt;/h3&gt;
     &lt;p&gt;
