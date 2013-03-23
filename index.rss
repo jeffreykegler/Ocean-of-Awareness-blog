@@ -18,7 +18,7 @@
       --&gt;
     &lt;/p&gt;
     &lt;p&gt;In 1980, George Copeland wrote an
-      about article titled &quot;What if Mass Storage were Free?&quot;.
+      article titled &quot;What if Mass Storage were Free?&quot;.
       (It's behind a paywall
       &lt;a href=&quot;http://dl.acm.org/citation.cfm?id=802685&quot;&gt;here&lt;/a&gt;.)
       Costs of mass storage were showing signs
@@ -37,13 +37,13 @@
     &lt;p&gt;
       Until now languages were high-cost efforts.
       Worse, language projects ran a high risk of disappointment,
-      up to and often including total failure.
+      up to and including total failure.
       I believe those days will soon
       be gone -- in fact that to a large extent they already are gone.
     &lt;/p&gt;
     &lt;h3&gt;Small languages, shaped to the problem domain&lt;/h3&gt;
     &lt;p&gt;What if whenever you needed a new language, poof, it was there?
-      You would be encourage to solve problems with a new language,
+      You would be encouraged to solve problems with a new language,
       one precisely shaped to the problem domain.
       Since it was no larger than the problem domain,
       learning it would be essentially the same as learning
@@ -77,9 +77,8 @@
     &lt;/p&gt;
     &lt;p&gt;If languages were free, this is the kind of perfection
       that we would seek --
-      languages so precisely fitted suited to their domain,
-      that adding to them is sure to make them worse instead
-      of better.
+      languages so precisely fitted suited to their domain
+      that adding to them cannot make them better.
     &lt;/p&gt;
     &lt;h3&gt;Moving toward free&lt;/h3&gt;
     &lt;p&gt;
@@ -90,7 +89,7 @@
       produces a reasonable parser for every language you can write in BNF,
       from the BNF, and without futher effort.
       If the BNF is for a grammar in any of the classes currently in practical
-      use, the parser Marpa produces will be have linear speed.
+      use, the parser Marpa produces will have linear speed.
     &lt;/p&gt;
     &lt;p&gt;
       In one case, using Marpa,
@@ -104,7 +103,7 @@
     &lt;p&gt;As one example of going from &quot;impossible&quot; to &quot;easy&quot;,
       I have tossed off a drop-in solution to an example in the
       Gang of Four book.
-      The Gang of Four were talked about language
+      The Gang of Four talked about language
       interpretation, but they did not include a parser.
       Creating a parser
       that would fit their example would have been impossibly hard.

@@ -5,7 +5,7 @@ What if languages were free?
       -->
     </p>
     <p>In 1980, George Copeland wrote an
-      about article titled "What if Mass Storage were Free?".
+      article titled "What if Mass Storage were Free?".
       (It's behind a paywall
       <a href="http://dl.acm.org/citation.cfm?id=802685">here</a>.)
       Costs of mass storage were showing signs
@@ -24,13 +24,13 @@ What if languages were free?
     <p>
       Until now languages were high-cost efforts.
       Worse, language projects ran a high risk of disappointment,
-      up to and often including total failure.
+      up to and including total failure.
       I believe those days will soon
       be gone -- in fact that to a large extent they already are gone.
     </p>
     <h3>Small languages, shaped to the problem domain</h3>
     <p>What if whenever you needed a new language, poof, it was there?
-      You would be encourage to solve problems with a new language,
+      You would be encouraged to solve problems with a new language,
       one precisely shaped to the problem domain.
       Since it was no larger than the problem domain,
       learning it would be essentially the same as learning
@@ -64,9 +64,8 @@ What if languages were free?
     </p>
     <p>If languages were free, this is the kind of perfection
       that we would seek --
-      languages so precisely fitted suited to their domain,
-      that adding to them is sure to make them worse instead
-      of better.
+      languages so precisely fitted suited to their domain
+      that adding to them cannot make them better.
     </p>
     <h3>Moving toward free</h3>
     <p>
@@ -77,7 +76,7 @@ What if languages were free?
       produces a reasonable parser for every language you can write in BNF,
       from the BNF, and without futher effort.
       If the BNF is for a grammar in any of the classes currently in practical
-      use, the parser Marpa produces will be have linear speed.
+      use, the parser Marpa produces will have linear speed.
     </p>
     <p>
       In one case, using Marpa,
@@ -91,7 +90,7 @@ What if languages were free?
     <p>As one example of going from "impossible" to "easy",
       I have tossed off a drop-in solution to an example in the
       Gang of Four book.
-      The Gang of Four were talked about language
+      The Gang of Four talked about language
       interpretation, but they did not include a parser.
       Creating a parser
       that would fit their example would have been impossibly hard.
