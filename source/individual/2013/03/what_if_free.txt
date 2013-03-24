@@ -58,7 +58,8 @@ What if languages were free?
       "having all the properties or qualities requisite to its nature and kind".
       The C language might be called perfect in this sense.
       C lacks a lot of features that are highly desirable in most contexts.
-      But for programming close to the hardware, but portably,
+      But for programming that is portable
+      and close to the hardware,
       the C language is perfect or close to it.
       If languages were free, this is the kind of perfection
       that we would seek --
@@ -68,9 +69,9 @@ What if languages were free?
     <h3>Moving toward free</h3>
     <p>
       My own effort to contribute to 
-      a fall in the cost of languages is the Marpa parser,
-      Marpa,
-      produces a reasonable parser for every language you can write in BNF.
+      a fall in the cost of languages is the Marpa parser.
+      Marpa produces a reasonable parser
+      for every language you can write in BNF.
       If the BNF is for a grammar in any of the classes currently in practical
       use, the parser Marpa produces will have linear speed.
       In one case, using Marpa,
