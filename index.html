@@ -34,6 +34,92 @@
   </p>
   </div>
   <div style="margin-left:190px;border-left:2px solid #38B0C0;padding:25px;">
+<h3>Sat, 20 Apr 2013</h3>
+<br />
+<center><a name="procedural"> <h2>Marpa's SLIF adds procedural parsing</h2> </a>
+</center>
+  <p>
+      <!--
+      marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
+      -->
+    </p>
+    <p>
+    </p><p>
+      Marpa's SLIF (scanless interface)
+      allows an application to parse straight from a BNF grammar,
+      with no external lexer.
+      Marpa now also allows the app to mix it own custom lexing and parsing logic
+      with Marpa's,
+      and to switch back and forth.
+      Among other things, this allows the SLIF to do procedural parsing.
+    </p>
+    <h3>What is procedural parsing?</h3>
+    <p>Informally, you could say procedural parsing is what happens when
+      you've given up on parsing algorithms -- it's hacking your way through the
+      syntax using a general-purpose language.
+      Before there was parsing algorithms (the first was published in 1961)
+      procedural parsing was all there was.
+    </p>
+    <p>
+      In the years after 1961, many declarative parsers were invented.
+      Yacc and its LALR-based descendants dominated the textbooks for years.
+      But, frankly, most programmer's have found declarative parsers
+      disappointing,
+      and the craft has come nearly full circle.
+      Modern programmers, when they haven't fallen all the way back to regular expressions,
+      focus on left parsing techniques.
+      Left parsing almost always make heavy use of procedural parsing.
+      In part this is because left parsing takes an intuitive path through the
+      syntax, which makes procedural parsing convenient.
+      And in part this is because left parsing is weak:
+      left parsing by itself will not
+      parse most useful grammars.
+    </p>
+    <h3>An example</h3>
+    <p>
+      Perl's here-documents are an example of a syntax which are most conveniently
+      parsed using procedural techniques.
+      For those unfamilar, Perl's here-documents are convenient, but their syntax
+      is seriously weird.
+    </p>
+    <p>
+      Peter Stuifzand recently worked out an example that parses a Perl subset
+      which includes here-documents,
+      and I've tweaked it for this blog post.
+    </p>
+    <p>
+      Marpa's latest version is
+      <a href="https://metacpan.org/module/Marpa::R2">Marpa::R2,
+        which is available on CPAN</a>.
+      Recently, it has gained immensely in "whipitupitude" with
+      <a href="https://metacpan.org/module/JKEGL/Marpa-R2-2.048000/pod/Scanless/DSL.pod">
+        a new interface</a>,
+      which has tutorials
+      <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2013/01/dsl_simpler2.html">here
+      </a>
+      and
+      <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2013/01/announce_scanless.html">
+        here</a>.
+      Marpa has
+      <a href="http://jeffreykegler.github.com/Marpa-web-site/">a web page</a>,
+      and of course it is the focus of
+      <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/">
+        my "Ocean of Awareness" blog</a>.
+    </p>
+    <p>
+      Comments on this post
+      can be sent to the Marpa's Google Group:
+      <code>marpa-parser@googlegroups.com</code>
+    </p>
+<br />
+<p>posted at: 23:39 |
+<a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2013/04/procedural.html">direct link to this entry</a>
+</p>
+<div style="color:#38B0C0;padding:1px;text-align:center;">
+&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&sect;
+</div>
 <h3>Sat, 23 Mar 2013</h3>
 <br />
 <center><a name="what_if_free"> <h2>What if languages were free?</h2> </a>
@@ -748,330 +834,6 @@ $VAR1 = bless( [
 <br />
 <p>posted at: 14:58 |
 <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2013/01/language_for_languages.html">direct link to this entry</a>
-</p>
-<div style="color:#38B0C0;padding:1px;text-align:center;">
-&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-&sect;
-</div>
-<h3>Tue, 08 Jan 2013</h3>
-<br />
-<center><a name="dsl_simpler2"> <h2>Making DSL's even simpler</h2> </a>
-</center>
-  <p>
-      <!--
-      marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
-      -->
-      <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/dsl.html">
-        In a previous post</a>, I described a method of writing
-	powerful domain-specific languages (DSLs),
-	one that was simpler and faster
-	than previous approaches.
-      This post takes things significantly further.
-      <p>
-      The approach described in the previous post was not itself directly
-      DSL-based,
-      and it required the programmer to write a separate lexer.
-      This post uses
-      <a href="https://metacpan.org/module/Marpa::R2">Marpa::R2</a>'s
-      new Scanless interface.
-      <a href="https://metacpan.org/module/JKEGL/Marpa-R2-2.040000/pod/Scanless.pod">
-      The Scanless interface</a>
-      is a DSL for writing DSL's
-      and it incorporates the specification of the lexer into
-      the language description.
-    </p>
-    <p>
-      When it comes to dealing with a programming problem,
-      no tool is as powerful and flexible as
-      a custom language targeted to the problem domain.
-      But writing a domain specific language (DSL) is among the
-      least used approaches,
-      and for what has been a very good reason --
-      in the past,
-      DSL's have been very difficult to write.
-    </p>
-    <p>This post takes a tutorial approach.
-      It does
-      <b>not</b>
-      assume knowledge of the previous tutorials
-      on this blog.
-    </p><p>
-      The full code for this post is in
-      <a href="https://gist.github.com/4480523">
-        a Github gist</a>.
-      Our example DSL is a calculator,
-      one whose features
-      are chosen for the purpose of illustration.
-      It is not a "toy" example -- its error reporting
-      is quite good and it has a test suite.
-      Nonetheless, it is both short and easy to read,
-      capable of being
-      written quickly and maintained and extended easily.
-    </p>
-    <h3>The Grammar</h3>
-    <p>
-      The grammar for our calculator
-      divides naturally into two parts.  Here is the first:
-    </p><blockquote>
-      <pre>
-:start ::= script
-script ::= expression
-script ::= script ';' expression action =&gt; do_arg2
-&lt;reduce op&gt; ::= '+' | '-' | '/' | '*'
-expression ::=
-     number
-   | variable action =&gt; do_is_var
-   | '(' expression ')' assoc =&gt; group action =&gt; do_arg1
-  || '-' expression action =&gt; do_negate
-  || expression '^' expression action =&gt; do_caret assoc =&gt; right
-  || expression '*' expression action =&gt; do_star
-   | expression '/' expression action =&gt; do_slash
-  || expression '+' expression action =&gt; do_plus
-   | expression '-' expression action =&gt; do_minus
-  || expression ',' expression action =&gt; do_array
-  || &lt;reduce op&gt; 'reduce' expression action =&gt; do_reduce
-  || variable '=' expression action =&gt; do_set_var
-</pre></blockquote>
-    <p>The format of the grammar is documented
-      <a href="https://metacpan.org/module/JKEGL/Marpa-R2-2.040000/pod/Scanless.pod">
-        here</a>.
-      It consists of a series of rules.
-      Each rule has a
-      left hand side (LHS)
-      and a right hand side (RHS),
-      which are separated by a rule operator.
-      In the rules above, the rule operator is the BNF operator (<tt>::=</tt>).
-      <p>
-      The first rule is a pseudo-rule -- its LHS is the pseudo-symbol
-      <tt>:start</tt>,
-      and indicates that
-      <tt>script</tt>
-      is the grammar's start symbol.
-      The next two rules indicate that
-      <tt>script</tt>
-      is a series of one
-      or more
-      <tt>expression</tt>'s, separated by a semicolon.
-    </p><p>
-      Rules can have action "adverbs"
-      to describe the semantics.
-      For example, the adverb "<tt>action =&gt; do_args</tt>"
-      says that the semantics for
-      the preceding RHS are implemented by a Perl closure named
-      <tt>do_args</tt>.
-    </p><p>The rule for
-      <tt>&lt;reduce op&gt;</tt>
-      introduces two new features: symbols names
-      in angle brackets, and alternatives,
-      separated by a veritcal bar, ("<tt>|</tt>").
-    </p>
-    <p>The last and longest rule, defined an
-      <tt>expression</tt>,
-      is a precedence rule.
-      It is a series of alternatives, some separated by
-      a single vertical bar,
-      and others separated by a double vertical bar ("<tt>||</tt>").
-      The double vertical bar indicates that the alternatives after it
-      are at a looser ("lower") precedence than the alternatives before it.
-      The single vertical bar separates alternatives at the same precedence level.
-    </p><p>
-      While Marpa's Scanless interface allows lexical and structural rules
-      to be intermixed,
-      it is usually convenient to have the lexical rules come after
-      the structural rules:
-    </p>
-    <blockquote>
-      <pre>
-number ~ [\d]+
-variable ~ [\w]+
-:discard ~ whitespace
-whitespace ~ [\s]+
-# allow comments
-:discard ~ &lt;hash comment&gt;
-&lt;hash comment&gt; ~ &lt;terminated hash comment&gt; | &lt;unterminated
-   final hash comment&gt;
-&lt;terminated hash comment&gt; ~ '#' &lt;hash comment body&gt; &lt;vertical space char&gt;
-&lt;unterminated final hash comment&gt; ~ '#' &lt;hash comment body&gt;
-&lt;hash comment body&gt; ~ &lt;hash comment char&gt;*
-&lt;vertical space char&gt; ~ [\x{A}\x{B}\x{C}\x{D}\x{2028}\x{2029}]
-&lt;hash comment char&gt; ~ [^\x{A}\x{B}\x{C}\x{D}\x{2028}\x{2029}]
-END_OF_GRAMMAR
-</pre></blockquote>
-    <p>
-      Rules in this second set of rules have
-      the same syntax as rules in the first set,
-      but instead of the BNF operator (<tt>::=</tt>),
-      they have a match operator (<tt>~</tt>) separating the LHS and RHS.
-      The BNF operator can be seen as telling Marpa, "When it comes to whitespace and comments,
-      do what I
-      <b>mean</b>".
-      The match operator tells Marpa to "Do exactly what I
-      <b>say</b>
-      on a literal,
-      character-by-character basis."
-    </p><p>
-      The first two lines indicate how
-      <tt>number</tt>'s and
-      <tt>variable</tt>'s
-      are formed.
-      The square bracketed character classes accept anything acceptable to Perl.
-      <tt>:discard</tt>
-      is another pseudo-symbol -- any lexeme recognized as a
-      <tt>:discard</tt>
-      symbol is thrown away.
-    </p><p>
-      This is how whitespace and comments are dealt with.
-      Note that our calculator recognizes "hash comments",
-      and takes some care to do the right thing even when the hash comment is at
-      the end of a string which does not end in vertical whitespace.
-      It is interesting to compare the representation of hash comments here with
-      the usual regular expression notation.
-      Regular expressions are much more concise, but the BNF-ish form
-      can be easier to read.
-      In this example,
-      long descriptive angle-bracketed symbol names
-      save the reader the trouble of
-      puzzling out the purpose of some of the more obscure cases.
-    </p>
-    <p>
-      Now that we have defined the grammar, we need to pre-process it:
-    </p>
-    <blockquote>
-      <pre>
-      my $grammar = Marpa::R2::Scanless::G-&gt;new(
-	{ action_object  =&gt; 'My_Actions',
-	  default_action =&gt; 'do_arg0',
-	  source =&gt; \$rules,
-	}
-      );
-</pre></blockquote>
-    <p>
-      The
-      <tt>action_object</tt>
-      named argument specifies a package to implement
-      the semantics -- Marpa will look up the names of the Perl closures in that
-      package.
-      The
-      <tt>default_action</tt>
-      named argument specified the action name for RHS's
-      which do not explicitly specify one with an
-      <tt>action</tt>
-      adverb.
-    </p>
-    <h3>Running a parse</h3>
-    <p>
-      The <tt>calculate()</tt> closure uses our grammar to parse a string.
-    </p>
-    <blockquote>
-      <pre>
-sub calculate {
-    my ($p_string) = @_;
-
-    my $recce = Marpa::R2::Scanless::R-&gt;new( { grammar =&gt; $grammar } );
-
-    my $self = bless { grammar =&gt; $grammar }, 'My_Actions';
-    $self-&gt;{recce}        = $recce;
-    $self-&gt;{symbol_table} = {};
-    local $My_Actions::SELF = $self;
-
-    if ( not defined eval { $recce-&gt;read($p_string); 1 } ) {
-
-        # Add last expression found, and rethrow
-        my $eval_error = $EVAL_ERROR;
-        chomp $eval_error;
-        die $self-&gt;show_last_expression(), "\n", $eval_error, "\n";
-    } ## end if ( not defined eval { $recce-&gt;read($p_string); 1 })
-    my $value_ref = $recce-&gt;value();
-    if ( not defined $value_ref ) {
-        die $self-&gt;show_last_expression(), "\n",
-            "No parse was found, after reading the entire input\n";
-    }
-    return ${$value_ref}, $self-&gt;{symbol_table};
-
-} ## end sub calculate
-
-</pre></blockquote>
-    <p>Walking through the code,
-    we first create a recognizer ("recce" for short) from our grammar.
-      Next, we define a parse object named "<tt>$self</tt>".
-      (Object enthusiasts will, I hope, forgive a certain awkwardness at this stage.)
-    <p>
-    Next, we call the
-      <tt>read()</tt>
-      method on the recognizer with our string.
-      We then check the result of the <tt>read()</tt> method for errors.
-      <p>
-      Finally, we return our results.
-      This calculator allows variables, whose values it keeps in a symbol table.
-      Since these can be important side effects, the symbol table is returned
-      as part of the results.
-    </p>
-    <h3>Dealing with errors</h3>
-    <p>This calculator has error reporting that compares favorably with
-      production languages.
-      (Unfortunately, these often do not set the bar very high.)
-      The methods of the Scanless interface return diagnostics that
-      pinpoint where things
-      went wrong from the technical point of view,
-      and what the problem was from the technical point of view.
-      As a diagnostic, this is often adequate, but not always.
-      Marpa's diagnostics have 100% technical accuracy, but
-      the parsing may have ceased to reflect the programmer's intent before
-      there is a technical problem.
-    </p>
-    <p>To help the programmer sync his intent to what Marpa is seeing,
-    when there is a problem,
-      this calculator reports to the user the text for the last
-      <tt>expression</tt>
-      that was successfully
-      recognized.
-      Here's the code that finds it:
-    </p><blockquote>
-      <pre>
-sub show_last_expression {
-    my ($self) = @_;
-    my $recce = $self-&gt;{recce};
-    my ( $start, $end ) = $recce-&gt;last_completed_range('expression');
-    return 'No expression was successfully parsed' if not defined $start;
-    my $last_expression = $recce-&gt;range_to_string( $start, $end );
-    return "Last expression successfully parsed was: $last_expression";
-} ## end sub show_last_expression
-</pre></blockquote>
-    <h3>The semantics</h3>
-    <p>Here is a snippet of the semantics, with a few of the simpler semantic closures.
-    </p><blockquote>
-      <pre>
-package My_Actions;
-our $SELF;
-sub new { return $SELF }
-sub do_set_var {
-    my ( $self, $var, undef, $value ) = @_;
-    return $self-&gt;{symbol_table}-&gt;{$var} = $value;
-}
-sub do_negate { return -$_[2]; }
-sub do_arg0 { return $_[1]; }
-sub do_arg1 { return $_[2]; }
-sub do_arg2 { return $_[3]; }
-</pre></blockquote>
-    <h3>About this example</h3>
-    <p>Full code for this example can be found in 
-      <a href="https://gist.github.com/4480523">a Github gist</a>.
-      Semantics, legalese, a test suite and other packaging
-      bring its total length to not quite 300 lines.
-    It uses the latest indexed CPAN release
-    of <a href="https://metacpan.org/module/Marpa::R2">Marpa::R2</a>.
-    Marpa also has <a href="http://jeffreykegler.github.com/Marpa-web-site/">
-    a web page</a>.
-    <h3>Comments</h3>
-    <p>
-      Comments on this post
-      can be sent to the Marpa Google Group:
-      <code>marpa-parser@googlegroups.com</code>
-    </p>
-<br />
-<p>posted at: 08:02 |
-<a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2013/01/dsl_simpler2.html">direct link to this entry</a>
 </p>
 <div style="color:#38B0C0;padding:1px;text-align:center;">
 &sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;

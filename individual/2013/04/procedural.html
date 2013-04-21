@@ -1,0 +1,147 @@
+<html>
+<head>
+<link rel="alternate" title="Ocean of Awareness RSS" type="application/rss+xml" title="RSS" href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/index.rss" />
+<title>Ocean of Awareness</title>
+<style type="text/css">
+   strong {font-weight: 700;}
+</style>
+</head>
+<body>
+<div
+  style="color:white;background-color:#38B0C0;padding:1em;clear:left;text-align:center;">
+<h1>Ocean of Awareness</h1>
+</div>
+  <div style="margin:0;padding:10px 30px 10px 10px;width:150px;float:left;border-right:2px solid #38B0C0">
+  <p>
+  <strong>Jeffrey Kegler's blog</strong>
+  about Marpa, his new parsing algorithm,
+    and other topics of interest</p>
+  <p><a href="http://www.jeffreykegler.com/">Jeffrey's personal website</a></p>
+      <p>
+	<a href="https://twitter.com/jeffreykegler" class="twitter-follow-button" data-show-count="false">Follow @jeffreykegler</a>
+      </p>
+      <p style="text-align:center">
+	<!-- Place this code where you want the badge to render. -->
+	<a href="//plus.google.com/101567692867247957860?prsrc=3" rel="publisher" style="text-decoration:none;">
+	<img src="//ssl.gstatic.com/images/icons/gplus-32.png" alt="Google+" style="border:0;width:32px;height:32px;"/></a>
+      </p>
+  <h3>Marpa resources</h3>
+  <p><a href="http://jeffreykegler.github.com/Marpa-web-site/">The Marpa website</a></p>
+  <p>The Ocean of Awareness blog: <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog">home page</a>,
+  <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/metapages/chronological.html">chronological index</a>,
+  and
+  <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/metapages/annotated.html">annotated index</a>.
+  </p>
+  </div>
+  <div style="margin-left:190px;border-left:2px solid #38B0C0;padding:25px;">
+<h3>Sat, 20 Apr 2013</h3>
+<br />
+<center><a name="procedural"> <h2>Marpa's SLIF adds procedural parsing</h2> </a>
+</center>
+  <p>
+      <!--
+      marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
+      -->
+    </p>
+    <p>
+    </p><p>
+      Marpa's SLIF (scanless interface)
+      allows an application to parse straight from a BNF grammar,
+      with no external lexer.
+      Marpa now also allows the app to mix it own custom lexing and parsing logic
+      with Marpa's,
+      and to switch back and forth.
+      Among other things, this allows the SLIF to do procedural parsing.
+    </p>
+    <h3>What is procedural parsing?</h3>
+    <p>Informally, you could say procedural parsing is what happens when
+      you've given up on parsing algorithms -- it's hacking your way through the
+      syntax using a general-purpose language.
+      Before there was parsing algorithms (the first was published in 1961)
+      procedural parsing was all there was.
+    </p>
+    <p>
+      In the years after 1961, many declarative parsers were invented.
+      Yacc and its LALR-based descendants dominated the textbooks for years.
+      But, frankly, most programmer's have found declarative parsers
+      disappointing,
+      and the craft has come nearly full circle.
+      Modern programmers, when they haven't fallen all the way back to regular expressions,
+      focus on left parsing techniques.
+      Left parsing almost always make heavy use of procedural parsing.
+      In part this is because left parsing takes an intuitive path through the
+      syntax, which makes procedural parsing convenient.
+      And in part this is because left parsing is weak:
+      left parsing by itself will not
+      parse most useful grammars.
+    </p>
+    <h3>An example</h3>
+    <p>
+      Perl's here-documents are an example of a syntax which are most conveniently
+      parsed using procedural techniques.
+      For those unfamilar, Perl's here-documents are convenient, but their syntax
+      is seriously weird.
+    </p>
+    <p>
+      Peter Stuifzand recently worked out an example that parses a Perl subset
+      which includes here-documents,
+      and I've tweaked it for this blog post.
+    </p>
+    <p>
+      Marpa's latest version is
+      <a href="https://metacpan.org/module/Marpa::R2">Marpa::R2,
+        which is available on CPAN</a>.
+      Recently, it has gained immensely in "whipitupitude" with
+      <a href="https://metacpan.org/module/JKEGL/Marpa-R2-2.048000/pod/Scanless/DSL.pod">
+        a new interface</a>,
+      which has tutorials
+      <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2013/01/dsl_simpler2.html">here
+      </a>
+      and
+      <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2013/01/announce_scanless.html">
+        here</a>.
+      Marpa has
+      <a href="http://jeffreykegler.github.com/Marpa-web-site/">a web page</a>,
+      and of course it is the focus of
+      <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/">
+        my "Ocean of Awareness" blog</a>.
+    </p>
+    <p>
+      Comments on this post
+      can be sent to the Marpa's Google Group:
+      <code>marpa-parser@googlegroups.com</code>
+    </p>
+<br />
+<p>posted at: 23:39 |
+<a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2013/04/procedural.html">direct link to this entry</a>
+</p>
+<div style="color:#38B0C0;padding:1px;text-align:center;">
+&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&sect;
+</div>
+</div>
+</div>
+<div id="footer" style="border-top:thick solid #38B0C0;clear:left;padding:1em;">
+<p>This is Ocean of Awareness's
+  new home.  This blog has been hosted at
+  <a href="http://blogs.perl.org/users/jeffrey_kegler/">blogs.perl.org</a>
+  but I have succumbed to the lure of static blogging.
+  I have not yet decided how to deal with comments at this new blog location.
+If the post is Marpa-related,
+<a href="https://groups.google.com/forum/?hl=en&fromgroups#%21forum/marpa-parser">
+the Marpa mailing list</a>
+is a good place to comment.
+</div>
+	<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+              <script type="text/javascript">
+            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+          </script>
+          <script type="text/javascript">
+            try {
+              var pageTracker = _gat._getTracker("UA-33430331-1");
+            pageTracker._trackPageview();
+            } catch(err) {}
+          </script>
+</body></html>

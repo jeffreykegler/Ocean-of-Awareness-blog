@@ -1,0 +1,74 @@
+Marpa's SLIF adds procedural parsing
+  <p>
+      <!--
+      marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
+      -->
+    </p>
+    <p>
+    </p><p>
+      Marpa's SLIF (scanless interface)
+      allows an application to parse straight from a BNF grammar,
+      with no external lexer.
+      Marpa now also allows the app to mix it own custom lexing and parsing logic
+      with Marpa's,
+      and to switch back and forth.
+      Among other things, this allows the SLIF to do procedural parsing.
+    </p>
+    <h3>What is procedural parsing?</h3>
+    <p>Informally, you could say procedural parsing is what happens when
+      you've given up on parsing algorithms -- it's hacking your way through the
+      syntax using a general-purpose language.
+      Before there was parsing algorithms (the first was published in 1961)
+      procedural parsing was all there was.
+    </p>
+    <p>
+      In the years after 1961, many declarative parsers were invented.
+      Yacc and its LALR-based descendants dominated the textbooks for years.
+      But, frankly, most programmer's have found declarative parsers
+      disappointing,
+      and the craft has come nearly full circle.
+      Modern programmers, when they haven't fallen all the way back to regular expressions,
+      focus on left parsing techniques.
+      Left parsing almost always make heavy use of procedural parsing.
+      In part this is because left parsing takes an intuitive path through the
+      syntax, which makes procedural parsing convenient.
+      And in part this is because left parsing is weak:
+      left parsing by itself will not
+      parse most useful grammars.
+    </p>
+    <h3>An example</h3>
+    <p>
+      Perl's here-documents are an example of a syntax which are most conveniently
+      parsed using procedural techniques.
+      For those unfamilar, Perl's here-documents are convenient, but their syntax
+      is seriously weird.
+    </p>
+    <p>
+      Peter Stuifzand recently worked out an example that parses a Perl subset
+      which includes here-documents,
+      and I've tweaked it for this blog post.
+    </p>
+    <p>
+      Marpa's latest version is
+      <a href="https://metacpan.org/module/Marpa::R2">Marpa::R2,
+        which is available on CPAN</a>.
+      Recently, it has gained immensely in "whipitupitude" with
+      <a href="https://metacpan.org/module/JKEGL/Marpa-R2-2.048000/pod/Scanless/DSL.pod">
+        a new interface</a>,
+      which has tutorials
+      <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2013/01/dsl_simpler2.html">here
+      </a>
+      and
+      <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2013/01/announce_scanless.html">
+        here</a>.
+      Marpa has
+      <a href="http://jeffreykegler.github.com/Marpa-web-site/">a web page</a>,
+      and of course it is the focus of
+      <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/">
+        my "Ocean of Awareness" blog</a>.
+    </p>
+    <p>
+      Comments on this post
+      can be sent to the Marpa's Google Group:
+      <code>marpa-parser@googlegroups.com</code>
+    </p>
