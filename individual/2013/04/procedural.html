@@ -42,50 +42,21 @@
       <!--
       marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
       -->
-    </p>
     <p>
-    </p><p>
-      Marpa's SLIF (scanless interface)
-      allows an application to parse straight from a BNF grammar,
-      with no external lexer.
-      Marpa now also allows the app to mix it own custom lexing and parsing logic
+      Marpa's SLIF (scanless interface) is a parser which
+      allows an application to parse straight from a BNF grammar.
+      Marpa parses vast classes of grammars in linear time,
+      including all those classes currently in practical use.
+      With its latest release, Marpa::R2's SLIF
+      also allows application to mix their own custom lexing and parsing logic
       with Marpa's,
-      and to switch back and forth.
-      Among other things, this allows the SLIF to do procedural parsing.
+      and to switch back and forth between them.
+      Among other things, this means that Marpa's SLIF can do procedural parsing.
     </p>
-    <h3>What is procedural parsing?</h3>
-    <p>Informally, you could say procedural parsing is what happens when
-      you've given up on parsing algorithms -- it's hacking your way through the
-      syntax using a general-purpose language.
-      Before there was parsing algorithms (the first was published in 1961)
-      procedural parsing was all there was.
-    </p>
-    <p>
-      In the years after 1961, many declarative parsers were invented.
-      Yacc and its LALR-based descendants dominated the textbooks for years.
-      But, frankly, most programmer's have found declarative parsers
-      disappointing,
-      and the craft has come nearly full circle.
-      Modern programmers, when they haven't fallen all the way back to regular expressions,
-      focus on left parsing techniques.
-      Left parsing almost always make heavy use of procedural parsing.
-      In part this is because left parsing takes an intuitive path through the
-      syntax, which makes procedural parsing convenient.
-      And in part this is because left parsing is weak:
-      left parsing by itself will not
-      parse most useful grammars.
-    </p>
-    <h3>An example</h3>
-    <p>
-      Perl's here-documents are an example of a syntax which are most conveniently
-      parsed using procedural techniques.
-      For those unfamilar, Perl's here-documents are convenient, but their syntax
-      is seriously weird.
-    </p>
-    <p>
-      Peter Stuifzand recently worked out an example that parses a Perl subset
-      which includes here-documents,
-      and I've tweaked it for this blog post.
+    <p>Modern programmers are accustomed to procedural parsing.
+    And there are problems which are best tackled that way.
+    Peter Stuifzand has used the just-released version of Marpa::R2 to
+    tackle one of them: Perl-style here-documents.
     </p>
     <p>
       Marpa's latest version is
