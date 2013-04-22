@@ -48,7 +48,7 @@
       Marpa parses vast classes of grammars in linear time,
       including all those classes currently in practical use.
       With its latest release, Marpa::R2's SLIF
-      also allows application to mix their own custom lexing and parsing logic
+      also allows application to intermix their own custom lexing and parsing logic
       with Marpa's,
       and to switch back and forth between them.
       Among other things, this means that Marpa's SLIF can do procedural parsing.
@@ -67,8 +67,9 @@
     Peter Stuifzand has tackled this using the
     just-released version of Marpa::R2.
     For those unfamiliar, Perl allows documents to be incorporated
-    in its source files.
-    The syntax for this is handy, but also seriously weird.
+    into its source files in line-oriented fashion,
+    and here-documents can be used in expressions.
+    The syntax to do this is very handy, if more than a little strange.
     For example,
     </p>
     <blockquote><pre>
@@ -82,27 +83,53 @@ ENDC
 d
 ENDD
     </pre></blockquote>
-starts with a single line declaring four here-documents spread out over two statements.
-The here-documents follow, in order, over the next eight lines.
-<p>Peter's solution to the Marpa SLIF's external scanning to read the
+starts with a single line declaring four here-documents spread out
+over two <tt>say</tt> statements.
+The expressions of the form <tt>&lt;&lt;ENDX</tt> are here-document expressions.
+<tt>&lt;&lt;</tt> is the heredoc operator.
+The string which follows it (in this case, <tt>ENDA</tt>, 
+<tt>ENDB</tt>, etc.) is the heredoc terminator string --
+the string that will signal end
+of the here-document.
+The body of the here-documents follow, in order, over the next eight lines.
+<p>All of this poses quite a challenge to a parser-lexer combination.
+There are a few ways Marpa could approach this.
+The one
+Peter Stuifzand chose was to
+to read the
 here-document as the value of the terminator in
 each <tt>&lt;&lt;ENDX</tt> expression.
-(<tt>&lt;&lt;</tt> is the heredoc operator.
-The strings <tt>ENDA</tt>, 
-<tt>ENDB</tt>, etc., are heredoc terminators strings that will signal end
-of the here-document.)
+<p>
+In more detail, the strategy works this way:
+Marpa allows the application to mark certain lexemes as "pause" lexemes.
+Whenever a "pause" lexeme is encountered, Marpa's internal scanning stops,
+and control is handed over to the application.
+In this case, the application is set up to pause after every newline,
+and before the terminator in every here-document expression.
+</p>
 <p>
 While reading the line containing the four here-document expressions,
-the SLIF parser pause scanning after every here-document terminator.
-Custom Marpa-external logic takes over,
-skips ahead to read the here-document's body,
-returns that to the SLIF grammar as the value of the heredoc expression,
-and then asks Marpa to resume parsing after the heredoc terminator.
+the Marpa's internal scanner pauses before every here-document terminator.
+Custom Marpa-external logic takes over from the internal scanner,
+and the external logic reads the terminator.
+The custom logic then skips ahead to read the here-document's body,
+returns that to the SLIF grammar as the value of the heredoc terminator,
+and asks Marpa's internal scanner to resume parsing after the heredoc terminator.
 This is done four times, one for each here-document.
-<p>In this solution, Marpa also pauses and hands control over to external
-logic at each newline, to check if here-documents were read.
-If so, Marpa is told to skip ahead, resuming parsing after the end
-of the last here-document.
+<p>As mentioned, Marpa also pauses and hands control over to external
+logic after each newline.
+This allows the external logic to check if any here-documents were read
+in the current line.
+If so, Marpa is told to skip past them before resuming parsing.
+<p>A compact example is in
+<a href="https://gist.github.com/jeffreykegler/5431739">a
+Github gist</a>.
+One with more tests is in
+<a href="https://github.com/jeffreykegler/demo-heredoc-parser">my
+fork</a> of
+<a href="https://github.com/pstuifzand/demo-heredoc-parser">a
+of Peter Stuifzand's github repository</a>.
+    </p>
     <p>
       Marpa's latest version is
       <a href="https://metacpan.org/module/Marpa::R2">Marpa::R2,
