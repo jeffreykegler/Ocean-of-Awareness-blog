@@ -14,8 +14,6 @@
 # General Public License along with Marpa::R2.  If not, see
 # http://www.gnu.org/licenses/.
 
-# Based on the 2nd Gang of Four Interpeter example
-
 use 5.010;
 use strict;
 use warnings;
@@ -60,17 +58,17 @@ my $expected = [
     [ [ 'say', [ "", ], ], ]
 ];
 
-is_deeply($v, $expected);
+is_deeply( $v, $expected );
 
 package Demo::Heredoc::Parser;
 
 sub new {
     my $class = shift;
 
-    my $grammar = Marpa::R2::Scanless::G->new({
-        default_action => '::array',
+    my $grammar = Marpa::R2::Scanless::G->new(
+        {   default_action => '::array',
 
-        source => \<<'GRAMMAR',
+            source => \<<'GRAMMAR',
 
 :start        ::= statements
 
@@ -112,14 +110,13 @@ newline         ~ [\n]
 ws              ~ [ \t]+
 
 GRAMMAR
-    });
+        }
+    );
 
-    my $self = {
-        grammar => $grammar,
-    };
+    my $self = { grammar => $grammar, };
 
     return bless $self, $class;
-}
+} ## end sub new
 
 sub parse {
     my ( $self, $input ) = @_;
@@ -138,7 +135,8 @@ sub parse {
         my $lexeme = $re->pause_lexeme();
         my ( $start_of_pause_lexeme, $length_of_pause_lexeme ) =
             $re->pause_span();
-        my $end_of_pause_lexeme = $start_of_pause_lexeme + $length_of_pause_lexeme;
+        my $end_of_pause_lexeme =
+            $start_of_pause_lexeme + $length_of_pause_lexeme;
 
         if ( $re->pause_lexeme() eq 'newline' ) {
 
@@ -153,22 +151,25 @@ sub parse {
         # If we are here, the pause lexeme was <heredoc terminator>
 
         # Find the <heredoc terminator>
-        my $terminator = $re->literal($start_of_pause_lexeme, $length_of_pause_lexeme);
+        my $terminator =
+            $re->literal( $start_of_pause_lexeme, $length_of_pause_lexeme );
 
         my $heredoc_start = $last_heredoc_end
             // ( index( $input, "\n", $pos ) + 1 );
 
         # Find the heredoc body --
-	# the literal text between the end of the last heredoc
-	# and the heredoc terminator for this heredoc
+        # the literal text between the end of the last heredoc
+        # and the heredoc terminator for this heredoc
         pos $input = $heredoc_start;
         my ($heredoc_body) = ( $input =~ m/\G(.*)^$terminator\n/gmsc );
         die "Heredoc terminator $terminator not found before end of input"
             if not defined $heredoc_body;
 
         # Pass the heredoc to the parser as the value of <heredoc terminator>
-        $re->lexeme_read( 'heredoc terminator', $heredoc_start, length($heredoc_body),
-            $heredoc_body ) // die $re->show_progress;
+        $re->lexeme_read(
+            'heredoc terminator',  $heredoc_start,
+            length($heredoc_body), $heredoc_body
+        ) // die $re->show_progress;
 
         # Save of the position of the end of the match
         # The next heredoc body starts there if there is one
