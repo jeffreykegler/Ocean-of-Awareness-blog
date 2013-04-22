@@ -14,6 +14,9 @@
 # General Public License along with Marpa::R2.  If not, see
 # http://www.gnu.org/licenses/.
 
+# Example of Perl-style here-document parsing, based
+# on code by Peter Stuifzand
+
 use 5.010;
 use strict;
 use warnings;
@@ -47,15 +50,12 @@ c
 ENDC
 d
 ENDD
-say <<ENDE;
-ENDE
 
 INPUT
 
 my $expected = [
     [ [ 'say', [ "a\n", "b\n", "c\n", ], ], ],
-    [ [ 'say', [ "d\n", ], ], ],
-    [ [ 'say', [ "", ], ], ]
+    [ [ 'say', [ "d\n", ], ], ]
 ];
 
 is_deeply( $v, $expected );
