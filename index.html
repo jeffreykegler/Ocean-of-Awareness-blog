@@ -42,14 +42,15 @@
       <!--
       marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
       -->
-    </p><p>
+    </p>
+    <p>
       Marpa's SLIF (scanless interface)
       allows an application to parse directly from any BNF grammar.
       Marpa parses vast classes of grammars in linear time,
       including all those classes currently in practical use.
       With
       <a href="https://metacpan.org/release/Marpa-R2">
-      its latest release</a>,
+        its latest release</a>,
       Marpa::R2's SLIF
       also allows an application to intermix
       its own custom lexing and parsing logic
@@ -61,8 +62,8 @@
       do procedural parsing.
     </p>
     <p>
-    What is procedural parsing?
-    Procedural parsing is parsing using
+      What is procedural parsing?
+      Procedural parsing is parsing using
       ad hoc code in a procedural language.
       The opposite of procedural parsing is declarative parsing
       -- parsing driven by some kind of formal description
@@ -70,19 +71,20 @@
       Procedural parsing
       may be described as what you do when you've given up
       on your parsing algorithm.
-      Dissatisfaction with parsing theory 
+      Dissatisfaction with parsing theory
       has left modern programmers accustomed to procedural parsing.
       And in fact some problems are best tackled with procedural parsing.
-    </p><h3>An example</h3>
+    </p>
+    <h3>An example</h3>
     <p>
       One such problem is parsing Perl-style here-documents.
       Peter Stuifzand has tackled this using
       <a href="https://metacpan.org/release/JKEGL/Marpa-R2-2.052000">
-      the
-      just-released version of Marpa::R2</a>.
+        the
+        just-released version of Marpa::R2</a>.
       For those unfamiliar, Perl allows documents to be incorporated
-      into its source files in line-oriented fashion,
-      and here-documents can be used in expressions.
+      into its source files in line-oriented fashion as "here-documents".
+      Here-documents can be used in expressions.
       The syntax to do this is very handy, if a little strange.
       For example,
     </p>
@@ -96,7 +98,7 @@ c
 ENDC
 d
 ENDD</pre></blockquote>
-<p>
+    <p>
       starts with a single line declaring four here-documents spread out
       over two
       <tt>say</tt>
@@ -114,13 +116,13 @@ ENDD</pre></blockquote>
       The body of the here-documents follow, in order, over the next eight lines.
       More details of here-document syntax, with examples, can be found
       in
-    <a href="http://perldoc.perl.org/perlop.html#Quote-Like-Operators">the
-    Perl documentation</a>.
+      <a href="http://perldoc.perl.org/perlop.html#Quote-Like-Operators">the
+        Perl documentation</a>.
     </p>
     <p>All of this poses quite a challenge to a parser-lexer combination,
-    which is one reason I chose it as an example --
-    to illustrate that the Marpa's SLIF support for procedural parsing can
-    handle genuinely difficult cases.
+      which is one reason I chose it as an example --
+      to illustrate that the Marpa's SLIF support for procedural parsing can
+      handle genuinely difficult cases.
       There are a few ways Marpa could approach this.
       The one
       Peter Stuifzand chose was to
@@ -129,7 +131,8 @@ ENDD</pre></blockquote>
       each
       <tt>&lt;&lt;ENDX</tt>
       expression.
-    </p><p>
+    </p>
+    <p>
       The strategy works this way:
       Marpa allows the application to mark certain lexemes as "pause" lexemes.
       Whenever a "pause" lexeme is encountered, Marpa's internal scanning stops,
@@ -142,32 +145,33 @@ ENDD</pre></blockquote>
       Marpa's SLIF pauses and resumes five times -- once for each here-document expression,
       then once for the final newline.
       Details can be found in compact form in the heavily commented code
-    in <a href="https://gist.github.com/jeffreykegler/5431739">this
+      in
+      <a href="https://gist.github.com/jeffreykegler/5431739">this
         Github gist</a>.
     </p>
     <h3>Marpa as a better procedural parser</h3>
     <p>So far I've talked in terms of Marpa "allowing" procedural parsing.
-    In fact, there can be much more to it.
-    Marpa can make procedural parsing easier and more accurate.
+      In fact, there can be much more to it.
+      Marpa can make procedural parsing easier and more accurate.
     </p>
     <p>Marpa knows, at every point, which rules it is recognizing, and how far it
-    is into them.
-    Marpa also knows which new rules the grammar expects, and which terminals.
-    The procedural parsing logic can consult this information to guide its decisions.
-    Marpa can provide your procedural parsing logic with radar,
-    as well as the option to use a very smart autopilot.
+      is into them.
+      Marpa also knows which new rules the grammar expects, and which terminals.
+      The procedural parsing logic can consult this information to guide its decisions.
+      Marpa can provide your procedural parsing logic with radar,
+      as well as the option to use a very smart autopilot.
     </p>
     <h3>For more about Marpa</h3>
     <p>
       Marpa's latest version is
       <a href="https://metacpan.org/module/Marpa::R2">Marpa::R2,
         which is available on CPAN</a>.
-	Marpa's
-<a href="https://metacpan.org/module/JKEGL/Marpa-R2-2.052000/pod/Scanless/DSL.pod">SLIF
-is
-	a new interface</a>,
-	which represents a major increase
-	in Marpa's "whipitupitude".
+      Marpa's
+      <a href="https://metacpan.org/module/JKEGL/Marpa-R2-2.052000/pod/Scanless/DSL.pod">SLIF
+        is
+        a new interface</a>,
+      which represents a major increase
+      in Marpa's "whipitupitude".
       The SLIF has tutorials
       <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2013/01/dsl_simpler2.html">here
       </a>
