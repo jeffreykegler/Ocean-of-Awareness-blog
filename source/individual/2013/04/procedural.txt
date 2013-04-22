@@ -32,8 +32,8 @@ Marpa's SLIF now allows procedural parsing
       may be described as what you do when you've given up
       on your parsing algorithm.
       Dissatisfaction with parsing theory 
-      has left modern programmers accustomed to procedural parsing,
-      and in fact some problems are best tackled that way.
+      has left modern programmers accustomed to procedural parsing.
+      And in fact some problems are best tackled with procedural parsing.
     </p><h3>An example</h3>
     <p>
       One such problem is parsing Perl-style here-documents.
@@ -44,7 +44,7 @@ Marpa's SLIF now allows procedural parsing
       For those unfamiliar, Perl allows documents to be incorporated
       into its source files in line-oriented fashion,
       and here-documents can be used in expressions.
-      The syntax to do this is very handy, if more than a little strange.
+      The syntax to do this is very handy, if a little strange.
       For example,
     </p>
     <blockquote><pre>
@@ -56,8 +56,8 @@ ENDB
 c
 ENDC
 d
-ENDD
-    </pre></blockquote><p>
+ENDD</pre></blockquote>
+<p>
       starts with a single line declaring four here-documents spread out
       over two
       <tt>say</tt>
@@ -106,7 +106,19 @@ ENDD
     in <a href="https://gist.github.com/jeffreykegler/5431739">this
         Github gist</a>.
     </p>
-    <h3>About Marpa</h3>
+    <h3>Marpa as a better procedural parser</h3>
+    <p>So far I've talked in terms of Marpa "allowing" procedural parsing.
+    In fact, there can be much more to it.
+    Marpa can make procedural parsing easier and more accurate.
+    </p>
+    <p>Marpa knows, at every point, which rules it is recognizing, and how far it
+    is into them.
+    Marpa also knows which new rules the grammar expects, and which terminals.
+    The procedural parsing logic can consult this information to guide its decisions.
+    Marpa can provide your procedural parsing logic with radar,
+    as well as the option to use a very smart autopilot.
+    </p>
+    <h3>For more about Marpa</h3>
     <p>
       Marpa's latest version is
       <a href="https://metacpan.org/module/Marpa::R2">Marpa::R2,

@@ -45,8 +45,8 @@
       may be described as what you do when you've given up
       on your parsing algorithm.
       Dissatisfaction with parsing theory 
-      has left modern programmers accustomed to procedural parsing,
-      and in fact some problems are best tackled that way.
+      has left modern programmers accustomed to procedural parsing.
+      And in fact some problems are best tackled with procedural parsing.
     &lt;/p&gt;&lt;h3&gt;An example&lt;/h3&gt;
     &lt;p&gt;
       One such problem is parsing Perl-style here-documents.
@@ -57,7 +57,7 @@
       For those unfamiliar, Perl allows documents to be incorporated
       into its source files in line-oriented fashion,
       and here-documents can be used in expressions.
-      The syntax to do this is very handy, if more than a little strange.
+      The syntax to do this is very handy, if a little strange.
       For example,
     &lt;/p&gt;
     &lt;blockquote&gt;&lt;pre&gt;
@@ -69,8 +69,8 @@ ENDB
 c
 ENDC
 d
-ENDD
-    &lt;/pre&gt;&lt;/blockquote&gt;&lt;p&gt;
+ENDD&lt;/pre&gt;&lt;/blockquote&gt;
+&lt;p&gt;
       starts with a single line declaring four here-documents spread out
       over two
       &lt;tt&gt;say&lt;/tt&gt;
@@ -119,7 +119,19 @@ ENDD
     in &lt;a href=&quot;https://gist.github.com/jeffreykegler/5431739&quot;&gt;this
         Github gist&lt;/a&gt;.
     &lt;/p&gt;
-    &lt;h3&gt;About Marpa&lt;/h3&gt;
+    &lt;h3&gt;Marpa as a better procedural parser&lt;/h3&gt;
+    &lt;p&gt;So far I've talked in terms of Marpa &quot;allowing&quot; procedural parsing.
+    In fact, there can be much more to it.
+    Marpa can make procedural parsing easier and more accurate.
+    &lt;/p&gt;
+    &lt;p&gt;Marpa knows, at every point, which rules it is recognizing, and how far it
+    is into them.
+    Marpa also knows which new rules the grammar expects, and which terminals.
+    The procedural parsing logic can consult this information to guide its decisions.
+    Marpa can provide your procedural parsing logic with radar,
+    as well as the option to use a very smart autopilot.
+    &lt;/p&gt;
+    &lt;h3&gt;For more about Marpa&lt;/h3&gt;
     &lt;p&gt;
       Marpa's latest version is
       &lt;a href=&quot;https://metacpan.org/module/Marpa::R2&quot;&gt;Marpa::R2,
