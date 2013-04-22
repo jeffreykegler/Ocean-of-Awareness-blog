@@ -4,8 +4,8 @@ Marpa's SLIF adds procedural parsing
       marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
       -->
     <p>
-      Marpa's SLIF (scanless interface) is a parser which
-      allows an application to parse straight from a BNF grammar.
+      Marpa's SLIF (scanless interface)
+      allows an application to parse directly from any BNF grammar.
       Marpa parses vast classes of grammars in linear time,
       including all those classes currently in practical use.
       With its latest release, Marpa::R2's SLIF
@@ -14,11 +14,56 @@ Marpa's SLIF adds procedural parsing
       and to switch back and forth between them.
       Among other things, this means that Marpa's SLIF can do procedural parsing.
     </p>
-    <p>Modern programmers are accustomed to procedural parsing.
-    And there are problems which are best tackled that way.
-    Peter Stuifzand has used the just-released version of Marpa::R2 to
-    tackle one of them: Perl-style here-documents.
+    <h3>What is procedural parsing?</h3>
+    <p>Procedural parsing is parsing using
+    ad hoc code in a procedural language.
+    Procedural parsing 
+    may be described as what you do when you've given up
+    on your parsing algorithm.
+    Modern programmers are accustomed to procedural parsing,
+    and some problems which are best tackled that way.
+    <h3>An example</h3>
+    <p>
+    One such problem is parsing Perl-style here-documents.
+    Peter Stuifzand has tackled this using the
+    just-released version of Marpa::R2.
+    For those unfamiliar, Perl allows documents to be incorporated
+    in its source files.
+    The syntax for this is handy, but also seriously weird.
+    For example,
     </p>
+    <blockquote><pre>
+say &lt;&lt;ENDA, &lt;&lt;ENDB, &lt;&lt;ENDC; say &lt;&lt;ENDD;
+a
+ENDA
+b
+ENDB
+c
+ENDC
+d
+ENDD
+    </pre></blockquote>
+starts with a single line declaring four here-documents spread out over two statements.
+The here-documents follow, in order, over the next eight lines.
+<p>Peter's solution to the Marpa SLIF's external scanning to read the
+here-document as the value of the terminator in
+each <tt>&lt;&lt;ENDX</tt> expression.
+(<tt>&lt;&lt;</tt> is the heredoc operator.
+The strings <tt>ENDA</tt>, 
+<tt>ENDB</tt>, etc., are heredoc terminators strings that will signal end
+of the here-document.)
+<p>
+While reading the line containing the four here-document expressions,
+the SLIF parser pause scanning after every here-document terminator.
+Custom Marpa-external logic takes over,
+skips ahead to read the here-document's body,
+returns that to the SLIF grammar as the value of the heredoc expression,
+and then asks Marpa to resume parsing after the heredoc terminator.
+This is done four times, one for each here-document.
+<p>In this solution, Marpa also pauses and hands control over to external
+logic at each newline, to check if here-documents were read.
+If so, Marpa is told to skip ahead, resuming parsing after the end
+of the last here-document.
     <p>
       Marpa's latest version is
       <a href="https://metacpan.org/module/Marpa::R2">Marpa::R2,
