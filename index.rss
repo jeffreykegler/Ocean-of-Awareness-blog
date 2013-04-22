@@ -10,41 +10,55 @@
     <language>en</language>
 
   <item>
-    <title>Marpa's SLIF adds procedural parsing</title>
+    <title>Marpa's SLIF now allows procedural parsing</title>
     <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2013/04/procedural.html</link>
     <description>  &lt;p&gt;
       &lt;!--
       marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
       --&gt;
-    &lt;p&gt;
+    &lt;/p&gt;&lt;p&gt;
       Marpa's SLIF (scanless interface)
       allows an application to parse directly from any BNF grammar.
       Marpa parses vast classes of grammars in linear time,
       including all those classes currently in practical use.
-      With its latest release, Marpa::R2's SLIF
-      also allows application to intermix their own custom lexing and parsing logic
+      With
+      &lt;a href=&quot;https://metacpan.org/release/Marpa-R2&quot;&gt;
+      its latest release&lt;/a&gt;,
+      Marpa::R2's SLIF
+      also allows an application to intermix
+      its own custom lexing and parsing logic
       with Marpa's,
       and to switch back and forth between them.
-      Among other things, this means that Marpa's SLIF can do procedural parsing.
+      This means,
+      among other things,
+      that Marpa's SLIF can now
+      do procedural parsing.
     &lt;/p&gt;
-    &lt;h3&gt;What is procedural parsing?&lt;/h3&gt;
-    &lt;p&gt;Procedural parsing is parsing using
-    ad hoc code in a procedural language.
-    Procedural parsing 
-    may be described as what you do when you've given up
-    on your parsing algorithm.
-    Modern programmers are accustomed to procedural parsing,
-    and some problems which are best tackled that way.
-    &lt;h3&gt;An example&lt;/h3&gt;
     &lt;p&gt;
-    One such problem is parsing Perl-style here-documents.
-    Peter Stuifzand has tackled this using the
-    just-released version of Marpa::R2.
-    For those unfamiliar, Perl allows documents to be incorporated
-    into its source files in line-oriented fashion,
-    and here-documents can be used in expressions.
-    The syntax to do this is very handy, if more than a little strange.
-    For example,
+    What is procedural parsing?
+    Procedural parsing is parsing using
+      ad hoc code in a procedural language.
+      The opposite of procedural parsing is declarative parsing
+      -- parsing driven by some kind of formal description
+      of the grammar.
+      Procedural parsing
+      may be described as what you do when you've given up
+      on your parsing algorithm.
+      Dissatisfaction with parsing theory 
+      has left modern programmers accustomed to procedural parsing,
+      and in fact some problems are best tackled that way.
+    &lt;/p&gt;&lt;h3&gt;An example&lt;/h3&gt;
+    &lt;p&gt;
+      One such problem is parsing Perl-style here-documents.
+      Peter Stuifzand has tackled this using
+      &lt;a href=&quot;https://metacpan.org/release/JKEGL/Marpa-R2-2.052000&quot;&gt;
+      the
+      just-released version of Marpa::R2&lt;/a&gt;.
+      For those unfamiliar, Perl allows documents to be incorporated
+      into its source files in line-oriented fashion,
+      and here-documents can be used in expressions.
+      The syntax to do this is very handy, if more than a little strange.
+      For example,
     &lt;/p&gt;
     &lt;blockquote&gt;&lt;pre&gt;
 say &amp;lt;&amp;lt;ENDA, &amp;lt;&amp;lt;ENDB, &amp;lt;&amp;lt;ENDC; say &amp;lt;&amp;lt;ENDD;
@@ -56,62 +70,67 @@ c
 ENDC
 d
 ENDD
-    &lt;/pre&gt;&lt;/blockquote&gt;
-starts with a single line declaring four here-documents spread out
-over two &lt;tt&gt;say&lt;/tt&gt; statements.
-The expressions of the form &lt;tt&gt;&amp;lt;&amp;lt;ENDX&lt;/tt&gt; are here-document expressions.
-&lt;tt&gt;&amp;lt;&amp;lt;&lt;/tt&gt; is the heredoc operator.
-The string which follows it (in this case, &lt;tt&gt;ENDA&lt;/tt&gt;, 
-&lt;tt&gt;ENDB&lt;/tt&gt;, etc.) is the heredoc terminator string --
-the string that will signal end
-of the here-document.
-The body of the here-documents follow, in order, over the next eight lines.
-&lt;p&gt;All of this poses quite a challenge to a parser-lexer combination.
-There are a few ways Marpa could approach this.
-The one
-Peter Stuifzand chose was to
-to read the
-here-document as the value of the terminator in
-each &lt;tt&gt;&amp;lt;&amp;lt;ENDX&lt;/tt&gt; expression.
-&lt;p&gt;
-In more detail, the strategy works this way:
-Marpa allows the application to mark certain lexemes as &quot;pause&quot; lexemes.
-Whenever a &quot;pause&quot; lexeme is encountered, Marpa's internal scanning stops,
-and control is handed over to the application.
-In this case, the application is set up to pause after every newline,
-and before the terminator in every here-document expression.
-&lt;/p&gt;
-&lt;p&gt;
-While reading the line containing the four here-document expressions,
-the Marpa's internal scanner pauses before every here-document terminator.
-Custom Marpa-external logic takes over from the internal scanner,
-and the external logic reads the terminator.
-The custom logic then skips ahead to read the here-document's body,
-returns that to the SLIF grammar as the value of the heredoc terminator,
-and asks Marpa's internal scanner to resume parsing after the heredoc terminator.
-This is done four times, one for each here-document.
-&lt;p&gt;As mentioned, Marpa also pauses and hands control over to external
-logic after each newline.
-This allows the external logic to check if any here-documents were read
-in the current line.
-If so, Marpa is told to skip past them before resuming parsing.
-&lt;p&gt;A compact example is in
-&lt;a href=&quot;https://gist.github.com/jeffreykegler/5431739&quot;&gt;a
-Github gist&lt;/a&gt;.
-One with more tests is in
-&lt;a href=&quot;https://github.com/jeffreykegler/demo-heredoc-parser&quot;&gt;my
-fork&lt;/a&gt; of
-&lt;a href=&quot;https://github.com/pstuifzand/demo-heredoc-parser&quot;&gt;a
-of Peter Stuifzand's github repository&lt;/a&gt;.
+    &lt;/pre&gt;&lt;/blockquote&gt;&lt;p&gt;
+      starts with a single line declaring four here-documents spread out
+      over two
+      &lt;tt&gt;say&lt;/tt&gt;
+      statements.
+      The expressions of the form
+    &lt;/p&gt;&lt;blockquote&gt;&lt;pre&gt;&amp;lt;&amp;lt;ENDX&lt;/pre&gt;&lt;/blockquote&gt;&lt;p&gt;
+      are here-document expressions.
+      &lt;tt&gt;&amp;lt;&amp;lt;&lt;/tt&gt;
+      is the heredoc operator.
+      The string which follows it (in this example,
+      &lt;tt&gt;ENDA&lt;/tt&gt;,
+      &lt;tt&gt;ENDB&lt;/tt&gt;, etc.) is the heredoc terminator string --
+      the string that will signal end
+      of body of the here-document.
+      The body of the here-documents follow, in order, over the next eight lines.
+      More details of here-document syntax, with examples, can be found
+      in
+    &lt;a href=&quot;http://perldoc.perl.org/perlop.html#Quote-Like-Operators&quot;&gt;the
+    Perl documentation&lt;/a&gt;.
     &lt;/p&gt;
+    &lt;p&gt;All of this poses quite a challenge to a parser-lexer combination,
+    which is one reason I chose it as an example --
+    to illustrate that the Marpa's SLIF support for procedural parsing can
+    handle genuinely difficult cases.
+      There are a few ways Marpa could approach this.
+      The one
+      Peter Stuifzand chose was to
+      to read the
+      here-document's body as the value of the terminator in
+      each
+      &lt;tt&gt;&amp;lt;&amp;lt;ENDX&lt;/tt&gt;
+      expression.
+    &lt;/p&gt;&lt;p&gt;
+      The strategy works this way:
+      Marpa allows the application to mark certain lexemes as &quot;pause&quot; lexemes.
+      Whenever a &quot;pause&quot; lexeme is encountered, Marpa's internal scanning stops,
+      and control is handed over to the application.
+      In this case, the application is set up to pause after every newline,
+      and before the terminator in every here-document expression.
+    &lt;/p&gt;
+    &lt;p&gt;
+      While reading the line containing the four here-document expressions,
+      Marpa's SLIF pauses and resumes five times -- once for each here-document expression,
+      then once for the final newline.
+      Details can be found in compact form in the heavily commented code
+    in &lt;a href=&quot;https://gist.github.com/jeffreykegler/5431739&quot;&gt;this
+        Github gist&lt;/a&gt;.
+    &lt;/p&gt;
+    &lt;h3&gt;About Marpa&lt;/h3&gt;
     &lt;p&gt;
       Marpa's latest version is
       &lt;a href=&quot;https://metacpan.org/module/Marpa::R2&quot;&gt;Marpa::R2,
         which is available on CPAN&lt;/a&gt;.
-      Recently, it has gained immensely in &quot;whipitupitude&quot; with
-      &lt;a href=&quot;https://metacpan.org/module/JKEGL/Marpa-R2-2.048000/pod/Scanless/DSL.pod&quot;&gt;
-        a new interface&lt;/a&gt;,
-      which has tutorials
+	Marpa's
+&lt;a href=&quot;https://metacpan.org/module/JKEGL/Marpa-R2-2.052000/pod/Scanless/DSL.pod&quot;&gt;SLIF
+is
+	a new interface&lt;/a&gt;,
+	which represents a major increase
+	in Marpa's &quot;whipitupitude&quot;.
+      The SLIF has tutorials
       &lt;a href=&quot;http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2013/01/dsl_simpler2.html&quot;&gt;here
       &lt;/a&gt;
       and
