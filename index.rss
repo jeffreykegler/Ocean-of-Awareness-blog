@@ -10,6 +10,105 @@
     <language>en</language>
 
   <item>
+    <title>Is Earley's Algorithm Fast Enough?</title>
+    <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2013/04/fast_enough.html</link>
+    <description>  &lt;blockquote&gt;&lt;!--
+      marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
+      --&gt;
+      &quot;First we ask, what impact will our algorithm have on the parsing
+      done in production compilers for existing programming languages?
+      The answer is, practically none.&quot; -- Jay Earley's Ph.D thesis, p. 122.
+  &lt;/blockquote&gt;
+    &lt;/p&gt;In the above quote, the inventor of Earley's algorithm poses a question
+    about it.  Is it fast enough for a production compiler?  His answer is a
+    stark &quot;no&quot;.
+    &lt;p&gt;Earley goes on to note that hand-written parsers can clearly be faster.
+    At the time Earley wrote, this was the state of the art for production compilers and
+    the world was such that languages remained static and hand-written approaches were
+    reasonable.
+    Today, hand-written parsers are once again the state of the art for production compilers,
+    though expectations about the size and stabiity of languages,
+    and perceptions about the desirability of large amounts of complex hand-crafted code,
+    has changed considerably.
+    But the speed remains the obstacle to anything better.  Or does it?
+    &lt;/p&gt;
+    &lt;p&gt;Earley, writing in 1968, took it for granted that a hand-written parser
+    was a highly optimized parser.  Four and a half decades of practice have taught
+    us that in fact it is hard to keep complex hand-written parsers correct
+    for evolving languages, and that they are in fact often slow.
+    But let's assume we don't know that.
+    &lt;/p&gt;
+    Let's assume the competitors to Earley's are one hundred times as fast.
+    So, slower by a factor of hundred means too slow, right?
+    Wrong.
+    The tendency is to repeat clear verdicts,
+    rather than re-examine them,
+    particularly if the field is complex.
+    And parsing theory is not just complex.
+    but it's out of fashion and off the funding radar.
+    Which means nobody has thought about the relevance of Moore's Law.
+    &lt;h3&gt;Time complexity and speed&lt;/h3&gt;
+    &lt;p&gt;Before re-examining the Earley verdict,
+    I'd like to clarify the difference between time complexity and speed.
+    Speed is fairly simple.
+    It's how fast the algorithm is.
+    To make speeds comparable, we'll assume we can count weighted instrucions
+    in a sensible way on some mutually-agreed architecture.
+    &lt;p&gt;
+    By the time Earley was writing, programmers had discovered that simply comparing
+    speeds would not work.
+    Computers were improving so quickly that the significance of speed results
+    could vanish quickly.
+    To make statements about time efficiency that would remain true,
+    they created the idea of time complexity.
+    &lt;/p&gt;
+    &lt;p&gt;Time complexity is measured using several notations, but the most
+    common is big-O notation.
+    Assume algorithm A uses 42 weighted instructions for each input symbol.
+    Assume that algorithm B uses 1792 weighted instructions for each input symbol.
+    Where the count of input symbols is N,
+    A's speed is 42*N, and B's is 1792*N.
+    But the time complexity of both is O(N) -- the big-O notation throws
+    away the &quot;constant factor&quot;.
+    &lt;/p&gt;
+    &lt;p&gt;It often happens that algorithms we need to compare for time efficiency
+    have the same time complexity,
+    but differents speeds.
+    And it sometimes happens that this difference is relevant.
+    When this happens, the slower algorithm is accused of having
+    a &quot;high constant factor&quot;.
+    &lt;h3&gt;OK, now about that constant factor&lt;/h3&gt;
+    &lt;/p&gt;
+    &lt;h3&gt;For more about Marpa&lt;/h3&gt;
+    &lt;p&gt;
+      Marpa's latest version is
+      &lt;a href=&quot;https://metacpan.org/module/Marpa::R2&quot;&gt;Marpa::R2,
+        which is available on CPAN&lt;/a&gt;.
+      Marpa's
+      &lt;a href=&quot;https://metacpan.org/module/JKEGL/Marpa-R2-2.052000/pod/Scanless/DSL.pod&quot;&gt;SLIF
+        is
+        a new interface&lt;/a&gt;,
+      which represents a major increase
+      in Marpa's &quot;whipitupitude&quot;.
+      The SLIF has tutorials
+      &lt;a href=&quot;http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2013/01/dsl_simpler2.html&quot;&gt;here
+      &lt;/a&gt;
+      and
+      &lt;a href=&quot;http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2013/01/announce_scanless.html&quot;&gt;
+        here&lt;/a&gt;.
+      Marpa has
+      &lt;a href=&quot;http://jeffreykegler.github.com/Marpa-web-site/&quot;&gt;a web page&lt;/a&gt;,
+      and of course it is the focus of
+      &lt;a href=&quot;http://jeffreykegler.github.com/Ocean-of-Awareness-blog/&quot;&gt;
+        my &quot;Ocean of Awareness&quot; blog&lt;/a&gt;.
+    &lt;/p&gt;
+    &lt;p&gt;
+      Comments on this post
+      can be sent to the Marpa's Google Group:
+      &lt;code&gt;marpa-parser@googlegroups.com&lt;/code&gt;
+    &lt;/p&gt;</description>
+  </item>
+  <item>
     <title>Marpa's SLIF now allows procedural parsing</title>
     <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2013/04/procedural.html</link>
     <description>  &lt;p&gt;
@@ -734,114 +833,6 @@ $VAR1 = bless( [
       was itself turned into an AST on its way to becoming a parser
       that turns boolean expressions into AST's.
     &lt;/p&gt;&lt;h3&gt;Comments&lt;/h3&gt;
-    &lt;p&gt;
-      Comments on this post
-      can be sent to the Marpa Google Group:
-      &lt;code&gt;marpa-parser@googlegroups.com&lt;/code&gt;
-    &lt;/p&gt;</description>
-  </item>
-  <item>
-    <title>A language for writing languages</title>
-    <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2013/01/language_for_languages.html</link>
-    <description>  &lt;p&gt;
-      &lt;!--
-      marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
-      --&gt;
-      &lt;a href=&quot;https://metacpan.org/release/Marpa-R2&quot;&gt;
-      Marpa::R2&lt;/a&gt;'s
-      &lt;a href=&quot;http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2013/01/announce_scanless.html&quot;&gt;
-      Scanless interface&lt;/a&gt;
-      is not yet two weeks old,
-      but already there are completed applications.
-      Significantly, two of them are for work.
-      &lt;h3&gt;A JSON Parser&lt;/h3&gt;
-      &lt;p&gt;The non-work-related application is
-      &lt;a href=&quot;https://gist.github.com/4447349&quot;&gt;
-      a JSON parser&lt;/a&gt;.
-      Given what it does,
-      it easily could have been work-related.
-      (It's been available for a few days as a gist,
-      so it may well be in production use somewhere.)
-      It was written by Peter Stuifzand,
-      runs 185 lines
-      and took him less than 30 minutes to write.
-      Peter reports that it was a matter of
-      typing in the grammar,
-      and adding a few Perl functions to provide the semantics.
-      &lt;p&gt;
-      There are, of course, other JSON parsers out there,
-      many of which run faster.
-      These, however, took weeks to write.
-      If you are, for example,
-      thinking of
-      &lt;a href=&quot;http://bolinfest.com/essays/json.html&quot;&gt;
-      extending JSON&lt;/a&gt;,
-      and development time is a major consideration,
-      the Marpa-based solution will be attractive.
-      &lt;h3&gt;Printer escape codes&lt;/h3&gt;
-      Peter also did
-      &lt;a href=&quot;https://groups.google.com/d/msg/marpa-parser/n4ouLW0e6P8/vdrku9fczZEJ&quot;&gt;
-      a Marpa-based language for work&lt;/a&gt; --
-      a solution to the problem of printer escape codes.
-      For those unfamilar, a printer's special features can often be invoked
-      by &quot;escape sequences&quot; --
-      byte sequences which control things like cursor motion, color, character sets,
-      graphics, etc., etc.
-      It's nice to invoke them with a set of well-named functions.
-      &lt;p&gt;Escape sequences are usually repetitive,
-      and when complex, are usually not complex in an interesting way.
-      They can be programmed with regex or eval hacks.
-      But this time
-      Peter chose to write 
-      a mini-language that specifies 
-      escape sequences,
-      and to use Marpa to
-      compile the mini-language into Perl code.
-      He was done in a hour.
-      &lt;h3&gt;A log file query language&lt;/h3&gt;
-      &lt;p&gt;Meanwhile, an interesting and adventurous language effort
-      was underway on
-      the other side of the Atlantic, where Paul Bennett,
-      faced with analyzing lots of nginx log files,
-      &lt;a href=&quot;https://plus.google.com/u/0/110360907592575381901/posts/XdTPRHvbA8w#110360907592575381901/posts/XdTPRHvbA8w&quot;&gt;
-      decided a powerful custom log query language was
-      the best way to address his issue&lt;/a&gt;.
-      Paul needed to design and specify his language from scratch.
-      Paul was also facing a learning curve,
-      but he read the gist for a Scanless interface example,
-      and apparently was able to teach himself quickly from there.
-      (He doesn't say, but it might have been the one for
-      &lt;a href=&quot;http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2013/01/dsl_simpler2.html&quot;&gt;
-      this post&lt;/a&gt;.)
-      &lt;p&gt;Like Peter's escape sequence language,
-      Paul's log query language program compiles to Perl.
-      Its writing and debugging
-      were spread out over 3 days.
-      Paul reports that his language is on the job already,
-      but that
-      it needs some clean-up before going onto CPAN.
-      &lt;p&gt;
-      The snippets Paul shows are enticing.
-      The language seems to include 
-      strings, integers and timestamps as supported types;
-      regexes;
-      a full set of comparison and boolean operators;
-      and helpful new &quot;any&quot;, &quot;between&quot; and &quot;one&quot; operators.
-      Pretty good for three days.
-      A lot of nasty problems snuggled away
-      in log files may find their
-      hiding places are not nearly as safe 
-      as they have been able to expect.
-    &lt;h3&gt;Where to start&lt;/h3&gt;
-    &lt;p&gt;If you're interested in learning more about Marpa's Scanless
-    interface, there is
-      &lt;a href=&quot;http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2013/01/dsl_simpler2.html&quot;&gt;
-      a tutorial&lt;/a&gt;.
-      Additionally,
-      the announcement of the Scanless interface contained
-      &lt;a href=&quot;http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2013/01/announce_scanless.html&quot;&gt;a
-      mini-tutorial&lt;/a&gt;.
-    &lt;h3&gt;Comments&lt;/h3&gt;
     &lt;p&gt;
       Comments on this post
       can be sent to the Marpa Google Group:
