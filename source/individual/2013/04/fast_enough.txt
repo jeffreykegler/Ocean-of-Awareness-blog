@@ -101,12 +101,13 @@ Is Earley Parsing Fast Enough?
     and in 2006 things went full circle -- the industry's standard C
     compiler, GCC, replaced LALR with recursive descent.
     </p>
-    <p>In his 1971 writeup in "Communications of the ACM",
+    <p>In his 1970 writeup for "Communications of the ACM",
     Earley put a number on his "constant factor".
     He said that his algorithm was an "order of magnitude" slower
     than the current favorites -- a factor of 10.
-    Since 1971,
-    things have changed heavily in Earley's favor.
+    Earley suggested ways to lower this 10-handicap,
+    and modern implementations have followed up on them
+    and found others.
     But for this post,
     let's concede the factor of ten and throw
     in another.
@@ -114,12 +115,12 @@ Is Earley Parsing Fast Enough?
     whatever that happens to be.
     </p>
     <h3>Moore's Law and beyond</h3>
-    <p>Let's take Earley's high-balled handicap of 100
-    and look at it in the light of Moore's Law.
+    <p>Let's look at the handicap of 100
+    in the light of Moore's Law.
     Since 1968, computers have gotten a billion times faster -- 9 orders
     of magnitude -- nine factors of ten.
     This means that today Earley's runs
-    well over a million times as fast as the current favorite algorithm did in
+    well over a billion times as fast as the current favorite algorithm did in
     1968.
     </p>
     <p>
@@ -133,14 +134,14 @@ Is Earley Parsing Fast Enough?
     Do the arithmetic and you find that Earley's is now
     over 10,000 times as fast as it needs to be to be practical.
     </p>
-    <p>But bringing in Moore's Law is just the beginning.
-    Because the ten-handicap Jay Earley gave his algorithm
-    was based on a straight comparison of CPU speeds.
+    <p>Bringing in Moore's Law is just the beginning.
+    Because the handicap Jay Earley gave his algorithm
+    is based on a straight comparison of CPU speeds.
     But parsing, in practical cases, involves I/O.
     And the "current favorite" needs to do as much I/O as Earley's.
     I/O overheads, and the accompanying context switches,
     swamp considerations of CPU speed,
-    and that is much more true today
+    and that is more true today
     that it was in 1968.
     When an application is I/O bound, CPU is in effect free.
     Parsing may not be I/O bound in this sense, but neither
@@ -148,13 +149,13 @@ Is Earley Parsing Fast Enough?
     in raw CPU terms.
     </p>
     <p>Finally, pipelining has changed
-    the nature of the CPU overhead itself radically,
-    and the change favors algorithms like Earley's,
+    the nature of the CPU overhead itself radically.
+    In 1968, the time to run a series of CPU
+    instructions varied linearly with the number of instructions.
+    Today, that is no longer true,
+    and the change favors strategies like Earley's,
     which require a higher raw instruction count,
-    but produce other kinds of payoff.
-    In practice,
-    pipelining, I/O and context switch overheads
-    significantly lower the Earley's handicap.
+    but produce payoffs in other ways.
     </p>
     <h3>Achievable speed</h3>
     <p>
@@ -167,9 +168,10 @@ Is Earley Parsing Fast Enough?
       Earley, writing in 1968 and thinking of hand-written recursive descent,
       assumed that production compilers
       could be, and in practice usually would be,
-      exquisitely hand-optimized in detail by teams of skilled
-      programmers focused on exactly that.
-      After forty-five years of practical experience,
+      written by
+      programmers with plenty of time to do 
+      careful and well-thought-out hand-optimization.
+      With forty-five years of practical experience,
       we know better.
     </p>
     <p>
@@ -179,24 +181,24 @@ Is Earley Parsing Fast Enough?
       it is usually all the maintainers can do to keep the procedural logic correct.
       In all but a few cases, optimization is opportunistic,
       not systematic.
-      As programmers have been exposed to
-      the realities of using compilers which
-      parse using large amounts of complex procedural logic,
-      hand-written recursive descent has actually acquired a
+      Programmers have been exposed to
+      the realities of parsing with
+      large amounts of complex procedural logic,
+      and hand-written recursive descent has acquired a
       reputation for being slow.
       </p>
       <p>
       In theory,
       LALR based compilers are less dependent on procedural
       parsing and therefore easier to keep optimal.
-      In practice they are as bad or worse,
-      because they still need a considerable amount of procedural logic,
+      In practice they are as bad or worse.
+      LALR parsers usually still need a considerable amount of procedural logic,
       And recursive descent is much more friendly to procedural logic
       than LALR is.
     </p>
     <p>Modern Earley parsing, on the other hand,
     has a much easier time actually delivering
-    it theoretical best speed in practice.
+    its theoretical best speed in practice.
     Earley's is powerful enough,
     and in its modern version well-enough aware of the state of the parse,
     that procedural logic can be kept to minimum or eliminated.
@@ -210,25 +212,32 @@ Is Earley Parsing Fast Enough?
     <p>But you might say,
     <blockquote>
     "A lot of interesting points, Jeffrey, but all things being
-    equal, a factor of 100 or 10, or even what's left from a factor of ten once I/O,
+    equal, a factor of 10,
+    or even what's left from a factor of ten once I/O,
     pipelining and implementation inefficiencies have all nibbled away at it,
     is still worth having.
     It may in a lot of instances not even be measurable, but why not grab
-    it for the sake of the cases where it might be?"
+    it for the sake of the cases where it is?"
     </blockquote>
     Which is a good point.
     The "implementation inefficiences" can be nasty enough that Earley's is in
     fact faster in raw terms,
     but let's assume
-    that some cost in speed is being paid for the use of Earley's.
+    that some cost in speed is still being paid for the use of Earley's.
     Why incur that cost?
     <h4>Error diagnosis</h4>
-    All the titleholders, in their quest for efficiency, do not maintain full
+    All the current favorites, in their quest for efficiency,
+    have not maintained full
     information about the state of the parse.
-    This means that, when the parse fails, they often have little idea of why.
-    Earley's knows the full state of the parse and, in its modern implementations,
-    can share that with the user.
-    In development contexts, this added knowledge can save a lot of resources.
+    This is fine is the source is 100% correct,
+    but in practice an important function of a parser is to find and
+    diagnose errors.
+    When the parse fails, the current favorites
+    often have little idea of why.
+    An Earley parser knows the full state of the parse and,
+    modern implementations can share that with the user.
+    This added knowledge can save a lot of
+    programmer time.
     <h4>Readability</h4>
     <p>
     The more that a parser does from the grammar,
@@ -240,80 +249,53 @@ Is Earley Parsing Fast Enough?
     <p>Procedural logic can produce inaccuracy -- inability
     to describe or control the actual language begin parsed.
     Some parsers, particular LALR and PEG,
-    have a second major source of inaccuracy.
-    Both LALR and PEG are restricted in the classes of
-    grammar they accept and in both, a practical grammar
-    is almost certain to produce at least one parsing conflict.
+    have a second major source of inaccuracy -- they use
+    a precedence scheme for conflict resolution.
+    In specific cases, this can work, but
+    produces a language without
+    a "clean" theoretical description.
     </p>
     <p>
-    When either LALR or PEG run into a parse conflict,
-    it attempts to turn the situation to advantage by resolving the
-    conflict with a precedence scheme.
-    These conflict-dependent precedence schemes
-    resembles a true precedence schemes in the same
-    way that staging a fake accident resembles selling your car
-    back to the dealer -- when it works,
-    it seems simply like a more convenient alternative.
-    Failures, however, can be disastrous,
-    and even success comes with a degree of blowback.
-    The actual language that results
-    from overlaying precedence over parse conflicts
-    is often not completely understood in full detail,
-    even by its designer.
-    <p>
-    When you don't know what language you are parsing,
-    you run into false negatives.
-    False negatives are failures to parse correct code.
-    While a nuisance, testing will usually either find these.
-    The developer then can fix them,
-    document them as syntax or,
-    failing both,
-    give up on the language.
-    CWriting down a language effort
-    is a not infrequent result with PEG and LALR langauge
-    efforts -- it ain't for nothing that recursive descent
-    is, over 50 years after its invention, still very much
-    mainstream.)
-    <p>False positives are more of a threat over a languages lifecycle.
-    False positives are cases
-    where the input is in error and should be reported
-    as such, but instead the hoped-for behavior occurs.
+    The obvious problem with not knowing what language you
+    are parsing is failure to parse correct source code.
+    But another, more subtle, problem can be worse over the
+    life cycle of a language ...
+    </p>
+    <h4>False positives</h4>
+    <p>False positives are cases
+    where the input is in error,
+    and should be reported as such, but instead
+    the result is what you wanted.
     This may sound like unexpected good news,
-    rather than a problem,
-    and for this
-    reason false positives
-    often go undetected for some time.
-    </p>
-    <p>
-    When a false positive does surface,
+    but when a false positive does surface,
     it is quite possible that it cannot be "fixed"
     without breaking code that, while incorrect, does work.
-    This incorrect code may have worked in production for months
-    or years.
-    And while theoretical correctness is important and should be treated
-    as such,
-    it is too much to expect
-    the maintainer of a production application
-    to be so broad-minded that he is willing to see code
-    that has worked for years in production suddenly break
-    in order to bring the parser better into line with its reference documentation.
-    </p>
-    In other words, when finally detected,
-    false positives often cannot be fixed.
-    Instead, they produce buggy and poorly understood code
+    Over the life of a language, false positives are deadly.
+    False positives produce buggy and poorly understood code
     which must be maintained forever.
-    Over the life of software, false positives
-    can be far more harmful than false negatives.
     </p>
     <h4>Power</h4>
     <p>
     The modern Earley implementation can parse vast classes
     of grammar in linear time.
-    These classes include all those parsed by the titleholders of the
-    last decades.
-    And it parses all context-free grammars in times that are, in practice,
+    These classes include all those currenty in practical use.
+    <h4>Flexibility</h4>
+    <p>Modern Earley implementations
+    parses all context-free grammars in times that are, in practice,
     considered optimal.
-    This makes syntax changes and extensions relatively carefree.
+    With other parsers,
+    the class of grammars parsed is highly restricted,
+    and there is usually a real danger that a new change
+    will violate those restrictions.
+    As mentioned,
+    the favorite alternatives to Earley's all
+    make it hard to know exactly what language you are,
+    in fact, parsing
+    and a change can break one of these parsers
+    without there being any indication of that.
+    By comparison,
+    syntax changes and extensions to Earley's grammars
+    are carefree.
     </p>
     <h3>For more about Marpa</h3>
     <p>
