@@ -282,7 +282,7 @@
       the result is what you wanted.
       This may sound like unexpected good news,
       but when a false positive does surface,
-      it is quite possible that it cannot be &quot;fixed&quot;
+      it is quite possible that it cannot be fixed
       without breaking code that, while incorrect, does work.
       Over the life of a language, false positives are deadly.
       False positives produce buggy and poorly understood code
