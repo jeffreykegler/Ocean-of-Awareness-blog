@@ -291,8 +291,8 @@ Is Earley Parsing Fast Enough?
       As mentioned,
       the favorite alternatives to Earley's
       make it hard to know exactly what language you are,
-      in fact, parsing
-      and a change can break one of these parsers
+      in fact, parsing.
+      A change can break one of these parsers
       without there being any indication.
       By comparison,
       syntax changes and extensions to Earley's grammars
