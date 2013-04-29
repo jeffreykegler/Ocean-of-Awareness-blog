@@ -15,21 +15,18 @@ Is Earley Parsing Fast Enough?
     <p>
     This is the verdict on Earley's that you often
     hear repeated today, 45 years later.
-    Earley's, it is said, has a "high constant factor".
-    When a field is as difficult as parsing theory,
-    verdicts tends to be repeated more often than examined.
-    This particular verdict originates with the inventor himself.
-    Since 1968, parsing theory has gone out of fashion and off
-    the funding radar.
+    Earley's, it is said, has a too high a "constant factor".
+    Verdicts tends to be repeated more often than examined and
+    this particular verdict originates with the inventor himself.
     So perhaps it should not seem astonishing
     that many treat the dismissal
     of Earley's on grounds of speed to be as valid today as it
     was in 1968.
     </p>
     <p>But in the past 45 years,
-    the technology has changed beyond recognition.
-    And, out of fashion or not, researchers
-    have made several important improvements to Earley's.
+    computer technology has changed beyond recognition.
+    And , researchers
+    have made several significant improvements to Earley's.
     It is time to reopen this case.
     <h3>What is a "constant factor"</h3>
     <p>The term "constant factor" here has a special meaning,
@@ -46,81 +43,106 @@ Is Earley Parsing Fast Enough?
       on some convenient and mutually-agreed architecture.
     </p>
     <p>
-      But by the time Earley was writing, programmers had discovered that simply comparing
+      By the time Earley was writing, programmers had discovered that simply comparing
       speeds,
-      even on abstract clocks, was not enough.
-      Computers were improving so quickly that a speed result
-      that was clearly significant when a comparison was made
-      might soon be unimportant.
-      Researchers wanted to
-      make statements about time efficiency that would remain as true
-      decades later as they were on the day they were made.
+      even on well-chosen abstract clocks, was not enough.
+      Computers were improving very quickly.
+      A speed result
+      that were clearly significant when the comparison was made
+      were quickly becoming unimportant.
+      Researchers needed a way to
+      talk about time efficiency in a way that made what they said as true
+      decades later as on the day they said it.
       To do this, researchers created the idea of time complexity.
     </p>
     <p>Time complexity is measured using several notations, but the most
-      common is big-O notation.
+      common is <a href="http://en.wikipedia.org/wiki/Big_O_notation">big-O
+      notation</a>.
       Here's the idea:
-      Assume we are comparion two algorithms, Algorithm A and Algorithm B.
+      Assume we are comparing two algorithms, Algorithm A and Algorithm B.
       Assume that algorithm A uses 42 weighted instructions for each input symbol.
       Assume that algorithm B uses 1792 weighted instructions for each input symbol.
       Where the count of input symbols is N,
       A's speed is 42*N, and B's is 1792*N.
-      But the time complexity of both is O(N) -- the big-O notation throws
-      away the "constant factor".
+      But the time complexity of both is the same: O(N).
+      The big-O notation throws away the two "constant factors", 42 and 1792.
+      Both are said to be "linear in N".
+      (Or more often, just "linear".)
     </p>
     <p>It often happens that algorithms we need to compare for time efficiency
-      have the same time complexity,
-      but differents speeds.
-      And it sometimes happens that this difference is relevant.
-      When this happens, the slower algorithm is accused of having
-      a "high constant factor".
+      have different speeds,
+      but the same time complexity.
+      In practice,
+      this usually this means we can treat them as having essentially
+      the same time efficiency.
+      But not always.
+      It sometimes happens that this difference is relevant.
+      When this happens, the rap against the slower algorithm is that it
+      has a "high constant factor".
     </p>
-    <h3>OK, so about that high constant factor</h3>
-    <p>What is the "constant factor" between Earley and the next best
-    algorithm, as a number?
-    My interest is practical, not historic,
-    so I will consider Earley as modernized by Aycock, Horspool, Leo and myself.
+    <h3>OK, about that high constant factor</h3>
+    <p>What is the "constant factor" between Earley and the current favorite
+    parsing algorithm, as a number?
+    (My interest is practical, not historic and
+    That means I will be talking about Earley's
+    as modernized by Aycock, Horspool, Leo and myself.
+    But much of what I say applies to Earley's algorithm in general.)
     </p>
-    <p>What the next best algorithm is an interesting question.
+    <p>What the current favorite parsing algorithm is
+    can be an interesting question.
     When Earley wrote, it was hand-written recursive descent.
     The next year (1969) LALR parsing was invented,
     and the year after (1970) a tool that used it was introduced -- yacc.
     At points over the next decade, yacc chased both Earley's
     and recursive descent almost completely out of the textbooks.
-    <p>
-    </p>
     <a href="http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2010/09/perl-and-parsing-6-rewind.html">
     But as I have detailed elsewhere<a/>,
     yacc had serious problems
     and in 2006 things went full circle -- the industry's standard C
     compiler, GCC, replaced LALR with recursive descent.
     </p>
-    <p>So is Earley's ten times slower than the next best?
-    To not waste time, I'll concede the factor of ten and throw
+    <p>In his 1971 writeup in "Communications of the ACM",
+    Earley put a number on his "constant factor".
+    He said that his algorithm was an "order of magnitude" slower
+    than the current favorites -- a factor of 10.
+    Since 1971,
+    things have changed heavily in Earley's favor.
+    But for this post,
+    let's concede the factor of ten and throw
     in another.
-    Let's say Earley's is 100 times slower than the next best,
+    Let's say Earley's is 100 times slower than the current favorite,
     whatever that happens to be.
     </p>
-    <h3>Enter Moore's Law</h3>
-    <p>Let's the high-ball handicap of a factor of 100 on Earley's,
+    <h3>Moore's Law and beyond</h3>
+    <p>Let's take Earley's high-balled handicap of 100
     and look at it in the light of Moore's Law.
     Since 1968, computers have gotten a billion times faster -- 9 orders
-    of magnitude.
+    of magnitude -- nine factors of ten.
     This means that today Earley's runs
-    well over a million times as fast as the next best algorithm did in
+    well over a million times as fast as the current favorite algorithm did in
     1968.
-    Which suggests that is the "next best" was practical then,
-    Earley's today is considerably more so.
     </p>
-    <h3>Beyond Moore's Law</h3>
-    <p>Bringing in Moore's Law is just the beginning.
-    So far we've compared CPU speeds.
-    But parsing, in practical cases involves I/O.
-    And "next best" does as much I/O as Earley's.
+    <p>
+    Of course, our standard of "fast enough to be practical" also evolves.
+    But it evolves a lot more slowly.
+    Let's exaggerate
+    and say that "practical" meant "takes an hour" in 1968,
+    but that today we would demand it take only a second.
+    That overstates the rate of the change, which is fine.
+    and that "practical" means "takes a second" today.
+    Do the arithmetic and you find that Earley's is now
+    over 10,000 times as fast as it needs to be to be practical.
+    </p>
+    <p>But bringing in Moore's Law is just the beginning.
+    Because the ten-handicap Jay Earley gave his algorithm
+    was based on a straight comparison of CPU speeds.
+    But parsing, in practical cases, involves I/O.
+    And the "current favorite" needs to do as much I/O as Earley's.
     I/O overheads, and the accompanying context switches,
-    swamp considerations of CPU speed, more so today than they
-    did in 1968.
-    In a truly I/O bound applications CPU is, in effect, free.
+    swamp considerations of CPU speed,
+    and that is much more true today
+    that it was in 1968.
+    When an application is I/O bound, CPU is in effect free.
     Parsing may not be I/O bound in this sense, but neither
     is it one of those applications where the comparison can be made
     in raw CPU terms.
@@ -130,52 +152,59 @@ Is Earley Parsing Fast Enough?
     and the change favors algorithms like Earley's,
     which require a higher raw instruction count,
     but produce other kinds of payoff.
+    In practice,
+    pipelining, I/O and context switch overheads
+    significantly lower the Earley's handicap.
     </p>
     <h3>Achievable speed</h3>
-    <p>Given the above considerations, a straight CPU horserace would be
-    hard to arrange between the current titleholder and Earley's --
-    the much-avoided "constant factor", in practice, would be very hard
-    to measure.
-    </p>
     <p>
     So far, I've spoken in terms of theoretical speeds, not achievable ones.
     That is, I've assumed that both Earley's
-    and the current titleholder are producing their best speed, unimpeded by
+    and the current favorite are producing their best speed, unimpeded by
     programming and implementation considerations.
     </p>
     <p>
       Earley, writing in 1968 and thinking of hand-written recursive descent,
-      assumed that production compilers based on recursive-descent
-      could and would be exquisitely hand-optimized in detail.
-      With forty-five years of practical experience,
+      assumed that production compilers
+      could be, and in practice usually would be,
+      exquisitely hand-optimized in detail by teams of skilled
+      programmers focused on exactly that.
+      After forty-five years of practical experience,
       we know better.
-      In the widely used practical compilers and interpreters
-      that rely on lots of procedural logic (which is most of them),
-      it is hard enough to keep all that procedural logic correct.
-      Optimizations are opportunistic, when not given up on entirely.
-      Due to the realities of dealing with a large body of complex code,
-      modern hand-written recursive descent has acquired a
+    </p>
+    <p>
+      In those widely used practical compilers and interpreters
+      that rely on lots of procedural logic --
+      and these days that is almost all of them --
+      it is usually all the maintainers can do to keep the procedural logic correct.
+      In all but a few cases, optimization is opportunistic,
+      not systematic.
+      As programmers have been exposed to
+      the realities of using compilers which
+      parse using large amounts of complex procedural logic,
+      hand-written recursive descent has actually acquired a
       reputation for being slow.
       </p>
       <p>
-      LALR based compilers, while in theory less dependent on procedural
-      parsing and therefore easier to keep optimal,
-      in practice could be as bad or worse,
-      This was a major factor in the turn away from LALR.
+      In theory,
+      LALR based compilers are less dependent on procedural
+      parsing and therefore easier to keep optimal.
+      In practice they are as bad or worse,
+      because they still need a considerable amount of procedural logic,
+      And recursive descent is much more friendly to procedural logic
+      than LALR is.
     </p>
     <p>Modern Earley parsing, on the other hand,
-    while it does have a higher constant factor in theory,
-    has a much easier time actually achieving in practice
-    what is its best speed in theory.
+    has a much easier time actually delivering
+    it theoretical best speed in practice.
     Earley's is powerful enough,
     and in its modern version well-enough aware of the state of the parse,
     that procedural logic can be kept to minimum or eliminated.
     Most of the parsing is done by the mathematics at its core.
-    This math can be heavily optimized.
-    Unlike optimization of procedural logic,
-    which apply only to a single application,
-    the optimizations apply to an Earley parse engine
-    apply to all applications.
+    The math at Earley's core can be heavily optimized,
+    and any optimization benefits all applications.
+    Optimizing a grammar's special-purpose procedural logic benefits
+    only the application that uses it.
     </p>
     <h3>Other considerations</h3>
     <p>But you might say,
@@ -275,15 +304,17 @@ Is Earley Parsing Fast Enough?
     which must be maintained forever.
     Over the life of software, false positives
     can be far more harmful than false negatives.
-    </li>
-    <li>Power: The modern Earley implementation can parse vast classes
+    </p>
+    <h4>Power</h4>
+    <p>
+    The modern Earley implementation can parse vast classes
     of grammar in linear time.
     These classes include all those parsed by the titleholders of the
     last decades.
     And it parses all context-free grammars in times that are, in practice,
     considered optimal.
     This makes syntax changes and extensions relatively carefree.
-    </li>
+    </p>
     <h3>For more about Marpa</h3>
     <p>
       Above I've spoken of "modern Earley parsing",
