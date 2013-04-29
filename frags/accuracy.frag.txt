@@ -1,0 +1,69 @@
+    <h4>Accuracy</h4>
+    <p>Procedural logic can produce inaccuracy -- inability
+    to describe or control the actual language begin parsed.
+    Some parsers, particular LALR and PEG,
+    have a second major source of inaccuracy.
+    Both LALR and PEG are restricted in the classes of
+    grammar they accept and in both, a practical grammar
+    is almost certain to produce at least one parsing conflict.
+    </p>
+    <p>
+    When either LALR or PEG run into a parse conflict,
+    it attempts to turn the situation to advantage by resolving the
+    conflict with a precedence scheme.
+    These conflict-dependent precedence schemes
+    resembles a true precedence schemes in the same
+    way that staging a fake accident resembles selling your car
+    back to the dealer -- when it works,
+    it seems simply like a more convenient alternative.
+    Failures, however, can be disastrous,
+    and even success comes with a degree of blowback.
+    The actual language that results
+    from overlaying precedence over parse conflicts
+    is often not completely understood in full detail,
+    even by its designer.
+    <p>
+    When you don't know what language you are parsing,
+    you run into false negatives.
+    False negatives are failures to parse correct code.
+    While a nuisance, testing will usually either find these.
+    The developer then can fix them,
+    document them as syntax or,
+    failing both,
+    give up on the language.
+    CWriting down a language effort
+    is a not infrequent result with PEG and LALR langauge
+    efforts -- it ain't for nothing that recursive descent
+    is, over 50 years after its invention, still very much
+    mainstream.)
+    <p>False positives are more of a threat over a languages lifecycle.
+    False positives are cases
+    where the input is in error and should be reported
+    as such, but instead the hoped-for behavior occurs.
+    This may sound like unexpected good news,
+    rather than a problem,
+    and for this
+    reason false positives
+    often go undetected for some time.
+    </p>
+    <p>
+    When a false positive does surface,
+    it is quite possible that it cannot be "fixed"
+    without breaking code that, while incorrect, does work.
+    This incorrect code may have worked in production for months
+    or years.
+    And while theoretical correctness is important and should be treated
+    as such,
+    it is too much to expect
+    the maintainer of a production application
+    to be so broad-minded that he is willing to see code
+    that has worked for years in production suddenly break
+    in order to bring the parser better into line with its reference documentation.
+    </p>
+    In other words, when finally detected,
+    false positives often cannot be fixed.
+    Instead, they produce buggy and poorly understood code
+    which must be maintained forever.
+    Over the life of software, false positives
+    can be far more harmful than false negatives.
+    </p>
