@@ -1,4 +1,4 @@
-Is Earley Parsing Fast Enough?
+Is Earley parsing fast enough?
   <blockquote>
       <!--
       marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
