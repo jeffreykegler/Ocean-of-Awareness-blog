@@ -44,7 +44,7 @@
     &lt;h3&gt;What is a &quot;constant factor&quot;&lt;/h3&gt;
     &lt;p&gt;The term &quot;constant factor&quot; here has a special meaning,
     one worth looking at carefully.
-    When programmers talk about time efficiency, they do it in two ways:
+    Programmers talk about time efficiency in two ways:
     time complexity and speed.
     &lt;/p&gt;
     &lt;p&gt;
