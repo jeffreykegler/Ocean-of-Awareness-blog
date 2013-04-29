@@ -51,6 +51,72 @@
       Is his algorithm fast enough for a production compiler?  His answer is a
       stark "no".
     </p>
+    <p>
+    This is the verdict on Earley's that you often
+    hear repeated today, 45 years later.
+    When the field is difficult,
+    any verdict tends to be repeated far more than it is re-examined,
+    and this one comes from the inventor himself.
+    Add to that that the field has fallen out of fashion
+    and off the funding radar,
+    and it is no surprise that many find it unnecessary to give Earley's
+    algorithm a second look.
+    </p>
+    <p>But in the pase 45 years,
+    the technology has changed beyond recognition.
+    And, out of fashion or not, researchers
+    have made several important improvements to Earley's.
+    It's time to take another look.
+    <h3>Time complexity and speed</h3>
+    <p>When programmers talk about time efficiency, they do it in two ways:
+    time complexity and speed.
+      Speed is fairly simple.
+      It's how fast the algorithm is against the clock.
+      The clock can be a bit abstract.
+      To make comparison easy,
+      the clock ticks could be, for example, weighted instructions
+      on some convenient and mutually-agreed architecture.
+    </p>
+    <p>
+      By the time Earley was writing, programmers had discovered that simply comparing
+      speeds,
+      even on abstract clocks, was not enough.
+      Computers were improving so quickly that a speed result
+      that was clearly significant when a comparison was made
+      might soon be unimportant .
+      So that researchers could
+      make statements about time efficiency that would remain true
+      over the decades,
+      they created the idea of time complexity.
+    </p>
+    <p>Time complexity is measured using several notations, but the most
+      common is big-O notation.
+      Here's the idea:
+      Assume we are comparion two algorithms, Algorithm A and Algorithm B.
+      Assume that algorithm A uses 42 weighted instructions for each input symbol.
+      Assume that algorithm B uses 1792 weighted instructions for each input symbol.
+      Where the count of input symbols is N,
+      A's speed is 42*N, and B's is 1792*N.
+      But the time complexity of both is O(N) -- the big-O notation throws
+      away the "constant factor".
+    </p>
+    <p>It often happens that algorithms we need to compare for time efficiency
+      have the same time complexity,
+      but differents speeds.
+      And it sometimes happens that this difference is relevant.
+      When this happens, the slower algorithm is accused of having
+      a "high constant factor".
+    </p>
+    <h3>OK, now about that constant factor</h3>
+    <h3>Other considerations</h3>
+    <ul>
+      <li>Error diagnosis.
+      </li>
+      <li>Readability.
+      </li>
+      <li>Maintainabilty.
+      </li></ul>
+    <h3>For more about Marpa</h3>
     <p>Earley goes on to note that hand-written parsers can clearly be faster.
       At the time Earley wrote, this was the state of the art for production compilers and
       the world was such that languages remained static and hand-written approaches were
@@ -78,48 +144,6 @@
       but it's out of fashion and off the funding radar.
       Which means nobody has thought about the relevance of Moore's Law.
     </p>
-    <h3>Time complexity and speed</h3>
-    <p>Before re-examining the Earley verdict,
-      I'd like to clarify the difference between time complexity and speed.
-      Speed is fairly simple.
-      It's how fast the algorithm is.
-      To make speeds comparable, we'll assume we can count weighted instrucions
-      in a sensible way on some mutually-agreed architecture.
-    </p>
-    <p>
-      By the time Earley was writing, programmers had discovered that simply comparing
-      speeds would not work.
-      Computers were improving so quickly that the significance of speed results
-      could vanish quickly.
-      To make statements about time efficiency that would remain true,
-      they created the idea of time complexity.
-    </p>
-    <p>Time complexity is measured using several notations, but the most
-      common is big-O notation.
-      Assume algorithm A uses 42 weighted instructions for each input symbol.
-      Assume that algorithm B uses 1792 weighted instructions for each input symbol.
-      Where the count of input symbols is N,
-      A's speed is 42*N, and B's is 1792*N.
-      But the time complexity of both is O(N) -- the big-O notation throws
-      away the "constant factor".
-    </p>
-    <p>It often happens that algorithms we need to compare for time efficiency
-      have the same time complexity,
-      but differents speeds.
-      And it sometimes happens that this difference is relevant.
-      When this happens, the slower algorithm is accused of having
-      a "high constant factor".
-    </p>
-    <h3>OK, now about that constant factor</h3>
-    <h3>Other considerations</h3>
-    <ul>
-      <li>Error diagnosis.
-      </li>
-      <li>Readability.
-      </li>
-      <li>Maintainabilty.
-      </li></ul>
-    <h3>For more about Marpa</h3>
     <p>
       Marpa's latest version is
       <a href="https://metacpan.org/module/Marpa::R2">Marpa::R2,
