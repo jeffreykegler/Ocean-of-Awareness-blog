@@ -1,71 +1,85 @@
-Is Earley's Algorithm Fast Enough?
-  <blockquote><!--
+Is Earley Parsing Fast Enough?
+  <blockquote>
+      <!--
       marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
       -->
       "First we ask, what impact will our algorithm have on the parsing
       done in production compilers for existing programming languages?
       The answer is, practically none." -- Jay Earley's Ph.D thesis, p. 122.
-  </blockquote>
-    </p>In the above quote, the inventor of Earley's algorithm poses a question
-    about it.  Is it fast enough for a production compiler?  His answer is a
-    stark "no".
+    </blockquote>
+    <p>In the above quote, the inventor of the Earley parsing
+      algorithm poses a question.
+      Is his algorithm fast enough for a production compiler?  His answer is a
+      stark "no".
+    </p>
     <p>Earley goes on to note that hand-written parsers can clearly be faster.
-    At the time Earley wrote, this was the state of the art for production compilers and
-    the world was such that languages remained static and hand-written approaches were
-    reasonable.
-    Today, hand-written parsers are once again the state of the art for production compilers,
-    though expectations about the size and stabiity of languages,
-    and perceptions about the desirability of large amounts of complex hand-crafted code,
-    has changed considerably.
-    But the speed remains the obstacle to anything better.  Or does it?
+      At the time Earley wrote, this was the state of the art for production compilers and
+      the world was such that languages remained static and hand-written approaches were
+      reasonable.
+      Today, hand-written parsers are once again the state of the art for production compilers,
+      though expectations about the size and stabiity of languages,
+      and perceptions about the desirability of large amounts of complex hand-crafted code,
+      has changed considerably.
+      But the speed remains the obstacle to anything better.  Or does it?
     </p>
     <p>Earley, writing in 1968, took it for granted that a hand-written parser
-    was a highly optimized parser.  Four and a half decades of practice have taught
-    us that in fact it is hard to keep complex hand-written parsers correct
-    for evolving languages, and that they are in fact often slow.
-    But let's assume we don't know that.
+      was a highly optimized parser.  Four and a half decades of practice have taught
+      us that in fact it is hard to keep complex hand-written parsers correct
+      for evolving languages, and that they are in fact often slow.
+      But let's assume we don't know that.
     </p>
-    Let's assume the competitors to Earley's are one hundred times as fast.
-    So, slower by a factor of hundred means too slow, right?
-    Wrong.
-    The tendency is to repeat clear verdicts,
-    rather than re-examine them,
-    particularly if the field is complex.
-    And parsing theory is not just complex.
-    but it's out of fashion and off the funding radar.
-    Which means nobody has thought about the relevance of Moore's Law.
+    <p>
+      Let's assume the competitors to Earley's are one hundred times as fast.
+      So, slower by a factor of hundred means too slow, right?
+      Wrong.
+      The tendency is to repeat clear verdicts,
+      rather than re-examine them,
+      particularly if the field is complex.
+      And parsing theory is not just complex.
+      but it's out of fashion and off the funding radar.
+      Which means nobody has thought about the relevance of Moore's Law.
+    </p>
     <h3>Time complexity and speed</h3>
     <p>Before re-examining the Earley verdict,
-    I'd like to clarify the difference between time complexity and speed.
-    Speed is fairly simple.
-    It's how fast the algorithm is.
-    To make speeds comparable, we'll assume we can count weighted instrucions
-    in a sensible way on some mutually-agreed architecture.
+      I'd like to clarify the difference between time complexity and speed.
+      Speed is fairly simple.
+      It's how fast the algorithm is.
+      To make speeds comparable, we'll assume we can count weighted instrucions
+      in a sensible way on some mutually-agreed architecture.
+    </p>
     <p>
-    By the time Earley was writing, programmers had discovered that simply comparing
-    speeds would not work.
-    Computers were improving so quickly that the significance of speed results
-    could vanish quickly.
-    To make statements about time efficiency that would remain true,
-    they created the idea of time complexity.
+      By the time Earley was writing, programmers had discovered that simply comparing
+      speeds would not work.
+      Computers were improving so quickly that the significance of speed results
+      could vanish quickly.
+      To make statements about time efficiency that would remain true,
+      they created the idea of time complexity.
     </p>
     <p>Time complexity is measured using several notations, but the most
-    common is big-O notation.
-    Assume algorithm A uses 42 weighted instructions for each input symbol.
-    Assume that algorithm B uses 1792 weighted instructions for each input symbol.
-    Where the count of input symbols is N,
-    A's speed is 42*N, and B's is 1792*N.
-    But the time complexity of both is O(N) -- the big-O notation throws
-    away the "constant factor".
+      common is big-O notation.
+      Assume algorithm A uses 42 weighted instructions for each input symbol.
+      Assume that algorithm B uses 1792 weighted instructions for each input symbol.
+      Where the count of input symbols is N,
+      A's speed is 42*N, and B's is 1792*N.
+      But the time complexity of both is O(N) -- the big-O notation throws
+      away the "constant factor".
     </p>
     <p>It often happens that algorithms we need to compare for time efficiency
-    have the same time complexity,
-    but differents speeds.
-    And it sometimes happens that this difference is relevant.
-    When this happens, the slower algorithm is accused of having
-    a "high constant factor".
-    <h3>OK, now about that constant factor</h3>
+      have the same time complexity,
+      but differents speeds.
+      And it sometimes happens that this difference is relevant.
+      When this happens, the slower algorithm is accused of having
+      a "high constant factor".
     </p>
+    <h3>OK, now about that constant factor</h3>
+    <h3>Other considerations</h3>
+    <ul>
+      <li>Error diagnosis.
+      </li>
+      <li>Readability.
+      </li>
+      <li>Maintainabilty.
+      </li></ul>
     <h3>For more about Marpa</h3>
     <p>
       Marpa's latest version is
