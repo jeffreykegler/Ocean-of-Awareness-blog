@@ -57,14 +57,14 @@
       Earley's, it is said, has a too high a "constant factor".
       Verdicts tends to be repeated more often than examined.
       This particular verdict originates with the inventor himself.
-      So perhaps it should not seem astonishing
+      So perhaps it is not astonishing
       that many treat the dismissal
       of Earley's on grounds of speed to be as valid today as it
       was in 1968.
     </p>
     <p>But in the past 45 years,
-      computer technology has changed beyond recognition.
-      And researchers
+      computer technology has changed beyond recognition
+      and researchers
       have made several significant improvements to Earley's.
       It is time to reopen this case.
     </p><h3>What is a "constant factor"</h3>
@@ -133,16 +133,19 @@
       When Earley wrote, it was hand-written recursive descent.
       The next year (1969) LALR parsing was invented,
       and the year after (1970) a tool that used it was introduced -- yacc.
-      At points over the next decade, yacc chased both Earley's
+      At points over the next decades,
+      yacc chased both Earley's
       and recursive descent almost completely out of the textbooks.
       <a href="http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2010/09/perl-and-parsing-6-rewind.html">
-        But as I have detailed elsewhere<a/>,
+        But as I have detailed elsewhere</a>,
           yacc had serious problems.
           In 2006 things went full circle -- the industry's standard C
           compiler, GCC, replaced LALR with recursive descent.
-        </a/></a></p>
-    <p>In his 1970 writeup for "Communications of the ACM",
-      Earley put a number on his "constant factor".
+        </p>
+    <p>So back to 1970.
+    That year, Jay Earley wrote up his algorithm for
+    "Communications of the ACM",
+      and put a rough number on his "constant factor".
       He said that his algorithm was an "order of magnitude" slower
       than the current favorites -- a factor of 10.
       Earley suggested ways to lower this 10-handicap,
@@ -209,7 +212,7 @@
       written by
       programmers with plenty of time to do
       careful and well-thought-out hand-optimization.
-      With forty-five years of practical experience,
+      After forty-five years of real-life experience,
       we know better.
     </p>
     <p>
@@ -234,7 +237,7 @@
       And recursive descent is much more friendly to procedural logic
       than LALR is.
     </p>
-    <p>Modern Earley parsing,
+    <p>Modern Earley parsing
       has a much easier time actually delivering
       its theoretical best speed in practice.
       Earley's is powerful enough,
@@ -321,7 +324,7 @@
       These classes include all those currently in practical use.
     </p><h4>Flexibility</h4>
     <p>Modern Earley implementations
-      parses all context-free grammars in times that are, in practice,
+      parse all context-free grammars in times that are, in practice,
       considered optimal.
       With other parsers,
       the class of grammars parsed is highly restricted,
