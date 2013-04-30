@@ -255,10 +255,11 @@ Is Earley parsing fast enough?
     </p><h4>Accuracy</h4>
     <p>Procedural logic can produce inaccuracy -- inability
       to describe or control the actual language begin parsed.
-      Some parsers, particular LALR and PEG,
+      Some parsers, particularly LALR and PEG,
       have a second major source of inaccuracy -- they use
       a precedence scheme for conflict resolution.
       In specific cases, this can work, but
+      precedence-driven conflict resolution
       produces a language without
       a "clean" theoretical description.
     </p>
