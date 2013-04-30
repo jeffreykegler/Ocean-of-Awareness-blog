@@ -198,8 +198,8 @@ Is Earley parsing fast enough?
       parsing and therefore easier to keep optimal.
       In practice they are as bad or worse.
       LALR parsers usually still need a considerable amount of procedural logic,
-      And recursive descent is much more friendly to procedural logic
-      than LALR is.
+      but procedural logic is harder to write for LALR than it
+      is for recursive descent.
     </p>
     <p>Modern Earley parsing
       has a much easier time actually delivering
