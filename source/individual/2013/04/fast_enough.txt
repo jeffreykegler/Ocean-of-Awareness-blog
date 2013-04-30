@@ -124,8 +124,11 @@ Is Earley parsing fast enough?
       Since 1968, computers have gotten a billion times faster -- nine orders
       of magnitude. Nine factors of ten.
       This means that today Earley's runs
-      well over a billion times as fast as the current favorite algorithm did in
+      seven factors of ten faster than
+      the current favorite algorithm did in
       1968.
+      Earley's is 10 million times as fast as the algorithm that was
+      then considered practical.
     </p>
     <p>
       Of course, our standard of "fast enough to be practical" also evolves.
@@ -134,7 +137,7 @@ Is Earley parsing fast enough?
       and say that "practical" meant "takes an hour" in 1968,
       but that today we would demand that the same program take only a second.
       Do the arithmetic and you find that Earley's is now
-      over 10,000 times as fast as it needs to be to be practical.
+      more than 2,000 times faster than it needs to be to be practical.
     </p>
     <p>Bringing in Moore's Law is just the beginning.
       The handicap Jay Earley gave his algorithm
