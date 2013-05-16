@@ -34,6 +34,10 @@
           Tutorials</a>
       </p>
       <p class="view">
+        <a href="#DSL">
+          Language-driven programming</a>
+      </p>
+      <p class="view">
         <a href="#GENERAL">
           About Marpa in general</a>
       </p>
@@ -132,7 +136,10 @@
 	  no simple way to produce an AST straight from BNF.
 	  Now there is.
 	  This tutorial contains the Gang of Four example worked out in full with a Marpa-based
-	  parser.
+	  parser, and
+	<a href="http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2013/03/interpreter.html">
+	  a sequel</a>
+	  talks about some of the implications of easier parsing.
 	  </p>
 	  </li>
       </ul>
@@ -142,7 +149,28 @@
           which are described below</a>,
         contain many useful examples,
         and most of the code in them carries over to SLIF line-for-line.
-      </p><h2><a name="GENERAL"></a>About Marpa in general</h2>
+      </p>
+      <h2><a name="DSL"></a>Language-driven programming</h2>
+      <p>
+	<ul>
+        <li>
+	<p>
+	<a href="http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2013/03/interpreter.html">
+	The Interpreter Design Pattern</a>
+	  The Language Design Pattern,
+	  is from the very influential
+	  <a href="http://en.wikipedia.org/wiki/Design_Patterns">
+	  Design Patterns book</a>,
+	  which was the subject of
+	  <a href="http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2013/03/bnf_to_ast.html">
+	  one of my tutorials</a>.
+	  This post discusses the implications for the Language Design Pattern of making
+	  parsers much easier to write.
+	<p>
+        </li>
+	</ul>
+      </p>
+      <h2><a name="GENERAL"></a>About Marpa in general</h2>
       <ul>
         <li><p><a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/08/the-solved-problem-that-isnt-is.html">The solved problem that isn't, is</a>.
             In an excellent post, Laurence Tratt described parsing as "the solved problem that isn't".
@@ -151,43 +179,8 @@
             with Marpa, the parsing problem is, in fact, now solved.
             In this post I state, point by point, why I believe
             I can accurately make that claim.
-          </p></li>
-      </ul>
-      <ul>
-        <li>
-          <p>
-            <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/07/partial-parsing-and-error-reporting.html">
-              Partial parsing and error reporting</a>
-            describes the technique of partial parsing -- parsing
-            when you can only deal with some of the target language.
-            This technique is useful for incremental parser development.
-            It is also the way to really do error reporting well.
-            <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/07/prefixing-the-ruby-slippers-and-the-bigfoot-maneuver.html">Prefixing the Ruby Slippers, and the Bigfoot Maneuver</a>
-            goes into the topic even more deeply.
           </p>
-        </li>
-        <li>
-          <p>
-            <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/07/two-new-interfaces-to-marpa.html">
-              Two new interfaces to Marpa</a>
-            describes Libmarpa and Marpa::R2::Thin.
-            Libmarpa is the core of Marpa, available as a C library.
-            Marpa::R2::Thin is a "thin" wrapper for Libmarpa.
-            With Libmarpa, you get pure C language speed.
-            With Marpa::R2::Thin, you get the ability to create your
-            own Marpa interface in Perl,
-            on a completely equal footing with Marpa::R2 itself.
-          </p>
-        </li>
-        <li>
-          <p>
-            <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/06/the-useful-the-playful-the-easy-the-hard-and-the-beautiful.html">
-              The useful, the playful, the easy, the hard and the beautiful</a>
-            starts out describing a nice interface to Marpa written by Peter Stuifzand,
-            and then gets into a discussion of how number series emerge from grammars.
-            I especially enjoyed this post, as apparently did a number of readers.
-          </p>
-        </li>
+	  </li>
         <li>
           <p>
             <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/self_parse.html">
@@ -203,22 +196,11 @@
         </li>
         <li>
           <p>
-            <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/06/marpa-customizing-the-ruby-slippers.html">Marpa & customizing the Ruby Slippers</a>
-            announces one of Marpa::R2's more important features.
-            The Marpa algorithm, at every point in a parse,
-            knows which rules were being recognized and how far recognition had proceeded.
-            Much of this information was already available,
-            in one form or another,
-            in Marpa::XS.
-            As of Marpa::R2, the application programmer has
-            efficient and direct access to 100% of this
-            information.
-          </p></li>
-        <li>
-          <p>
             <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2011/11/marpa-and-the-ruby-slippers.html">
               Marpa and the Ruby Slippers</a>
-            talks more about Marpa and the Ruby Slippers.
+	      An older post,
+	      but one with a nice explanation of one of Marpa's significant new features:
+            Ruby Slippers parsing.
           </p>
         </li>
         <li>
@@ -229,14 +211,8 @@
             Marpa, Python looked like a better choice in terms
             of mindshare. In this post, I explain why the initial
             Marpa implementation uses Perl.
-          </p>
-        </li>
-        <li>
-          <p>
-            <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/03/user-experiences-with-marpa-some-observations.html">
-              User experiences with Marpa</a>:
-            How users react to Marpa. Of course, I am a hopelessly
-            biased source. but I do get a lot of feedback.
+	    This post has been very popular, even
+	    being translated into Japanese.
           </p>
         </li>
       </ul>
@@ -590,10 +566,19 @@ href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2011/05
             lays out the essentials of the Marpa algorithm.
             Does not require the reader to be
             mathematically inclined,
-            but even that reader might want to look it
-            before looking at
+            but even that reader might want to look here
+            before digging into
             <a href="https://github.com/downloads/jeffreykegler/Marpa-theory/recce.pdf">
               the formal theory paper</a>.
+          </p>
+        </li>
+        <li>
+          <p>
+            <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/06/the-useful-the-playful-the-easy-the-hard-and-the-beautiful.html">
+              The useful, the playful, the easy, the hard and the beautiful</a>
+            starts out describing a nice interface to Marpa written by Peter Stuifzand,
+            and then gets into a discussion of how number series emerge from grammars.
+            I especially enjoyed this post, as apparently did a number of readers.
           </p>
         </li>
       </ul>
