@@ -142,6 +142,24 @@
 	  talks about some of the implications of easier parsing.
 	  </p>
 	  </li>
+	  <li>
+	  <p>
+	  <a href="http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2013/04/procedural.html">
+	  Marpa and procedural parsing</a>.
+	  "Procedural parsing" is a fancy term for giving up on your parsing algorithm and just hacking
+	  out the parse.
+	  With the currently favored parsing algorithms, a lot of this type of code is
+	  necessary, and programmers have come to expect a parser to allow for it.
+	  Marpa tries to offer the best of both worlds:
+	  a declarative parser which knows exactly where it is in your BNF at all times,
+	  but one which is willing to step out of the way and let custom code take over,
+	  at the same time sharing what it knows with the custom code.
+	  Perl heredocs are an example of a language feature which requires procedural
+	  parsing.
+	  Parsing these correctly requires jumping back and forth in the input.
+	  This tutorial for this post shows how to handle them straightforwardly using Marpa's SLIF.
+	  </p>
+	  </li>
       </ul>
       <p>For the beginner, SLIF-based tutorials like the above are the place to start.
         But my pre-SLIF tutorials,
@@ -155,7 +173,7 @@
         <li>
 	<p>
 	<a href="http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2013/03/interpreter.html">
-	The Interpreter Design Pattern</a>
+	The Interpreter Design Pattern</a>.
 	  The Language Design Pattern,
 	  is from the very influential
 	  <a href="http://en.wikipedia.org/wiki/Design_Patterns">
@@ -171,12 +189,13 @@
 	<p>
       In 1980, George Copeland wrote
       <a href="http://dl.acm.org/citation.cfm?id=802685">
-      an article titled "What if Mass Storage were Free?"</a>.
-      Costs of mass storage were showing signs that they might fall dramatically, so Copeland ran a thought experiment:
-      What might happen if there were, in effect, zero?
-      This post runs same thought experiment on languages.
-      Marpa makes it much easier to solve your problem by creating a new language.
-      What might change when the time and effort required for a custom DSL falls toward zero?
+      an article titled "What if Mass Storage were Free?"</a>
+      Afterwards, the cost of mass storage fell dramatically.
+      Copeland saw the first signs of this, and ran a thought experiment:
+      What might happen costs fell to the point where mass storage was, in effect, free?
+      This post runs a similar thought experiment on languages.
+      What might happen when the time and effort required to create a new language
+      falls toward zero?
       </p>
 	</li>
 	</ul>
