@@ -42,9 +42,8 @@
       <!--
       marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
       -->
-      Seasoned observers of the parsing scene may have been unimpressed
-      by my confidence in Marpa's abilities,
-      present and future.
+      Seasoned and candid observers of the parsing scene may not
+      have been impressed by this series of posts about my new Marpa parser.
       They've certainly seen it before.
       "New" parsing algorithms have come along over the past decades with
       some regularity.
@@ -53,11 +52,11 @@
       and disappointing results.
     </p>
     <p>
-      In this post I'll explain, on what this confidence is based,
-      and why I think that the candid and seasoned observer could convince himself,
-      "This time it's different".
+      In this post I'll explain, on what my confidence in Marpa is based,
+      and why I think that even a jaded observer might want to say,
+      "This time it might be different".
     </p>
-    <h3>The power and flexibility table parsing</h3>
+    <h3>The power and flexibility of table parsing</h3>
     <p>
       Marpa is a table parser, one of a family of such algorithms.
       Marpa is unusual among this family in its focus on speed.
@@ -79,9 +78,10 @@
       This means that if you keep the parsing from left-to_right
       (which Marpa does)
       you can easily combine procedural parsing with your parsing algorithm.
+      And you can pinpoint and identify errors precisely.
     </p>
     <h3>The feasibility of table parsing</h3>
-    <p>But a questions arises about table parsing:
+    <p>But a question arises about table parsing:
       "Sounds great, but can you do it fast enough to be useful in practice?"
     </p>
     <p>
@@ -100,10 +100,10 @@
       So table parsing is definitely possible.
       But way of implementing it described above would be too slow for it
       to be a practical method.
-    </p><p>Fortunately, there are faster ways to do it,
+    Fortunately, there are faster ways to do it,
       and a number of these are in use.
       But most of them concentrate on power -- they don't try to
-      be fast enough for a wide range of practical applications
+      be fast enough for a wide range of practical applications,
       and they aren't.
     </p>
     <h3>Fast table parsing</h3>
@@ -114,10 +114,15 @@
       Marpa's latest version is
       <a href="https://metacpan.org/module/Marpa::R2">Marpa::R2,
         which is available on CPAN</a>.
+      A list of Marpa tutorials can be found
+      <a href="http://jeffreykegler.github.io/Ocean-of-Awareness-blog/metapages/annotated.html#TUTORIAL">
+      here</a>.
       There is
       <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/">
-        a blog</a>,
-      as well as a
+        this blog</a>,
+	which has
+	<a href="http://jeffreykegler.github.io/Ocean-of-Awareness-blog/metapages/annotated.html">an annotated guide</a>,
+	and 
       <a href="http://jeffreykegler.github.com/Marpa-web-site/">a web page</a>.
       For questions, support and discussion, there is a
       Google Group:
