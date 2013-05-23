@@ -50,7 +50,7 @@
       how far into a rule you have recognized it,
       what symbols you expect next, etc. etc.
       This means that if build the table steadily from left to right
-      (which Marpa does)
+      (which Marpa does),
       you can easily combine procedural parsing with your parsing algorithm.
       And you can pinpoint and identify errors precisely.
     &lt;/p&gt;
