@@ -10,6 +10,96 @@
     <language>en</language>
 
   <item>
+    <title>Why Marpa works: table parsing</title>
+    <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2013/05/table.html</link>
+    <description>  &lt;p&gt;
+      &lt;!--
+      marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
+      --&gt;
+      Seasoned observers of the parsing scene may have been unimpressed
+      by my confidence in Marpa's abilities,
+      present and future.
+      They've certainly seen it before.
+      &quot;New&quot; parsing algorithms have come along over the past decades with
+      some regularity.
+      They tried a wide variety of different approaches,
+      but all of them shared two things: confident authors
+      and disappointing results.
+    &lt;/p&gt;
+    &lt;p&gt;
+      In this post I'll explain, on what this confidence is based,
+      and why I think that the candid and seasoned observer could convince himself,
+      &quot;This time it's different&quot;.
+    &lt;/p&gt;
+    &lt;h3&gt;The power and flexibility table parsing&lt;/h3&gt;
+    &lt;p&gt;
+      Marpa is a table parser, one of a family of such algorithms.
+      Marpa is unusual among this family in its focus on speed.
+    &lt;/p&gt;
+    &lt;p&gt;
+      Table parsing means parsing by constructing a table of all the possible parses.
+      The current favorite parsers (yacc, recursive descent, etc.) do not do this --
+      their quest for speed uses state diagrams and/or stacks,
+      and they are not able to track all possible parses.
+    &lt;/p&gt;
+    &lt;p&gt;
+      The advantages of table parsing are pretty obvious.
+      If your table tracks BNF rules,
+      you can parse any grammar that you can write in BNF.
+      You always know exactly what is going on -- what rules
+      are possible, what rules have been recognized,
+      how far into a rule you have recognized it,
+      what symbols you expect next, etc. etc.
+      This means that if you keep the parsing from left-to_right
+      (which Marpa does)
+      you can easily combine procedural parsing with your parsing algorithm.
+    &lt;/p&gt;
+    &lt;h3&gt;The feasibility of table parsing&lt;/h3&gt;
+    &lt;p&gt;But a questions arises about table parsing:
+      &quot;Sounds great, but can you do it fast enough to be useful in practice?&quot;
+    &lt;/p&gt;
+    &lt;p&gt;
+      First, let's assure ourselves that it can be done.
+      If we ignore speed issues,
+      the answer is fairly clearly &quot;yes&quot;.
+      A grammar has a finite number of rules, each of finite length,
+      and parses a finite number of input symbols.
+      Since the number of input symbols is finite,
+      at any location the number of previous location at which a rule
+      or symbol could have started is also finite.
+      Since everything is finite, all we have to do is check all the possibilities
+      as we progress from left-to-right, making sure they apply.
+    &lt;/p&gt;
+    &lt;p&gt;
+      So table parsing is definitely possible.
+      But way of implementing it described above would be too slow for it
+      to be a practical method.
+    &lt;/p&gt;&lt;p&gt;Fortunately, there are faster ways to do it,
+      and a number of these are in use.
+      But most of them concentrate on power -- they don't try to
+      be fast enough for a wide range of practical applications
+      and they aren't.
+    &lt;/p&gt;
+    &lt;h3&gt;Fast table parsing&lt;/h3&gt;
+    &lt;p&gt;
+    &lt;/p&gt;
+    &lt;h3&gt;For more about Marpa&lt;/h3&gt;
+    &lt;p&gt;
+      Marpa's latest version is
+      &lt;a href=&quot;https://metacpan.org/module/Marpa::R2&quot;&gt;Marpa::R2,
+        which is available on CPAN&lt;/a&gt;.
+      There is
+      &lt;a href=&quot;http://jeffreykegler.github.com/Ocean-of-Awareness-blog/&quot;&gt;
+        a blog&lt;/a&gt;,
+      as well as a
+      &lt;a href=&quot;http://jeffreykegler.github.com/Marpa-web-site/&quot;&gt;a web page&lt;/a&gt;.
+      For questions, support and discussion, there is a
+      Google Group:
+      &lt;code&gt;marpa-parser@googlegroups.com&lt;/code&gt;.
+      Comments on this post can be made there.
+    &lt;/p&gt;</description>
+  </item>
+  <item>
     <title>Is Earley parsing fast enough?</title>
     <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2013/04/fast_enough.html</link>
     <description>  &lt;blockquote&gt;
@@ -856,233 +946,6 @@ ENDD&lt;/pre&gt;&lt;/blockquote&gt;
       &lt;a href=&quot;http://www.dmst.aueb.gr/dds/pubs/jrnl/2000-JSS-DSLPatterns/html/dslpat.html&quot;&gt;
         &quot;Notable Design Patterns for Domain-Specific Languages&quot;&lt;/a&gt;, Diomidis Spinellis; and
       &lt;a href=&quot;http://www.c2.com/cgi/wiki?DomainSpecificLanguage&quot;&gt;the c2.com wiki&lt;/a&gt;.
-    &lt;/p&gt;</description>
-  </item>
-  <item>
-    <title>BNF to AST</title>
-    <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2013/03/bnf_to_ast.html</link>
-    <description>  &lt;p&gt;
-      &lt;!--
-      marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
-      --&gt;
-      The latest version of
-      &lt;a href=&quot;https://metacpan.org/module/Marpa::R2&quot;&gt;
-      Marpa&lt;/a&gt; takes parsing &quot;whipitupitude&quot; one step further.
-      You can now go straight from
-      a BNF description of your language,
-      and an input string,
-      to an abstract syntax tree (AST).
-    &lt;/p&gt;
-    &lt;p&gt;To illustrate, I'll use an example from the
-      Gang of Four's (Go4's) chapter
-      on the Interpreter pattern.
-      (It's pages 243-255 of the
-      &lt;a href=&quot;http://en.wikipedia.org/wiki/Design_Patterns&quot;&gt;
-      &lt;em&gt;Design Patterns&lt;/em&gt; book&lt;/a&gt;.)
-      The Go4 knew of no easy general way to go from BNF to AST,
-      so they dealt with that part of the interpreter problem
-      by punting --
-      they did not even try to parse the input string.
-      Instead they constructed the BNF they'd just presented and
-      constructed an AST directly in their code.
-    &lt;/p&gt;
-    &lt;p&gt;The reason the Go4 didn't know of an easy,
-    generally-applicable way
-      to parse their example was that
-      there was none.
-      Now there is.
-      In this post, Marpa will take us
-      quickly and easily
-      from BNF to AST.
-      (Full code for this post can
-      be found in
-      &lt;a href=&quot;https://gist.github.com/jeffreykegler/5121769&quot;&gt;a Github gist&lt;/a&gt;.)
-    &lt;/p&gt;
-    &lt;p&gt;
-      The Go4's example was a simple boolean expression language,
-      whose primary input was
-    &lt;/p&gt;
-    &lt;blockquote&gt;
-      &lt;pre&gt;
-true and x or y and not x
-&lt;/pre&gt;
-    &lt;/blockquote&gt;
-    &lt;p&gt;Here, in full, is the BNF for an slight elaboration of the
-      Go4 example.
-      It is written in the DSL for Marpa's Scanless interface (SLIF DSL),
-      and includes specifications for building the AST.
-    &lt;/p&gt;&lt;blockquote&gt;
-      &lt;pre&gt;
-:default ::= action =&amp;gt; ::array
-
-:start ::= &amp;lt;boolean expression&amp;gt;
-&amp;lt;boolean expression&amp;gt; ::=
-       &amp;lt;variable&amp;gt; bless =&amp;gt; variable
-     | '1' bless =&amp;gt; constant
-     | '0' bless =&amp;gt; constant
-     | ('(') &amp;lt;boolean expression&amp;gt; (')') action =&amp;gt; ::first bless =&amp;gt; ::undef
-    || ('not') &amp;lt;boolean expression&amp;gt; bless =&amp;gt; not
-    || &amp;lt;boolean expression&amp;gt; ('and') &amp;lt;boolean expression&amp;gt; bless =&amp;gt; and
-    || &amp;lt;boolean expression&amp;gt; ('or') &amp;lt;boolean expression&amp;gt; bless =&amp;gt; or
-
-&amp;lt;variable&amp;gt; ~ [[:alpha:]] &amp;lt;zero or more word characters&amp;gt;
-&amp;lt;zero or more word characters&amp;gt; ~ [\w]*
-
-:discard ~ whitespace
-whitespace ~ [\s]+
-&lt;/pre&gt;
-    &lt;/blockquote&gt;
-    &lt;p&gt;This syntax should be fairly transparent.
-      In previous posts I've given
-      &lt;a href=&quot;http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2013/01/dsl_simpler2.html&quot;&gt;
-        a tutorial&lt;/a&gt;,
-      and a
-      &lt;a href=&quot;http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2013/01/announce_scanless.html&quot;&gt;a
-        mini-tutorial&lt;/a&gt;.
-      And of course, the interface is
-      &lt;a href=&quot;https://metacpan.org/module/JKEGL/Marpa-R2-2.048000/pod/Scanless/DSL.pod&quot;&gt;
-        documented&lt;/a&gt;.
-    &lt;/p&gt;
-    &lt;p&gt;For those skimming, here are a few quick comments on less-obvious features.
-      To guide Marpa in building the AST,
-      the BNF statements have
-      &lt;tt&gt;action&lt;/tt&gt;
-      and
-      &lt;tt&gt;bless&lt;/tt&gt;
-      adverbs.
-      The
-      &lt;tt&gt;bless&lt;/tt&gt;
-      adverbs indicate a Perl class into which the node should be
-      blessed.
-      This is convenient for using an object-oriented approach with the AST.
-      The
-      &lt;tt&gt;action&lt;/tt&gt;
-      adverb tells Marpa how to build the nodes.
-      &quot;&lt;tt&gt;action =&amp;gt; ::array&lt;/tt&gt;&quot; means the result of the rule should
-      be an array containing its child nodes.
-      &quot;&lt;tt&gt;action =&amp;gt; ::first&lt;/tt&gt;&quot; means the result of the rule should just be
-      its first child.
-      Many of the child symbols,
-      especially literal strings of a structural nature,
-      are in parentheses.
-      This makes them invisible to
-      the semantics.
-    &lt;/p&gt;
-    &lt;p&gt;A
-      &lt;tt&gt;:default&lt;/tt&gt;
-      pseudo-rule specifies the defaults -- in this case the
-      &quot;&lt;tt&gt;action =&amp;gt; ::array&lt;/tt&gt;&quot; adverb setting.
-      The
-      &lt;tt&gt;:start&lt;/tt&gt;
-      pseudo-rule specified the start symbol.
-      The &lt;tt&gt;:discard&lt;/tt&gt; pseudo-rule
-      indicates that whitespace is to be discarded.
-    &lt;/p&gt;
-    &lt;p&gt;The Go4 did not deal with precedence.
-      In their example, the input string is fully parenthesized,
-      even though its priorities are the standard ones.
-      I've eliminated the parentheses, because
-      the standard precedence is implemented in SLIF grammar.
-      The double vertical bar (&quot;&lt;tt&gt;||&lt;/tt&gt;&quot;) is a &quot;loosen&quot; operator --
-      an alternative after &quot;loosen&quot; operator will be
-      at a looser precedence than the one before.
-      Alternatives separated by a single bar are at the same precedence.
-    &lt;/p&gt;&lt;h3&gt;Creating the AST&lt;/h3&gt;&lt;p&gt;
-      Creating the AST is simple.
-      First, we use Marpa to turn the above DSL for boolean expressions
-      into a parser.
-      (We'd saved the SLIF DSL source in the string
-      &lt;tt&gt;$rules&lt;/tt&gt;.)
-    &lt;/p&gt;&lt;blockquote&gt;
-      &lt;pre&gt;
-my $grammar = Marpa::R2::Scanless::G-&gt;new(
-    {   bless_package =&gt; 'Boolean_Expression',
-        source        =&gt; \$rules,
-    }   
-);  
-&lt;/pre&gt;
-    &lt;/blockquote&gt;
-    &lt;p&gt;Next we define a closure that uses
-      &lt;tt&gt;$grammar&lt;/tt&gt;
-      to turn
-      BNF into AST's.
-    &lt;/p&gt;&lt;blockquote&gt;
-      &lt;pre&gt;
-sub bnf_to_ast {
-    my ($bnf) = @_;
-    my $recce = Marpa::R2::Scanless::R-&gt;new( { grammar =&gt; $grammar } );
-    $recce-&gt;read( \$bnf );
-    my $value_ref = $recce-&gt;value();
-    if ( not defined $value_ref ) {
-        die &quot;No parse for $bnf&quot;;
-    }
-    return ${$value_ref};
-} ## end sub bnf_to_ast
-&lt;/pre&gt;
-    &lt;/blockquote&gt;&lt;p&gt;
-Where &lt;tt&gt;$bnf&lt;/tt&gt; is our input string,
-we run it as follows:
-    &lt;/p&gt;&lt;blockquote&gt;
-      &lt;pre&gt;
-my $ast1 = bnf_to_ast($bnf);
-&lt;/pre&gt;
-    &lt;/blockquote&gt;
-    &lt;h3&gt;The AST&lt;/h3&gt;
-    &lt;p&gt;If we use Data::Dumper to examine the AST,
-    &lt;/p&gt;&lt;blockquote&gt;
-      &lt;pre&gt;
-say Data::Dumper::Dumper($ast1) if $verbose_flag;
-&lt;/pre&gt;
-    &lt;/blockquote&gt;&lt;p&gt;
-      we see this:
-    &lt;/p&gt;&lt;blockquote&gt;
-      &lt;pre&gt;
-$VAR1 = bless( [
-                 bless( [
-                          bless( [
-                                   'true'
-                                 ], 'Boolean_Expression::variable' ),
-                          bless( [
-                                   'x'
-                                 ], 'Boolean_Expression::variable' )
-                        ], 'Boolean_Expression::and' ),
-                 bless( [
-                          bless( [
-                                   'y'
-                                 ], 'Boolean_Expression::variable' ),
-                          bless( [
-                                   bless( [
-                                            'x'
-                                          ], 'Boolean_Expression::variable' )
-                                 ], 'Boolean_Expression::not' )
-                        ], 'Boolean_Expression::and' )
-               ], 'Boolean_Expression::or' );
-&lt;/pre&gt;
-    &lt;/blockquote&gt;
-    &lt;h3&gt;Processing the AST&lt;/h3&gt;
-    &lt;p&gt;In their example,
-    the Go4 processed their AST in several ways:
-    straight evaluation, copying,
-      and substitution of the occurrences of a variable in one boolean expression
-      by another boolean expression.
-      It is obvious that the AST above is the computational
-      equivalent of the Go4's AST,
-      but for the sake of completeness I carry out the same operations
-      &lt;a href=&quot;https://gist.github.com/jeffreykegler/5121769&quot;&gt;in the Github gist&lt;/a&gt;.
-    &lt;/p&gt;
-    &lt;p&gt;
-      AST creation via Marpa's SLIF is self-hosting --
-      the SLIF DSL is parsed into an AST,
-      and a parser created by interpreting the AST.
-      The Marpa SLIF DSL source file in this post,
-      that describes boolean expressions,
-      was itself turned into an AST on its way to becoming a parser
-      that turns boolean expressions into AST's.
-    &lt;/p&gt;&lt;h3&gt;Comments&lt;/h3&gt;
-    &lt;p&gt;
-      Comments on this post
-      can be sent to the Marpa Google Group:
-      &lt;code&gt;marpa-parser@googlegroups.com&lt;/code&gt;
     &lt;/p&gt;</description>
   </item>
   </channel>

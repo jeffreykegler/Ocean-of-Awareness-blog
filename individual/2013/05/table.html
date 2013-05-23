@@ -1,0 +1,160 @@
+<html>
+<head>
+<link rel="alternate" title="Ocean of Awareness RSS" type="application/rss+xml" title="RSS" href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/index.rss" />
+<title>Ocean of Awareness</title>
+<style type="text/css">
+   strong {font-weight: 700;}
+</style>
+</head>
+<body>
+<div
+  style="color:white;background-color:#38B0C0;padding:1em;clear:left;text-align:center;">
+<h1>Ocean of Awareness</h1>
+</div>
+  <div style="margin:0;padding:10px 30px 10px 10px;width:150px;float:left;border-right:2px solid #38B0C0">
+  <p>
+  <strong>Jeffrey Kegler's blog</strong>
+  about Marpa, his new parsing algorithm,
+    and other topics of interest</p>
+  <p><a href="http://www.jeffreykegler.com/">Jeffrey's personal website</a></p>
+      <p>
+	<a href="https://twitter.com/jeffreykegler" class="twitter-follow-button" data-show-count="false">Follow @jeffreykegler</a>
+      </p>
+      <p style="text-align:center">
+	<!-- Place this code where you want the badge to render. -->
+	<a href="//plus.google.com/101567692867247957860?prsrc=3" rel="publisher" style="text-decoration:none;">
+	<img src="//ssl.gstatic.com/images/icons/gplus-32.png" alt="Google+" style="border:0;width:32px;height:32px;"/></a>
+      </p>
+  <h3>Marpa resources</h3>
+  <p><a href="http://jeffreykegler.github.com/Marpa-web-site/">The Marpa website</a></p>
+  <p>The Ocean of Awareness blog: <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog">home page</a>,
+  <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/metapages/chronological.html">chronological index</a>,
+  and
+  <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/metapages/annotated.html">annotated index</a>.
+  </p>
+  </div>
+  <div style="margin-left:190px;border-left:2px solid #38B0C0;padding:25px;">
+<h3>Thu, 23 May 2013</h3>
+<br />
+<center><a name="table"> <h2>Why Marpa works: table parsing</h2> </a>
+</center>
+  <p>
+      <!--
+      marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
+      -->
+      Seasoned observers of the parsing scene may have been unimpressed
+      by my confidence in Marpa's abilities,
+      present and future.
+      They've certainly seen it before.
+      "New" parsing algorithms have come along over the past decades with
+      some regularity.
+      They tried a wide variety of different approaches,
+      but all of them shared two things: confident authors
+      and disappointing results.
+    </p>
+    <p>
+      In this post I'll explain, on what this confidence is based,
+      and why I think that the candid and seasoned observer could convince himself,
+      "This time it's different".
+    </p>
+    <h3>The power and flexibility table parsing</h3>
+    <p>
+      Marpa is a table parser, one of a family of such algorithms.
+      Marpa is unusual among this family in its focus on speed.
+    </p>
+    <p>
+      Table parsing means parsing by constructing a table of all the possible parses.
+      The current favorite parsers (yacc, recursive descent, etc.) do not do this --
+      their quest for speed uses state diagrams and/or stacks,
+      and they are not able to track all possible parses.
+    </p>
+    <p>
+      The advantages of table parsing are pretty obvious.
+      If your table tracks BNF rules,
+      you can parse any grammar that you can write in BNF.
+      You always know exactly what is going on -- what rules
+      are possible, what rules have been recognized,
+      how far into a rule you have recognized it,
+      what symbols you expect next, etc. etc.
+      This means that if you keep the parsing from left-to_right
+      (which Marpa does)
+      you can easily combine procedural parsing with your parsing algorithm.
+    </p>
+    <h3>The feasibility of table parsing</h3>
+    <p>But a questions arises about table parsing:
+      "Sounds great, but can you do it fast enough to be useful in practice?"
+    </p>
+    <p>
+      First, let's assure ourselves that it can be done.
+      If we ignore speed issues,
+      the answer is fairly clearly "yes".
+      A grammar has a finite number of rules, each of finite length,
+      and parses a finite number of input symbols.
+      Since the number of input symbols is finite,
+      at any location the number of previous location at which a rule
+      or symbol could have started is also finite.
+      Since everything is finite, all we have to do is check all the possibilities
+      as we progress from left-to-right, making sure they apply.
+    </p>
+    <p>
+      So table parsing is definitely possible.
+      But way of implementing it described above would be too slow for it
+      to be a practical method.
+    </p><p>Fortunately, there are faster ways to do it,
+      and a number of these are in use.
+      But most of them concentrate on power -- they don't try to
+      be fast enough for a wide range of practical applications
+      and they aren't.
+    </p>
+    <h3>Fast table parsing</h3>
+    <p>
+    </p>
+    <h3>For more about Marpa</h3>
+    <p>
+      Marpa's latest version is
+      <a href="https://metacpan.org/module/Marpa::R2">Marpa::R2,
+        which is available on CPAN</a>.
+      There is
+      <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/">
+        a blog</a>,
+      as well as a
+      <a href="http://jeffreykegler.github.com/Marpa-web-site/">a web page</a>.
+      For questions, support and discussion, there is a
+      Google Group:
+      <code>marpa-parser@googlegroups.com</code>.
+      Comments on this post can be made there.
+    </p>
+<br />
+<p>posted at: 10:52 |
+<a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2013/05/table.html">direct link to this entry</a>
+</p>
+<div style="color:#38B0C0;padding:1px;text-align:center;">
+&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&sect;
+</div>
+</div>
+</div>
+<div id="footer" style="border-top:thick solid #38B0C0;clear:left;padding:1em;">
+<p>This is Ocean of Awareness's
+  new home.  This blog has been hosted at
+  <a href="http://blogs.perl.org/users/jeffrey_kegler/">blogs.perl.org</a>
+  but I have succumbed to the lure of static blogging.
+  I have not yet decided how to deal with comments at this new blog location.
+If the post is Marpa-related,
+<a href="https://groups.google.com/forum/?hl=en&fromgroups#%21forum/marpa-parser">
+the Marpa mailing list</a>
+is a good place to comment.
+</div>
+	<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+              <script type="text/javascript">
+            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+          </script>
+          <script type="text/javascript">
+            try {
+              var pageTracker = _gat._getTracker("UA-33430331-1");
+            pageTracker._trackPageview();
+            } catch(err) {}
+          </script>
+</body></html>
