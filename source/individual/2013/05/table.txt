@@ -70,6 +70,8 @@ Why Marpa works: table parsing
        In this, you parse with an over-simplified grammar and,
        when it fails, you ask the parser what it was looking for.
        Then -- poof! -- you provide it.
+    </p>
+    <p>
        The Ruby Slippers works beautifully when dealing with
        missing tags in HTML.
        You can define a simplified HTML grammar,
