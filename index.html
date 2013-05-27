@@ -139,6 +139,23 @@
     <p>
     Table parsing has had a reputation for being slow due to a
     bad "constant factor".
+    Theoreticians, when looking at speed as time complexity,
+    throw away constant factors.
+    What's left once the constant factor is ignored is always more
+    important,
+    and surprisingly often time complexity results which ignore
+    constant factors are also practical.
+    </p>
+    But not 100% of the time.
+    Sometimes the constant factor makes all the difference.
+    And deciding when a constant factor does make a difference,
+    and when it does not,
+    is a tricky matter,
+    one that lies in that murky zone between practice and theory,
+    where neither practitioner or theorist feels fully at home.
+    <p>
+    </p>
+    <p>
     It's time to look again, for two reasons.
     First, Aycock and Horspool did a lot of careful work on
     reducing
@@ -152,7 +169,7 @@
     </p>
     Why has nobody re-examined this judgment as the years and the order
     of magnitude speed-ups marched by?
-    When a judgement crosses sub-disciplines, it can be very "sticky"
+    When a judgement crosses sub-disciplines, it can be "sticky"
     beyond all reason,
     and this one is a good example of why.
     The decision that its "constant factor" made table parsing
@@ -189,7 +206,7 @@
     the theoreticians?
     </p>
     <p>
-    I look carefully and at some length at the issue
+    I look carefully at the issue
     of the "constant factor" in
     <a href="http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2013/04/fast_enough.html">
     a previous post</a>.
@@ -202,7 +219,7 @@
     But why quibble?)
     It's reasonable to suspect that
     the constant factor that practitioners
-    and theoreticians worried about in 1968
+    and theoreticians were worried about in 1968
     stopped being a
     major obstacle many years ago.
     </p>
