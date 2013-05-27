@@ -45,7 +45,7 @@
     &lt;/p&gt;
     &lt;p&gt;
     Where the analogy between walking blindfolded and parsing breaks
-    down is that taking off the blindfold has no cost,
+    down is that while taking off the blindfold has no cost,
     building a table of everything that is happening while you parse
     &lt;b&gt;does&lt;/b&gt; have a cost.
     If you limit your parser to a stack and a state machine,
@@ -101,7 +101,7 @@
     that was as fast as possible.
     I was surprised to find that the academic literature contained a
     major improvement to table parsing by Joop Leo,
-    one that nobody had ever made a serious attempt to implement.
+    one which nobody had ever made a serious attempt to implement.
     Marpa is the first implementation of Joop Leo's 1991 improvement to table parsing which,
     as far as theory goes,
     makes Marpa as fast any parser
@@ -111,7 +111,7 @@
     Marpa will parse in linear time.
     &lt;/p&gt;
     &lt;p&gt;
-    Table parsing did have a reputation for being slow due to a
+    Table parsing has had a reputation for being slow due to a
     bad &quot;constant factor&quot;.
     It's time to look again, for two reasons.
     First, Aycock and Horspool did a lot of careful work on
@@ -124,44 +124,60 @@
     times slower then they are now.
     &lt;p&gt;
     &lt;/p&gt;
-    Why had nobody re-examined this judgment as the years and order
-    of magnitude improvements slipped by?
-    In 1968, practitioner and theoretician alike decided
-    table parsing was not practical.
-    The theoretical results changed, but the theoreticians did not change
-    their mind because it was a judgement about the practical application
+    Why has nobody re-examined this judgment as the years and the order
+    of magnitude speed-ups marched by?
+    When a judgement crosses sub-disciplines, it can be very &quot;sticky&quot;
+    beyond all reason,
+    and this one is a good example of why.
+    The decision that its &quot;constant factor&quot; made table parsing
+    too slow for many practical applications
+    is in part a practical take on a theoretical issue,
+    and in part a theoretical call on a practical matter.
+    &lt;p&gt;
+    &lt;/p&gt;
+    Since 1968,
+    the theoretical results have changed.
+    But the theoreticians did not change
+    their mind about the speed of table parsing
+    because it was a judgement about the practical application
     of the theory.
-    The practitioners were the people who wrote
-    compilers.
-    You have to assume they know what they
+    The practitioners were actually out there writing compilers.
+    When it comes down to practice,
+    you have to assume that practitioners know what they
     are talking about, right?
     &lt;p&gt;
     &lt;/p&gt;
-    Meanwhile the world of the practitioners totally revolutionized itself
-    every five years.
+    Meanwhile the practice of writing software underwent
+    revolution after revolution.
     But the practitioners continued to write off table parsing
     as impractical.
-    After all, the theoreticians had said it was.
-    And it is the theoreticians who work up
-    these algorithms.
-    So you are pretty much forced
-    to assume that
-    the theoreticians know what they are talking about,
-    right?
+    Talking about the speed of table parsers quickly got you
+    into some very heavy math.
+    And some of the algorithms
+    did not even exist except as mathematical
+    notation on the pages
+    of the journals and textbooks.
+    When it comes down to theory about things
+    that don't exist outside of theory,
+    who do you listen to if not
+    the theoreticians?
+    &lt;/p&gt;
     &lt;p&gt;
     I look carefully and at some length at the issue
     of the &quot;constant factor&quot; in
     &lt;a href=&quot;http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2013/04/fast_enough.html&quot;&gt;
     a previous post&lt;/a&gt;.
     But summarizing,
-    forty-five years and
-    nine orders of magnitude in cost of CPU have passed.
+    forty-five years have passed and
+    cost of CPU has fallen
+    nine orders of magnitude.
     (Others say the cost of CPU has dropped by 50% a year,
     in which case it's over 14 orders of magnitude.
     But why quibble?)
-    It's reasonable to believe that
+    It's reasonable to suspect that
     the constant factor that practitioners
-    and theoreticians worried about in 1968 stopped being a
+    and theoreticians worried about in 1968
+    stopped being a
     major obstacle many years ago.
     &lt;/p&gt;
     &lt;h3&gt;For more about Marpa&lt;/h3&gt;
