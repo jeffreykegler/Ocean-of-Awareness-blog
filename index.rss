@@ -88,7 +88,8 @@
        The Ruby Slippers work beautifully when dealing with
        missing tags in HTML.
        You can define a simplified HTML grammar,
-       one that leaves in a non-existent ideal world where all start
+       one that lives in a non-existent world --
+       an ideal world where all start
        and end tags are always where they belong.
        Then you parse away.
        If, as will happen with real-world input, a tag is missing,
