@@ -11,7 +11,7 @@ Why Marpa works: table parsing
     </p>
     <p>
       The currently favored parsers use stacks,
-       in some cases together with a state machine.
+      in some cases together with a state machine.
       These have the advantage that it is easy
       to see how they can be made
       to run fast.
@@ -30,15 +30,16 @@ Why Marpa works: table parsing
       it's a bad idea.
     </p>
     <p>
-    Where the analogy between walking blindfolded and parsing breaks
-    down is that while taking off the blindfold has no cost,
-    building a table of everything that is happening while you parse
-    <b>does</b> have a cost.
-    If you limit your parser to a stack and a state machine,
-    you may be parsing with a blindfold on,
-    but it is clear that your parser can be fast.
-    How to make a table parser run fast
-    is not so clear.
+      Where the analogy between walking blindfolded and parsing breaks
+      down is that while taking off the blindfold has no cost,
+      building a table of everything that is happening while you parse
+      <b>does</b>
+      have a cost.
+      If you limit your parser to a stack and a state machine,
+      you may be parsing with a blindfold on,
+      but it is clear that your parser can be fast.
+      How to make a table parser run fast
+      is not so clear.
     </p>
     <h3>The advantages of table parsing</h3>
     <p>
@@ -50,8 +51,8 @@ Why Marpa works: table parsing
       are possible, what rules have been recognized,
       how far into a rule you have recognized it,
       what symbols you expect next, etc. etc.
-    <p>
-    </p>
+    </p><p>
+    </p><p>
       We programmers have gotten used to parsers which run blindfolded.
       When you bump into something while
       blindfolded you don't know
@@ -65,125 +66,125 @@ Why Marpa works: table parsing
       This means that you can pinpoint and identify errors precisely.
     </p>
     <p>
-       Knowing where you are in a parse also allows certain tricks,
-       like the one I call the Ruby Slippers.
-       In this, you parse with an over-simplified grammar and,
-       when it fails, you ask the parser what it was looking for.
-       Then -- poof! -- you provide it.
+      Knowing where you are in a parse also allows certain tricks,
+      like the one I call the Ruby Slippers.
+      In this, you parse with an over-simplified grammar and,
+      when it fails, you ask the parser what it was looking for.
+      Then -- poof! -- you provide it.
     </p>
     <p>
-       The Ruby Slippers work beautifully when dealing with
-       missing tags in HTML.
-       You can define a simplified HTML grammar,
-       one that lives in a non-existent world --
-       an ideal world where all start
-       and end tags are always where they belong.
-       Then you parse away.
-       If, as will happen with real-world input, a tag is missing,
-       you ask the table parser what it was looking for,
-       and give it a virtual tag.
+      The Ruby Slippers work beautifully when dealing with
+      missing tags in HTML.
+      You can define a simplified HTML grammar,
+      one that lives in a non-existent world --
+      an ideal world where all start
+      and end tags are always where they belong.
+      Then you parse away.
+      If, as will happen with real-world input, a tag is missing,
+      you ask the table parser what it was looking for,
+      and give it a virtual tag.
     </p>
     <h3>And as for fast ...</h3>
     <p>When I decided to write Marpa in 2007 my goal was to create a table parser
-    that was as fast as possible.
-    I was surprised to find that the academic literature contained a
-    major improvement to table parsing by Joop Leo,
-    one which nobody had ever made a serious attempt to implement.
-    Marpa is the first implementation of Joop Leo's 1991 improvement to table parsing which,
-    as far as theory goes,
-    makes Marpa as fast any parser
-    in practical use today.
-    Any class of grammar that
-    recursive descent, bison, etc. will parse,
-    Marpa will parse in linear time.
+      that was as fast as possible.
+      I was surprised to find that the academic literature contained a
+      major improvement to table parsing by Joop Leo,
+      one which nobody had ever made a serious attempt to implement.
+      Marpa is the first implementation of Joop Leo's 1991 improvement to table parsing which,
+      as far as theory goes,
+      makes Marpa as fast any parser
+      in practical use today.
+      Any class of grammar that
+      recursive descent, bison, etc. will parse,
+      Marpa will parse in linear time.
     </p>
     <p>
-    Table parsing has had a reputation for being slow due to a
-    bad "constant factor".
-    Theoreticians, when looking at speed as time complexity,
-    throw away constant factors.
-    What's left once the constant factor is ignored is always more
-    important.
-    Surprisingly often,
-    time complexity results which ignore
-    constant factors are also the most
-    meaningful results in practical terms.
-    </p>
-    But not 100% of the time.
-    Sometimes the constant factor makes all the difference.
-    And deciding when a constant factor does make a difference,
-    and when it does not,
-    is a tricky matter,
-    one that lies in that murky zone between practice and theory
-    where neither practitioner or theorist feels fully at home.
-    <p>
-    </p>
-    <p>
-    It's time to look again, for two reasons.
-    First, Aycock and Horspool did a lot of careful work on
-    reducing
-    the constant factor, work which Marpa incorporates
-    and builds on.
-    Second,
-    the judgment about the constant factor dates from 1968,
-    when computers were literally a billion
-    times slower then they are now.
-    <p>
-    </p>
-    Why has nobody re-examined this judgment as the years and the order
-    of magnitude speed-ups marched by?
-    When a judgment crosses sub-disciplines, it can be "sticky"
-    beyond all reason,
-    and this one is a good example.
-    The decision that its "constant factor" made table parsing
-    too slow for many practical applications
-    is in part a practical take on a theoretical issue,
-    and in part a theoretical call on a practical matter.
-    <p>
-    </p>
-    Since 1968,
-    the theoretical results have improved.
-    But the theoreticians did not change
-    their mind about the speed of table parsing
-    because it was a judgment about the practical application
-    of the theory.
-    The practitioners were actually out there writing compilers.
-    When it comes down to practice,
-    you have to assume that practitioners know what they
-    are talking about, right?
-    <p>
-    </p>
-    Meanwhile the practice of writing software underwent
-    revolution after revolution.
-    But the practitioners continued to write off table parsing
-    as impractical.
-    Talking about the speed of table parsers quickly got you
-    into some very heavy math.
-    And some of the algorithms
-    did not even exist except as mathematical
-    notation on the pages
-    of the journals and textbooks.
-    When it comes down to theory about things
-    that don't exist outside of theory,
-    who do you listen to if not
-    the theoreticians?
+      Table parsing has had a reputation for being slow due to a
+      bad "constant factor".
+      Theoreticians, when looking at speed as time complexity,
+      throw away constant factors.
+      What's left once the constant factor is ignored is always more
+      important.
+      Surprisingly often,
+      time complexity results which ignore
+      constant factors are also the most
+      meaningful results in practical terms.
+    </p><p>
+      But not 100% of the time.
+      Sometimes the constant factor makes all the difference.
+      And deciding when a constant factor does make a difference,
+      and when it does not,
+      is a tricky matter,
+      one that lies in that murky zone between practice and theory
+      where neither practitioner or theorist feels fully at home.
+    </p><p>
     </p>
     <p>
-    I look carefully at the issue
-    of the "constant factor" in
-    <a href="http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2013/04/fast_enough.html">
-    a previous post</a>.
-    Forty-five years have passed and
-    cost of CPU has fallen
-    nine orders of magnitude.
-    (Others say the cost of CPU has dropped by 50% a year,
-    in which case it's over 14 orders of magnitude.
-    But why quibble?)
-    It's reasonable to suspect that
-    the constant factor that practitioners
-    and theoreticians were worried about in 1968
-    stopped being a
-    major obstacle many years ago.
+      It's time to look again, for two reasons.
+      First, Aycock and Horspool did a lot of careful work on
+      reducing
+      the constant factor, work which Marpa incorporates
+      and builds on.
+      Second,
+      the judgment about the constant factor dates from 1968,
+      when computers were literally a billion
+      times slower then they are now.
+    </p><p>
+    </p><p>
+      Why has nobody re-examined this judgment as the years and the order
+      of magnitude speed-ups marched by?
+      When a judgment crosses sub-disciplines, it can be "sticky"
+      beyond all reason,
+      and this one is a good example.
+      The decision that its "constant factor" made table parsing
+      too slow for many practical applications
+      is in part a practical take on a theoretical issue,
+      and in part a theoretical call on a practical matter.
+    </p><p>
+    </p><p>
+      Since 1968,
+      the theoretical results have improved.
+      But the theoreticians did not change
+      their mind about the speed of table parsing
+      because it was a judgment about the practical application
+      of the theory.
+      The practitioners were actually out there writing compilers.
+      When it comes down to practice,
+      you have to assume that practitioners know what they
+      are talking about, right?
+    </p><p>
+    </p><p>
+      Meanwhile the practice of writing software underwent
+      revolution after revolution.
+      But the practitioners continued to write off table parsing
+      as impractical.
+      Talking about the speed of table parsers quickly got you
+      into some very heavy math.
+      And some of the algorithms
+      did not even exist except as mathematical
+      notation on the pages
+      of the journals and textbooks.
+      When it comes down to theory about things
+      that don't exist outside of theory,
+      who do you listen to if not
+      the theoreticians?
+    </p>
+    <p>
+      I look carefully at the issue
+      of the "constant factor" in
+      <a href="http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2013/04/fast_enough.html">
+        a previous post</a>.
+      Forty-five years have passed and
+      cost of CPU has fallen
+      nine orders of magnitude.
+      (Others say the cost of CPU has dropped by 50% a year,
+      in which case it's over 14 orders of magnitude.
+      But why quibble?)
+      It's reasonable to suspect that
+      the constant factor that practitioners
+      and theoreticians were worried about in 1968
+      stopped being a
+      major obstacle many years ago.
     </p>
     <h3>For more about Marpa</h3>
     <p>
@@ -192,15 +193,16 @@ Why Marpa works: table parsing
         which is available on CPAN</a>.
       A list of my Marpa tutorials can be found
       <a href="http://jeffreykegler.github.io/Ocean-of-Awareness-blog/metapages/annotated.html#TUTORIAL">
-      here</a>.
+        here</a>.
       There is
       <a href="http://marpa-guide.github.io/chapter1.html">
-      a new tutorial by Peter Stuifzand</a>.
+        a new tutorial by Peter Stuifzand</a>.
       <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/">
-        This blog</a> focuses on Marpa,
-	and it has
-	<a href="http://jeffreykegler.github.io/Ocean-of-Awareness-blog/metapages/annotated.html">an annotated guide</a>.
-	Marpa also has
+        This blog</a>
+      focuses on Marpa,
+      and it has
+      <a href="http://jeffreykegler.github.io/Ocean-of-Awareness-blog/metapages/annotated.html">an annotated guide</a>.
+      Marpa also has
       <a href="http://jeffreykegler.github.com/Marpa-web-site/">a web page</a>.
       For questions, support and discussion, there is a
       Google Group:
