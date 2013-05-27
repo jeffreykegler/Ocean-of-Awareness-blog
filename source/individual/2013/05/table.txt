@@ -89,7 +89,7 @@ Why Marpa works: table parsing
     I was surprised to find that the academic literature contained a
     major improvement to table parsing by Joop Leo,
     one that nobody had ever made a serious attempt to implement.
-    Marpa is the first implement of Joop Leo's 1991 improvement to table parsing which,
+    Marpa is the first implementation of Joop Leo's 1991 improvement to table parsing which,
     as far as theory goes,
     makes Marpa as fast any parser
     in practical use today.
