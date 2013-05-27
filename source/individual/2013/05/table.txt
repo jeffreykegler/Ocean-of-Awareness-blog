@@ -83,10 +83,12 @@ Why Marpa works: table parsing
     <h3>And as for fast ...</h3>
     <p>When I decided to write Marpa in 2007 my goal was to create a table parser
     that was as fast as possible.
-    I was surprised to find that the academic literature contained a 1991 result
-    that nobody had ever made a serious attempt to implement.
-    As far as theory goes,
-    Marpa is as fast any parser
+    I was surprised to find that the academic literature contained a
+    major improvement to table parsing by Joop Leo,
+    one that nobody had ever made a serious attempt to implement.
+    Marpa is the first implement of Joop Leo's 1991 improvement to table parsing which,
+    as far as theory goes,
+    makes Marpa as fast any parser
     in practical use today.
     Any class of grammar that
     recursive descent, bison, etc. will parse,
@@ -123,12 +125,18 @@ Why Marpa works: table parsing
     you were pretty much forced
     to assume they knew what they were talking about.
     <p>
-    Forty-five years and
+    I look carefully and at some length at the issue
+    of the "constant factor" in a previous post.
+    But summarizing,
+    forty-five years and
     nine orders of magnitude in cost of CPU have passed.
     (Others say the cost of CPU has dropped by 50% a year,
     in which case it's over 14 orders of magnitude.
     But why quibble?)
-    I look at this more carefully in a previous post.
+    It's reasonable to believe that
+    the constant factor that practitioners
+    and theoreticians worried about in 1968 stopped being a
+    major obstacle many years ago.
     </p>
     <h3>For more about Marpa</h3>
     <p>
