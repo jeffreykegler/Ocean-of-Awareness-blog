@@ -80,34 +80,55 @@ Why Marpa works: table parsing
        you ask the table parser what it was looking for,
        and give it a virtual tag.
     </p>
-    <h3>The feasibility of table parsing</h3>
-    <p>But a question arises about table parsing:
-      "Sounds great, but can you do it fast enough to be useful in practice?"
+    <h3>And as for fast ...</h3>
+    <p>When I decided to write Marpa in 2007 my goal was to create a table parser
+    that was as fast as possible.
+    I was surprised to find that the academic literature contained a 1991 result
+    that nobody had ever made a serious attempt to implement.
+    As far as theory goes,
+    Marpa is as fast any parser
+    in practical use today.
+    Any class of grammar that
+    recursive descent, bison, etc. will parse,
+    Marpa will parse on linear time.
     </p>
     <p>
-      First, let's assure ourselves that it can be done.
-      If we ignore speed issues,
-      the answer is fairly clearly "yes".
-      A grammar has a finite number of rules, each of finite length,
-      and parses a finite number of input symbols.
-      Since the number of input symbols is finite,
-      at any location the number of previous location at which a rule
-      or symbol could have started is also finite.
-      Since everything is finite, all we have to do is check all the possibilities
-      as we progress from left-to-right, making sure they apply.
-    </p>
+    Table parsing did have a reputation for being slow due to a
+    bad "constant factor".
+    I think it's time to look again, for two reasons.
+    First, Aycock and Horspool did a lot of careful work on
+    the constant factor, work which Marpa builds on.
     <p>
-      So table parsing is definitely possible.
-      But way of implementing it described above would be too slow for it
-      to be a practical method.
-    Fortunately, there are faster ways to do it,
-      and a number of these are in use.
-      But most of them concentrate on power -- they don't try to
-      be fast enough for a wide range of practical applications,
-      and they aren't.
     </p>
-    <h3>Fast table parsing</h3>
+    Second, and more important
+    the judgement about the constant factor dates from  1968,
+    when computers were literally a billion
+    times slower then they are now.
+    Why had nobody re-examined this judgment as the years and order
+    of magnitude improvements slipped by?
     <p>
+    </p>
+    In 1968, practitioner and theoretician alike decided
+    table parsing was not practical.
+    As the theoretical results changed, the theoreticians did change
+    their mind because they the practitioners were the people who wrote
+    compilers, and you had to assume they knew what they
+    were talking about.
+    Mean while the practice of programming revolutionized itself every five years,
+    but the practitioners continued to write off table parsing
+    as impractical.
+    After all, the theoreticians said it was.
+    and since it was the theoreticians who worked up
+    these algorithms,
+    you were pretty much forced
+    to assume they knew what they were talking about.
+    <p>
+    Forty-five years and
+    nine orders of magnitude in cost of CPU have passed.
+    (Others say the cost of CPU has dropped by 50% a year,
+    in which case it's over 14 orders of magnitude.
+    But why quibble?)
+    I look at this more carefully in a previous post.
     </p>
     <h3>For more about Marpa</h3>
     <p>
