@@ -10,9 +10,9 @@ Why Marpa works: table parsing
     <p>
       The currently favored parsers (recursive descent and,
       decreasing, LALR parsers like bison)
-      uses stacks and/or state machines.
-      These have the advantage that they are easy
-      to make fast.
+      use stacks and/or state machines.
+      These have the advantage that it is easy
+      to see how they can be made fast.
       They have the disadvantage of severely limiting
       what the parser can do and how much it can know.
     </p>
