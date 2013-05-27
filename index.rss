@@ -23,16 +23,15 @@
       its focus is on speed.
     &lt;/p&gt;
     &lt;p&gt;
-      The currently favored parsers (recursive descent and,
-      decreasing, LALR parsers like bison)
-      use stacks and/or state machines.
+      The currently favored parsers use stacks,
+       in some cases together with a state machine.
       These have the advantage that it is easy
       to see how they can be made
       to run fast.
       They have the disadvantage of severely limiting
       what the parser can do and how much it can know.
     &lt;/p&gt;
-    &lt;h3&gt;What is table parsing&lt;/h3&gt;
+    &lt;h3&gt;What is table parsing?&lt;/h3&gt;
     &lt;p&gt;
       Table parsing means parsing by constructing a table of all the possible parses.
       This is pretty clearly something you want -- anything less means
@@ -67,11 +66,12 @@
     &lt;p&gt;
     &lt;/p&gt;
       We programmers have gotten used to parsers which run blindfolded.
-      Just like when you hit something blindfolded you don't know
-      what it was, whether you could get around it or how,
-      when these parsers fail, they don't know why.
-      They can only guess.
-      If you have a full parse table
+      When you bump into something while
+      blindfolded you don't know
+      what it was.
+      When non-table parsers fail, they usually don't know why --
+      they can only guess.
+      If you have a full parse table,
       built from left to right,
       you know what you were looking for and what you already think you
       found.
@@ -116,16 +116,18 @@
     Theoreticians, when looking at speed as time complexity,
     throw away constant factors.
     What's left once the constant factor is ignored is always more
-    important,
-    and surprisingly often time complexity results which ignore
-    constant factors are also practical.
+    important.
+    Surprisingly often,
+    time complexity results which ignore
+    constant factors are also the most
+    meaningful results in practical terms.
     &lt;/p&gt;
     But not 100% of the time.
     Sometimes the constant factor makes all the difference.
     And deciding when a constant factor does make a difference,
     and when it does not,
     is a tricky matter,
-    one that lies in that murky zone between practice and theory,
+    one that lies in that murky zone between practice and theory
     where neither practitioner or theorist feels fully at home.
     &lt;p&gt;
     &lt;/p&gt;
@@ -136,16 +138,16 @@
     the constant factor, work which Marpa incorporates
     and builds on.
     Second,
-    the judgement about the constant factor dates from 1968,
+    the judgment about the constant factor dates from 1968,
     when computers were literally a billion
     times slower then they are now.
     &lt;p&gt;
     &lt;/p&gt;
     Why has nobody re-examined this judgment as the years and the order
     of magnitude speed-ups marched by?
-    When a judgement crosses sub-disciplines, it can be &quot;sticky&quot;
+    When a judgment crosses sub-disciplines, it can be &quot;sticky&quot;
     beyond all reason,
-    and this one is a good example of why.
+    and this one is a good example.
     The decision that its &quot;constant factor&quot; made table parsing
     too slow for many practical applications
     is in part a practical take on a theoretical issue,
@@ -153,10 +155,10 @@
     &lt;p&gt;
     &lt;/p&gt;
     Since 1968,
-    the theoretical results have changed.
+    the theoretical results have improved.
     But the theoreticians did not change
     their mind about the speed of table parsing
-    because it was a judgement about the practical application
+    because it was a judgment about the practical application
     of the theory.
     The practitioners were actually out there writing compilers.
     When it comes down to practice,
@@ -184,8 +186,7 @@
     of the &quot;constant factor&quot; in
     &lt;a href=&quot;http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2013/04/fast_enough.html&quot;&gt;
     a previous post&lt;/a&gt;.
-    But summarizing,
-    forty-five years have passed and
+    Forty-five years have passed and
     cost of CPU has fallen
     nine orders of magnitude.
     (Others say the cost of CPU has dropped by 50% a year,
