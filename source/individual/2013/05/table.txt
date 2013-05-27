@@ -72,7 +72,7 @@ Why Marpa works: table parsing
        Then -- poof! -- you provide it.
     </p>
     <p>
-       The Ruby Slippers works beautifully when dealing with
+       The Ruby Slippers work beautifully when dealing with
        missing tags in HTML.
        You can define a simplified HTML grammar,
        one that leaves in a non-existent ideal world where all start
