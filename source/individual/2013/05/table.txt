@@ -3,43 +3,82 @@ Why Marpa works: table parsing
       <!--
       marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
       -->
-      Seasoned and candid observers of the parsing scene may not
-      have been impressed by this series of posts about my new Marpa parser.
-      They've certainly seen it before.
-      "New" parsing algorithms have come along over the past decades with
-      some regularity.
-      They tried a wide variety of different approaches,
-      but all of them shared two things: confident authors
-      and disappointing results.
+      Marpa works very differently from the parsers
+      in wide use today.
+      Marpa is a table parser.
     </p>
     <p>
-      In this post I'll explain, on what my confidence in Marpa is based,
-      and why I think that even a jaded observer might want to say,
-      "This time it might be different".
+      The currently favored parsers (recursive descent and,
+      decreasing, LALR parsers like bison)
+      uses stacks and/or state machines.
+      These have the advantage that they are easy
+      to make fast.
+      They have the disadvantage of severely limiting
+      what the parser can do and how much it can know.
     </p>
-    <h3>The power and flexibility of table parsing</h3>
     <p>
-      Marpa is a table parser, one of a family of such algorithms.
-      Marpa is unusual among this family in its focus on speed.
+      There are other table parsers besides Marpa.
+      These are popular in specialized uses, particular those 
+      where power is important and speed
+      is not.
+      Marpa is unusual among table parsers --
+      its focus is on speed.
     </p>
+    <h3>What is table parsing</h3>
     <p>
       Table parsing means parsing by constructing a table of all the possible parses.
-      The current favorite parsers (yacc, recursive descent, etc.) do not do this --
-      their quest for speed uses state diagrams and/or stacks,
-      and they are not able to track all possible parses.
+      This is pretty clearly something you want -- anything less means
+      not completely knowing what you're doing.
+      It's like walking across the yard blindfolded.
+      It's fine if you can make sure there are
+      no walls, open pits, or other dangerous obstacles.
+      But for the general case,
+      it's a bad idea.
     </p>
     <p>
-      The advantages of table parsing are pretty obvious.
-      If your table tracks BNF rules,
-      you can parse any grammar that you can write in BNF.
-      You always know exactly what is going on -- what rules
+    Where the analogy between walking blindfolded and parsing breaks
+    down is that taking off the blindfold has no cost,
+    Building a table of everything that is happening while you parse
+    <b>does</b> have a cost.
+    </p>
+    <h3>The advantages of table parsing</h3>
+    <p>
+      What are the advantages of taking off the blindfold?
+      First, your parser can be completely general --
+      anything you can write in BNF it can parse.
+      And second,
+      you always know exactly what is going on -- what rules
       are possible, what rules have been recognized,
       how far into a rule you have recognized it,
       what symbols you expect next, etc. etc.
-      This means that if build the table steadily from left to right
-      (which Marpa does),
-      you can easily combine procedural parsing with your parsing algorithm.
-      And you can pinpoint and identify errors precisely.
+    <p>
+    </p>
+      We programmers have gotten used to parsers which run blindfolded.
+      Just like when you hit something blindfolded you don't know
+      what it was, whether you could get around it or how,
+      when these parsers fail, they don't know why.
+      They can only guess.
+      If you have a full parse table
+      built from left to right,
+      you know what you were looking for and what you already think you
+      found.
+      This means that you can pinpoint and identify errors precisely.
+    </p>
+    <p>
+       Knowing where you are in a parse also allows certain tricks,
+       like the one I call the Ruby Slippers.
+       In this, you parse with an over-simplified grammar and,
+       when it fails, you ask the parser what it was looking for.
+       Then -- poof! -- you provide it.
+       The Ruby Slippers works beautifully when dealing with
+       missing tags in HTML.
+       You can define a simplified HTML grammar,
+       one that leaves in a non-existent ideal world where all start
+       and end tags are always where they belong.
+       Then you parse away.
+       If, as will happen with real-world input, a tag is missing,
+       you ask the table parser what it was looking for,
+       and give it a virtual tag.
     </p>
     <h3>The feasibility of table parsing</h3>
     <p>But a question arises about table parsing:
