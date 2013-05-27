@@ -19,23 +19,18 @@
       Marpa works very differently from the parsers
       in wide use today.
       Marpa is a table parser.
+      And Marpa is unusual among table parsers --
+      its focus is on speed.
     &lt;/p&gt;
     &lt;p&gt;
       The currently favored parsers (recursive descent and,
       decreasing, LALR parsers like bison)
-      uses stacks and/or state machines.
-      These have the advantage that they are easy
-      to make fast.
+      use stacks and/or state machines.
+      These have the advantage that it is easy
+      to see how they can be made
+      to run fast.
       They have the disadvantage of severely limiting
       what the parser can do and how much it can know.
-    &lt;/p&gt;
-    &lt;p&gt;
-      There are other table parsers besides Marpa.
-      These are popular in specialized uses, particular those 
-      where power is important and speed
-      is not.
-      Marpa is unusual among table parsers --
-      its focus is on speed.
     &lt;/p&gt;
     &lt;h3&gt;What is table parsing&lt;/h3&gt;
     &lt;p&gt;
@@ -51,8 +46,13 @@
     &lt;p&gt;
     Where the analogy between walking blindfolded and parsing breaks
     down is that taking off the blindfold has no cost,
-    Building a table of everything that is happening while you parse
+    building a table of everything that is happening while you parse
     &lt;b&gt;does&lt;/b&gt; have a cost.
+    If you limit your parser to a stack and a state machine,
+    you may be parsing with a blindfold on,
+    but it is clear that your parser can be fast.
+    How to make a table parser run fast
+    is not so clear.
     &lt;/p&gt;
     &lt;h3&gt;The advantages of table parsing&lt;/h3&gt;
     &lt;p&gt;
