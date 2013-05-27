@@ -108,41 +108,51 @@
     in practical use today.
     Any class of grammar that
     recursive descent, bison, etc. will parse,
-    Marpa will parse on linear time.
+    Marpa will parse in linear time.
     &lt;/p&gt;
     &lt;p&gt;
     Table parsing did have a reputation for being slow due to a
     bad &quot;constant factor&quot;.
-    I think it's time to look again, for two reasons.
+    It's time to look again, for two reasons.
     First, Aycock and Horspool did a lot of careful work on
-    the constant factor, work which Marpa builds on.
-    &lt;p&gt;
-    &lt;/p&gt;
-    Second, and more important
-    the judgement about the constant factor dates from  1968,
+    reducing
+    the constant factor, work which Marpa incorporates
+    and builds on.
+    Second,
+    the judgement about the constant factor dates from 1968,
     when computers were literally a billion
     times slower then they are now.
-    Why had nobody re-examined this judgment as the years and order
-    of magnitude improvements slipped by?
     &lt;p&gt;
     &lt;/p&gt;
+    Why had nobody re-examined this judgment as the years and order
+    of magnitude improvements slipped by?
     In 1968, practitioner and theoretician alike decided
     table parsing was not practical.
-    As the theoretical results changed, the theoreticians did change
-    their mind because they the practitioners were the people who wrote
-    compilers, and you had to assume they knew what they
-    were talking about.
-    Mean while the practice of programming revolutionized itself every five years,
-    but the practitioners continued to write off table parsing
+    The theoretical results changed, but the theoreticians did not change
+    their mind because it was a judgement about the practical application
+    of the theory.
+    The practitioners were the people who wrote
+    compilers.
+    You have to assume they know what they
+    are talking about, right?
+    &lt;p&gt;
+    &lt;/p&gt;
+    Meanwhile the world of the practitioners totally revolutionized itself
+    every five years.
+    But the practitioners continued to write off table parsing
     as impractical.
-    After all, the theoreticians said it was.
-    and since it was the theoreticians who worked up
-    these algorithms,
-    you were pretty much forced
-    to assume they knew what they were talking about.
+    After all, the theoreticians had said it was.
+    And it is the theoreticians who work up
+    these algorithms.
+    So you are pretty much forced
+    to assume that
+    the theoreticians know what they are talking about,
+    right?
     &lt;p&gt;
     I look carefully and at some length at the issue
-    of the &quot;constant factor&quot; in a previous post.
+    of the &quot;constant factor&quot; in
+    &lt;a href=&quot;http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2013/04/fast_enough.html&quot;&gt;
+    a previous post&lt;/a&gt;.
     But summarizing,
     forty-five years and
     nine orders of magnitude in cost of CPU have passed.
@@ -159,15 +169,17 @@
       Marpa's latest version is
       &lt;a href=&quot;https://metacpan.org/module/Marpa::R2&quot;&gt;Marpa::R2,
         which is available on CPAN&lt;/a&gt;.
-      A list of Marpa tutorials can be found
+      A list of my Marpa tutorials can be found
       &lt;a href=&quot;http://jeffreykegler.github.io/Ocean-of-Awareness-blog/metapages/annotated.html#TUTORIAL&quot;&gt;
       here&lt;/a&gt;.
       There is
+      &lt;a href=&quot;http://marpa-guide.github.io/chapter1.html&quot;&gt;
+      a new tutorial by Peter Stuifzand&lt;/a&gt;.
       &lt;a href=&quot;http://jeffreykegler.github.com/Ocean-of-Awareness-blog/&quot;&gt;
-        this blog&lt;/a&gt;,
-	which has
-	&lt;a href=&quot;http://jeffreykegler.github.io/Ocean-of-Awareness-blog/metapages/annotated.html&quot;&gt;an annotated guide&lt;/a&gt;,
-	and 
+        This blog&lt;/a&gt; focuses on Marpa,
+	and it has
+	&lt;a href=&quot;http://jeffreykegler.github.io/Ocean-of-Awareness-blog/metapages/annotated.html&quot;&gt;an annotated guide&lt;/a&gt;.
+	Marpa also has
       &lt;a href=&quot;http://jeffreykegler.github.com/Marpa-web-site/&quot;&gt;a web page&lt;/a&gt;.
       For questions, support and discussion, there is a
       Google Group:
