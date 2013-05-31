@@ -38,9 +38,9 @@ The Design of Four
     <p><tt>ack</tt> is a file search tool -- UNIX's grep with improvements.
       The improvements are influenced by a Perl sensibility,
       and <tt>ack</tt> is written in Perl.
-      But while the other tools I list will be of little interest fi
-      you don't speak Perl,
-      <tt>ack</tt> is something that will benefit someone who otherwise shuns Perl tools.
+      But while the other tools I list are little interest unless
+      you are into Perl,
+      <tt>ack</tt> can help you out even if you otherwise shun Perl tools.
     </p>
     <p>
       <tt>cpanm</tt> is for installing CPAN packages from CPAN.
