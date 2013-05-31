@@ -34,6 +34,126 @@
   </p>
   </div>
   <div style="margin-left:190px;border-left:2px solid #38B0C0;padding:25px;">
+<h3>Thu, 30 May 2013</h3>
+<br />
+<center><a name="design_of_4"> <h2>The Design of Four</h2> </a>
+</center>
+  <p>
+      <!--
+      marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
+      -->
+      In the Perl world at the moment,
+      a lot is being said about the consequences of bad design.
+      A lot should be said.
+      A lot needs to be said.
+      But this post will not say those things.
+    </p>
+    <p>
+      As useful as it is to study design failures,
+      the exercise will come to nothing unless you
+      also find some road to learning good design.
+      This post will point out four
+      Perl-centric
+      projects which I believe must be accounted,
+      not just successful,
+      but so successful they are worth study as models.
+    </p>
+    <p>
+      The projects are
+      <a href="https://metacpan.org/release/ack">
+      ack</a>,
+      <a href="https://metacpan.org/release/App-cpanminus">
+      cpanm</a>,
+      <a href="https://metacpan.org/release/local-lib">local::lib</a> and
+      <a href="https://metacpan.org/release/App-perlbrew">perlbrew</a>.
+      Each of these is perfect
+      in the older sense of "having all that is requisite to its nature and kind"
+      (<a href="http://1828.mshaffer.com/d/word/perfect">
+        Webster's 1828</a>).
+	If you are into Perl,
+	they are all widely useful,
+	and looking at them as a potential or an actual user
+	is the best way to gain an appreciation of the art behind them.
+    </p>
+    <p>ack is a file search tool -- UNIX's grep with improvements.
+      The improvements are influenced by a Perl sensibility,
+      and ack is written in Perl.
+      But while the other tools I list will be of little interest fi
+      you don't speak Perl,
+      ack is something that will benefit someone who otherwise shuns Perl tools.
+    </p>
+    <p>
+      cpanm is for installing CPAN packages from CPAN.
+      If you don't know what that means, you aren't interested.
+      If you do, you want to be using it.
+      It does everything you need and importantly, nothing more.
+      The interface is without clutter.
+      Like I said, perfect.
+    </p>
+    <p>
+      local::lib is for installing Perl modules in the directory of your choice.
+      Even if you have root permission on a system,
+      it is good practice to leave the delivered Perl on your system
+      untouched except by vendor-sponsored patches and updates.
+      Leaving the system Perl untouched is wise, even if your system is single-user.
+      On my Raspberry Pi, for example, it is almost certain that anyone
+      will ever log in except for me.
+      But I leave the Raspbian Perl as delivered.
+      local::lib allows me to do this easily and conveniently.
+      It has every feature and convenience I want.
+      And reading its documentation is again an encounter with
+      perfection.
+      Every feature described is either something you need today,
+      something you are worried you might need tomorrow,
+      or something you were not worried you might need
+      but should have been.
+      There is nothing else.
+      Perfect.
+    </p>
+    <p>
+      Repeated perfection can be boring,
+      a fact which I suspect plays no small role in its scarcity.
+      So of perlbrew,
+      I will simply say that it does for Perl versions and executables
+      what local::lib does for Perl modules.
+      Good practice dictates that you leave the Perl delivered with
+      your distribution alone,
+      perlbrew is the way to manage alternative Perl executables.
+      And using it,
+      is a good way to study yet another perfect interface.
+    </p>
+    <p>
+      How did Andy Lester (ack),
+      Tatsuhiko Miyagawa (cpanm),
+      Matt S Trout (local::lib)
+      and Kang-min Liu (perlbrew) do it?
+      It might be tempting to say these were simpler
+      problems and that those that have seen our much-discussed failures
+      are more complex and harder to define.
+      That we are dealing with a fortunate choice of problem space.
+    </p>
+    <p>
+      But I was well aware of the problem space tackled by ack and cpanm
+      and it did not look simple before
+      those two tools came along.
+      And while the problem spaces tackled by local::lib and perlbrew seem very precisely
+      defined to me now, I learned that definition from those tools --
+      I am not at all sure I could have come up with it on my own.
+      So the idea that these design benefit from a lucky choice of problem make me
+      think of Ben Hogan's comment:
+    </p>
+    <blockquote>Golf is a game of luck.
+      The more I practice, the luckier I get.
+    </blockquote>
+<br />
+<p>posted at: 23:01 |
+<a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2013/05/design_of_4.html">direct link to this entry</a>
+</p>
+<div style="color:#38B0C0;padding:1px;text-align:center;">
+&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&sect;
+</div>
 <h3>Mon, 27 May 2013</h3>
 <br />
 <center><a name="table"> <h2>Why Marpa works: table parsing</h2> </a>
@@ -904,239 +1024,6 @@ ENDD</pre></blockquote>
 <br />
 <p>posted at: 10:16 |
 <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2013/03/what_if_free.html">direct link to this entry</a>
-</p>
-<div style="color:#38B0C0;padding:1px;text-align:center;">
-&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-&sect;
-</div>
-<h3>Wed, 20 Mar 2013</h3>
-<br />
-<center><a name="interpreter"> <h2>The Interpreter Design Pattern</h2> </a>
-</center>
-  <p>
-      <!--
-      marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
-      -->
-    </p>
-    <p>The influential
-      <a href="http://en.wikipedia.org/wiki/Design_Patterns">
-        <em>Design Patterns</em>
-        book</a>
-      lays out 23 patterns for programming.
-      One of them, the Interpreter Pattern, is rarely used.
-      Steve Yegge puts it a bit more strikingly -- he says
-      that the book contains
-      <a href="https://sites.google.com/site/steveyegge2/ten-great-books">22
-        patterns and a practical joke</a>.
-    </p>
-    <p>That sounds (and in fact is) negative, but
-      <a href="http://steve-yegge.blogspot.com/2007/12/codes-worst-enemy.html">
-        elsewhere</a>
-      Yegge says that
-      "[t]ragically, the only [Go4] pattern that can help code get smaller
-      (Interpreter) is utterly ignored by programmers".
-      (The
-      <i>Design Patterns</i>
-      book has four authors,
-      and is often called the Gang of Four book, or Go4.)
-    </p>
-    <p>
-      In fact, under various names and definitions, the
-      Interpreter Pattern and its close relatives and/or identical twins
-      are widely cited,
-      much argued and highly praised<a href="#NOTE1">[1]</a>.
-          As they should be.
-          Languages are the most powerful and flexible design pattern of all.
-          A language can include all, and only, the concepts relevent
-          to your domain.
-          A language can allow you to relate them in all, and only, the appropriate ways.
-          A language can identify errors with pinpoint precision,
-          hide implementation details,
-          allow invisible "drop-in" enhancements, etc., etc., etc.
-        </p>
-    <p>
-      In fact languages are so powerful and flexible,
-      that their use is pretty much universal.
-      The choice is not whether or not to use a language to solve
-      the problem,
-      but whether to use
-      a general-purpose language,
-      or a domain-specific language.
-      Put another way,
-      if you decide not to use a language targeted
-      to your domain,
-      it almost always means that you
-      are choosing to use another language that is not specifically
-      fitted to your domain.
-    </p>
-    <p>
-      Why then, is the Interpreter Pattern so little used?
-      Why does Yegge call it a practical joke?
-    </p>
-    <h3>There's a problem</h3>
-    <p>The problem with the Interpreter Pattern is that you must
-      turn your language into an AST --
-      that is,
-      you must parse it somehow.
-      Simplifying the language can help here.
-      But if the point is to be simple at the expense of power
-      and flexibility,
-      you might as well
-      stick with the other 22 design patterns.
-    </p>
-    <p>
-      On the other hand,
-      creating a parser for anything but the simplest languages
-      has been a time-consuming effort,
-      and one of a kind known for disappointing results.
-      In fact,
-      language development efforts run
-      a real risk of total failure.
-    </p>
-    <p>How did the Go4 deal with this?
-      They defined the problem away.
-      They stated that the parsing issue was separate from the
-      Interpreter Pattern, which was limited to what you did with the AST
-      once you'd somehow come up with one.
-    </p>
-    <p>
-      But AST's don't (so to speak) grow on trees.
-      You have to get one from somewhere.
-      In their example, the Go4 simply built an AST in their code,
-      node by node.
-      In doing this, they bypassed the BNF and the problem of parsing.
-      But they also bypassed their language and the whole point
-      of the Interpreter Pattern.
-    </p>
-    <p>
-      Which is why Yegge characterized the chapter as a practical joke.
-      And why other programming techniques and patterns are almost
-      always preferred to the Interpreter Pattern.
-    </p>
-    <h3>Finding that one missing piece</h3>
-    <p>So that's how the Go4 left things.
-      A potentially great programming technique,
-      made almost useless because
-      of a missing piece.
-      There was no easy, general, and practical way to generate AST's.
-    </p>
-    <p>
-      Few expected that to change.
-      I was more optimistic than most.
-      In 2007 I embarked on a full-time project:
-      to create a parser based on Earley's algorithm.
-      I was sure that it would fulfill two of the criteria --
-      it would be easy to use, and it would be general.
-      As for practical -- well, a lot of parsing problems
-      are small, and a lot of applications don't require a lot
-      of speed, and for these I expected the result to be good enough.
-    </p>
-    <p>What I didn't realize was that
-      all of the problems preventing
-      Earley's from seeing real, practical use
-      has already been solved in the academic literature.
-      I was not alone in not having put the picture together.
-      The people who had solved the problems
-      had focused on two disjoint sets of issues,
-      and were unaware of each other's
-      work.
-      In 1991, in the Netherlands,
-      the mathematican Joop Leo had
-      arrived at an astounding result --
-      he showed how to make Earley's run in linear time for LR-regular grammars.
-      LR-regular is a vast class of grammars.
-      It easily includes, as a proper subset, every class of grammar now
-      in practical use -- regular expressions, PEG, recursive descent,
-      the LALR on which yacc and bison are based, you name it.
-      (For those into the math,
-      LR-regular includes LR(k)
-      for all <i>k</i>,
-      and therefore LL(k),
-      also for all <i>k</i>.)
-      </p>
-      <p>
-      Leo's mathematical approach did not address some nagging practical issues,
-      foremost among them the handling of nullable rules and symbols.
-      But ten years later in Canada,
-      Aycock and Horspool focused on exactly these issues,
-      and solved them.
-      Aycock-Horspool
-      seem to have been unaware of Leo's earlier result.
-      The time complexity of the Aycock-Horspool
-      algorithm was essentially that of
-      Earley's original algorithm.
-    </p>
-    <p>
-      Because of Leo's work,
-      for any grammar in any class currently in practical use,
-      an Earley's parser could be fast.
-      If only it could be combined with the approach
-      of Aycock and Horspool, I realized,
-      Leo's speeds could be available in an everyday programming tool.
-    </p>
-    <p>
-      In changing the Earley parse engine,
-      Aycock-Horspool and Leo had branched off in different directions.
-      It was not obvious that their approaches could be combined, much less how.
-      And in fact, the combination of the two is not a simple algorithm.
-      But it is fast,
-      and the new Marpa parse engine makes full information
-      about the state of the parse (rules recognized, symbols expected, etc.)
-      available as it proceeds.
-      This is very convenient for, among other things, error reporting.
-    </p>
-    <h3>Eureka and all that</h3>
-    <p>The result is an algorithm which parses anything
-      you can write in BNF and
-      does it in times considered optimal in practice.
-      Unlike recursive descent, you don't have to write out the parser --
-      Marpa generates a parser for you, from the BNF.
-      It's the easy, "drop-in" solution that the Go4 needed and did not have.
-      A reworking of the Go4 example, with the missing parser added,
-      is in
-      <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2013/03/bnf_to_ast.html">a
-        previous blog post</a>, and the code for the reworking is in
-      <a href="https://gist.github.com/jeffreykegler/5121769">
-        a Github gist</a>.
-    </p>
-    <h3>More about Marpa</h3>
-    <p>
-      Marpa's latest version is
-      <a href="https://metacpan.org/module/Marpa::R2">Marpa::R2,
-        which is available on CPAN</a>.
-      Recently, it has gained immensely in "whipitupitude" with
-      <a href="https://metacpan.org/module/JKEGL/Marpa-R2-2.048000/pod/Scanless/DSL.pod">
-        a new interface</a>,
-      which has tutorials
-      <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2013/01/dsl_simpler2.html">here
-      </a>
-      and
-      <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2013/01/announce_scanless.html">
-        here</a>.
-      Marpa has
-      <a href="http://jeffreykegler.github.com/Marpa-web-site/">a web page</a>,
-      and of course it is the focus of
-      <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/">
-        my "Ocean of Awareness" blog</a>.
-    </p>
-    <p>
-      Comments on this post
-      can be sent to the Marpa's Google Group:
-      <code>marpa-parser@googlegroups.com</code>
-    </p>
-    <h3>Notes</h3>
-    <p><a name="NOTE1">Note 1</a>:
-      For example,
-      <a href="http://en.wikipedia.org/wiki/Domain-specific_language">the Wikipedia article on DSL's</a>;
-      <a href="http://www.faqs.org/docs/artu/minilanguageschapter.html">Eric Raymond discussing mini-languages</a>;
-      <a href="http://www.dmst.aueb.gr/dds/pubs/jrnl/2000-JSS-DSLPatterns/html/dslpat.html">
-        "Notable Design Patterns for Domain-Specific Languages"</a>, Diomidis Spinellis; and
-      <a href="http://www.c2.com/cgi/wiki?DomainSpecificLanguage">the c2.com wiki</a>.
-    </p>
-<br />
-<p>posted at: 10:16 |
-<a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2013/03/interpreter.html">direct link to this entry</a>
 </p>
 <div style="color:#38B0C0;padding:1px;text-align:center;">
 &sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
