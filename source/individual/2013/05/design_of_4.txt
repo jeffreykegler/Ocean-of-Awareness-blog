@@ -5,19 +5,14 @@ The Design of Four
       -->
       In the Perl world at the moment,
       a lot is being said about the consequences of bad design.
-      A lot should be said.
-      A lot needs to be said.
-      But this post will not say those things.
-    </p>
-    <p>
-      As useful as it is to study design failures,
-      the exercise will come to nothing unless you
+      And it is useful to study design failures.
+      But the exercise will come to nothing unless you
       also find some road to learning good design.
       This post will point out four
       Perl-centric
-      projects which I believe must be accounted,
-      not just successful,
-      but so successful they are worth study as models.
+      projects which I believe exemplify good design,
+      to the extent they are worth study as models
+      for other projects.
     </p>
     <p>
       The projects are
@@ -72,38 +67,36 @@ The Design of Four
     </p>
     <p>
       Repeated perfection can be boring,
-      a fact which I suspect plays no small role in its scarcity.
+      a fact which
+      I suspect plays no small role
+      in making perfection an unusual thing in this world.
       So of <tt>perlbrew</tt>,
       I will simply say that it does for Perl versions and executables
       what <tt>local::lib</tt> does for Perl modules.
       Good practice dictates that you leave the Perl delivered with
       your distribution alone.
       <tt>perlbrew</tt> is the way to manage alternative Perl executables.
-      And using it,
+      And using <tt>perlbrew</tt>
       is a good way to study yet another perfect interface.
     </p>
     <p>
-      How did Andy Lester (<tt>ack</tt>),
+    How much relevance does the work of
+      Andy Lester (<tt>ack</tt>),
       Tatsuhiko Miyagawa (<tt>cpanm</tt>),
       Matt S Trout (<tt>local::lib</tt>)
-      and Kang-min Liu (<tt>perlbrew</tt>) do it?
-      It might be tempting to say these were simpler
-      problems and that our failures
-      have come with projects that are
-      more complex and harder to define.
-    </p>
-    <p>
-      There is perhaps some truth in that.
-      But I was quite familiar with the problem spaces tackled by <tt>ack</tt> and <tt>cpanm</tt>
-      before those two tools came along,
-      and they did not look simple.
-      And while the problem spaces tackled by <tt>local::lib</tt> and <tt>perlbrew</tt> do very precisely
-      defined to me now,
-      I think my precise definitions come from using those tools --
-      I am not at all sure I could have come up with it on my own.
-      So the idea that these designs have the benefit of
-      a lucky choice of which problem to tqckle,
-      make me think of Ben Hogan's comment:
+      and Kang-min Liu (<tt>perlbrew</tt>) have to other projects,
+      including projects that now seem larger and more complex?
+      Certainly
+      these four applications all seem simple, well-defined,
+      and self-contained.
+      But I would argue that
+      much of the reason these problems seem simple and well-defined today,
+      is the product of the design skills
+      of Andy, Tatsuhiko, Matt and Kang-min.
+      And if, to an extent, they did benefit from
+      having the good fortune to pick the the right problem at
+      the right time,
+      I remmember Ben Hogan's comment on his profession:
     </p>
     <blockquote>Golf is a game of luck.
       The more I practice, the luckier I get.
