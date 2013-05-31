@@ -36,15 +36,15 @@ The Design of Four
 	and looking at them as a potential or an actual user
 	is the best way to gain an appreciation of the art behind them.
     </p>
-    <p>ack is a file search tool -- UNIX's grep with improvements.
+    <p><tt>ack</tt> is a file search tool -- UNIX's grep with improvements.
       The improvements are influenced by a Perl sensibility,
-      and ack is written in Perl.
+      and <tt>ack</tt> is written in Perl.
       But while the other tools I list will be of little interest fi
       you don't speak Perl,
-      ack is something that will benefit someone who otherwise shuns Perl tools.
+      <tt>ack</tt> is something that will benefit someone who otherwise shuns Perl tools.
     </p>
     <p>
-      cpanm is for installing CPAN packages from CPAN.
+      <tt>cpanm</tt> is for installing CPAN packages from CPAN.
       If you don't know what that means, you aren't interested.
       If you do, you want to be using it.
       It does everything you need and importantly, nothing more.
@@ -52,7 +52,7 @@ The Design of Four
       Like I said, perfect.
     </p>
     <p>
-      local::lib is for installing Perl modules in the directory of your choice.
+      <tt>local::lib</tt> is for installing Perl modules in the directory of your choice.
       Even if you have root permission on a system,
       it is good practice to leave the delivered Perl on your system
       untouched except by vendor-sponsored patches and updates.
@@ -60,7 +60,7 @@ The Design of Four
       On my Raspberry Pi, for example, it is almost certain that anyone
       will ever log in except for me.
       But I leave the Raspbian Perl as delivered.
-      local::lib allows me to do this easily and conveniently.
+      <tt>local::lib</tt> allows me to do this easily and conveniently.
       It has every feature and convenience I want.
       And reading its documentation is again an encounter with
       perfection.
@@ -74,30 +74,30 @@ The Design of Four
     <p>
       Repeated perfection can be boring,
       a fact which I suspect plays no small role in its scarcity.
-      So of perlbrew,
+      So of <tt>perlbrew</tt>,
       I will simply say that it does for Perl versions and executables
-      what local::lib does for Perl modules.
+      what <tt>local::lib</tt> does for Perl modules.
       Good practice dictates that you leave the Perl delivered with
       your distribution alone,
-      perlbrew is the way to manage alternative Perl executables.
+      <tt>perlbrew</tt> is the way to manage alternative Perl executables.
       And using it,
       is a good way to study yet another perfect interface.
     </p>
     <p>
-      How did Andy Lester (ack),
-      Tatsuhiko Miyagawa (cpanm),
-      Matt S Trout (local::lib)
-      and Kang-min Liu (perlbrew) do it?
+      How did Andy Lester (<tt>ack</tt>),
+      Tatsuhiko Miyagawa (<tt>cpanm</tt>),
+      Matt S Trout (<tt>local::lib</tt>)
+      and Kang-min Liu (<tt>perlbrew</tt>) do it?
       It might be tempting to say these were simpler
       problems and that those that have seen our much-discussed failures
       are more complex and harder to define.
       That we are dealing with a fortunate choice of problem space.
     </p>
     <p>
-      But I was well aware of the problem space tackled by ack and cpanm
+      But I was well aware of the problem space tackled by <tt>ack</tt> and <tt>cpanm</tt>
       and it did not look simple before
       those two tools came along.
-      And while the problem spaces tackled by local::lib and perlbrew seem very precisely
+      And while the problem spaces tackled by <tt>local::lib</tt> and <tt>perlbrew</tt> seem very precisely
       defined to me now, I learned that definition from those tools --
       I am not at all sure I could have come up with it on my own.
       So the idea that these design benefit from a lucky choice of problem make me
