@@ -66,7 +66,7 @@ The Design of Four
       Every feature described is either something that you need today,
       something that you are worried you might need tomorrow,
       or something that you are not worried you might need,
-      but reading the documentation discover that you should be.
+      but on reading the documentation discover that you should be.
       Aside from that, there is nothing else.
       Clutter-free.  Perfect.
     </p>
@@ -77,7 +77,7 @@ The Design of Four
       I will simply say that it does for Perl versions and executables
       what <tt>local::lib</tt> does for Perl modules.
       Good practice dictates that you leave the Perl delivered with
-      your distribution alone,
+      your distribution alone.
       <tt>perlbrew</tt> is the way to manage alternative Perl executables.
       And using it,
       is a good way to study yet another perfect interface.
