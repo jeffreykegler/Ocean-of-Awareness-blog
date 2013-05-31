@@ -102,19 +102,22 @@
       Matt S Trout (&lt;tt&gt;local::lib&lt;/tt&gt;)
       and Kang-min Liu (&lt;tt&gt;perlbrew&lt;/tt&gt;) do it?
       It might be tempting to say these were simpler
-      problems and that those that have seen our much-discussed failures
-      are more complex and harder to define.
-      That we are dealing with a fortunate choice of problem space.
+      problems and that the failures
+      tend to come with projects that are
+      more complex and harder to define.
     &lt;/p&gt;
     &lt;p&gt;
-      But I was well aware of the problem space tackled by &lt;tt&gt;ack&lt;/tt&gt; and &lt;tt&gt;cpanm&lt;/tt&gt;
-      and it did not look simple before
-      those two tools came along.
-      And while the problem spaces tackled by &lt;tt&gt;local::lib&lt;/tt&gt; and &lt;tt&gt;perlbrew&lt;/tt&gt; seem very precisely
-      defined to me now, I learned that definition from those tools --
+      There is perhaps some truth in that.
+      But I was quite familiar with the problem spaces tackled by &lt;tt&gt;ack&lt;/tt&gt; and &lt;tt&gt;cpanm&lt;/tt&gt;
+      before those two tools came along,
+      and they did not look simple.
+      And while the problem spaces tackled by &lt;tt&gt;local::lib&lt;/tt&gt; and &lt;tt&gt;perlbrew&lt;/tt&gt; do very precisely
+      defined to me now,
+      I think my precise definitions come from using those tools --
       I am not at all sure I could have come up with it on my own.
-      So the idea that these design benefit from a lucky choice of problem make me
-      think of Ben Hogan's comment:
+      So the idea that these designs have the benefit of
+      a lucky choice of which problem to tqckle,
+      make me think of Ben Hogan's comment:
     &lt;/p&gt;
     &lt;blockquote&gt;Golf is a game of luck.
       The more I practice, the luckier I get.
