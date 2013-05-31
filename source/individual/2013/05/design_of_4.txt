@@ -1,0 +1,104 @@
+The Design of Four
+  <p>
+      <!--
+      marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
+      -->
+      In the Perl world at the moment,
+      a lot is being said about the consequences of bad design.
+      A lot should be said.
+      A lot needs to be said.
+      But this post will not say those things.
+    </p>
+    <p>
+      As useful as it is to study design failures,
+      the exercise will come to nothing unless you
+      also find some road to learning good design.
+      This post will point out four
+      Perl-centric
+      projects which I believe must be accounted,
+      not just successful,
+      but so successful they are worth study as models.
+    </p>
+    <p>
+      The projects are
+      ack,
+      cpanm,
+      local::lib and
+      perlbrew.
+      Each of these is perfect
+      in the older sense of "having all that is requisite to its nature and kind"
+      (<a href="http://1828.mshaffer.com/d/word/perfect">
+        Webster's 1828</a>).
+      To really appreciate their perfection, you need to be a potential user,
+      and that's the best way to learn about their design.
+    </p>
+    <p>ack is a file search tool -- UNIX's grep with improvements.
+      The improvements are influenced by a Perl sensibility,
+      and ack is written in Perl.
+      But while the other tools I list will be of little interest fi
+      you don't speak Perl,
+      ack is something that will benefit someone who otherwise shuns Perl tools.
+    </p>
+    <p>
+      cpanm is for installing CPAN packages from CPAN.
+      If you don't know what that means, you aren't interested.
+      If you do, you want to be using it.
+      It does everything you need and importantly, nothing more.
+      The interface is without clutter.
+      Like I said, perfect.
+    </p>
+    <p>
+      local::lib is for installing Perl modules in the directory of your choice.
+      Even if you have root permission on a system,
+      it is good practice to leave the delivered Perl on your system
+      untouched except by vendor-sponsored patches and updates.
+      Leaving the system Perl untouched is wise, even if your system is single-user.
+      On my Raspberry Pi, for example, it is almost certain that anyone
+      will ever log in except for me.
+      But I leave the Raspbian Perl as delivered.
+      local::lib allows me to do this easily and conveniently.
+      It has every feature and convenience I want.
+      And reading its documentation is again an encounter with
+      perfection.
+      Every feature described is either something you need today,
+      something you are worried you might need tomorrow,
+      or something you were not worried you might need
+      but should have been.
+      There is nothing else.
+      Perfect.
+    </p>
+    <p>
+      Repeated perfection can be boring,
+      a fact which I suspect plays no small role in its scarcity.
+      So of perlbrew,
+      I will simply say that it does for Perl versions and executables
+      what local::lib does for Perl modules.
+      Good practice dictates that you leave the Perl delivered with
+      your distribution alone,
+      perlbrew is the way to manage alternative Perl executables.
+      And using it,
+      is a good way to study yet another perfect interface.
+    </p>
+    <p>
+      How did Andy Lester (ack),
+      Tatsuhiko Miyagawa (cpanm),
+      Matt S Trout (local::lib)
+      and Kang-min Liu (perlbrew) do it?
+      It might be tempting to say these were simpler
+      problems and that those that have seen our much-discussed failures
+      are more complex and harder to define.
+      That we are dealing with a fortunate choice of problem space.
+    </p>
+    <p>
+      But I was well aware of the problem space tackled by ack and cpanm
+      and it did not look simple before
+      those two tools came along.
+      And while the problem spaces tackled by local::lib and perlbrew seem very precisely
+      defined to me now, I learned that definition from those tools --
+      I am not at all sure I could have come up with it on my own.
+      So the idea that these design benefit from a lucky choice of problem make me
+      think of Ben Hogan's comment:
+    </p>
+    <blockquote>Golf is a game of luck.
+      The more I practice, the luckier I get.
+    </blockquote>
