@@ -63,12 +63,12 @@ The Design of Four
       It has every feature and convenience I want.
       And reading its documentation is again an encounter with
       perfection.
-      Every feature described is either something you need today,
-      something you are worried you might need tomorrow,
-      or something you were not worried you might need
-      but should have been.
-      There is nothing else.
-      Perfect.
+      Every feature described is either something that you need today,
+      something that you are worried you might need tomorrow,
+      or something that you are not worried you might need,
+      but reading the documentation discover that you should be.
+      Aside from that, there is nothing else.
+      Clutter-free.  Perfect.
     </p>
     <p>
       Repeated perfection can be boring,

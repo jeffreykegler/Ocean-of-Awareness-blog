@@ -51,9 +51,9 @@
     &lt;p&gt;&lt;tt&gt;ack&lt;/tt&gt; is a file search tool -- UNIX's grep with improvements.
       The improvements are influenced by a Perl sensibility,
       and &lt;tt&gt;ack&lt;/tt&gt; is written in Perl.
-      But while the other tools I list will be of little interest fi
-      you don't speak Perl,
-      &lt;tt&gt;ack&lt;/tt&gt; is something that will benefit someone who otherwise shuns Perl tools.
+      But while the other tools I list are little interest unless
+      you are into Perl,
+      &lt;tt&gt;ack&lt;/tt&gt; can help you out even if you otherwise shun Perl tools.
     &lt;/p&gt;
     &lt;p&gt;
       &lt;tt&gt;cpanm&lt;/tt&gt; is for installing CPAN packages from CPAN.
@@ -76,12 +76,12 @@
       It has every feature and convenience I want.
       And reading its documentation is again an encounter with
       perfection.
-      Every feature described is either something you need today,
-      something you are worried you might need tomorrow,
-      or something you were not worried you might need
-      but should have been.
-      There is nothing else.
-      Perfect.
+      Every feature described is either something that you need today,
+      something that you are worried you might need tomorrow,
+      or something that you are not worried you might need,
+      but reading the documentation discover that you should be.
+      Aside from that, there is nothing else.
+      Clutter-free.  Perfect.
     &lt;/p&gt;
     &lt;p&gt;
       Repeated perfection can be boring,
