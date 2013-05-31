@@ -29,8 +29,7 @@ The Design of Four
       <a href="https://metacpan.org/release/App-perlbrew">perlbrew</a>.
       Each of these is perfect
       in the older sense of "having all that is requisite to its nature and kind"
-      (<a href="http://1828.mshaffer.com/d/word/perfect">
-        Webster's 1828</a>).
+      (<a href="http://1828.mshaffer.com/d/word/perfect">Webster's 1828</a>).
 	If you are into Perl,
 	they are all widely useful,
 	and looking at them as a potential or an actual user
@@ -89,8 +88,8 @@ The Design of Four
       Matt S Trout (<tt>local::lib</tt>)
       and Kang-min Liu (<tt>perlbrew</tt>) do it?
       It might be tempting to say these were simpler
-      problems and that the failures
-      tend to come with projects that are
+      problems and that our failures
+      have come with projects that are
       more complex and harder to define.
     </p>
     <p>

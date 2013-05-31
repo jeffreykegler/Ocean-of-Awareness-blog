@@ -42,8 +42,7 @@
       &lt;a href=&quot;https://metacpan.org/release/App-perlbrew&quot;&gt;perlbrew&lt;/a&gt;.
       Each of these is perfect
       in the older sense of &quot;having all that is requisite to its nature and kind&quot;
-      (&lt;a href=&quot;http://1828.mshaffer.com/d/word/perfect&quot;&gt;
-        Webster's 1828&lt;/a&gt;).
+      (&lt;a href=&quot;http://1828.mshaffer.com/d/word/perfect&quot;&gt;Webster's 1828&lt;/a&gt;).
 	If you are into Perl,
 	they are all widely useful,
 	and looking at them as a potential or an actual user
@@ -102,8 +101,8 @@
       Matt S Trout (&lt;tt&gt;local::lib&lt;/tt&gt;)
       and Kang-min Liu (&lt;tt&gt;perlbrew&lt;/tt&gt;) do it?
       It might be tempting to say these were simpler
-      problems and that the failures
-      tend to come with projects that are
+      problems and that our failures
+      have come with projects that are
       more complex and harder to define.
     &lt;/p&gt;
     &lt;p&gt;
