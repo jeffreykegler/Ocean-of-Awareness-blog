@@ -16,16 +16,16 @@
       &lt;!--
       marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
       --&gt;
-      In the Perl world at the moment,
+      In the Perl world at this moment,
       a lot is being said about the consequences of bad design.
       And it is useful to study design failures.
-      But the exercise will come to nothing unless you
-      also find some road to learning good design.
+      But the exercise will come to nothing
+      without a road to good design.
       This post will point out four
       Perl-centric
-      projects which I believe exemplify good design,
-      to the extent they are worth study as models
-      for other projects.
+      projects that
+      are worth study as models
+      of good design.
     &lt;/p&gt;
     &lt;p&gt;
       The projects are
@@ -63,18 +63,17 @@
       Even if you have root permission on a system,
       it is good practice to leave the delivered Perl on your system
       untouched except by vendor-sponsored patches and updates.
-      Leaving the system Perl untouched is wise, even if your system is single-user.
-      On my Raspberry Pi, for example, it is almost certain that anyone
-      will ever log in except for me.
-      But I leave the Raspbian Perl as delivered.
-      &lt;tt&gt;local::lib&lt;/tt&gt; allows me to do this easily and conveniently.
+      &lt;tt&gt;local::lib&lt;/tt&gt; allows you to do this easily and conveniently.
       It has every feature and convenience I want.
       And reading its documentation is again an encounter with
       perfection.
-      Every feature described is either something that you need today,
-      something that you are worried you might need tomorrow,
-      or something that you are not worried you might need,
-      but on reading the documentation discover that you should be.
+      Every feature described is
+      &lt;ul&gt;
+      &lt;li&gt;something that you need today,
+      &lt;li&gt;something that you are worried you might need tomorrow, or
+      &lt;li&gt;something that you are not worried you might need,
+      but on reading the documentation will discover that you should be.
+      &lt;/ul&gt;
       Aside from that, there is nothing else.
       Clutter-free.  Perfect.
     &lt;/p&gt;
@@ -86,8 +85,6 @@
       So of &lt;tt&gt;perlbrew&lt;/tt&gt;,
       I will simply say that it does for Perl versions and executables
       what &lt;tt&gt;local::lib&lt;/tt&gt; does for Perl modules.
-      Good practice dictates that you leave the Perl delivered with
-      your distribution alone.
       &lt;tt&gt;perlbrew&lt;/tt&gt; is the way to manage alternative Perl executables.
       And using &lt;tt&gt;perlbrew&lt;/tt&gt;
       is a good way to study yet another perfect interface.
