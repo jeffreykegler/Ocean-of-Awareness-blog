@@ -34,6 +34,237 @@
   </p>
   </div>
   <div style="margin-left:190px;border-left:2px solid #38B0C0;padding:25px;">
+<h3>Sun, 09 Jun 2013</h3>
+<br />
+<center><a name="mixing-procedural"> <h2>Mixing procedural and declarative parsing</h2> </a>
+</center>
+<h2>The application</h2>
+<p>In
+<a href="http://blogs.perl.org/users/polettix/2012/04/parserecdescent-and-number-of-elements-read-on-the-fly.html">
+a recent blog post</a>,
+Flavio Poletti described an unusual language,
+one which he'd written a parser for,
+using the very traditional method of
+recursive descent.
+Specifically he'd used Perl's Parse::RecDescent
+module.
+Several people asked me how
+<a href="http://jeffreykegler.github.com/Marpa-web-site/">
+Marpa</a>
+would do on this language.
+This post contains
+a comparison, including a benchmark.
+</p>
+The reader who wants an exact description should
+look at
+<a href="http://blogs.perl.org/users/polettix/2012/04/parserecdescent-and-number-of-elements-read-on-the-fly.html">
+Flavio's post and code</a>.
+I call it a Dyck-Hollerith language because it
+combines
+<a href="http://en.wikipedia.org/wiki/Hollerith_constant">
+Hollerith constants</a>
+
+(strings preceded by a count),
+with balanced parentheses
+(what is called
+<a href="http://en.wikipedia.org/wiki/Dyck_language">
+a Dyck language</a>
+by mathematicians).
+Here's Flavio's example:
+<code class="prettyprint">
+<pre>
+A2(A2(S3(Hey)S13(Hello, World!))S5(Ciao!))
+</pre>
+</code>
+<p>
+When I did
+<a href="http://blogs.perl.org/users/jeffrey_kegler/2011/11/marpa-v-perl-regexes-some-numbers.html">
+a Marpa versus Perl regexes comparison</a>,
+I was very careful to choose an application which showed Marpa in
+a good light.
+Here I did not pick the application,
+and it is almost as if it was designed
+to show recursive descent in a good light.
+</p>
+<p>
+
+Recursive descent tries to parse by treating each rule
+as a subroutine call.
+This is a very natural way for a programmer
+to look at a grammar.
+But, alas, it only works in certain cases,
+and most of those are already handled by regular expressions.
+However, Dyck languages, including balanced parentheses,
+are one of the boundary cases:
+languages beyond the abilities of regular expressions,
+but within the capabilities of recursive descent.
+</p>
+<p>
+Hollerith constants highlight the other strength of
+recursive descent.
+Since recursive descent's basic idea is so intuitive, it is easy
+to add custom hacks to it.
+And Hollerith constants are beyond the capabilities of even
+general BNF parsing.
+Earley's, Marpa, CYK, GLR, you name it,
+none of them can handle Hollerith constants without
+some kind of custom hack.
+You might say that Hollerith constants force a parser
+to wrestle in the mud.
+And when it comes to wrestling in the mud,
+recursive descent is hard to beat.
+</p>
+<h2>code</h2>
+<blockquote>
+<pre>
+#!perl
+# Copyright 2013 Jeffrey Kegler
+# This file is part of Marpa::R2.  Marpa::R2 is free software: you can
+# redistribute it and/or modify it under the terms of the GNU Lesser
+# General Public License as published by the Free Software Foundation,
+# either version 3 of the License, or (at your option) any later version.
+#
+# Marpa::R2 is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+# Lesser General Public License for more details.
+#
+# You should have received a copy of the GNU Lesser
+# General Public License along with Marpa::R2.  If not, see
+# http://www.gnu.org/licenses/.
+
+use 5.010;
+use strict;
+use warnings;
+use Data::Dumper;
+use Scalar::Util;
+use Marpa::R2 2.056000;
+use English qw( -no_match_vars );
+
+# A Marpa::R2 parser for the Dyck-Hollerith language
+
+my $repeat;
+if (@ARGV) {
+    $repeat = $ARGV[0];
+    die 'Argument not a number'
+        if not Scalar::Util::looks_like_number($repeat);
+}
+
+my $dsl = &lt;&lt;'END_OF_DSL';
+# The BNF
+:start ::= sentence
+sentence ::= element
+array ::= 'A' &lt;array count&gt; '(' elements ')'
+    action =&gt; check_array
+string ::= ( 'S' &lt;string length&gt; '(' ) text ( ')' )
+elements ::= element+
+  action =&gt; ::array
+element ::= string | array
+
+# Declare the places where we pause before
+# and after lexemes
+:lexeme ~ &lt;string length&gt; pause =&gt; after
+:lexeme ~ text pause =&gt; before
+
+# Declare the lexemes themselves
+&lt;array count&gt; ~ [\d]+
+&lt;string length&gt; ~ [\d]+
+# define &lt;text&gt; as one character of anything, as a stub
+# the external scanner determines its actual size and value
+text ~ [\d\D]
+END_OF_DSL
+
+my $grammar = Marpa::R2::Scanless::G-&gt;new(
+    {   action_object  =&gt; 'My_Actions',
+        default_action =&gt; '::first',
+        source         =&gt; \$dsl
+    }
+);
+
+my $recce = Marpa::R2::Scanless::R-&gt;new( { grammar =&gt; $grammar } );
+
+my $input;
+if ($repeat) {
+    $input = "A$repeat("
+        . ( 'A2(A2(S3(Hey)S13(Hello, World!))S5(Ciao!))' x $repeat ) . ')';
+}
+else {
+    $input = 'A2(A2(S3(Hey)S13(Hello, World!))S5(Ciao!))';
+}
+
+my $last_string_length;
+my $input_length = length $input;
+INPUT:
+for (
+    my $pos = $recce-&gt;read( \$input );
+    $pos &lt; $input_length;
+    $pos = $recce-&gt;resume($pos)
+    )
+{
+    my $lexeme = $recce-&gt;pause_lexeme();
+    die q{Parse exhausted in front of this string: "},
+        substr( $input, $pos ), q{"}
+        if not defined $lexeme;
+    my ( $start, $lexeme_length ) = $recce-&gt;pause_span();
+    if ( $lexeme eq 'string length' ) {
+        $last_string_length = $recce-&gt;literal( $start, $lexeme_length ) + 0;
+        $pos = $start + $lexeme_length;
+        next INPUT;
+    }
+    if ( $lexeme eq 'text' ) {
+        my $text_length = $last_string_length;
+        $recce-&gt;lexeme_read( 'text', $start, $text_length );
+        $pos = $start + $text_length;
+        next INPUT;
+    } ## end if ( $lexeme eq 'text' )
+    die "Unexpected lexeme: $lexeme";
+} ## end INPUT: for ( my $pos = $recce-&gt;read( \$input ); $pos &lt; $input_length...)
+
+my $result = $recce-&gt;value();
+die 'No parse' if not defined $result;
+my $received = Data::Dumper::Dumper( ${$result} );
+
+my $expected = &lt;&lt;'EXPECTED_OUTPUT';
+$VAR1 = [
+          [
+            'Hey',
+            'Hello, World!'
+          ],
+          'Ciao!'
+        ];
+EXPECTED_OUTPUT
+if ( $received eq $expected ) {
+    say 'Output matches' or die "say() failed: $ERRNO";
+}
+else {
+    say "Output differs: $received" or die "say() failed: $ERRNO";
+}
+
+package My_Actions;
+
+sub new { }
+
+sub check_array {
+    my ( undef, undef, $declared_size, undef, $array ) = @_;
+    my $actual_size = @{$array};
+    warn
+        "Array size ($actual_size) does not match that specified ($declared_size)"
+        if $declared_size != $actual_size;
+    return $array;
+} ## end sub check_array
+
+</pre>
+<blockquote>
+<h2>Conclusions</h2>
+<br />
+<p>posted at: 14:27 |
+<a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2013/06/mixing-procedural.html">direct link to this entry</a>
+</p>
+<div style="color:#38B0C0;padding:1px;text-align:center;">
+&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&sect;
+</div>
 <h3>Fri, 31 May 2013</h3>
 <br />
 <center><a name="design_of_4"> <h2>The Design of Four</h2> </a>
@@ -883,140 +1114,6 @@ ENDD</pre></blockquote>
 <br />
 <p>posted at: 00:03 |
 <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2013/04/procedural.html">direct link to this entry</a>
-</p>
-<div style="color:#38B0C0;padding:1px;text-align:center;">
-&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-&sect;
-</div>
-<h3>Sat, 23 Mar 2013</h3>
-<br />
-<center><a name="what_if_free"> <h2>What if languages were free?</h2> </a>
-</center>
-  <p>
-      <!--
-      marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
-      -->
-    </p>
-    <p>In 1980, George Copeland wrote
-      <a href="http://dl.acm.org/citation.cfm?id=802685">
-    an article</a>
-    titled "What if Mass Storage were Free?".
-      Costs of mass storage were showing signs
-      that they might fall dramatically.
-      Copeland, as a thought exercise, took this trend to its extreme.
-      Among other things, he predicted that deletion would become
-      unnecessary, and in fact, undesirable.
-    </p>
-    <p>Copeland's
-      thought experiment has proved prophetic.
-      For many purposes, mass storage is treated as if it were free.
-      For example, you probably retrieved this blog post from a server
-      provided to me at no charge, in the hope
-      that I might write and upload something interesting.
-    </p>
-    <p>
-      Until now languages were high-cost efforts.
-      Worse, language projects ran a high risk of disappointment,
-      up to and including total failure.
-      I believe those days are coming to an end.
-    </p>
-    <h3>Small languages, shaped to the problem domain</h3>
-    <p>What if whenever you needed a new language, poof, it was there?
-      You would be encouraged to tackle each problem domain with
-      a new language dedicated to dealing with that domain.
-      Since each language is no larger than its problem domain,
-      learning a language would be essentially the same as learning
-      the problem domain.
-      The incremental effort required to learn the language
-      itself would head toward zero.
-    </p>
-    <h3>No more language bloat</h3>
-    <p>Language bloat would end.
-      Currently, the risk and cost of developing languages
-      make it imperative to extend the ones we have.
-      Free languages mean fewer reasons to add features
-      to existing languages.
-    </p>
-    <h3>No more search for THE perfect language</h3>
-    <p>
-      No language is perfect for all tasks.
-      But because the high cost of languages favors
-      large, general-purpose languages,
-      we are compelled to try for perfection anyway.
-      Ironically, we are often making the language worse,
-      and we know it.
-    </p>
-    <h3>A world full of perfect languages</h3>
-    <p>An older sense of the word perfect is
-      "having all the properties or qualities requisite to its nature and kind".
-      The C language might be called perfect in this sense.
-      C lacks a lot of features that are highly desirable in most contexts.
-      But for programming that is portable
-      and close to the hardware,
-      the C language is perfect or close to it.
-      If languages were free, this is the kind of perfection
-      that we would seek --
-      languages precisely fitted to their domain,
-      so that adding to them cannot make them better.
-    </p>
-    <h3>Moving toward free</h3>
-    <p>
-      My own effort to contribute to 
-      a fall in the cost of languages is the Marpa parser.
-      Marpa produces a reasonable parser
-      for every language you can write in BNF.
-      If the BNF is for a grammar in any of the classes currently in practical
-      use, the parser Marpa produces will have linear speed.
-      In one case, using Marpa,
-      <a href="https://gist.github.com/4447349">a targeted language</a>
-      was written
-      in less than an hour.
-      <a href="http://blogs.perl.org/users/jeffrey_kegler/2013/01/a-language-for-writing-languages.html">
-        More typically</a>, Marpa reduce the time needed to create new languages to hours.
-    </p>
-    <p>As one example of going from "impossible" to "easy",
-      I have written a drop-in solution to an example in the
-      <a href="http://en.wikipedia.org/wiki/Design_Patterns">Gang
-        of Four book</a>.
-      The Gang of Four described a language
-      and its interpretation,
-      but they did not include a parser.
-      Creating a parser
-      to fit their example would have been
-      impossibly hard when the Gang of Four wrote.
-      Using Marpa, it is easy.
-      The parser can be found in
-      <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2013/03/bnf_to_ast.html">this
-        earlier blog post</a>.
-    </p>
-    <p>
-      Marpa's latest version is
-      <a href="https://metacpan.org/module/Marpa::R2">Marpa::R2,
-        which is available on CPAN</a>.
-      Recently, it has gained immensely in "whipitupitude" with
-      <a href="https://metacpan.org/module/JKEGL/Marpa-R2-2.048000/pod/Scanless/DSL.pod">
-        a new interface</a>,
-      which has tutorials
-      <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2013/01/dsl_simpler2.html">here
-      </a>
-      and
-      <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2013/01/announce_scanless.html">
-        here</a>.
-      Marpa has
-      <a href="http://jeffreykegler.github.com/Marpa-web-site/">a web page</a>,
-      and of course it is the focus of
-      <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/">
-        my "Ocean of Awareness" blog</a>.
-    </p>
-    <p>
-      Comments on this post
-      can be sent to the Marpa's Google Group:
-      <code>marpa-parser@googlegroups.com</code>
-    </p>
-<br />
-<p>posted at: 10:16 |
-<a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2013/03/what_if_free.html">direct link to this entry</a>
 </p>
 <div style="color:#38B0C0;padding:1px;text-align:center;">
 &sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
