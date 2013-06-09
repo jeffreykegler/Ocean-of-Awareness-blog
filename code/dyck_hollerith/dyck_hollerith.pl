@@ -18,14 +18,12 @@ my $dsl = <<'END_OF_DSL';
 # The BNF
 :start ::= sentence
 sentence ::= element
-string ::= ( 'S' <string length> LPAREN ) text ( RPAREN )
+string ::= ( 'S' <string length> '(' ) text ( ')' )
 array ::= 'A' <array count> '(' elements ')'
     action => check_array
 elements ::= element+
   action => ::array
 element ::= string | array
-LPAREN ::= '('
-RPAREN ::= ')'
 
 # Declare the places where we pause before
 # and after lexemes
