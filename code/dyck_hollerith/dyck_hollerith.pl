@@ -18,9 +18,9 @@ my $dsl = <<'END_OF_DSL';
 # The BNF
 :start ::= sentence
 sentence ::= element
-string ::= ( 'S' <string length> '(' ) text ( ')' )
 array ::= 'A' <array count> '(' elements ')'
     action => check_array
+string ::= ( 'S' <string length> '(' ) text ( ')' )
 elements ::= element+
   action => ::array
 element ::= string | array
