@@ -1,16 +1,33 @@
+#!perl
+# Copyright 2013 Jeffrey Kegler
+# This file is part of Marpa::R2.  Marpa::R2 is free software: you can
+# redistribute it and/or modify it under the terms of the GNU Lesser
+# General Public License as published by the Free Software Foundation,
+# either version 3 of the License, or (at your option) any later version.
+#
+# Marpa::R2 is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+# Lesser General Public License for more details.
+#
+# You should have received a copy of the GNU Lesser
+# General Public License along with Marpa::R2.  If not, see
+# http://www.gnu.org/licenses/.
+
 use 5.010;
 use strict;
 use warnings;
 use Data::Dumper;
 use Scalar::Util;
-use Marpa::R2;
+use Marpa::R2 2.056000;
+use English qw( -no_match_vars );
 
 # A Marpa::R2 parser for the Dyck-Hollerith language
 
 my $repeat;
 if (@ARGV) {
     $repeat = $ARGV[0];
-    die "Argument not a number"
+    die 'Argument not a number'
         if not Scalar::Util::looks_like_number($repeat);
 }
 
@@ -67,8 +84,8 @@ for (
     )
 {
     my $lexeme = $recce->pause_lexeme();
-    die qq{Parse exhausted in front of this string: "},
-        substr( $input, $pos ), '"'
+    die q{Parse exhausted in front of this string: "},
+        substr( $input, $pos ), q{"}
         if not defined $lexeme;
     my ( $start, $lexeme_length ) = $recce->pause_span();
     if ( $lexeme eq 'string length' ) {
@@ -93,8 +110,8 @@ for (
 } ## end INPUT: for ( my $pos = $recce->read( \$input ); $pos < $input_length...)
 
 my $result = $recce->value();
-die "No parse" if not defined $result;
-my $received = Dumper( ${$result} );
+die 'No parse' if not defined $result;
+my $received = Data::Dumper::Dumper( ${$result} );
 
 my $expected = <<'EXPECTED_OUTPUT';
 $VAR1 = [
@@ -106,10 +123,10 @@ $VAR1 = [
         ];
 EXPECTED_OUTPUT
 if ( $received eq $expected ) {
-    say "Output matches";
+    say 'Output matches' or die "say() failed: $ERRNO";
 }
 else {
-    say "Output differs: $received";
+    say "Output differs: $received" or die "say() failed: $ERRNO";
 }
 
 package My_Actions;
