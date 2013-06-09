@@ -10,7 +10,8 @@ use Marpa::R2;
 my $repeat;
 if (@ARGV) {
     $repeat = $ARGV[0];
-    die "Argument not a number" if not Scalar::Util::looks_like_number($repeat);
+    die "Argument not a number"
+        if not Scalar::Util::looks_like_number($repeat);
 }
 
 my $dsl = <<'END_OF_DSL';
@@ -30,19 +31,20 @@ text ~ [\d\D] # one character of anything, just to trigger the pause
 END_OF_DSL
 
 my $grammar = Marpa::R2::Scanless::G->new(
-    {   
-	action_object => 'My_Actions',
-	default_action => '::first',
-        source => \$dsl
+    {   action_object  => 'My_Actions',
+        default_action => '::first',
+        source         => \$dsl
     }
 );
 
-my $recce = Marpa::R2::Scanless::R->new({ grammar => $grammar });
+my $recce = Marpa::R2::Scanless::R->new( { grammar => $grammar } );
 
 my $input;
 if ($repeat) {
-    $input = "A$repeat(" . ('A2(A2(S3(Hey)S13(Hello, World!))S5(Ciao!))' x $repeat) . ')';
-} else {
+    $input = "A$repeat("
+        . ( 'A2(A2(S3(Hey)S13(Hello, World!))S5(Ciao!))' x $repeat ) . ')';
+}
+else {
     $input = 'A2(A2(S3(Hey)S13(Hello, World!))S5(Ciao!))';
 }
 
@@ -57,7 +59,8 @@ for (
 {
     my $lexeme = $recce->pause_lexeme();
     die qq{Parse exhausted in front of this string: "},
-        substr( $input, $pos ), '"' if not defined $lexeme;
+        substr( $input, $pos ), '"'
+        if not defined $lexeme;
     my ( $start, $lexeme_length ) = $recce->pause_span();
     if ( $lexeme eq 'string length' ) {
         $last_string_length = $recce->literal( $start, $lexeme_length ) + 0;
@@ -78,11 +81,11 @@ for (
         next INPUT;
     } ## end if ( $lexeme eq 'text' )
     die "Unexpected lexeme: $lexeme";
-} ## end INPUT: for ( my $pos = $recce->read( \$input ); $pos < length...)
+} ## end INPUT: for ( my $pos = $recce->read( \$input ); $pos < $input_length...)
 
 my $result = $recce->value();
 die "No parse" if not defined $result;
-my $received = Dumper(${$result});
+my $received = Dumper( ${$result} );
 
 my $expected = <<'EXPECTED_OUTPUT';
 $VAR1 = [
@@ -93,22 +96,23 @@ $VAR1 = [
           'Ciao!'
         ];
 EXPECTED_OUTPUT
-if ($received eq $expected )
-{
+if ( $received eq $expected ) {
     say "Output matches";
-} else {
+}
+else {
     say "Output differs: $received";
 }
 
 package My_Actions;
 
-sub new {};
+sub new { }
 
 sub check_array {
-    my (undef, $declared_size, $array) = @_;
+    my ( undef, $declared_size, $array ) = @_;
     my $actual_size = @{$array};
-    warn "Array size ($actual_size) does not match that specified ($declared_size)"
+    warn
+        "Array size ($actual_size) does not match that specified ($declared_size)"
         if $declared_size != $actual_size;
     return $array;
-}
+} ## end sub check_array
 
