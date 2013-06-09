@@ -10,9 +10,12 @@
     <language>en</language>
 
   <item>
-    <title>Mixing procedural and declarative parsing</title>
+    <title>Mixing procedural and declarative parsing gracefully</title>
     <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2013/06/mixing-procedural.html</link>
-    <description>&lt;h2&gt;The application&lt;/h2&gt;
+    <description>&lt;h3&gt;The application&lt;/h3&gt;
+      &lt;!--
+      marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
+      --&gt;
 &lt;p&gt;In
 &lt;a href=&quot;http://blogs.perl.org/users/polettix/2012/04/parserecdescent-and-number-of-elements-read-on-the-fly.html&quot;&gt;
 a recent blog post&lt;/a&gt;,
@@ -88,7 +91,7 @@ to wrestle in the mud.
 And when it comes to wrestling in the mud,
 recursive descent is hard to beat.
 &lt;/p&gt;
-&lt;h2&gt;code&lt;/h2&gt;
+&lt;h3&gt;code&lt;/h3&gt;
 &lt;blockquote&gt;
 &lt;pre&gt;
 #!perl
@@ -228,8 +231,30 @@ sub check_array {
 } ## end sub check_array
 
 &lt;/pre&gt;
-&lt;blockquote&gt;
-&lt;h2&gt;Conclusions&lt;/h2&gt;</description>
+&lt;/blockquote&gt;
+    &lt;h3&gt;For more about Marpa&lt;/h3&gt;
+    &lt;p&gt;
+      Marpa's latest version is
+      &lt;a href=&quot;https://metacpan.org/module/Marpa::R2&quot;&gt;Marpa::R2,
+        which is available on CPAN&lt;/a&gt;.
+      A list of my Marpa tutorials can be found
+      &lt;a href=&quot;http://jeffreykegler.github.io/Ocean-of-Awareness-blog/metapages/annotated.html#TUTORIAL&quot;&gt;
+        here&lt;/a&gt;.
+      There is
+      &lt;a href=&quot;http://marpa-guide.github.io/chapter1.html&quot;&gt;
+        a new tutorial by Peter Stuifzand&lt;/a&gt;.
+      &lt;a href=&quot;http://jeffreykegler.github.com/Ocean-of-Awareness-blog/&quot;&gt;
+        This blog&lt;/a&gt;
+      focuses on Marpa,
+      and it has
+      &lt;a href=&quot;http://jeffreykegler.github.io/Ocean-of-Awareness-blog/metapages/annotated.html&quot;&gt;an annotated guide&lt;/a&gt;.
+      Marpa also has
+      &lt;a href=&quot;http://jeffreykegler.github.com/Marpa-web-site/&quot;&gt;a web page&lt;/a&gt;.
+      For questions, support and discussion, there is a
+      Google Group:
+      &lt;code&gt;marpa-parser@googlegroups.com&lt;/code&gt;.
+      Comments on this post can be made there.
+    &lt;/p&gt;</description>
   </item>
   <item>
     <title>The Design of Four</title>
