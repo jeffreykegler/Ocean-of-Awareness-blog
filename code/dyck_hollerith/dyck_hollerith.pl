@@ -18,7 +18,8 @@ my $dsl = <<'END_OF_DSL';
 sentence ::= element
 string ::= ( 'S' <string length> '(' ) text ( ')' )
 array ::= ('A') <array count> ('(') elements ( ')' )
-elements ::= element+
+    action => check_array
+elements ::= element+ action => ::array
 element ::= string | array
 :lexeme ~ <array count> pause => after
 :lexeme ~ <string length> pause => after
@@ -31,7 +32,7 @@ END_OF_DSL
 my $grammar = Marpa::R2::Scanless::G->new(
     {   
 	action_object => 'My_Actions',
-	default_action => '::array',
+	default_action => '::first',
         source => \$dsl
     }
 );
@@ -55,12 +56,8 @@ for (
     )
 {
     my $lexeme = $recce->pause_lexeme();
-    if (not defined $lexeme) {
-      my $event_ix = 0;
-      while (my $event = $recce->event($event_ix++)) { say Data::Dumper::Dumper($event); }
-	# die qq{Parse exhausted in front of this string: "}, substr($input, $pos), '"';
-      die 'Unexplained pause in reading';
-    }
+    die qq{Parse exhausted in front of this string: "},
+        substr( $input, $pos ), '"' if not defined $lexeme;
     my ( $start, $lexeme_length ) = $recce->pause_span();
     if ( $lexeme eq 'string length' ) {
         $last_string_length = $recce->literal( $start, $lexeme_length ) + 0;
@@ -106,4 +103,12 @@ if ($received eq $expected )
 package My_Actions;
 
 sub new {};
+
+sub check_array {
+    my (undef, $declared_size, $array) = @_;
+    my $actual_size = @{$array};
+    warn "Array size ($actual_size) does not match that specified ($declared_size)"
+        if $declared_size != $actual_size;
+    return $array;
+}
 
