@@ -13,26 +13,25 @@ if (@ARGV) {
     die "Argument not a number" if not Scalar::Util::looks_like_number($repeat);
 }
 
-sub arg1 { return $_[1]; }
-sub arg4 { return $_[4]; }
-sub all_args { shift; return \@_; }
-
 my $dsl = <<'END_OF_DSL';
 :start ::= sentence
 sentence ::= element
-string ::= ('S' count '(') text (')')
-array ::= ('A' count '(') elements (')')
+string ::= ( 'S' <string length> '(' ) text ( ')' )
+array ::= ('A') <array count> ('(') elements ( ')' )
 elements ::= element+
 element ::= string | array
-:lexeme ~ count pause => after
+:lexeme ~ <array count> pause => after
+:lexeme ~ <string length> pause => after
 :lexeme ~ text pause => before
-count ~ [\d]+
+<array count> ~ [\d]+
+<string length> ~ [\d]+
 text ~ [\d\D] # one character of anything, just to trigger the pause
 END_OF_DSL
 
 my $grammar = Marpa::R2::Scanless::G->new(
     {   
 	action_object => 'My_Actions',
+	default_action => '::array',
         source => \$dsl
     }
 );
@@ -46,16 +45,43 @@ if ($repeat) {
     $input = 'A2(A2(S3(Hey)S13(Hello, World!))S5(Ciao!))';
 }
 
-my $last_hollerith_count = 0;
-INPUT: for (my $pos = $recce->read(\$input); $pos < length $input; $pos = $recce->resume($pos)) {
+my $last_string_length;
+my $input_length = length $input;
+INPUT:
+for (
+    my $pos = $recce->read( \$input );
+    $pos < $input_length;
+    $pos = $recce->resume($pos)
+    )
+{
     my $lexeme = $recce->pause_lexeme();
-    if ($lexeme eq 'count') {
-        $last_hollerith_count = $recce->literal($recce->pause_span()) + 0;
-	next INPUT;
+    if (not defined $lexeme) {
+      my $event_ix = 0;
+      while (my $event = $recce->event($event_ix++)) { say Data::Dumper::Dumper($event); }
+	# die qq{Parse exhausted in front of this string: "}, substr($input, $pos), '"';
+      die 'Unexplained pause in reading';
     }
-    # We paused before the lexeme text
-    my $text_value = $recce->lexeme_read('text', $pos, $last_hollerith_count);
-}
+    my ( $start, $lexeme_length ) = $recce->pause_span();
+    if ( $lexeme eq 'string length' ) {
+        $last_string_length = $recce->literal( $start, $lexeme_length ) + 0;
+        $pos = $start + $lexeme_length;
+        next INPUT;
+    }
+    if ( $lexeme eq 'array count' ) {
+        my $array_count = $recce->literal( $start, $lexeme_length ) + 0;
+        $recce->lexeme_read( 'array count', $start, $lexeme_length,
+            $array_count );
+        $pos = $start + $lexeme_length;
+        next INPUT;
+    } ## end if ( $lexeme eq 'array count' )
+    if ( $lexeme eq 'text' ) {
+        my $text_length = $last_string_length;
+        $recce->lexeme_read( 'text', $start, $text_length );
+        $pos = $start + $text_length;
+        next INPUT;
+    } ## end if ( $lexeme eq 'text' )
+    die "Unexpected lexeme: $lexeme";
+} ## end INPUT: for ( my $pos = $recce->read( \$input ); $pos < length...)
 
 my $result = $recce->value();
 die "No parse" if not defined $result;
