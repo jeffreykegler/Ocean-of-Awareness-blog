@@ -44,7 +44,6 @@ element ::= string | array
 
 # Declare the places where we pause before
 # and after lexemes
-:lexeme ~ <array count> pause => after
 :lexeme ~ <string length> pause => after
 :lexeme ~ text pause => before
 
@@ -93,13 +92,6 @@ for (
         $pos = $start + $lexeme_length;
         next INPUT;
     }
-    if ( $lexeme eq 'array count' ) {
-        my $array_count = $recce->literal( $start, $lexeme_length ) + 0;
-        $recce->lexeme_read( 'array count', $start, $lexeme_length,
-            $array_count );
-        $pos = $start + $lexeme_length;
-        next INPUT;
-    } ## end if ( $lexeme eq 'array count' )
     if ( $lexeme eq 'text' ) {
         my $text_length = $last_string_length;
         $recce->lexeme_read( 'text', $start, $text_length );
