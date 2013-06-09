@@ -15,19 +15,30 @@ if (@ARGV) {
 }
 
 my $dsl = <<'END_OF_DSL';
+# The BNF
 :start ::= sentence
 sentence ::= element
-string ::= ( 'S' <string length> '(' ) text ( ')' )
-array ::= ('A') <array count> ('(') elements ( ')' )
+string ::= ( 'S' <string length> LPAREN ) text ( RPAREN )
+array ::= 'A' <array count> '(' elements ')'
     action => check_array
-elements ::= element+ action => ::array
+elements ::= element+
+  action => ::array
 element ::= string | array
+LPAREN ::= '('
+RPAREN ::= ')'
+
+# Declare the places where we pause before
+# and after lexemes
 :lexeme ~ <array count> pause => after
 :lexeme ~ <string length> pause => after
 :lexeme ~ text pause => before
+
+# Declare the lexemes themselves
 <array count> ~ [\d]+
 <string length> ~ [\d]+
-text ~ [\d\D] # one character of anything, just to trigger the pause
+# define <text> as one character of anything, as a stub
+# the external scanner determines its actual size and value
+text ~ [\d\D]
 END_OF_DSL
 
 my $grammar = Marpa::R2::Scanless::G->new(
@@ -108,7 +119,7 @@ package My_Actions;
 sub new { }
 
 sub check_array {
-    my ( undef, $declared_size, $array ) = @_;
+    my ( undef, undef, $declared_size, undef, $array ) = @_;
     my $actual_size = @{$array};
     warn
         "Array size ($actual_size) does not match that specified ($declared_size)"
