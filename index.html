@@ -59,16 +59,10 @@ Nice as declarative parsing may sound,
 the need to do at least <b>some</b> procedural parsing
 can seem to an obstacle
 in real-life.
-</p>
 In this post, I take a problem for which procedural
 parsing is essential,
 and create a fast, short solution that
 mixes procedural and declarative.
-The "weld point" between
-the procedural and the declaration is
-not tricky or awkward,
-and the solution comes out looking like
-the problem.
 </p>
 <h3>The application</h3>
 <p>This is a sample of the language:
@@ -83,10 +77,9 @@ It describes strings in nested arrays.
 The strings are introducted by the letter 'S', followed by a length count and then,
 in parentheses, the string itself.
 Arrays are introducted by the letter 'A' followed by an element count and, inside parentheses, the
-arrays contents.
-The array contents are a concatenated series of strings and other arrays.
-</p>
-<p>I call this a Dyck-Hollerith language because it
+array's contents.
+These contents are a concatenated series of strings and other arrays.
+I call this a Dyck-Hollerith language because it
 combines
 <a href="http://en.wikipedia.org/wiki/Hollerith_constant">
 Hollerith constants</a>
@@ -110,25 +103,29 @@ Several people, Gabor Szabo among them, challenged me to show how
 Marpa</a>
 would do on this language.
 I did this a year ago, using Marpa's previous version, Marpa::XS.
-In this post, I redo it, using Marpa's new SLIF interface.
-The result, already quite satisfactory, is a considerable improvement
+The result was quite satisfactory, but
+in this post, I redo it,
+The result, using Marpa's new SLIF interface,
+is a considerable improvement
 in readability, flexibility and speed.
 </p>
 <h3>The code</h3>
 <p>The full code for this example is in
 <a href="https://gist.github.com/jeffreykegler/5745272">
 a Github gist</a>.
-In what follows, I will assume the reader is skimming,
-looking for the general idea,
-and I will focus on major features.
-Actual tutorials can be found
+In what follows, I will assume the reader is
+interested in the ideas.
+Details,
+along with more detail-oriented tutorials,
+can be found
 <a href="https://metacpan.org/module/Marpa::R2".
-in Marpa's documentation</a>,
+in Marpa's documentation</a>.
+Other tutorials are
 on
 <a href=http://jeffreykegler.github.io/Ocean-of-Awareness-blog/">
 the Ocean of Awareness blog</a>,
 and on
-<a href="http://marpa-guide.github.io/index.html"
+<a href="http://marpa-guide.github.io/index.html">
 the Marpa Guide,
 a new website</a>
 being
@@ -157,19 +154,22 @@ element ::= string | array
 <p>Details of this syntax are in Marpa's documentation,
 but it's a dialect of EBNF.
 Adverbs like <tt>action =&gt; semantics</tt> tell Marpa what the semantics will be.
-The default (which will be set below) is for a rule to retun its first child.
+The default (which will be set below) is for a rule to return its first child.
 The parentheses in the <tt>string</tt> declaration "hide" the symbols from the
 semantics, so that <tt>text</tt> is treated by the semantics as if it
 were the "first" symbol.
 <tt>::array</tt> semantics tell Marpa to return all every <tt>element</tt>
 of <tt>elements</tt> in an array.
 And <tt>check_array</tt> is the name of a function providing
-the semantics, one which will be described below.
+the semantics, as will be seen below.
 </p>
-<p>Marpa's SLIF provides a lexer for the user, and this one will handle most
-of the symbols.  The single-quoted strings we saw in the BNF are actually instructions
-to this lexer, and here are some on how to handle
-<tt>&lt;array_count&gt;</tt> and
+<p>Marpa's SLIF provides a lexer for the user,
+and this Marpa-internal lexer will handle most
+of the symbols in this example.
+The single-quoted strings we saw in the BNF are actually instructions
+to the internal lexer.
+The next lines tell Marpa how to recognize
+the <tt>&lt;array_count&gt;</tt> and
 <tt>&lt;string length&gt;</tt>.
 <blockquote>
 <pre>
@@ -180,16 +180,17 @@ END_OF_DSL
 </pre>
 </blockquote>
 <p>
-<tt>&lt;array_count&gt;</tt> are
+<tt>&lt;array_count&gt;</tt> anand
 <tt>&lt;string length&gt;</tt> are both declared to be a series of digits.
 <tt>text</tt> is a stub.
 The length of <tt>text</tt> depends on the numeric value of
-<tt>&lt;string length&gt;</tt>, and that's beyond the power of BNF to deal with,
-so when the time comes,
-When it comes time to deal with <tt>text</tt>,
+<tt>&lt;string length&gt;</tt>, and dealing with that is beyond the power of
+the BNF.
+When it comes time to count out the symbols needed for <tt>text</tt>,
 we will hand control over to an external lexer.
-For the purposes of Marpa's lexer, it's enough to tell it
-that text is a single character of anything.
+For the purposes of Marpa's lexer, it's enough to describe
+<tt>text</tt>
+as a single character of anything.
 </p>
 <p>Now comes the weld between declarative and procedural ...
 </p>
@@ -227,19 +228,18 @@ my $recce = Marpa::R2::Scanless::R-&gt;new( { grammar =&gt; $grammar } );
 </pre>
 </blockquote>
 <p>The previous lines tell Marpa that, when its semantics
-is provided by a Perl semantics, to look for its semantics in a package called
+are provided by a Perl closure, to look for that closure in a package called
 <tt>My_Actions</tt>.
 The default semantics are <tt>::first</tt>, which means simply pass the value of
 the first RHS symbol of a rule upwards.
 </p>
 <blockquote>
 <pre>
-    $input = 'A2(A2(S3(Hey)S13(Hello, World!))S5(Ciao!))';
+$input = 'A2(A2(S3(Hey)S13(Hello, World!))S5(Ciao!))';
 </pre>
 </blockquote>
 <blockquote>
 <pre>
-
 my $last_string_length;
 my $input_length = length $input;
 INPUT:

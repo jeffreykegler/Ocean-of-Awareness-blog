@@ -33,16 +33,10 @@ Nice as declarative parsing may sound,
 the need to do at least &lt;b&gt;some&lt;/b&gt; procedural parsing
 can seem to an obstacle
 in real-life.
-&lt;/p&gt;
 In this post, I take a problem for which procedural
 parsing is essential,
 and create a fast, short solution that
 mixes procedural and declarative.
-The &quot;weld point&quot; between
-the procedural and the declaration is
-not tricky or awkward,
-and the solution comes out looking like
-the problem.
 &lt;/p&gt;
 &lt;h3&gt;The application&lt;/h3&gt;
 &lt;p&gt;This is a sample of the language:
@@ -57,10 +51,9 @@ It describes strings in nested arrays.
 The strings are introducted by the letter 'S', followed by a length count and then,
 in parentheses, the string itself.
 Arrays are introducted by the letter 'A' followed by an element count and, inside parentheses, the
-arrays contents.
-The array contents are a concatenated series of strings and other arrays.
-&lt;/p&gt;
-&lt;p&gt;I call this a Dyck-Hollerith language because it
+array's contents.
+These contents are a concatenated series of strings and other arrays.
+I call this a Dyck-Hollerith language because it
 combines
 &lt;a href=&quot;http://en.wikipedia.org/wiki/Hollerith_constant&quot;&gt;
 Hollerith constants&lt;/a&gt;
@@ -84,25 +77,29 @@ Several people, Gabor Szabo among them, challenged me to show how
 Marpa&lt;/a&gt;
 would do on this language.
 I did this a year ago, using Marpa's previous version, Marpa::XS.
-In this post, I redo it, using Marpa's new SLIF interface.
-The result, already quite satisfactory, is a considerable improvement
+The result was quite satisfactory, but
+in this post, I redo it,
+The result, using Marpa's new SLIF interface,
+is a considerable improvement
 in readability, flexibility and speed.
 &lt;/p&gt;
 &lt;h3&gt;The code&lt;/h3&gt;
 &lt;p&gt;The full code for this example is in
 &lt;a href=&quot;https://gist.github.com/jeffreykegler/5745272&quot;&gt;
 a Github gist&lt;/a&gt;.
-In what follows, I will assume the reader is skimming,
-looking for the general idea,
-and I will focus on major features.
-Actual tutorials can be found
+In what follows, I will assume the reader is
+interested in the ideas.
+Details,
+along with more detail-oriented tutorials,
+can be found
 &lt;a href=&quot;https://metacpan.org/module/Marpa::R2&quot;.
-in Marpa's documentation&lt;/a&gt;,
+in Marpa's documentation&lt;/a&gt;.
+Other tutorials are
 on
 &lt;a href=http://jeffreykegler.github.io/Ocean-of-Awareness-blog/&quot;&gt;
 the Ocean of Awareness blog&lt;/a&gt;,
 and on
-&lt;a href=&quot;http://marpa-guide.github.io/index.html&quot;
+&lt;a href=&quot;http://marpa-guide.github.io/index.html&quot;&gt;
 the Marpa Guide,
 a new website&lt;/a&gt;
 being
@@ -131,19 +128,22 @@ element ::= string | array
 &lt;p&gt;Details of this syntax are in Marpa's documentation,
 but it's a dialect of EBNF.
 Adverbs like &lt;tt&gt;action =&amp;gt; semantics&lt;/tt&gt; tell Marpa what the semantics will be.
-The default (which will be set below) is for a rule to retun its first child.
+The default (which will be set below) is for a rule to return its first child.
 The parentheses in the &lt;tt&gt;string&lt;/tt&gt; declaration &quot;hide&quot; the symbols from the
 semantics, so that &lt;tt&gt;text&lt;/tt&gt; is treated by the semantics as if it
 were the &quot;first&quot; symbol.
 &lt;tt&gt;::array&lt;/tt&gt; semantics tell Marpa to return all every &lt;tt&gt;element&lt;/tt&gt;
 of &lt;tt&gt;elements&lt;/tt&gt; in an array.
 And &lt;tt&gt;check_array&lt;/tt&gt; is the name of a function providing
-the semantics, one which will be described below.
+the semantics, as will be seen below.
 &lt;/p&gt;
-&lt;p&gt;Marpa's SLIF provides a lexer for the user, and this one will handle most
-of the symbols.  The single-quoted strings we saw in the BNF are actually instructions
-to this lexer, and here are some on how to handle
-&lt;tt&gt;&amp;lt;array_count&amp;gt;&lt;/tt&gt; and
+&lt;p&gt;Marpa's SLIF provides a lexer for the user,
+and this Marpa-internal lexer will handle most
+of the symbols in this example.
+The single-quoted strings we saw in the BNF are actually instructions
+to the internal lexer.
+The next lines tell Marpa how to recognize
+the &lt;tt&gt;&amp;lt;array_count&amp;gt;&lt;/tt&gt; and
 &lt;tt&gt;&amp;lt;string length&amp;gt;&lt;/tt&gt;.
 &lt;blockquote&gt;
 &lt;pre&gt;
@@ -154,16 +154,17 @@ END_OF_DSL
 &lt;/pre&gt;
 &lt;/blockquote&gt;
 &lt;p&gt;
-&lt;tt&gt;&amp;lt;array_count&amp;gt;&lt;/tt&gt; are
+&lt;tt&gt;&amp;lt;array_count&amp;gt;&lt;/tt&gt; anand
 &lt;tt&gt;&amp;lt;string length&amp;gt;&lt;/tt&gt; are both declared to be a series of digits.
 &lt;tt&gt;text&lt;/tt&gt; is a stub.
 The length of &lt;tt&gt;text&lt;/tt&gt; depends on the numeric value of
-&lt;tt&gt;&amp;lt;string length&amp;gt;&lt;/tt&gt;, and that's beyond the power of BNF to deal with,
-so when the time comes,
-When it comes time to deal with &lt;tt&gt;text&lt;/tt&gt;,
+&lt;tt&gt;&amp;lt;string length&amp;gt;&lt;/tt&gt;, and dealing with that is beyond the power of
+the BNF.
+When it comes time to count out the symbols needed for &lt;tt&gt;text&lt;/tt&gt;,
 we will hand control over to an external lexer.
-For the purposes of Marpa's lexer, it's enough to tell it
-that text is a single character of anything.
+For the purposes of Marpa's lexer, it's enough to describe
+&lt;tt&gt;text&lt;/tt&gt;
+as a single character of anything.
 &lt;/p&gt;
 &lt;p&gt;Now comes the weld between declarative and procedural ...
 &lt;/p&gt;
@@ -201,19 +202,18 @@ my $recce = Marpa::R2::Scanless::R-&amp;gt;new( { grammar =&amp;gt; $grammar } )
 &lt;/pre&gt;
 &lt;/blockquote&gt;
 &lt;p&gt;The previous lines tell Marpa that, when its semantics
-is provided by a Perl semantics, to look for its semantics in a package called
+are provided by a Perl closure, to look for that closure in a package called
 &lt;tt&gt;My_Actions&lt;/tt&gt;.
 The default semantics are &lt;tt&gt;::first&lt;/tt&gt;, which means simply pass the value of
 the first RHS symbol of a rule upwards.
 &lt;/p&gt;
 &lt;blockquote&gt;
 &lt;pre&gt;
-    $input = 'A2(A2(S3(Hey)S13(Hello, World!))S5(Ciao!))';
+$input = 'A2(A2(S3(Hey)S13(Hello, World!))S5(Ciao!))';
 &lt;/pre&gt;
 &lt;/blockquote&gt;
 &lt;blockquote&gt;
 &lt;pre&gt;
-
 my $last_string_length;
 my $input_length = length $input;
 INPUT:
