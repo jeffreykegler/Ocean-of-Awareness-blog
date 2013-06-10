@@ -188,7 +188,6 @@ element ::= string | array
       The single-quoted strings we saw in the BNF are actually instructions
       to the internal lexer.
       The next lines tell Marpa how to recognize
-      the
       <tt>&lt;array count&gt;</tt>
       and
       <tt>&lt;string length&gt;</tt>.
@@ -215,9 +214,15 @@ END_OF_DSL
       When it comes time to count out the symbols needed for
       <tt>text</tt>,
       we will hand control over to an external lexer.
-      For the purposes of Marpa's lexer, it's enough to describe
-      <tt>text</tt>
-      as a single character of anything.
+      For the purposes of Marpa's lexer,
+      <tt>text</tt> is described
+      as a single character of any kind.
+      Marpa's internal scanner uses a longest tokens match algorithm,
+      and since we don't want the internal scanner to read <tt>text</tt>
+      lexemes,
+      describing <tt>text</tt> and other purely external lexemes
+      as single characters is the right thing to do.
+      </p>
     </p>
     <p>Now comes the weld between declarative and procedural ...
     </p>
@@ -272,7 +277,7 @@ $input = 'A2(A2(S3(Hey)S13(Hello, World!))S5(Ciao!))';
     </blockquote>
     <p>The block of code which follows is the main loop through the parse, including
       all the procedural logic.
-      Below, I will pull out this
+      Below, I will pull this
       procedural logic out of the loop
       for separate examination.
     </p>
@@ -286,12 +291,11 @@ $input = 'A2(A2(S3(Hey)S13(Hello, World!))S5(Ciao!))';
       the
       <tt>$recce-&gt;resume()</tt>
       call.
-      Throughout
+      Throughout,
       <tt>$pos</tt>
       is used to track the current character
       in the input stream.
       The loop ends when
-      the
       <tt>$pos</tt>
       is after the last character of
       <tt>$input</tt>.
@@ -328,11 +332,12 @@ for (
 </pre>
     </blockquote>
     <h3>The procedural parsing</h3>
-    <p>What the procedural logic needs to do is to count the
+    <p>In this language,
+    we need the procedural logic to count the
       <tt>text</tt>
       strings properly.
-      The logic to do this is coded in a very direct way.
-      First
+      This is done in a very direct way.
+      First we pull the count from
       <tt>&lt;string length&gt;</tt>:
     </p><blockquote>
       <pre>
@@ -353,7 +358,7 @@ for (
       to the start and length of the lexeme that
       Marpa's internal scanner found.
       Passed to
-      <tt>$recce->&gtliteral()</tt>, these two values
+      <tt>$recce-&gt;literal()</tt>, these two values
       return the "literal" string value of the lexeme, which will
       be the ASCII representation of a decimal number.
       We convert it to numeric, salt it away in
@@ -382,7 +387,7 @@ for (
       <b>before</b>
       the lexeme, which means it will not have been read yet.
       With
-      <tt>$recce-&gtlexeme_read()</tt>, we tell Marpa
+      <tt>$recce-&gt;lexeme_read()</tt>, we tell Marpa
       what we want the next lexeme to be:
       of type
       <tt>text</tt>,
@@ -438,8 +443,8 @@ sub check_array {
       <tt>$declared_size</tt>
       from
       <tt>&lt;array count&gt;</tt>;
-      an a
-      <tt>$actual</tt>
+      and an
+      <tt>$actual_size</tt>
       by looking at the array referenced by
       <tt>$array</tt>.
       If these differ, we choose to warn the user.
