@@ -30,10 +30,10 @@
       But practical grammars often have context-sensitive parts --
       features which cannot be described in BNF.
       Nice as declarative parsing may sound,
-      the need to do at least
+      at least
       &lt;b&gt;some&lt;/b&gt;
       procedural parsing
-      can seem to an obstacle
+      can be a necessity
       in real-life.
       In this post, I take a problem for which procedural
       parsing is essential,
@@ -70,20 +70,25 @@ A2(A2(S3(Hey)S13(Hello, World!))S5(Ciao!))
       The language is one I've dealt with before.
       It is apparently from &quot;real life&quot;, and is described more fully
       in
-      In
       &lt;a href=&quot;http://blogs.perl.org/users/polettix/2012/04/parserecdescent-and-number-of-elements-read-on-the-fly.html&quot;&gt;
         a blog post by
         Flavio Poletti&lt;/a&gt;.
-      Several people, Gabor Szabo among them, challenged me to show how
+      Several people, Gabor Szabo among them, prodded me to show how
       &lt;a href=&quot;http://jeffreykegler.github.com/Marpa-web-site/&quot;&gt;
         Marpa&lt;/a&gt;
       would do on this language.
-      I did this a year ago, using Marpa's previous version, Marpa::XS.
-      The result was quite satisfactory, but
-      in this post, I redo it,
-      The result, using Marpa's new SLIF interface,
-      is a considerable improvement
-      in readability, flexibility and speed.
+      I did this
+      &lt;a href=&quot;http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2012/04/marpa-v-parserecdescent-some-numbers.html&quot;&gt;a year ago, using Marpa's previous version, Marpa::XS&lt;/a&gt;.
+      The result was well-received and quite satisfactory.
+      &lt;/p&gt;
+      &lt;p&gt;
+      This time around, I used
+      Marpa's latest version, Marpa::R2,
+      and its new interface, the SLIF.
+      The solution presented here was
+      much easer to write,
+      and will be easier to read.
+      It is also several times faster.
     &lt;/p&gt;
     &lt;h3&gt;The code&lt;/h3&gt;
     &lt;p&gt;The full code for this example is in
@@ -91,10 +96,10 @@ A2(A2(S3(Hey)S13(Hello, World!))S5(Ciao!))
         a Github gist&lt;/a&gt;.
       In what follows, I will assume the reader is
       interested in the ideas.
-      Details,
+      Details of the interface,
       along with more detail-oriented tutorials,
       can be found
-      &lt;a href=&quot;https://metacpan.org/module/Marpa::R2&quot;.
+      &lt;a href=&quot;https://metacpan.org/module/Marpa::R2&quot;&gt;
 in Marpa's documentation&lt;/a&gt;.
         Other tutorials are
         on
@@ -158,7 +163,7 @@ element ::= string | array
       to the internal lexer.
       The next lines tell Marpa how to recognize
       the
-      &lt;tt&gt;&amp;lt;array_count&amp;gt;&lt;/tt&gt;
+      &lt;tt&gt;&amp;lt;array count&amp;gt;&lt;/tt&gt;
       and
       &lt;tt&gt;&amp;lt;string length&amp;gt;&lt;/tt&gt;.
     &lt;/p&gt;&lt;blockquote&gt;
