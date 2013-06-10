@@ -37,9 +37,9 @@ A2(A2(S3(Hey)S13(Hello, World!))S5(Ciao!))
     </blockquote>
     <p>
       It describes strings in nested arrays.
-      The strings are introducted by the letter 'S', followed by a length count and then,
+      The strings are introduced by the letter 'S', followed by a length count and then,
       in parentheses, the string itself.
-      Arrays are introducted by the letter 'A' followed by an element count and, inside parentheses, the
+      Arrays are introduced by the letter 'A' followed by an element count and, inside parentheses, the
       array's contents.
       These contents are a concatenated series of strings and other arrays.
       I call this a Dyck-Hollerith language because it
@@ -67,8 +67,8 @@ A2(A2(S3(Hey)S13(Hello, World!))S5(Ciao!))
       I did this
       <a href="http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2012/04/marpa-v-parserecdescent-some-numbers.html">a year ago, using Marpa's previous version, Marpa::XS</a>.
       The result was well-received and quite satisfactory.
-      </p>
-      <p>
+    </p>
+    <p>
       This time around, I used
       Marpa's latest version, Marpa::R2,
       and its new interface, the SLIF.
@@ -87,19 +87,19 @@ A2(A2(S3(Hey)S13(Hello, World!))S5(Ciao!))
       along with more detail-oriented tutorials,
       can be found
       <a href="https://metacpan.org/module/Marpa::R2">
-in Marpa's documentation</a>.
-        Other tutorials are
-        on
-        <a href=http://jeffreykegler.github.io/Ocean-of-Awareness-blog/">
-          the Ocean of Awareness blog</a>,
-        and on
-        <a href="http://marpa-guide.github.io/index.html">
-          the Marpa Guide,
-          a new website</a>
-        being
-        built due to the generosity of Peter Stuifzand
-        and Ron Savage.
-      </a></p>
+        in Marpa's documentation</a>.
+      Other tutorials are
+      on
+      <a href=http://jeffreykegler.github.io/Ocean-of-Awareness-blog/">
+        the Ocean of Awareness blog</a>,
+      and on
+      <a href="http://marpa-guide.github.io/index.html">
+        the Marpa Guide,
+        a new website</a>
+      being
+      built due to the generosity of Peter Stuifzand
+      and Ron Savage.
+    </p>
     <h3>The DSL</h3>
     <p>First off, let's look at the declarative part.
       The core of the parser is the following lines,
@@ -135,10 +135,11 @@ element ::= string | array
       <tt>check_array</tt>
       is the name of a function providing
       the semantics, as will be seen below.
-      </p>
-      <p>
+    </p>
+    <p>
       Single-quoted strings are looked for literally in the input.
-      In the <tt>string</tt>
+      In the
+      <tt>string</tt>
       declaration,
       you'll note some parentheses which are not in quotes.
       The unquoted parentheses are part of the Marpa DSL's own syntax,
@@ -182,14 +183,17 @@ END_OF_DSL
       <tt>text</tt>,
       we will hand control over to an external lexer.
       For the purposes of Marpa's lexer,
-      <tt>text</tt> is described
+      <tt>text</tt>
+      is described
       as a single character of any kind.
       Marpa's internal scanner uses a longest tokens match algorithm,
-      and since we don't want the internal scanner to read <tt>text</tt>
+      and since we don't want the internal scanner to read
+      <tt>text</tt>
       lexemes,
-      describing <tt>text</tt> and other purely external lexemes
+      describing
+      <tt>text</tt>
+      and other purely external lexemes
       as single characters is the right thing to do.
-      </p>
     </p>
     <p>Now comes the weld between declarative and procedural ...
     </p>
@@ -300,7 +304,7 @@ for (
     </blockquote>
     <h3>The procedural parsing</h3>
     <p>In this language,
-    we need the procedural parsing logic to count the
+      we need the procedural parsing logic to count the
       <tt>text</tt>
       strings properly.
       This is done in a very direct way.
@@ -355,15 +359,23 @@ for (
       the lexeme, which means it will not have been read yet.
       With
       <tt>$recce-&gt;lexeme_read()</tt>, we tell Marpa
-      what we want the next lexeme to be:
-      of type
-      <tt>text</tt>,
-      starting as the already decided
-      <tt>$start</tt>
-      position,
-      and with the length that
-      we saved in
-      <tt>$last_string_length</tt>.
+      that we want the next lexeme
+    </p>
+    <ul>
+      <li>to be of type
+        <tt>text</tt>,
+      </li>
+      <li>to start at the already decided
+        <tt>$start</tt>
+        position, and
+      </li>
+      <li>
+        to be of the length that
+        we saved in
+        <tt>$last_string_length</tt>.
+      </li>
+    </ul>
+    <p>
       We also set
       <tt>$pos</tt>
       to be just after the
@@ -371,11 +383,12 @@ for (
     </p>
     <p>We've focused on the string lengths, but the Dyck-Hollerith language has
       a count of the number of elements in its array.
-      Marpa's BNF-driver parsing logic has no trouble
+      Marpa's BNF-driven parsing logic has no trouble
       determining the number of elements from the array contents,
       and it does not need the count.
       What to do with it?
-    </p><blockquote>
+    </p>
+    <blockquote>
       <pre>
 package My_Actions;
 </pre>
@@ -426,7 +439,7 @@ die 'No parse' if not defined $result;
     </blockquote>
     <h3>For more about Marpa</h3>
     <p>The techniques described apply to problems considerably
-      larger this than the example of this post.
+      larger than the example of this post.
       Jean-Damien Durand is using them to create
       <a href="https://github.com/jddurand/MarpaX-Languages-C-AST">
         a C-to-AST tool</a>.
@@ -438,7 +451,7 @@ die 'No parse' if not defined $result;
       as you wish.
     </p
     <p><p>
-      <a href="https://metacpan.org/module/Marpa::R2">Marpa::R2,
+      <a href="https://metacpan.org/module/Marpa::R2">Marpa::R2
         is available on CPAN</a>.
       A list of my Marpa tutorials can be found
       <a href="http://jeffreykegler.github.io/Ocean-of-Awareness-blog/metapages/annotated.html#TUTORIAL">
@@ -447,7 +460,7 @@ die 'No parse' if not defined $result;
       <a href="http://marpa-guide.github.io/chapter1.html">
         a new tutorial by Peter Stuifzand</a>.
       <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/">
-        This blog</a>
+        The Ocean of Awareness blog</a>
       focuses on Marpa,
       and it has
       <a href="http://jeffreykegler.github.io/Ocean-of-Awareness-blog/metapages/annotated.html">an annotated guide</a>.

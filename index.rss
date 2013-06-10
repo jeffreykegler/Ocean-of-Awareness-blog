@@ -50,9 +50,9 @@ A2(A2(S3(Hey)S13(Hello, World!))S5(Ciao!))
     &lt;/blockquote&gt;
     &lt;p&gt;
       It describes strings in nested arrays.
-      The strings are introducted by the letter 'S', followed by a length count and then,
+      The strings are introduced by the letter 'S', followed by a length count and then,
       in parentheses, the string itself.
-      Arrays are introducted by the letter 'A' followed by an element count and, inside parentheses, the
+      Arrays are introduced by the letter 'A' followed by an element count and, inside parentheses, the
       array's contents.
       These contents are a concatenated series of strings and other arrays.
       I call this a Dyck-Hollerith language because it
@@ -80,8 +80,8 @@ A2(A2(S3(Hey)S13(Hello, World!))S5(Ciao!))
       I did this
       &lt;a href=&quot;http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2012/04/marpa-v-parserecdescent-some-numbers.html&quot;&gt;a year ago, using Marpa's previous version, Marpa::XS&lt;/a&gt;.
       The result was well-received and quite satisfactory.
-      &lt;/p&gt;
-      &lt;p&gt;
+    &lt;/p&gt;
+    &lt;p&gt;
       This time around, I used
       Marpa's latest version, Marpa::R2,
       and its new interface, the SLIF.
@@ -100,19 +100,19 @@ A2(A2(S3(Hey)S13(Hello, World!))S5(Ciao!))
       along with more detail-oriented tutorials,
       can be found
       &lt;a href=&quot;https://metacpan.org/module/Marpa::R2&quot;&gt;
-in Marpa's documentation&lt;/a&gt;.
-        Other tutorials are
-        on
-        &lt;a href=http://jeffreykegler.github.io/Ocean-of-Awareness-blog/&quot;&gt;
-          the Ocean of Awareness blog&lt;/a&gt;,
-        and on
-        &lt;a href=&quot;http://marpa-guide.github.io/index.html&quot;&gt;
-          the Marpa Guide,
-          a new website&lt;/a&gt;
-        being
-        built due to the generosity of Peter Stuifzand
-        and Ron Savage.
-      &lt;/a&gt;&lt;/p&gt;
+        in Marpa's documentation&lt;/a&gt;.
+      Other tutorials are
+      on
+      &lt;a href=http://jeffreykegler.github.io/Ocean-of-Awareness-blog/&quot;&gt;
+        the Ocean of Awareness blog&lt;/a&gt;,
+      and on
+      &lt;a href=&quot;http://marpa-guide.github.io/index.html&quot;&gt;
+        the Marpa Guide,
+        a new website&lt;/a&gt;
+      being
+      built due to the generosity of Peter Stuifzand
+      and Ron Savage.
+    &lt;/p&gt;
     &lt;h3&gt;The DSL&lt;/h3&gt;
     &lt;p&gt;First off, let's look at the declarative part.
       The core of the parser is the following lines,
@@ -148,10 +148,11 @@ element ::= string | array
       &lt;tt&gt;check_array&lt;/tt&gt;
       is the name of a function providing
       the semantics, as will be seen below.
-      &lt;/p&gt;
-      &lt;p&gt;
+    &lt;/p&gt;
+    &lt;p&gt;
       Single-quoted strings are looked for literally in the input.
-      In the &lt;tt&gt;string&lt;/tt&gt;
+      In the
+      &lt;tt&gt;string&lt;/tt&gt;
       declaration,
       you'll note some parentheses which are not in quotes.
       The unquoted parentheses are part of the Marpa DSL's own syntax,
@@ -195,14 +196,17 @@ END_OF_DSL
       &lt;tt&gt;text&lt;/tt&gt;,
       we will hand control over to an external lexer.
       For the purposes of Marpa's lexer,
-      &lt;tt&gt;text&lt;/tt&gt; is described
+      &lt;tt&gt;text&lt;/tt&gt;
+      is described
       as a single character of any kind.
       Marpa's internal scanner uses a longest tokens match algorithm,
-      and since we don't want the internal scanner to read &lt;tt&gt;text&lt;/tt&gt;
+      and since we don't want the internal scanner to read
+      &lt;tt&gt;text&lt;/tt&gt;
       lexemes,
-      describing &lt;tt&gt;text&lt;/tt&gt; and other purely external lexemes
+      describing
+      &lt;tt&gt;text&lt;/tt&gt;
+      and other purely external lexemes
       as single characters is the right thing to do.
-      &lt;/p&gt;
     &lt;/p&gt;
     &lt;p&gt;Now comes the weld between declarative and procedural ...
     &lt;/p&gt;
@@ -313,7 +317,7 @@ for (
     &lt;/blockquote&gt;
     &lt;h3&gt;The procedural parsing&lt;/h3&gt;
     &lt;p&gt;In this language,
-    we need the procedural parsing logic to count the
+      we need the procedural parsing logic to count the
       &lt;tt&gt;text&lt;/tt&gt;
       strings properly.
       This is done in a very direct way.
@@ -368,15 +372,23 @@ for (
       the lexeme, which means it will not have been read yet.
       With
       &lt;tt&gt;$recce-&amp;gt;lexeme_read()&lt;/tt&gt;, we tell Marpa
-      what we want the next lexeme to be:
-      of type
-      &lt;tt&gt;text&lt;/tt&gt;,
-      starting as the already decided
-      &lt;tt&gt;$start&lt;/tt&gt;
-      position,
-      and with the length that
-      we saved in
-      &lt;tt&gt;$last_string_length&lt;/tt&gt;.
+      that we want the next lexeme
+    &lt;/p&gt;
+    &lt;ul&gt;
+      &lt;li&gt;to be of type
+        &lt;tt&gt;text&lt;/tt&gt;,
+      &lt;/li&gt;
+      &lt;li&gt;to start at the already decided
+        &lt;tt&gt;$start&lt;/tt&gt;
+        position, and
+      &lt;/li&gt;
+      &lt;li&gt;
+        to be of the length that
+        we saved in
+        &lt;tt&gt;$last_string_length&lt;/tt&gt;.
+      &lt;/li&gt;
+    &lt;/ul&gt;
+    &lt;p&gt;
       We also set
       &lt;tt&gt;$pos&lt;/tt&gt;
       to be just after the
@@ -384,11 +396,12 @@ for (
     &lt;/p&gt;
     &lt;p&gt;We've focused on the string lengths, but the Dyck-Hollerith language has
       a count of the number of elements in its array.
-      Marpa's BNF-driver parsing logic has no trouble
+      Marpa's BNF-driven parsing logic has no trouble
       determining the number of elements from the array contents,
       and it does not need the count.
       What to do with it?
-    &lt;/p&gt;&lt;blockquote&gt;
+    &lt;/p&gt;
+    &lt;blockquote&gt;
       &lt;pre&gt;
 package My_Actions;
 &lt;/pre&gt;
@@ -439,7 +452,7 @@ die 'No parse' if not defined $result;
     &lt;/blockquote&gt;
     &lt;h3&gt;For more about Marpa&lt;/h3&gt;
     &lt;p&gt;The techniques described apply to problems considerably
-      larger this than the example of this post.
+      larger than the example of this post.
       Jean-Damien Durand is using them to create
       &lt;a href=&quot;https://github.com/jddurand/MarpaX-Languages-C-AST&quot;&gt;
         a C-to-AST tool&lt;/a&gt;.
@@ -451,7 +464,7 @@ die 'No parse' if not defined $result;
       as you wish.
     &lt;/p
     &lt;p&gt;&lt;p&gt;
-      &lt;a href=&quot;https://metacpan.org/module/Marpa::R2&quot;&gt;Marpa::R2,
+      &lt;a href=&quot;https://metacpan.org/module/Marpa::R2&quot;&gt;Marpa::R2
         is available on CPAN&lt;/a&gt;.
       A list of my Marpa tutorials can be found
       &lt;a href=&quot;http://jeffreykegler.github.io/Ocean-of-Awareness-blog/metapages/annotated.html#TUTORIAL&quot;&gt;
@@ -460,7 +473,7 @@ die 'No parse' if not defined $result;
       &lt;a href=&quot;http://marpa-guide.github.io/chapter1.html&quot;&gt;
         a new tutorial by Peter Stuifzand&lt;/a&gt;.
       &lt;a href=&quot;http://jeffreykegler.github.com/Ocean-of-Awareness-blog/&quot;&gt;
-        This blog&lt;/a&gt;
+        The Ocean of Awareness blog&lt;/a&gt;
       focuses on Marpa,
       and it has
       &lt;a href=&quot;http://jeffreykegler.github.io/Ocean-of-Awareness-blog/metapages/annotated.html&quot;&gt;an annotated guide&lt;/a&gt;.
