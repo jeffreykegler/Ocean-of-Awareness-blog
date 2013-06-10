@@ -114,7 +114,32 @@ In this post, I redo it, using Marpa's new SLIF interface.
 The result, already quite satisfactory, is a considerable improvement
 in readability, flexibility and speed.
 </p>
-<h3>code</h3>
+<h3>The code</h3>
+<p>The full code for this example is in
+<a href="https://gist.github.com/jeffreykegler/5745272">
+a Github gist</a>.
+In what follows, I will assume the reader is skimming,
+looking for the general idea,
+and I will focus on major features.
+Actual tutorials can be found
+<a href="https://metacpan.org/module/Marpa::R2".
+in Marpa's documentation</a>,
+on
+<a href=http://jeffreykegler.github.io/Ocean-of-Awareness-blog/">
+the Ocean of Awareness blog</a>,
+and on
+<a href="http://marpa-guide.github.io/index.html"
+the Marpa Guide,
+a new website</a>
+being
+built due to the generosity of Peter Stuifzand
+and Ron Savage.
+</p>
+<h3>The DSL</h3>
+<p>First off, let's look at the declarative part.
+The core of the parser is the following lines,
+containing the BNF for the language's top-level structure.
+</p>
 <blockquote>
 <pre>
 my $dsl = &lt;&lt;'END_OF_DSL';
@@ -129,29 +154,68 @@ elements ::= element+
 element ::= string | array
 </pre>
 </blockquote>
+<p>Details of this syntax are in Marpa's documentation,
+but it's a dialect of EBNF.
+Adverbs like <tt>action =&gt; semantics</tt> tell Marpa what the semantics will be.
+The default (which will be set below) is for a rule to retun its first child.
+The parentheses in the <tt>string</tt> declaration "hide" the symbols from the
+semantics, so that <tt>text</tt> is treated by the semantics as if it
+were the "first" symbol.
+<tt>::array</tt> semantics tell Marpa to return all every <tt>element</tt>
+of <tt>elements</tt> in an array.
+And <tt>check_array</tt> is the name of a function providing
+the semantics, one which will be described below.
+</p>
+<p>Marpa's SLIF provides a lexer for the user, and this one will handle most
+of the symbols.  The single-quoted strings we saw in the BNF are actually instructions
+to this lexer, and here are some on how to handle
+<tt>&lt;array_count&gt;</tt> and
+<tt>&lt;string length&gt;</tt>.
 <blockquote>
 <pre>
-# Declare the places where we pause before
-# and after lexemes
-:lexeme ~ &lt;string length&gt; pause =&gt; after
-:lexeme ~ text pause =&gt; before
-</pre>
-</blockquote>
-<blockquote>
-<pre>
-
-# Declare the lexemes themselves
 &lt;array count&gt; ~ [\d]+
 &lt;string length&gt; ~ [\d]+
-# define &lt;text&gt; as one character of anything, as a stub
-# the external scanner determines its actual size and value
 text ~ [\d\D]
 END_OF_DSL
 </pre>
 </blockquote>
+<p>
+<tt>&lt;array_count&gt;</tt> are
+<tt>&lt;string length&gt;</tt> are both declared to be a series of digits.
+<tt>text</tt> is a stub.
+The length of <tt>text</tt> depends on the numeric value of
+<tt>&lt;string length&gt;</tt>, and that's beyond the power of BNF to deal with,
+so when the time comes,
+When it comes time to deal with <tt>text</tt>,
+we will hand control over to an external lexer.
+For the purposes of Marpa's lexer, it's enough to tell it
+that text is a single character of anything.
+</p>
+<p>Now comes the weld between declarative and procedural ...
+</p>
 <blockquote>
 <pre>
-
+:lexeme ~ &lt;string length&gt; pause =&gt; after
+:lexeme ~ text pause =&gt; before
+</pre>
+</blockquote>
+<p>These two statements tell Marpa that 
+<tt>&lt;string length&gt;</tt>
+and
+<tt>&lt;text&gt;</tt>
+are two lexicals at which Marpa's own parsing should "pause",
+handing over control to external procedural logic.
+In the case of <tt>&lt;string length&gt;</tt>,
+the pause should be after it is read.
+In the case of <tt>&lt;text&gt;</tt>
+the pause should be before.
+What happens during the "pause", we will soon see.
+</p>
+<h3>Starting the parse</h3>
+<p>Next follows the code to read the DSL,
+and start the parser.
+<blockquote>
+<pre>
 my $grammar = Marpa::R2::Scanless::G-&gt;new(
     {   action_object  =&gt; 'My_Actions',
         default_action =&gt; '::first',
@@ -160,9 +224,14 @@ my $grammar = Marpa::R2::Scanless::G-&gt;new(
 );
 
 my $recce = Marpa::R2::Scanless::R-&gt;new( { grammar =&gt; $grammar } );
-
 </pre>
 </blockquote>
+<p>The previous lines tell Marpa that, when its semantics
+is provided by a Perl semantics, to look for its semantics in a package called
+<tt>My_Actions</tt>.
+The default semantics are <tt>::first</tt>, which means simply pass the value of
+the first RHS symbol of a rule upwards.
+</p>
 <blockquote>
 <pre>
     $input = 'A2(A2(S3(Hey)S13(Hello, World!))S5(Ciao!))';

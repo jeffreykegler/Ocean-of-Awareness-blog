@@ -88,7 +88,32 @@ In this post, I redo it, using Marpa's new SLIF interface.
 The result, already quite satisfactory, is a considerable improvement
 in readability, flexibility and speed.
 &lt;/p&gt;
-&lt;h3&gt;code&lt;/h3&gt;
+&lt;h3&gt;The code&lt;/h3&gt;
+&lt;p&gt;The full code for this example is in
+&lt;a href=&quot;https://gist.github.com/jeffreykegler/5745272&quot;&gt;
+a Github gist&lt;/a&gt;.
+In what follows, I will assume the reader is skimming,
+looking for the general idea,
+and I will focus on major features.
+Actual tutorials can be found
+&lt;a href=&quot;https://metacpan.org/module/Marpa::R2&quot;.
+in Marpa's documentation&lt;/a&gt;,
+on
+&lt;a href=http://jeffreykegler.github.io/Ocean-of-Awareness-blog/&quot;&gt;
+the Ocean of Awareness blog&lt;/a&gt;,
+and on
+&lt;a href=&quot;http://marpa-guide.github.io/index.html&quot;
+the Marpa Guide,
+a new website&lt;/a&gt;
+being
+built due to the generosity of Peter Stuifzand
+and Ron Savage.
+&lt;/p&gt;
+&lt;h3&gt;The DSL&lt;/h3&gt;
+&lt;p&gt;First off, let's look at the declarative part.
+The core of the parser is the following lines,
+containing the BNF for the language's top-level structure.
+&lt;/p&gt;
 &lt;blockquote&gt;
 &lt;pre&gt;
 my $dsl = &amp;lt;&amp;lt;'END_OF_DSL';
@@ -103,29 +128,68 @@ elements ::= element+
 element ::= string | array
 &lt;/pre&gt;
 &lt;/blockquote&gt;
+&lt;p&gt;Details of this syntax are in Marpa's documentation,
+but it's a dialect of EBNF.
+Adverbs like &lt;tt&gt;action =&amp;gt; semantics&lt;/tt&gt; tell Marpa what the semantics will be.
+The default (which will be set below) is for a rule to retun its first child.
+The parentheses in the &lt;tt&gt;string&lt;/tt&gt; declaration &quot;hide&quot; the symbols from the
+semantics, so that &lt;tt&gt;text&lt;/tt&gt; is treated by the semantics as if it
+were the &quot;first&quot; symbol.
+&lt;tt&gt;::array&lt;/tt&gt; semantics tell Marpa to return all every &lt;tt&gt;element&lt;/tt&gt;
+of &lt;tt&gt;elements&lt;/tt&gt; in an array.
+And &lt;tt&gt;check_array&lt;/tt&gt; is the name of a function providing
+the semantics, one which will be described below.
+&lt;/p&gt;
+&lt;p&gt;Marpa's SLIF provides a lexer for the user, and this one will handle most
+of the symbols.  The single-quoted strings we saw in the BNF are actually instructions
+to this lexer, and here are some on how to handle
+&lt;tt&gt;&amp;lt;array_count&amp;gt;&lt;/tt&gt; and
+&lt;tt&gt;&amp;lt;string length&amp;gt;&lt;/tt&gt;.
 &lt;blockquote&gt;
 &lt;pre&gt;
-# Declare the places where we pause before
-# and after lexemes
-:lexeme ~ &amp;lt;string length&amp;gt; pause =&amp;gt; after
-:lexeme ~ text pause =&amp;gt; before
-&lt;/pre&gt;
-&lt;/blockquote&gt;
-&lt;blockquote&gt;
-&lt;pre&gt;
-
-# Declare the lexemes themselves
 &amp;lt;array count&amp;gt; ~ [\d]+
 &amp;lt;string length&amp;gt; ~ [\d]+
-# define &amp;lt;text&amp;gt; as one character of anything, as a stub
-# the external scanner determines its actual size and value
 text ~ [\d\D]
 END_OF_DSL
 &lt;/pre&gt;
 &lt;/blockquote&gt;
+&lt;p&gt;
+&lt;tt&gt;&amp;lt;array_count&amp;gt;&lt;/tt&gt; are
+&lt;tt&gt;&amp;lt;string length&amp;gt;&lt;/tt&gt; are both declared to be a series of digits.
+&lt;tt&gt;text&lt;/tt&gt; is a stub.
+The length of &lt;tt&gt;text&lt;/tt&gt; depends on the numeric value of
+&lt;tt&gt;&amp;lt;string length&amp;gt;&lt;/tt&gt;, and that's beyond the power of BNF to deal with,
+so when the time comes,
+When it comes time to deal with &lt;tt&gt;text&lt;/tt&gt;,
+we will hand control over to an external lexer.
+For the purposes of Marpa's lexer, it's enough to tell it
+that text is a single character of anything.
+&lt;/p&gt;
+&lt;p&gt;Now comes the weld between declarative and procedural ...
+&lt;/p&gt;
 &lt;blockquote&gt;
 &lt;pre&gt;
-
+:lexeme ~ &amp;lt;string length&amp;gt; pause =&amp;gt; after
+:lexeme ~ text pause =&amp;gt; before
+&lt;/pre&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;These two statements tell Marpa that 
+&lt;tt&gt;&amp;lt;string length&amp;gt;&lt;/tt&gt;
+and
+&lt;tt&gt;&amp;lt;text&amp;gt;&lt;/tt&gt;
+are two lexicals at which Marpa's own parsing should &quot;pause&quot;,
+handing over control to external procedural logic.
+In the case of &lt;tt&gt;&amp;lt;string length&amp;gt;&lt;/tt&gt;,
+the pause should be after it is read.
+In the case of &lt;tt&gt;&amp;lt;text&amp;gt;&lt;/tt&gt;
+the pause should be before.
+What happens during the &quot;pause&quot;, we will soon see.
+&lt;/p&gt;
+&lt;h3&gt;Starting the parse&lt;/h3&gt;
+&lt;p&gt;Next follows the code to read the DSL,
+and start the parser.
+&lt;blockquote&gt;
+&lt;pre&gt;
 my $grammar = Marpa::R2::Scanless::G-&amp;gt;new(
     {   action_object  =&amp;gt; 'My_Actions',
         default_action =&amp;gt; '::first',
@@ -134,9 +198,14 @@ my $grammar = Marpa::R2::Scanless::G-&amp;gt;new(
 );
 
 my $recce = Marpa::R2::Scanless::R-&amp;gt;new( { grammar =&amp;gt; $grammar } );
-
 &lt;/pre&gt;
 &lt;/blockquote&gt;
+&lt;p&gt;The previous lines tell Marpa that, when its semantics
+is provided by a Perl semantics, to look for its semantics in a package called
+&lt;tt&gt;My_Actions&lt;/tt&gt;.
+The default semantics are &lt;tt&gt;::first&lt;/tt&gt;, which means simply pass the value of
+the first RHS symbol of a rule upwards.
+&lt;/p&gt;
 &lt;blockquote&gt;
 &lt;pre&gt;
     $input = 'A2(A2(S3(Hey)S13(Hello, World!))S5(Ciao!))';
