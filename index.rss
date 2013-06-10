@@ -12,121 +12,85 @@
   <item>
     <title>Mixing procedural and declarative parsing gracefully</title>
     <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2013/06/mixing-procedural.html</link>
-    <description>&lt;h3&gt;The application&lt;/h3&gt;
-      &lt;!--
+    <description>&lt;h3&gt;Declarative and procedural parsing&lt;/h3&gt;
+&lt;p&gt;&lt;!--
       marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
-      --&gt;
-&lt;p&gt;In
-&lt;a href=&quot;http://blogs.perl.org/users/polettix/2012/04/parserecdescent-and-number-of-elements-read-on-the-fly.html&quot;&gt;
-a recent blog post&lt;/a&gt;,
-Flavio Poletti described an unusual language,
-one which he'd written a parser for,
-using the very traditional method of
-recursive descent.
-Specifically he'd used Perl's Parse::RecDescent
-module.
-Several people asked me how
-&lt;a href=&quot;http://jeffreykegler.github.com/Marpa-web-site/&quot;&gt;
-Marpa&lt;/a&gt;
-would do on this language.
-This post contains
-a comparison, including a benchmark.
+--&gt;A declarative parser
+takes a description of your language and parses it
+for you.
+On the face of it, this sounds like the way you'd want
+to go,
+and Marpa offers that possibily -- it generates
+a parser from anything you can write in BNF and,
+if the parser in is one of the classes currently in
+practical use,
+that parser will run in linear time.
 &lt;/p&gt;
-The reader who wants an exact description should
-look at
-&lt;a href=&quot;http://blogs.perl.org/users/polettix/2012/04/parserecdescent-and-number-of-elements-read-on-the-fly.html&quot;&gt;
-Flavio's post and code&lt;/a&gt;.
-I call it a Dyck-Hollerith language because it
+&lt;p&gt;
+But practical grammars often have context-sensitive parts --
+features which cannot be described in BNF.
+Nice as declarative parsing may sound,
+the need to do at least &lt;b&gt;some&lt;/b&gt; procedural parsing
+can seem to an obstacle
+in real-life.
+&lt;/p&gt;
+In this post, I take a problem for which procedural
+parsing is essential,
+and create a fast, short solution that
+mixes procedural and declarative.
+The &quot;weld point&quot; between
+the procedural and the declaration is
+not tricky or awkward,
+and the solution comes out looking like
+the problem.
+&lt;/p&gt;
+&lt;h3&gt;The application&lt;/h3&gt;
+&lt;p&gt;This is a sample of the language:
+&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;pre&gt;
+A2(A2(S3(Hey)S13(Hello, World!))S5(Ciao!))
+&lt;/pre&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;
+It describes strings in nested arrays.
+The strings are introducted by the letter 'S', followed by a length count and then,
+in parentheses, the string itself.
+Arrays are introducted by the letter 'A' followed by an element count and, inside parentheses, the
+arrays contents.
+The array contents are a concatenated series of strings and other arrays.
+&lt;/p&gt;
+&lt;p&gt;I call this a Dyck-Hollerith language because it
 combines
 &lt;a href=&quot;http://en.wikipedia.org/wiki/Hollerith_constant&quot;&gt;
 Hollerith constants&lt;/a&gt;
-
 (strings preceded by a count),
 with balanced parentheses
 (what is called
 &lt;a href=&quot;http://en.wikipedia.org/wiki/Dyck_language&quot;&gt;
 a Dyck language&lt;/a&gt;
 by mathematicians).
-Here's Flavio's example:
-&lt;code class=&quot;prettyprint&quot;&gt;
-&lt;pre&gt;
-A2(A2(S3(Hey)S13(Hello, World!))S5(Ciao!))
-&lt;/pre&gt;
-&lt;/code&gt;
-&lt;p&gt;
-When I did
-&lt;a href=&quot;http://blogs.perl.org/users/jeffrey_kegler/2011/11/marpa-v-perl-regexes-some-numbers.html&quot;&gt;
-a Marpa versus Perl regexes comparison&lt;/a&gt;,
-I was very careful to choose an application which showed Marpa in
-a good light.
-Here I did not pick the application,
-and it is almost as if it was designed
-to show recursive descent in a good light.
 &lt;/p&gt;
 &lt;p&gt;
-
-Recursive descent tries to parse by treating each rule
-as a subroutine call.
-This is a very natural way for a programmer
-to look at a grammar.
-But, alas, it only works in certain cases,
-and most of those are already handled by regular expressions.
-However, Dyck languages, including balanced parentheses,
-are one of the boundary cases:
-languages beyond the abilities of regular expressions,
-but within the capabilities of recursive descent.
-&lt;/p&gt;
-&lt;p&gt;
-Hollerith constants highlight the other strength of
-recursive descent.
-Since recursive descent's basic idea is so intuitive, it is easy
-to add custom hacks to it.
-And Hollerith constants are beyond the capabilities of even
-general BNF parsing.
-Earley's, Marpa, CYK, GLR, you name it,
-none of them can handle Hollerith constants without
-some kind of custom hack.
-You might say that Hollerith constants force a parser
-to wrestle in the mud.
-And when it comes to wrestling in the mud,
-recursive descent is hard to beat.
+The language is one I've dealt with before.
+It is apparently from &quot;real life&quot;, and is described more fully
+in 
+In
+&lt;a href=&quot;http://blogs.perl.org/users/polettix/2012/04/parserecdescent-and-number-of-elements-read-on-the-fly.html&quot;&gt;
+a blog post by
+Flavio Poletti&lt;/a&gt;.
+Several people, Gabor Szabo among them, challenged me to show how
+&lt;a href=&quot;http://jeffreykegler.github.com/Marpa-web-site/&quot;&gt;
+Marpa&lt;/a&gt;
+would do on this language.
+I did this a year ago, using Marpa's previous version, Marpa::XS.
+In this post, I redo it, using Marpa's new SLIF interface.
+The result, already quite satisfactory, is a considerable improvement
+in readability, flexibility and speed.
 &lt;/p&gt;
 &lt;h3&gt;code&lt;/h3&gt;
 &lt;blockquote&gt;
 &lt;pre&gt;
-#!perl
-# Copyright 2013 Jeffrey Kegler
-# This file is part of Marpa::R2.  Marpa::R2 is free software: you can
-# redistribute it and/or modify it under the terms of the GNU Lesser
-# General Public License as published by the Free Software Foundation,
-# either version 3 of the License, or (at your option) any later version.
-#
-# Marpa::R2 is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-# Lesser General Public License for more details.
-#
-# You should have received a copy of the GNU Lesser
-# General Public License along with Marpa::R2.  If not, see
-# http://www.gnu.org/licenses/.
-
-use 5.010;
-use strict;
-use warnings;
-use Data::Dumper;
-use Scalar::Util;
-use Marpa::R2 2.056000;
-use English qw( -no_match_vars );
-
-# A Marpa::R2 parser for the Dyck-Hollerith language
-
-my $repeat;
-if (@ARGV) {
-    $repeat = $ARGV[0];
-    die 'Argument not a number'
-        if not Scalar::Util::looks_like_number($repeat);
-}
-
 my $dsl = &amp;lt;&amp;lt;'END_OF_DSL';
 # The BNF
 :start ::= sentence
@@ -137,11 +101,18 @@ string ::= ( 'S' &amp;lt;string length&amp;gt; '(' ) text ( ')' )
 elements ::= element+
   action =&amp;gt; ::array
 element ::= string | array
-
+&lt;/pre&gt;
+&lt;/blockquote&gt;
+&lt;blockquote&gt;
+&lt;pre&gt;
 # Declare the places where we pause before
 # and after lexemes
 :lexeme ~ &amp;lt;string length&amp;gt; pause =&amp;gt; after
 :lexeme ~ text pause =&amp;gt; before
+&lt;/pre&gt;
+&lt;/blockquote&gt;
+&lt;blockquote&gt;
+&lt;pre&gt;
 
 # Declare the lexemes themselves
 &amp;lt;array count&amp;gt; ~ [\d]+
@@ -150,6 +121,10 @@ element ::= string | array
 # the external scanner determines its actual size and value
 text ~ [\d\D]
 END_OF_DSL
+&lt;/pre&gt;
+&lt;/blockquote&gt;
+&lt;blockquote&gt;
+&lt;pre&gt;
 
 my $grammar = Marpa::R2::Scanless::G-&amp;gt;new(
     {   action_object  =&amp;gt; 'My_Actions',
@@ -160,14 +135,15 @@ my $grammar = Marpa::R2::Scanless::G-&amp;gt;new(
 
 my $recce = Marpa::R2::Scanless::R-&amp;gt;new( { grammar =&amp;gt; $grammar } );
 
-my $input;
-if ($repeat) {
-    $input = &quot;A$repeat(&quot;
-        . ( 'A2(A2(S3(Hey)S13(Hello, World!))S5(Ciao!))' x $repeat ) . ')';
-}
-else {
+&lt;/pre&gt;
+&lt;/blockquote&gt;
+&lt;blockquote&gt;
+&lt;pre&gt;
     $input = 'A2(A2(S3(Hey)S13(Hello, World!))S5(Ciao!))';
-}
+&lt;/pre&gt;
+&lt;/blockquote&gt;
+&lt;blockquote&gt;
+&lt;pre&gt;
 
 my $last_string_length;
 my $input_length = length $input;
@@ -196,30 +172,17 @@ for (
     } ## end if ( $lexeme eq 'text' )
     die &quot;Unexpected lexeme: $lexeme&quot;;
 } ## end INPUT: for ( my $pos = $recce-&amp;gt;read( \$input ); $pos &amp;lt; $input_length...)
-
-my $result = $recce-&amp;gt;value();
-die 'No parse' if not defined $result;
-my $received = Data::Dumper::Dumper( ${$result} );
-
-my $expected = &amp;lt;&amp;lt;'EXPECTED_OUTPUT';
-$VAR1 = [
-          [
-            'Hey',
-            'Hello, World!'
-          ],
-          'Ciao!'
-        ];
-EXPECTED_OUTPUT
-if ( $received eq $expected ) {
-    say 'Output matches' or die &quot;say() failed: $ERRNO&quot;;
-}
-else {
-    say &quot;Output differs: $received&quot; or die &quot;say() failed: $ERRNO&quot;;
-}
+&lt;/pre&gt;
+&lt;/blockquote&gt;
+&lt;blockquote&gt;
+&lt;pre&gt;
 
 package My_Actions;
 
-sub new { }
+&lt;/pre&gt;
+&lt;/blockquote&gt;
+&lt;blockquote&gt;
+&lt;pre&gt;
 
 sub check_array {
     my ( undef, undef, $declared_size, undef, $array ) = @_;
@@ -229,6 +192,15 @@ sub check_array {
         if $declared_size != $actual_size;
     return $array;
 } ## end sub check_array
+
+&lt;/pre&gt;
+&lt;/blockquote&gt;
+&lt;blockquote&gt;
+&lt;pre&gt;
+
+my $result = $recce-&amp;gt;value();
+die 'No parse' if not defined $result;
+my $received = Data::Dumper::Dumper( ${$result} );
 
 &lt;/pre&gt;
 &lt;/blockquote&gt;
