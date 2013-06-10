@@ -9,7 +9,7 @@ Mixing procedural and declarative parsing gracefully
       to go,
       and Marpa offers that possibility -- it generates
       a parser from anything you can write in BNF and,
-      if the parser in is one of the classes currently in
+      if the parser is in one of the classes currently in
       practical use,
       that parser will run in linear time.
     </p>
@@ -125,13 +125,6 @@ element ::= string | array
       <tt>action =&gt; semantics</tt>
       tell Marpa what the semantics will be.
       The default (which will be set below) is for a rule to return its first child.
-      The parentheses in the
-      <tt>string</tt>
-      declaration "hide" the symbols from the
-      semantics, so that
-      <tt>text</tt>
-      is treated by the semantics as if it
-      were the "first" symbol.
       <tt>::array</tt>
       semantics tell Marpa to return all every
       <tt>element</tt>
@@ -142,6 +135,19 @@ element ::= string | array
       <tt>check_array</tt>
       is the name of a function providing
       the semantics, as will be seen below.
+      </p>
+      <p>
+      Single-quoted strings are looked for literally in the input.
+      In the <tt>string</tt>
+      declaration,
+      you'll note some parentheses which are not in quotes.
+      The unquoted parentheses are part of the Marpa DSL's own syntax,
+      telling Marpa to "hide" the parenthesized symbols from the
+      semantics.
+      Here, the effect is that
+      <tt>text</tt>
+      is treated by the semantics as if it
+      were the "first" symbol.
     </p>
     <p>Marpa's SLIF provides a lexer for the user,
       and this Marpa-internal lexer will handle most
@@ -162,7 +168,7 @@ END_OF_DSL
     </blockquote>
     <p>
       <tt>&lt;array_count&gt;</tt>
-      anand
+      and
       <tt>&lt;string length&gt;</tt>
       are both declared to be a series of digits.
       <tt>text</tt>
@@ -198,7 +204,7 @@ END_OF_DSL
       and
       <tt>&lt;text&gt;</tt>
       are two lexicals at which Marpa's own parsing should "pause",
-      handing over control to external procedural logic.
+      handing over control to external procedural parsing logic.
       In the case of
       <tt>&lt;string length&gt;</tt>,
       the pause should be after it is read.
@@ -222,8 +228,8 @@ my $grammar = Marpa::R2::Scanless::G-&gt;new(
 my $recce = Marpa::R2::Scanless::R-&gt;new( { grammar =&gt; $grammar } );
 </pre>
     </blockquote>
-    <p>The previous lines tell Marpa that, when its semantics
-      are provided by a Perl closure, to look for that closure in a package called
+    <p>The previous lines tell Marpa that when its semantics
+      are provided by a Perl closure, it is to look for that closure in a package called
       <tt>My_Actions</tt>.
       The default semantics are
       <tt>::first</tt>, which means simply pass the value of
@@ -237,9 +243,9 @@ $input = 'A2(A2(S3(Hey)S13(Hello, World!))S5(Ciao!))';
 </pre>
     </blockquote>
     <p>The block of code which follows is the main loop through the parse, including
-      all the procedural logic.
+      all the procedural parsing logic.
       Below, I will pull this
-      procedural logic out of the loop
+      procedural parsing logic out of the loop
       for separate examination.
     </p>
     <p>
@@ -248,7 +254,7 @@ $input = 'A2(A2(S3(Hey)S13(Hello, World!))S5(Ciao!))';
       method performs the first read
       and sets up the input string.
       The interior of the loop is entered whenever Marpa "pauses".
-      Once the procedural logic is done, Marpa resumes with
+      Once the procedural parsing logic is done, Marpa resumes with
       the
       <tt>$recce-&gt;resume()</tt>
       call.
@@ -294,7 +300,7 @@ for (
     </blockquote>
     <h3>The procedural parsing</h3>
     <p>In this language,
-    we need the procedural logic to count the
+    we need the procedural parsing logic to count the
       <tt>text</tt>
       strings properly.
       This is done in a very direct way.
@@ -366,12 +372,9 @@ for (
     <p>We've focused on the string lengths, but the Dyck-Hollerith language has
       a count of the number of elements in its array.
       Marpa's BNF-driver parsing logic has no trouble
-      determining this from the array contents themselves,
-      so that the count is
-      completely redundant.
-      What to do with the
-      <tt>&lt;array count&gt;</tt>?
-      Here's one idea.
+      determining the number of elements from the array contents,
+      and it does not need the count.
+      What to do with it?
     </p><blockquote>
       <pre>
 package My_Actions;
