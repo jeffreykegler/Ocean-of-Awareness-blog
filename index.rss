@@ -232,13 +232,34 @@ my $recce = Marpa::R2::Scanless::R-&amp;gt;new( { grammar =&amp;gt; $grammar } )
       &lt;tt&gt;::first&lt;/tt&gt;, which means simply pass the value of
       the first RHS symbol of a rule upwards.
     &lt;/p&gt;
+&lt;h3&gt;The main loop&lt;/h3&gt;
+&lt;p&gt;We saw our input above:&lt;/p&gt;
     &lt;blockquote&gt;
       &lt;pre&gt;
 $input = 'A2(A2(S3(Hey)S13(Hello, World!))S5(Ciao!))';
 &lt;/pre&gt;
-    &lt;/blockquote&gt;
-    &lt;blockquote&gt;
-      &lt;pre&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;The block of code which follows is the main loop through the parse, including
+all the procedural logic.
+Below, I will pull out this
+procedural logic out of the loop
+for separate examination.
+&lt;/p&gt;
+&lt;p&gt;
+Here the &lt;tt&gt;$recce-&amp;gt;read()&lt;/tt&gt; method performs the first read
+and sets up the input string.
+The interior of the loop is entered whenever Marpa &quot;pauses&quot;.
+Once the procedural logic is done, Marpa resumes with
+the &lt;tt&gt;$recce-&amp;gt;resume()&lt;/tt&gt; call.
+Throughout
+&lt;tt&gt;$pos&lt;/tt&gt; is used to track the current character
+in the input stream.
+The loop ends when 
+the &lt;tt&gt;$pos&lt;/tt&gt; is after the last character of
+&lt;tt&gt;$input&lt;/tt&gt;.
+&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;pre&gt;
 my $last_string_length;
 my $input_length = length $input;
 INPUT:
@@ -268,16 +289,67 @@ for (
 } ## end INPUT: for ( my $pos = $recce-&amp;gt;read( \$input ); $pos &amp;lt; $input_length...)
 &lt;/pre&gt;
     &lt;/blockquote&gt;
+&lt;h3&gt;The procedural parsing&lt;/h3&gt;
+&lt;p&gt;What the procedural logic needs to do is to count the &lt;tt&gt;text&lt;/tt&gt; strings properly.
+The logic to do this is coded in a very direct way.
+First &lt;tt&gt;&amp;lt;string length&amp;gt;&lt;/tt&gt;:
     &lt;blockquote&gt;
       &lt;pre&gt;
-
+    if ( $lexeme eq 'string length' ) {
+        $last_string_length = $recce-&amp;gt;literal( $start, $lexeme_length ) + 0;
+        $pos = $start + $lexeme_length;
+        next INPUT;
+    }
+&lt;/pre&gt;
+    &lt;/blockquote&gt;
+&lt;p&gt;
+Above, we used &lt;tt&gt;pause_span()&lt;/tt&gt; to set &lt;tt&gt;$start&lt;/tt&gt;
+and &lt;tt&gt;$lexeme_length&lt;/tt&gt; to the start and length of the lexeme that 
+Marpa's internal scanner found.
+Passed to &lt;tt&gt;$recce-&gt;&amp;gtliteral()&lt;/tt&gt;, these two values
+return the &quot;literal&quot; string value of the lexeme, which will
+be the ASCII representation of a decimal number.
+We convert it to numeric, salt it away in &lt;tt&gt;$last_string_length&lt;/tt&gt;,
+and set &lt;tt&gt;$pos&lt;/tt&gt; to the location just after the
+&lt;tt&gt;&amp;lt;string length&amp;gt;&lt;/tt&gt; lexeme.
+&lt;/p&gt;
+    &lt;blockquote&gt;
+      &lt;pre&gt;
+    if ( $lexeme eq 'text' ) {
+        my $text_length = $last_string_length;
+        $recce-&amp;gt;lexeme_read( 'text', $start, $text_length );
+        $pos = $start + $text_length;
+        next INPUT;
+    } ## end if ( $lexeme eq 'text' )
+&lt;/pre&gt;
+    &lt;/blockquote&gt;
+&lt;p&gt;Now we come to counting out the characters for the &lt;tt&gt;text&lt;/tt&gt; lexeme.
+Recall that in the case of &lt;tt&gt;text&lt;/tt&gt;, we pause &lt;b&gt;before&lt;/b&gt;
+the lexeme, which means it will not have been read yet.
+With &lt;tt&gt;$recce-&amp;gtlexeme_read()&lt;/tt&gt;, we tell Marpa
+what we want the next lexeme to be:
+of type &lt;tt&gt;text&lt;/tt&gt;,
+starting as the already decided &lt;tt&gt;$start&lt;/tt&gt; position,
+and with the length that 
+we saved in &lt;tt&gt;$last_string_length&lt;/tt&gt;.
+We also set &lt;tt&gt;$pos&lt;/tt&gt; to be just after the
+end of the lexeme.
+&lt;/p&gt;
+&lt;p&gt;We've focused on the string lengths, but the Dyck-Hollerith language has
+a count of the number of elements in its array.
+Marpa's BNF-driver parsing logic has no trouble
+determining this from the array contents themselves,
+so that the count is
+completely redundant.
+What to do with the &lt;tt&gt;&amp;lt;array count&amp;gt;&lt;/tt&gt;?
+Here's one idea.
+    &lt;blockquote&gt;
+      &lt;pre&gt;
 package My_Actions;
-
 &lt;/pre&gt;
     &lt;/blockquote&gt;
     &lt;blockquote&gt;
       &lt;pre&gt;
-
 sub check_array {
     my ( undef, undef, $declared_size, undef, $array ) = @_;
     my $actual_size = @{$array};
@@ -286,16 +358,30 @@ sub check_array {
         if $declared_size != $actual_size;
     return $array;
 } ## end sub check_array
-
 &lt;/pre&gt;
     &lt;/blockquote&gt;
+&lt;p&gt;Recall that Marpa promised special semantics for the &lt;tt&gt;array&lt;/tt&gt; rule
+in its DSL.
+Here they are.
+The first parameter to Marpa's semantic closures is a per-parse variable, here unused.
+The rest are the values of the RHS symbols, in order.
+We only care about the second (for &lt;tt&gt;&amp;lt;array count&amp;gt;&lt;/tt&gt;),
+and the fourth (for &lt;tt&gt;elements&lt;/tt&gt;).
+We determine a &lt;tt&gt;$declared_size&lt;/tt&gt; from 
+&lt;tt&gt;&amp;lt;array count&amp;gt;&lt;/tt&gt;;
+an a &lt;tt&gt;$actual&lt;/tt&gt; by looking at the array referenced by
+&lt;tt&gt;$array&lt;/tt&gt;.
+If these differ, we choose to warn the user.
+Depending on your purposes,
+anything from ignoring the issue
+to throwing a fatal error may be equally or more reasonable.
+&lt;/p&gt;
+&lt;h3&gt;The result of the the parse&lt;/h3&gt;
+&lt;p&gt;And now we are ready to take the result of the parse.
     &lt;blockquote&gt;
       &lt;pre&gt;
-
 my $result = $recce-&amp;gt;value();
 die 'No parse' if not defined $result;
-my $received = Data::Dumper::Dumper( ${$result} );
-
 &lt;/pre&gt;
     &lt;/blockquote&gt;
     &lt;h3&gt;For more about Marpa&lt;/h3&gt;
@@ -312,9 +398,8 @@ my $received = Data::Dumper::Dumper( ${$result} );
       as you wish.
     &lt;/p
     &lt;p&gt;&lt;p&gt;
-      Marpa's latest version is
       &lt;a href=&quot;https://metacpan.org/module/Marpa::R2&quot;&gt;Marpa::R2,
-        which is available on CPAN&lt;/a&gt;.
+        is available on CPAN&lt;/a&gt;.
       A list of my Marpa tutorials can be found
       &lt;a href=&quot;http://jeffreykegler.github.io/Ocean-of-Awareness-blog/metapages/annotated.html#TUTORIAL&quot;&gt;
         here&lt;/a&gt;.

@@ -258,13 +258,34 @@ my $recce = Marpa::R2::Scanless::R-&gt;new( { grammar =&gt; $grammar } );
       <tt>::first</tt>, which means simply pass the value of
       the first RHS symbol of a rule upwards.
     </p>
+<h3>The main loop</h3>
+<p>We saw our input above:</p>
     <blockquote>
       <pre>
 $input = 'A2(A2(S3(Hey)S13(Hello, World!))S5(Ciao!))';
 </pre>
-    </blockquote>
-    <blockquote>
-      <pre>
+</blockquote>
+<p>The block of code which follows is the main loop through the parse, including
+all the procedural logic.
+Below, I will pull out this
+procedural logic out of the loop
+for separate examination.
+</p>
+<p>
+Here the <tt>$recce-&gt;read()</tt> method performs the first read
+and sets up the input string.
+The interior of the loop is entered whenever Marpa "pauses".
+Once the procedural logic is done, Marpa resumes with
+the <tt>$recce-&gt;resume()</tt> call.
+Throughout
+<tt>$pos</tt> is used to track the current character
+in the input stream.
+The loop ends when 
+the <tt>$pos</tt> is after the last character of
+<tt>$input</tt>.
+</p>
+<blockquote>
+<pre>
 my $last_string_length;
 my $input_length = length $input;
 INPUT:
@@ -294,16 +315,67 @@ for (
 } ## end INPUT: for ( my $pos = $recce-&gt;read( \$input ); $pos &lt; $input_length...)
 </pre>
     </blockquote>
+<h3>The procedural parsing</h3>
+<p>What the procedural logic needs to do is to count the <tt>text</tt> strings properly.
+The logic to do this is coded in a very direct way.
+First <tt>&lt;string length&gt;</tt>:
     <blockquote>
       <pre>
-
+    if ( $lexeme eq 'string length' ) {
+        $last_string_length = $recce-&gt;literal( $start, $lexeme_length ) + 0;
+        $pos = $start + $lexeme_length;
+        next INPUT;
+    }
+</pre>
+    </blockquote>
+<p>
+Above, we used <tt>pause_span()</tt> to set <tt>$start</tt>
+and <tt>$lexeme_length</tt> to the start and length of the lexeme that 
+Marpa's internal scanner found.
+Passed to <tt>$recce->&gtliteral()</tt>, these two values
+return the "literal" string value of the lexeme, which will
+be the ASCII representation of a decimal number.
+We convert it to numeric, salt it away in <tt>$last_string_length</tt>,
+and set <tt>$pos</tt> to the location just after the
+<tt>&lt;string length&gt;</tt> lexeme.
+</p>
+    <blockquote>
+      <pre>
+    if ( $lexeme eq 'text' ) {
+        my $text_length = $last_string_length;
+        $recce-&gt;lexeme_read( 'text', $start, $text_length );
+        $pos = $start + $text_length;
+        next INPUT;
+    } ## end if ( $lexeme eq 'text' )
+</pre>
+    </blockquote>
+<p>Now we come to counting out the characters for the <tt>text</tt> lexeme.
+Recall that in the case of <tt>text</tt>, we pause <b>before</b>
+the lexeme, which means it will not have been read yet.
+With <tt>$recce-&gtlexeme_read()</tt>, we tell Marpa
+what we want the next lexeme to be:
+of type <tt>text</tt>,
+starting as the already decided <tt>$start</tt> position,
+and with the length that 
+we saved in <tt>$last_string_length</tt>.
+We also set <tt>$pos</tt> to be just after the
+end of the lexeme.
+</p>
+<p>We've focused on the string lengths, but the Dyck-Hollerith language has
+a count of the number of elements in its array.
+Marpa's BNF-driver parsing logic has no trouble
+determining this from the array contents themselves,
+so that the count is
+completely redundant.
+What to do with the <tt>&lt;array count&gt;</tt>?
+Here's one idea.
+    <blockquote>
+      <pre>
 package My_Actions;
-
 </pre>
     </blockquote>
     <blockquote>
       <pre>
-
 sub check_array {
     my ( undef, undef, $declared_size, undef, $array ) = @_;
     my $actual_size = @{$array};
@@ -312,16 +384,30 @@ sub check_array {
         if $declared_size != $actual_size;
     return $array;
 } ## end sub check_array
-
 </pre>
     </blockquote>
+<p>Recall that Marpa promised special semantics for the <tt>array</tt> rule
+in its DSL.
+Here they are.
+The first parameter to Marpa's semantic closures is a per-parse variable, here unused.
+The rest are the values of the RHS symbols, in order.
+We only care about the second (for <tt>&lt;array count&gt;</tt>),
+and the fourth (for <tt>elements</tt>).
+We determine a <tt>$declared_size</tt> from 
+<tt>&lt;array count&gt;</tt>;
+an a <tt>$actual</tt> by looking at the array referenced by
+<tt>$array</tt>.
+If these differ, we choose to warn the user.
+Depending on your purposes,
+anything from ignoring the issue
+to throwing a fatal error may be equally or more reasonable.
+</p>
+<h3>The result of the the parse</h3>
+<p>And now we are ready to take the result of the parse.
     <blockquote>
       <pre>
-
 my $result = $recce-&gt;value();
 die 'No parse' if not defined $result;
-my $received = Data::Dumper::Dumper( ${$result} );
-
 </pre>
     </blockquote>
     <h3>For more about Marpa</h3>
@@ -338,9 +424,8 @@ my $received = Data::Dumper::Dumper( ${$result} );
       as you wish.
     </p
     <p><p>
-      Marpa's latest version is
       <a href="https://metacpan.org/module/Marpa::R2">Marpa::R2,
-        which is available on CPAN</a>.
+        is available on CPAN</a>.
       A list of my Marpa tutorials can be found
       <a href="http://jeffreykegler.github.io/Ocean-of-Awareness-blog/metapages/annotated.html#TUTORIAL">
         here</a>.
