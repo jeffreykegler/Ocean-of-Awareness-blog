@@ -261,6 +261,18 @@ my $received = Data::Dumper::Dumper( ${$result} );
 </pre>
 </blockquote>
     <h3>For more about Marpa</h3>
+    <p>The techniques described apply to problems considerably
+    larger this than the example of this post.
+    Jean-Damien Durand is using them to create
+    <a href="https://github.com/jddurand/MarpaX-Languages-C-AST">
+    a C-to-AST tool</a>.
+    This
+    takes C language and converts it to an AST,
+    following the C11
+    specification carefully.
+    The AST can then be manipulated
+    as you wish.
+    </p
     <p>
       Marpa's latest version is
       <a href="https://metacpan.org/module/Marpa::R2">Marpa::R2,
