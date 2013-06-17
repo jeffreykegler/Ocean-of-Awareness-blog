@@ -97,24 +97,23 @@ recursive descent is hard to beat.
 &lt;th&gt;Parse::RecDescent
 &lt;/tr&gt;
 &lt;tr&gt;&lt;td&gt;1000
-&lt;td align=&quot;center&quot;&gt;
+&lt;td align=&quot;center&quot;&gt;1.569
 &lt;td align=&quot;center&quot;&gt;2.938
-
 &lt;td align=&quot;center&quot;&gt;13.616
 &lt;/tr&gt;
 &lt;tr&gt;&lt;td&gt;2000
-&lt;td align=&quot;center&quot;&gt;
+&lt;td align=&quot;center&quot;&gt;2.746
 &lt;td align=&quot;center&quot;&gt;7.067
 &lt;td align=&quot;center&quot;&gt;62.083
 &lt;/tr&gt;
 &lt;tr&gt;&lt;td&gt;3000
-&lt;td align=&quot;center&quot;&gt;
+&lt;td align=&quot;center&quot;&gt;3.935
 &lt;td align=&quot;center&quot;&gt;13.953
 &lt;td align=&quot;center&quot;&gt;132.549
 &lt;/tr&gt;
 &lt;tr&gt;
 &lt;td&gt;10000
-&lt;td align=&quot;center&quot;&gt;
+&lt;td align=&quot;center&quot;&gt;12.270
 &lt;td align=&quot;center&quot;&gt;121.654
 &lt;td align=&quot;center&quot;&gt;1373.171
 &lt;/tr&gt;
