@@ -12,7 +12,7 @@
   <item>
     <title>Marpa v. Parse::RecDescent: a rematch</title>
     <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2013/06/vs-prd-round-2.html</link>
-    <description>  &lt;h2&gt;The application&lt;/h2&gt;&lt;!--
+    <description>  &lt;h3&gt;The application&lt;/h3&gt;&lt;!--
       marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
 --&gt;&lt;p&gt;
       In
@@ -33,14 +33,16 @@ A2(A2(S3(Hey)S13(Hello, World!))S5(Ciao!))
       specialty.
       &lt;/p&gt;
       &lt;p&gt;
-      The last post focused on how Marpa can enable you to mix
-      procedural and declarative parsing smoothly
-      from the coding point of view.
+      &lt;a href=&quot;http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2013/06/mixing-procedural.html&quot;&gt;
+      The previous post&lt;/a&gt;
+      focused on how to use Marpa to mix
+      procedural and declarative parsing together smoothly,
+      from a coding point of view.
       It only hinted at another aspect: speed.
     Over the last year, Marpa has greatly improved its speed for this kind of application.
       The latest release of Marpa::R2 now clocks in almost 100 times faster than Parse::RecDescent for long inputs.
     &lt;/p&gt;
-    &lt;h2&gt;The benchmark&lt;/h2&gt;
+    &lt;h3&gt;The benchmark&lt;/h3&gt;
     &lt;table align=&quot;center&quot; cellpadding=&quot;5&quot; border=&quot;1&quot; width=&quot;100%&quot;&gt;
       &lt;tbody&gt;&lt;tr&gt;&lt;th rowspan=&quot;2&quot;&gt;Length&lt;/th&gt;&lt;th colspan=&quot;3&quot;&gt;Seconds&lt;/th&gt;&lt;/tr&gt;
         &lt;tr&gt;
@@ -78,7 +80,7 @@ A2(A2(S3(Hey)S13(Hello, World!))S5(Ciao!))
     &lt;p&gt;
       And it is nice to see that the changes from Marpa::XS to Marpa::R2 have paid off.
       Included in the table are the Marpa numbers from my
-      2012 benchmark of MarpaL::XS.
+      2012 benchmark of Marpa::XS.
       Marpa::R2 has a new interface
       and an internal lexer,
       and now beats Marpa::XS by a factor of up to 10.

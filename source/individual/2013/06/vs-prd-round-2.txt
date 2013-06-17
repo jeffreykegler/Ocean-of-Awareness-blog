@@ -1,5 +1,5 @@
 Marpa v. Parse::RecDescent: a rematch
-  <h2>The application</h2><!--
+  <h3>The application</h3><!--
       marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
 --><p>
       In
@@ -20,14 +20,16 @@ A2(A2(S3(Hey)S13(Hello, World!))S5(Ciao!))
       specialty.
       </p>
       <p>
-      The last post focused on how Marpa can enable you to mix
-      procedural and declarative parsing smoothly
-      from the coding point of view.
+      <a href="http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2013/06/mixing-procedural.html">
+      The previous post</a>
+      focused on how to use Marpa to mix
+      procedural and declarative parsing together smoothly,
+      from a coding point of view.
       It only hinted at another aspect: speed.
     Over the last year, Marpa has greatly improved its speed for this kind of application.
       The latest release of Marpa::R2 now clocks in almost 100 times faster than Parse::RecDescent for long inputs.
     </p>
-    <h2>The benchmark</h2>
+    <h3>The benchmark</h3>
     <table align="center" cellpadding="5" border="1" width="100%">
       <tbody><tr><th rowspan="2">Length</th><th colspan="3">Seconds</th></tr>
         <tr>
@@ -65,7 +67,7 @@ A2(A2(S3(Hey)S13(Hello, World!))S5(Ciao!))
     <p>
       And it is nice to see that the changes from Marpa::XS to Marpa::R2 have paid off.
       Included in the table are the Marpa numbers from my
-      2012 benchmark of MarpaL::XS.
+      2012 benchmark of Marpa::XS.
       Marpa::R2 has a new interface
       and an internal lexer,
       and now beats Marpa::XS by a factor of up to 10.
