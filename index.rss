@@ -90,26 +90,31 @@ recursive descent is hard to beat.
 &lt;/p&gt;
 &lt;h2&gt;The benchmark&lt;/h2&gt;
 &lt;table align=&quot;center&quot; cellpadding=&quot;5&quot; border=&quot;1&quot; width=&quot;100%&quot;&gt;
-&lt;tr&gt;&lt;th rowspan=&quot;2&quot;&gt;Length&lt;th colspan=&quot;2&quot;&gt;Seconds&lt;/tr&gt;
+&lt;tr&gt;&lt;th rowspan=&quot;2&quot;&gt;Length&lt;th colspan=&quot;3&quot;&gt;Seconds&lt;/tr&gt;
 &lt;tr&gt;
+&lt;th&gt;Marpa::R2
 &lt;th&gt;Marpa::XS
 &lt;th&gt;Parse::RecDescent
 &lt;/tr&gt;
 &lt;tr&gt;&lt;td&gt;1000
+&lt;td align=&quot;center&quot;&gt;
 &lt;td align=&quot;center&quot;&gt;2.938
 
 &lt;td align=&quot;center&quot;&gt;13.616
 &lt;/tr&gt;
 &lt;tr&gt;&lt;td&gt;2000
+&lt;td align=&quot;center&quot;&gt;
 &lt;td align=&quot;center&quot;&gt;7.067
 &lt;td align=&quot;center&quot;&gt;62.083
 &lt;/tr&gt;
 &lt;tr&gt;&lt;td&gt;3000
+&lt;td align=&quot;center&quot;&gt;
 &lt;td align=&quot;center&quot;&gt;13.953
 &lt;td align=&quot;center&quot;&gt;132.549
 &lt;/tr&gt;
 &lt;tr&gt;
 &lt;td&gt;10000
+&lt;td align=&quot;center&quot;&gt;
 &lt;td align=&quot;center&quot;&gt;121.654
 &lt;td align=&quot;center&quot;&gt;1373.171
 &lt;/tr&gt;
