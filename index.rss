@@ -10,6 +10,185 @@
     <language>en</language>
 
   <item>
+    <title>Marpa v. Parse::RecDescent: some numbers</title>
+    <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2013/06/vs-prd-round-2.html</link>
+    <description>&lt;h2&gt;The application&lt;/h2&gt;
+&lt;p&gt;In
+&lt;a href=&quot;http://blogs.perl.org/users/polettix/2012/04/parserecdescent-and-number-of-elements-read-on-the-fly.html&quot;&gt;
+a recent blog post&lt;/a&gt;,
+Flavio Poletti described an unusual language,
+one which he'd written a parser for,
+using the very traditional method of
+recursive descent.
+Specifically he'd used Perl's Parse::RecDescent
+module.
+Several people asked me how
+&lt;a href=&quot;http://jeffreykegler.github.com/Marpa-web-site/&quot;&gt;
+Marpa&lt;/a&gt;
+would do on this language.
+This post contains
+a comparison, including a benchmark.
+&lt;/p&gt;
+The reader who wants an exact description should
+look at
+&lt;a href=&quot;http://blogs.perl.org/users/polettix/2012/04/parserecdescent-and-number-of-elements-read-on-the-fly.html&quot;&gt;
+Flavio's post and code&lt;/a&gt;.
+I call it a Dyck-Hollerith language because it
+combines
+&lt;a href=&quot;http://en.wikipedia.org/wiki/Hollerith_constant&quot;&gt;
+Hollerith constants&lt;/a&gt;
+
+(strings preceded by a count),
+with balanced parentheses
+(what is called
+&lt;a href=&quot;http://en.wikipedia.org/wiki/Dyck_language&quot;&gt;
+a Dyck language&lt;/a&gt;
+by mathematicians).
+Here's Flavio's example:
+&lt;code class=&quot;prettyprint&quot;&gt;
+&lt;pre&gt;
+A2(A2(S3(Hey)S13(Hello, World!))S5(Ciao!))
+&lt;/pre&gt;
+&lt;/code&gt;
+&lt;p&gt;
+When I did
+&lt;a href=&quot;http://blogs.perl.org/users/jeffrey_kegler/2011/11/marpa-v-perl-regexes-some-numbers.html&quot;&gt;
+a Marpa versus Perl regexes comparison&lt;/a&gt;,
+I was very careful to choose an application which showed Marpa in
+a good light.
+Here I did not pick the application,
+and it is almost as if it was designed
+to show recursive descent in a good light.
+&lt;/p&gt;
+&lt;p&gt;
+
+Recursive descent tries to parse by treating each rule
+as a subroutine call.
+This is a very natural way for a programmer
+to look at a grammar.
+But, alas, it only works in certain cases,
+and most of those are already handled by regular expressions.
+However, Dyck languages, including balanced parentheses,
+are one of the boundary cases:
+languages beyond the abilities of regular expressions,
+but within the capabilities of recursive descent.
+&lt;/p&gt;
+&lt;p&gt;
+Hollerith constants highlight the other strength of
+recursive descent.
+Since recursive descent's basic idea is so intuitive, it is easy
+to add custom hacks to it.
+And Hollerith constants are beyond the capabilities of even
+general BNF parsing.
+Earley's, Marpa, CYK, GLR, you name it,
+none of them can handle Hollerith constants without
+some kind of custom hack.
+You might say that Hollerith constants force a parser
+to wrestle in the mud.
+And when it comes to wrestling in the mud,
+recursive descent is hard to beat.
+&lt;/p&gt;
+&lt;h2&gt;The benchmark&lt;/h2&gt;
+&lt;table align=&quot;center&quot; cellpadding=&quot;5&quot; border=&quot;1&quot; width=&quot;100%&quot;&gt;
+&lt;tr&gt;&lt;th rowspan=&quot;2&quot;&gt;Length&lt;th colspan=&quot;2&quot;&gt;Seconds&lt;/tr&gt;
+&lt;tr&gt;
+&lt;th&gt;Marpa::XS
+&lt;th&gt;Parse::RecDescent
+&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;1000
+&lt;td align=&quot;center&quot;&gt;2.938
+
+&lt;td align=&quot;center&quot;&gt;13.616
+&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;2000
+&lt;td align=&quot;center&quot;&gt;7.067
+&lt;td align=&quot;center&quot;&gt;62.083
+&lt;/tr&gt;
+&lt;tr&gt;&lt;td&gt;3000
+&lt;td align=&quot;center&quot;&gt;13.953
+&lt;td align=&quot;center&quot;&gt;132.549
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;10000
+&lt;td align=&quot;center&quot;&gt;121.654
+&lt;td align=&quot;center&quot;&gt;1373.171
+&lt;/tr&gt;
+&lt;/table&gt;
+&lt;/p&gt;
+
+&lt;p&gt;
+For Parse::RecDescent, the code used
+in the benchmark is Flavio's,
+with light
+modifications such as the
+one that allows inputs of varying lengths.
+The Marpa::XS parser
+used in this benchmark is
+&lt;a href=&quot;https://gist.github.com/2364437&quot;&gt;
+on github as a gist&lt;/a&gt;.
+&lt;/p&gt;
+&lt;p&gt;
+Since Marpa::XS has its parse engine in optimized C,
+while Parse::RecDescent is pure Perl,
+one would hope that Marpa::XS would put better numbers
+on the board,
+and it did.
+Marpa::XS has some startup overhead, but settles in
+at roughly 10 times faster than the Parse::RecDescent
+implementation.
+&lt;/p&gt;
+&lt;p&gt;
+To test inputs of varying lengths, I took the example above and created
+arrays of it in the Dyck-Hollerith language.
+The reported length is the length of the top-level array.
+The example is 42 characters long, so a reported length of 1000 means
+the input string is 6+1000*42+1=42007 characters long.
+(The 6 is the length of the &quot;A1000(&quot; prefix of the enclosing
+array and the 1 is for
+its closing parenthesis.)
+&lt;/p&gt;
+&lt;h2&gt;Conclusions&lt;/h2&gt;
+&lt;p&gt;Benchmarks are like traffic accidents.
+They have a draw and an excitement,
+one that the wiser and
+nobler sort know is improper and to be resisted.
+But you'll often catch even them slowing down to look.
+&lt;/p&gt;
+&lt;p&gt;
+
+Other factors than speed may determine the choice of a parser,
+particularly if large inputs do not occur.
+As noted, many programmers prefer the recursive descent approach
+of turning grammar rules into subroutines calls:
+for them, it is the way things SHOULD work.
+And given recursive descent's hacker friendliness, it is the
+way things often DO work.
+&lt;/p&gt;
+&lt;p&gt;
+But I think those accustomed to recursive descent may want to
+look at Marpa.
+Marpa has all the same context that recursive descent
+has, and allows the same tricks and more.
+In this benchmark,
+Marpa did NOT haul out the Ruby Slippers --
+it limited itself to the context that recursive descent has.
+&lt;/p&gt;
+&lt;p&gt;
+Marpa is faster in this benchmark because it gives the
+application the best of both worlds -- custom hacks,
+*AND* a parse engine written in optimized C.
+Recursive descent is good at custom hacks,
+and for this grammar its underlying algorithm has
+the same big-O complexity.
+But by its nature, Parse::RecDescent is pure Perl,
+so Marpa::XS clocks a steady factor-of-ten advantage.
+And, in fact, of the time Marpa::XS does use, only about 20%
+is used by its parse engine.
+Overhead and lexing in Marpa::XS are in pure Perl, and they take
+80% of the time.
+&lt;/p&gt;</description>
+  </item>
+  <item>
     <title>Mixing procedural and declarative parsing gracefully</title>
     <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2013/06/mixing-procedural.html</link>
     <description>  &lt;h3&gt;Declarative and procedural parsing&lt;/h3&gt;
@@ -1121,161 +1300,6 @@ die 'No parse' if not defined $result;
       At the moment, the only implementation that contains
       all of these modernizations is Marpa.
     &lt;/p&gt;
-    &lt;p&gt;
-      Marpa's latest version is
-      &lt;a href=&quot;https://metacpan.org/module/Marpa::R2&quot;&gt;Marpa::R2,
-        which is available on CPAN&lt;/a&gt;.
-      Marpa's
-      &lt;a href=&quot;https://metacpan.org/module/JKEGL/Marpa-R2-2.052000/pod/Scanless/DSL.pod&quot;&gt;SLIF
-        is
-        a new interface&lt;/a&gt;,
-      which represents a major increase
-      in Marpa's &quot;whipitupitude&quot;.
-      The SLIF has tutorials
-      &lt;a href=&quot;http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2013/01/dsl_simpler2.html&quot;&gt;here
-      &lt;/a&gt;
-      and
-      &lt;a href=&quot;http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2013/01/announce_scanless.html&quot;&gt;
-        here&lt;/a&gt;.
-      Marpa has
-      &lt;a href=&quot;http://jeffreykegler.github.com/Marpa-web-site/&quot;&gt;a web page&lt;/a&gt;,
-      and of course it is the focus of
-      &lt;a href=&quot;http://jeffreykegler.github.com/Ocean-of-Awareness-blog/&quot;&gt;
-        my &quot;Ocean of Awareness&quot; blog&lt;/a&gt;.
-    &lt;/p&gt;
-    &lt;p&gt;
-      Comments on this post
-      can be sent to the Marpa's Google Group:
-      &lt;code&gt;marpa-parser@googlegroups.com&lt;/code&gt;
-    &lt;/p&gt;</description>
-  </item>
-  <item>
-    <title>Marpa's SLIF now allows procedural parsing</title>
-    <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2013/04/procedural.html</link>
-    <description>  &lt;p&gt;
-      &lt;!--
-      marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
-      --&gt;
-    &lt;/p&gt;
-    &lt;p&gt;
-      Marpa's SLIF (scanless interface)
-      allows an application to parse directly from any BNF grammar.
-      Marpa parses vast classes of grammars in linear time,
-      including all those classes currently in practical use.
-      With
-      &lt;a href=&quot;https://metacpan.org/release/Marpa-R2&quot;&gt;
-        its latest release&lt;/a&gt;,
-      Marpa::R2's SLIF
-      also allows an application to intermix
-      its own custom lexing and parsing logic
-      with Marpa's,
-      and to switch back and forth between them.
-      This means,
-      among other things,
-      that Marpa's SLIF can now
-      do procedural parsing.
-    &lt;/p&gt;
-    &lt;p&gt;
-      What is procedural parsing?
-      Procedural parsing is parsing using
-      ad hoc code in a procedural language.
-      The opposite of procedural parsing is declarative parsing
-      -- parsing driven by some kind of formal description
-      of the grammar.
-      Procedural parsing
-      may be described as what you do when you've given up
-      on your parsing algorithm.
-      Dissatisfaction with parsing theory
-      has left modern programmers accustomed to procedural parsing.
-      And in fact some problems are best tackled with procedural parsing.
-    &lt;/p&gt;
-    &lt;h3&gt;An example&lt;/h3&gt;
-    &lt;p&gt;
-      One such problem is parsing Perl-style here-documents.
-      Peter Stuifzand has tackled this using
-      &lt;a href=&quot;https://metacpan.org/release/JKEGL/Marpa-R2-2.052000&quot;&gt;
-        the
-        just-released version of Marpa::R2&lt;/a&gt;.
-      For those unfamiliar, Perl allows documents to be incorporated
-      into its source files in line-oriented fashion as &quot;here-documents&quot;.
-      Here-documents can be used in expressions.
-      The syntax to do this is very handy, if a little strange.
-      For example,
-    &lt;/p&gt;
-    &lt;blockquote&gt;&lt;pre&gt;
-say &amp;lt;&amp;lt;ENDA, &amp;lt;&amp;lt;ENDB, &amp;lt;&amp;lt;ENDC; say &amp;lt;&amp;lt;ENDD;
-a
-ENDA
-b
-ENDB
-c
-ENDC
-d
-ENDD&lt;/pre&gt;&lt;/blockquote&gt;
-    &lt;p&gt;
-      starts with a single line declaring four here-documents spread out
-      over two
-      &lt;tt&gt;say&lt;/tt&gt;
-      statements.
-      The expressions of the form
-    &lt;/p&gt;&lt;blockquote&gt;&lt;pre&gt;&amp;lt;&amp;lt;ENDX&lt;/pre&gt;&lt;/blockquote&gt;&lt;p&gt;
-      are here-document expressions.
-      &lt;tt&gt;&amp;lt;&amp;lt;&lt;/tt&gt;
-      is the heredoc operator.
-      The string which follows it (in this example,
-      &lt;tt&gt;ENDA&lt;/tt&gt;,
-      &lt;tt&gt;ENDB&lt;/tt&gt;, etc.) is the heredoc terminator string --
-      the string that will signal end
-      of body of the here-document.
-      The body of the here-documents follow, in order, over the next eight lines.
-      More details of here-document syntax, with examples, can be found
-      in
-      &lt;a href=&quot;http://perldoc.perl.org/perlop.html#Quote-Like-Operators&quot;&gt;the
-        Perl documentation&lt;/a&gt;.
-    &lt;/p&gt;
-    &lt;p&gt;All of this poses quite a challenge to a parser-lexer combination,
-      which is one reason I chose it as an example --
-      to illustrate that the Marpa's SLIF support for procedural parsing can
-      handle genuinely difficult cases.
-      There are a few ways Marpa could approach this.
-      The one
-      Peter Stuifzand chose was to
-      to read the
-      here-document's body as the value of the terminator in
-      each
-      &lt;tt&gt;&amp;lt;&amp;lt;ENDX&lt;/tt&gt;
-      expression.
-    &lt;/p&gt;
-    &lt;p&gt;
-      The strategy works this way:
-      Marpa allows the application to mark certain lexemes as &quot;pause&quot; lexemes.
-      Whenever a &quot;pause&quot; lexeme is encountered, Marpa's internal scanning stops,
-      and control is handed over to the application.
-      In this case, the application is set up to pause after every newline,
-      and before the terminator in every here-document expression.
-    &lt;/p&gt;
-    &lt;p&gt;
-      While reading the line containing the four here-document expressions,
-      Marpa's SLIF pauses and resumes five times -- once for each here-document expression,
-      then once for the final newline.
-      Details can be found in compact form in the heavily commented code
-      in
-      &lt;a href=&quot;https://gist.github.com/jeffreykegler/5431739&quot;&gt;this
-        Github gist&lt;/a&gt;.
-    &lt;/p&gt;
-    &lt;h3&gt;Marpa as a better procedural parser&lt;/h3&gt;
-    &lt;p&gt;So far I've talked in terms of Marpa &quot;allowing&quot; procedural parsing.
-      In fact, there can be much more to it.
-      Marpa can make procedural parsing easier and more accurate.
-    &lt;/p&gt;
-    &lt;p&gt;Marpa knows, at every point, which rules it is recognizing, and how far it
-      is into them.
-      Marpa also knows which new rules the grammar expects, and which terminals.
-      The procedural parsing logic can consult this information to guide its decisions.
-      Marpa can provide your procedural parsing logic with radar,
-      as well as the option to use a very smart autopilot.
-    &lt;/p&gt;
-    &lt;h3&gt;For more about Marpa&lt;/h3&gt;
     &lt;p&gt;
       Marpa's latest version is
       &lt;a href=&quot;https://metacpan.org/module/Marpa::R2&quot;&gt;Marpa::R2,
