@@ -16,30 +16,25 @@
       marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
 --&gt;&lt;p&gt;
       In my last post, I looked at an unusual language which defines arrays and strings,
-      mixing counts and parentheses.  Here's an example if it:
-    &lt;/p&gt;&lt;blockquote&gt;&lt;pre&gt;
+      mixing counts and parentheses.  Here is an example:
+    &lt;/p&gt;
+&lt;blockquote&gt;&lt;pre&gt;
 A2(A2(S3(Hey)S13(Hello, World!))S5(Ciao!))
 &lt;/pre&gt;&lt;/blockquote&gt;
     &lt;p&gt;
-      The language is of special interest to me because, while simple, it requires procedural
+      The language is of special interest for testing recursive descent
+      because, while simple, it requires procedural
       parsing -- a purely declarative BNF approach will not work.
       So it's a chance to find out if Marpa can play the game that is recursive descent's
       specialty.
-      The last post focused on how Marpa now allows you to mix
+      &lt;/p&gt;
+      &lt;p&gt;
+      The last post focused on how Marpa allows you to mix
       procedural and declarative parsing very smoothly
       from the coding point of view.
       It only hinted at another aspect: speed.
-    &lt;/p&gt;&lt;p&gt;Over the last year, Marpa has greatly improved its speed for this kind of application.
-      It now clocks almost 100 times faster than Parse::RecDescent for long inputs.
-    &lt;/p&gt;&lt;p&gt;Parse::RecDescent is pure Perl, while Marpa is based on a parse
-      engine in a library written in
-      hand-optimized C.
-      You'd expect Marpa to win this race and, as represented by Marpa::XS
-      in 2012, it did, by a factor of up to 10.
-      In the past year, Marpa::R2 has come out, with a new interface
-      and an internal lexer.
-      Marpa::R2 beats Marpa::XS by a factor of up to 10,
-      making it 100 times faster for long inputs.
+    Over the last year, Marpa::R2 has greatly improved its speed for this kind of application.
+      It now clocks in almost 100 times faster than Parse::RecDescent for long inputs.
     &lt;/p&gt;
     &lt;h2&gt;The benchmark&lt;/h2&gt;
     &lt;table align=&quot;center&quot; cellpadding=&quot;5&quot; border=&quot;1&quot; width=&quot;100%&quot;&gt;
@@ -74,24 +69,18 @@ A2(A2(S3(Hey)S13(Hello, World!))S5(Ciao!))
     &lt;p&gt;Parse::RecDescent is pure Perl, while Marpa is based on a parse
       engine in a library written in
       hand-optimized C.
-      You'd certainly expect Marpa to win this race and it did.
-    &lt;/p&gt;&lt;p&gt;The C versus Perl difference is not just a matter of comparing languages,
-      however -- it points up a fundamental advantage of Marpa over recursive
-      descent.
-      Recursive descent is a general strategy, not a true algorithm.
-      The actual algorithm must be hand-coded for each application.
-      Marpa, at is core, is a algorithm.
-      Write that algorithm up in hand-optimized C once
-      (which I have already done for you),
-      and every application reaps the advantage.
-    &lt;/p&gt;&lt;p&gt;
-      This
-      in 2012, it did, by a factor of up to 10.
-      In the past year, Marpa::R2 has come out, with a new interface
-      and an internal lexer.
-      Marpa::R2 beats Marpa::XS by a factor of up to 10,
-      making it 100 times faster for long inputs.
-      While the language is ideally suited to show recursive descent to
+      You'd expect Marpa to win this race and it did.
+      And it is nice to see that the changes from Marpa::XS to Marpa::R2 have paid off.
+    &lt;/p&gt;
+    &lt;p&gt;
+      Included in the table are the Marpa numbers from my
+      2012 benchmark of MarpaL::XS.
+      Marpa::R2 has a new interface
+      and an internal lexer,
+      and now beats Marpa::XS by a factor of up to 10.
+      &lt;/p&gt;
+      &lt;p&gt;
+      While the benchmarked language is ideally suited to show recursive descent to
       advantage, the input lengths were picked to emphasize Marpa's strengths.
       Marpa optimizes by doing a lot of precomputation,
       and is written long inputs in mind.
