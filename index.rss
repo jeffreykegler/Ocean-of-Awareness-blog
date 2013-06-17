@@ -90,19 +90,17 @@ A2(A2(S3(Hey)S13(Hello, World!))S5(Ciao!))
       advantage, the input lengths were picked to emphasize Marpa's strengths.
       Marpa optimizes by doing a lot of precomputation,
       and is written with long inputs in mind.
-      The tests emphasize long inputs, though these days a 500K source,
+      Though these days, a 500K source,
       longer than the longest tested, would not exactly set a new industry record.
     &lt;/p&gt;
     &lt;h3&gt;To learn more&lt;/h3&gt;
     &lt;p&gt;
-      The reader who wants an fuller description of the language
-      tested should consult
-      look at
+      There are fuller descriptions of the language in
       &lt;a href=&quot;http://blogs.perl.org/users/polettix/2012/04/parserecdescent-and-number-of-elements-read-on-the-fly.html&quot;&gt;
         Flavio's post and code&lt;/a&gt;,
       &lt;a href=&quot;http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2013/06/mixing-procedural.html&quot;&gt;
-      my recent post on how to write a parser for this language&lt;/a&gt;,
-      and
+      and my recent post on how to write a parser for this language&lt;/a&gt;.
+      I talk more about the benchmark's methodology in
       &lt;a href=&quot;http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2012/04/marpa-v-parserecdescent-some-numbers.html&quot;&gt;
       my post on the 2012 benchmark&lt;/a&gt;.
     &lt;/p&gt;
