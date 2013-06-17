@@ -66,55 +66,6 @@ and an internal lexer.
 Marpa::R2 beats Marpa::XS by a factor of up to 10,
 making it 100 times faster for long inputs.
 </p>
-I call it a Dyck-Hollerith language because it
-combines
-<a href="http://en.wikipedia.org/wiki/Hollerith_constant">
-Hollerith constants</a>
-
-(strings preceded by a count),
-with balanced parentheses
-(what is called
-<a href="http://en.wikipedia.org/wiki/Dyck_language">
-a Dyck language</a>
-by mathematicians).
-Here's Flavio's example:
-When I did
-<a href="http://blogs.perl.org/users/jeffrey_kegler/2011/11/marpa-v-perl-regexes-some-numbers.html">
-a Marpa versus Perl regexes comparison</a>,
-I was very careful to choose an application which showed Marpa in
-a good light.
-Here I did not pick the application,
-and it is almost as if it was designed
-to show recursive descent in a good light.
-</p>
-<p>
-
-Recursive descent tries to parse by treating each rule
-as a subroutine call.
-This is a very natural way for a programmer
-to look at a grammar.
-But, alas, it only works in certain cases,
-and most of those are already handled by regular expressions.
-However, Dyck languages, including balanced parentheses,
-are one of the boundary cases:
-languages beyond the abilities of regular expressions,
-but within the capabilities of recursive descent.
-</p>
-<p>
-Hollerith constants highlight the other strength of
-recursive descent.
-Since recursive descent's basic idea is so intuitive, it is easy
-to add custom hacks to it.
-And Hollerith constants are beyond the capabilities of even
-general BNF parsing.
-Earley's, Marpa, CYK, GLR, you name it,
-none of them can handle Hollerith constants without
-some kind of custom hack.
-You might say that Hollerith constants force a parser
-to wrestle in the mud.
-And when it comes to wrestling in the mud,
-recursive descent is hard to beat.
-</p>
 <h2>The benchmark</h2>
 <table align="center" cellpadding="5" border="1" width="100%">
 <tr><th rowspan="2">Length<th colspan="3">Seconds</tr>
