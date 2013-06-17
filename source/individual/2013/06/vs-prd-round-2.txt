@@ -2,26 +2,30 @@ Marpa v. Parse::RecDescent: a rematch
   <h2>The application</h2><!--
       marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
 --><p>
-      In my last post, I looked at an unusual language which serializes arrays and strings,
+      In
+      <a href="http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2013/06/mixing-procedural.html">
+      a recent post</a>,
+      I looked at an unusual language which serializes arrays and strings,
       using a mixture of counts and parentheses.  Here is an example:
     </p>
 <blockquote><pre>
 A2(A2(S3(Hey)S13(Hello, World!))S5(Ciao!))
 </pre></blockquote>
     <p>
-      The language is of special interest for testing recursive descent
+      The language is of special interest for comparison
+      against recursive descent
       because, while simple, it requires procedural
       parsing -- a purely declarative BNF approach will not work.
       So it's a chance to find out if Marpa can play the game that is recursive descent's
       specialty.
       </p>
       <p>
-      The last post focused on how Marpa allows you to mix
-      procedural and declarative parsing very smoothly
+      The last post focused on how Marpa can enable you to mix
+      procedural and declarative parsing smoothly
       from the coding point of view.
       It only hinted at another aspect: speed.
-    Over the last year, Marpa::R2 has greatly improved its speed for this kind of application.
-      It now clocks in almost 100 times faster than Parse::RecDescent for long inputs.
+    Over the last year, Marpa has greatly improved its speed for this kind of application.
+      The latest release of Marpa::R2 now clocks in almost 100 times faster than Parse::RecDescent for long inputs.
     </p>
     <h2>The benchmark</h2>
     <table align="center" cellpadding="5" border="1" width="100%">
@@ -57,9 +61,9 @@ A2(A2(S3(Hey)S13(Hello, World!))S5(Ciao!))
       engine in a library written in
       hand-optimized C.
       You'd expect Marpa to win this race and it did.
-      And it is nice to see that the changes from Marpa::XS to Marpa::R2 have paid off.
     </p>
     <p>
+      And it is nice to see that the changes from Marpa::XS to Marpa::R2 have paid off.
       Included in the table are the Marpa numbers from my
       2012 benchmark of MarpaL::XS.
       Marpa::R2 has a new interface
@@ -74,15 +78,20 @@ A2(A2(S3(Hey)S13(Hello, World!))S5(Ciao!))
       The tests emphasize long inputs, though these days a 500K source,
       longer than the longest tested, would not exactly set a new industry record.
     </p>
+    <h3>To learn more</h3>
     <p>
       The reader who wants an fuller description of the language
       tested should consult
       look at
       <a href="http://blogs.perl.org/users/polettix/2012/04/parserecdescent-and-number-of-elements-read-on-the-fly.html">
         Flavio's post and code</a>,
-      my last post,
-      and my post on last year's running of this benchmark.
-    </p><p>
+      <a href="http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2013/06/mixing-procedural.html">
+      my recent post on how to write a parser for this language</a>,
+      and
+      <a href="http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2012/04/marpa-v-parserecdescent-some-numbers.html">
+      my post on the 2012 benchmark</a>.
+    </p>
+    <p>
       <a href="https://metacpan.org/module/Marpa::R2">Marpa::R2
         is available on CPAN</a>.
       A list of my Marpa tutorials can be found
