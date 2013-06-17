@@ -1,73 +1,116 @@
 Marpa v. Parse::RecDescent: a rematch
-<h2>The application</h2>
-<p>
-In my last post, I looked at an unusual language which defines arrays and strings,
-mixing counts and parentheses.  Here's an example if it:
-<code class="prettyprint">
-<pre>
+  <h2>The application</h2><!--
+      marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
+--><p>
+      In my last post, I looked at an unusual language which defines arrays and strings,
+      mixing counts and parentheses.  Here's an example if it:
+    </p><blockquote><pre>
 A2(A2(S3(Hey)S13(Hello, World!))S5(Ciao!))
-</pre>
-</code>
-<p>
-The language is of special interest to me because, while simple, it requires procedural
-parsing -- a purely declarative BNF approach will not work.
-So it's a chance to find out if Marpa can play the game that is recursive descent's
-specialty.
-The last post focused on how to write the solution
-in a nice mix of procedural and declarative.
-It hinted at another aspect: speed.
-<p>Over the last year, Marpa has also improved its speed.
-Parse::RecDescent is pure Perl, while Marpa is based on a parse
-engine in a library written in
-hand-optimized C.
-You'd expect Marpa to win this race and, as represented by Marpa::XS
-a year it did, by a factor of up to 10.
-In the past year, Marpa::R2 has come out, with a new interface
-and an internal lexer.
-Marpa::R2 beats Marpa::XS by a factor of up to 10,
-making it 100 times faster for long inputs.
-</p>
-<h2>The benchmark</h2>
-<table align="center" cellpadding="5" border="1" width="100%">
-<tr><th rowspan="2">Length<th colspan="3">Seconds</tr>
-<tr>
-<th>Marpa::R2
-<th>Marpa::XS
-<th>Parse::RecDescent
-</tr>
-<tr><td>1000
-<td align="center">1.569
-<td align="center">2.938
-<td align="center">13.616
-</tr>
-<tr><td>2000
-<td align="center">2.746
-<td align="center">7.067
-<td align="center">62.083
-</tr>
-<tr><td>3000
-<td align="center">3.935
-<td align="center">13.953
-<td align="center">132.549
-</tr>
-<tr>
-<td>10000
-<td align="center">12.270
-<td align="center">121.654
-<td align="center">1373.171
-</tr>
-</table>
-</p>
-
-<p>
-The benchmark emphasizes long inputs, though these days a 500K source,
-longer than the longest tested, would not exactly set a new record.
-Marpa optimizes by doing a lot of grammar precomputation,
-and is written long inputs in mind.
-in the benchmark is Flavio's,
-</p>
-<p>
-The reader who wants an exact description should
-look at
-<a href="http://blogs.perl.org/users/polettix/2012/04/parserecdescent-and-number-of-elements-read-on-the-fly.html">
-Flavio's post and code</a>.
+</pre></blockquote>
+    <p>
+      The language is of special interest to me because, while simple, it requires procedural
+      parsing -- a purely declarative BNF approach will not work.
+      So it's a chance to find out if Marpa can play the game that is recursive descent's
+      specialty.
+      The last post focused on how Marpa now allows you to mix
+      procedural and declarative parsing very smoothly
+      from the coding point of view.
+      It only hinted at another aspect: speed.
+    </p><p>Over the last year, Marpa has greatly improved its speed for this kind of application.
+      It now clocks almost 100 times faster than Parse::RecDescent for long inputs.
+    </p><p>Parse::RecDescent is pure Perl, while Marpa is based on a parse
+      engine in a library written in
+      hand-optimized C.
+      You'd expect Marpa to win this race and, as represented by Marpa::XS
+      in 2012, it did, by a factor of up to 10.
+      In the past year, Marpa::R2 has come out, with a new interface
+      and an internal lexer.
+      Marpa::R2 beats Marpa::XS by a factor of up to 10,
+      making it 100 times faster for long inputs.
+    </p>
+    <h2>The benchmark</h2>
+    <table align="center" cellpadding="5" border="1" width="100%">
+      <tbody><tr><th rowspan="2">Length</th><th colspan="3">Seconds</th></tr>
+        <tr>
+          <th>Marpa::R2</th>
+          <th>Marpa::XS</th>
+          <th>Parse::RecDescent
+          </th></tr>
+        <tr><td>1000
+          </td><td align="center">1.569
+          </td><td align="center">2.938
+          </td><td align="center">13.616
+          </td></tr>
+        <tr><td>2000
+          </td><td align="center">2.746
+          </td><td align="center">7.067
+          </td><td align="center">62.083
+          </td></tr>
+        <tr><td>3000
+          </td><td align="center">3.935
+          </td><td align="center">13.953
+          </td><td align="center">132.549
+          </td></tr>
+        <tr>
+          <td>10000
+          </td><td align="center">12.270
+          </td><td align="center">121.654
+          </td><td align="center">1373.171
+          </td></tr>
+      </tbody></table>
+    <p>Parse::RecDescent is pure Perl, while Marpa is based on a parse
+      engine in a library written in
+      hand-optimized C.
+      You'd certainly expect Marpa to win this race and it did.
+    </p><p>The C versus Perl difference is not just a matter of comparing languages,
+      however -- it points up a fundamental advantage of Marpa over recursive
+      descent.
+      Recursive descent is a general strategy, not a true algorithm.
+      The actual algorithm must be hand-coded for each application.
+      Marpa, at is core, is a algorithm.
+      Write that algorithm up in hand-optimized C once
+      (which I have already done for you),
+      and every application reaps the advantage.
+    </p><p>
+      This
+      in 2012, it did, by a factor of up to 10.
+      In the past year, Marpa::R2 has come out, with a new interface
+      and an internal lexer.
+      Marpa::R2 beats Marpa::XS by a factor of up to 10,
+      making it 100 times faster for long inputs.
+      While the language is ideally suited to show recursive descent to
+      advantage, the input lengths were picked to emphasize Marpa's strengths.
+      Marpa optimizes by doing a lot of precomputation,
+      and is written long inputs in mind.
+      The tests emphasize long inputs, though these days a 500K source,
+      longer than the longest tested, would not exactly set a new industry record.
+    </p>
+    <p>
+      The reader who wants an fuller description of the language
+      tested should consult
+      look at
+      <a href="http://blogs.perl.org/users/polettix/2012/04/parserecdescent-and-number-of-elements-read-on-the-fly.html">
+        Flavio's post and code</a>,
+      my last post,
+      and my post on last year's running of this benchmark.
+    </p><p>
+      <a href="https://metacpan.org/module/Marpa::R2">Marpa::R2
+        is available on CPAN</a>.
+      A list of my Marpa tutorials can be found
+      <a href="http://jeffreykegler.github.io/Ocean-of-Awareness-blog/metapages/annotated.html#TUTORIAL">
+        here</a>.
+      There is
+      <a href="http://marpa-guide.github.io/chapter1.html">
+        a new tutorial by Peter Stuifzand</a>.
+      <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/">
+        The Ocean of Awareness blog</a>
+      focuses on Marpa,
+      and it has
+      <a href="http://jeffreykegler.github.io/Ocean-of-Awareness-blog/metapages/annotated.html">an annotated guide</a>.
+      Marpa also has
+      <a href="http://jeffreykegler.github.com/Marpa-web-site/">a web page</a>.
+      For questions, support and discussion, there is a
+      Google Group:
+      <code>marpa-parser@googlegroups.com</code>.
+      Comments on this post can be made there.
+    </p>

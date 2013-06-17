@@ -12,78 +12,121 @@
   <item>
     <title>Marpa v. Parse::RecDescent: a rematch</title>
     <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2013/06/vs-prd-round-2.html</link>
-    <description>&lt;h2&gt;The application&lt;/h2&gt;
-&lt;p&gt;
-In my last post, I looked at an unusual language which defines arrays and strings,
-mixing counts and parentheses.  Here's an example if it:
-&lt;code class=&quot;prettyprint&quot;&gt;
-&lt;pre&gt;
+    <description>  &lt;h2&gt;The application&lt;/h2&gt;&lt;!--
+      marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
+--&gt;&lt;p&gt;
+      In my last post, I looked at an unusual language which defines arrays and strings,
+      mixing counts and parentheses.  Here's an example if it:
+    &lt;/p&gt;&lt;blockquote&gt;&lt;pre&gt;
 A2(A2(S3(Hey)S13(Hello, World!))S5(Ciao!))
-&lt;/pre&gt;
-&lt;/code&gt;
-&lt;p&gt;
-The language is of special interest to me because, while simple, it requires procedural
-parsing -- a purely declarative BNF approach will not work.
-So it's a chance to find out if Marpa can play the game that is recursive descent's
-specialty.
-The last post focused on how to write the solution
-in a nice mix of procedural and declarative.
-It hinted at another aspect: speed.
-&lt;p&gt;Over the last year, Marpa has also improved its speed.
-Parse::RecDescent is pure Perl, while Marpa is based on a parse
-engine in a library written in
-hand-optimized C.
-You'd expect Marpa to win this race and, as represented by Marpa::XS
-a year it did, by a factor of up to 10.
-In the past year, Marpa::R2 has come out, with a new interface
-and an internal lexer.
-Marpa::R2 beats Marpa::XS by a factor of up to 10,
-making it 100 times faster for long inputs.
-&lt;/p&gt;
-&lt;h2&gt;The benchmark&lt;/h2&gt;
-&lt;table align=&quot;center&quot; cellpadding=&quot;5&quot; border=&quot;1&quot; width=&quot;100%&quot;&gt;
-&lt;tr&gt;&lt;th rowspan=&quot;2&quot;&gt;Length&lt;th colspan=&quot;3&quot;&gt;Seconds&lt;/tr&gt;
-&lt;tr&gt;
-&lt;th&gt;Marpa::R2
-&lt;th&gt;Marpa::XS
-&lt;th&gt;Parse::RecDescent
-&lt;/tr&gt;
-&lt;tr&gt;&lt;td&gt;1000
-&lt;td align=&quot;center&quot;&gt;1.569
-&lt;td align=&quot;center&quot;&gt;2.938
-&lt;td align=&quot;center&quot;&gt;13.616
-&lt;/tr&gt;
-&lt;tr&gt;&lt;td&gt;2000
-&lt;td align=&quot;center&quot;&gt;2.746
-&lt;td align=&quot;center&quot;&gt;7.067
-&lt;td align=&quot;center&quot;&gt;62.083
-&lt;/tr&gt;
-&lt;tr&gt;&lt;td&gt;3000
-&lt;td align=&quot;center&quot;&gt;3.935
-&lt;td align=&quot;center&quot;&gt;13.953
-&lt;td align=&quot;center&quot;&gt;132.549
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;10000
-&lt;td align=&quot;center&quot;&gt;12.270
-&lt;td align=&quot;center&quot;&gt;121.654
-&lt;td align=&quot;center&quot;&gt;1373.171
-&lt;/tr&gt;
-&lt;/table&gt;
-&lt;/p&gt;
-
-&lt;p&gt;
-The benchmark emphasizes long inputs, though these days a 500K source,
-longer than the longest tested, would not exactly set a new record.
-Marpa optimizes by doing a lot of grammar precomputation,
-and is written long inputs in mind.
-in the benchmark is Flavio's,
-&lt;/p&gt;
-&lt;p&gt;
-The reader who wants an exact description should
-look at
-&lt;a href=&quot;http://blogs.perl.org/users/polettix/2012/04/parserecdescent-and-number-of-elements-read-on-the-fly.html&quot;&gt;
-Flavio's post and code&lt;/a&gt;.</description>
+&lt;/pre&gt;&lt;/blockquote&gt;
+    &lt;p&gt;
+      The language is of special interest to me because, while simple, it requires procedural
+      parsing -- a purely declarative BNF approach will not work.
+      So it's a chance to find out if Marpa can play the game that is recursive descent's
+      specialty.
+      The last post focused on how Marpa now allows you to mix
+      procedural and declarative parsing very smoothly
+      from the coding point of view.
+      It only hinted at another aspect: speed.
+    &lt;/p&gt;&lt;p&gt;Over the last year, Marpa has greatly improved its speed for this kind of application.
+      It now clocks almost 100 times faster than Parse::RecDescent for long inputs.
+    &lt;/p&gt;&lt;p&gt;Parse::RecDescent is pure Perl, while Marpa is based on a parse
+      engine in a library written in
+      hand-optimized C.
+      You'd expect Marpa to win this race and, as represented by Marpa::XS
+      in 2012, it did, by a factor of up to 10.
+      In the past year, Marpa::R2 has come out, with a new interface
+      and an internal lexer.
+      Marpa::R2 beats Marpa::XS by a factor of up to 10,
+      making it 100 times faster for long inputs.
+    &lt;/p&gt;
+    &lt;h2&gt;The benchmark&lt;/h2&gt;
+    &lt;table align=&quot;center&quot; cellpadding=&quot;5&quot; border=&quot;1&quot; width=&quot;100%&quot;&gt;
+      &lt;tbody&gt;&lt;tr&gt;&lt;th rowspan=&quot;2&quot;&gt;Length&lt;/th&gt;&lt;th colspan=&quot;3&quot;&gt;Seconds&lt;/th&gt;&lt;/tr&gt;
+        &lt;tr&gt;
+          &lt;th&gt;Marpa::R2&lt;/th&gt;
+          &lt;th&gt;Marpa::XS&lt;/th&gt;
+          &lt;th&gt;Parse::RecDescent
+          &lt;/th&gt;&lt;/tr&gt;
+        &lt;tr&gt;&lt;td&gt;1000
+          &lt;/td&gt;&lt;td align=&quot;center&quot;&gt;1.569
+          &lt;/td&gt;&lt;td align=&quot;center&quot;&gt;2.938
+          &lt;/td&gt;&lt;td align=&quot;center&quot;&gt;13.616
+          &lt;/td&gt;&lt;/tr&gt;
+        &lt;tr&gt;&lt;td&gt;2000
+          &lt;/td&gt;&lt;td align=&quot;center&quot;&gt;2.746
+          &lt;/td&gt;&lt;td align=&quot;center&quot;&gt;7.067
+          &lt;/td&gt;&lt;td align=&quot;center&quot;&gt;62.083
+          &lt;/td&gt;&lt;/tr&gt;
+        &lt;tr&gt;&lt;td&gt;3000
+          &lt;/td&gt;&lt;td align=&quot;center&quot;&gt;3.935
+          &lt;/td&gt;&lt;td align=&quot;center&quot;&gt;13.953
+          &lt;/td&gt;&lt;td align=&quot;center&quot;&gt;132.549
+          &lt;/td&gt;&lt;/tr&gt;
+        &lt;tr&gt;
+          &lt;td&gt;10000
+          &lt;/td&gt;&lt;td align=&quot;center&quot;&gt;12.270
+          &lt;/td&gt;&lt;td align=&quot;center&quot;&gt;121.654
+          &lt;/td&gt;&lt;td align=&quot;center&quot;&gt;1373.171
+          &lt;/td&gt;&lt;/tr&gt;
+      &lt;/tbody&gt;&lt;/table&gt;
+    &lt;p&gt;Parse::RecDescent is pure Perl, while Marpa is based on a parse
+      engine in a library written in
+      hand-optimized C.
+      You'd certainly expect Marpa to win this race and it did.
+    &lt;/p&gt;&lt;p&gt;The C versus Perl difference is not just a matter of comparing languages,
+      however -- it points up a fundamental advantage of Marpa over recursive
+      descent.
+      Recursive descent is a general strategy, not a true algorithm.
+      The actual algorithm must be hand-coded for each application.
+      Marpa, at is core, is a algorithm.
+      Write that algorithm up in hand-optimized C once
+      (which I have already done for you),
+      and every application reaps the advantage.
+    &lt;/p&gt;&lt;p&gt;
+      This
+      in 2012, it did, by a factor of up to 10.
+      In the past year, Marpa::R2 has come out, with a new interface
+      and an internal lexer.
+      Marpa::R2 beats Marpa::XS by a factor of up to 10,
+      making it 100 times faster for long inputs.
+      While the language is ideally suited to show recursive descent to
+      advantage, the input lengths were picked to emphasize Marpa's strengths.
+      Marpa optimizes by doing a lot of precomputation,
+      and is written long inputs in mind.
+      The tests emphasize long inputs, though these days a 500K source,
+      longer than the longest tested, would not exactly set a new industry record.
+    &lt;/p&gt;
+    &lt;p&gt;
+      The reader who wants an fuller description of the language
+      tested should consult
+      look at
+      &lt;a href=&quot;http://blogs.perl.org/users/polettix/2012/04/parserecdescent-and-number-of-elements-read-on-the-fly.html&quot;&gt;
+        Flavio's post and code&lt;/a&gt;,
+      my last post,
+      and my post on last year's running of this benchmark.
+    &lt;/p&gt;&lt;p&gt;
+      &lt;a href=&quot;https://metacpan.org/module/Marpa::R2&quot;&gt;Marpa::R2
+        is available on CPAN&lt;/a&gt;.
+      A list of my Marpa tutorials can be found
+      &lt;a href=&quot;http://jeffreykegler.github.io/Ocean-of-Awareness-blog/metapages/annotated.html#TUTORIAL&quot;&gt;
+        here&lt;/a&gt;.
+      There is
+      &lt;a href=&quot;http://marpa-guide.github.io/chapter1.html&quot;&gt;
+        a new tutorial by Peter Stuifzand&lt;/a&gt;.
+      &lt;a href=&quot;http://jeffreykegler.github.com/Ocean-of-Awareness-blog/&quot;&gt;
+        The Ocean of Awareness blog&lt;/a&gt;
+      focuses on Marpa,
+      and it has
+      &lt;a href=&quot;http://jeffreykegler.github.io/Ocean-of-Awareness-blog/metapages/annotated.html&quot;&gt;an annotated guide&lt;/a&gt;.
+      Marpa also has
+      &lt;a href=&quot;http://jeffreykegler.github.com/Marpa-web-site/&quot;&gt;a web page&lt;/a&gt;.
+      For questions, support and discussion, there is a
+      Google Group:
+      &lt;code&gt;marpa-parser@googlegroups.com&lt;/code&gt;.
+      Comments on this post can be made there.
+    &lt;/p&gt;</description>
   </item>
   <item>
     <title>Mixing procedural and declarative parsing gracefully</title>
