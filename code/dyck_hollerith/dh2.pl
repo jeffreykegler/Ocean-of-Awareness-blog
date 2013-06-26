@@ -44,7 +44,7 @@ element ::= string | array
 
 # Declare the places where we pause before
 # and after lexemes
-:lexeme ~ <string length> pause => after
+:lexeme ~ <string length> pause => after event => 'string length'
 event 'expecting text' = predicted <text>
 
 # Declare the lexemes themselves
@@ -82,7 +82,6 @@ for (
     $pos = $recce->resume($pos)
     )
 {
-    my $lexeme = $recce->pause_lexeme();
     EVENT:
     for (
         my $event_ix = 0;
@@ -92,25 +91,22 @@ for (
     {
 
         my $event = $recce->event($event_ix);
-        my ($name) = @{$event};
+        my $name  = shift @{$event};
         if ( $name eq 'expecting text' ) {
             my $text_length = $last_string_length;
             $recce->lexeme_read( 'text', $pos, $text_length );
             $pos += $text_length;
-            next INPUT;
+            next EVENT;
         } ## end if ( $name eq 'expecting text' )
-	die "Unexpected event: ", join q{ }, @{$event};
+        if ( $name eq 'string length' ) {
+            my ( $start, $end ) = @{$event};
+            $last_string_length =
+                $recce->literal( $start, $end - $start ) + 0;
+            $pos = $end;
+            next EVENT;
+        } ## end if ( $name eq 'string length' )
+        die "Unexpected event: ", join q{ }, @{$event};
     } ## end EVENT: for ( my $event_ix = 0; my $event = $recce->event(...))
-    die q{Parse exhausted in front of this string: "},
-        substr( $input, $pos ), q{"}
-        if not defined $lexeme;
-    my ( $start, $lexeme_length ) = $recce->pause_span();
-    if ( $lexeme eq 'string length' ) {
-        $last_string_length = $recce->literal( $start, $lexeme_length ) + 0;
-        $pos = $start + $lexeme_length;
-        next INPUT;
-    }
-    die "Unexpected lexeme: $lexeme";
 } ## end INPUT: for ( my $pos = $recce->read( \$input ); $pos < $input_length...)
 
 my $result = $recce->value();
