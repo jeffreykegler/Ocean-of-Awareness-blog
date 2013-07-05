@@ -34,6 +34,129 @@
   </p>
   </div>
   <div style="margin-left:190px;border-left:2px solid #38B0C0;padding:25px;">
+<h3>Fri, 05 Jul 2013</h3>
+<br />
+<center><a name="lovelace"> <h2>Parsing Ada Lovelace</h2> </a>
+</center>
+  <h3>The application</h3><!--
+      marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
+      <p>My recent work has been on tools for ambiguous parsing.
+      Marpa, my parser project, has long allowed users to generate and examine all
+      the parses of an ambiguous parse,
+      which was more than enough for most purposes.
+      </p>
+      <p>
+      But there are users who want to efficiently manipulate large sets of ambiguous parses.
+      My new work allows the creation of an Abstract Syntax Forest (ASF)
+      An ASF, as the name suggests, is a collection of Abstract Syntax Trees.
+      The trick in designing an ASF is to make it efficient -- a simple set of fully expanded
+      AST's can quickly become exponential in the size of the input,
+      and unusable in practice.
+      In fully expanded AST's, many of the subtrees will be identical.
+      To be reasonably efficient,
+      ASF's need to take advantage of this duplication of information.
+    <h3>Ada Lovelace's Quote</h3>
+    <p>Ada Lovelace's wrote the first paper
+    separates computing and software, on one hand,
+    from caculating and hardware, on the other.
+    These ideas were hers.
+    She worked with Charles Babbage,
+    and the hardware design was entirely his work,
+    as was much of the actual coding.
+    <p>
+    But Babbage was not a mathematician.
+    More importantly, he was caught up in
+    a world view where God had arranged matters so that reason
+    was the exclusive province of human beings.
+    These days children, not long after they learn to talk,
+    come to understand that games and game machines are two
+    distinct things,
+    and that while the game software is intangible,
+    it is nonetheless a very real thing
+    and necessary to "animate" the game machine.
+    For Babbage, his comtemporaries and almost everyone for the next century,
+    thinking out the implications of
+    intangible things which animate things which are not human beings
+    was way too Mary Shelley.
+    <p>Babbage 
+    As <a href="http://www.fourmilab.ch/babbage/hpb.html">his son put it</a>,
+    Babbage considered
+    <blockquote>
+    the Paper by Menabrea, translated with notes by Lady Lovelace,
+    published in volume 3 of Taylor's 'Scientific Memoirs," as quite disposing of the mathematical aspect of the invention.
+    <blockquote>
+    <h3>On reading Ada</h3>
+    <p>If you reread Ada's notes, "quite disposes" understates the case.
+    For example, she clearly understood the interchangeability of data and program,
+    and that programs could (and should) maninpulate other programs.
+    <p>Ada's notes are still worth reading and pondering,
+    but they present a lot of difficulties to the modern reader.
+    Among them:
+    <ul>
+    <li>They are in Victorian English.  Long, complex sentences were encouraged,
+    and considered especially appropriate when making an difficult and important point.</li>
+    <li>They are mathemtical, and focus on areas of math, such as the method of differences,
+    which are not important for modern computer programmers.
+    <li>Ada does not have her terminology ready-made.
+    For example, she speaks of attaching symbol results, which she clearly understand
+    can represent operations, to numeric data, which she clearly understands can in fact
+    represent not just numbers, but notes, positions in a loom, or computer operations.
+    So is she talking about objects and methods?
+    </ul>
+    <h3>The quote</h3>
+<blockquote>
+Those who view mathematical science,
+not merely as a vast body of abstract and immutable truths,
+whose intrinsic beauty,
+symmetry and logical completeness,
+when regarded in their connexion together as a whole,
+entitle them to a prominent place in the interest of all profound
+and logical minds,
+but as possessing a yet deeper interest for the human race,
+when it is remembered that this science constitutes the language
+through which alone we can adequately express the great facts of
+the natural world,
+and those unceasing changes of mutual relationship which,
+visibly or invisibly,
+consciously or unconsciously to our immediate physical perceptions,
+are interminably going on in the agencies of the creation we live amidst:
+those who thus think on mathematical truth as the instrument through
+which the weak mind of man can most effectually read his Creator's
+works,
+will regard with especial interest all that can tend to facilitate
+the translation of its principles into explicit practical forms.
+</blockquote>
+    <h3>To learn more</h3>
+    <p>
+      <a href="https://metacpan.org/module/Marpa::R2">Marpa::R2
+        is available on CPAN</a>.
+      A list of my Marpa tutorials can be found
+      <a href="http://jeffreykegler.github.io/Ocean-of-Awareness-blog/metapages/annotated.html#TUTORIAL">
+        here</a>.
+      There is
+      <a href="http://marpa-guide.github.io/chapter1.html">
+        a new tutorial by Peter Stuifzand</a>.
+      <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/">
+        The Ocean of Awareness blog</a>
+      focuses on Marpa,
+      and it has
+      <a href="http://jeffreykegler.github.io/Ocean-of-Awareness-blog/metapages/annotated.html">an annotated guide</a>.
+      Marpa also has
+      <a href="http://jeffreykegler.github.com/Marpa-web-site/">a web page</a>.
+      For questions, support and discussion, there is a
+      Google Group:
+      <code>marpa-parser@googlegroups.com</code>.
+      Comments on this post can be made there.
+    </p>
+<br />
+<p>posted at: 11:37 |
+<a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2013/07/lovelace.html">direct link to this entry</a>
+</p>
+<div style="color:#38B0C0;padding:1px;text-align:center;">
+&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&sect;
+</div>
 <h3>Mon, 17 Jun 2013</h3>
 <br />
 <center><a name="vs-prd-round-2"> <h2>Marpa v. Parse::RecDescent: a rematch</h2> </a>
@@ -976,360 +1099,6 @@ die 'No parse' if not defined $result;
 <br />
 <p>posted at: 01:37 |
 <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2013/05/table.html">direct link to this entry</a>
-</p>
-<div style="color:#38B0C0;padding:1px;text-align:center;">
-&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-&sect;
-</div>
-<h3>Mon, 29 Apr 2013</h3>
-<br />
-<center><a name="fast_enough"> <h2>Is Earley parsing fast enough?</h2> </a>
-</center>
-  <blockquote>
-      <!--
-      marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
-      -->
-      "First we ask, what impact will our algorithm have on the parsing
-      done in production compilers for existing programming languages?
-      The answer is, practically none." -- Jay Earley's Ph.D thesis, p. 122.
-    </blockquote>
-    <p>In the above quote, the inventor of the Earley parsing
-      algorithm poses a question.
-      Is his algorithm fast enough for a production compiler?  His answer is a
-      stark "no".
-    </p>
-    <p>
-      This is the verdict on Earley's that you often
-      hear repeated today, 45 years later.
-      Earley's, it is said, has a too high a "constant factor".
-      Verdicts tends to be repeated more often than examined.
-      This particular verdict originates with the inventor himself.
-      So perhaps it is not astonishing
-      that many treat the dismissal
-      of Earley's on grounds of speed to be as valid today as it
-      was in 1968.
-    </p>
-    <p>But in the past 45 years,
-      computer technology has changed beyond recognition
-      and researchers
-      have made several significant improvements to Earley's.
-      It is time to reopen this case.
-    </p><h3>What is a "constant factor"</h3>
-    <p>The term "constant factor" here has a special meaning,
-      one worth looking at carefully.
-      Programmers talk about time efficiency in two ways:
-      time complexity and speed.
-    </p>
-    <p>
-      Speed is simple:
-      It's how fast the algorithm is against the clock.
-      To make comparison easy,
-      the clock can be an abstraction.
-      The clock ticks could be, for example, weighted instructions
-      on some convenient and mutually-agreed architecture.
-    </p>
-    <p>
-      By the time Earley was writing, programmers had discovered that simply comparing
-      speeds,
-      even on well-chosen abstract clocks, was not enough.
-      Computers were improving very quickly.
-      A speed result
-      that was clearly significant when the comparison was made
-      could quickly become unimportant.
-      Researchers needed to
-      talk about time efficiency in a way that made what they said as true
-      decades later as on the day they said it.
-      To do this, researchers created the idea of time complexity.
-    </p>
-    <p>Time complexity is measured using several notations, but the most
-      common is
-      <a href="http://en.wikipedia.org/wiki/Big_O_notation">big-O
-        notation</a>.
-      Here's the idea:
-      Assume we are comparing two algorithms, Algorithm A and Algorithm B.
-      Assume that algorithm A uses 42 weighted instructions for each input symbol.
-      Assume that algorithm B uses 1792 weighted instructions for each input symbol.
-      Where the count of input symbols is N,
-      A's speed is 42*N, and B's is 1792*N.
-      But the time complexity of both is the same: O(N).
-      The big-O notation throws away the two "constant factors", 42 and 1792.
-      Both are said to be "linear in N".
-      (Or more often, just "linear".)
-    </p>
-    <p>It often happens that algorithms we need to compare for time efficiency
-      have different speeds,
-      but the same time complexity.
-      In practice,
-      this usually this means we can treat them as having essentially
-      the same time efficiency.
-      But not always.
-      It sometimes happens that this difference is relevant.
-      When this happens, the rap against the slower algorithm is that it
-      has a "high constant factor".
-    </p>
-    <h3>OK, about that high constant factor</h3>
-    <p>What is the "constant factor" between Earley and the current favorite
-      parsing algorithm, as a number?
-      (My interest is practical, not historic,
-      so I will be talking about Earley's
-      as modernized by Aycock, Horspool, Leo and myself.
-      But much of what I say applies to Earley's algorithm in general.)
-    </p>
-    <p>What the current favorite parsing algorithm is
-      can be an interesting question.
-      When Earley wrote, it was hand-written recursive descent.
-      The next year (1969) LALR parsing was invented,
-      and the year after (1970) a tool that used it was introduced -- yacc.
-      At points over the next decades,
-      yacc chased both Earley's
-      and recursive descent almost completely out of the textbooks.
-      <a href="http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2010/09/perl-and-parsing-6-rewind.html">
-        But as I have detailed elsewhere</a>,
-          yacc had serious problems.
-          In 2006 things went full circle -- the industry's standard C
-          compiler, GCC, replaced LALR with recursive descent.
-        </p>
-    <p>So back to 1970.
-    That year, Jay Earley wrote up his algorithm for
-    "Communications of the ACM",
-      and put a rough number on his "constant factor".
-      He said that his algorithm was an "order of magnitude" slower
-      than the current favorites -- a factor of 10.
-      Earley suggested ways to lower this 10-handicap,
-      and modern implementations have followed up on them
-      and found others.
-      But for this post,
-      let's concede the factor of ten and throw
-      in another.
-      Let's say Earley's is 100 times slower than the current favorite,
-      whatever that happens to be.
-    </p>
-    <h3>Moore's Law and beyond</h3>
-    <p>Let's look at the handicap of 100
-      in the light of Moore's Law.
-      Since 1968, computers have gotten a billion times faster -- nine orders
-      of magnitude. Nine factors of ten.
-      This means that today Earley's runs
-      seven factors of ten faster than
-      the current favorite algorithm did in
-      1968.
-      Earley's is 10 million times as fast as the algorithm that was
-      then considered practical.
-    </p>
-    <p>
-      Of course, our standard of "fast enough to be practical" also evolves.
-      But it evolves a lot more slowly.
-      Let's exaggerate
-      and say that "practical" meant "takes an hour" in 1968,
-      but that today we would demand that the same program take only a second.
-      Do the arithmetic and you find that Earley's is now
-      more than 2,000 times faster than it needs to be to be practical.
-    </p>
-    <p>Bringing in Moore's Law is just the beginning.
-      The handicap Jay Earley gave his algorithm
-      is based on a straight comparison of CPU speeds.
-      But parsing, in practical cases, involves I/O.
-      And the "current favorite" needs to do as much I/O as Earley's.
-      I/O overheads, and the accompanying context switches,
-      swamp considerations of CPU speed,
-      and that is more true today
-      that it was in 1968.
-      When an application is I/O bound, CPU is in effect free.
-      Parsing may not be I/O bound in this sense, but neither
-      is it one of those applications where the comparison can be made
-      in raw CPU terms.
-    </p>
-    <p>Finally, pipelining has changed
-      the nature of the CPU overhead itself radically.
-      In 1968, the time to run a series of CPU
-      instructions varied linearly with the number of instructions.
-      Today, that is no longer true,
-      and the change favors strategies like Earley's,
-      which require a higher instruction count,
-      but achieve efficiency in other ways.
-    </p>
-    <h3>Achievable speed</h3>
-    <p>
-      So far, I've spoken in terms of theoretical speeds, not achievable ones.
-      That is, I've assumed that both Earley's
-      and the current favorite are producing their best speed, unimpeded by
-      implementation considerations.
-    </p>
-    <p>
-      Earley, writing in 1968 and thinking of hand-written recursive descent,
-      assumed that production compilers
-      could be, and in practice usually would be,
-      written by
-      programmers with plenty of time to do
-      careful and well-thought-out hand-optimization.
-      After forty-five years of real-life experience,
-      we know better.
-    </p>
-    <p>
-      In those widely used practical compilers and interpreters
-      that rely on lots of procedural logic --
-      and these days that is almost all of them --
-      it is usually all the maintainers can do to keep the procedural logic correct.
-      In all but a few cases, optimization is opportunistic,
-      not systematic.
-      Programmers have been exposed to
-      the realities of parsing with
-      large amounts of complex procedural logic,
-      and hand-written recursive descent has acquired a
-      reputation for being slow.
-    </p>
-    <p>
-      In theory,
-      LALR based compilers are less dependent on procedural
-      parsing and therefore easier to keep optimal.
-      In practice they are as bad or worse.
-      LALR parsers usually still need a considerable amount of procedural logic,
-      but procedural logic is harder to write for LALR than it
-      is for recursive descent.
-    </p>
-    <p>Modern Earley parsing
-      has a much easier time actually delivering
-      its theoretical best speed in practice.
-      Earley's is powerful enough,
-      and in its modern version well-enough aware of the state of the parse,
-      that procedural logic can be kept to minimum or eliminated.
-      Most of the parsing is done by the mathematics at its core.
-    </p>
-    <p>
-      The math at Earley's core can be heavily optimized,
-      and any optimization benefits all applications.
-      Optimization of special-purpose procedural logic benefits
-      only the application that uses that logic.
-    </p>
-    <h3>Other considerations</h3>
-    <p>But you might say,
-    </p><blockquote>
-      "A lot of interesting points, Jeffrey, but all things being
-      equal, a factor of 10,
-      or even what's left from a factor of ten once I/O,
-      pipelining and implementation inefficiencies have all nibbled away at it,
-      is still worth having.
-      It may in a lot of instances not even be measurable, but why not grab
-      it for the sake of the cases where it is?"
-    </blockquote><p>
-      Which is a good point.
-      The "implementation inefficiences" can be nasty enough that Earley's is in
-      fact faster in raw terms,
-      but let's assume
-      that some cost in speed is still being paid for the use of Earley's.
-      Why incur that cost?
-    </p><h4>Error diagnosis</h4><p>
-      The parsing algorithms currently favored,
-      in their quest for efficiency,
-      do not maintain full
-      information about the state of the parse.
-      This is fine when the source is 100% correct,
-      but in practice an important function of a parser is to find and
-      diagnose errors.
-      When the parse fails, the current favorites
-      often have little idea of why.
-      An Earley parser knows the full state of the parse.
-      This added knowledge can save a lot of
-      programmer time.
-    </p><h4>Readability</h4>
-    <p>
-      The more that a parser does from the grammar,
-      and the less procedural logic it uses,
-      the more readable the code will be.
-      This has a determining effect on maintainance costs
-      and the software's ability to evolve over time.
-    </p><h4>Accuracy</h4>
-    <p>Procedural logic can produce inaccuracy -- inability
-      to describe or control the actual language begin parsed.
-      Some parsers, particularly LALR and PEG,
-      have a second major source of inaccuracy -- they use
-      a precedence scheme for conflict resolution.
-      In specific cases, this can work, but
-      precedence-driven conflict resolution
-      produces a language without
-      a "clean" theoretical description.
-    </p>
-    <p>
-      The obvious problem with not knowing what language you
-      are parsing is failure to parse correct source code.
-      But another, more subtle, problem can be worse over the
-      life cycle of a language ...
-    </p>
-    <h4>False positives</h4>
-    <p>False positives are cases
-      where the input is in error,
-      and should be reported as such, but instead
-      the result is what you wanted.
-      This may sound like unexpected good news,
-      but when a false positive does surface,
-      it is quite possible that it cannot be fixed
-      without breaking code that, while incorrect, does work.
-      Over the life of a language, false positives are deadly.
-      False positives produce buggy and poorly understood code
-      which must be preserved and maintained forever.
-    </p>
-    <h4>Power</h4>
-    <p>
-      The modern Earley implementation can parse vast classes
-      of grammar in linear time.
-      These classes include all those currently in practical use.
-    </p><h4>Flexibility</h4>
-    <p>Modern Earley implementations
-      parse all context-free grammars in times that are, in practice,
-      considered optimal.
-      With other parsers,
-      the class of grammars parsed is highly restricted,
-      and there is usually a real danger that a new change
-      will violate those restrictions.
-      As mentioned,
-      the favorite alternatives to Earley's
-      make it hard to know exactly what language you are,
-      in fact, parsing.
-      A change can break one of these parsers
-      without there being any indication.
-      By comparison,
-      syntax changes and extensions to Earley's grammars
-      are carefree.
-    </p>
-    <h3>For more about Marpa</h3>
-    <p>
-      Above I've spoken of "modern Earley parsing",
-      by which I've meant Earley parsing as amended and improved
-      by the efforts of Aho, Horspool, Leo and myself.
-      At the moment, the only implementation that contains
-      all of these modernizations is Marpa.
-    </p>
-    <p>
-      Marpa's latest version is
-      <a href="https://metacpan.org/module/Marpa::R2">Marpa::R2,
-        which is available on CPAN</a>.
-      Marpa's
-      <a href="https://metacpan.org/module/JKEGL/Marpa-R2-2.052000/pod/Scanless/DSL.pod">SLIF
-        is
-        a new interface</a>,
-      which represents a major increase
-      in Marpa's "whipitupitude".
-      The SLIF has tutorials
-      <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2013/01/dsl_simpler2.html">here
-      </a>
-      and
-      <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2013/01/announce_scanless.html">
-        here</a>.
-      Marpa has
-      <a href="http://jeffreykegler.github.com/Marpa-web-site/">a web page</a>,
-      and of course it is the focus of
-      <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/">
-        my "Ocean of Awareness" blog</a>.
-    </p>
-    <p>
-      Comments on this post
-      can be sent to the Marpa's Google Group:
-      <code>marpa-parser@googlegroups.com</code>
-    </p>
-<br />
-<p>posted at: 11:12 |
-<a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2013/04/fast_enough.html">direct link to this entry</a>
 </p>
 <div style="color:#38B0C0;padding:1px;text-align:center;">
 &sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;

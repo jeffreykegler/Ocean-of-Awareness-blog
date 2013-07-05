@@ -1,6 +1,92 @@
 Parsing Ada Lovelace
   <h3>The application</h3><!--
       marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
+      <p>My recent work has been on tools for ambiguous parsing.
+      Marpa, my parser project, has long allowed users to generate and examine all
+      the parses of an ambiguous parse,
+      which was more than enough for most purposes.
+      </p>
+      <p>
+      But there are users who want to efficiently manipulate large sets of ambiguous parses.
+      My new work allows the creation of an Abstract Syntax Forest (ASF)
+      An ASF, as the name suggests, is a collection of Abstract Syntax Trees.
+      The trick in designing an ASF is to make it efficient -- a simple set of fully expanded
+      AST's can quickly become exponential in the size of the input,
+      and unusable in practice.
+      In fully expanded AST's, many of the subtrees will be identical.
+      To be reasonably efficient,
+      ASF's need to take advantage of this duplication of information.
+    <h3>Ada Lovelace's Quote</h3>
+    <p>Ada Lovelace's wrote the first paper
+    separates computing and software, on one hand,
+    from caculating and hardware, on the other.
+    These ideas were hers.
+    She worked with Charles Babbage,
+    and the hardware design was entirely his work,
+    as was much of the actual coding.
+    <p>
+    But Babbage was not a mathematician.
+    More importantly, he was caught up in
+    a world view where God had arranged matters so that reason
+    was the exclusive province of human beings.
+    These days children, not long after they learn to talk,
+    come to understand that games and game machines are two
+    distinct things,
+    and that while the game software is intangible,
+    it is nonetheless a very real thing
+    and necessary to "animate" the game machine.
+    For Babbage, his comtemporaries and almost everyone for the next century,
+    thinking out the implications of
+    intangible things which animate things which are not human beings
+    was way too Mary Shelley.
+    <p>Babbage 
+    As <a href="http://www.fourmilab.ch/babbage/hpb.html">his son put it</a>,
+    Babbage considered
+    <blockquote>
+    the Paper by Menabrea, translated with notes by Lady Lovelace,
+    published in volume 3 of Taylor's 'Scientific Memoirs," as quite disposing of the mathematical aspect of the invention.
+    <blockquote>
+    <h3>On reading Ada</h3>
+    <p>If you reread Ada's notes, "quite disposes" understates the case.
+    For example, she clearly understood the interchangeability of data and program,
+    and that programs could (and should) maninpulate other programs.
+    <p>Ada's notes are still worth reading and pondering,
+    but they present a lot of difficulties to the modern reader.
+    Among them:
+    <ul>
+    <li>They are in Victorian English.  Long, complex sentences were encouraged,
+    and considered especially appropriate when making an difficult and important point.</li>
+    <li>They are mathemtical, and focus on areas of math, such as the method of differences,
+    which are not important for modern computer programmers.
+    <li>Ada does not have her terminology ready-made.
+    For example, she speaks of attaching symbol results, which she clearly understand
+    can represent operations, to numeric data, which she clearly understands can in fact
+    represent not just numbers, but notes, positions in a loom, or computer operations.
+    So is she talking about objects and methods?
+    </ul>
+    <h3>The quote</h3>
+<blockquote>
+Those who view mathematical science,
+not merely as a vast body of abstract and immutable truths,
+whose intrinsic beauty,
+symmetry and logical completeness,
+when regarded in their connexion together as a whole,
+entitle them to a prominent place in the interest of all profound
+and logical minds,
+but as possessing a yet deeper interest for the human race,
+when it is remembered that this science constitutes the language
+through which alone we can adequately express the great facts of
+the natural world,
+and those unceasing changes of mutual relationship which,
+visibly or invisibly,
+consciously or unconsciously to our immediate physical perceptions,
+are interminably going on in the agencies of the creation we live amidst:
+those who thus think on mathematical truth as the instrument through
+which the weak mind of man can most effectually read his Creator's
+works,
+will regard with especial interest all that can tend to facilitate
+the translation of its principles into explicit practical forms.
+</blockquote>
     <h3>To learn more</h3>
     <p>
       <a href="https://metacpan.org/module/Marpa::R2">Marpa::R2
