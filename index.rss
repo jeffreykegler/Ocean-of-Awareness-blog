@@ -58,7 +58,7 @@
     &lt;blockquote&gt;
     the Paper by Menabrea, translated with notes by Lady Lovelace,
     published in volume 3 of Taylor's 'Scientific Memoirs,&quot; as quite disposing of the mathematical aspect of the invention.
-    &lt;blockquote&gt;
+    &lt;/blockquote&gt;
     &lt;h3&gt;On reading Ada&lt;/h3&gt;
     &lt;p&gt;If you reread Ada's notes, &quot;quite disposes&quot; understates the case.
     For example, she clearly understood the interchangeability of data and program,
@@ -100,6 +100,7 @@ works,
 will regard with especial interest all that can tend to facilitate
 the translation of its principles into explicit practical forms.
 &lt;/blockquote&gt;
+&lt;p&gt;158 words!
     &lt;h3&gt;To learn more&lt;/h3&gt;
     &lt;p&gt;
       &lt;a href=&quot;https://metacpan.org/module/Marpa::R2&quot;&gt;Marpa::R2
