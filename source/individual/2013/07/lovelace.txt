@@ -148,7 +148,7 @@ First, let take it as bullet points:
 <li>2. Math describes and predicts reality.
 <li>3. No better way to figure out what is really behind our
 existence.
-<li>4. We have a way to make doing math more practical.
+<li>4. We have found a way to do more and better math.
 Let's go for it.
 </ul>
 Ada is in fact quickly connecting her new science of software to
