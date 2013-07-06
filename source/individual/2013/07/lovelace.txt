@@ -1,45 +1,79 @@
 Parsing Ada Lovelace
   <h3>The application</h3><!--
       marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
-      <p>My recent work has been on tools for ambiguous parsing.
-      Marpa, my parser project, has long allowed users to generate and examine all
-      the parses of an ambiguous parse,
-      which was more than enough for most purposes.
-      </p>
+      <p>Marpa, my parser project, has long allowed users to generate and examine all
+      the parses of an ambiguous parse.
+      This was more than enough for most applications.
       <p>
-      But there are users who want to efficiently manipulate large sets of ambiguous parses.
-      My new work allows the creation of an Abstract Syntax Forest (ASF)
-      An ASF, as the name suggests, is a collection of Abstract Syntax Trees.
-      The trick in designing an ASF is to make it efficient -- a simple set of fully expanded
-      AST's can quickly become exponential in the size of the input,
-      and unusable in practice.
-      In fully expanded AST's, many of the subtrees will be identical.
-      To be reasonably efficient,
-      ASF's need to take advantage of this duplication of information.
+      </p>
+      But not all.
+      Some users need to manipulate very large sets of ambiguous parses,
+      and do it efficiently.
+      My new work with Marpa allows the creation of an Abstract Syntax Forest (ASF)
+      An ASF is, as the name suggests, a collection of Abstract Syntax Trees.
+      <p>
+      </p>Writing an efficient ASF in not a simple matter.
+      The naive implementation, as a set of fully expanded
+      AST's, consumes resource that are
+      exponential in the size of the input,
+      and in practice quickly becomes unuseable.
+      Marpa takes advantage of the fact that,
+      in fully expanded AST's,
+      many of the subtrees will be identical.
     <h3>Ada Lovelace's Quote</h3>
-    <p>Ada Lovelace's wrote the first paper
-    separates computing and software, on one hand,
-    from caculating and hardware, on the other.
-    These ideas were hers.
-    She worked with Charles Babbage,
-    and the hardware design was entirely his work,
-    as was much of the actual coding.
+    <p>Natural Language Processing (NLP) is
+    one application that requires working with highly ambiguous parses.
+    I picked as an example to work with,
+    an quote from Ada Lovelace.
+    It have proven very interesting from a number of points of view.
+    </p>
     <p>
-    But Babbage was not a mathematician.
-    More importantly, he was caught up in
-    a world view where God had arranged matters so that reason
-    was the exclusive province of human beings.
+    Ada, Countess of Lovelace, wrote the first paper
+    that separates clearly separates computers and software, on one hand,
+    from caculators and hardware, on the other.
+    The paper makes clear she know the importance of this separation.
+    Ada was working with Charles Babbage,
+    who did all of the hardware design,
+    and most of the actual coding in her paper.
+    But the ideas in her paper are hers,
+    not Babbage's.
+    <p>
+    Why would Babbage
+    ignore obvious implications of his
+    own invention?
+    The answer is that,
+    while these implications are obvious to us,
+    they simply did not fit into Babbage's view of the world,
+    and the view held by almost everyone in his society then.
+    In 1843, the most significant aspect of the world was your duty to embrace
+    Good and avoid Evil.
+    In one form or another,
+    pretty much everyone sees that as still the case today,
+    But if you have the duty to avoid Evil,
+    it is because you have Reason,
+    which allows you to distinguish Good from Evil.
+    Once once starts talking about machines which not only
+    calculate, but manipulate the equations they use to calculate
+    and compose music -- well, you were getting way too
+    Mary Shelley for a lot of people.
+    </p>
+    <p>
     These days children, not long after they learn to talk,
     come to understand that games and game machines are two
     distinct things,
     and that while the game software is intangible,
     it is nonetheless a very real thing
     and necessary to "animate" the game machine.
-    For Babbage, his comtemporaries and almost everyone for the next century,
-    thinking out the implications of
-    intangible things which animate things which are not human beings
-    was way too Mary Shelley.
-    <p>Babbage 
+    By the time modern children come to decide whether they has a soul
+    or not, animated but soulless entities are part of their landscape.
+    For Babbaage's generation, this was way too Mary Shelly.
+    </p>
+    <p>But Ada was the poet Byron's daughter.
+    Pushing boundaries and shocking contemporaries
+    was her inheritance.
+    And mathematics were more her interest.
+    Babbage was happy to delegate these complicated and unsettling matters
+    to her.
     As <a href="http://www.fourmilab.ch/babbage/hpb.html">his son put it</a>,
     Babbage considered
     <blockquote>
@@ -47,23 +81,38 @@ Parsing Ada Lovelace
     published in volume 3 of Taylor's 'Scientific Memoirs," as quite disposing of the mathematical aspect of the invention.
     </blockquote>
     <h3>On reading Ada</h3>
-    <p>If you reread Ada's notes, "quite disposes" understates the case.
-    For example, she clearly understood the interchangeability of data and program,
-    and that programs could (and should) maninpulate other programs.
-    <p>Ada's notes are still worth reading and pondering,
-    but they present a lot of difficulties to the modern reader.
+    <p>Ada's notes are worth reading and pondering,
+    but they present many layers of difficulties to the modern reader.
     Among them:
     <ul>
     <li>They are in Victorian English.  Long, complex sentences were encouraged,
-    and considered especially appropriate when making an difficult and important point.</li>
-    <li>They are mathemtical, and focus on areas of math, such as the method of differences,
+    and considered especially appropriate when making an difficult and important point.
+    </li>
+    <li>They are mathemetical
+    </li>
+    <li>Within math, their focus is on topics
     which are not important for modern computer programmers.
+    </li>
     <li>Ada does not have her terminology ready-made.
-    For example, she speaks of attaching symbol results, which she clearly understand
-    can represent operations, to numeric data, which she clearly understands can in fact
+    For example, she speaks of computing both symbolic results and numeric data,
+    and attaching one to the other.
+    She clearly understand that the symbolic results can represent operations.
+    She also clearly understands that
+    numeric data can
     represent not just numbers, but notes, positions in a loom, or computer operations.
-    So is she talking about objects and methods?
+    She does not speak of objects, classes or methods.
+    Is this because she does not have the idea,
+    or because the terminology does not yet exist?
+    </li>
+    <li>Where her terminology is ready-made, it is now archaic.
+    </li>
+    <li>She connects mathematics and philosophy in a way that was not just understood then,
+    but expected and demanded.
+    Unfortunately, modern readers now often see that sort of discussion as
+    irrelevant, or even as a sign of inability to come to the point.
+    </li>
     </ul>
+    <p>
     <h3>The quote</h3>
 <blockquote>
 Those who view mathematical science,
@@ -87,7 +136,41 @@ works,
 will regard with especial interest all that can tend to facilitate
 the translation of its principles into explicit practical forms.
 </blockquote>
-<p>158 words!
+<h3>Ada, the bullet point version</h3>
+<p>158 words!  Ada's original sentence may look what happens
+when two pickups taking
+out-of-date dictionaries to the landfill collide.
+There is, in fact, a good deal of structure and meaning in all those
+words.
+First, let take it as bullet points:
+<ul>
+<li>1. Math is awesome just for being itself.
+<li>2. Math describes and predicts reality.
+<li>3. No better way to figure out what is really behind our
+existence.
+<li>4. We have a way to make doing math more practical.
+Let's go for it.
+</ul>
+Ada is in fact quickly connecting her new science of software to
+the history of philosophy in the West.
+Bullet point 1 alludes to the Platonist view of mathematics.
+Bullet point 2 alludes to the scientific one pioneered by
+Galileo and Newton.
+Bullet point 3 connects it with a post-Classical world view.
+Ada's language is Christian but her idea here is one that Einstein
+would have had no trouble with.
+And bullet point 4 is the call to action.
+<p>
+When we come to discuss the parse in detail,
+we'll see that it follows this structure.
+As an aside,
+note Ada' mention of "logical completeness" as one of the virtues of math.
+G&ouml;del came along nearly a century later and showed this vision,
+which went back to the Greeks, was an illusion.
+So Ada did not predict everything.
+On the other hand, 
+G&ouml;del's result was also a complete surprise to Johnny von Neumann,
+who was in the room that day.
     <h3>To learn more</h3>
     <p>
       <a href="https://metacpan.org/module/Marpa::R2">Marpa::R2
