@@ -196,7 +196,7 @@ Parsing Ada Lovelace
       When we come to discuss the parse in detail,
       we'll see that it follows this structure.
       As an aside,
-      note Ada' mention of "logical completeness" as one of the virtues of math.
+      note Ada's mention of "logical completeness" as one of the virtues of math.
       G&ouml;del came along nearly a century later and showed this vision,
       which went back to the Greeks, was an illusion.
       So Ada did not predict everything.
@@ -206,7 +206,9 @@ Parsing Ada Lovelace
     </p>
     <h3>The experiment so far</h3>
     <p>I've gotten Marpa to grind through this sentence,
-    using the same framework as the Stanford NLP demo.
+    using the same framework as
+    <a href="http://nlp.stanford.edu:8080/parser/">
+    the Stanford NLP demo</a>.
     That demo, in fact, refuses to even attempt any sentence longer than 70 words,
     so my Ada quote needs to be broken up.
     Even on the smaller pieces,
@@ -216,19 +218,19 @@ Parsing Ada Lovelace
     Marpa seems to be exhibiting linear behavior.
     <p>Promising as this seems for Marpa,
     its first results may not hold up as the experiment gets more realistic.
-    So far, I've only given Marpa enough of an English grammar and vocabulary to parse this one
+    So far, I've only given Marpa enough English grammar and vocabulary to parse this one
     sentence.
     That is enough to make the grammar very complex and ambiguous,
     but even so it must be far less complex and ambiguous
-    that the one behind the Stanford demo.
+    than the one behind the Stanford demo.
     Marpa will never have time worse than O(n<sup>3</sup>),
     but it's quite possible that if Marpa's grammar were as ambiguous as the Stanford one,
     Marpa would be no faster.
-    Marpa could turn out to be slower by some linear factor.
-    <p>There may be no final answer on speed,
-    with Marpa turning out to represent one approach, good for certain purposes.
-    And, especially when speed stays within bounds, other abilities can prove
-    more important.
+    Marpa, in fact, could turn out to be slower by some linear factor.
+    <p>There may never be a final decision based on speed.
+    Marpa might turn out to represent one approach, good for certain purposes.
+    And, especially when speed is indecisive,
+    other abilities can prove more important.
     <h3>To learn more</h3>
     <p>
       <a href="https://metacpan.org/module/Marpa::R2">Marpa::R2
