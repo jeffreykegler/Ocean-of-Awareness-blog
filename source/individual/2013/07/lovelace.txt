@@ -3,7 +3,7 @@ Parsing Ada Lovelace
       marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
       -->
       Abstract Syntax Forests (ASF's) are my most recent project.
-      I am adding ASF's to my Marpa parser
+      I am adding ASF's to my Marpa parser.
       <a href="http://jeffreykegler.github.io/Marpa-web-site/">
       Marpa</a>
       has long supported ambiguous parsing,

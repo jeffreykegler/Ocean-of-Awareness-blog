@@ -16,7 +16,7 @@
       marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
       --&gt;
       Abstract Syntax Forests (ASF's) are my most recent project.
-      I am adding ASF's to my Marpa parser
+      I am adding ASF's to my Marpa parser.
       &lt;a href=&quot;http://jeffreykegler.github.io/Marpa-web-site/&quot;&gt;
       Marpa&lt;/a&gt;
       has long supported ambiguous parsing,
