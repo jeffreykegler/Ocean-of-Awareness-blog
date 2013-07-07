@@ -14,67 +14,70 @@
     <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2013/07/lovelace.html</link>
     <description>  &lt;h3&gt;The application&lt;/h3&gt;&lt;p&gt;&lt;!--
       marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
-      --&gt;My most recent project is adding
-      Abstract Syntax Forests (ASF's) to my Marpa parser.
-      Marpa has long supported ambiguous parsing,
+      --&gt;
+      Abstract Syntax Forests (ASF's) are my most recent project.
+      I am adding ASF's to my Marpa parser
+      &lt;a href=&quot;http://jeffreykegler.github.io/Marpa-web-site/&quot;&gt;
+      Marpa&lt;/a&gt;
+      has long supported ambiguous parsing,
       and allowed users to iterate through,
       and examine,
       all the parses of an ambiguous parse.
       This was enough for most applications.
     &lt;/p&gt;
     &lt;p&gt;
-      But applications which avoid ambiguity will benefit from better ways to detect
+      Even applications which avoid ambiguity benefit from better ways to detect
       and locate it.
       And there are applications that require the ability to select among
       and 
-      manipulate very large sets of ambiguous parses,
-      Prominent among these is Natural Language Processing (NLP),
-      and this post will introduce an experiment of mine in this field.
+      manipulate very large sets of ambiguous parses.
+      Prominent among these is Natural Language Processing (NLP).
+      This post will introduce an experiment.
     Marpa in fact seems to have some potential for NLP.
     &lt;/p&gt;
     &lt;p&gt;Writing an efficient ASF in not a simple matter.
-      The naive implementation, as a set of fully expanded
-      AST's, consumes resources that are
+      The naive implementation is to generate complete set
+      of fully expanded abstract
+      syntax trees (AST's).
+      This approach consumes resources that can become
       exponential in the size of the input.
-      Translation: it quickly becomes unuseable.
-      In fully expanded AST's,
-      many of the subtrees will be identical,
-      and for an ASF to be useful it needs to take
-      advantage of that fact.
+      Translation: the naive implementation quickly becomes unuseably slow.
+      Marpa optimizes
+      by aggressively identifying identical subtrees 
+      of the AST's.
+      Especially in highly ambiguous parses,
+      many subtrees are identical,
+      and this optimization is often a big win.
     &lt;/p&gt;
     &lt;h3&gt;Ada Lovelace&lt;/h3&gt;
     &lt;p&gt;
-      The main example to work with,
+      My primary NLP example at this point
       is a quote from Ada Lovelace.
-      It is a long sentence from her
+      It is a long sentence, possibly the longest, from her
       &lt;a href=&quot;http://www.fourmilab.ch/babbage/sketch.html&quot;&gt;
-      Notes&lt;/a&gt;,
-      possibly the longest -- 158 words.
-      While nowhere near
-      &lt;a href=&quot;http://en.wikipedia.org/wiki/Longest_English_sentence&quot;&gt;
-      a record&lt;/a&gt;,
-      this is by modern standards a very long, complex sentence.
+      Notes&lt;/a&gt; -- 158 words.
       A disadvantage of this example is that it is not typical 
       of normal NLP.
+      By modern standards it is an unusually long and complex sentence.
       An advantage of it,
       and my reason for the choice,
       is that it stresses the parser.
     &lt;/p&gt;
     &lt;p&gt;
       The &quot;Note A&quot; from which this sentence is taken is
-      one of Ada's notes on a translation of another paper
-      on Babbage's work.
-      Ada's &quot;Notes&quot; are longer than the paper are far more
-      important.
-      It is in these &quot;Notes&quot;
-      the first distinction is made
+      one of Ada's notes on a translation of a paper
+      on the work of her mentor and colleague, Charles Babbage.
+      Ada's &quot;Notes&quot; are longer than the original paper,
+      and far more important.
+      In these &quot;Notes&quot; Ada makes
+      the first distinction
       between a computer and a calculator,
       and between software and hardware.
-      Ada was working with Charles Babbage.
+      In their collaboration,
       Babbage did all of the hardware design,
       and he wrote most of the actual programs in her paper.
       But these two revolutionary ideas,
-      and their elaboration on them, are Ada's.
+      and their elaboration, are Ada's.
     &lt;/p&gt;
     &lt;p&gt;
       Why would Babbage
@@ -84,26 +87,27 @@
       while these implications are obvious to us,
       they simply did not fit into the 1843 view of the world.
       In those days,
-      algebra was leading-edge math,
-      and the ability to manipulate equations a very high form of reason.
+      algebra was leading-edge math.
+      The ability to manipulate equations was considered
+      an extremely advanced form of reason.
       For Babbage and his contemporaries, that sort of ability to reason
       certainly suggested the ability to distinguish between good and evil,
       and this in turn suggested possession of a soul.
-      Ada is writing 20 years after Mary Shelly
-      wrote the novel Frankenstein,
-      while vacationing with her father in Switzerland.
-      For Ada's contemporaries, that you could create a machine which did
-      could compose music or do
-      advanced mathematical reasoning
-      carried many of the same
-      implications as the idea
-      that you could assemble a human being from parts.
+      Ada's &quot;Notes&quot; were written 20 years after Mary Shelly,
+      while visiting Ada's father in Switzerland,
+      wrote
+      the novel Frankenstein.
+      For Ada's contemporaries,
+      announcing that you planned to create a
+      machine that composed music, or did
+      advanced mathematical reasoning,
+      was not very different
+      from announcing that you planned
+      to assemble a human being in your lab.
     &lt;/p&gt;
-    &lt;p&gt;Babbage was happy to leave
-      these unsettling matter of the relationship of his machine to
-      mathematics and creativity to Ada.
-      As the poet Byron's daughter,
-      pushing boundaries was a family tradition.
+    &lt;p&gt;Ada was the daughter of the poet Byron.
+      For her, pushing boundaries was a family tradition.
+    Babbage was happy to leave these matters to Ada.
       As
       &lt;a href=&quot;http://www.fourmilab.ch/babbage/hpb.html&quot;&gt;Babbage's son put it&lt;/a&gt;,
       his father
@@ -117,28 +121,27 @@
     &lt;h3&gt;On reading Ada&lt;/h3&gt;
     &lt;p&gt;Ada's notes are worth reading,
     but the modern reader has to be prepared to face 
-      several many layers of difficulty:
+      several layers of difficulty:
       &lt;ul&gt;
     &lt;li&gt;They are in Victorian English.
-      In modern English, a very long, complex sentences, is considered a failure to edit.
+      In modern English, a long complex sentence is usually considered a editing failure.
       In Ada's time, following Greek and Roman examples,
-      they were considered especially appropriate when making an difficult and important point.
-      Good literary style and good scientific style were considered one and the same,
-      and an element of good literary style was crafting a syntax to match the train of thought.
+      a periodic sentence was considered especially appropriate when making an important point.
+      And good literary style and good scientific style were considered one and the same.
       &lt;li&gt;They are mathematical,
       and none of math is of the kind currently studied by programmers.
       &lt;li&gt;Ada has literally no prior literature on software to build on,
       and has to invent her terminology.
       It is almost never the modern terminology, and it can be hard to guess
-      how it relates to modern terminology,
+      how it relates to modern terminology.
       For example, does Ada forsee objects, methods and classes?
-        We know that she speaks of computing both symbolic results and numeric data,
+        Ada speaks of computing both symbolic results and numeric data,
         and attaching one to the other.
         She clearly understands that the symbolic results can represent operations.
         Ada also clearly understands that numeric data can
         represent not just the numbers themselves,
 	but notes, positions in a loom, or computer operations.
-        So we have data, tagged with symbols that can be both names and operations.
+        So we have arbitrary data, tagged with symbols that can be both names and operations.
 	But are these objects?
       &lt;/li&gt;
       &lt;li&gt;Finally, she associates mathematics with philosophy.
@@ -172,12 +175,14 @@
       the translation of its principles into explicit practical forms.
     &lt;/blockquote&gt;
     &lt;h3&gt;Ada, the bullet point version&lt;/h3&gt;
-    &lt;p&gt;Ada's sentence may look what happens
-      two pickups with out-of-date dictionaries run into
-      each other on the way to the the landfill.
-      There is, in fact,
+    &lt;p&gt;Ada's sentence may look like what happens
+    when
+      two pickups carrying out-of-date dictionaries to the landfill
+      run into
+      each other on the way.
+      But there is, in fact,
       a good deal of structure and meaning in all those words.
-      First, let take it as bullet points:
+      Let's take it as bullet points:
     &lt;/p&gt;
     &lt;ul&gt;
       &lt;li&gt;1. Math is awesome just for being itself.&lt;/li&gt;
@@ -187,8 +192,8 @@
       &lt;li&gt;4. If we can do more and better math, that has to be a good thing.&lt;/li&gt;
       &lt;/ul&gt;
     &lt;p&gt;
-      Ada is in fact quickly connecting her new science of software to
-      the history of philosophy in the West,
+      Ada is connecting her new science of software to
+      the history of thought in the West,
       something which readers of the time would expect her to do.
       Bullet point 1 alludes to the Greek view of mathematics,
       especially Plato's.
@@ -198,7 +203,7 @@
       especially the Christian one.
       But while the language is Christian, Ada's idea is one that Einstein
       would have had no trouble with.
-      And bullet point 4 is the call to action.
+      And bullet 4 is the call to action.
     &lt;/p&gt;
     &lt;p&gt;
       When we come to discuss the parse in detail,
@@ -254,9 +259,10 @@
       &lt;a href=&quot;http://jeffreykegler.github.io/Ocean-of-Awareness-blog/metapages/annotated.html&quot;&gt;an annotated guide&lt;/a&gt;.
       Marpa also has
       &lt;a href=&quot;http://jeffreykegler.github.com/Marpa-web-site/&quot;&gt;a web page&lt;/a&gt;.
-      For questions, support and discussion, there is a
-      Google Group:
-      &lt;code&gt;marpa-parser@googlegroups.com&lt;/code&gt;.
+      For questions, support and discussion, there is
+      &lt;a href=&quot;http://groups.google.com/group/marpa-parser&quot;&gt;
+      the &quot;marpa parser&quot;
+      Google Group.&lt;/a&gt;
       Comments on this post can be made there.
     &lt;/p&gt;</description>
   </item>
