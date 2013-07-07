@@ -20,29 +20,18 @@
       and allowed users to iterate through,
       and examine,
       all the parses of an ambiguous parse.
-      This was more than enough for most applications.
+      This was enough for most applications.
     &lt;/p&gt;
     &lt;p&gt;
-      But most applications will benefit from better ways to explore
-      and exploit ambiguity.
-      Applications which want nothing to do with ambiguous parsing can benefit
-      from a tool that help detect it which it occurs by accident.
-      And there are applications which use highly ambiguous grammars,
-      and need efficient and effective ways to select among
+      But applications which avoid ambiguity will benefit from better ways to detect
+      and locate it.
+      And there are applications that require the ability to select among
       and 
       manipulate very large sets of ambiguous parses,
-      The most visible among these is 
-    Natural Language Processing (NLP),
+      Prominent among these is Natural Language Processing (NLP),
+      and this post will introduce an experiment of mine in this field.
+    Marpa in fact seems to have some potential for NLP.
     &lt;/p&gt;
-    NLP is a vast sea of difficulties.
-    This post, devoted to describing my primary test case,
-    will probably be the first of several posts describing my
-    attempts to dip Marpa's toes into the edge of this sea.
-    Veteran observers of NLP will know enough not to get excited
-    over preliminary result but,
-    as we'll see at the end,
-    Marpa in fact seems to be fairly well.
-    &lt;p&gt;
     &lt;p&gt;Writing an efficient ASF in not a simple matter.
       The naive implementation, as a set of fully expanded
       AST's, consumes resources that are
@@ -54,100 +43,112 @@
       advantage of that fact.
     &lt;/p&gt;
     &lt;h3&gt;Ada Lovelace&lt;/h3&gt;
-    &lt;p&gt;Natural Language Processing (NLP) is
-      one application that requires working with highly ambiguous parses.
-      I picked as an example to work with,
-      an quote from Ada Lovelace.
-      It have proven very interesting from a number of points of view.
+    &lt;p&gt;
+      The main example to work with,
+      is a quote from Ada Lovelace.
+      It is a long sentence from her
+      &lt;a href=&quot;http://www.fourmilab.ch/babbage/sketch.html&quot;&gt;
+      Notes&lt;/a&gt;,
+      possibly the longest -- 158 words.
+      While nowhere near
+      &lt;a href=&quot;http://en.wikipedia.org/wiki/Longest_English_sentence&quot;&gt;
+      a record&lt;/a&gt;,
+      this is by modern standards a very long, complex sentence.
+      A disadvantage of this example is that it is not typical 
+      of normal NLP.
+      An advantage of it,
+      and my reason for the choice,
+      is that it stresses the parser.
     &lt;/p&gt;
     &lt;p&gt;
-      Ada, Countess of Lovelace, wrote the first paper
-      that separates clearly separates computers and software, on one hand,
-      from caculators and hardware, on the other.
-      The paper makes clear she know the importance of this separation.
-      Ada was working with Charles Babbage,
-      who did all of the hardware design,
-      and most of the actual coding in her paper.
-      But the ideas in her paper are hers,
-      not Babbage's.
-    &lt;/p&gt;&lt;p&gt;
+      The &quot;Note A&quot; from which this sentence is taken is
+      one of Ada's notes on a translation of another paper
+      on Babbage's work.
+      Ada's &quot;Notes&quot; are longer than the paper are far more
+      important.
+      It is in these &quot;Notes&quot;
+      the first distinction is made
+      between a computer and a calculator,
+      and between software and hardware.
+      Ada was working with Charles Babbage.
+      Babbage did all of the hardware design,
+      and he wrote most of the actual programs in her paper.
+      But these two revolutionary ideas,
+      and their elaboration on them, are Ada's.
+    &lt;/p&gt;
+    &lt;p&gt;
       Why would Babbage
       ignore obvious implications of his
       own invention?
       The answer is that,
       while these implications are obvious to us,
-      they simply did not fit into Babbage's view of the world,
-      and the view held by almost everyone in his society then.
-      In 1843, the most significant aspect of the world was your duty to embrace
-      Good and avoid Evil.
-      In one form or another,
-      pretty much everyone sees that as still the case today,
-      But if you have the duty to avoid Evil,
-      it is because you have Reason,
-      which allows you to distinguish Good from Evil.
-      Once once starts talking about machines which not only
-      calculate, but manipulate the equations they use to calculate
-      and compose music -- well, you were getting way too
-      Mary Shelley for a lot of people.
+      they simply did not fit into the 1843 view of the world.
+      In those days,
+      algebra was leading-edge math,
+      and the ability to manipulate equations a very high form of reason.
+      For Babbage and his contemporaries, that sort of ability to reason
+      certainly suggested the ability to distinguish between good and evil,
+      and this in turn suggested possession of a soul.
+      Ada is writing 20 years after Mary Shelly
+      wrote the novel Frankenstein,
+      while vacationing with her father in Switzerland.
+      For Ada's contemporaries, that you could create a machine which did
+      could compose music or do
+      advanced mathematical reasoning
+      carried many of the same
+      implications as the idea
+      that you could assemble a human being from parts.
     &lt;/p&gt;
-    &lt;p&gt;
-      These days children, not long after they learn to talk,
-      come to understand that games and game machines are two
-      distinct things,
-      and that while the game software is intangible,
-      it is nonetheless a very real thing
-      and necessary to &quot;animate&quot; the game machine.
-      By the time modern children come to decide whether they has a soul
-      or not, animated but soulless entities are part of their landscape.
-      For Babbaage's generation, this was way too Mary Shelly.
-    &lt;/p&gt;
-    &lt;p&gt;But Ada was the poet Byron's daughter.
-      Pushing boundaries and shocking contemporaries
-      was her inheritance.
-      And mathematics were more her interest.
-      Babbage was happy to delegate these complicated and unsettling matters
-      to her.
+    &lt;p&gt;Babbage was happy to leave
+      these unsettling matter of the relationship of his machine to
+      mathematics and creativity to Ada.
+      As the poet Byron's daughter,
+      pushing boundaries was a family tradition.
       As
-      &lt;a href=&quot;http://www.fourmilab.ch/babbage/hpb.html&quot;&gt;his son put it&lt;/a&gt;,
-      Babbage considered
+      &lt;a href=&quot;http://www.fourmilab.ch/babbage/hpb.html&quot;&gt;Babbage's son put it&lt;/a&gt;,
+      his father
     &lt;/p&gt;&lt;blockquote&gt;
+      considered
       the Paper by Menabrea, translated with notes by Lady Lovelace,
-      published in volume 3 of Taylor's 'Scientific Memoirs,&quot; as quite disposing of the mathematical aspect of the invention.
+      published in volume 3 of Taylor's 'Scientific Memoirs,&quot;
+      as quite disposing of the mathematical aspect of the invention.
+      My business now is not with that.
     &lt;/blockquote&gt;
     &lt;h3&gt;On reading Ada&lt;/h3&gt;
-    &lt;p&gt;Ada's notes are worth reading and pondering,
-      but they present many layers of difficulties to the modern reader.
-      Among them:
-    &lt;/p&gt;&lt;ul&gt;
-      &lt;li&gt;They are in Victorian English.  Long, complex sentences were encouraged,
-        and considered especially appropriate when making an difficult and important point.
-      &lt;/li&gt;
-      &lt;li&gt;They are mathemetical
-      &lt;/li&gt;
-      &lt;li&gt;Within math, their focus is on topics
-        which are not important for modern computer programmers.
-      &lt;/li&gt;
-      &lt;li&gt;Ada does not have her terminology ready-made.
-        For example, she speaks of computing both symbolic results and numeric data,
+    &lt;p&gt;Ada's notes are worth reading,
+    but the modern reader has to be prepared to face 
+      several many layers of difficulty:
+      &lt;ul&gt;
+    &lt;li&gt;They are in Victorian English.
+      In modern English, a very long, complex sentences, is considered a failure to edit.
+      In Ada's time, following Greek and Roman examples,
+      they were considered especially appropriate when making an difficult and important point.
+      Good literary style and good scientific style were considered one and the same,
+      and an element of good literary style was crafting a syntax to match the train of thought.
+      &lt;li&gt;They are mathematical,
+      and none of math is of the kind currently studied by programmers.
+      &lt;li&gt;Ada has literally no prior literature on software to build on,
+      and has to invent her terminology.
+      It is almost never the modern terminology, and it can be hard to guess
+      how it relates to modern terminology,
+      For example, does Ada forsee objects, methods and classes?
+        We know that she speaks of computing both symbolic results and numeric data,
         and attaching one to the other.
-        She clearly understand that the symbolic results can represent operations.
-        She also clearly understands that
-        numeric data can
-        represent not just numbers, but notes, positions in a loom, or computer operations.
-        She does not speak of objects, classes or methods.
-        Is this because she does not have the idea,
-        or because the terminology does not yet exist?
+        She clearly understands that the symbolic results can represent operations.
+        Ada also clearly understands that numeric data can
+        represent not just the numbers themselves,
+	but notes, positions in a loom, or computer operations.
+        So we have data, tagged with symbols that can be both names and operations.
+	But are these objects?
       &lt;/li&gt;
-      &lt;li&gt;Where her terminology is ready-made, it is now archaic.
-      &lt;/li&gt;
-      &lt;li&gt;She connects mathematics and philosophy in a way that was not just understood then,
-        but expected and demanded.
+      &lt;li&gt;Finally, she associates mathematics with philosophy.
+      In her day, this was expected.
         Unfortunately, modern readers now often see that sort of discussion as
         irrelevant, or even as a sign of inability to come to the point.
       &lt;/li&gt;
     &lt;/ul&gt;
     &lt;p&gt;
-    &lt;/p&gt;&lt;h3&gt;The quote&lt;/h3&gt;
+    &lt;/p&gt;&lt;h3&gt;Ada's quote&lt;/h3&gt;
     &lt;blockquote&gt;
       Those who view mathematical science,
       not merely as a vast body of abstract and immutable truths,
@@ -171,29 +172,31 @@
       the translation of its principles into explicit practical forms.
     &lt;/blockquote&gt;
     &lt;h3&gt;Ada, the bullet point version&lt;/h3&gt;
-    &lt;p&gt;158 words!  Ada's original sentence may look what happens
-      when two pickups taking
-      out-of-date dictionaries to the landfill collide.
-      There is, in fact, a good deal of structure and meaning in all those
-      words.
+    &lt;p&gt;Ada's sentence may look what happens
+      two pickups with out-of-date dictionaries run into
+      each other on the way to the the landfill.
+      There is, in fact,
+      a good deal of structure and meaning in all those words.
       First, let take it as bullet points:
     &lt;/p&gt;
     &lt;ul&gt;
-      &lt;li&gt;1. Math is awesome just for being itself. &lt;/li&gt;
+      &lt;li&gt;1. Math is awesome just for being itself.&lt;/li&gt;
       &lt;li&gt;2. Math describes and predicts the external world.&lt;/li&gt;
-      &lt;li&gt;3. No better way to figure out what is really behind our
-        existence.&lt;/li&gt;
-      &lt;li&gt;4. We have found a way to do more and better math.
-        Let's go for it.&lt;/li&gt;
+      &lt;li&gt;3. Math is the best way to get at
+      what it is that is really behind existence.&lt;/li&gt;
+      &lt;li&gt;4. If we can do more and better math, that has to be a good thing.&lt;/li&gt;
       &lt;/ul&gt;
     &lt;p&gt;
       Ada is in fact quickly connecting her new science of software to
-      the history of philosophy in the West.
-      Bullet point 1 alludes to the Platonist view of mathematics.
-      Bullet point 2 alludes to the scientific one pioneered by
+      the history of philosophy in the West,
+      something which readers of the time would expect her to do.
+      Bullet point 1 alludes to the Greek view of mathematics,
+      especially Plato's.
+      Bullet point 2 alludes to the scientific view, as pioneered by
       Galileo and Newton.
-      Bullet point 3 connects it with a post-Classical world view.
-      Ada's language is Christian but her idea here is one that Einstein
+      Bullet point 3 alludes to the post-Classical world view,
+      especially the Christian one.
+      But while the language is Christian, Ada's idea is one that Einstein
       would have had no trouble with.
       And bullet point 4 is the call to action.
     &lt;/p&gt;
@@ -209,6 +212,31 @@
       G&amp;ouml;del's result was also a complete surprise to Johnny von Neumann,
       who was in the room that day.
     &lt;/p&gt;
+    &lt;h3&gt;The experiment so far&lt;/h3&gt;
+    &lt;p&gt;I've gotten Marpa to grind through this sentence,
+    using the same framework as the Stanford NLP demo.
+    That demo, in fact, refuses to even attempt any sentence longer than 70 words,
+    so my Ada quote needs to be broken up.
+    Even on the smaller pieces,
+    the Stanford demo becomes quite slow.
+    Marpa, by contrast, grinds through the whole thing quickly.
+    The Stanford demo is based on a CYK parser, and presumably is O(n&lt;sup&gt;3&lt;/sup&gt;) -- cubic.
+    Marpa seems to be exhibiting linear behavior.
+    &lt;p&gt;Promising as this seems for Marpa,
+    its first results may not hold up as the experiment gets more realistic.
+    So far, I've only given Marpa enough of an English grammar and vocabulary to parse this one
+    sentence.
+    That is enough to make the grammar very complex and ambiguous,
+    but even so it must be far less complex and ambiguous
+    that the one behind the Stanford demo.
+    Marpa will never have time worse than O(n&lt;sup&gt;3&lt;/sup&gt;),
+    but it's quite possible that if Marpa's grammar were as ambiguous as the Stanford one,
+    Marpa would be no faster.
+    Marpa could turn out to be slower by some linear factor.
+    &lt;p&gt;There may be no final answer on speed,
+    with Marpa turning out to represent one approach, good for certain purposes.
+    And, especially when speed stays within bounds, other abilities can prove
+    more important.
     &lt;h3&gt;To learn more&lt;/h3&gt;
     &lt;p&gt;
       &lt;a href=&quot;https://metacpan.org/module/Marpa::R2&quot;&gt;Marpa::R2
