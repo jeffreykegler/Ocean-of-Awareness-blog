@@ -1,0 +1,35 @@
+A Marpa-powered C parser
+  <p><!--
+      marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
+      -->
+      Jean-Damien Durand has written a very ambitious application of Marpa:
+      A tool which parses C language into an abstract syntax tree (AST).
+      Recently released, it is more than a prototype.
+      It parses the Perl C source code, as well as Marpa's own.
+      </p>
+      <p>
+      </p>
+    <h3>To learn more</h3>
+    <p>
+      <a href="https://metacpan.org/module/Marpa::R2">Marpa::R2
+        is available on CPAN</a>.
+      A list of my Marpa tutorials can be found
+      <a href="http://jeffreykegler.github.io/Ocean-of-Awareness-blog/metapages/annotated.html#TUTORIAL">
+        here</a>.
+      There are
+        new tutorials by
+      <a href="http://marpa-guide.github.io/chapter1.html">Peter Stuifzand</a>
+      and <a href="http://longanswers.blogspot.de/2013/06/transforming-syntax.html">amon</a>.
+      <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/">
+      The Ocean of Awareness blog</a>
+      focuses on Marpa,
+      and it has
+      <a href="http://jeffreykegler.github.io/Ocean-of-Awareness-blog/metapages/annotated.html">an annotated guide</a>.
+      Marpa also has
+      <a href="http://jeffreykegler.github.com/Marpa-web-site/">a web page</a>.
+      For questions, support and discussion, there is
+      <a href="http://groups.google.com/group/marpa-parser">
+      the "marpa parser"
+      Google Group.</a>
+      Comments on this post can be made there.
+    </p>
