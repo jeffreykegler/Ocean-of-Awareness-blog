@@ -96,21 +96,21 @@ A Marpa-powered C parser
     <p>How did the Perl 5.19.2 source fare?
       No better than Marpa's source, which appropriates these names from the reserved space:
     </p>
-    <blockquote>
+    <blockquote><tt>
       isa isa_changed isa_hash isa_hashes isarev isary ischop iscv isdst isg
       isio islop islv ismatchop ismodifying ismore isreg isrel isuni isutf
       todo toend token tokenbuf_len toketype tokid
       tolen too too_deep top top2 top_index top_ptr top_si topelem
       topgen_cmp topgv topmask topname
       topsv toptab tot total total_elems
-    </blockquote>
+    </tt></blockquote>
     <p>Another commonly misappropriated portion of the namespace reserved by the C standards is that beginning with "str",
     which is reserved for string functions by the implementation.
     This is far beyond what seems necessary, but so saith the standards,
     and Perl 5.19.2 intrudes on that namespace a few times:
-    <blockquote>
+    <blockquote><tt>
 strbeg stream strend strict string stringarg stringok strp strpos strut
-    </blockquote>
+    </tt></blockquote>
     </p>
     <p>
     </p><p>And, in fact, Perl's namespace troubles get deeper than Marpa's.
