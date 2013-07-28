@@ -10,6 +10,168 @@
     <language>en</language>
 
   <item>
+    <title>A Marpa-powered C parser</title>
+    <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2013/07/c2ast.html</link>
+    <description>  &lt;p&gt;
+      &lt;!--
+      marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
+      --&gt;
+      Jean-Damien Durand has written a very ambitious application of Marpa:
+      A tool which parses C language into an abstract syntax tree (AST).
+      Recently released, it is more than a prototype.
+      It parses the Perl C source code, as well as Marpa's own.
+    &lt;/p&gt;
+    &lt;p&gt;
+      A C parser can take one of two strategies: approximate or precise.
+      A compiler has, of course, to be precise.
+      Tools, such as cross-referencers, often decide to be approximate, or sloppy.
+      Sloppiness is easier to implement and has other advantages:
+      Compilers require the user to get all the C flags right.
+      A sloppy tool can tolerate missing flags: what the flags should be
+      can be one of the things it guesses at.
+    &lt;/p&gt;
+    &lt;p&gt;Of the two strategies, Jean-Damien decided to go with &quot;precise&quot;.
+      MarpaX::Languages::C::AST follows the C11 standard,
+      with either GCC or Microsoft extensions.
+      This has the advantage that
+      MarpaX::Languages::C::AST could be used as the front end of a compiler.
+    &lt;/p&gt;
+    &lt;h3&gt;Applying MarpaX::Languges::C::AST&lt;/h3&gt;&lt;h3&gt;
+    &lt;/h3&gt;&lt;p&gt;To help check out MarpaX::Languges::C::AST, Jean-Damien created a tool which spots
+      use of C reserved names.
+      The standard diagnostics often do not catch violations of
+      these.
+      Some of the restrictions date from days when
+      namespace management was less well understood than it is now and
+      are, frankly, quite a nuisance.
+    &lt;/p&gt;
+    &lt;p&gt;The C and POSIX reserved namespace restrictions are very often ignored,
+      but they are quite real.
+      Take as an example, this one:
+    &lt;/p&gt;&lt;blockquote&gt;Additional
+      macro definitions, beginning with
+      &lt;b&gt;E&lt;/b&gt;
+      and a digit or
+      &lt;b&gt;E&lt;/b&gt;
+      and an uppercase
+      letter, may also be specified by the implementation.
+    &lt;/blockquote&gt;&lt;p&gt;
+      Any implementation is free to define a new error code, say
+      &lt;tt&gt;EIM&lt;/tt&gt;
+      for
+      &quot;Error you never IMagined would be defined&quot;.
+      If it does defined
+      &lt;tt&gt;EIM&lt;/tt&gt;
+      as an error code, any use of it by a programm is &quot;undefined&quot; -- the implementation
+      is free to &quot;break&quot; in any way it finds convenient, and with or
+      without notice.
+    &lt;/p&gt;
+    &lt;p&gt;
+      Using
+      &lt;tt&gt;#undef&lt;/tt&gt;
+      is no help here -- the behavior for that case is also undefined.
+      The standards committee wanted to allow tricky and optimized implementations of elements in the reserved namespace, so
+      that a compiler is allowed to assume that a programmer user has not reappropriated a reserved name for his own
+      purposes.
+    &lt;/p&gt;
+    &lt;p&gt;I've been aware of these namespace issues for some time, but the list of this is
+      long and complicated, and there are no diagnostics
+      for violations of them.
+      I suspected some has slipped into Marpa's 21,000 plus lines of C code.
+      And there were.
+    &lt;/p&gt;
+    &lt;p&gt;
+      My implementation of Earley's algorithm requires many types and it is convenient to have short
+      abbreviations for things like Earley items and Earley sets.
+      &lt;tt&gt;EIM&lt;/tt&gt;
+      and
+      &lt;tt&gt;ES&lt;/tt&gt;
+      seemed like great choices.
+      But of course they violate the error code namespace.
+      (I told you these restrictions could be nuisances.)
+    &lt;/p&gt;
+    &lt;p&gt;Also flagged as violations by Jean-Damien's utility were the variable names
+      &lt;tt&gt;top_of_stack&lt;/tt&gt;
+      and
+      &lt;tt&gt;token_type&lt;/tt&gt;:
+      &quot;Function names that begin with either
+      &lt;tt&gt;is&lt;/tt&gt;
+      or
+      &lt;tt&gt;to&lt;/tt&gt;,
+      and a lowercase letter&quot; are also reserved.
+      That means that I had also transgressed by using
+      &lt;tt&gt;isy_count&lt;/tt&gt;
+      and
+      &lt;tt&gt;isy_by_right_isy_matrix&lt;/tt&gt;.
+      (&quot;isy&quot; is my short abbreviation for &quot;internal symbol&quot;, and the last variable name shows why I need to use abbreviations --
+      my types appear as part of other variables and they are far more readable with abbreviated type names.)
+    &lt;/p&gt;
+    &lt;p&gt;How did the Perl 5.19.2 source fare?
+      No better than Marpa's source, which appropriates these names from the reserved space:
+    &lt;/p&gt;
+    &lt;blockquote&gt;
+      isa isa_changed isa_hash isa_hashes isarev isary ischop iscv isdst isg
+      isio islop islv ismatchop ismodifying ismore isreg isrel isuni isutf
+      todo toend token tokenbuf_len toketype tokid
+      tolen too too_deep top top2 top_index top_ptr top_si topelem
+      topgen_cmp topgv topmask topname
+      topsv toptab tot total total_elems
+    &lt;/blockquote&gt;
+    &lt;p&gt;Another commonly misappropriated portion of the namespace reserved by the C standards is that beginning with &quot;str&quot;,
+    which is reserved for string functions by the implementation.
+    This is far beyond what seems necessary, but so saith the standards,
+    and Perl 5.19.2 intrudes on that namespace a few times:
+    &lt;blockquote&gt;
+strbeg stream strend strict string stringarg stringok strp strpos strut
+    &lt;/blockquote&gt;
+    &lt;/p&gt;
+    &lt;p&gt;
+    &lt;/p&gt;&lt;p&gt;And, in fact, Perl's namespace troubles get deeper than Marpa's.
+      So far, the examples have only included names reserved regardless of header inclusion.
+      Marpa's C code does not do IO, and it is safe to assume it never will, so Marpa is free
+      to ignore, for example, the namespace reserved for
+      &lt;tt&gt;fcntl.h&lt;/tt&gt;.
+      &lt;tt&gt;fnctl.h&lt;/tt&gt;
+      reserves, among other things, the namespace starting with
+      &lt;tt&gt;S_&lt;/tt&gt;,
+      Perl has to take into account headers needed to do POSIX IO,
+      but Perl also uses, for its own purposes, 353 variables named in the alphabetical range from
+      &lt;tt&gt;S_aassign_common_vars&lt;/tt&gt;
+      to
+      &lt;tt&gt;S_yywarn&lt;/tt&gt;.
+    &lt;/p&gt;
+    &lt;p&gt;The namespace restrictions imposed by the C and POSIX standards are
+      &lt;a href=&quot;http://www.gnu.org/software/libc/manual/html_node/Reserved-Names.html&quot;&gt;
+        conveniently
+        collected in GNU's manual for its libc library&lt;/a&gt;.
+    &lt;/p&gt;
+    &lt;h3&gt;To learn more&lt;/h3&gt;
+    &lt;p&gt;
+      &lt;a href=&quot;https://metacpan.org/module/Marpa::R2&quot;&gt;Marpa::R2
+        is available on CPAN&lt;/a&gt;.
+      A list of my Marpa tutorials can be found
+      &lt;a href=&quot;http://jeffreykegler.github.io/Ocean-of-Awareness-blog/metapages/annotated.html#TUTORIAL&quot;&gt;
+        here&lt;/a&gt;.
+      There are
+      new tutorials by
+      &lt;a href=&quot;http://marpa-guide.github.io/chapter1.html&quot;&gt;Peter Stuifzand&lt;/a&gt;
+      and
+      &lt;a href=&quot;http://longanswers.blogspot.de/2013/06/transforming-syntax.html&quot;&gt;amon&lt;/a&gt;.
+      &lt;a href=&quot;http://jeffreykegler.github.com/Ocean-of-Awareness-blog/&quot;&gt;
+        The Ocean of Awareness blog&lt;/a&gt;
+      focuses on Marpa,
+      and it has
+      &lt;a href=&quot;http://jeffreykegler.github.io/Ocean-of-Awareness-blog/metapages/annotated.html&quot;&gt;an annotated guide&lt;/a&gt;.
+      Marpa also has
+      &lt;a href=&quot;http://jeffreykegler.github.com/Marpa-web-site/&quot;&gt;a web page&lt;/a&gt;.
+      For questions, support and discussion, there is
+      &lt;a href=&quot;http://groups.google.com/group/marpa-parser&quot;&gt;
+        the &quot;marpa parser&quot;
+        Google Group.&lt;/a&gt;
+      Comments on this post can be made there.
+    &lt;/p&gt;</description>
+  </item>
+  <item>
     <title>Parsing Ada Lovelace</title>
     <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2013/07/lovelace.html</link>
     <description>  &lt;h3&gt;The application&lt;/h3&gt;&lt;p&gt;&lt;!--
@@ -965,221 +1127,6 @@ die 'No parse' if not defined $result;
     &lt;blockquote&gt;Golf is a game of luck.
       The more I practice, the luckier I get.
     &lt;/blockquote&gt;</description>
-  </item>
-  <item>
-    <title>Why Marpa works: table parsing</title>
-    <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2013/05/table.html</link>
-    <description>  &lt;p&gt;
-      &lt;!--
-      marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
-      --&gt;
-      Marpa works very differently from the parsers
-      in wide use today.
-      Marpa is a table parser.
-      And Marpa is unusual among table parsers --
-      its focus is on speed.
-    &lt;/p&gt;
-    &lt;p&gt;
-      The currently favored parsers use stacks,
-      in some cases together with a state machine.
-      These have the advantage that it is easy
-      to see how they can be made
-      to run fast.
-      They have the disadvantage of severely limiting
-      what the parser can do and how much it can know.
-    &lt;/p&gt;
-    &lt;h3&gt;What is table parsing?&lt;/h3&gt;
-    &lt;p&gt;
-      Table parsing means parsing by constructing a table of all the possible parses.
-      This is pretty clearly something you want -- anything less means
-      not completely knowing what you're doing.
-      It's like walking across the yard blindfolded.
-      It's fine if you can make sure there are
-      no walls, open pits, or other dangerous obstacles.
-      But for the general case,
-      it's a bad idea.
-    &lt;/p&gt;
-    &lt;p&gt;
-      Where the analogy between walking blindfolded and parsing breaks
-      down is that while taking off the blindfold has no cost,
-      building a table of everything that is happening while you parse
-      &lt;b&gt;does&lt;/b&gt;
-      have a cost.
-      If you limit your parser to a stack and a state machine,
-      you may be parsing with a blindfold on,
-      but it is clear that your parser can be fast.
-      How to make a table parser run fast
-      is not so clear.
-    &lt;/p&gt;
-    &lt;h3&gt;The advantages of table parsing&lt;/h3&gt;
-    &lt;p&gt;
-      What are the advantages of taking off the blindfold?
-      First, your parser can be completely general --
-      anything you can write in BNF it can parse.
-      And second,
-      you always know exactly what is going on -- what rules
-      are possible, what rules have been recognized,
-      how far into a rule you have recognized it,
-      what symbols you expect next, etc. etc.
-    &lt;/p&gt;&lt;p&gt;
-    &lt;/p&gt;&lt;p&gt;
-      We programmers have gotten used to parsers which run blindfolded.
-      When you bump into something while
-      blindfolded you don't know
-      what it was.
-      When non-table parsers fail, they usually don't know why --
-      they can only guess.
-      If you have a full parse table,
-      built from left to right,
-      you know what you were looking for and what you already think you
-      found.
-      This means that you can pinpoint and identify errors precisely.
-    &lt;/p&gt;
-    &lt;p&gt;
-      Knowing where you are in a parse also allows certain tricks,
-      like the one I call the Ruby Slippers.
-      In this, you parse with an over-simplified grammar and,
-      when it fails, you ask the parser what it was looking for.
-      Then -- poof! -- you provide it.
-    &lt;/p&gt;
-    &lt;p&gt;
-      The Ruby Slippers work beautifully when dealing with
-      missing tags in HTML.
-      You can define a simplified HTML grammar,
-      one that lives in a non-existent world --
-      an ideal world where all start
-      and end tags are always where they belong.
-      Then you parse away.
-      If, as will happen with real-world input, a tag is missing,
-      you ask the table parser what it was looking for,
-      and give it a virtual tag.
-    &lt;/p&gt;
-    &lt;h3&gt;And as for fast ...&lt;/h3&gt;
-    &lt;p&gt;When I decided to write Marpa in 2007 my goal was to create a table parser
-      that was as fast as possible.
-      I was surprised to find that the academic literature contained a
-      major improvement to table parsing by Joop Leo,
-      an improvement which nobody had ever made a serious attempt to implement.
-      Marpa is the first implementation of Joop Leo's 1991 improvement to table parsing which,
-      as far as theory goes,
-      makes Marpa as fast any parser
-      in practical use today.
-      Any class of grammar that
-      recursive descent, bison, etc. will parse,
-      Marpa will parse in linear time.
-    &lt;/p&gt;
-    &lt;p&gt;
-      Table parsing has had a reputation for being slow due to a
-      bad &quot;constant factor&quot;.
-      Theoreticians, when looking at speed as time complexity,
-      throw away constant factors.
-      What's left once the constant factor is ignored is always more
-      important.
-      Surprisingly often,
-      time complexity results which ignore
-      constant factors are also the most
-      meaningful results in practical terms.
-    &lt;/p&gt;&lt;p&gt;
-      But not 100% of the time.
-      Sometimes the constant factor makes all the difference.
-      And deciding when a constant factor does make a difference,
-      and when it does not,
-      is a tricky matter,
-      one that lies in that murky zone between practice and theory
-      where neither practitioner or theorist feels fully at home.
-    &lt;/p&gt;&lt;p&gt;
-    &lt;/p&gt;
-    &lt;p&gt;
-      It's time to look again, for two reasons.
-      First, Aycock and Horspool did a lot of careful work on
-      reducing
-      the constant factor for table parsing,
-      work which Marpa incorporates
-      and builds on.
-      Second,
-      the judgment about the constant factor dates from 1968,
-      when computers were literally a billion
-      times slower then they are now.
-    &lt;/p&gt;&lt;p&gt;
-    &lt;/p&gt;&lt;p&gt;
-      Why has nobody re-examined this judgment as the years and the order
-      of magnitude speed-ups marched by?
-      When a judgment crosses sub-disciplines, it can be &quot;sticky&quot;
-      beyond all reason,
-      and this one is a good example.
-      The decision that its &quot;constant factor&quot; made table parsing
-      too slow for many practical applications
-      is in part a practical take on a theoretical issue,
-      and in part a theoretical call on a practical matter.
-    &lt;/p&gt;&lt;p&gt;
-    &lt;/p&gt;&lt;p&gt;
-      Since 1968,
-      the theoretical results have improved.
-      But the theoreticians did not change
-      their mind about the speed of table parsing
-      because it was a judgment about the practical application
-      of the theory.
-      The practitioners were actually out there writing compilers.
-      When it comes down to practice,
-      you have to assume that practitioners know what they
-      are talking about, right?
-    &lt;/p&gt;&lt;p&gt;
-    &lt;/p&gt;&lt;p&gt;
-      Meanwhile the practice of writing software underwent
-      revolution after revolution.
-      But the practitioners continued to write off table parsing
-      as impractical.
-      Talking about the speed of table parsers quickly got you
-      into some very heavy math.
-      And some of the algorithms
-      did not even exist except as mathematical
-      notation on the pages
-      of the journals and textbooks.
-      When it comes down to theory about things
-      that don't exist outside of theory,
-      who do you listen to if not
-      the theoreticians?
-    &lt;/p&gt;
-    &lt;p&gt;
-      I look carefully at the issue
-      of the &quot;constant factor&quot; in
-      &lt;a href=&quot;http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2013/04/fast_enough.html&quot;&gt;
-        a previous post&lt;/a&gt;.
-      Forty-five years have passed and
-      cost of CPU has fallen
-      nine orders of magnitude.
-      (Others say the cost of CPU has dropped by 50% a year,
-      in which case it's over 14 orders of magnitude.
-      But why quibble?)
-      It's reasonable to suspect that
-      the constant factor that practitioners
-      and theoreticians were worried about in 1968
-      stopped being a
-      major obstacle many years ago.
-    &lt;/p&gt;
-    &lt;h3&gt;For more about Marpa&lt;/h3&gt;
-    &lt;p&gt;
-      Marpa's latest version is
-      &lt;a href=&quot;https://metacpan.org/module/Marpa::R2&quot;&gt;Marpa::R2,
-        which is available on CPAN&lt;/a&gt;.
-      A list of my Marpa tutorials can be found
-      &lt;a href=&quot;http://jeffreykegler.github.io/Ocean-of-Awareness-blog/metapages/annotated.html#TUTORIAL&quot;&gt;
-        here&lt;/a&gt;.
-      There is
-      &lt;a href=&quot;http://marpa-guide.github.io/chapter1.html&quot;&gt;
-        a new tutorial by Peter Stuifzand&lt;/a&gt;.
-      &lt;a href=&quot;http://jeffreykegler.github.com/Ocean-of-Awareness-blog/&quot;&gt;
-        This blog&lt;/a&gt;
-      focuses on Marpa,
-      and it has
-      &lt;a href=&quot;http://jeffreykegler.github.io/Ocean-of-Awareness-blog/metapages/annotated.html&quot;&gt;an annotated guide&lt;/a&gt;.
-      Marpa also has
-      &lt;a href=&quot;http://jeffreykegler.github.com/Marpa-web-site/&quot;&gt;a web page&lt;/a&gt;.
-      For questions, support and discussion, there is a
-      Google Group:
-      &lt;code&gt;marpa-parser@googlegroups.com&lt;/code&gt;.
-      Comments on this post can be made there.
-    &lt;/p&gt;</description>
   </item>
   </channel>
 </rss>
