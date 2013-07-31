@@ -11,9 +11,9 @@ A Marpa-powered C parser
     <p>
       Potential uses of MarpaX::Languages::C::AST includes tools, interpreters
       and compilers for the C language.
-      This code is open source, and is a basis on which
-      C language supersets and subsets can be created -- a basis
-      which is far easier to build on then existing C parsers.
+      This code is open source, and is much easier basis on which
+      to create C language supersets and subsets than
+      previous C parsers.
     </p>
     <p>
       A C parser can take one of two strategies: approximate or precise.
@@ -30,18 +30,24 @@ A Marpa-powered C parser
       This has the advantage that
       MarpaX::Languages::C::AST could be used as the front end of a compiler.
     </p>
-    <h3>Applying MarpaX::Languges::C::AST</h3><h3>
-    </h3><p>To help check out MarpaX::Languges::C::AST, Jean-Damien created a tool which spots
+    <h3>A sample app: checking for violations of reserved namespace</h3>
+    <p>To help check out MarpaX::Languges::C::AST, Jean-Damien created a tool which spots
       use of C reserved names.
-      The standard diagnostics often do not catch violations of
-      these.
-      Some of the restrictions date from days when
-      namespace management was less well understood than it is now and
-      are, frankly, quite a nuisance.
+      When many of the C language namespace decisions were made,
+      namespace management was less well understood than it is now.
+      Some of the restrictions are, frankly, annoying.
+      Since standard diagnostics often do not report violations of them,
+      reserved namespace violations are often ignored.
+    (The namespace restrictions imposed by the basic C and POSIX C Libary standards are
+      <a href="http://www.gnu.org/software/libc/manual/html_node/Reserved-Names.html">
+        conveniently
+        collected in GNU's manual for its libc library</a>).
     </p>
-    <p>The C and POSIX reserved namespace restrictions are very often ignored,
-      but they are quite real.
-      Take as an example, this one:
+    </p>
+    <p>Ignored or not, the issue is serious -- namespace violations in
+    currenly working code could cause it to break when ported, or when its environment
+    is upgraded.
+      Consider, as an example, this reservation of namespace:
     </p><blockquote>Additional
       macro definitions, beginning with
       <b>E</b>
@@ -63,19 +69,18 @@ A Marpa-powered C parser
       "Undefined" behaviors mean the implementation can break
       "break" in any way that it finds convenient, with or
       without notice.
-    </p>
-    <p>
       Using
       <tt>#undef</tt>
       is no help here.
       The result of an "<tt>#undef EIM</tt>" is also undefined.
-      (As an aside, the standards committee did not do this out of malevolence.
+    </p>
+    <p>As an aside, the standards committee did not do this out of malevolence.
       They wanted to allow
       optimized implementations of
       elements in the reserved namespace.
       If a compiler that is allowed to assume
       that a programmer has not commandeered the reserved namespace for his own uses,
-      it can be much more aggressive in its optimizations.)
+      it can be much more aggressive in its optimizations.
     </p>
     <p>I've been aware of these namespace issues for some time, but the list of this is
       long and complicated, and there are no diagnostics
@@ -91,7 +96,7 @@ A Marpa-powered C parser
       <tt>ES</tt>
       seemed like great choices.
       But of course they violate the error code namespace.
-      (I told you these restrictions could be nuisances.)
+      (I told you these restrictions could be annoying.)
     </p>
     <p>Also flagged as violations by Jean-Damien's utility were the variable names
       <tt>top_of_stack</tt>
@@ -142,11 +147,6 @@ strbeg stream strend strict string stringarg stringok strp strpos strut
       <tt>S_aassign_common_vars</tt>
       to
       <tt>S_yywarn</tt>.
-    </p>
-    <p>The namespace restrictions imposed by the C and POSIX standards are
-      <a href="http://www.gnu.org/software/libc/manual/html_node/Reserved-Names.html">
-        conveniently
-        collected in GNU's manual for its libc library</a>.
     </p>
     <h3>Applications</h3>
     <ul>
