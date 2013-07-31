@@ -156,7 +156,8 @@ strbeg stream strend strict string stringarg stringok strp strpos strut
       reserves, among other things, the namespace starting with
       &lt;tt&gt;S_&lt;/tt&gt;,
       Perl has to take into account headers needed to do POSIX IO,
-      but Perl also uses, for its own purposes, 353 variables named in the alphabetical range from
+      but even so, the Perl source reappropriates,
+      for its own purposes, 377 variables in the alphabetical range from
       &lt;tt&gt;S_aassign_common_vars&lt;/tt&gt;
       to
       &lt;tt&gt;S_yywarn&lt;/tt&gt;.
@@ -165,7 +166,6 @@ strbeg stream strend strict string stringarg stringok strp strpos strut
     &lt;ul&gt;
     &lt;li&gt;Customized and customize-able &quot;lints&quot; -- programs to enforce C language standards
     and restrictions specific to a individual, a company or a project.
-    &lt;li&gt;
     &lt;/ul&gt;
     &lt;h3&gt;Compilers?&lt;/h3&gt;
     &lt;p&gt;
