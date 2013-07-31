@@ -18,8 +18,15 @@
       --&gt;
       Jean-Damien Durand has written a very ambitious application of Marpa:
       A tool which parses C language into an abstract syntax tree (AST).
-      Recently released, it is more than a prototype.
-      It parses the Perl C source code, as well as Marpa's own.
+      Recently released, it has been tested against
+      Perl's C source code, as well as Marpa's own C source file.
+    &lt;/p&gt;
+    &lt;p&gt;
+      Potential uses of MarpaX::Languages::C::AST includes tools, interpreters
+      and compilers for the C language.
+      This code is open source, and is much easier basis on which
+      to create C language supersets and subsets than
+      previous C parsers.
     &lt;/p&gt;
     &lt;p&gt;
       A C parser can take one of two strategies: approximate or precise.
@@ -36,18 +43,24 @@
       This has the advantage that
       MarpaX::Languages::C::AST could be used as the front end of a compiler.
     &lt;/p&gt;
-    &lt;h3&gt;Applying MarpaX::Languges::C::AST&lt;/h3&gt;&lt;h3&gt;
-    &lt;/h3&gt;&lt;p&gt;To help check out MarpaX::Languges::C::AST, Jean-Damien created a tool which spots
+    &lt;h3&gt;A sample app: checking for violations of reserved namespace&lt;/h3&gt;
+    &lt;p&gt;To help check out MarpaX::Languges::C::AST, Jean-Damien created a tool which spots
       use of C reserved names.
-      The standard diagnostics often do not catch violations of
-      these.
-      Some of the restrictions date from days when
-      namespace management was less well understood than it is now and
-      are, frankly, quite a nuisance.
+      When many of the C language namespace decisions were made,
+      namespace management was less well understood than it is now.
+      Some of the restrictions are, frankly, annoying.
+      Since standard diagnostics often do not report violations of them,
+      reserved namespace violations are often ignored.
+    (The namespace restrictions imposed by the basic C and POSIX C Libary standards are
+      &lt;a href=&quot;http://www.gnu.org/software/libc/manual/html_node/Reserved-Names.html&quot;&gt;
+        conveniently
+        collected in GNU's manual for its libc library&lt;/a&gt;).
     &lt;/p&gt;
-    &lt;p&gt;The C and POSIX reserved namespace restrictions are very often ignored,
-      but they are quite real.
-      Take as an example, this one:
+    &lt;/p&gt;
+    &lt;p&gt;Ignored or not, the issue is serious -- namespace violations in
+    currenly working code could cause it to break when ported, or when its environment
+    is upgraded.
+      Consider, as an example, this reservation of namespace:
     &lt;/p&gt;&lt;blockquote&gt;Additional
       macro definitions, beginning with
       &lt;b&gt;E&lt;/b&gt;
@@ -60,25 +73,33 @@
       &lt;tt&gt;EIM&lt;/tt&gt;
       for
       &quot;Error you never IMagined would be defined&quot;.
-      If it does defined
+      Whether or not an implementation defines
       &lt;tt&gt;EIM&lt;/tt&gt;
-      as an error code, any use of it by a programm is &quot;undefined&quot; -- the implementation
-      is free to &quot;break&quot; in any way it finds convenient, and with or
+      as an error code, the standards leave the result of an program's re-appropriation
+      of it &quot;undefined&quot;.
+      In the C standards, &quot;undefined&quot; is used in a special way,
+      and not a nice one.
+      &quot;Undefined&quot; behaviors mean the implementation can break
+      &quot;break&quot; in any way that it finds convenient, with or
       without notice.
-    &lt;/p&gt;
-    &lt;p&gt;
       Using
       &lt;tt&gt;#undef&lt;/tt&gt;
-      is no help here -- the behavior for that case is also undefined.
-      The standards committee wanted to allow tricky and optimized implementations of elements in the reserved namespace, so
-      that a compiler is allowed to assume that a programmer user has not reappropriated a reserved name for his own
-      purposes.
+      is no help here.
+      The result of an &quot;&lt;tt&gt;#undef EIM&lt;/tt&gt;&quot; is also undefined.
+    &lt;/p&gt;
+    &lt;p&gt;As an aside, the standards committee did not do this out of malevolence.
+      They wanted to allow
+      optimized implementations of
+      elements in the reserved namespace.
+      If a compiler that is allowed to assume
+      that a programmer has not commandeered the reserved namespace for his own uses,
+      it can be much more aggressive in its optimizations.
     &lt;/p&gt;
     &lt;p&gt;I've been aware of these namespace issues for some time, but the list of this is
       long and complicated, and there are no diagnostics
       for violations of them.
       I suspected some has slipped into Marpa's 21,000 plus lines of C code.
-      And there were.
+      Some had.
     &lt;/p&gt;
     &lt;p&gt;
       My implementation of Earley's algorithm requires many types and it is convenient to have short
@@ -88,7 +109,7 @@
       &lt;tt&gt;ES&lt;/tt&gt;
       seemed like great choices.
       But of course they violate the error code namespace.
-      (I told you these restrictions could be nuisances.)
+      (I told you these restrictions could be annoying.)
     &lt;/p&gt;
     &lt;p&gt;Also flagged as violations by Jean-Damien's utility were the variable names
       &lt;tt&gt;top_of_stack&lt;/tt&gt;
@@ -140,10 +161,25 @@ strbeg stream strend strict string stringarg stringok strp strpos strut
       to
       &lt;tt&gt;S_yywarn&lt;/tt&gt;.
     &lt;/p&gt;
-    &lt;p&gt;The namespace restrictions imposed by the C and POSIX standards are
-      &lt;a href=&quot;http://www.gnu.org/software/libc/manual/html_node/Reserved-Names.html&quot;&gt;
-        conveniently
-        collected in GNU's manual for its libc library&lt;/a&gt;.
+    &lt;h3&gt;Applications&lt;/h3&gt;
+    &lt;ul&gt;
+    &lt;li&gt;Customized and customize-able &quot;lints&quot; -- programs to enforce C language standards
+    and restrictions specific to a individual, a company or a project.
+    &lt;li&gt;
+    &lt;/ul&gt;
+    &lt;h3&gt;Compilers?&lt;/h3&gt;
+    &lt;p&gt;
+    I am focused on parsing,
+    and I'm often tempted to call MarpaX::Languages::C::AST a &quot;compiler&quot;.
+    And it can be called that if you were willing to consider an abstract syntax tree
+    a compilation &quot;target&quot;.
+    But much of what you look for in a compiler is missing from MarpaX::Languages::C::AST,
+    including implementation of non-syntactic constraints -- things
+    like &quot;&lt;tt&gt;case&lt;/tt&gt;&quot; labels only being allowed in switch statements.
+    These could be added in the same way that more conventional compilers typically implement them --
+    in post-processing.
+    But a central advantage of MarpaX::Languages::C::AST is to empower your own extensions --
+    for you to pick up where it leaves off.
     &lt;/p&gt;
     &lt;h3&gt;To learn more&lt;/h3&gt;
     &lt;p&gt;
