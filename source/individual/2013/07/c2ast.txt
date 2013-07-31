@@ -5,8 +5,15 @@ A Marpa-powered C parser
       -->
       Jean-Damien Durand has written a very ambitious application of Marpa:
       A tool which parses C language into an abstract syntax tree (AST).
-      Recently released, it is more than a prototype.
-      It parses the Perl C source code, as well as Marpa's own.
+      Recently released, it has been tested against
+      Perl's C source code, as well as Marpa's own C source file.
+    </p>
+    <p>
+      Potential uses of MarpaX::Languages::C::AST includes tools, interpreters
+      and compilers for the C language.
+      This code is open source, and is a basis on which
+      C language supersets and subsets can be created -- a basis
+      which is far easier to build on then existing C parsers.
     </p>
     <p>
       A C parser can take one of two strategies: approximate or precise.
@@ -47,25 +54,34 @@ A Marpa-powered C parser
       <tt>EIM</tt>
       for
       "Error you never IMagined would be defined".
-      If it does defined
+      Whether or not an implementation defines
       <tt>EIM</tt>
-      as an error code, any use of it by a programm is "undefined" -- the implementation
-      is free to "break" in any way it finds convenient, and with or
+      as an error code, the standards leave the result of an program's re-appropriation
+      of it "undefined".
+      In the C standards, "undefined" is used in a special way,
+      and not a nice one.
+      "Undefined" behaviors mean the implementation can break
+      "break" in any way that it finds convenient, with or
       without notice.
     </p>
     <p>
       Using
       <tt>#undef</tt>
-      is no help here -- the behavior for that case is also undefined.
-      The standards committee wanted to allow tricky and optimized implementations of elements in the reserved namespace, so
-      that a compiler is allowed to assume that a programmer user has not reappropriated a reserved name for his own
-      purposes.
+      is no help here.
+      The result of an "<tt>#undef EIM</tt>" is also undefined.
+      (As an aside, the standards committee did not do this out of malevolence.
+      They wanted to allow
+      optimized implementations of
+      elements in the reserved namespace.
+      If a compiler that is allowed to assume
+      that a programmer has not commandeered the reserved namespace for his own uses,
+      it can be much more aggressive in its optimizations.)
     </p>
     <p>I've been aware of these namespace issues for some time, but the list of this is
       long and complicated, and there are no diagnostics
       for violations of them.
       I suspected some has slipped into Marpa's 21,000 plus lines of C code.
-      And there were.
+      Some had.
     </p>
     <p>
       My implementation of Earley's algorithm requires many types and it is convenient to have short
@@ -131,6 +147,26 @@ strbeg stream strend strict string stringarg stringok strp strpos strut
       <a href="http://www.gnu.org/software/libc/manual/html_node/Reserved-Names.html">
         conveniently
         collected in GNU's manual for its libc library</a>.
+    </p>
+    <h3>Applications</h3>
+    <ul>
+    <li>Customized and customize-able "lints" -- programs to enforce C language standards
+    and restrictions specific to a individual, a company or a project.
+    <li>
+    </ul>
+    <h3>Compilers?</h3>
+    <p>
+    I am focused on parsing,
+    and I'm often tempted to call MarpaX::Languages::C::AST a "compiler".
+    And it can be called that if you were willing to consider an abstract syntax tree
+    a compilation "target".
+    But much of what you look for in a compiler is missing from MarpaX::Languages::C::AST,
+    including implementation of non-syntactic constraints -- things
+    like "<tt>case</tt>" labels only being allowed in switch statements.
+    These could be added in the same way that more conventional compilers typically implement them --
+    in post-processing.
+    But a central advantage of MarpaX::Languages::C::AST is to empower your own extensions --
+    for you to pick up where it leaves off.
     </p>
     <h3>To learn more</h3>
     <p>
