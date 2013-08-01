@@ -10,15 +10,14 @@ A Marpa-powered C parser
     </p>
     <p>
       Because it is Marpa-powered,
-      MarpaX::Languages::C::AST works differently from other C parsers,
-      which are based on either LALR (yacc/bison) parsing,
-      or hand-written recursive descent.
-      MarpaX::Languages::C::AST's is syntax-driven, like LALR.
-      But it allows procedural parsing, like recursive descent --
-      in fact, better, since Marpa's syntax-driven side is capable of
-      feeding full information about the state of the parse to the
-      procedural logic.
-      This means that the two can reinforce each other.
+      MarpaX::Languages::C::AST works differently from other C parsers.
+      C parsers have been either syntax-driven,
+      like those parsers based on yacc,
+      or based on recursive descent and procedurally-driven.
+      MarpaX::Languages::C::AST uses both approaches.
+      Marpa has the advantage that it makes full knowledge of the state of the parse
+      available to the programmer,
+      so that the two approaches can reinforce each other.
     </p>
     <p>The result is a combined lexer/parser
     which is unusually compact, easy-to-understand
@@ -29,20 +28,23 @@ A Marpa-powered C parser
     including the
     much discussed <a href="http://en.wikipedia.org/wiki/Dangling_else>if-then-else issue</a>.
     </p>
-    <p>But C is actually context-sensitive -- the disambiguation of C types from
-    C variable names cannot be fully described in BNF.
-    Traditional compilers handle this as
-    <a href="http://en.wikipedia.org/wiki/The_lexer_hack">
-    a lexer hack</a>.
-    This solution can be hack-ish because the traditional lexer has no clue
-    about the C grammar.
-    MarpaX::Languages::C::AST deals with this by switching to procedural logic
-    at the appropriate points.
-    In Marpa's approach, the code deciding whether a name is a variable or a type
-    knows context in which it was called,
-    so no hack-ish tricks are required,
-    and it is much easier to see how
-    the code relates to the problem being solved.
+    <p>But C in some aspects is actually context-sensitive -- incapable of being described in BNF.
+    In particular, C cannot distinguish type names from variable names using its BNF grammar alone.
+    Most C parsers deal with this via either
+    <a href="http://en.wikipedia.org/wiki/The_lexer_hack">a lexer hack</a>,
+    or a post-processing hack.
+    Marpa allows the parser to do this more elegantly.
+    Marpa knows the parsing context at all times and can comnunicate this to a user's
+    customized lexing code.
+    It also allows the parser to switch back and forth between customized parsing and
+    its own internal parsing.
+    Combined, these two features allow the code to distinguish C variable names from
+    C's types to avoid hacks, and to address the issue in a direct and focused way.
+    The procedural logic to do this can be limited to the cases were it is necessary.
+    And since Marpa is fully aware of parse context,
+    the procedural logic does not need to resort to hacks and tricks to make the right
+    decisions.
+    The resulting code, and parser, is much simpler and clearer.
     </p>
     <p>
       Potential uses of MarpaX::Languages::C::AST includes tools, interpreters
