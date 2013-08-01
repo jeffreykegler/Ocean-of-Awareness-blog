@@ -37,7 +37,7 @@
       so that the two approaches reinforce each other.
     The result is a combined lexer/parser
       which is very compact and easy to understand.
-      Among the applications:
+      Among the potential applications:
     &lt;/p&gt;
     &lt;ul&gt;
       &lt;li&gt;Customized &quot;lints&quot;.
@@ -55,7 +55,8 @@
       to try out the proposals submitted to it.
       &lt;/li&gt;
       &lt;li&gt;C supersets.
-      Add some of your favorite syntax from other languages to C?
+      Would you like to see some of the syntax from a favorite language available in C?
+      Here's your chance.
       &lt;/li&gt;
     &lt;/ul&gt;
     &lt;h3&gt;A few details&lt;/h3&gt;
@@ -79,7 +80,7 @@
       MarpaX::Languages::C::AST purpose is to take things as far an AST,
       and let the user take over,
       it does not implement those constraints usually implemented in post-processing.
-      One example of a post-syntactic constraints is the one that bans
+      One example of a post-syntactic constraint is the one that bans
       &quot;&lt;tt&gt;case&lt;/tt&gt;&quot; labels outside of switch statements.
       Perhaps a future version can include a default &quot;first phase&quot; post-processor to enforce
       the constraints from the standards.
@@ -90,21 +91,21 @@
     &lt;/p&gt;
     &lt;h3&gt;The parsing strategy&lt;/h3&gt;
     &lt;p&gt;
-      Those familar with the C's parsing and its issues may be interested in how
-      Jean-Damien approached them.
+      Those familar with the C parsing and its special issues may be interested in
+      Jean-Damien's approach to them.
       MarpaX::Languages::C::AST is, with a few exceptions, syntax-driven -- the parser works
       from Marpa's SLIF, an extended BNF variant.
       The SLIF-driven parser is sufficient to deal with the
       &lt;a href=&quot;http://en.wikipedia.org/wiki/Dangling_else&quot;&gt;if-then-else issue&lt;/a&gt;.
       Marpa handles right recursion in linear time,
       so that the if-then-else issue could have been dealt with by rewriting the relevant rules.
-      But Jean-Damien wanted to have his grammar follow closely that in the standards,
+      But Jean-Damien wanted to have his CNF follow closely the grammar in the standards,
       and he decided to use Marpa's rule ranking facility instead.
       &lt;/p&gt;
       &lt;p&gt;More complicated is the ambiguity in C between variable names and types,
       which actually takes C beyond BNF and context-free grammars into context-sensitive
       territory.
-    Most C parsers deal with this with
+    Most C parsers deal with this using
     &lt;a href=&quot;http://en.wikipedia.org/wiki/The_lexer_hack&quot;&gt;lexer 
       and/or post-processing hacks&lt;/a&gt;.
       Marpa allows the parser to do this more elegantly.
@@ -114,11 +115,12 @@
       decide when to
       switch control from the syntax-driven logic to
       a user's customized procedural logic,
-      and to resume when the procedural logic wants to switch back.
+      and for the syntax-driven logic to take control back
+      when the procedural logic wants to give it back.
       This allows the variable name versus type ambiguity to be handled by specifically targeted code
       which knows the full context of the decisions it needs to make.
-      The necessary procedural code can be written much simpler and clearer
-      than was the case in previous solutions.
+      This code can be written more directly, simply and clearly
+      than was possible with previous parsing methods.
     &lt;/p&gt;
     &lt;p&gt;
     &lt;h3&gt;Compilers?&lt;/h3&gt;
