@@ -42,9 +42,11 @@
       <!--
       marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
       -->
-      Jean-Damien Durand has written MarpaX::Languages::C::AST,
-      a tool which parses C language into an abstract syntax tree (AST).
-      Recently released, it has been tested against
+      Jean-Damien Durand has just released
+      <a href="https://metacpan.org/release/MarpaX-Languages-C-AST">
+      MarpaX::Languages::C::AST</a>,
+      which parses C language into an abstract syntax tree (AST).
+      MarpaX::Languages::C::AST has been tested against
       Perl's C source code, as well as Marpa's own C source file.
     </p>
     <p>
@@ -108,10 +110,10 @@
     </p>
     <p>
       For those familar with the C's parsing and its issues.
-      MarpaX::Languages::C::AST is largely syntax-driven -- the parser works
+      MarpaX::Languages::C::AST is almost entirely syntax-driven -- the parser works
       from Marpa's SLIF, an extended BNF variant.
       This is sufficient to deal with the
-      <a href="http://en.wikipedia.org/wiki/Dangling_else>if-then-else issue</a>.
+      <a href="http://en.wikipedia.org/wiki/Dangling_else">if-then-else issue</a>.
       Marpa handles right recursion in linear time,
       so that the if-then-else issue could have been dealt with by rewriting the relevant rules.
       But Jean-Damien wanted to have his grammar follow closely that in the standards,
