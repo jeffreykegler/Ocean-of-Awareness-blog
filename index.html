@@ -52,158 +52,6 @@
     <p>
       Because it is Marpa-powered,
       MarpaX::Languages::C::AST works differently from other C parsers.
-      In the past, C parsers have been syntax-driven -- parsed from their BNF descriptions.
-      More recent parsers have tended to use hand-written recursive descent,
-      and to be heavily procedurally-driven.
-      MarpaX::Languages::C::AST combines both approaches.
-      Its underlying parse engine,
-      Marpa,
-      makes full knowledge of the state of the parse available to the programmer,
-      allowing the two approaches to reinforce each other.
-    The result is a combined lexer/parser
-      which is unusually compact, easy-to-understand
-      and easy to modify, and which is well-suited to applications like these:
-    <ul>
-      <li>Customized and customize-able "lints" -- programs to enforce C language standards
-        and restrictions specific to a individual, a company or a project.
-      </li>
-      <li>Interpreters.
-      By taking the AST and adding your own back end, you can create a special-purpose C interpreter
-      or a special-purpose compiler.
-      </li>
-      <li>C variants.
-      Because the code for the parser is compact and easy to modify,
-      it lends itself to language extension and experimentation.
-      For example, a standards committee could create compilers to implement
-      and test the proposals submitted to it.
-      </li>
-      <li>C supersets.
-      Add some of your favorite syntax from other language to C?  Why not?
-      </li>
-    </ul>
-    <h3>A few details</h3>
-    <p>A few of Jean-Damien's implementation choices are worth singling out.
-      A C parser can take one of two strategies: approximate or precise.
-      A compiler has, of course, to be precise.
-      Tools, such as cross-referencers, often decide to be approximate, or sloppy.
-      Sloppiness is easier to implement and has other advantages:
-      Compilers require the user to get all the C flags right.
-      A sloppy tool can tolerate missing flags: what the flags should be
-      can be one of the things it guesses at.
-    </p>
-    <p>Of the two strategies, Jean-Damien decided to go with "precise".
-      MarpaX::Languages::C::AST follows the C11 standard,
-      with either GCC or Microsoft extensions.
-      This has the advantage that
-      MarpaX::Languages::C::AST could be used as the front end of a compiler.
-    </p>
-      <p>
-      Because 
-      MarpaX::Languages::C::AST purpose is to take things as far an AST,
-      and let the user take over,
-      it does not implement those constraints usually implemented in post-processing.
-      One example of a post-syntactic constraints is the one that bans
-      "<tt>case</tt>" labels outside of switch statements.
-      Perhaps a future version can include a default "first phase" post-processor to enforce
-      the constraints from the standards.
-      As currently implemented, the user can check for and enforce these constraints in any
-      way he likes.
-      This makes it easier for extensions and customizations,
-      which I think of as the major purpose of MarpaX::Languages::C::AST.
-    </p>
-    <p>
-      For those familar with the C's parsing and its issues.
-      MarpaX::Languages::C::AST is almost entirely syntax-driven -- the parser works
-      from Marpa's SLIF, an extended BNF variant.
-      This is sufficient to deal with the
-      <a href="http://en.wikipedia.org/wiki/Dangling_else">if-then-else issue</a>.
-      Marpa handles right recursion in linear time,
-      so that the if-then-else issue could have been dealt with by rewriting the relevant rules.
-      But Jean-Damien wanted to have his grammar follow closely that in the standards,
-      and he decided to use Marpa's rule ranking facility instead.
-      </p>
-      <p>More complicated is the ambiguity in C between variable names and types,
-      which actually takes C beyond BNF and context-free grammars into context-sensitive
-      territory.
-    Most C parsers deal with this with
-    <a href="http://en.wikipedia.org/wiki/The_lexer_hack">lexer 
-      and/or post-processing hacks</a>.
-      Marpa allows the parser to do this more elegantly.
-      Marpa knows the parsing context at all times and can comnunicate this to a user's
-      customized lexing code.
-      It also allows the parser to switch back and forth between customized parsing and
-      its own internal parsing.
-      The resulting code, and parser, is much simpler and clearer.
-    </p>
-    <p>
-      Potential uses of MarpaX::Languages::C::AST includes tools, interpreters
-      and compilers for the C language.
-      This code is open source, and is much easier basis on which
-      to create C language supersets and subsets than
-      previous C parsers.
-    </p>
-    <p>
-    <h3>Compilers?</h3>
-    <p>
-      Above I mentioned special-purpose compilers.
-      What about productions compilers?
-      MarpaX::Languages::C::AST's upper layers are in Perl,
-      so the speed, while acceptable for special-purpose tools,
-      will not be adequate for production.
-      Perhaps a future Marpa-powered C parser will rewrite those
-      upper layers in C, making the race much closer.
-      </p>
-    <h3>To learn more</h3>
-    <p>
-      <a href="https://metacpan.org/module/Marpa::R2">Marpa::R2
-        is available on CPAN</a>.
-      A list of my Marpa tutorials can be found
-      <a href="http://jeffreykegler.github.io/Ocean-of-Awareness-blog/metapages/annotated.html#TUTORIAL">
-        here</a>.
-      There are
-      new tutorials by
-      <a href="http://marpa-guide.github.io/chapter1.html">Peter Stuifzand</a>
-      and
-      <a href="http://longanswers.blogspot.de/2013/06/transforming-syntax.html">amon</a>.
-      <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/">
-        The Ocean of Awareness blog</a>
-      focuses on Marpa,
-      and it has
-      <a href="http://jeffreykegler.github.io/Ocean-of-Awareness-blog/metapages/annotated.html">an annotated guide</a>.
-      Marpa also has
-      <a href="http://jeffreykegler.github.com/Marpa-web-site/">a web page</a>.
-      For questions, support and discussion, there is
-      <a href="http://groups.google.com/group/marpa-parser">
-        the "marpa parser"
-        Google Group.</a>
-      Comments on this post can be made there.
-    </p>
-<br />
-<p>posted at: 10:29 |
-<a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2013/07/c2ast.html">direct link to this entry</a>
-</p>
-<div style="color:#38B0C0;padding:1px;text-align:center;">
-&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-&sect;
-</div>
-<br />
-<center><a name="c2ast"> <h2>A Marpa-powered C parser</h2> </a>
-</center>
-  <p>
-      <!--
-      marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
-      -->
-      Jean-Damien Durand has just released
-      <a href="https://metacpan.org/release/MarpaX-Languages-C-AST">
-      MarpaX::Languages::C::AST</a>,
-      which parses C language into an abstract syntax tree (AST).
-      MarpaX::Languages::C::AST has been tested against
-      Perl's C source code, as well as Marpa's own C source file.
-    </p>
-    <p>
-      Because it is Marpa-powered,
-      MarpaX::Languages::C::AST works differently from other C parsers.
       C parsers have been either syntax-driven,
       like those parsers based on yacc,
       or based on recursive descent and procedurally-driven.
@@ -217,17 +65,22 @@
     </p>
     <h3>Applications</h3>
     <ul>
-      <li>Customized and customize-able "lints" -- programs to enforce C language standards
+      <li>Customized "lints".
+      You can write programs to enforce C language standards
         and restrictions specific to a individual, a company or a project.
       </li>
-      <li>Interpreters.
+      <li>C interpreters.
       By taking the AST and adding your own back end, you can create a special-purpose C interpreter
       or a special-purpose compiler.
       </li>
-      <li>C subsets, supersets and variants.
+      <li>C variants.
       Because the code for the parser is compact and easy to modify,
       it lends itself to language extension and experimentation.
-      Add some Perl's of syntax to C?  Why not?
+      For example, a standards committee could reasonably implement compilers
+      to try out the proposals submitted to it.
+      </li>
+      <li>C supersets.
+      Add some of your favorite syntax from other languages to C?  Why not?
       </li>
     </ul>
     <h3>A few details</h3>
@@ -291,9 +144,9 @@
       What about productions compilers?
       MarpaX::Languages::C::AST's upper layers are in Perl,
       so the speed, while acceptable for special-purpose tools,
-      will not be adequate for production.
+      will probably not be adequate for production.
       Perhaps a future Marpa-powered C parser will rewrite those
-      upper layers in C, making the race much closer.
+      upper layers in C, and make the race more interesting.
       </p>
     <h3>To learn more</h3>
     <p>
@@ -1203,6 +1056,119 @@ die 'No parse' if not defined $result;
 <br />
 <p>posted at: 07:17 |
 <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2013/06/mixing-procedural.html">direct link to this entry</a>
+</p>
+<div style="color:#38B0C0;padding:1px;text-align:center;">
+&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&sect;
+</div>
+<h3>Fri, 31 May 2013</h3>
+<br />
+<center><a name="design_of_4"> <h2>The Design of Four</h2> </a>
+</center>
+  <p>
+      <!--
+      marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
+      -->
+      In the Perl world at this moment,
+      a lot is being said about the consequences of bad design.
+      And it is useful to study design failures.
+      But the exercise will come to nothing
+      without a road to good design.
+      This post will point out four
+      Perl-centric
+      projects that
+      are worth study as models
+      of good design.
+    </p>
+    <p>
+      The projects are
+      <a href="https://metacpan.org/release/ack">
+      ack</a>,
+      <a href="https://metacpan.org/release/App-cpanminus">
+      cpanm</a>,
+      <a href="https://metacpan.org/release/local-lib">local::lib</a> and
+      <a href="https://metacpan.org/release/App-perlbrew">perlbrew</a>.
+      Each of these is perfect
+      in the older sense of "having all that is requisite to its nature and kind"
+      (<a href="http://1828.mshaffer.com/d/word/perfect">Webster's 1828</a>).
+	If you are into Perl,
+	they are all widely useful,
+	and looking at them as a potential or an actual user
+	is the best way to gain an appreciation of the art behind them.
+    </p>
+    <p><tt>ack</tt> is a file search tool -- UNIX's grep with improvements.
+      The improvements are influenced by a Perl sensibility,
+      and <tt>ack</tt> is written in Perl.
+      But while the other tools I list are of little interest unless
+      you are into Perl,
+      <tt>ack</tt> can help you out even if you otherwise shun Perl tools.
+    </p>
+    <p>
+      <tt>cpanm</tt> is for installing CPAN packages from CPAN.
+      If you don't know what that means, you aren't interested.
+      If you do, you want to be using it.
+      It does everything you need and importantly, nothing more.
+      The interface is without clutter.
+      Like I said, perfect.
+    </p>
+    <p>
+      <tt>local::lib</tt> is for installing Perl modules in the directory of your choice.
+      Even if you have root permission on a system,
+      it is good practice to leave the delivered Perl on your system
+      untouched except by vendor-sponsored patches and updates.
+      <tt>local::lib</tt> allows you to do this easily and conveniently.
+      It has every feature and convenience I want.
+      And reading its documentation is again an encounter with
+      perfection.
+      Every feature described is
+      <ul>
+      <li>something that you need today,
+      <li>something that you are worried you might need tomorrow, or
+      <li>something that you are not worried you might need,
+      but on reading the documentation will discover that you should be.
+      </ul>
+      Aside from that, there is nothing else.
+      Clutter-free.  Perfect.
+    </p>
+    <p>
+      Repeated perfection can be boring,
+      a fact which
+      I suspect plays no small role
+      in making perfection an unusual thing in this world.
+      So of <tt>perlbrew</tt>,
+      I will simply say that it does for Perl versions and executables
+      what <tt>local::lib</tt> does for Perl modules.
+      <tt>perlbrew</tt> is the way to manage alternative Perl executables.
+      And using <tt>perlbrew</tt>
+      is a good way to study yet another perfect interface.
+    </p>
+    <p>
+    How much relevance does the work of
+      Andy Lester (<tt>ack</tt>),
+      Tatsuhiko Miyagawa (<tt>cpanm</tt>),
+      Matt S Trout (<tt>local::lib</tt>)
+      and Kang-min Liu (<tt>perlbrew</tt>) have to other projects,
+      including projects that now seem larger and more complex?
+      Certainly
+      these four applications all seem simple, well-defined,
+      and self-contained.
+      But I would argue that,
+      if these problems seem simple and well-defined today,
+      much of that impression is the result of the design skills
+      of Andy, Tatsuhiko, Matt and Kang-min.
+      And if, to an extent, they did benefit from
+      having the good fortune to pick the the right problem at
+      the right time,
+      it is useful to recall
+      Ben Hogan's comment on his profession:
+    </p>
+    <blockquote>Golf is a game of luck.
+      The more I practice, the luckier I get.
+    </blockquote>
+<br />
+<p>posted at: 07:20 |
+<a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2013/05/design_of_4.html">direct link to this entry</a>
 </p>
 <div style="color:#38B0C0;padding:1px;text-align:center;">
 &sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;

@@ -26,17 +26,22 @@ A Marpa-powered C parser
     </p>
     <h3>Applications</h3>
     <ul>
-      <li>Customized and customize-able "lints" -- programs to enforce C language standards
+      <li>Customized "lints".
+      You can write programs to enforce C language standards
         and restrictions specific to a individual, a company or a project.
       </li>
-      <li>Interpreters.
+      <li>C interpreters.
       By taking the AST and adding your own back end, you can create a special-purpose C interpreter
       or a special-purpose compiler.
       </li>
-      <li>C subsets, supersets and variants.
+      <li>C variants.
       Because the code for the parser is compact and easy to modify,
       it lends itself to language extension and experimentation.
-      Add some Perl's of syntax to C?  Why not?
+      For example, a standards committee could reasonably implement compilers
+      to try out the proposals submitted to it.
+      </li>
+      <li>C supersets.
+      Add some of your favorite syntax from other languages to C?  Why not?
       </li>
     </ul>
     <h3>A few details</h3>
@@ -100,9 +105,9 @@ A Marpa-powered C parser
       What about productions compilers?
       MarpaX::Languages::C::AST's upper layers are in Perl,
       so the speed, while acceptable for special-purpose tools,
-      will not be adequate for production.
+      will probably not be adequate for production.
       Perhaps a future Marpa-powered C parser will rewrite those
-      upper layers in C, making the race much closer.
+      upper layers in C, and make the race more interesting.
       </p>
     <h3>To learn more</h3>
     <p>
