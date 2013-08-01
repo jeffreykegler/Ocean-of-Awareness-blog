@@ -1,0 +1,195 @@
+A Marpa-powered C parser
+  <p>
+      <!--
+      marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
+      -->
+      Jean-Damien Durand has written a very ambitious application of Marpa:
+      A tool which parses C language into an abstract syntax tree (AST).
+      Recently released, it has been tested against
+      Perl's C source code, as well as Marpa's own C source file.
+    </p>
+    <p>
+      Potential uses of MarpaX::Languages::C::AST includes tools, interpreters
+      and compilers for the C language.
+      This code is open source, and is much easier basis on which
+      to create C language supersets and subsets than
+      previous C parsers.
+    </p>
+    <p>
+      A C parser can take one of two strategies: approximate or precise.
+      A compiler has, of course, to be precise.
+      Tools, such as cross-referencers, often decide to be approximate, or sloppy.
+      Sloppiness is easier to implement and has other advantages:
+      Compilers require the user to get all the C flags right.
+      A sloppy tool can tolerate missing flags: what the flags should be
+      can be one of the things it guesses at.
+    </p>
+    <p>Of the two strategies, Jean-Damien decided to go with "precise".
+      MarpaX::Languages::C::AST follows the C11 standard,
+      with either GCC or Microsoft extensions.
+      This has the advantage that
+      MarpaX::Languages::C::AST could be used as the front end of a compiler.
+    </p>
+    <h3>A sample app: checking for violations of reserved namespace</h3>
+    <p>To help check out MarpaX::Languges::C::AST, Jean-Damien created a tool which spots
+      use of C reserved names.
+      When many of the C language namespace decisions were made,
+      namespace management was less well understood than it is now.
+      Some of the restrictions are, frankly, annoying.
+      Since standard diagnostics often do not report violations of them,
+      reserved namespace violations are often ignored.
+    (The namespace restrictions imposed by the basic C and POSIX C Libary standards are
+      <a href="http://www.gnu.org/software/libc/manual/html_node/Reserved-Names.html">
+        conveniently
+        collected in GNU's manual for its libc library</a>).
+    </p>
+    </p>
+    <p>Ignored or not, the issue is serious -- namespace violations in
+    currenly working code could cause it to break when ported, or when its environment
+    is upgraded.
+      Consider, as an example, this reservation of namespace:
+    </p><blockquote>Additional
+      macro definitions, beginning with
+      <b>E</b>
+      and a digit or
+      <b>E</b>
+      and an uppercase
+      letter, may also be specified by the implementation.
+    </blockquote><p>
+      Any implementation is free to define a new error code, say
+      <tt>EIM</tt>
+      for
+      "Error you never IMagined would be defined".
+      Whether or not an implementation defines
+      <tt>EIM</tt>
+      as an error code, the standards leave the result of an program's re-appropriation
+      of it "undefined".
+      In the C standards, "undefined" is used in a special way,
+      and not a nice one.
+      "Undefined" behaviors mean the implementation can break
+      "break" in any way that it finds convenient, with or
+      without notice.
+      Using
+      <tt>#undef</tt>
+      is no help here.
+      The result of an "<tt>#undef EIM</tt>" is also undefined.
+    </p>
+    <p>As an aside, the standards committee did not do this out of malevolence.
+      They wanted to allow
+      optimized implementations of
+      elements in the reserved namespace.
+      If a compiler that is allowed to assume
+      that a programmer has not commandeered the reserved namespace for his own uses,
+      it can be much more aggressive in its optimizations.
+    </p>
+    <p>I've been aware of these namespace issues for some time, but the list of this is
+      long and complicated, and there are no diagnostics
+      for violations of them.
+      I suspected some has slipped into Marpa's 21,000 plus lines of C code.
+      Some had.
+    </p>
+    <p>
+      My implementation of Earley's algorithm requires many types and it is convenient to have short
+      abbreviations for things like Earley items and Earley sets.
+      <tt>EIM</tt>
+      and
+      <tt>ES</tt>
+      seemed like great choices.
+      But of course they violate the error code namespace.
+      (I told you these restrictions could be annoying.)
+    </p>
+    <p>Also flagged as violations by Jean-Damien's utility were the variable names
+      <tt>top_of_stack</tt>
+      and
+      <tt>token_type</tt>:
+      "Function names that begin with either
+      <tt>is</tt>
+      or
+      <tt>to</tt>,
+      and a lowercase letter" are also reserved.
+      That means that I had also transgressed by using
+      <tt>isy_count</tt>
+      and
+      <tt>isy_by_right_isy_matrix</tt>.
+      ("isy" is my short abbreviation for "internal symbol", and the last variable name shows why I need to use abbreviations --
+      my types appear as part of other variables and they are far more readable with abbreviated type names.)
+    </p>
+    <p>How did the Perl 5.19.2 source fare?
+      No better than Marpa's source, which appropriates these names from the reserved space:
+    </p>
+    <blockquote><tt>
+      isa isa_changed isa_hash isa_hashes isarev isary ischop iscv isdst isg
+      isio islop islv ismatchop ismodifying ismore isreg isrel isuni isutf
+      todo toend token tokenbuf_len toketype tokid
+      tolen too too_deep top top2 top_index top_ptr top_si topelem
+      topgen_cmp topgv topmask topname
+      topsv toptab tot total total_elems
+    </tt></blockquote>
+    <p>Another commonly misappropriated portion of the namespace reserved by the C standards is that beginning with "str",
+    which is reserved for string functions by the implementation.
+    This is far beyond what seems necessary, but so saith the standards,
+    and Perl 5.19.2 intrudes on that namespace a few times:
+    <blockquote><tt>
+strbeg stream strend strict string stringarg stringok strp strpos strut
+    </tt></blockquote>
+    </p>
+    <p>
+    </p><p>And, in fact, Perl's namespace troubles get deeper than Marpa's.
+      So far, the examples have only included names reserved regardless of header inclusion.
+      Marpa's C code does not do IO, and it is safe to assume it never will, so Marpa is free
+      to ignore, for example, the namespace reserved for
+      <tt>fcntl.h</tt>.
+      <tt>fnctl.h</tt>
+      reserves, among other things, the namespace starting with
+      <tt>S_</tt>,
+      Perl has to take into account headers needed to do POSIX IO,
+      but even so, the Perl source reappropriates,
+      for its own purposes, 377 variables in the alphabetical range from
+      <tt>S_aassign_common_vars</tt>
+      to
+      <tt>S_yywarn</tt>.
+    </p>
+    <h3>Applications</h3>
+    <ul>
+    <li>Customized and customize-able "lints" -- programs to enforce C language standards
+    and restrictions specific to a individual, a company or a project.
+    </ul>
+    <h3>Compilers?</h3>
+    <p>
+    I am focused on parsing,
+    and I'm often tempted to call MarpaX::Languages::C::AST a "compiler".
+    And it can be called that if you were willing to consider an abstract syntax tree
+    a compilation "target".
+    But much of what you look for in a compiler is missing from MarpaX::Languages::C::AST,
+    including implementation of non-syntactic constraints -- things
+    like "<tt>case</tt>" labels only being allowed in switch statements.
+    These could be added in the same way that more conventional compilers typically implement them --
+    in post-processing.
+    But a central advantage of MarpaX::Languages::C::AST is to empower your own extensions --
+    for you to pick up where it leaves off.
+    </p>
+    <h3>To learn more</h3>
+    <p>
+      <a href="https://metacpan.org/module/Marpa::R2">Marpa::R2
+        is available on CPAN</a>.
+      A list of my Marpa tutorials can be found
+      <a href="http://jeffreykegler.github.io/Ocean-of-Awareness-blog/metapages/annotated.html#TUTORIAL">
+        here</a>.
+      There are
+      new tutorials by
+      <a href="http://marpa-guide.github.io/chapter1.html">Peter Stuifzand</a>
+      and
+      <a href="http://longanswers.blogspot.de/2013/06/transforming-syntax.html">amon</a>.
+      <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/">
+        The Ocean of Awareness blog</a>
+      focuses on Marpa,
+      and it has
+      <a href="http://jeffreykegler.github.io/Ocean-of-Awareness-blog/metapages/annotated.html">an annotated guide</a>.
+      Marpa also has
+      <a href="http://jeffreykegler.github.com/Marpa-web-site/">a web page</a>.
+      For questions, support and discussion, there is
+      <a href="http://groups.google.com/group/marpa-parser">
+        the "marpa parser"
+        Google Group.</a>
+      Comments on this post can be made there.
+    </p>
