@@ -52,15 +52,17 @@
     <p>
       Because it is Marpa-powered,
       MarpaX::Languages::C::AST works differently from other C parsers.
-      In the pasr,
+      In the past,
       C parsers have been syntax-driven -- parsing was based on a BNF description
       of the C grammar.
       More recently, C parsers have used hand-written
       recursive descent -- they have been procedurally-driven.
-      MarpaX::Languages::C::AST combines the two approaches.
+      </p>
+      <p>
+      MarpaX::Languages::C::AST uses both approaches.
       Marpa has the advantage that it makes full knowledge of the state of the parse
       available to the programmer,
-      so that the two approaches reinforce each other.
+      so that procedural logic and syntax-driven parsing can reinforce each other.
     The result is a combined lexer/parser
       which is very compact and easy to understand.
       Among the potential applications:
@@ -77,22 +79,23 @@
       <li>C variants.
       Because the code for the parser is compact and easy to modify,
       it lends itself to language extension and experimentation.
-      For example, a standards committee could reasonably implement compilers
-      to try out the proposals submitted to it.
+      For example,
+      you could reasonably implement compilers
+      to try out the proposals submitted to 
+      a standards committee.
       </li>
       <li>C supersets.
       Would you like to see some of the syntax from a favorite language available in C?
       Here's your chance.
       </li>
     </ul>
-    <h3>A few details</h3>
+    <h3>The implementation</h3>
     <p>A few of Jean-Damien's implementation choices are worth noting.
       A C parser can take one of two strategies: approximate or precise.
       A compiler has, of course, to be precise.
       Tools, such as cross-referencers, often decide to be approximate, or sloppy.
       Sloppiness is easier to implement and has other advantages:
-      Compilers require the user to get all the C flags right.
-      A sloppy tool can tolerate missing flags: what the flags should be
+      A sloppy tool can tolerate missing C flags: what the C flags should be
       can be one of the things it guesses at.
     </p>
     <p>Of the two strategies, Jean-Damien decided to go with "precise".
@@ -103,7 +106,7 @@
     </p>
       <p>
       Because 
-      MarpaX::Languages::C::AST purpose is to take things as far an AST,
+      MarpaX::Languages::C::AST purpose is to take things as far as an AST,
       and let the user take over,
       it does not implement those constraints usually implemented in post-processing.
       One example of a post-syntactic constraint is the one that bans
@@ -121,11 +124,11 @@
       Jean-Damien's approach to them.
       MarpaX::Languages::C::AST is, with a few exceptions, syntax-driven -- the parser works
       from Marpa's SLIF, an extended BNF variant.
-      The SLIF-driven parser is sufficient to deal with the
+      The SLIF-driven logic is sufficient to deal with the
       <a href="http://en.wikipedia.org/wiki/Dangling_else">if-then-else issue</a>.
       Marpa handles right recursion in linear time,
       so that the if-then-else issue could have been dealt with by rewriting the relevant rules.
-      But Jean-Damien wanted to have his CNF follow closely the grammar in the standards,
+      But Jean-Damien wanted to have his BNF follow closely the grammar in the standards,
       and he decided to use Marpa's rule ranking facility instead.
       </p>
       <p>More complicated is the ambiguity in C between variable names and types,
@@ -143,7 +146,7 @@
       a user's customized procedural logic,
       and for the syntax-driven logic to take control back
       when the procedural logic wants to give it back.
-      This allows the variable name versus type ambiguity to be handled by specifically targeted code
+      This allows the variable-name-versus-type ambiguity to be handled by specifically targeted code
       which knows the full context of the decisions it needs to make.
       This code can be written more directly, simply and clearly
       than was possible with previous parsing methods.
