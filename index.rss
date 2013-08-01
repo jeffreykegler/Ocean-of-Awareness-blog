@@ -44,7 +44,7 @@
     &lt;ul&gt;
       &lt;li&gt;Customized &quot;lints&quot;.
         You can write programs to enforce C language standards
-        and restrictions specific to a individual, a company or a project.
+        and restrictions specific to an individual, a company or a project.
       &lt;/li&gt;
       &lt;li&gt;C interpreters.
         By taking the AST and adding your own back end, you can create a special-purpose C interpreter
@@ -110,10 +110,10 @@
       territory.
       Most C parsers deal with this using
       &lt;a href=&quot;http://en.wikipedia.org/wiki/The_lexer_hack&quot;&gt;lexer
-        and/or post-processing hacks&lt;/a&gt;.
+        or post-processing hacks&lt;/a&gt;.
       Marpa allows the parser to do this more elegantly.
       Marpa knows the parsing context at all times and can comnunicate this to a user's
-      customized lexing code.
+      customized code.
       Marpa also has the ability to use the parsing context to
       decide when to
       switch control from the syntax-driven logic to
