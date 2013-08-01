@@ -5,7 +5,7 @@ A Marpa-powered C parser
       -->
       Jean-Damien Durand has just released
       <a href="https://metacpan.org/release/MarpaX-Languages-C-AST">
-      MarpaX::Languages::C::AST</a>,
+        MarpaX::Languages::C::AST</a>,
       which parses C language into an abstract syntax tree (AST).
       MarpaX::Languages::C::AST has been tested against
       Perl's C source code, as well as Marpa's own C source.
@@ -18,36 +18,36 @@ A Marpa-powered C parser
       of the C grammar.
       More recently, C parsers have used hand-written
       recursive descent -- they have been procedurally-driven.
-      </p>
-      <p>
+    </p>
+    <p>
       MarpaX::Languages::C::AST uses both approaches.
       Marpa has the advantage that it makes full knowledge of the state of the parse
       available to the programmer,
       so that procedural logic and syntax-driven parsing can reinforce each other.
-    The result is a combined lexer/parser
+      The result is a combined lexer/parser
       which is very compact and easy to understand.
       Among the potential applications:
     </p>
     <ul>
       <li>Customized "lints".
-      You can write programs to enforce C language standards
+        You can write programs to enforce C language standards
         and restrictions specific to a individual, a company or a project.
       </li>
       <li>C interpreters.
-      By taking the AST and adding your own back end, you can create a special-purpose C interpreter
-      or a special-purpose compiler.
+        By taking the AST and adding your own back end, you can create a special-purpose C interpreter
+        or a special-purpose compiler.
       </li>
       <li>C variants.
-      Because the code for the parser is compact and easy to modify,
-      it lends itself to language extension and experimentation.
-      For example,
-      you could reasonably implement compilers
-      to try out the proposals submitted to 
-      a standards committee.
+        Because the code for the parser is compact and easy to modify,
+        it lends itself to language extension and experimentation.
+        For example,
+        you could reasonably implement compilers
+        to try out the proposals submitted to
+        a standards committee.
       </li>
       <li>C supersets.
-      Would you like to see some of the syntax from a favorite language available in C?
-      Here's your chance.
+        Would you like to see some of the syntax from a favorite language available in C?
+        Here's your chance.
       </li>
     </ul>
     <h3>The implementation</h3>
@@ -65,8 +65,8 @@ A Marpa-powered C parser
       This has the advantage that
       MarpaX::Languages::C::AST could be used as the front end of a compiler.
     </p>
-      <p>
-      Because 
+    <p>
+      Because
       MarpaX::Languages::C::AST purpose is to take things as far as an AST,
       and let the user take over,
       it does not implement those constraints usually implemented in post-processing.
@@ -91,13 +91,13 @@ A Marpa-powered C parser
       so that the if-then-else issue could have been dealt with by rewriting the relevant rules.
       But Jean-Damien wanted to have his BNF follow closely the grammar in the standards,
       and he decided to use Marpa's rule ranking facility instead.
-      </p>
-      <p>More complicated is the ambiguity in C between variable names and types,
+    </p>
+    <p>More complicated is the ambiguity in C between variable names and types,
       which actually takes C beyond BNF and context-free grammars into context-sensitive
       territory.
-    Most C parsers deal with this using
-    <a href="http://en.wikipedia.org/wiki/The_lexer_hack">lexer 
-      and/or post-processing hacks</a>.
+      Most C parsers deal with this using
+      <a href="http://en.wikipedia.org/wiki/The_lexer_hack">lexer
+        and/or post-processing hacks</a>.
       Marpa allows the parser to do this more elegantly.
       Marpa knows the parsing context at all times and can comnunicate this to a user's
       customized lexing code.
@@ -113,7 +113,7 @@ A Marpa-powered C parser
       than was possible with previous parsing methods.
     </p>
     <p>
-    <h3>Compilers?</h3>
+    </p><h3>Compilers?</h3>
     <p>
       Above I mentioned special-purpose compilers.
       What about production compilers?
@@ -122,7 +122,7 @@ A Marpa-powered C parser
       will probably not be adequate for production.
       Perhaps a future Marpa-powered C parser will rewrite those
       upper layers in C, and make the race more interesting.
-      </p>
+    </p>
     <h3>To learn more</h3>
     <p>
       <a href="https://metacpan.org/module/Marpa::R2">Marpa::R2
