@@ -20,31 +20,32 @@ A Marpa-powered C parser
       so that the two approaches can reinforce each other.
     </p>
     <p>The result is a combined lexer/parser
-    which is unusually compact, easy-to-understand
-    and easy to modify.
-    The logic which can be described via syntax (BNF) is implemented from the
-    BNF.
-    Parsing from the BNF is enough to handle lexing and parsing for almost all of standard C,
-    including the
-    much discussed <a href="http://en.wikipedia.org/wiki/Dangling_else>if-then-else issue</a>.
+      which is unusually compact, easy-to-understand
+      and easy to modify.
+      The logic which can be described via syntax (BNF) is implemented from the
+      BNF.
+      Parsing from the BNF is enough to handle lexing and parsing for almost all of standard C,
+      including the
+      much discussed
+      <a href="http://en.wikipedia.org/wiki/Dangling_else>if-then-else issue</a>.
     </p>
     <p>But C in some aspects is actually context-sensitive -- incapable of being described in BNF.
     In particular, C cannot distinguish type names from variable names using its BNF grammar alone.
     Most C parsers deal with this via either
     <a href="http://en.wikipedia.org/wiki/The_lexer_hack">a lexer hack</a>,
-    or a post-processing hack.
-    Marpa allows the parser to do this more elegantly.
-    Marpa knows the parsing context at all times and can comnunicate this to a user's
-    customized lexing code.
-    It also allows the parser to switch back and forth between customized parsing and
-    its own internal parsing.
-    Combined, these two features allow the code to distinguish C variable names from
-    C's types to avoid hacks, and to address the issue in a direct and focused way.
-    The procedural logic to do this can be limited to the cases were it is necessary.
-    And since Marpa is fully aware of parse context,
-    the procedural logic does not need to resort to hacks and tricks to make the right
-    decisions.
-    The resulting code, and parser, is much simpler and clearer.
+      or a post-processing hack.
+      Marpa allows the parser to do this more elegantly.
+      Marpa knows the parsing context at all times and can comnunicate this to a user's
+      customized lexing code.
+      It also allows the parser to switch back and forth between customized parsing and
+      its own internal parsing.
+      Combined, these two features allow the code to distinguish C variable names from
+      C's types to avoid hacks, and to address the issue in a direct and focused way.
+      The procedural logic to do this can be limited to the cases were it is necessary.
+      And since Marpa is fully aware of parse context,
+      the procedural logic does not need to resort to hacks and tricks to make the right
+      decisions.
+      The resulting code, and parser, is much simpler and clearer.
     </p>
     <p>
       Potential uses of MarpaX::Languages::C::AST includes tools, interpreters
@@ -70,22 +71,22 @@ A Marpa-powered C parser
     </p>
     <h3>Applications</h3>
     <ul>
-    <li>Customized and customize-able "lints" -- programs to enforce C language standards
-    and restrictions specific to a individual, a company or a project.
-    </ul>
+      <li>Customized and customize-able "lints" -- programs to enforce C language standards
+        and restrictions specific to a individual, a company or a project.
+      </li></ul>
     <h3>Compilers?</h3>
     <p>
-    I am focused on parsing,
-    and I'm often tempted to call MarpaX::Languages::C::AST a "compiler".
-    And it can be called that if you were willing to consider an abstract syntax tree
-    a compilation "target".
-    But much of what you look for in a compiler is missing from MarpaX::Languages::C::AST,
-    including implementation of non-syntactic constraints -- things
-    like "<tt>case</tt>" labels only being allowed in switch statements.
-    These could be added in the same way that more conventional compilers typically implement them --
-    in post-processing.
-    But a central advantage of MarpaX::Languages::C::AST is to empower your own extensions --
-    for you to pick up where it leaves off.
+      I am focused on parsing,
+      and I'm often tempted to call MarpaX::Languages::C::AST a "compiler".
+      And it can be called that if you were willing to consider an abstract syntax tree
+      a compilation "target".
+      But much of what you look for in a compiler is missing from MarpaX::Languages::C::AST,
+      including implementation of non-syntactic constraints -- things
+      like "<tt>case</tt>" labels only being allowed in switch statements.
+      These could be added in the same way that more conventional compilers typically implement them --
+      in post-processing.
+      But a central advantage of MarpaX::Languages::C::AST is to empower your own extensions --
+      for you to pick up where it leaves off.
     </p>
     <h3>To learn more</h3>
     <p>
