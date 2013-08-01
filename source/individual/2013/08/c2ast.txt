@@ -8,23 +8,24 @@ A Marpa-powered C parser
       MarpaX::Languages::C::AST</a>,
       which parses C language into an abstract syntax tree (AST).
       MarpaX::Languages::C::AST has been tested against
-      Perl's C source code, as well as Marpa's own C source file.
+      Perl's C source code, as well as Marpa's own C source.
     </p>
     <p>
       Because it is Marpa-powered,
       MarpaX::Languages::C::AST works differently from other C parsers.
-      C parsers have been either syntax-driven,
-      like those parsers based on yacc,
-      or based on recursive descent and procedurally-driven.
-      MarpaX::Languages::C::AST uses both approaches.
+      In the pasr,
+      C parsers have been syntax-driven -- parsing was based on a BNF description
+      of the C grammar.
+      More recently, C parsers have used hand-written
+      recursive descent -- they have been procedurally-driven.
+      MarpaX::Languages::C::AST combines the two approaches.
       Marpa has the advantage that it makes full knowledge of the state of the parse
       available to the programmer,
-      so that the two approaches can reinforce each other.
+      so that the two approaches reinforce each other.
     The result is a combined lexer/parser
-      which is unusually compact, easy-to-understand
-      and easy to modify.
+      which is very compact and easy to understand.
+      Among the applications:
     </p>
-    <h3>Applications</h3>
     <ul>
       <li>Customized "lints".
       You can write programs to enforce C language standards
@@ -41,11 +42,11 @@ A Marpa-powered C parser
       to try out the proposals submitted to it.
       </li>
       <li>C supersets.
-      Add some of your favorite syntax from other languages to C?  Why not?
+      Add some of your favorite syntax from other languages to C?
       </li>
     </ul>
     <h3>A few details</h3>
-    <p>A few of Jean-Damien's implementation choices are worth singling out.
+    <p>A few of Jean-Damien's implementation choices are worth noting.
       A C parser can take one of two strategies: approximate or precise.
       A compiler has, of course, to be precise.
       Tools, such as cross-referencers, often decide to be approximate, or sloppy.
@@ -74,11 +75,13 @@ A Marpa-powered C parser
       This makes it easier for extensions and customizations,
       which I think of as the major purpose of MarpaX::Languages::C::AST.
     </p>
+    <h3>The parsing strategy</h3>
     <p>
-      For those familar with the C's parsing and its issues.
-      MarpaX::Languages::C::AST is almost entirely syntax-driven -- the parser works
+      Those familar with the C's parsing and its issues may be interested in how
+      Jean-Damien approached them.
+      MarpaX::Languages::C::AST is, with a few exceptions, syntax-driven -- the parser works
       from Marpa's SLIF, an extended BNF variant.
-      This is sufficient to deal with the
+      The SLIF-driven parser is sufficient to deal with the
       <a href="http://en.wikipedia.org/wiki/Dangling_else">if-then-else issue</a>.
       Marpa handles right recursion in linear time,
       so that the if-then-else issue could have been dealt with by rewriting the relevant rules.
@@ -94,15 +97,21 @@ A Marpa-powered C parser
       Marpa allows the parser to do this more elegantly.
       Marpa knows the parsing context at all times and can comnunicate this to a user's
       customized lexing code.
-      It also allows the parser to switch back and forth between customized parsing and
-      its own internal parsing.
-      The resulting code, and parser, is much simpler and clearer.
+      Marpa also has the ability to use the parsing context to
+      decide when to
+      switch control from the syntax-driven logic to
+      a user's customized procedural logic,
+      and to resume when the procedural logic wants to switch back.
+      This allows the variable name versus type ambiguity to be handled by specifically targeted code
+      which knows the full context of the decisions it needs to make.
+      The necessary procedural code can be written much simpler and clearer
+      than was the case in previous solutions.
     </p>
     <p>
     <h3>Compilers?</h3>
     <p>
       Above I mentioned special-purpose compilers.
-      What about productions compilers?
+      What about production compilers?
       MarpaX::Languages::C::AST's upper layers are in Perl,
       so the speed, while acceptable for special-purpose tools,
       will probably not be adequate for production.
