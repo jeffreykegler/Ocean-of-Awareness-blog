@@ -34,6 +34,112 @@
   </p>
   </div>
   <div style="margin-left:190px;border-left:2px solid #38B0C0;padding:25px;">
+<h3>Tue, 25 Feb 2014</h3>
+<br />
+<center><a name="semantic_ws"> <h2>Significant whitespace?  Or semicolons?</h2> </a>
+</center>
+  <p>
+      <!--
+      marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
+      -->
+      Should statements have explicit terminators, like Perl and C's semicolon?
+      Or should they avoid the clutter, and separate statements by giving whitespace
+      syntactic signifance and a real effect on
+      the semantics?
+      Actually you don't have to go either way,
+      and you can avoid both sets of problems.
+    </p>
+    <p>
+      As an example, let's look at some BNF-ish DSL.
+      It defines a small calculator.
+      At first glance, it looks as if this language has taken the
+      significant-whitespace route -- there certainly are no explicit statement
+      terminators.
+    </p>
+    <blockquote>
+    <pre>
+:default ::= action =&gt; ::first
+:start ::= Expression
+Expression ::= Term
+Term ::=
+      Factor
+    | Term '+' Term action =&gt; do_add
+Factor ::=
+      Number
+    | Factor '*' Factor action =&gt; do_multiply
+Number ~ digits
+digits ~ [\d]+
+:discard ~ whitespace
+whitespace ~ [\s]+
+</pre>
+</blockquote>
+    <p>
+If you use this DSL, and try natural rearrangements of the whitespace, you'll they
+just work.
+You might become curious about what exactly what the rules for newlines are,
+but if you look at the documentation, you won't find any.
+That's because there aren't any.
+</p>
+<p>
+You can see this for yourself.
+GNU's fmt command will thoroughly mess it up the line structure:
+</p>
+<blockquote>
+<pre>
+:default ::= action =&gt; ::first :start ::= Expression Expression ::= Term
+Term ::= Factor | Term '+' Term action =&gt; do_add Factor ::= Number |
+Factor '*' Factor action =&gt; do_multiply Number ~ digits digits ~
+[\d]+ :discard ~ whitespace whitespace ~ [\s]+
+</pre>
+<p>
+But the script will still run just fine.
+</blockquote>
+    <h3>How does it work?</h3>
+<p>How does it work?
+Actually, pose this question first?
+Assuming you've gotten used to reading BNF,
+can you tell where the statements end?
+If you not used to reading BNF, you might have trouble with this
+particular example, but for a language you know the answer is simple:
+Yes, of course you can.
+So really the question is,
+why you expect the parser to be so stupid that it cannot?
+    </p>
+    <h3>To learn more</h3>
+    <p>
+      This example was produced with the Marpa parser.
+      <a href="https://metacpan.org/module/Marpa::R2">Marpa::R2
+        is available on CPAN</a>.
+      A list of my Marpa tutorials can be found
+      <a href="http://jeffreykegler.github.io/Ocean-of-Awareness-blog/metapages/annotated.html#TUTORIAL">
+        here</a>.
+      There are
+      new tutorials by
+      <a href="http://marpa-guide.github.io/chapter1.html">Peter Stuifzand</a>
+      and
+      <a href="http://longanswers.blogspot.de/2013/06/transforming-syntax.html">amon</a>.
+      <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/">
+        The Ocean of Awareness blog</a>
+      focuses on Marpa,
+      and it has
+      <a href="http://jeffreykegler.github.io/Ocean-of-Awareness-blog/metapages/annotated.html">an annotated guide</a>.
+      Marpa also has
+      <a href="http://jeffreykegler.github.com/Marpa-web-site/">a web page</a>.
+      For questions, support and discussion, there is
+      <a href="http://groups.google.com/group/marpa-parser">
+        the "marpa parser"
+        Google Group.</a>
+      Comments on this post can be made there.
+    </p>
+<br />
+<p>posted at: 15:30 |
+<a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2014/02/semantic_ws.html">direct link to this entry</a>
+</p>
+<div style="color:#38B0C0;padding:1px;text-align:center;">
+&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&sect;
+</div>
 <h3>Thu, 01 Aug 2013</h3>
 <br />
 <center><a name="c2ast"> <h2>A Marpa-powered C parser</h2> </a>
@@ -1070,119 +1176,6 @@ die 'No parse' if not defined $result;
 <br />
 <p>posted at: 07:17 |
 <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2013/06/mixing-procedural.html">direct link to this entry</a>
-</p>
-<div style="color:#38B0C0;padding:1px;text-align:center;">
-&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-&sect;
-</div>
-<h3>Fri, 31 May 2013</h3>
-<br />
-<center><a name="design_of_4"> <h2>The Design of Four</h2> </a>
-</center>
-  <p>
-      <!--
-      marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
-      -->
-      In the Perl world at this moment,
-      a lot is being said about the consequences of bad design.
-      And it is useful to study design failures.
-      But the exercise will come to nothing
-      without a road to good design.
-      This post will point out four
-      Perl-centric
-      projects that
-      are worth study as models
-      of good design.
-    </p>
-    <p>
-      The projects are
-      <a href="https://metacpan.org/release/ack">
-      ack</a>,
-      <a href="https://metacpan.org/release/App-cpanminus">
-      cpanm</a>,
-      <a href="https://metacpan.org/release/local-lib">local::lib</a> and
-      <a href="https://metacpan.org/release/App-perlbrew">perlbrew</a>.
-      Each of these is perfect
-      in the older sense of "having all that is requisite to its nature and kind"
-      (<a href="http://1828.mshaffer.com/d/word/perfect">Webster's 1828</a>).
-	If you are into Perl,
-	they are all widely useful,
-	and looking at them as a potential or an actual user
-	is the best way to gain an appreciation of the art behind them.
-    </p>
-    <p><tt>ack</tt> is a file search tool -- UNIX's grep with improvements.
-      The improvements are influenced by a Perl sensibility,
-      and <tt>ack</tt> is written in Perl.
-      But while the other tools I list are of little interest unless
-      you are into Perl,
-      <tt>ack</tt> can help you out even if you otherwise shun Perl tools.
-    </p>
-    <p>
-      <tt>cpanm</tt> is for installing CPAN packages from CPAN.
-      If you don't know what that means, you aren't interested.
-      If you do, you want to be using it.
-      It does everything you need and importantly, nothing more.
-      The interface is without clutter.
-      Like I said, perfect.
-    </p>
-    <p>
-      <tt>local::lib</tt> is for installing Perl modules in the directory of your choice.
-      Even if you have root permission on a system,
-      it is good practice to leave the delivered Perl on your system
-      untouched except by vendor-sponsored patches and updates.
-      <tt>local::lib</tt> allows you to do this easily and conveniently.
-      It has every feature and convenience I want.
-      And reading its documentation is again an encounter with
-      perfection.
-      Every feature described is
-      <ul>
-      <li>something that you need today,
-      <li>something that you are worried you might need tomorrow, or
-      <li>something that you are not worried you might need,
-      but on reading the documentation will discover that you should be.
-      </ul>
-      Aside from that, there is nothing else.
-      Clutter-free.  Perfect.
-    </p>
-    <p>
-      Repeated perfection can be boring,
-      a fact which
-      I suspect plays no small role
-      in making perfection an unusual thing in this world.
-      So of <tt>perlbrew</tt>,
-      I will simply say that it does for Perl versions and executables
-      what <tt>local::lib</tt> does for Perl modules.
-      <tt>perlbrew</tt> is the way to manage alternative Perl executables.
-      And using <tt>perlbrew</tt>
-      is a good way to study yet another perfect interface.
-    </p>
-    <p>
-    How much relevance does the work of
-      Andy Lester (<tt>ack</tt>),
-      Tatsuhiko Miyagawa (<tt>cpanm</tt>),
-      Matt S Trout (<tt>local::lib</tt>)
-      and Kang-min Liu (<tt>perlbrew</tt>) have to other projects,
-      including projects that now seem larger and more complex?
-      Certainly
-      these four applications all seem simple, well-defined,
-      and self-contained.
-      But I would argue that,
-      if these problems seem simple and well-defined today,
-      much of that impression is the result of the design skills
-      of Andy, Tatsuhiko, Matt and Kang-min.
-      And if, to an extent, they did benefit from
-      having the good fortune to pick the the right problem at
-      the right time,
-      it is useful to recall
-      Ben Hogan's comment on his profession:
-    </p>
-    <blockquote>Golf is a game of luck.
-      The more I practice, the luckier I get.
-    </blockquote>
-<br />
-<p>posted at: 07:20 |
-<a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2013/05/design_of_4.html">direct link to this entry</a>
 </p>
 <div style="color:#38B0C0;padding:1px;text-align:center;">
 &sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;

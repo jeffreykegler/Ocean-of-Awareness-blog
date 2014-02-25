@@ -1,0 +1,162 @@
+<html>
+<head>
+<link rel="alternate" title="Ocean of Awareness RSS" type="application/rss+xml" title="RSS" href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/index.rss" />
+<title>Ocean of Awareness</title>
+<style type="text/css">
+   strong {font-weight: 700;}
+</style>
+</head>
+<body>
+<div
+  style="color:white;background-color:#38B0C0;padding:1em;clear:left;text-align:center;">
+<h1>Ocean of Awareness</h1>
+</div>
+  <div style="margin:0;padding:10px 30px 10px 10px;width:150px;float:left;border-right:2px solid #38B0C0">
+  <p>
+  <strong>Jeffrey Kegler's blog</strong>
+  about Marpa, his new parsing algorithm,
+    and other topics of interest</p>
+  <p><a href="http://www.jeffreykegler.com/">Jeffrey's personal website</a></p>
+      <p>
+	<a href="https://twitter.com/jeffreykegler" class="twitter-follow-button" data-show-count="false">Follow @jeffreykegler</a>
+      </p>
+      <p style="text-align:center">
+	<!-- Place this code where you want the badge to render. -->
+	<a href="//plus.google.com/101567692867247957860?prsrc=3" rel="publisher" style="text-decoration:none;">
+	<img src="//ssl.gstatic.com/images/icons/gplus-32.png" alt="Google+" style="border:0;width:32px;height:32px;"/></a>
+      </p>
+  <h3>Marpa resources</h3>
+  <p><a href="http://jeffreykegler.github.com/Marpa-web-site/">The Marpa website</a></p>
+  <p>The Ocean of Awareness blog: <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog">home page</a>,
+  <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/metapages/chronological.html">chronological index</a>,
+  and
+  <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/metapages/annotated.html">annotated index</a>.
+  </p>
+  </div>
+  <div style="margin-left:190px;border-left:2px solid #38B0C0;padding:25px;">
+<h3>Tue, 25 Feb 2014</h3>
+<br />
+<center><a name="semantic_ws"> <h2>Significant whitespace?  Or semicolons?</h2> </a>
+</center>
+  <p>
+      <!--
+      marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
+      -->
+      Should statements have explicit terminators, like Perl and C's semicolon?
+      Or should they avoid the clutter, and separate statements by giving whitespace
+      syntactic signifance and a real effect on
+      the semantics?
+      Actually you don't have to go either way,
+      and you can avoid both sets of problems.
+    </p>
+    <p>
+      As an example, let's look at some BNF-ish DSL.
+      It defines a small calculator.
+      At first glance, it looks as if this language has taken the
+      significant-whitespace route -- there certainly are no explicit statement
+      terminators.
+    </p>
+    <blockquote>
+    <pre>
+:default ::= action =&gt; ::first
+:start ::= Expression
+Expression ::= Term
+Term ::=
+      Factor
+    | Term '+' Term action =&gt; do_add
+Factor ::=
+      Number
+    | Factor '*' Factor action =&gt; do_multiply
+Number ~ digits
+digits ~ [\d]+
+:discard ~ whitespace
+whitespace ~ [\s]+
+</pre>
+</blockquote>
+    <p>
+If you use this DSL, and try natural rearrangements of the whitespace, you'll they
+just work.
+You might become curious about what exactly what the rules for newlines are,
+but if you look at the documentation, you won't find any.
+That's because there aren't any.
+</p>
+<p>
+You can see this for yourself.
+GNU's fmt command will thoroughly mess it up the line structure:
+</p>
+<blockquote>
+<pre>
+:default ::= action =&gt; ::first :start ::= Expression Expression ::= Term
+Term ::= Factor | Term '+' Term action =&gt; do_add Factor ::= Number |
+Factor '*' Factor action =&gt; do_multiply Number ~ digits digits ~
+[\d]+ :discard ~ whitespace whitespace ~ [\s]+
+</pre>
+<p>
+But the script will still run just fine.
+</blockquote>
+    <h3>How does it work?</h3>
+<p>How does it work?
+Actually, pose this question first?
+Assuming you've gotten used to reading BNF,
+can you tell where the statements end?
+If you not used to reading BNF, you might have trouble with this
+particular example, but for a language you know the answer is simple:
+Yes, of course you can.
+So really the question is,
+why you expect the parser to be so stupid that it cannot?
+    </p>
+    <h3>To learn more</h3>
+    <p>
+      This example was produced with the Marpa parser.
+      <a href="https://metacpan.org/module/Marpa::R2">Marpa::R2
+        is available on CPAN</a>.
+      A list of my Marpa tutorials can be found
+      <a href="http://jeffreykegler.github.io/Ocean-of-Awareness-blog/metapages/annotated.html#TUTORIAL">
+        here</a>.
+      There are
+      new tutorials by
+      <a href="http://marpa-guide.github.io/chapter1.html">Peter Stuifzand</a>
+      and
+      <a href="http://longanswers.blogspot.de/2013/06/transforming-syntax.html">amon</a>.
+      <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/">
+        The Ocean of Awareness blog</a>
+      focuses on Marpa,
+      and it has
+      <a href="http://jeffreykegler.github.io/Ocean-of-Awareness-blog/metapages/annotated.html">an annotated guide</a>.
+      Marpa also has
+      <a href="http://jeffreykegler.github.com/Marpa-web-site/">a web page</a>.
+      For questions, support and discussion, there is
+      <a href="http://groups.google.com/group/marpa-parser">
+        the "marpa parser"
+        Google Group.</a>
+      Comments on this post can be made there.
+    </p>
+<br />
+<p>posted at: 15:30 |
+<a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2014/02/semantic_ws.html">direct link to this entry</a>
+</p>
+<div style="color:#38B0C0;padding:1px;text-align:center;">
+&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&sect;
+</div>
+</div>
+</div>
+<div id="footer" style="border-top:thick solid #38B0C0;clear:left;padding:1em;">
+<p>This is Ocean of Awareness's
+  new home.  This blog has been hosted at
+  <a href="http://blogs.perl.org/users/jeffrey_kegler/">blogs.perl.org</a>
+  but I have succumbed to the lure of static blogging.
+</div>
+	<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+              <script type="text/javascript">
+            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+          </script>
+          <script type="text/javascript">
+            try {
+              var pageTracker = _gat._getTracker("UA-33430331-1");
+            pageTracker._trackPageview();
+            } catch(err) {}
+          </script>
+</body></html>
