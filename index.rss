@@ -74,7 +74,7 @@ Factor '*' Factor action =&amp;gt; do_multiply Number ~ digits digits ~
 [\d]+ :discard ~ whitespace whitespace ~ [\s]+
 &lt;/pre&gt;
     &lt;/blockquote&gt;
-    &lt;p&gt;the &lt;a href=&quot;https://gist.github.com/jeffreykegler/9220695&quot;&gt;
+    &lt;p&gt;The &lt;a href=&quot;https://gist.github.com/jeffreykegler/9220695&quot;&gt;
       script&lt;/a&gt; will continue to run just fine.
     &lt;/p&gt;
     &lt;h3&gt;How does it work?&lt;/h3&gt;
@@ -98,8 +98,7 @@ Factor '*' Factor action =&amp;gt; do_multiply Number ~ digits digits ~
       and what it is not.
       The Marpa parser is powerful enough to simply take this self-describing DSL
       and act on it, finding where statements begin and end,
-      much as a human reader
-      would be able to in the same circumstance.
+      much as a human reader is able to.
     &lt;/p&gt;
     &lt;h3&gt;To learn more&lt;/h3&gt;
     &lt;p&gt;
