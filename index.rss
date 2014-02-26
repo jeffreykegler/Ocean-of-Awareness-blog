@@ -12,7 +12,10 @@
   <item>
     <title>Significant whitespace?  Or semicolons?</title>
     <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2014/02/semantic_ws.html</link>
-    <description>  &lt;p&gt;
+    <description>&lt;html&gt;
+  &lt;head&gt;
+  &lt;/head&gt;
+  &lt;body&gt;&lt;p&gt;
       &lt;!--
       marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
       --&gt;
@@ -31,7 +34,7 @@
       terminators.
     &lt;/p&gt;
     &lt;blockquote&gt;
-    &lt;pre&gt;
+      &lt;pre&gt;
 :default ::= action =&amp;gt; ::first
 :start ::= Expression
 Expression ::= Term
@@ -46,44 +49,65 @@ digits ~ [\d]+
 :discard ~ whitespace
 whitespace ~ [\s]+
 &lt;/pre&gt;
-&lt;/blockquote&gt;
+    &lt;/blockquote&gt;
+    &lt;h3&gt;The rule is that there isn't one&lt;/h3&gt;
     &lt;p&gt;
-If you use this DSL, and try natural rearrangements of the whitespace, you'll they
-just work.
-You might become curious about what exactly what the rules for newlines are,
-but if you look at the documentation, you won't find any.
-That's because there aren't any.
-&lt;/p&gt;
-&lt;p&gt;
-You can see this for yourself.
-GNU's fmt command will thoroughly mess it up the line structure:
-&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;pre&gt;
+      If you use this DSL, and try natural rearrangements of the whitespace, you'll they
+      just work.
+      You might become curious about what exactly what the rules for newlines are,
+      but if you look at
+      &lt;a href=&quot;https://metacpan.org/pod/distribution/Marpa-R2/pod/Scanless/DSL.pod&quot;&gt;
+      the documentation&lt;/a&gt;,
+      you won't find any.
+      That's because there aren't any.
+    &lt;/p&gt;
+    &lt;p&gt;
+      You can see this for yourself.
+      GNU's fmt command will thoroughly mess it up the line structure:
+    &lt;/p&gt;
+    &lt;blockquote&gt;
+      &lt;pre&gt;
 :default ::= action =&amp;gt; ::first :start ::= Expression Expression ::= Term
 Term ::= Factor | Term '+' Term action =&amp;gt; do_add Factor ::= Number |
 Factor '*' Factor action =&amp;gt; do_multiply Number ~ digits digits ~
 [\d]+ :discard ~ whitespace whitespace ~ [\s]+
 &lt;/pre&gt;
-&lt;p&gt;
-But the script will still run just fine.
-&lt;/blockquote&gt;
+      &lt;p&gt;
+        But the script will still run just fine.
+      &lt;/p&gt;&lt;/blockquote&gt;
     &lt;h3&gt;How does it work?&lt;/h3&gt;
-&lt;p&gt;How does it work?
-Actually, pose this question first?
-Assuming you've gotten used to reading BNF,
-can you tell where the statements end?
-If you not used to reading BNF, you might have trouble with this
-particular example, but for a language you know the answer is simple:
-Yes, of course you can.
-So really the question is,
-why you expect the parser to be so stupid that it cannot?
+    &lt;p&gt;How does it work?
+      Actually, pose this question first:
+      Can you tell where the statements end?
+      If you not used to reading BNF, you might have trouble with this
+      particular example but,
+      for a language that you know, the answer is simple:
+      Yes, of course you can.
+      So really the question is,
+      why do we expect the parser to be so stupid that it cannot?
+    &lt;/p&gt;
+    &lt;p&gt;
+      The only trick is that this is done without trickery.
+      Marpa's DSL is
+      &lt;a href=&quot;https://metacpan.org/source/JKEGL/Marpa-R2-2.080000/lib/Marpa/R2/meta/metag.bnf&quot;&gt;
+      written in itself&lt;/a&gt;,
+      and Marpa's self-grammar describes exactly what a statement is
+      and what it is not.
+      The Marpa parser is powerful enough to simply take this self-describing DSL
+      and act on it, finding where statements begin and end,
+      much as a human reader
+      would be able to in the same circumstance.
     &lt;/p&gt;
     &lt;h3&gt;To learn more&lt;/h3&gt;
     &lt;p&gt;
       This example was produced with the Marpa parser.
       &lt;a href=&quot;https://metacpan.org/module/Marpa::R2&quot;&gt;Marpa::R2
         is available on CPAN&lt;/a&gt;.
+	The code for this example is based on that in
+	the synopsis for its top-level document,
+	but it is isolated conveniently in a Github gist.
+      &lt;p&gt;
+      &lt;/p&gt;
       A list of my Marpa tutorials can be found
       &lt;a href=&quot;http://jeffreykegler.github.io/Ocean-of-Awareness-blog/metapages/annotated.html#TUTORIAL&quot;&gt;
         here&lt;/a&gt;.
@@ -104,7 +128,9 @@ why you expect the parser to be so stupid that it cannot?
         the &quot;marpa parser&quot;
         Google Group.&lt;/a&gt;
       Comments on this post can be made there.
-    &lt;/p&gt;</description>
+    &lt;/p&gt;
+  &lt;/body&gt;
+&lt;/html&gt;</description>
   </item>
   <item>
     <title>A Marpa-powered C parser</title>

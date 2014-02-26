@@ -1,5 +1,8 @@
 Significant whitespace?  Or semicolons?
-  <p>
+<html>
+  <head>
+  </head>
+  <body><p>
       <!--
       marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
       -->
@@ -18,7 +21,7 @@ Significant whitespace?  Or semicolons?
       terminators.
     </p>
     <blockquote>
-    <pre>
+      <pre>
 :default ::= action =&gt; ::first
 :start ::= Expression
 Expression ::= Term
@@ -33,44 +36,65 @@ digits ~ [\d]+
 :discard ~ whitespace
 whitespace ~ [\s]+
 </pre>
-</blockquote>
+    </blockquote>
+    <h3>The rule is that there isn't one</h3>
     <p>
-If you use this DSL, and try natural rearrangements of the whitespace, you'll they
-just work.
-You might become curious about what exactly what the rules for newlines are,
-but if you look at the documentation, you won't find any.
-That's because there aren't any.
-</p>
-<p>
-You can see this for yourself.
-GNU's fmt command will thoroughly mess it up the line structure:
-</p>
-<blockquote>
-<pre>
+      If you use this DSL, and try natural rearrangements of the whitespace, you'll they
+      just work.
+      You might become curious about what exactly what the rules for newlines are,
+      but if you look at
+      <a href="https://metacpan.org/pod/distribution/Marpa-R2/pod/Scanless/DSL.pod">
+      the documentation</a>,
+      you won't find any.
+      That's because there aren't any.
+    </p>
+    <p>
+      You can see this for yourself.
+      GNU's fmt command will thoroughly mess it up the line structure:
+    </p>
+    <blockquote>
+      <pre>
 :default ::= action =&gt; ::first :start ::= Expression Expression ::= Term
 Term ::= Factor | Term '+' Term action =&gt; do_add Factor ::= Number |
 Factor '*' Factor action =&gt; do_multiply Number ~ digits digits ~
 [\d]+ :discard ~ whitespace whitespace ~ [\s]+
 </pre>
-<p>
-But the script will still run just fine.
 </blockquote>
+      <p>But the script will still run just fine, as you see from this Github gist.
+      </p>
     <h3>How does it work?</h3>
-<p>How does it work?
-Actually, pose this question first?
-Assuming you've gotten used to reading BNF,
-can you tell where the statements end?
-If you not used to reading BNF, you might have trouble with this
-particular example, but for a language you know the answer is simple:
-Yes, of course you can.
-So really the question is,
-why you expect the parser to be so stupid that it cannot?
+    <p>How does it work?
+      Actually, pose this question first:
+      Can you tell where the statements end?
+      If you not used to reading BNF, you might have trouble with this
+      particular example but,
+      for a language that you know, the answer is simple:
+      Yes, of course you can.
+      So really the question is,
+      why do we expect the parser to be so stupid that it cannot?
+    </p>
+    <p>
+      The only trick is that this is done without trickery.
+      Marpa's DSL is
+      <a href="https://metacpan.org/source/JKEGL/Marpa-R2-2.080000/lib/Marpa/R2/meta/metag.bnf">
+      written in itself</a>,
+      and Marpa's self-grammar describes exactly what a statement is
+      and what it is not.
+      The Marpa parser is powerful enough to simply take this self-describing DSL
+      and act on it, finding where statements begin and end,
+      much as a human reader
+      would be able to in the same circumstance.
     </p>
     <h3>To learn more</h3>
     <p>
       This example was produced with the Marpa parser.
       <a href="https://metacpan.org/module/Marpa::R2">Marpa::R2
         is available on CPAN</a>.
+	The code for this example is based on that in
+	the synopsis for its top-level document,
+	but it is isolated conveniently in a Github gist.
+      <p>
+      </p>
       A list of my Marpa tutorials can be found
       <a href="http://jeffreykegler.github.io/Ocean-of-Awareness-blog/metapages/annotated.html#TUTORIAL">
         here</a>.
@@ -92,3 +116,5 @@ why you expect the parser to be so stupid that it cannot?
         Google Group.</a>
       Comments on this post can be made there.
     </p>
+  </body>
+</html>
