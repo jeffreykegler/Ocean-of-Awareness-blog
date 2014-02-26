@@ -1,4 +1,4 @@
-Significant whitespace?  Or semicolons?
+Significant newlines?  Or semicolons?
 <html>
   <head>
   </head>
@@ -9,11 +9,12 @@ Significant whitespace?  Or semicolons?
       Should statements have explicit terminators, like the semicolon of Perl and
       the C language?
       Or should they avoid the clutter, and separate statements by giving whitespace
-      syntactic signifance and a real effect on
-      the semantics?
-      Actually you don't have to go either way.
+      syntactic significance and a real effect on
+      the semantics,
+      as is done in Python and Javascript?
     </p>
     <p>
+      Actually we don't have to go either way.
       As an example, let's look at some BNF-ish DSL.
       It defines a small calculator.
       At first glance, it looks as if this language has taken the
@@ -39,18 +40,18 @@ whitespace ~ [\s]+
     </blockquote>
     <h3>The rule is that there isn't one</h3>
     <p>
-      If you use this DSL, and try natural rearrangements of the whitespace, you'll they
-      just work.
-      You might become curious about what exactly what the rules for newlines are,
-      but if you look at
+      If we don't happen to like the layout of the above DSL,
+      and rearrange it in various ways,
+      we'll find that everything we try works.
+      If we become curious about what exactly what the rules for newlines are,
+      and look at
       <a href="https://metacpan.org/pod/distribution/Marpa-R2/pod/Scanless/DSL.pod">
         the documentation</a>,
-      you won't find any.
+      we won't find any.
       That's because there aren't any.
     </p>
     <p>
-      You can see this for yourself.
-      GNU's fmt command will thoroughly mess it up the line structure:
+      We can see this by thoroughly messing up the line structure:
     </p>
     <blockquote>
       <pre>
@@ -60,18 +61,18 @@ Factor '*' Factor action =&gt; do_multiply Number ~ digits digits ~
 [\d]+ :discard ~ whitespace whitespace ~ [\s]+
 </pre>
     </blockquote>
-    <p>But
-      <a href="https://gist.github.com/jeffreykegler/9220695">
-        the script will still run just fine</a>.
+    <p>The <a href="https://gist.github.com/jeffreykegler/9220695">
+      script</a> will continue to run just fine.
     </p>
     <h3>How does it work?</h3>
     <p>How does it work?
-      Actually, pose this question first:
-      Can you tell where the statements end?
-      If you not used to reading BNF, you might have trouble with this
+      Actually, pose the question this way:
+      Can a human reader tell where the statements end?
+      If the reader is not used to reading BNF,
+      he might have trouble with this
       particular example but,
-      for a language that you know, the answer is simple:
-      Yes, of course you can.
+      for a language that he knows, the answer is simple:
+      Yes, of course he can.
       So really the question is,
       why do we expect the parser to be so stupid that it cannot?
     </p>
@@ -112,8 +113,11 @@ Factor '*' Factor action =&gt; do_multiply Number ~ digits digits ~
       focuses on Marpa,
       and it has
       <a href="http://jeffreykegler.github.io/Ocean-of-Awareness-blog/metapages/annotated.html">an annotated guide</a>.
-      Marpa also has
-      <a href="http://jeffreykegler.github.com/Marpa-web-site/">a web page</a>.
+      Marpa has
+      <a href="http://jeffreykegler.github.com/Marpa-web-site/">a web page that I maintain</a>
+      and Ron Savage maintains
+      <a href="http://savage.net.au/Perl-modules/html/marpa.papers/index.html">
+        another</a>.
       For questions, support and discussion, there is
       <a href="http://groups.google.com/group/marpa-parser">
         the "marpa parser"
