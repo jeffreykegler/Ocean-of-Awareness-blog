@@ -72,9 +72,11 @@ Term ::= Factor | Term '+' Term action =&amp;gt; do_add Factor ::= Number |
 Factor '*' Factor action =&amp;gt; do_multiply Number ~ digits digits ~
 [\d]+ :discard ~ whitespace whitespace ~ [\s]+
 &lt;/pre&gt;
-      &lt;p&gt;
-        But the script will still run just fine.
-      &lt;/p&gt;&lt;/blockquote&gt;
+&lt;/blockquote&gt;
+      &lt;p&gt;But
+      &lt;a href=&quot;https://gist.github.com/jeffreykegler/9220695&quot;&gt;
+      the script will still run just fine&lt;/a&gt;.
+      &lt;/p&gt;
     &lt;h3&gt;How does it work?&lt;/h3&gt;
     &lt;p&gt;How does it work?
       Actually, pose this question first:
@@ -105,7 +107,9 @@ Factor '*' Factor action =&amp;gt; do_multiply Number ~ digits digits ~
         is available on CPAN&lt;/a&gt;.
 	The code for this example is based on that in
 	the synopsis for its top-level document,
-	but it is isolated conveniently in a Github gist.
+	but it is isolated conveniently in
+	&lt;a href=&quot;https://gist.github.com/jeffreykegler/9220695&quot;&gt;
+	a Github gist&lt;/a&gt;.
       &lt;p&gt;
       &lt;/p&gt;
       A list of my Marpa tutorials can be found

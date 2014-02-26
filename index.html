@@ -98,9 +98,11 @@ Term ::= Factor | Term '+' Term action =&gt; do_add Factor ::= Number |
 Factor '*' Factor action =&gt; do_multiply Number ~ digits digits ~
 [\d]+ :discard ~ whitespace whitespace ~ [\s]+
 </pre>
-      <p>
-        But the script will still run just fine.
-      </p></blockquote>
+</blockquote>
+      <p>But
+      <a href="https://gist.github.com/jeffreykegler/9220695">
+      the script will still run just fine</a>.
+      </p>
     <h3>How does it work?</h3>
     <p>How does it work?
       Actually, pose this question first:
@@ -131,7 +133,9 @@ Factor '*' Factor action =&gt; do_multiply Number ~ digits digits ~
         is available on CPAN</a>.
 	The code for this example is based on that in
 	the synopsis for its top-level document,
-	but it is isolated conveniently in a Github gist.
+	but it is isolated conveniently in
+	<a href="https://gist.github.com/jeffreykegler/9220695">
+	a Github gist</a>.
       <p>
       </p>
       A list of my Marpa tutorials can be found
