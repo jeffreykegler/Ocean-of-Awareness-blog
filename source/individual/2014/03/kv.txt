@@ -112,7 +112,7 @@ Evolvable languages
 	<a href="https://metacpan.org/release/MarpaX-xPathLike">XPath</a>, and
 	<a href="https://metacpan.org/pod/distribution/Marpa-R2/html/pod/HTML.pod">liberal HTML</a>.
     </p>
-    <p>Marpa is a general HTML parser, which means that anything you can write in BNF, Marpa can parse.
+    <p>Marpa is a general BNF parser, which means that anything you can write in BNF, Marpa can parse.
     For practical parsing, what matters are those grammars that can be parsed in linear time,
     and with Marpa that class is vast, including all the classes of grammar currently in practical use.
     To describe the class of grammars that Marpa parses in linear time,
