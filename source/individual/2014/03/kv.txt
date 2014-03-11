@@ -72,11 +72,24 @@ Your new language: extending the syntax
             }
 </pre>
     </blockquote>
-    <p>And in fact, that is the output of the script in this Github gist,
-      <a href="https://gist.github.com/jeffreykegler/9478391">,
+    <p>And in fact, that is the output of the script in
+      <a href="https://gist.github.com/jeffreykegler/9478391">
+    this Github gist</a>,
         which parses the previous "extended Perl 5" snippet using a Marpa
         grammar before passing it on to Perl.
-      </a></p>
+      </p>
+      <p>Perl 5 does not allow a syntax like this,
+      and looking at its parsing code will tell you why -- it's already
+      a maintenance nightmare.
+      The extension I've described above could, in theory, be added to Perl
+      5, but doing so would aggravate an already desperate maintenance situation.
+    <p>
+      Now, depending on your tastes,
+      you feel just as happy that you'll never
+      see the change I've just described in Perl 5.
+      But I don't think it is as easy to happy about a parsing technology that
+      quickly paints the languages which use it into a corner.
+    </p>
     <h3>To learn more</h3>
     <p>
       This example was produced with the Marpa parser.
