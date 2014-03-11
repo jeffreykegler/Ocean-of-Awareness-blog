@@ -36,7 +36,7 @@
   <div style="margin-left:190px;border-left:2px solid #38B0C0;padding:25px;">
 <h3>Mon, 10 Mar 2014</h3>
 <br />
-<center><a name="kv"> <h2>Your new language: extending the syntax</h2> </a>
+<center><a name="kv"> <h2>Evolvable languages</h2> </a>
 </center>
 <html>
   <head>
@@ -47,11 +47,18 @@
       -->
       Ideally, if a syntax is useful and clear,
       and a programmer can easily parse it at a glance,
-      a programmer would be able to add it to an existing language.
-      In this post, I suggest a modest incremential change to the Perl syntax.
-      Modest, but one that, regardless of its merits, is unlikely to happen,
-      given the way that Perl 5 is currently parsed.
-      And I show a way of writing a parser, so that this change,
+      you should be able to add it to an existing language.
+      In this post, I will describe
+      a modest incremental change to the Perl syntax.
+    </p>
+    <p>
+      It's one I like, because that's beside the point, for two
+      reasons.
+      First, it's simply intended as an example of language evolution.
+      Second, regardless of its merits, it is unlikely to happen,
+      because of the way that Perl 5 is parsed.
+      In this post I will demonstrate a way of writing a parser,
+      so that this change,
       or others, can be made in a straightforward way,
       and without designing your language into a corner.
     </p>
@@ -123,24 +130,72 @@
       The extension I've described above could, in theory, be added to Perl
       5, but doing so would aggravate an already desperate maintenance situation.
     <p>
-      Now, depending on your tastes,
-      you feel just as happy that you'll never
-      see the change I've just described in Perl 5.
-      But I don't think it is as easy to happy about a parsing technology that
+      Now, depending on taste,
+      you be just as happy that you'll never
+      see the extensions I have just outlined in Perl 5.
+      But I don't think it is as easy to
+      be happy about a parsing technology that
       quickly paints the languages which use it into a corner.
+    </p>
+    <h3>How it works</h3>
+    <p>
+      The code is in
+      <a href="https://gist.github.com/jeffreykegler/9478391">
+        a Github gist</a>.
+	For the purposes of the example, I've implemented
+	a toy subset of Perl.
+	But this approach has been shown to scale.
+	There are full Marpa-powered parsers of
+	<a href="https://metacpan.org/release/MarpaX-Languages-C-AST">C</a>,
+	<a href="https://metacpan.org/release/MarpaX-Languages-ECMAScript-AST">ECMAScript</a>,
+	<a href="https://metacpan.org/release/MarpaX-xPathLike">XPath</a>, and
+	<a href="https://metacpan.org/pod/distribution/Marpa-R2/html/pod/HTML.pod">liberal HTML</a>.
+    </p>
+    <p>Marpa is a general HTML parser, which means that anything you can write in BNF, Marpa can parse.
+    For practical parsing, what matters are those grammars that can be parsed in linear time,
+    and with Marpa that class is vast, including all the classes of grammar currently in practical use.
+    To describe the class of grammars that Marpa parses in linear time,
+    assume that you have either a left or right parser,
+    with infinite lookahead,
+    that uses regular expressions.
+    (A parser like this is called LR-regular.)
+    Assume that this LR-regular parser parses your grammar.
+    In that case,
+    you can be sure that
+    Marpa will parse that grammar in linear time, and without doing the lookahead.
+    (Instead Marpa tracks possibilities in a highly-optimized table.)
+    Marpa also parses many grammars that are not LR-regular in linear time,
+    but just LR-regular is very likely to include any class of grammar that you will be
+    interested in parsing.
+    The LR-regular grammars easily include all those that can be
+    parsed using yacc, recursive descent or regular expressions.
+    </p>
+    <p>
+    Marpa excels at those special hacks so necessary in recursive descent and other techniques.
+    Marpa allows you to define events that will stop it at symbols or rules, both before and after.
+    While stopped,
+    you can hand processing over to your own custom code.
+    Your custom code can feed your own tokens to the parse for as long as you like.
+    In doing so, it can
+    consult Marpa to determine exactly what symbols and rules have been recognized and
+    which ones are expected.
+    Once finished with custom processing,
+    you can then ask Marpa to pick up again at any point you wish.
+    </p>
+    <h3>The craps game is over</h3>
+    <p>The bottom line is that if you can describe you language extension in BNF,
+    or in BNF plus some hacks,
+    you can rely on Marpa parsing it in reasonable time.
+    Language design has been like shooting crap in a casino
+    that sets you up to
+    win a lot of the first rolls before
+    the laws of probability grind you down.
+    Marpa changes the game.
     </p>
     <h3>To learn more</h3>
     <p>
-      This example was produced with the Marpa parser.
       <a href="https://metacpan.org/module/Marpa::R2">Marpa::R2
         is available on CPAN</a>.
-      The code for this example is based on that in
-      the synopsis for its top-level document,
-      but it is isolated conveniently in
-      <a href="https://gist.github.com/jeffreykegler/9478391">
-        a Github gist</a>.
-    </p>
-    <p>
       A list of my Marpa tutorials can be found
       <a href="http://jeffreykegler.github.io/Ocean-of-Awareness-blog/metapages/annotated.html#TUTORIAL">
         here</a>.
@@ -166,9 +221,10 @@
     </p>
     <h3>Comments</h3>
     <p>
-      Comments on this post can be made in Marpa's Google group:
-      <a href="http://groups.google.com/group/marpa-parser">.
-      </a></p>
+      Comments on this post can be made in
+      <a href="http://groups.google.com/group/marpa-parser">
+      Marpa's Google group</a>.
+      </p>
   </body>
 </html>
 <br />
