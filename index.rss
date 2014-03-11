@@ -20,7 +20,7 @@
       marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
       --&gt;
       Ideally, if a syntax is useful and clear,
-      and a programmer can easily parse it at a glance,
+      and a programmer can easily read it at a glance,
       you should be able to add it to an existing language.
       In this post, I will describe
       a modest incremental change to the Perl syntax.
@@ -105,7 +105,7 @@
       5, but doing so would aggravate an already desperate maintenance situation.
     &lt;p&gt;
       Now, depending on taste,
-      you be just as happy that you'll never
+      you may be just as happy that you'll never
       see the extensions I have just outlined in Perl 5.
       But I don't think it is as easy to
       be happy about a parsing technology that
@@ -157,7 +157,7 @@
     you can then ask Marpa to pick up again at any point you wish.
     &lt;/p&gt;
     &lt;h3&gt;The craps game is over&lt;/h3&gt;
-    &lt;p&gt;The bottom line is that if you can describe you language extension in BNF,
+    &lt;p&gt;The bottom line is that if you can describe your language extension in BNF,
     or in BNF plus some hacks,
     you can rely on Marpa parsing it in reasonable time.
     Language design has been like shooting crap in a casino
