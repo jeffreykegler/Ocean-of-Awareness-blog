@@ -1,0 +1,128 @@
+Your new language: extending the syntax
+<html>
+  <head>
+  </head>
+  <body><p>
+      <!--
+      marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
+      -->
+      Ideally, if a syntax is useful and clear,
+      and a programmer can easily parse it at a glance,
+      a programmer would be able to add it to an existing language.
+      In this post, I suggest a modest incremential change to the Perl syntax.
+      Modest, but one that, regardless of its merits, is unlikely to happen,
+      given the way that Perl 5 is currently parsed.
+      And I show a way of writing a parser, so that this change,
+      or others, can be made in a straightforward way,
+      and without designing your language into a corner.
+    </p>
+    <p>
+    </p>
+    <blockquote>
+      <pre>
+:default ::= action =&gt; ::first
+:start ::= Expression
+Expression ::= Term
+Term ::=
+      Factor
+    | Term '+' Term action =&gt; do_add
+Factor ::=
+      Number
+    | Factor '*' Factor action =&gt; do_multiply
+Number ~ digits
+digits ~ [\d]+
+:discard ~ whitespace
+whitespace ~ [\s]+
+</pre>
+    </blockquote>
+    <h3>The rule is that there isn't one</h3>
+    <p>
+      If we don't happen to like the layout of the above DSL,
+      and rearrange it in various ways,
+      we'll find that everything we try works.
+      If we become curious about what exactly what the rules for newlines are,
+      and look at
+      <a href="https://metacpan.org/pod/distribution/Marpa-R2/pod/Scanless/DSL.pod">
+        the documentation</a>,
+      we won't find any.
+      That's because there aren't any.
+    </p>
+    <p>
+      We can see this by thoroughly messing up the line structure:
+    </p>
+    <blockquote>
+      <pre>
+:default ::= action =&gt; ::first :start ::= Expression Expression ::= Term
+Term ::= Factor | Term '+' Term action =&gt; do_add Factor ::= Number |
+Factor '*' Factor action =&gt; do_multiply Number ~ digits digits ~
+[\d]+ :discard ~ whitespace whitespace ~ [\s]+
+</pre>
+    </blockquote>
+    <p>The <a href="https://gist.github.com/jeffreykegler/9220695">
+      script</a> will continue to run just fine.
+    </p>
+    <h3>How does it work?</h3>
+    <p>How does it work?
+      Actually, pose the question this way:
+      Can a human reader tell where the statements end?
+      If the reader is not used to reading BNF,
+      he might have trouble with this
+      particular example but,
+      for a language that he knows, the answer is simple:
+      Yes, of course he can.
+      So really the question is,
+      why do we expect the parser to be so stupid that it cannot?
+    </p>
+    <p>
+      The only trick is that this is done without trickery.
+      Marpa's DSL is
+      <a href="https://metacpan.org/source/JKEGL/Marpa-R2-2.080000/lib/Marpa/R2/meta/metag.bnf">
+        written in itself</a>,
+      and Marpa's self-grammar describes exactly what a statement is
+      and what it is not.
+      The Marpa parser is powerful enough to simply take this self-describing DSL
+      and act on it, finding where statements begin and end,
+      much as a human reader is able to.
+    </p>
+    <h3>To learn more</h3>
+    <p>
+      This example was produced with the Marpa parser.
+      <a href="https://metacpan.org/module/Marpa::R2">Marpa::R2
+        is available on CPAN</a>.
+      The code for this example is based on that in
+      the synopsis for its top-level document,
+      but it is isolated conveniently in
+      <a href="https://gist.github.com/jeffreykegler/9220695">
+        a Github gist</a>.
+    </p>
+    <p>
+      A list of my Marpa tutorials can be found
+      <a href="http://jeffreykegler.github.io/Ocean-of-Awareness-blog/metapages/annotated.html#TUTORIAL">
+        here</a>.
+      There are
+      new tutorials by
+      <a href="http://marpa-guide.github.io/chapter1.html">Peter Stuifzand</a>
+      and
+      <a href="http://longanswers.blogspot.de/2013/06/transforming-syntax.html">amon</a>.
+      <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/">
+        The Ocean of Awareness blog</a>
+      focuses on Marpa,
+      and it has
+      <a href="http://jeffreykegler.github.io/Ocean-of-Awareness-blog/metapages/annotated.html">an annotated guide</a>.
+      Marpa has
+      <a href="http://jeffreykegler.github.com/Marpa-web-site/">a web page that I maintain</a>
+      and Ron Savage maintains
+      <a href="http://savage.net.au/Perl-modules/html/marpa.papers/index.html">
+        another</a>.
+      For questions, support and discussion, there is
+      <a href="http://groups.google.com/group/marpa-parser">
+        the "marpa parser"
+        Google Group.</a>
+    </p>
+    <h3>Comments</h3>
+    <p>
+      Comments on this post can be made in Marpa's Google group:
+      <a href="http://groups.google.com/group/marpa-parser">.
+    </p>
+  </body>
+</html>

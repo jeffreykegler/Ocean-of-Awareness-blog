@@ -72,11 +72,13 @@ sub kv_flatten {
     return [ @{$keys}, $value ];
 }
 
-sub flatten {
-    my ( undef, @kv_pairs ) = @_;
-    return [ map { @{$_} } @kv_pairs ];
-}
-
+# Perl has ragged hashes of hashes, but the syntax is not
+# friendly to them.  I considered putting together the
+# assignment as a string, and doing a string eval, which
+# certainly would have been simpler.  For better
+# or worse, in the following code I work with hash references.
+# Strings eval's are usually discouraged, but this may be
+# one example where their use could have been justified.
 sub make_hash_ref {
     my ( undef, $elements ) = @_;
     my $hash_ref = {};
