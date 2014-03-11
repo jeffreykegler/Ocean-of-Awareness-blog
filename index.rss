@@ -10,6 +10,130 @@
     <language>en</language>
 
   <item>
+    <title>Your new language: extending the syntax</title>
+    <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2014/03/kv.html</link>
+    <description>&lt;html&gt;
+  &lt;head&gt;
+  &lt;/head&gt;
+  &lt;body&gt;&lt;p&gt;
+      &lt;!--
+      marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
+      --&gt;
+      Ideally, if a syntax is useful and clear,
+      and a programmer can easily parse it at a glance,
+      a programmer would be able to add it to an existing language.
+      In this post, I suggest a modest incremential change to the Perl syntax.
+      Modest, but one that, regardless of its merits, is unlikely to happen,
+      given the way that Perl 5 is currently parsed.
+      And I show a way of writing a parser, so that this change,
+      or others, can be made in a straightforward way,
+      and without designing your language into a corner.
+    &lt;/p&gt;
+    &lt;p&gt;
+      When initializing a hash, Perl 5 allows you to use not just commas,
+      but also the so-called &quot;wide comma&quot; (&lt;tt&gt;=&amp;gt;&lt;/tt&gt;).
+      The wide comma is suggestive visually, and it also has some smarts
+      about what a hash key is:
+      The hash key is always converted into a string, so that wide comma
+      knows that in a key-value pair like this:
+    &lt;/p&gt;&lt;blockquote&gt;
+      &lt;pre&gt;
+    key1 =&gt; 711,
+&lt;/pre&gt;
+    &lt;/blockquote&gt;&lt;p&gt;
+      that
+      &lt;tt&gt;key1&lt;/tt&gt;
+      is intended as a string.
+    &lt;/p&gt;
+    &lt;p&gt;
+      But what about something like this?
+    &lt;/p&gt;
+    &lt;blockquote&gt;
+      &lt;pre&gt;
+  {
+   company name =&gt; 'Kamamaya Technology',
+   employee 1 =&gt; first name =&gt; 'Jane',
+   employee 1 =&gt; last name =&gt; 'Doe',
+   employee 1 =&gt; title =&gt; 'President',
+   employee 2 =&gt; first name =&gt; 'John',
+   employee 2 =&gt; last name =&gt; 'Smith',
+   employee 3 =&gt; first name =&gt; 'Clarence',
+   employee 3 =&gt; last name =&gt; 'Darrow',
+  }
+&lt;/pre&gt;
+    &lt;/blockquote&gt;&lt;p&gt;
+      Here I think the intent is obvious -- to create an employee database in the form
+      of a hash of hashes, allowing spaces in the keys.
+      In Data::Dumper format, the result would look like:
+    &lt;/p&gt;&lt;blockquote&gt;
+      &lt;pre&gt;
+{
+              'employee 2' =&gt; {
+                                'last name' =&gt; '\'Smith\'',
+                                'first name' =&gt; '\'John\''
+                              },
+              'company name' =&gt; '\'Kamamaya Technology\'',
+              'employee 3' =&gt; {
+                                'last name' =&gt; '\'Darrow\'',
+                                'first name' =&gt; '\'Clarence\''
+                              },
+              'employee 1' =&gt; {
+                                'title' =&gt; '\'President\'',
+                                'last name' =&gt; '\'Doe\'',
+                                'first name' =&gt; '\'Jane\''
+                              }
+            }
+&lt;/pre&gt;
+    &lt;/blockquote&gt;
+    &lt;p&gt;And in fact, that is the output of the script in this Github gist,
+      &lt;a href=&quot;https://gist.github.com/jeffreykegler/9478391&quot;&gt;,
+        which parses the previous &quot;extended Perl 5&quot; snippet using a Marpa
+        grammar before passing it on to Perl.
+      &lt;/a&gt;&lt;/p&gt;
+    &lt;h3&gt;To learn more&lt;/h3&gt;
+    &lt;p&gt;
+      This example was produced with the Marpa parser.
+      &lt;a href=&quot;https://metacpan.org/module/Marpa::R2&quot;&gt;Marpa::R2
+        is available on CPAN&lt;/a&gt;.
+      The code for this example is based on that in
+      the synopsis for its top-level document,
+      but it is isolated conveniently in
+      &lt;a href=&quot;https://gist.github.com/jeffreykegler/9478391&quot;&gt;
+        a Github gist&lt;/a&gt;.
+    &lt;/p&gt;
+    &lt;p&gt;
+      A list of my Marpa tutorials can be found
+      &lt;a href=&quot;http://jeffreykegler.github.io/Ocean-of-Awareness-blog/metapages/annotated.html#TUTORIAL&quot;&gt;
+        here&lt;/a&gt;.
+      There are
+      new tutorials by
+      &lt;a href=&quot;http://marpa-guide.github.io/chapter1.html&quot;&gt;Peter Stuifzand&lt;/a&gt;
+      and
+      &lt;a href=&quot;http://longanswers.blogspot.de/2013/06/transforming-syntax.html&quot;&gt;amon&lt;/a&gt;.
+      &lt;a href=&quot;http://jeffreykegler.github.com/Ocean-of-Awareness-blog/&quot;&gt;
+        The Ocean of Awareness blog&lt;/a&gt;
+      focuses on Marpa,
+      and it has
+      &lt;a href=&quot;http://jeffreykegler.github.io/Ocean-of-Awareness-blog/metapages/annotated.html&quot;&gt;an annotated guide&lt;/a&gt;.
+      Marpa has
+      &lt;a href=&quot;http://jeffreykegler.github.com/Marpa-web-site/&quot;&gt;a web page that I maintain&lt;/a&gt;
+      and Ron Savage maintains
+      &lt;a href=&quot;http://savage.net.au/Perl-modules/html/marpa.papers/index.html&quot;&gt;
+        another&lt;/a&gt;.
+      For questions, support and discussion, there is
+      &lt;a href=&quot;http://groups.google.com/group/marpa-parser&quot;&gt;
+        the &quot;marpa parser&quot;
+        Google Group.&lt;/a&gt;
+    &lt;/p&gt;
+    &lt;h3&gt;Comments&lt;/h3&gt;
+    &lt;p&gt;
+      Comments on this post can be made in Marpa's Google group:
+      &lt;a href=&quot;http://groups.google.com/group/marpa-parser&quot;&gt;.
+      &lt;/a&gt;&lt;/p&gt;
+  &lt;/body&gt;
+&lt;/html&gt;</description>
+  </item>
+  <item>
     <title>Significant newlines?  Or semicolons?</title>
     <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2014/02/semantic_ws.html</link>
     <description>&lt;html&gt;
@@ -648,482 +772,6 @@ A2(A2(S3(Hey)S13(Hello, World!))S5(Ciao!))
       my post on the 2012 benchmark&lt;/a&gt;.
     &lt;/p&gt;
     &lt;p&gt;
-      &lt;a href=&quot;https://metacpan.org/module/Marpa::R2&quot;&gt;Marpa::R2
-        is available on CPAN&lt;/a&gt;.
-      A list of my Marpa tutorials can be found
-      &lt;a href=&quot;http://jeffreykegler.github.io/Ocean-of-Awareness-blog/metapages/annotated.html#TUTORIAL&quot;&gt;
-        here&lt;/a&gt;.
-      There is
-      &lt;a href=&quot;http://marpa-guide.github.io/chapter1.html&quot;&gt;
-        a new tutorial by Peter Stuifzand&lt;/a&gt;.
-      &lt;a href=&quot;http://jeffreykegler.github.com/Ocean-of-Awareness-blog/&quot;&gt;
-        The Ocean of Awareness blog&lt;/a&gt;
-      focuses on Marpa,
-      and it has
-      &lt;a href=&quot;http://jeffreykegler.github.io/Ocean-of-Awareness-blog/metapages/annotated.html&quot;&gt;an annotated guide&lt;/a&gt;.
-      Marpa also has
-      &lt;a href=&quot;http://jeffreykegler.github.com/Marpa-web-site/&quot;&gt;a web page&lt;/a&gt;.
-      For questions, support and discussion, there is a
-      Google Group:
-      &lt;code&gt;marpa-parser@googlegroups.com&lt;/code&gt;.
-      Comments on this post can be made there.
-    &lt;/p&gt;</description>
-  </item>
-  <item>
-    <title>Mixing procedural and declarative parsing gracefully</title>
-    <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2013/06/mixing-procedural.html</link>
-    <description>  &lt;h3&gt;Declarative and procedural parsing&lt;/h3&gt;
-    &lt;p&gt;&lt;!--
-      marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
---&gt;A declarative parser
-      takes a description of your language and parses it
-      for you.
-      On the face of it, this sounds like the way you'd want
-      to go,
-      and Marpa offers that possibility -- it generates
-      a parser from anything you can write in BNF and,
-      if the parser is in one of the classes currently in
-      practical use,
-      that parser will run in linear time.
-    &lt;/p&gt;
-    &lt;p&gt;
-      But practical grammars often have context-sensitive parts --
-      features which cannot be described in BNF.
-      Nice as declarative parsing may sound,
-      at least
-      &lt;b&gt;some&lt;/b&gt;
-      procedural parsing
-      can be a necessity
-      in real-life.
-      In this post, I take a problem for which procedural
-      parsing is essential,
-      and create a fast, short solution that
-      mixes procedural and declarative.
-    &lt;/p&gt;
-    &lt;h3&gt;The application&lt;/h3&gt;
-    &lt;p&gt;This is a sample of the language:
-    &lt;/p&gt;
-    &lt;blockquote&gt;
-      &lt;pre&gt;
-A2(A2(S3(Hey)S13(Hello, World!))S5(Ciao!))
-&lt;/pre&gt;
-    &lt;/blockquote&gt;
-    &lt;p&gt;
-      It describes strings in nested arrays.
-      The strings are introduced by the letter 'S', followed by a length count and then,
-      in parentheses, the string itself.
-      Arrays are introduced by the letter 'A' followed by an element count and, inside parentheses, the
-      array's contents.
-      These contents are a concatenated series of strings and other arrays.
-      I call this a Dyck-Hollerith language because it
-      combines
-      &lt;a href=&quot;http://en.wikipedia.org/wiki/Hollerith_constant&quot;&gt;
-        Hollerith constants&lt;/a&gt;
-      (strings preceded by a count),
-      with balanced parentheses
-      (what is called
-      &lt;a href=&quot;http://en.wikipedia.org/wiki/Dyck_language&quot;&gt;
-        a Dyck language&lt;/a&gt;
-      by mathematicians).
-    &lt;/p&gt;
-    &lt;p&gt;
-      The language is one I've dealt with before.
-      It is apparently from &quot;real life&quot;, and is described more fully
-      in
-      &lt;a href=&quot;http://blogs.perl.org/users/polettix/2012/04/parserecdescent-and-number-of-elements-read-on-the-fly.html&quot;&gt;
-        a blog post by
-        Flavio Poletti&lt;/a&gt;.
-      Several people, Gabor Szabo among them, prodded me to show how
-      &lt;a href=&quot;http://jeffreykegler.github.com/Marpa-web-site/&quot;&gt;
-        Marpa&lt;/a&gt;
-      would do on this language.
-      I did this
-      &lt;a href=&quot;http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2012/04/marpa-v-parserecdescent-some-numbers.html&quot;&gt;a year ago, using Marpa's previous version, Marpa::XS&lt;/a&gt;.
-      The result was well-received and quite satisfactory.
-    &lt;/p&gt;
-    &lt;p&gt;
-      This time around, I used
-      Marpa's latest version, Marpa::R2,
-      and its new interface, the SLIF.
-      The solution presented here was
-      much easer to write,
-      and will be easier to read.
-      It is also several times faster.
-    &lt;/p&gt;
-    &lt;h3&gt;The code&lt;/h3&gt;
-    &lt;p&gt;The full code for this example is in
-      &lt;a href=&quot;https://gist.github.com/jeffreykegler/5745272&quot;&gt;
-        a Github gist&lt;/a&gt;.
-      In what follows, I will assume the reader is
-      interested in the ideas.
-      Details of the interface,
-      along with more detail-oriented tutorials,
-      can be found
-      &lt;a href=&quot;https://metacpan.org/module/Marpa::R2&quot;&gt;
-        in Marpa's documentation&lt;/a&gt;.
-      Other tutorials are
-      on
-      &lt;a href=http://jeffreykegler.github.io/Ocean-of-Awareness-blog/&quot;&gt;
-        the Ocean of Awareness blog&lt;/a&gt;,
-      and on
-      &lt;a href=&quot;http://marpa-guide.github.io/index.html&quot;&gt;
-        the Marpa Guide,
-        a new website&lt;/a&gt;
-      being
-      built due to the generosity of Peter Stuifzand
-      and Ron Savage.
-    &lt;/p&gt;
-    &lt;h3&gt;The DSL&lt;/h3&gt;
-    &lt;p&gt;First off, let's look at the declarative part.
-      The core of the parser is the following lines,
-      containing the BNF for the language's top-level structure.
-    &lt;/p&gt;
-    &lt;blockquote&gt;
-      &lt;pre&gt;
-my $dsl = &amp;lt;&amp;lt;'END_OF_DSL';
-# The BNF
-:start ::= sentence
-sentence ::= element
-array ::= 'A' &amp;lt;array count&amp;gt; '(' elements ')'
-    action =&amp;gt; check_array
-string ::= ( 'S' &amp;lt;string length&amp;gt; '(' ) text ( ')' )
-elements ::= element+
-  action =&amp;gt; ::array
-element ::= string | array
-&lt;/pre&gt;
-    &lt;/blockquote&gt;
-    &lt;p&gt;Details of this syntax are in Marpa's documentation,
-      but it's a dialect of EBNF.
-      Adverbs like
-      &lt;tt&gt;action =&amp;gt; semantics&lt;/tt&gt;
-      tell Marpa what the semantics will be.
-      The default (which will be set below) is for a rule to return its first child.
-      &lt;tt&gt;::array&lt;/tt&gt;
-      semantics tell Marpa to return all every
-      &lt;tt&gt;element&lt;/tt&gt;
-      of
-      &lt;tt&gt;elements&lt;/tt&gt;
-      in an array.
-      And
-      &lt;tt&gt;check_array&lt;/tt&gt;
-      is the name of a function providing
-      the semantics, as will be seen below.
-    &lt;/p&gt;
-    &lt;p&gt;
-      Single-quoted strings are looked for literally in the input.
-      In the
-      &lt;tt&gt;string&lt;/tt&gt;
-      declaration,
-      you'll note some parentheses which are not in quotes.
-      The unquoted parentheses are part of the Marpa DSL's own syntax,
-      telling Marpa to &quot;hide&quot; the parenthesized symbols from the
-      semantics.
-      Here, the effect is that
-      &lt;tt&gt;text&lt;/tt&gt;
-      is treated by the semantics as if it
-      were the &quot;first&quot; symbol.
-    &lt;/p&gt;
-    &lt;p&gt;Marpa's SLIF provides a lexer for the user,
-      and this Marpa-internal lexer will handle most
-      of the symbols in this example.
-      The single-quoted strings we saw in the BNF are actually instructions
-      to the internal lexer.
-      The next lines tell Marpa how to recognize
-      &lt;tt&gt;&amp;lt;array count&amp;gt;&lt;/tt&gt;
-      and
-      &lt;tt&gt;&amp;lt;string length&amp;gt;&lt;/tt&gt;.
-    &lt;/p&gt;&lt;blockquote&gt;
-      &lt;pre&gt;
-&amp;lt;array count&amp;gt; ~ [\d]+
-&amp;lt;string length&amp;gt; ~ [\d]+
-text ~ [\d\D]
-END_OF_DSL
-&lt;/pre&gt;
-    &lt;/blockquote&gt;
-    &lt;p&gt;
-      &lt;tt&gt;&amp;lt;array_count&amp;gt;&lt;/tt&gt;
-      and
-      &lt;tt&gt;&amp;lt;string length&amp;gt;&lt;/tt&gt;
-      are both declared to be a series of digits.
-      &lt;tt&gt;text&lt;/tt&gt;
-      is a stub.
-      The length of
-      &lt;tt&gt;text&lt;/tt&gt;
-      depends on the numeric value of
-      &lt;tt&gt;&amp;lt;string length&amp;gt;&lt;/tt&gt;, and dealing with that is beyond the power of
-      the BNF.
-      When it comes time to count out the symbols needed for
-      &lt;tt&gt;text&lt;/tt&gt;,
-      we will hand control over to an external lexer.
-      For the purposes of Marpa's lexer,
-      &lt;tt&gt;text&lt;/tt&gt;
-      is described
-      as a single character of any kind.
-      Marpa's internal scanner uses a longest tokens match algorithm,
-      and since we don't want the internal scanner to read
-      &lt;tt&gt;text&lt;/tt&gt;
-      lexemes,
-      describing
-      &lt;tt&gt;text&lt;/tt&gt;
-      and other purely external lexemes
-      as single characters is the right thing to do.
-    &lt;/p&gt;
-    &lt;p&gt;Now comes the weld between declarative and procedural ...
-    &lt;/p&gt;
-    &lt;blockquote&gt;
-      &lt;pre&gt;
-:lexeme ~ &amp;lt;string length&amp;gt; pause =&amp;gt; after
-:lexeme ~ text pause =&amp;gt; before
-&lt;/pre&gt;
-    &lt;/blockquote&gt;
-    &lt;p&gt;These two statements tell Marpa that
-      &lt;tt&gt;&amp;lt;string length&amp;gt;&lt;/tt&gt;
-      and
-      &lt;tt&gt;&amp;lt;text&amp;gt;&lt;/tt&gt;
-      are two lexicals at which Marpa's own parsing should &quot;pause&quot;,
-      handing over control to external procedural parsing logic.
-      In the case of
-      &lt;tt&gt;&amp;lt;string length&amp;gt;&lt;/tt&gt;,
-      the pause should be after it is read.
-      In the case of
-      &lt;tt&gt;&amp;lt;text&amp;gt;&lt;/tt&gt;
-      the pause should be before.
-      What happens during the &quot;pause&quot;, we will soon see.
-    &lt;/p&gt;
-    &lt;h3&gt;Starting the parse&lt;/h3&gt;
-    &lt;p&gt;Next follows the code to read the DSL,
-      and start the parser.
-    &lt;/p&gt;&lt;blockquote&gt;
-      &lt;pre&gt;
-my $grammar = Marpa::R2::Scanless::G-&amp;gt;new(
-    {   action_object  =&amp;gt; 'My_Actions',
-        default_action =&amp;gt; '::first',
-        source         =&amp;gt; \$dsl
-    }
-);
-
-my $recce = Marpa::R2::Scanless::R-&amp;gt;new( { grammar =&amp;gt; $grammar } );
-&lt;/pre&gt;
-    &lt;/blockquote&gt;
-    &lt;p&gt;The previous lines tell Marpa that when its semantics
-      are provided by a Perl closure, it is to look for that closure in a package called
-      &lt;tt&gt;My_Actions&lt;/tt&gt;.
-      The default semantics are
-      &lt;tt&gt;::first&lt;/tt&gt;, which means simply pass the value of
-      the first RHS symbol of a rule upwards.
-    &lt;/p&gt;
-    &lt;h3&gt;The main loop&lt;/h3&gt;
-    &lt;p&gt;We saw our input above:&lt;/p&gt;
-    &lt;blockquote&gt;
-      &lt;pre&gt;
-$input = 'A2(A2(S3(Hey)S13(Hello, World!))S5(Ciao!))';
-&lt;/pre&gt;
-    &lt;/blockquote&gt;
-    &lt;p&gt;The block of code which follows is the main loop through the parse, including
-      all the procedural parsing logic.
-      Below, I will pull this
-      procedural parsing logic out of the loop
-      for separate examination.
-    &lt;/p&gt;
-    &lt;p&gt;
-      Here the
-      &lt;tt&gt;$recce-&amp;gt;read()&lt;/tt&gt;
-      method performs the first read
-      and sets up the input string.
-      The interior of the loop is entered whenever Marpa &quot;pauses&quot;.
-      Once the procedural parsing logic is done, Marpa resumes with
-      the
-      &lt;tt&gt;$recce-&amp;gt;resume()&lt;/tt&gt;
-      call.
-      Throughout,
-      &lt;tt&gt;$pos&lt;/tt&gt;
-      is used to track the current character
-      in the input stream.
-      The loop ends when
-      &lt;tt&gt;$pos&lt;/tt&gt;
-      is after the last character of
-      &lt;tt&gt;$input&lt;/tt&gt;.
-    &lt;/p&gt;
-    &lt;blockquote&gt;
-      &lt;pre&gt;
-my $last_string_length;
-my $input_length = length $input;
-INPUT:
-for (
-    my $pos = $recce-&amp;gt;read( \$input );
-    $pos &amp;lt; $input_length;
-    $pos = $recce-&amp;gt;resume($pos)
-    )
-{
-    my $lexeme = $recce-&amp;gt;pause_lexeme();
-    die q{Parse exhausted in front of this string: &quot;},
-        substr( $input, $pos ), q{&quot;}
-        if not defined $lexeme;
-    my ( $start, $lexeme_length ) = $recce-&amp;gt;pause_span();
-    if ( $lexeme eq 'string length' ) {
-        $last_string_length = $recce-&amp;gt;literal( $start, $lexeme_length ) + 0;
-        $pos = $start + $lexeme_length;
-        next INPUT;
-    }
-    if ( $lexeme eq 'text' ) {
-        my $text_length = $last_string_length;
-        $recce-&amp;gt;lexeme_read( 'text', $start, $text_length );
-        $pos = $start + $text_length;
-        next INPUT;
-    } ## end if ( $lexeme eq 'text' )
-    die &quot;Unexpected lexeme: $lexeme&quot;;
-} ## end INPUT: for ( my $pos = $recce-&amp;gt;read( \$input ); $pos &amp;lt; $input_length...)
-&lt;/pre&gt;
-    &lt;/blockquote&gt;
-    &lt;h3&gt;The procedural parsing&lt;/h3&gt;
-    &lt;p&gt;In this language,
-      we need the procedural parsing logic to count the
-      &lt;tt&gt;text&lt;/tt&gt;
-      strings properly.
-      This is done in a very direct way.
-      First we pull the count from
-      &lt;tt&gt;&amp;lt;string length&amp;gt;&lt;/tt&gt;:
-    &lt;/p&gt;&lt;blockquote&gt;
-      &lt;pre&gt;
-    if ( $lexeme eq 'string length' ) {
-        $last_string_length = $recce-&amp;gt;literal( $start, $lexeme_length ) + 0;
-        $pos = $start + $lexeme_length;
-        next INPUT;
-    }
-&lt;/pre&gt;
-    &lt;/blockquote&gt;
-    &lt;p&gt;
-      Above, we used
-      &lt;tt&gt;pause_span()&lt;/tt&gt;
-      to set
-      &lt;tt&gt;$start&lt;/tt&gt;
-      and
-      &lt;tt&gt;$lexeme_length&lt;/tt&gt;
-      to the start and length of the lexeme that
-      Marpa's internal scanner found.
-      Passed to
-      &lt;tt&gt;$recce-&amp;gt;literal()&lt;/tt&gt;, these two values
-      return the &quot;literal&quot; string value of the lexeme, which will
-      be the ASCII representation of a decimal number.
-      We convert it to numeric, salt it away in
-      &lt;tt&gt;$last_string_length&lt;/tt&gt;,
-      and set
-      &lt;tt&gt;$pos&lt;/tt&gt;
-      to the location just after the
-      &lt;tt&gt;&amp;lt;string length&amp;gt;&lt;/tt&gt;
-      lexeme.
-    &lt;/p&gt;
-    &lt;blockquote&gt;
-      &lt;pre&gt;
-    if ( $lexeme eq 'text' ) {
-        my $text_length = $last_string_length;
-        $recce-&amp;gt;lexeme_read( 'text', $start, $text_length );
-        $pos = $start + $text_length;
-        next INPUT;
-    } ## end if ( $lexeme eq 'text' )
-&lt;/pre&gt;
-    &lt;/blockquote&gt;
-    &lt;p&gt;Now we come to counting out the characters for the
-      &lt;tt&gt;text&lt;/tt&gt;
-      lexeme.
-      Recall that in the case of
-      &lt;tt&gt;text&lt;/tt&gt;, we pause
-      &lt;b&gt;before&lt;/b&gt;
-      the lexeme, which means it will not have been read yet.
-      With
-      &lt;tt&gt;$recce-&amp;gt;lexeme_read()&lt;/tt&gt;, we tell Marpa
-      that we want the next lexeme
-    &lt;/p&gt;
-    &lt;ul&gt;
-      &lt;li&gt;to be of type
-        &lt;tt&gt;text&lt;/tt&gt;,
-      &lt;/li&gt;
-      &lt;li&gt;to start at the already decided
-        &lt;tt&gt;$start&lt;/tt&gt;
-        position, and
-      &lt;/li&gt;
-      &lt;li&gt;
-        to be of the length that
-        we saved in
-        &lt;tt&gt;$last_string_length&lt;/tt&gt;.
-      &lt;/li&gt;
-    &lt;/ul&gt;
-    &lt;p&gt;
-      We also set
-      &lt;tt&gt;$pos&lt;/tt&gt;
-      to be just after the
-      end of the lexeme.
-    &lt;/p&gt;
-    &lt;p&gt;We've focused on the string lengths, but the Dyck-Hollerith language has
-      a count of the number of elements in its array.
-      Marpa's BNF-driven parsing logic has no trouble
-      determining the number of elements from the array contents,
-      and it does not need the count.
-      What to do with it?
-    &lt;/p&gt;
-    &lt;blockquote&gt;
-      &lt;pre&gt;
-package My_Actions;
-&lt;/pre&gt;
-    &lt;/blockquote&gt;
-    &lt;blockquote&gt;
-      &lt;pre&gt;
-sub check_array {
-    my ( undef, undef, $declared_size, undef, $array ) = @_;
-    my $actual_size = @{$array};
-    warn
-        &quot;Array size ($actual_size) does not match that specified ($declared_size)&quot;
-        if $declared_size != $actual_size;
-    return $array;
-} ## end sub check_array
-&lt;/pre&gt;
-    &lt;/blockquote&gt;
-    &lt;p&gt;Recall that Marpa promised special semantics for the
-      &lt;tt&gt;array&lt;/tt&gt;
-      rule
-      in its DSL.
-      Here they are.
-      The first parameter to Marpa's semantic closures is a per-parse variable, here unused.
-      The rest are the values of the RHS symbols, in order.
-      We only care about the second (for
-      &lt;tt&gt;&amp;lt;array count&amp;gt;&lt;/tt&gt;),
-      and the fourth (for
-      &lt;tt&gt;elements&lt;/tt&gt;).
-      We determine a
-      &lt;tt&gt;$declared_size&lt;/tt&gt;
-      from
-      &lt;tt&gt;&amp;lt;array count&amp;gt;&lt;/tt&gt;;
-      and an
-      &lt;tt&gt;$actual_size&lt;/tt&gt;
-      by looking at the array referenced by
-      &lt;tt&gt;$array&lt;/tt&gt;.
-      If these differ, we choose to warn the user.
-      Depending on your purposes,
-      anything from ignoring the issue
-      to throwing a fatal error may be equally or more reasonable.
-    &lt;/p&gt;
-    &lt;h3&gt;The result of the the parse&lt;/h3&gt;
-    &lt;p&gt;And now we are ready to take the result of the parse.
-    &lt;/p&gt;&lt;blockquote&gt;
-      &lt;pre&gt;
-my $result = $recce-&amp;gt;value();
-die 'No parse' if not defined $result;
-&lt;/pre&gt;
-    &lt;/blockquote&gt;
-    &lt;h3&gt;For more about Marpa&lt;/h3&gt;
-    &lt;p&gt;The techniques described apply to problems considerably
-      larger than the example of this post.
-      Jean-Damien Durand is using them to create
-      &lt;a href=&quot;https://github.com/jddurand/MarpaX-Languages-C-AST&quot;&gt;
-        a C-to-AST tool&lt;/a&gt;.
-      This
-      takes C language and converts it to an AST,
-      following the C11
-      specification carefully.
-      The AST can then be manipulated
-      as you wish.
-    &lt;/p
-    &lt;p&gt;&lt;p&gt;
       &lt;a href=&quot;https://metacpan.org/module/Marpa::R2&quot;&gt;Marpa::R2
         is available on CPAN&lt;/a&gt;.
       A list of my Marpa tutorials can be found
