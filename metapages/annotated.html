@@ -42,6 +42,10 @@
           About Marpa in general</a>
       </p>
       <p class="view">
+        <a href="#DESIGN">
+          Language design</a>
+      </p>
+      <p class="view">
         <a href="#PARSE_HTML">
           Parsing HTML</a>
       </p>
@@ -168,24 +172,20 @@
 	  in order to get the best of both worlds.
 	  </p>
 	  </li>
-	  <li>
-	  <p>
-	  <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2014/02/semantic_ws.html">Significant newlines?
-	  Or semicolons?</a>.
-	  This small example explores a theme.
-	  Currently a programming language designer must choose: either newlines are significant is his language,
-	  or else there is explicit punctuation to separate them.  Typically that's a semicolon (";").
-	  But Lua does without either, by keeping the syntax resricted and tiny.
-	  And with the power of Marpa, you can also do without either, but at the same time have a syntactically
-	  rich, large language, as shown in this post.
-	  </p>
-	  </li>
       </ul>
-      <p>For the beginner, SLIF-based tutorials like the above are the place to start.
-        But my pre-SLIF tutorials,
+      <p>If you're looking for tutorials, you'll want to start, and probably to
+      end, with those based on the SLIF interface.
+      The best of these for the beginner are above, in this section.
+      The
+      <a href="#DESIGN">section on programming language design</a>
+      also contains some posts which work as SLIF-based tutorials.
+      </p>
+      <p>
+      While SLIF-based tutorials should be strongly preferred, my
+      pre-SLIF tutorials,
         <a href="#OLD_TUTORIAL">
-          which are described below</a>,
-        contain many useful examples,
+          described below</a> may still have some value.
+        They contain many useful examples,
         and most of the code in them carries over to SLIF line-for-line.
       </p>
       <h2><a name="DSL"></a>Language-driven programming</h2>
@@ -275,6 +275,25 @@
 	    being translated into Japanese.
           </p>
         </li>
+      </ul>
+      <h2><a name="DESIGN">Designing languages</a></h2>
+      <p>Marpa allows things to be done which have never
+      been doable before.
+      Many of these things are relevant to language design --
+      they allow langauges to take radically new approaches to their syntax.
+      </p>
+      <ul>
+	  <li>
+	  <p>
+	  <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2014/02/semantic_ws.html">Significant newlines?
+	  Or semicolons?</a>.
+	  Currently a programming language designer must choose: either newlines are significant is his language,
+	  or else there is explicit punctuation to separate them.  Typically that's a semicolon (";").
+	  But Lua does without either, by keeping the syntax resricted and tiny.
+	  And with the power of Marpa, you can also do without either, but at the same time have a syntactically
+	  rich, large language, as shown in this post.
+	  </p>
+	  </li>
       </ul>
       <h2><a name="PARSE_HTML">How to parse HTML</a></h2>
       <p>
