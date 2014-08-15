@@ -175,10 +175,10 @@
       </ul>
       <p>If you're looking for tutorials, you'll want to start, and probably to
         end, with those based on the SLIF interface.
-        The best of these for the beginner are above, in this section.
+        The best of mine for the beginner are above, in this section.
         The
         <a href="#DESIGN">section on programming language design</a>
-        also contains some posts which work as SLIF-based tutorials.
+        also contains some posts whose examples work as SLIF-based tutorials.
       </p>
       <p>
         While SLIF-based tutorials should be strongly preferred, my
@@ -279,8 +279,9 @@
       <h2><a name="DESIGN">Designing languages</a></h2>
       <p>Marpa allows things to be done which have never
         been doable before.
-        Many of these things are relevant to language design --
-        they allow langauges to take radically new approaches to their syntax.
+        Many of these things are significant for language design --
+        they allow languages to take radically new and aggressive approaches
+	to their syntax.
       </p>
       <ul>
         <li>
@@ -294,7 +295,8 @@
           </p>
           <p>
             But Marpa lets you keep extending your language and (essentially) as long as you can
-            describe your language extension in BNF, or BNF plus some hacks, you can still
+            describe your language extension in BNF,
+	    or in BNF plus some hacks, you can still
             parse the language in linear time.
             "Language design has been like shooting
             crap in a casino that sets you up to win a lot of the first rolls
@@ -308,8 +310,8 @@
             <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2014/02/semantic_ws.html">Significant newlines?
               Or semicolons?</a>.
             Currently a programming language designer must choose: either make whitespace semantically significant,
-            or use explicit punctuation to separate statements.  (Typically that explicit punctuation is a semicolon (";").)
-            But Lua does without either, by keeping the syntax resricted and tiny.
+            or use explicit punctuation to separate statements.
+            But Lua does without either, by keeping the syntax restricted and tiny.
             And with the power of Marpa, you can also do without either, but at the same time have a lanuage which
             is as large and as syntactically
             rich as you want.
