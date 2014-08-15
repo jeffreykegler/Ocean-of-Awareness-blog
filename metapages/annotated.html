@@ -125,113 +125,113 @@
             that sort of thing,
             this makes an excellent advanced tutorial.
           </p>
-	  </li>
-	  <li>
-	  <p>
-	  <a href="http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2013/03/bnf_to_ast.html">
-	  BNF to AST</a>
-	  This post is based on the chapter on the Language Design Pattern,
-	  from the very influential
-	  <a href="http://en.wikipedia.org/wiki/Design_Patterns">
-	  Design Patterns book</a>.
-	  In that book, the authors (widely known as the Gang of Four)
-	  did not attempt to parse the language of their example --
-	  there was
-	  no simple way to produce an AST straight from BNF.
-	  Now there is.
-	  This tutorial contains the Gang of Four example worked out in full with a Marpa-based
-	  parser, and
-	<a href="http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2013/03/interpreter.html">
-	  a sequel</a>
-	  talks about some of the implications of easier parsing.
-	  </p>
-	  </li>
-	  <li>
-	  <p>
-	  <a href="http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2013/04/procedural.html">
-	  Marpa and procedural parsing</a>.
-	  "Procedural parsing" is a fancy term for giving up on your parsing algorithm and just hacking
-	  out the parse.
-	  With the currently favored parsing algorithms, a lot of this type of code is
-	  necessary, and programmers have come to expect a parser to allow for it.
-	  Marpa tries to offer the best of both worlds:
-	  a declarative parser which knows exactly where it is in your BNF at all times,
-	  but one which is willing to step out of the way and let custom code take over,
-	  at the same time sharing what it knows with the custom code.
-	  Perl heredocs are an example of a language feature which requires procedural
-	  parsing.
-	  Parsing these correctly requires jumping back and forth in the input.
-	  This tutorial for this post shows how to handle them straightforwardly using Marpa's SLIF.
-	  </p>
-	  </li>
-	  <li>
-	  <p>
-	  <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2013/06/mixing-procedural.html">
-	  Mixing procedural and declarative parsing</a>.
-	  This post is another example that combines procedural and syntax-driven parsing
-	  in order to get the best of both worlds.
-	  </p>
-	  </li>
+        </li>
+        <li>
+          <p>
+            <a href="http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2013/03/bnf_to_ast.html">
+              BNF to AST</a>
+            This post is based on the chapter on the Language Design Pattern,
+            from the very influential
+            <a href="http://en.wikipedia.org/wiki/Design_Patterns">
+              Design Patterns book</a>.
+            In that book, the authors (widely known as the Gang of Four)
+            did not attempt to parse the language of their example --
+            there was
+            no simple way to produce an AST straight from BNF.
+            Now there is.
+            This tutorial contains the Gang of Four example worked out in full with a Marpa-based
+            parser, and
+            <a href="http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2013/03/interpreter.html">
+              a sequel</a>
+            talks about some of the implications of easier parsing.
+          </p>
+        </li>
+        <li>
+          <p>
+            <a href="http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2013/04/procedural.html">
+              Marpa and procedural parsing</a>.
+            "Procedural parsing" is a fancy term for giving up on your parsing algorithm and just hacking
+            out the parse.
+            With the currently favored parsing algorithms, a lot of this type of code is
+            necessary, and programmers have come to expect a parser to allow for it.
+            Marpa tries to offer the best of both worlds:
+            a declarative parser which knows exactly where it is in your BNF at all times,
+            but one which is willing to step out of the way and let custom code take over,
+            at the same time sharing what it knows with the custom code.
+            Perl heredocs are an example of a language feature which requires procedural
+            parsing.
+            Parsing these correctly requires jumping back and forth in the input.
+            This tutorial for this post shows how to handle them straightforwardly using Marpa's SLIF.
+          </p>
+        </li>
+        <li>
+          <p>
+            <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2013/06/mixing-procedural.html">
+              Mixing procedural and declarative parsing</a>.
+            This post is another example that combines procedural and syntax-driven parsing
+            in order to get the best of both worlds.
+          </p>
+        </li>
       </ul>
       <p>If you're looking for tutorials, you'll want to start, and probably to
-      end, with those based on the SLIF interface.
-      The best of these for the beginner are above, in this section.
-      The
-      <a href="#DESIGN">section on programming language design</a>
-      also contains some posts which work as SLIF-based tutorials.
+        end, with those based on the SLIF interface.
+        The best of these for the beginner are above, in this section.
+        The
+        <a href="#DESIGN">section on programming language design</a>
+        also contains some posts which work as SLIF-based tutorials.
       </p>
       <p>
-      While SLIF-based tutorials should be strongly preferred, my
-      pre-SLIF tutorials,
+        While SLIF-based tutorials should be strongly preferred, my
+        pre-SLIF tutorials,
         <a href="#OLD_TUTORIAL">
-          described below</a> may still have some value.
+          described below</a>
+        may still have some value.
         They contain many useful examples,
         and most of the code in them carries over to SLIF line-for-line.
       </p>
       <h2><a name="DSL"></a>Language-driven programming</h2>
-	<ul>
+      <ul>
         <li>
-	<p>
-	<a href="http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2013/03/interpreter.html">
-	The Interpreter Design Pattern</a>.
-	  The Language Design Pattern,
-	  is from the very influential
-	  <a href="http://en.wikipedia.org/wiki/Design_Patterns">
-	  Design Patterns book</a>,
-	  which was the subject of
-	  <a href="http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2013/03/bnf_to_ast.html">
-	  one of my tutorials</a>.
-	  This post discusses the implications for the Language Design Pattern of making
-	  parsers much easier to write.
-	<p>
+          <p>
+            <a href="http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2013/03/interpreter.html">
+              The Interpreter Design Pattern</a>.
+            The Language Design Pattern,
+            is from the very influential
+            <a href="http://en.wikipedia.org/wiki/Design_Patterns">
+              Design Patterns book</a>,
+            which was the subject of
+            <a href="http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2013/03/bnf_to_ast.html">
+              one of my tutorials</a>.
+            This post discusses the implications for the Language Design Pattern of making
+            parsers much easier to write.
+          </p><p>
+          </p></li>
+        <li>
+          <p>
+            In 1980, George Copeland wrote
+            <a href="http://dl.acm.org/citation.cfm?id=802685">
+              an article titled "What if Mass Storage were Free?"</a>
+            Afterwards, the cost of mass storage fell dramatically.
+            Copeland saw the first signs of this, and ran a thought experiment:
+            What might happen costs fell to the point where mass storage was, in effect, free?
+            This post runs a similar thought experiment on languages.
+            What might happen when the time and effort required to create a new language
+            falls toward zero?
+          </p>
         </li>
-	<li>
-	<p>
-      In 1980, George Copeland wrote
-      <a href="http://dl.acm.org/citation.cfm?id=802685">
-      an article titled "What if Mass Storage were Free?"</a>
-      Afterwards, the cost of mass storage fell dramatically.
-      Copeland saw the first signs of this, and ran a thought experiment:
-      What might happen costs fell to the point where mass storage was, in effect, free?
-      This post runs a similar thought experiment on languages.
-      What might happen when the time and effort required to create a new language
-      falls toward zero?
-      </p>
-	</li>
-	</ul>
-      </p>
+      </ul>
       <h2><a name="GENERAL"></a>About Marpa in general</h2>
       <ul>
         <li><p>
-	<a href="http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2013/05/table.html">
-	Why Marpa works: table parsing</a>.
+            <a href="http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2013/05/table.html">
+              Why Marpa works: table parsing</a>.
             Marpa is different from the other widely used parsers.
-	    The others use stacks, state machines or both.
-	    Marpa is a table parser.
-	    This post explains the advantages of table parsing,
-	    but also the challenges faced in implementing it.
+            The others use stacks, state machines or both.
+            Marpa is a table parser.
+            This post explains the advantages of table parsing,
+            but also the challenges faced in implementing it.
           </p>
-	  </li>
+        </li>
         <li><p><a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/08/the-solved-problem-that-isnt-is.html">The solved problem that isn't, is</a>.
             In an excellent post, Laurence Tratt described parsing as "the solved problem that isn't".
             Tratt expressed my reasons for creating Marpa very well.
@@ -240,7 +240,7 @@
             In this post I state, point by point, why I believe
             I can accurately make that claim.
           </p>
-	  </li>
+        </li>
         <li>
           <p>
             <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/self_parse.html">
@@ -258,8 +258,8 @@
           <p>
             <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2011/11/marpa-and-the-ruby-slippers.html">
               Marpa and the Ruby Slippers</a>
-	      An older post,
-	      but one with a nice explanation of one of Marpa's significant new features:
+            An older post,
+            but one with a nice explanation of one of Marpa's significant new features:
             Ruby Slippers parsing.
           </p>
         </li>
@@ -271,29 +271,50 @@
             Marpa, Python looked like a better choice in terms
             of mindshare. In this post, I explain why the initial
             Marpa implementation uses Perl.
-	    This post has been very popular, even
-	    being translated into Japanese.
+            This post has been very popular, even
+            being translated into Japanese.
           </p>
         </li>
       </ul>
       <h2><a name="DESIGN">Designing languages</a></h2>
       <p>Marpa allows things to be done which have never
-      been doable before.
-      Many of these things are relevant to language design --
-      they allow langauges to take radically new approaches to their syntax.
+        been doable before.
+        Many of these things are relevant to language design --
+        they allow langauges to take radically new approaches to their syntax.
       </p>
       <ul>
-	  <li>
-	  <p>
-	  <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2014/02/semantic_ws.html">Significant newlines?
-	  Or semicolons?</a>.
-	  Currently a programming language designer must choose: either newlines are significant is his language,
-	  or else there is explicit punctuation to separate them.  Typically that's a semicolon (";").
-	  But Lua does without either, by keeping the syntax resricted and tiny.
-	  And with the power of Marpa, you can also do without either, but at the same time have a syntactically
-	  rich, large language, as shown in this post.
-	  </p>
-	  </li>
+        <li>
+          <p>
+            <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2014/03/kv.html">Evolvable
+              languages</a>.
+            The parsers in heaviest use today (LALR and recursive descent) parse only
+            a very limited subset of what you can express in in BNF.
+            That's a barrier that a language starts bumping up against almost immediately,
+            and bumps up against more and more frequently as its adds features.
+          </p>
+          <p>
+            But Marpa lets you keep extending your language and (essentially) as long as you can
+            describe your language extension in BNF, or BNF plus some hacks, you can still
+            parse the language in linear time.
+            "Language design has been like shooting
+            crap in a casino that sets you up to win a lot of the first rolls
+            before the laws of probability grind you down.
+            Marpa changes the game."
+          </p>
+        </li>
+        <li>
+          <p>
+            Or take this issue:
+            <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2014/02/semantic_ws.html">Significant newlines?
+              Or semicolons?</a>.
+            Currently a programming language designer must choose: either make whitespace semantically significant,
+            or use explicit punctuation to separate statements.  (Typically that explicit punctuation is a semicolon (";").)
+            But Lua does without either, by keeping the syntax resricted and tiny.
+            And with the power of Marpa, you can also do without either, but at the same time have a lanuage which
+            is as large and as syntactically
+            rich as you want.
+          </p>
+        </li>
       </ul>
       <h2><a name="PARSE_HTML">How to parse HTML</a></h2>
       <p>
@@ -612,19 +633,19 @@ href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2011/05
             This post claims to answer that question.
           </p></li>
         <li>
-	<p><a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2013/07/lovelace.html">
-	Parsing Ada Lovelace</a>.
-	I wrote this post when I started exploring parsing ambiguity.
-	Following this line of inquiry eventually resulted in a new way of handling ambiguity in programming languages -- allowing
-	potential ambiguities in the grammar, but not allowing actual ambiguities.
-	(An actual ambiguity, when it occurs, is handled in much the same way as a syntax error.
-	And it can be fixed, for example, by adding parentheses, or whatever other punctuation eliminates
-	the ambiguity.)
-	My primary concern is programming language issues, not natural languages issues,
-	but I find going back and forth between the two very fruitful.
-	<p>
-        </li>
-	  </ul>
+          <p><a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2013/07/lovelace.html">
+              Parsing Ada Lovelace</a>.
+            I wrote this post when I started exploring parsing ambiguity.
+            Following this line of inquiry eventually resulted in a new way of handling ambiguity in programming languages -- allowing
+            potential ambiguities in the grammar, but not allowing actual ambiguities.
+            (An actual ambiguity, when it occurs, is handled in much the same way as a syntax error.
+            And it can be fixed, for example, by adding parentheses, or whatever other punctuation eliminates
+            the ambiguity.)
+            My primary concern is programming language issues, not natural languages issues,
+            but I find going back and forth between the two very fruitful.
+          </p><p>
+          </p></li>
+      </ul>
       <h2><a name="THEORY">Theory</a></h2>
       <p>Behind Marpa is a lot of mathematics,
         a lot of it old, but also some new.
@@ -645,11 +666,11 @@ href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2011/05
         </li>
         <li>
           <p>
-	  <a href="http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2013/04/fast_enough.html">
-	  Is Earley parsing fast enough?</a>:
-	  In 1968, Earley's algortihm was considered too slow to be practical for production.
-	  Now Earley's has improved and computers are over a billion times faster.
-	  Maybe, after 45 years, the old rule of thumb on Earley parsing speed needs revisiting.
+            <a href="http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2013/04/fast_enough.html">
+              Is Earley parsing fast enough?</a>:
+            In 1968, Earley's algortihm was considered too slow to be practical for production.
+            Now Earley's has improved and computers are over a billion times faster.
+            Maybe, after 45 years, the old rule of thumb on Earley parsing speed needs revisiting.
           </p>
         </li>
         <li>
@@ -661,7 +682,7 @@ href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2011/05
             mathematically inclined,
             but even that reader might want to look here
             before digging into
-        <a href="https://docs.google.com/file/d/0B9_mR_M2zOc4Ni1zSW5IYzk3TGc/edit?usp=sharing">
+            <a href="https://docs.google.com/file/d/0B9_mR_M2zOc4Ni1zSW5IYzk3TGc/edit?usp=sharing">
               the actual theory paper</a>.
           </p>
         </li>
@@ -811,29 +832,28 @@ href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2011/05
           </p>
         </li>
       </ul>
-    </div>
-    <div id="footer" style="border-top:thick solid #38B0C0;clear:left;padding:1em;">
-      <p>
-        This is Ocean of Awareness's
-        new home. This blog has been hosted at
-        <a href="http://blogs.perl.org/users/jeffrey_kegler/">blogs.perl.org</a>
-        but I have succumbed to the lure of static blogging.
-        I have not yet decided how to deal with comments at this new blog location.
-        If the post is Marpa-related,
-        <a href="https://groups.google.com/forum/?hl=en&fromgroups#%21forum/marpa-parser">
-          the Marpa mailing list</a>
-        is a good place to comment.
-      </p>
-    </div>
-    <script type="text/javascript">
+      <div id="footer" style="border-top:thick solid #38B0C0;clear:left;padding:1em;">
+        <p>
+          This is Ocean of Awareness's
+          new home. This blog has been hosted at
+          <a href="http://blogs.perl.org/users/jeffrey_kegler/">blogs.perl.org</a>
+          but I have succumbed to the lure of static blogging.
+          I have not yet decided how to deal with comments at this new blog location.
+          If the post is Marpa-related,
+          <a href="https://groups.google.com/forum/?hl=en&fromgroups#%21forum/marpa-parser">
+            the Marpa mailing list</a>
+          is a good place to comment.
+        </p>
+      </div>
+      <script type="text/javascript">
       var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
       document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
     </script>
-    <script type="text/javascript">
+      <script type="text/javascript">
       try {
       var pageTracker = _gat._getTracker("UA-33430331-1");
       pageTracker._trackPageview();
       } catch(err) {}
     </script>
-  </body>
+    </div></body>
 </html>
