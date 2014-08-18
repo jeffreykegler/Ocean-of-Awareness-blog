@@ -10,7 +10,7 @@
     <language>en</language>
 
   <item>
-    <title>Ambiguous languages</title>
+    <title>Exploiting ambiguity in language design</title>
     <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2014/08/ambig.html</link>
     <description>&lt;html&gt;
   &lt;head&gt;
@@ -22,11 +22,13 @@
       Currently, in designing lanuages,
       we don't allow even potential ambiguity.
       That is, not only must a program be unambiguous, it must not be
-      even &lt;b&gt;possible&lt;/b&gt; to write an ambiguous program.
+      even
+      &lt;b&gt;possible&lt;/b&gt;
+      to write an ambiguous program.
       This is overly restrictive.  In fact, Perl 5 syntax is not just
       potentially ambiguous, it is potentially undecidable.
-      &lt;/p&gt;
-      &lt;p&gt;
+    &lt;/p&gt;
+    &lt;p&gt;
       This post is written in English, which is full of ambiguities.
       Natural languages are always ambiguous.
       Human beings arrange things so that (if all goes well) every
@@ -35,36 +37,50 @@
       we just ask for clarification.
     &lt;/p&gt;
     &lt;p&gt;Ambiguity is a powerful tool for creating a flexible, compact
-    language.  It is a tool that
-    we can use in designing programming languages.
-    We can allow our computer languages to take their natural form,
-    which will often have the potential for ambiguity.
-    When &lt;b&gt;actual&lt;/b&gt; ambiguities occur, we can treat them just like
-    any other syntax problem:
-    We can catch it and report it.
+      language. It is a tool that
+      we can use in designing programming languages.
+      We can allow our computer languages to take their natural form,
+      which will often have the potential for ambiguity.
+      When
+      &lt;b&gt;actual&lt;/b&gt;
+      ambiguities occur, we can treat them just like
+      any other syntax problem:
+      We can catch it and report it.
     &lt;/p&gt;
     &lt;h3&gt;An example&lt;/h3&gt;
     &lt;p&gt;
-    To illustrate,
-    I'll use a DSL-writing DSL language.
-    It'll be tiny -- even toy -- just lexeme declarations and BNF rules.
-    Newlines will &lt;b&gt;not&lt;/b&gt; be significant.
-    Statements can end with s semicolon, but it's optional.
-    (The code for this post is in
-    &lt;a href=&quot;https://gist.github.com/jeffreykegler/ed64bf00983f7be666bc&quot;&gt;
-    a Github gist&lt;/a&gt;.)
+      To illustrate,
+      I'll use a DSL-writing DSL language.
+      It'll be tiny -- even toy -- just lexeme declarations and BNF rules.
+      Newlines will
+      &lt;b&gt;not&lt;/b&gt;
+      be significant.
+      Statements can end with s semicolon, but it's optional.
+      (The code for this post is in
+      &lt;a href=&quot;https://gist.github.com/jeffreykegler/ed64bf00983f7be666bc&quot;&gt;
+        a Github gist&lt;/a&gt;.)
     &lt;/p&gt;
-    &lt;/p&gt;Here is an example in that language DSL-writing language
-    -- a tiny calculator.
+    &lt;p&gt;Here is an example in that language DSL-writing language
+      -- a tiny calculator.
+    &lt;/p&gt;&lt;blockquote&gt;
+      &lt;pre&gt;
+  Number matches '\d+'
+  E ::= T '*' F
+  E ::= T
+  T ::= F '+' Number
+  T ::= Number
+&lt;/pre&gt;
+    &lt;/blockquote&gt;
     &lt;h3&gt;Trying an improvement&lt;/h3&gt;
     &lt;p&gt;The previous description of a calculator
-    has the lexeme declaration at the beginning, but I
-    think it looks better coming just after where the symbol
-    &lt;tt&gt;Number&lt;/tt&gt; is used.
-    True, with this toy calculator, it really does not make much difference,
-    but if our grammar was longer, the difference in readability would be major.
-    So we move the lexeme declaraion to the end:
-    &lt;blockquote&gt;
+      has the lexeme declaration at the beginning, but I
+      think it looks better coming just after where the symbol
+      &lt;tt&gt;Number&lt;/tt&gt;
+      is used.
+      True, with this toy calculator, it really does not make much difference,
+      but if our grammar was longer, the difference in readability would be major.
+      So we move the lexeme declaraion to the end:
+    &lt;/p&gt;&lt;blockquote&gt;
       &lt;pre&gt;
   E ::= T '*' F
   E ::= T
@@ -73,9 +89,8 @@
   Number matches '\d+'
 &lt;/pre&gt;
     &lt;/blockquote&gt;
-    &lt;/p&gt;
     &lt;p&gt;
-    &lt;blockquote&gt;
+    &lt;/p&gt;&lt;blockquote&gt;
       &lt;pre&gt;
 Parse of BNF/Scanless source is ambiguous
 Length of symbol &quot;Statement&quot; at line 4, column 1 is ambiguous
@@ -84,19 +99,18 @@ Length of symbol &quot;Statement&quot; at line 4, column 1 is ambiguous
   Choice 1: T ::= Number
   Choice 2, length=33, ends at line 5, column 20
   Choice 2: T ::= Number\nNumber matches '\\d
-    &lt;/blockquote&gt;
-    &lt;/p&gt;
+&lt;/pre&gt;&lt;/blockquote&gt;
     &lt;h3&gt;A fix&lt;/h3&gt;
     &lt;p&gt;
-    &lt;blockquote&gt;
+    &lt;/p&gt;&lt;blockquote&gt;
       &lt;pre&gt;
   E ::= T '*' F
   E ::= T
   T ::= F '+' Number
   T ::= Number ;
   Number matches '\d+'
+&lt;/pre&gt;
     &lt;/blockquote&gt;
-    &lt;/p&gt;
     &lt;h3&gt;To learn more&lt;/h3&gt;
     &lt;p&gt;
       &lt;a href=&quot;https://metacpan.org/module/Marpa::R2&quot;&gt;Marpa::R2
@@ -128,8 +142,8 @@ Length of symbol &quot;Statement&quot; at line 4, column 1 is ambiguous
     &lt;p&gt;
       Comments on this post can be made in
       &lt;a href=&quot;http://groups.google.com/group/marpa-parser&quot;&gt;
-      Marpa's Google group&lt;/a&gt;.
-      &lt;/p&gt;
+        Marpa's Google group&lt;/a&gt;.
+    &lt;/p&gt;
   &lt;/body&gt;
 &lt;/html&gt;</description>
   </item>
