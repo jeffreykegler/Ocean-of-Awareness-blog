@@ -1,0 +1,89 @@
+Ambiguous languages
+<html>
+  <head>
+  </head>
+  <body><p>
+      <!--
+      marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
+      -->
+      Currently, in designing lanuages,
+      we don't allow even potential ambiguity.
+      That is, not only must a program be unambiguous, it must not be
+      even <b>possible</b> to write an ambiguous program.
+      This is overly restrictive.  In fact, Perl 5 syntax is not just
+      potentially ambiguous, it is potentially undecidable.
+      </p>
+      <p>
+      This post is written in English, which is full of ambiguities.
+      Natural languages are always ambiguous.
+      Human beings arrange things so that (if all goes well) every
+      sentence is unambiguous in context.
+      That can break down, but in conversation that's no problem --
+      we just ask for clarification.
+    </p>
+    <p>Ambiguity is a powerful tool for creating a flexible, compact
+    language.  It is a tool that
+    we can use in designing programming languages.
+    We can allow our computer languages to take their natural form,
+    which will often have the potential for ambiguity.
+    When <b>actual</b> ambiguities occur, we can treat them just like
+    any other syntax problem:
+    We can catch it and report it.
+    </p>
+    <h3>An example</h3>
+    This post describes an DSL which uses ambiguity in a effort to
+    maximize readability.
+    To keep things simply, the language is kept very small.
+    (The code for this post is in a Github gist.)
+    <p>
+      But what about something like this?
+    </p>
+    <blockquote>
+      <pre>
+  {
+   company name => 'Kamamaya Technology',
+   employee 1 => first name => 'Jane',
+   employee 1 => last name => 'Doe',
+   employee 1 => title => 'President',
+   employee 2 => first name => 'John',
+   employee 2 => last name => 'Smith',
+   employee 3 => first name => 'Clarence',
+   employee 3 => last name => 'Darrow',
+  }
+</pre>
+    </blockquote><p>
+    <h3>To learn more</h3>
+    <p>
+      <a href="https://metacpan.org/module/Marpa::R2">Marpa::R2
+        is available on CPAN</a>.
+      A list of my Marpa tutorials can be found
+      <a href="http://jeffreykegler.github.io/Ocean-of-Awareness-blog/metapages/annotated.html#TUTORIAL">
+        here</a>.
+      There are
+      new tutorials by
+      <a href="http://marpa-guide.github.io/chapter1.html">Peter Stuifzand</a>
+      and
+      <a href="http://longanswers.blogspot.de/2013/06/transforming-syntax.html">amon</a>.
+      <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/">
+        The Ocean of Awareness blog</a>
+      focuses on Marpa,
+      and it has
+      <a href="http://jeffreykegler.github.io/Ocean-of-Awareness-blog/metapages/annotated.html">an annotated guide</a>.
+      Marpa has
+      <a href="http://jeffreykegler.github.com/Marpa-web-site/">a web page that I maintain</a>
+      and Ron Savage maintains
+      <a href="http://savage.net.au/Perl-modules/html/marpa.papers/index.html">
+        another</a>.
+      For questions, support and discussion, there is
+      <a href="http://groups.google.com/group/marpa-parser">
+        the "marpa parser"
+        Google Group.</a>
+    </p>
+    <h3>Comments</h3>
+    <p>
+      Comments on this post can be made in
+      <a href="http://groups.google.com/group/marpa-parser">
+      Marpa's Google group</a>.
+      </p>
+  </body>
+</html>
