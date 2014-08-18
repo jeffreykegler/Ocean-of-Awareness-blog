@@ -46,32 +46,39 @@
       marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
       -->
       Currently, in designing lanuages,
-      we don't allow even potential ambiguity.
-      That is, not only must a program be unambiguous, it must not be
+      we don't allow ambiguitites --
+      not even potential ones.
+      We insist that it must not be
       even
       <b>possible</b>
       to write an ambiguous program.
-      This is overly restrictive.  In fact, Perl 5 syntax is not just
-      potentially ambiguous, it is potentially undecidable.
+      This is unnecessarily restrictive.
     </p>
     <p>
       This post is written in English, which is full of ambiguities.
-      Natural languages are always ambiguous.
-      Human beings arrange things so that (if all goes well) every
+      Natural languages are always ambiguous,
+      because human beings find that's that best way for versatile,
+      rapid, easy communiciation.
+      Human beings arrange things so that every
       sentence is unambiguous in context.
-      That can break down, but in conversation that's no problem --
-      we just ask for clarification.
+      Mistakes happen, and ambiguous sentences occur,
+      but in practice, the problem is manageable.
+      In a conversation, for example,
+      we would just ask for clarification.
     </p>
-    <p>Ambiguity is a powerful tool for creating a flexible, compact
-      language. It is a tool that
-      we can use in designing programming languages.
-      We can allow our computer languages to take their natural form,
-      which will often have the potential for ambiguity.
+    <p>
+      If we allow our computer languages to take their most natural forms,
+      they will often have the <b>potential</b> for ambiguity.
+      This is even less of a problem on a computer than it is in
+      coversation -- a computer can always spot an actual ambiguity
+      immediately.
       When
       <b>actual</b>
-      ambiguities occur, we can treat them just like
+      ambiguities occur, we can deal them 
+      in exactly the same way that we deal with
       any other syntax problem:
-      We can catch it and report it.
+      The computer catches it and reports it,
+      and we fix it.
     </p>
     <h3>An example</h3>
     <p>
@@ -81,13 +88,12 @@
       Newlines will
       <b>not</b>
       be significant.
-      Statements can end with s semicolon, but it's optional.
+      Statements can end with a semicolon, but that's optional.
       (The code for this post is in
       <a href="https://gist.github.com/jeffreykegler/ed64bf00983f7be666bc">
         a Github gist</a>.)
     </p>
-    <p>Here is an example in that language DSL-writing language
-      -- a tiny calculator.
+    <p>Here is a toy calculator written in our tiny DSL-writing language:
     </p><blockquote>
       <pre>
   Number matches '\d+'
@@ -146,12 +152,11 @@ Length of symbol "Statement" at line 4, column 1 is ambiguous
       like the ones we choose when we humans communicate with each other.
       The downside is that actual ambiguities will occur,
       but they can be reported, and fixed,
-      like any other syntax error.
+      just like any other syntax error.
     </p><p>In this case, we
-      recalling we allow semi-colons to terminate a rule,
+      recall we allowed semi-colons to terminate a rule,
       and our fix is easy:
     </p>
-    <h3>A fix</h3>
     <p>
     </p><blockquote>
       <pre>
@@ -187,12 +192,11 @@ Length of symbol "Statement" at line 4, column 1 is ambiguous
       For questions, support and discussion, there is
       <a href="http://groups.google.com/group/marpa-parser">
         a "marpa parser"
-        Google Group
+        Google Group</a>
         and an IRC channel:
         <tt>#marpa</tt>
         at
         <tt>irc.freenode.net</tt>.
-        .</a>
     </p>
     <h3>Comments</h3>
     <p>
