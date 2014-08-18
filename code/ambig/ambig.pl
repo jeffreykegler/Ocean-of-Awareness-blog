@@ -27,7 +27,7 @@ use Marpa::R2;
 my $dsl = <<'END_OF_DSL';
 :default ::= action => [name,values]
 lexeme default = latm => 1
-Statement ::= Statement*
+Statements ::= Statement*
 Statement ::= <Terminated statement>
 | <Statement body>
 <Terminated statement> ::= <Statement body> ';'
@@ -38,8 +38,8 @@ rhs ::= symbol*
 symbol ::= <symbol name> | <single quoted string>
 <lexeme declaration> ::= symbol 'matches' <single quoted string>
 
-<symbol name> ~ [_[:alpha]] <one or more symbol characters>
-<one or more symbol characters> ~ [_[:alnum:]]+
+<symbol name> ~ [_[:alpha:]] <symbol characters>
+<symbol characters> ~ [_[:alnum:]]*
 <single quoted string> ~ ['] <single quoted string chars> [']
 <single quoted string chars> ~ [^'\x{0A}\x{0B}\x{0C}\x{0D}\x{0085}\x{2028}\x{2029}]+
 :discard ~ whitespace
@@ -48,9 +48,9 @@ END_OF_DSL
 
 my $calc_lexer = q{number matches '\d+'};
 my $calc_grammar = <<'END_OF_STRING';
-E ::= T * F
+E ::= T '*' F
 E ::= T
-T ::= F + Number
+T ::= F '+' Number
 T ::= Number
 END_OF_STRING
 chomp $calc_grammar;
@@ -60,3 +60,28 @@ my $ex2 = join "\n", ($calc_grammar . ';'), $calc_lexer, q{};
 
 say $ex1;
 say $ex2;
+
+my $grammar = Marpa::R2::Scanless::G->new( { source => \$dsl } );
+
+for my $input (\$ex1, \$ex2) {
+  my $recce = Marpa::R2::Scanless::R->new( { grammar => $grammar } );
+  doit($recce, $input);
+}
+
+sub doit {
+	my ($recce, $input) = @_;
+	my $input_length = ${$input};
+        my $length_read = $recce->read($input);
+	if ($length_read != length $input_length) {
+	   die "read() ended prematurely\n",
+	      "  input length = $input_length\n",
+	      "  length read = $length_read\n",
+	      "  the cause may be an unexpected event";
+	}
+        my $value_ref = $recce->value();
+	if (!$value_ref) {
+                die "input read, but there was no parse";
+        }
+
+        return $value_ref;
+}
