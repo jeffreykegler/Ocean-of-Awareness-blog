@@ -23,23 +23,23 @@ use warnings;
 use Data::Dumper;
 use English qw( -no_match_vars );
 
-use Test::More tests => 2;
+use Test::More tests => 3;
 
 use Marpa::R2 2.090;
 
 my $dsl = <<'END_OF_DSL';
-:default ::= action => [name,values]
+:default ::= action => ::first
 lexeme default = latm => 1
-Statements ::= Statement*
+Statements ::= Statement* action => [values]
 Statement ::= <Terminated statement>
 | <Statement body>
-<Terminated statement> ::= <Statement body> ';'
+<Terminated statement> ::= <Statement body> ';' action => [values]
 <Statement body> ::= <BNF rule> | <lexeme declaration>
-<BNF rule> ::= lhs '::=' rhs
+<BNF rule> ::= lhs '::=' rhs action => [values]
 lhs ::= <symbol name>
-rhs ::= symbol*
+rhs ::= symbol* action => [values]
 symbol ::= <symbol name> | <single quoted string>
-<lexeme declaration> ::= symbol 'matches' <single quoted string>
+<lexeme declaration> ::= symbol 'matches' <single quoted string> action => [values]
 
 <symbol name> ~ [_[:alpha:]] <symbol characters>
 <symbol characters> ~ [_[:alnum:]]*
@@ -60,22 +60,69 @@ chomp $calc_grammar;
 
 my $ex1 = join "\n", $calc_lexer, $calc_grammar, q{};
 my $ex2 = join "\n", $calc_grammar, $calc_lexer, q{};
-my $ex3 = join "\n", ($calc_grammar . ';'), $calc_lexer, q{};
-
+my $ex3 = join "\n", ($calc_grammar . q{ ;}), $calc_lexer, q{};
 
 my $grammar = Marpa::R2::Scanless::G->new( { source => \$dsl } );
 
-for my $input (\$ex1, \$ex2, \$ex3) {
-  say ${$input};
+TEST: {
+  my $input = \$ex1;
+  my $recce = Marpa::R2::Scanless::R->new( { grammar => $grammar } );
+  my $value_ref;
+  my $eval_ok = eval { $value_ref = doit($recce, $input); 1; };
+  if (!$eval_ok) {
+    Test::More::fail("Example 1 failed");
+    Test::More::diag( $EVAL_ERROR);
+    last TEST;
+  }
+  my $result = [grep { defined } split q{ }, ${$input}];
+  Test::More::is_deeply($result, flatten($value_ref), 'Example 1');
+}
+
+TEST: {
+  my $expected_error = <<'=== END ===';
+Parse of BNF/Scanless source is ambiguous
+Length of symbol "Statement" at line 4, column 1 is ambiguous
+  Choices start with: T ::= Number
+  Choice 1, length=12, ends at line 4, column 12
+  Choice 1: T ::= Number
+  Choice 2, length=33, ends at line 5, column 20
+  Choice 2: T ::= Number\nNumber matches '\\d
+=== END ===
+  my $input = \$ex2;
   my $recce = Marpa::R2::Scanless::R->new( { grammar => $grammar
      # , trace_terminals => 99
   } );
-  my $eval_ok = eval { my $value_ref = doit($recce, $input); 1; };
+  my $value_ref;
+  my $eval_ok = eval { $value_ref = doit($recce, $input); 1; };
   if (!$eval_ok) {
-     say $EVAL_ERROR;
+    Test::More::is($EVAL_ERROR, $expected_error, 'Example 2 (ambiguous)');
+     last TEST;
   }
-  # say Data::Dumper::Dumper($value_ref);
+  Test::More::fail('Example 2 parsed -- it should not do so');
 }
+
+TEST: {
+  my $input = \$ex3;
+  my $recce = Marpa::R2::Scanless::R->new( { grammar => $grammar } );
+  my $value_ref;
+  my $eval_ok = eval { $value_ref = doit($recce, $input); 1; };
+  if (!$eval_ok) {
+    Test::More::fail('Example 3 failed');
+    Test::More::diag( $EVAL_ERROR);
+    last TEST;
+  }
+  my $result = [grep { defined } split q{ }, ${$input}];
+  Test::More::is_deeply($result, flatten($value_ref), 'Example 3');
+}
+
+sub flatten {
+    my ($tree) = @_;
+    if ( ref $tree eq 'REF' ) { return flatten( ${$tree} ); }
+    if ( ref $tree eq 'ARRAY' ) {
+        return [ map { @{flatten($_)} } @{$tree} ];
+    }
+    return [$tree];
+} ## end sub flatten
 
 sub doit {
     my ( $recce, $input ) = @_;
