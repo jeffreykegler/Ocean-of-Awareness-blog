@@ -42,13 +42,15 @@
     &lt;/p&gt;
     &lt;p&gt;
       If we allow our computer languages to take their most natural forms,
-      they will often have the &lt;b&gt;potential&lt;/b&gt; for ambiguity.
+      they will often have the
+      &lt;b&gt;potential&lt;/b&gt;
+      for ambiguity.
       This is even less of a problem on a computer than it is in
       coversation -- a computer can always spot an actual ambiguity
       immediately.
       When
       &lt;b&gt;actual&lt;/b&gt;
-      ambiguities occur, we can deal them 
+      ambiguities occur, we can deal them
       in exactly the same way that we deal with
       any other syntax problem:
       The computer catches it and reports it,
@@ -143,8 +145,12 @@ Length of symbol &quot;Statement&quot; at line 4, column 1 is ambiguous
     &lt;/blockquote&gt;
     &lt;h3&gt;To learn more&lt;/h3&gt;
     &lt;p&gt;
-      &lt;a href=&quot;https://metacpan.org/module/Marpa::R2&quot;&gt;Marpa::R2
-        is available on CPAN&lt;/a&gt;.
+      The code for this post is
+      &lt;a href=&quot;https://gist.github.com/jeffreykegler/ed64bf00983f7be666bc&quot;&gt;
+        a gist on Github&lt;/a&gt;.
+      It was written using
+      &lt;a href=&quot;https://metacpan.org/module/Marpa::R2&quot;&gt;Marpa::R2,
+        which is available on CPAN&lt;/a&gt;.
       A list of my Marpa tutorials can be found
       &lt;a href=&quot;http://jeffreykegler.github.io/Ocean-of-Awareness-blog/metapages/annotated.html#TUTORIAL&quot;&gt;
         here&lt;/a&gt;.
@@ -167,10 +173,10 @@ Length of symbol &quot;Statement&quot; at line 4, column 1 is ambiguous
       &lt;a href=&quot;http://groups.google.com/group/marpa-parser&quot;&gt;
         a &quot;marpa parser&quot;
         Google Group&lt;/a&gt;
-        and an IRC channel:
-        &lt;tt&gt;#marpa&lt;/tt&gt;
-        at
-        &lt;tt&gt;irc.freenode.net&lt;/tt&gt;.
+      and an IRC channel:
+      &lt;tt&gt;#marpa&lt;/tt&gt;
+      at
+      &lt;tt&gt;irc.freenode.net&lt;/tt&gt;.
     &lt;/p&gt;
     &lt;h3&gt;Comments&lt;/h3&gt;
     &lt;p&gt;
