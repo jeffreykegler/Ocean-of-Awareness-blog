@@ -98,10 +98,13 @@
 </pre>
     </blockquote>
     <h3>Trying an improvement</h3>
-    <p>With a calculator grammar this small, just about <b>anything</b>
-    is readable.
-    But let's assume we want to improve it, and that we decide
-      that the lexeme declaration of <tt>Number</tt> really belongs
+    <p>With a calculator grammar this small, just about
+      <b>anything</b>
+      is readable.
+      But let's assume we want to improve it, and that we decide
+      that the lexeme declaration of
+      <tt>Number</tt>
+      really belongs
       after the rules which use it.
       (If our grammar was longer, this could make a real difference.)
       So we move the lexeme declaraion to the end:
@@ -114,11 +117,13 @@
   Number matches '\d+'
 </pre>
     </blockquote>
+    <h3>But there's an issue</h3>
     <p>
-    But this time, when we go to parse our example, there's an issue.
-It turns out our grammar design, we've made it ambiguous.
-Marpa::R2, by default, is actually perfectly OK with that -- it just gives you
-the first of a series of ambiguous parses.
+      It turns out the grammar for our toy DSL-writer is ambiguous.
+      When a lexeme declaration follows a BNF rule,
+      there's no way to tell whether or not it is actually a
+      lexeme declaration, or part of the BNF rule.
+      Fortunately, we set up our parser to catch that:
     </p><blockquote>
       <pre>
 Parse of BNF/Scanless source is ambiguous
@@ -129,8 +134,23 @@ Length of symbol "Statement" at line 4, column 1 is ambiguous
   Choice 2, length=33, ends at line 5, column 20
   Choice 2: T ::= Number\nNumber matches '\\d
 </pre></blockquote>
-<p>
-</p>
+    <p>
+      Here Marpa tells you why it thinks your script is ambiguous.
+      Two different statements can start at line 4.
+      Both of them are BNF rules, but one is longer than the other.
+    </p>
+    <h3>Just another syntax error</h3>
+    <p>Instead of having to design a language where ambiguity was not
+      even possible, we designed one where ambiguities can happen.
+      This allows us to design a much more flexible language,
+      like the ones we choose when we humans communicate with each other.
+      The downside is that actual ambiguities will occur,
+      but they can be reported, and fixed,
+      like any other syntax error.
+    </p><p>In this case, we
+      recalling we allow semi-colons to terminate a rule,
+      and our fix is easy:
+    </p>
     <h3>A fix</h3>
     <p>
     </p><blockquote>
@@ -166,8 +186,13 @@ Length of symbol "Statement" at line 4, column 1 is ambiguous
         another</a>.
       For questions, support and discussion, there is
       <a href="http://groups.google.com/group/marpa-parser">
-        the "marpa parser"
-        Google Group.</a>
+        a "marpa parser"
+        Google Group
+        and an IRC channel:
+        <tt>#marpa</tt>
+        at
+        <tt>irc.freenode.net</tt>.
+        .</a>
     </p>
     <h3>Comments</h3>
     <p>
