@@ -21,6 +21,7 @@ use strict;
 use warnings;
 
 use Data::Dumper;
+use English qw( -no_match_vars );
 
 use Test::More tests => 2;
 
@@ -69,7 +70,11 @@ for my $input (\$ex1, \$ex2, \$ex3) {
   my $recce = Marpa::R2::Scanless::R->new( { grammar => $grammar
      # , trace_terminals => 99
   } );
-  # say Data::Dumper::Dumper(doit($recce, $input));
+  my $eval_ok = eval { my $value_ref = doit($recce, $input); 1; };
+  if (!$eval_ok) {
+     say $EVAL_ERROR;
+  }
+  # say Data::Dumper::Dumper($value_ref);
 }
 
 sub doit {
