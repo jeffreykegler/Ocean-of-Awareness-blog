@@ -74,7 +74,7 @@ TEST: {
         Test::More::diag($EVAL_ERROR);
         last TEST;
     }
-    my $result = [ grep {defined} split q{ }, ${$input} ];
+    my $result = [ split q{ }, ${$input} ];
     Test::More::is_deeply( $result, flatten($value_ref), 'Example 1' );
 } ## end TEST:
 
