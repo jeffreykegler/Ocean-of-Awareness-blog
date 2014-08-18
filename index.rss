@@ -10,6 +10,130 @@
     <language>en</language>
 
   <item>
+    <title>Ambiguous languages</title>
+    <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2014/08/ambig.html</link>
+    <description>&lt;html&gt;
+  &lt;head&gt;
+  &lt;/head&gt;
+  &lt;body&gt;&lt;p&gt;
+      &lt;!--
+      marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
+      --&gt;
+      Currently, in designing lanuages,
+      we don't allow even potential ambiguity.
+      That is, not only must a program be unambiguous, it must not be
+      even &lt;b&gt;possible&lt;/b&gt; to write an ambiguous program.
+      This is overly restrictive.  In fact, Perl 5 syntax is not just
+      potentially ambiguous, it is potentially undecidable.
+      &lt;/p&gt;
+      &lt;p&gt;
+      This post is written in English, which is full of ambiguities.
+      Natural languages are always ambiguous.
+      Human beings arrange things so that (if all goes well) every
+      sentence is unambiguous in context.
+      That can break down, but in conversation that's no problem --
+      we just ask for clarification.
+    &lt;/p&gt;
+    &lt;p&gt;Ambiguity is a powerful tool for creating a flexible, compact
+    language.  It is a tool that
+    we can use in designing programming languages.
+    We can allow our computer languages to take their natural form,
+    which will often have the potential for ambiguity.
+    When &lt;b&gt;actual&lt;/b&gt; ambiguities occur, we can treat them just like
+    any other syntax problem:
+    We can catch it and report it.
+    &lt;/p&gt;
+    &lt;h3&gt;An example&lt;/h3&gt;
+    &lt;p&gt;
+    To illustrate,
+    I'll use a DSL-writing DSL language.
+    It'll be tiny -- even toy -- just lexeme declarations and BNF rules.
+    Newlines will &lt;b&gt;not&lt;/b&gt; be significant.
+    Statements can end with s semicolon, but it's optional.
+    (The code for this post is in
+    &lt;a href=&quot;https://gist.github.com/jeffreykegler/ed64bf00983f7be666bc&quot;&gt;
+    a Github gist&lt;/a&gt;.)
+    &lt;/p&gt;
+    &lt;/p&gt;Here is an example in that language DSL-writing language
+    -- a tiny calculator.
+    &lt;h3&gt;Trying an improvement&lt;/h3&gt;
+    &lt;p&gt;The previous description of a calculator
+    has the lexeme declaration at the beginning, but I
+    think it looks better coming just after where the symbol
+    &lt;tt&gt;Number&lt;/tt&gt; is used.
+    True, with this toy calculator, it really does not make much difference,
+    but if our grammar was longer, the difference in readability would be major.
+    So we move the lexeme declaraion to the end:
+    &lt;blockquote&gt;
+      &lt;pre&gt;
+  E ::= T '*' F
+  E ::= T
+  T ::= F '+' Number
+  T ::= Number
+  Number matches '\d+'
+&lt;/pre&gt;
+    &lt;/blockquote&gt;
+    &lt;/p&gt;
+    &lt;p&gt;
+    &lt;blockquote&gt;
+      &lt;pre&gt;
+Parse of BNF/Scanless source is ambiguous
+Length of symbol &quot;Statement&quot; at line 4, column 1 is ambiguous
+  Choices start with: T ::= Number
+  Choice 1, length=12, ends at line 4, column 12
+  Choice 1: T ::= Number
+  Choice 2, length=33, ends at line 5, column 20
+  Choice 2: T ::= Number\nNumber matches '\\d
+    &lt;/blockquote&gt;
+    &lt;/p&gt;
+    &lt;h3&gt;A fix&lt;/h3&gt;
+    &lt;p&gt;
+    &lt;blockquote&gt;
+      &lt;pre&gt;
+  E ::= T '*' F
+  E ::= T
+  T ::= F '+' Number
+  T ::= Number ;
+  Number matches '\d+'
+    &lt;/blockquote&gt;
+    &lt;/p&gt;
+    &lt;h3&gt;To learn more&lt;/h3&gt;
+    &lt;p&gt;
+      &lt;a href=&quot;https://metacpan.org/module/Marpa::R2&quot;&gt;Marpa::R2
+        is available on CPAN&lt;/a&gt;.
+      A list of my Marpa tutorials can be found
+      &lt;a href=&quot;http://jeffreykegler.github.io/Ocean-of-Awareness-blog/metapages/annotated.html#TUTORIAL&quot;&gt;
+        here&lt;/a&gt;.
+      There are
+      new tutorials by
+      &lt;a href=&quot;http://marpa-guide.github.io/chapter1.html&quot;&gt;Peter Stuifzand&lt;/a&gt;
+      and
+      &lt;a href=&quot;http://longanswers.blogspot.de/2013/06/transforming-syntax.html&quot;&gt;amon&lt;/a&gt;.
+      &lt;a href=&quot;http://jeffreykegler.github.com/Ocean-of-Awareness-blog/&quot;&gt;
+        The Ocean of Awareness blog&lt;/a&gt;
+      focuses on Marpa,
+      and it has
+      &lt;a href=&quot;http://jeffreykegler.github.io/Ocean-of-Awareness-blog/metapages/annotated.html&quot;&gt;an annotated guide&lt;/a&gt;.
+      Marpa has
+      &lt;a href=&quot;http://jeffreykegler.github.com/Marpa-web-site/&quot;&gt;a web page that I maintain&lt;/a&gt;
+      and Ron Savage maintains
+      &lt;a href=&quot;http://savage.net.au/Perl-modules/html/marpa.papers/index.html&quot;&gt;
+        another&lt;/a&gt;.
+      For questions, support and discussion, there is
+      &lt;a href=&quot;http://groups.google.com/group/marpa-parser&quot;&gt;
+        the &quot;marpa parser&quot;
+        Google Group.&lt;/a&gt;
+    &lt;/p&gt;
+    &lt;h3&gt;Comments&lt;/h3&gt;
+    &lt;p&gt;
+      Comments on this post can be made in
+      &lt;a href=&quot;http://groups.google.com/group/marpa-parser&quot;&gt;
+      Marpa's Google group&lt;/a&gt;.
+      &lt;/p&gt;
+  &lt;/body&gt;
+&lt;/html&gt;</description>
+  </item>
+  <item>
     <title>Evolvable languages</title>
     <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2014/03/kv.html</link>
     <description>&lt;html&gt;
@@ -742,123 +866,6 @@ Factor '*' Factor action =&amp;gt; do_multiply Number ~ digits digits ~
       &lt;a href=&quot;http://groups.google.com/group/marpa-parser&quot;&gt;
       the &quot;marpa parser&quot;
       Google Group.&lt;/a&gt;
-      Comments on this post can be made there.
-    &lt;/p&gt;</description>
-  </item>
-  <item>
-    <title>Marpa v. Parse::RecDescent: a rematch</title>
-    <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2013/06/vs-prd-round-2.html</link>
-    <description>  &lt;h3&gt;The application&lt;/h3&gt;&lt;!--
-      marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
---&gt;&lt;p&gt;
-      In
-      &lt;a href=&quot;http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2013/06/mixing-procedural.html&quot;&gt;
-      a recent post&lt;/a&gt;,
-      I looked at an unusual language which serializes arrays and strings,
-      using a mixture of counts and parentheses.  Here is an example:
-    &lt;/p&gt;
-&lt;blockquote&gt;&lt;pre&gt;
-A2(A2(S3(Hey)S13(Hello, World!))S5(Ciao!))
-&lt;/pre&gt;&lt;/blockquote&gt;
-    &lt;p&gt;
-      The language is of special interest for comparison
-      against recursive descent
-      because, while simple, it requires procedural
-      parsing -- a purely declarative BNF approach will not work.
-      So it's a chance to find out if Marpa can play the game that is recursive descent's
-      specialty.
-      &lt;/p&gt;
-      &lt;p&gt;
-      &lt;a href=&quot;http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2013/06/mixing-procedural.html&quot;&gt;
-      The previous post&lt;/a&gt;
-      focused on how to use Marpa to mix
-      procedural and declarative parsing together smoothly,
-      from a coding point of view.
-      It only hinted at another aspect: speed.
-    Over the last year, Marpa has greatly improved its speed for this kind of application.
-      The latest release of Marpa::R2 now clocks in almost 100 times faster than Parse::RecDescent for long inputs.
-    &lt;/p&gt;
-    &lt;h3&gt;The benchmark&lt;/h3&gt;
-    &lt;table align=&quot;center&quot; cellpadding=&quot;5&quot; border=&quot;1&quot; width=&quot;100%&quot;&gt;
-      &lt;tbody&gt;&lt;tr&gt;&lt;th rowspan=&quot;2&quot;&gt;Length&lt;/th&gt;&lt;th colspan=&quot;3&quot;&gt;Seconds&lt;/th&gt;&lt;/tr&gt;
-        &lt;tr&gt;
-          &lt;th&gt;Marpa::R2&lt;/th&gt;
-          &lt;th&gt;Marpa::XS&lt;/th&gt;
-          &lt;th&gt;Parse::RecDescent
-          &lt;/th&gt;&lt;/tr&gt;
-        &lt;tr&gt;&lt;td&gt;1000
-          &lt;/td&gt;&lt;td align=&quot;center&quot;&gt;1.569
-          &lt;/td&gt;&lt;td align=&quot;center&quot;&gt;2.938
-          &lt;/td&gt;&lt;td align=&quot;center&quot;&gt;13.616
-          &lt;/td&gt;&lt;/tr&gt;
-        &lt;tr&gt;&lt;td&gt;2000
-          &lt;/td&gt;&lt;td align=&quot;center&quot;&gt;2.746
-          &lt;/td&gt;&lt;td align=&quot;center&quot;&gt;7.067
-          &lt;/td&gt;&lt;td align=&quot;center&quot;&gt;62.083
-          &lt;/td&gt;&lt;/tr&gt;
-        &lt;tr&gt;&lt;td&gt;3000
-          &lt;/td&gt;&lt;td align=&quot;center&quot;&gt;3.935
-          &lt;/td&gt;&lt;td align=&quot;center&quot;&gt;13.953
-          &lt;/td&gt;&lt;td align=&quot;center&quot;&gt;132.549
-          &lt;/td&gt;&lt;/tr&gt;
-        &lt;tr&gt;
-          &lt;td&gt;10000
-          &lt;/td&gt;&lt;td align=&quot;center&quot;&gt;12.270
-          &lt;/td&gt;&lt;td align=&quot;center&quot;&gt;121.654
-          &lt;/td&gt;&lt;td align=&quot;center&quot;&gt;1373.171
-          &lt;/td&gt;&lt;/tr&gt;
-      &lt;/tbody&gt;&lt;/table&gt;
-    &lt;p&gt;Parse::RecDescent is pure Perl, while Marpa is based on a parse
-      engine in a library written in
-      hand-optimized C.
-      You'd expect Marpa to win this race and it did.
-    &lt;/p&gt;
-    &lt;p&gt;
-      And it is nice to see that the changes from Marpa::XS to Marpa::R2 have paid off.
-      Included in the table are the Marpa numbers from my
-      2012 benchmark of Marpa::XS.
-      Marpa::R2 has a new interface
-      and an internal lexer,
-      and now beats Marpa::XS by a factor of up to 10.
-      &lt;/p&gt;
-      &lt;p&gt;
-      While the benchmarked language is ideally suited to show recursive descent to
-      advantage, the input lengths were picked to emphasize Marpa's strengths.
-      Marpa optimizes by doing a lot of precomputation,
-      and is written with long inputs in mind.
-      Though these days, a 500K source,
-      longer than the longest tested, would not exactly set a new industry record.
-    &lt;/p&gt;
-    &lt;h3&gt;To learn more&lt;/h3&gt;
-    &lt;p&gt;
-      There are fuller descriptions of the language in
-      &lt;a href=&quot;http://blogs.perl.org/users/polettix/2012/04/parserecdescent-and-number-of-elements-read-on-the-fly.html&quot;&gt;
-        Flavio's post and code&lt;/a&gt;,
-      &lt;a href=&quot;http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2013/06/mixing-procedural.html&quot;&gt;
-      and my recent post on how to write a parser for this language&lt;/a&gt;.
-      I talk more about the benchmark's methodology in
-      &lt;a href=&quot;http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2012/04/marpa-v-parserecdescent-some-numbers.html&quot;&gt;
-      my post on the 2012 benchmark&lt;/a&gt;.
-    &lt;/p&gt;
-    &lt;p&gt;
-      &lt;a href=&quot;https://metacpan.org/module/Marpa::R2&quot;&gt;Marpa::R2
-        is available on CPAN&lt;/a&gt;.
-      A list of my Marpa tutorials can be found
-      &lt;a href=&quot;http://jeffreykegler.github.io/Ocean-of-Awareness-blog/metapages/annotated.html#TUTORIAL&quot;&gt;
-        here&lt;/a&gt;.
-      There is
-      &lt;a href=&quot;http://marpa-guide.github.io/chapter1.html&quot;&gt;
-        a new tutorial by Peter Stuifzand&lt;/a&gt;.
-      &lt;a href=&quot;http://jeffreykegler.github.com/Ocean-of-Awareness-blog/&quot;&gt;
-        The Ocean of Awareness blog&lt;/a&gt;
-      focuses on Marpa,
-      and it has
-      &lt;a href=&quot;http://jeffreykegler.github.io/Ocean-of-Awareness-blog/metapages/annotated.html&quot;&gt;an annotated guide&lt;/a&gt;.
-      Marpa also has
-      &lt;a href=&quot;http://jeffreykegler.github.com/Marpa-web-site/&quot;&gt;a web page&lt;/a&gt;.
-      For questions, support and discussion, there is a
-      Google Group:
-      &lt;code&gt;marpa-parser@googlegroups.com&lt;/code&gt;.
       Comments on this post can be made there.
     &lt;/p&gt;</description>
   </item>
