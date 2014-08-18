@@ -72,13 +72,12 @@
 &lt;/pre&gt;
     &lt;/blockquote&gt;
     &lt;h3&gt;Trying an improvement&lt;/h3&gt;
-    &lt;p&gt;The previous description of a calculator
-      has the lexeme declaration at the beginning, but I
-      think it looks better coming just after where the symbol
-      &lt;tt&gt;Number&lt;/tt&gt;
-      is used.
-      True, with this toy calculator, it really does not make much difference,
-      but if our grammar was longer, the difference in readability would be major.
+    &lt;p&gt;With a calculator grammar this small, just about &lt;b&gt;anything&lt;/b&gt;
+    is readable.
+    But let's assume we want to improve it, and that we decide
+      that the lexeme declaration of &lt;tt&gt;Number&lt;/tt&gt; really belongs
+      after the rules which use it.
+      (If our grammar was longer, this could make a real difference.)
       So we move the lexeme declaraion to the end:
     &lt;/p&gt;&lt;blockquote&gt;
       &lt;pre&gt;
@@ -90,6 +89,10 @@
 &lt;/pre&gt;
     &lt;/blockquote&gt;
     &lt;p&gt;
+    But this time, when we go to parse our example, there's an issue.
+It turns out our grammar design, we've made it ambiguous.
+Marpa::R2, by default, is actually perfectly OK with that -- it just gives you
+the first of a series of ambiguous parses.
     &lt;/p&gt;&lt;blockquote&gt;
       &lt;pre&gt;
 Parse of BNF/Scanless source is ambiguous
@@ -100,6 +103,8 @@ Length of symbol &quot;Statement&quot; at line 4, column 1 is ambiguous
   Choice 2, length=33, ends at line 5, column 20
   Choice 2: T ::= Number\nNumber matches '\\d
 &lt;/pre&gt;&lt;/blockquote&gt;
+&lt;p&gt;
+&lt;/p&gt;
     &lt;h3&gt;A fix&lt;/h3&gt;
     &lt;p&gt;
     &lt;/p&gt;&lt;blockquote&gt;
