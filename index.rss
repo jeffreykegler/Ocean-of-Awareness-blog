@@ -20,7 +20,7 @@
       marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
       --&gt;
       Currently, in designing lanuages,
-      we don't allow ambiguitites --
+      we don't allow ambiguities --
       not even potential ones.
       We insist that it must not be
       even
@@ -50,7 +50,7 @@
       immediately.
       When
       &lt;b&gt;actual&lt;/b&gt;
-      ambiguities occur, we can deal them
+      ambiguities occur, we can deal with them
       in exactly the same way that we deal with
       any other syntax problem:
       The computer catches it and reports it,
