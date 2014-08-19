@@ -19,7 +19,7 @@
       &lt;!--
       marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
       --&gt;
-      Currently, in designing lanuages,
+      Currently, in designing languages,
       we don't allow ambiguities --
       not even potential ones.
       We insist that it must not be
