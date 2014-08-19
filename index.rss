@@ -10,7 +10,7 @@
     <language>en</language>
 
   <item>
-    <title>Exploiting ambiguity in language design</title>
+    <title>Language design: Exploiting ambiguity</title>
     <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2014/08/ambig.html</link>
     <description>&lt;html&gt;
   &lt;head&gt;
@@ -31,8 +31,8 @@
     &lt;p&gt;
       This post is written in English, which is full of ambiguities.
       Natural languages are always ambiguous,
-      because human beings find that's that best way for versatile,
-      rapid, easy communiciation.
+      because human beings find that that's best way for versatile,
+      rapid, easy communication.
       Human beings arrange things so that every
       sentence is unambiguous in context.
       Mistakes happen, and ambiguous sentences occur,
@@ -46,7 +46,7 @@
       &lt;b&gt;potential&lt;/b&gt;
       for ambiguity.
       This is even less of a problem on a computer than it is in
-      coversation -- a computer can always spot an actual ambiguity
+      conversation -- a computer can always spot an actual ambiguity
       immediately.
       When
       &lt;b&gt;actual&lt;/b&gt;
@@ -60,7 +60,7 @@
     &lt;p&gt;
       To illustrate,
       I'll use a DSL-writing DSL language.
-      It'll be tiny -- even toy -- just lexeme declarations and BNF rules.
+      It'll be tiny -- just lexeme declarations and BNF rules.
       Newlines will
       &lt;b&gt;not&lt;/b&gt;
       be significant.
@@ -80,7 +80,7 @@
 &lt;/pre&gt;
     &lt;/blockquote&gt;
     &lt;h3&gt;Trying an improvement&lt;/h3&gt;
-    &lt;p&gt;With a calculator grammar this small, just about
+    &lt;p&gt;With a grammar this small, just about
       &lt;b&gt;anything&lt;/b&gt;
       is readable.
       But let's assume we want to improve it, and that we decide
@@ -89,7 +89,7 @@
       really belongs
       after the rules which use it.
       (If our grammar was longer, this could make a real difference.)
-      So we move the lexeme declaraion to the end:
+      So we move the lexeme declaration to the end:
     &lt;/p&gt;&lt;blockquote&gt;
       &lt;pre&gt;
   E ::= T '*' F
@@ -105,7 +105,7 @@
       When a lexeme declaration follows a BNF rule,
       there's no way to tell whether or not it is actually a
       lexeme declaration, or part of the BNF rule.
-      Fortunately, we set up our parser to catch that:
+      Our parser catches that:
     &lt;/p&gt;&lt;blockquote&gt;
       &lt;pre&gt;
 Parse of BNF/Scanless source is ambiguous

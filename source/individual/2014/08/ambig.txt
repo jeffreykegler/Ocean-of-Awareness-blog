@@ -1,4 +1,4 @@
-Exploiting ambiguity in language design
+Language design: Exploiting ambiguity
 <html>
   <head>
   </head>
@@ -18,8 +18,8 @@ Exploiting ambiguity in language design
     <p>
       This post is written in English, which is full of ambiguities.
       Natural languages are always ambiguous,
-      because human beings find that's that best way for versatile,
-      rapid, easy communiciation.
+      because human beings find that that's best way for versatile,
+      rapid, easy communication.
       Human beings arrange things so that every
       sentence is unambiguous in context.
       Mistakes happen, and ambiguous sentences occur,
@@ -33,7 +33,7 @@ Exploiting ambiguity in language design
       <b>potential</b>
       for ambiguity.
       This is even less of a problem on a computer than it is in
-      coversation -- a computer can always spot an actual ambiguity
+      conversation -- a computer can always spot an actual ambiguity
       immediately.
       When
       <b>actual</b>
@@ -47,7 +47,7 @@ Exploiting ambiguity in language design
     <p>
       To illustrate,
       I'll use a DSL-writing DSL language.
-      It'll be tiny -- even toy -- just lexeme declarations and BNF rules.
+      It'll be tiny -- just lexeme declarations and BNF rules.
       Newlines will
       <b>not</b>
       be significant.
@@ -67,7 +67,7 @@ Exploiting ambiguity in language design
 </pre>
     </blockquote>
     <h3>Trying an improvement</h3>
-    <p>With a calculator grammar this small, just about
+    <p>With a grammar this small, just about
       <b>anything</b>
       is readable.
       But let's assume we want to improve it, and that we decide
@@ -76,7 +76,7 @@ Exploiting ambiguity in language design
       really belongs
       after the rules which use it.
       (If our grammar was longer, this could make a real difference.)
-      So we move the lexeme declaraion to the end:
+      So we move the lexeme declaration to the end:
     </p><blockquote>
       <pre>
   E ::= T '*' F
@@ -92,7 +92,7 @@ Exploiting ambiguity in language design
       When a lexeme declaration follows a BNF rule,
       there's no way to tell whether or not it is actually a
       lexeme declaration, or part of the BNF rule.
-      Fortunately, we set up our parser to catch that:
+      Our parser catches that:
     </p><blockquote>
       <pre>
 Parse of BNF/Scanless source is ambiguous
