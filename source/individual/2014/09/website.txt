@@ -39,7 +39,17 @@ Marpa has a new web page
         to you detailed information about the parse so far --
         which rules and symbols have been recognized, with their locations,
         and which rules and symbols are expected next.
-      </li></ul>
+      </li>
+      <li>Marpa is convenient.
+      Unlike recursive descent, you do not have to write a parser,
+      Marpa generates one for you from your BNF.
+      Unlike PEG or yacc, parser generation is unrestricted and accurate:
+      Marpa generates every BNF grammar into a parser which recognizes exactly
+      the language described by that BNF, and nothing else.
+      If a rule allows multiple alternatives, all of them are always
+      considered -- you are not forced to choose one of them arbitrarily.
+      </li>
+      </ul>
     <h3>Comments</h3>
     <p>
       Comments on this post can be made in
