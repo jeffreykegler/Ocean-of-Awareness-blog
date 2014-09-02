@@ -46,13 +46,13 @@ Marpa has a new web page
       </li>
       <li>Marpa is convenient.
       Unlike recursive descent, you do not have to write a parser --
-      Marpa generates one from the BNF.
+      Marpa generates one from BNF.
       Unlike PEG or yacc, parser generation is unrestricted and exact.
       Marpa converts any grammar which can be written as BNF
       into a parser which recognizes everything
       in the language described by that BNF, and which rejects everything that is
       not in that language.
-      The programmer is not forced to make arbitrary choices in advance.
+      The programmer is not forced to make arbitrary choices while parsing.
       If a rule has several alternatives,
       all of the alternatives are considered for as long as they might yield a valid parse.
       </li>
