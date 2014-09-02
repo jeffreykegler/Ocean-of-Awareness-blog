@@ -1,0 +1,50 @@
+Marpa has a new web page
+<html>
+  <head>
+  </head>
+  <body><p>
+      <!--
+      marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
+      -->
+      Marpa has a new official public website,
+      which Ron Savage has generously agreed to manage.
+      Marpa, for those who have not heard of it,
+      is a parsing algorithm.
+      It is new, but very much based
+      on the prior work of Jay Earley, Joop Leo, John Aycock and R. Nigel Horspool.
+      Marpa is intended to replace, and to go well beyond,
+      recursive descent and the yacc family of parsers.
+    </p><ul>
+      <li>
+        Marpa is fast. It parses in linear time:
+        <ul>
+          <li>All the grammars that recursive descent parses.
+          </li>
+          <li>All grammars that the yacc family parses.
+          </li>
+          <li>
+            In fact, all unambiguous grammars, as long as they are free of unmarked middle recursions.
+          </li><li>
+            All the ambiguous grammars that are unions of a finite set of any of the above grammars.
+          </li>
+        </ul>
+      </li>
+      <li>
+        Marpa is powerful. Marpa will parse anything you can write in BNF,
+        including any mixture of left, right and middle recursion, as well as cycles.
+      </li>
+      <li>
+        Marpa is flexible. Like recursive descent, Marpa allows you to stop and
+        do your own custom processing. Unlike recursive descent, Marpa makes available
+        to you detailed information about the parse so far --
+        which rules and symbols have been recognized, with their locations,
+        and which rules and symbols are expected next.
+      </li></ul>
+    <h3>Comments</h3>
+    <p>
+      Comments on this post can be made in
+      <a href="http://groups.google.com/group/marpa-parser">
+        Marpa's Google group</a>.
+    </p>
+  </body>
+</html>
