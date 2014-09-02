@@ -20,16 +20,12 @@ Marpa has a new web page
       <li>
         Marpa is fast. It parses in linear time:
         <ul>
-          <li>all the grammars that recursive descent parses;
-          </li>
-          <li>all grammars that the yacc family parses;
-          </li>
+          <li>all the grammar classes that recursive descent parses;</li>
+          <li>the grammar class that the yacc family parses;</li>
           <li>in fact, all unambiguous grammars, as long as they are free of unmarked middle recursions;
-	  and
-          </li>
-	  <li>
-            all ambiguous grammars that are unions of a finite set of any of the above grammars.
-          </li>
+	  and</li>
+	  <li>all
+	  ambiguous grammars that are unions of a finite set of any of the above grammars.</li>
         </ul>
       </li>
       <li>
