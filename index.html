@@ -59,29 +59,18 @@
       <li>
         Marpa is fast. It parses in linear time:
         <ul>
-          <li>all the grammars that recursive descent parses;
-          </li>
-          <li>all grammars that the yacc family parses;
-          </li>
+          <li>all the grammar classes that recursive descent parses;</li>
+          <li>the grammar class that the yacc family parses;</li>
           <li>in fact, all unambiguous grammars, as long as they are free of unmarked middle recursions;
-	  and
-          </li>
-	  <li>
-            all ambiguous grammars that are unions of a finite set of any of the above grammars.
-          </li>
+	  and</li>
+	  <li>all
+	  ambiguous grammars that are unions of a finite set of any of the above grammars.</li>
         </ul>
       </li>
       <li>
         Marpa is powerful. Marpa will parse anything that can be
 	written in BNF.
 	This includes any mixture of left, right and middle recursions.
-      </li>
-      <li>
-        Marpa is flexible. Like recursive descent, Marpa allows you to stop and
-        do your own custom processing. Unlike recursive descent, Marpa makes available
-        to you detailed information about the parse so far --
-        which rules and symbols have been recognized, with their locations,
-        and which rules and symbols are expected next.
       </li>
       <li>Marpa is convenient.
       Unlike recursive descent, you do not have to write a parser --
@@ -94,6 +83,13 @@
       The programmer is not forced to make arbitrary choices while parsing.
       If a rule has several alternatives,
       all of the alternatives are considered for as long as they might yield a valid parse.
+      </li>
+      <li>
+        Marpa is flexible. Like recursive descent, Marpa allows you to stop and
+        do your own custom processing. Unlike recursive descent, Marpa makes available
+        to you detailed information about the parse so far --
+        which rules and symbols have been recognized, with their locations,
+        and which rules and symbols are expected next.
       </li>
       </ul>
     <h3>Comments</h3>

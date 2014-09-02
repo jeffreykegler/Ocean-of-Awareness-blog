@@ -33,29 +33,18 @@
       &lt;li&gt;
         Marpa is fast. It parses in linear time:
         &lt;ul&gt;
-          &lt;li&gt;all the grammars that recursive descent parses;
-          &lt;/li&gt;
-          &lt;li&gt;all grammars that the yacc family parses;
-          &lt;/li&gt;
+          &lt;li&gt;all the grammar classes that recursive descent parses;&lt;/li&gt;
+          &lt;li&gt;the grammar class that the yacc family parses;&lt;/li&gt;
           &lt;li&gt;in fact, all unambiguous grammars, as long as they are free of unmarked middle recursions;
-	  and
-          &lt;/li&gt;
-	  &lt;li&gt;
-            all ambiguous grammars that are unions of a finite set of any of the above grammars.
-          &lt;/li&gt;
+	  and&lt;/li&gt;
+	  &lt;li&gt;all
+	  ambiguous grammars that are unions of a finite set of any of the above grammars.&lt;/li&gt;
         &lt;/ul&gt;
       &lt;/li&gt;
       &lt;li&gt;
         Marpa is powerful. Marpa will parse anything that can be
 	written in BNF.
 	This includes any mixture of left, right and middle recursions.
-      &lt;/li&gt;
-      &lt;li&gt;
-        Marpa is flexible. Like recursive descent, Marpa allows you to stop and
-        do your own custom processing. Unlike recursive descent, Marpa makes available
-        to you detailed information about the parse so far --
-        which rules and symbols have been recognized, with their locations,
-        and which rules and symbols are expected next.
       &lt;/li&gt;
       &lt;li&gt;Marpa is convenient.
       Unlike recursive descent, you do not have to write a parser --
@@ -68,6 +57,13 @@
       The programmer is not forced to make arbitrary choices while parsing.
       If a rule has several alternatives,
       all of the alternatives are considered for as long as they might yield a valid parse.
+      &lt;/li&gt;
+      &lt;li&gt;
+        Marpa is flexible. Like recursive descent, Marpa allows you to stop and
+        do your own custom processing. Unlike recursive descent, Marpa makes available
+        to you detailed information about the parse so far --
+        which rules and symbols have been recognized, with their locations,
+        and which rules and symbols are expected next.
       &lt;/li&gt;
       &lt;/ul&gt;
     &lt;h3&gt;Comments&lt;/h3&gt;
