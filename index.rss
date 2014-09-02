@@ -19,32 +19,36 @@
       &lt;!--
       marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
       --&gt;
-      Marpa has a new official public website,
+      Marpa has
+      &lt;a href=&quot;http://savage.net.au/Marpa.html&quot;&gt;a
+      new official public website&lt;/a&gt;,
       which Ron Savage has generously agreed to manage.
-      Marpa, for those who have not heard of it,
-      is a parsing algorithm.
+      For those who have not heard of it,
+      Marpa is a parsing algorithm.
       It is new, but very much based
-      on the prior work of Jay Earley, Joop Leo, John Aycock and R. Nigel Horspool.
+      on earlier work by Jay Earley, Joop Leo, John Aycock and R. Nigel Horspool.
       Marpa is intended to replace, and to go well beyond,
       recursive descent and the yacc family of parsers.
     &lt;/p&gt;&lt;ul&gt;
       &lt;li&gt;
         Marpa is fast. It parses in linear time:
         &lt;ul&gt;
-          &lt;li&gt;All the grammars that recursive descent parses.
+          &lt;li&gt;all the grammars that recursive descent parses;
           &lt;/li&gt;
-          &lt;li&gt;All grammars that the yacc family parses.
+          &lt;li&gt;all grammars that the yacc family parses;
           &lt;/li&gt;
-          &lt;li&gt;
-            In fact, all unambiguous grammars, as long as they are free of unmarked middle recursions.
-          &lt;/li&gt;&lt;li&gt;
-            All the ambiguous grammars that are unions of a finite set of any of the above grammars.
+          &lt;li&gt;in fact, all unambiguous grammars, as long as they are free of unmarked middle recursions;
+	  and
+          &lt;/li&gt;
+	  &lt;li&gt;
+            all ambiguous grammars that are unions of a finite set of any of the above grammars.
           &lt;/li&gt;
         &lt;/ul&gt;
       &lt;/li&gt;
       &lt;li&gt;
-        Marpa is powerful. Marpa will parse anything you can write in BNF,
-        including any mixture of left, right and middle recursion, as well as cycles.
+        Marpa is powerful. Marpa will parse anything that can be
+	written in BNF.
+	This includes any mixture of left, right and middle recursions.
       &lt;/li&gt;
       &lt;li&gt;
         Marpa is flexible. Like recursive descent, Marpa allows you to stop and
@@ -54,13 +58,16 @@
         and which rules and symbols are expected next.
       &lt;/li&gt;
       &lt;li&gt;Marpa is convenient.
-      Unlike recursive descent, you do not have to write a parser,
-      Marpa generates one for you from your BNF.
-      Unlike PEG or yacc, parser generation is unrestricted and accurate:
-      Marpa generates every BNF grammar into a parser which recognizes exactly
-      the language described by that BNF, and nothing else.
-      If a rule allows multiple alternatives, all of them are always
-      considered -- you are not forced to choose one of them arbitrarily.
+      Unlike recursive descent, you do not have to write a parser --
+      Marpa generates one from the BNF.
+      Unlike PEG or yacc, parser generation is unrestricted and exact.
+      Marpa converts any grammar which can be written as BNF
+      into a parser which recognizes everything
+      in the language described by that BNF, and which rejects everything that is
+      not in that language.
+      The programmer is not forced to make arbitrary choices in advance.
+      If a rule has several alternatives,
+      all of the alternatives are considered for as long as they might yield a valid parse.
       &lt;/li&gt;
       &lt;/ul&gt;
     &lt;h3&gt;Comments&lt;/h3&gt;
