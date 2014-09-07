@@ -7,20 +7,24 @@ A parsing chronology
       marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
       -->
     </p>
-<p>1960 -- The ALGOL 60 spec comes out, specifying a block structured
+<p>1960 -- The ALGOL 60 spec comes out.
+It specifies, for the first time, a block structured
 language.
-At this time nobody know how to parse such a language, but in
-<p>1961 Ned Irons published a paper which such an algorithm.
-It's the first description of recursive descent -- in fact the first paper
+As the ALGOL committee is well aware,
+at this time
+nobody know how to parse such a language.
+<p>1961 -- Ned Irons 
+publishes the first paper
 ever to describe any parsing algorithm.
-<p>Ned's algorithmm, if it
-appeared today, could easily be billed as the a hot new innovation.
-It was declarative, or syntax-driven.  That is, unlike modern recursive
-descent, it was driven by a description of the grammar in BNF.
-It could handle any BNF, by back-tracking,
-and, as an optimization, used left-corner parsing.
+It's a form of recursive descent.
+Ned's original variant of recursive descent is general
+and syntax-driven.
+General means it can parse anything written in BNF.
+Syntax driven (aka declarative) means that the algorithm
+creates the parser from the BNF.
 <p>1965 -- Don Knuth invents LR parsing.  Knuth was mainly interested
-in the mathematics, and the algorithm is not thought practical.
+in the mathematics, and the actual algorithms
+in his paper are not thought practical.
 <p>1968 -- Jay Earley invents the algorithm named after him.
 It is also syntax-driven and fully general.  The core idea is to 
 track everything about the parse in  tables.
