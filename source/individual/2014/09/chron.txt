@@ -1,0 +1,116 @@
+A parsing chronology
+<html>
+  <head>
+  </head>
+  <body><p>
+      <!--
+      marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
+      -->
+    </p>
+<p>1960 -- The ALGOL 60 spec comes out.
+It specifies, for the first time, a block structured
+language.
+As the ALGOL committee is well aware,
+at this time
+nobody know how to parse such a language.
+<p>1961 -- Ned Irons 
+publishes the first paper
+ever to describe any parsing algorithm.
+It's a form of recursive descent.
+Ned's original variant of recursive descent is general
+and syntax-driven.
+General means it can parse anything written in BNF.
+Syntax driven (aka declarative) means that the algorithm
+creates the parser from the BNF.
+<p>1965 -- Don Knuth invents LR parsing.  Knuth was mainly interested
+in the mathematics, and the actual algorithms
+in his paper are not thought practical.
+<p>1968 -- Jay Earley invents the algorithm named after him.
+It is also syntax-driven and fully general.  The core idea is to 
+track everything about the parse in  tables.
+In the meantime, Ned's recursive descent has evolved
+into the hand-written algorithm that is familiar today.
+Jay Earley's table-building is quite efficient, but the machines
+of the 1960's were very slow, so that in
+<p>1969 a PhD thesis by Frank DeRemer describes a variant of Knuth's LR
+parsing that requires only a stack and a manageable state table,
+the world takes notice.
+DeRemer's LALR <b>is</b> thought of as practical,
+so much so that at Bell Labs in
+<p>1975 they convert their C compiler from hand-written recursive
+descent to DeRemer's LALR algorithm.
+LALR has also come to dominate the textbooks.  In ...
+<p>1977 the first Dragon book comes out, and the knight in
+the drawing on the front of this classic textbook
+carries a lance with LALR emblazoned along it.
+To make light of LALR is to besmirch the escutcheon
+or parsing theory.
+<p>Earley's algorithm is relegated to the back pages
+of these texts, when it's not omitted entirely.
+Earley's original algorithm had a bug, to which Aho
+and Ullman's vast two volume suggests a straightforward
+remedy, but this fix slows
+down an algorithm
+whose speed was already an issue.
+<p>In 1987, Larry Wall introduces Perl,
+it is parsed using LALR.
+The very complex Perl 1 through 5
+parsers represent a
+high water mark in the application of LALR to real life.
+<p>In 1991, Joop Leo discovers a way of speeding up right
+recursions in Earley's algorithm.  This means that Earley's
+is now linear for just about every unambiguous grammar of
+practical interest, and many ambiguous ones as well.
+But so badly eclipsed is Earley parsing,
+that Joop's paper
+attracts no practical implementations for almost 20 years.
+On the other hand, there's growing discontent
+in LALR-land.
+<p>In 2000, Larry Wall starts work on a radical reimplementation
+of Perl 6.  This time, he does not even consider an LALR.
+Practitioners have discovered that, while LALR automatically
+generates a parser for you, it is so hard to debug that it's
+just as easy to write one by hand.
+And even once written, an LALR parser, when it fails, provides
+little clue as to why.
+LALR has been discovered to be, in Larry's words,
+"fast but stupid".
+<p>2002 -- Discontent with LALR is spreading inside academia.
+A much-read paper by Aho&Ullman attempts a practical speedup.
+Less noticed, but more important, they discover a clever method
+for handling nulls, one that finally deals with the bug in Earley's
+algorithm without a speed penalty.
+But this innovation is buried in the Aho&Ullman paper, and
+they do not include Joop Leo's improvement -- they seem to
+be unaware of it.
+While widely noticed,
+Aho&Ullmann has no effect on practical parsing.
+But now nothing can slow the fall of LALR from favor.
+In ...
+<p>2006,
+GNU announces that the GCC compiler's parser has been
+completely rewritten.
+For 3 decades, the flagship C compilers have been
+parsed with LALR.
+That day is now over,
+and LALR
+is replaced by the 1960's technology that
+it originally replaced -- recursive descent.
+<p>With the fall comes a fall in the
+reputation of parsing theory.
+The result of more than a half century of
+research is exactly zero.
+We are back to a world in which,
+if Ned Iron's original 1961 paper were reissued,
+it could easily be presented as a
+ground-breaking new algorithm.
+<p>2010 --
+Marpa algorithm
+    <h3>Comments</h3>
+    <p>
+      Comments on this post can be made in
+      <a href="http://groups.google.com/group/marpa-parser">
+        Marpa's Google group</a>.
+    </p>
+  </body>
+</html>
