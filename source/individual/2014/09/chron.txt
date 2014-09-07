@@ -40,12 +40,68 @@ LALR has also come to dominate the textbooks.  In ...
 the drawing on the front of this classic textbook
 carries a lance with LALR emblazoned along it.
 To make light of LALR is to besmirch the escutcheon
-or parsing theory, so it is no surprise that in ...
-<p>1987, when Larry Wall introduces Perl,
+or parsing theory.
+<p>Earley's algorithm is relegated to the back pages
+of these texts, when it's not omitted entirely.
+Earley's original algorithm had a bug, to which Aho
+and Ullman's vast two volume suggests a straightforward
+remedy, but this fix slows
+down an algorithm
+whose speed was already an issue.
+<p>In 1987, Larry Wall introduces Perl,
 it is parsed using LALR.
 The very complex Perl 1 through 5
-parsers represent the
-high water mark of LALR.
+parsers represent a
+high water mark in the application of LALR to real life.
+<p>In 1991, Joop Leo discovers a way of speeding up right
+recursions in Earley's algorithm.  This means that Earley's
+is now linear for just about every unambiguous grammar of
+practical interest, and many ambiguous ones as well.
+But so badly eclipsed is Earley parsing,
+that Joop's paper
+attracts no practical implementations for almost 20 years.
+On the other hand, there's growing discontent
+in LALR-land.
+<p>In 2000, Larry Wall starts work on a radical reimplementation
+of Perl 6.  This time, he does not even consider an LALR.
+Practitioners have discovered that, while LALR automatically
+generates a parser for you, it is so hard to debug that it's
+just as easy to write one by hand.
+And even once written, an LALR parser, when it fails, provides
+little clue as to why.
+LALR has been discovered to be, in Larry's words,
+"fast but stupid".
+<p>2002 -- Discontent with LALR is spreading inside academia.
+A much-read paper by Aho&Ullman attempts a practical speedup.
+Less noticed, but more important, they discover a clever method
+for handling nulls, one that finally deals with the bug in Earley's
+algorithm without a speed penalty.
+But this innovation is buried in the Aho&Ullman paper, and
+they do not include Joop Leo's improvement -- they seem to
+be unaware of it.
+While widely noticed,
+Aho&Ullmann has no effect on practical parsing.
+But now nothing can slow the fall of LALR from favor.
+In ...
+<p>2006,
+GNU announces that the GCC compiler's parser has been
+completely rewritten.
+For 3 decades, the flagship C compilers have been
+parsed with LALR.
+That day is now over,
+and LALR
+is replaced by the 1960's technology that
+it originally replaced -- recursive descent.
+<p>With the fall comes a fall in the
+reputation of parsing theory.
+The result of more than a half century of
+research is exactly zero.
+We are back to a world in which,
+if Ned Iron's original 1961 paper were reissued,
+it could easily be presented as a
+ground-breaking new algorithm.
+<p>2010 --
+Marpa algorithm
     <h3>Comments</h3>
     <p>
       Comments on this post can be made in
