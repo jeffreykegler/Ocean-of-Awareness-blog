@@ -1,0 +1,56 @@
+A parsing chronology
+<html>
+  <head>
+  </head>
+  <body><p>
+      <!--
+      marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
+      -->
+    </p>
+<p>1960 -- The ALGOL 60 spec comes out, specifying a block structured
+language.
+At this time nobody know how to parse such a language, but in
+<p>1961 Ned Irons published a paper which such an algorithm.
+It's the first description of recursive descent -- in fact the first paper
+ever to describe any parsing algorithm.
+<p>Ned's algorithmm, if it
+appeared today, could easily be billed as the a hot new innovation.
+It was declarative, or syntax-driven.  That is, unlike modern recursive
+descent, it was driven by a description of the grammar in BNF.
+It could handle any BNF, by back-tracking,
+and, as an optimization, used left-corner parsing.
+<p>1965 -- Don Knuth invents LR parsing.  Knuth was mainly interested
+in the mathematics, and the algorithm is not thought practical.
+<p>1968 -- Jay Earley invents the algorithm named after him.
+It is also syntax-driven and fully general.  The core idea is to 
+track everything about the parse in  tables.
+In the meantime, Ned's recursive descent has evolved
+into the hand-written algorithm that is familiar today.
+Jay Earley's table-building is quite efficient, but the machines
+of the 1960's were very slow, so that in
+<p>1969 a PhD thesis by Frank DeRemer describes a variant of Knuth's LR
+parsing that requires only a stack and a manageable state table,
+the world takes notice.
+DeRemer's LALR <b>is</b> thought of as practical,
+so much so that at Bell Labs in
+<p>1975 they convert their C compiler from hand-written recursive
+descent to DeRemer's LALR algorithm.
+LALR has also come to dominate the textbooks.  In ...
+<p>1977 the first Dragon book comes out, and the knight in
+the drawing on the front of this classic textbook
+carries a lance with LALR emblazoned along it.
+To make light of LALR is to besmirch the escutcheon
+or parsing theory, so it is no surprise that in ...
+<p>1987, when Larry Wall introduces Perl,
+it is parsed using LALR.
+The very complex Perl 1 through 5
+parsers represent the
+high water mark of LALR.
+    <h3>Comments</h3>
+    <p>
+      Comments on this post can be made in
+      <a href="http://groups.google.com/group/marpa-parser">
+        Marpa's Google group</a>.
+    </p>
+  </body>
+</html>
