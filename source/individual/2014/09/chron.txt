@@ -45,7 +45,7 @@ Parsing: a timeline
       Three factors are at work:
       <ul>
       <li>
-      In 1960's, memory and CPU is both extremely limited.
+      In 1960's, memory and CPU are both extremely limited.
       Hand-coding pays off, even when the gains are small.
       <li>
       Pure left parsing is a very weak parsing technique.
@@ -123,7 +123,7 @@ Parsing: a timeline
       When it comes to the speed,
       the game has changed in favor of Earley algorithm.
       But Earley parsing is almost forgotten.
-      It takes 20 years for anyone to write a practical
+      It will be 20 years before anyone writes a practical
       implementation of Leo's algorithm.
     </p>
     <p><b>1990's</b>:
@@ -183,13 +183,13 @@ Parsing: a timeline
     </p>
     <p>
     <h3>Marpa</h3>
-      Over the years, I'd come back to Earley's algorithm again and again.
+      Over the years,
+      I had come back to Earley's algorithm again and again.
       Around 2010, I realized
       that the original, long-abandoned vision --
       an efficient, practical, general and syntax-driven parser --
       was now, in fact, quite possible.
-      Over the years,
-      the necessary pieces had fallen into place.
+      The necessary pieces had fallen into place.
     </p>
     <p>
       Aycock&Hospool has solved the zero-length rule bug.
@@ -229,7 +229,7 @@ Parsing: a timeline
       all rules recognized
       in all possible parses so far,
       and all symbols expected.
-      Earley's algorithm is a even better companion
+      Earley's algorithm is now a even better companion
       for hand-written procedural logic than recursive descent.
     </p>
     <h3>For more</h3>
