@@ -65,14 +65,12 @@ A timeline of parsing
       The search for an efficient, powerful, syntax-driven algorithm
       seem to be at a dead-end until ...
     </p>
-    <p <b>1969</b>:
+    <p><b>1969</b>:
       a PhD thesis by Frank DeRemer described a new variant of Knuth's LR
       parsing.
       DeRemer's LALR algorithm requires only
       a stack and a state table of quite
       manageable size.
-      Gradually,
-      the world takes notice.
     </p>
     <p><b>1975</b>:
       Bell Labs converts its C compiler from hand-written recursive
@@ -83,8 +81,8 @@ A timeline of parsing
       The nickname of this classic textbooks comes from the drawing
       on the front cover, in which a knight takes on a dragon.
       Emblazoned on his lance are the letters "LALR".
-      From here on,
-      to speak lightly of LALR will be to besmirch the escutcheon
+      And indeed, by this point,
+      to speak lightly of LALR is to besmirch the escutcheon
       of parsing theory.
     </p>
     <p><b>1987</b>:
@@ -128,14 +126,15 @@ A timeline of parsing
       is that they are incorrect --
       the LALR tables provide little clue as to why.
       In Larry's words, LALR was "fast but stupid".
-    </p><p>In
-      <b>2000</b>, Larry Wall decides on a radical reimplementation
+    </p><b>2000</b>:
+    Larry Wall decides on a radical reimplementation
       of Perl -- Perl 6.
       Larry does not even consider using LALR again.
       Discontent with LALR
       was also spreading inside academia ...
     </p>
-    <p <b>2002</b>:
+    <p
+    <b>2002</b>:
       Aycock&Horspool describe their attempt to speed up Earley's in practice.
       They do not include Joop Leo's improvement --
       they seem not to be aware of it.
@@ -143,11 +142,6 @@ A timeline of parsing
       and introduces complications.
       But buried in their paper is a solution to the null-production bug --
       this time a solution that requires no additional bookkeeping.
-    </p>
-    <p>
-      The Aycock&Horpsool has little effect on practical parsing.
-      But LALR's plummet from favor is by now unstoppable.
-      completely rewritten.
     </p>
     <p><b>2006</b>:
       For three decades,

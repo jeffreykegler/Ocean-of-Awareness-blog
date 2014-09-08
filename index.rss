@@ -78,14 +78,12 @@
       The search for an efficient, powerful, syntax-driven algorithm
       seem to be at a dead-end until ...
     &lt;/p&gt;
-    &lt;p &lt;b&gt;1969&lt;/b&gt;:
+    &lt;p&gt;&lt;b&gt;1969&lt;/b&gt;:
       a PhD thesis by Frank DeRemer described a new variant of Knuth's LR
       parsing.
       DeRemer's LALR algorithm requires only
       a stack and a state table of quite
       manageable size.
-      Gradually,
-      the world takes notice.
     &lt;/p&gt;
     &lt;p&gt;&lt;b&gt;1975&lt;/b&gt;:
       Bell Labs converts its C compiler from hand-written recursive
@@ -96,8 +94,8 @@
       The nickname of this classic textbooks comes from the drawing
       on the front cover, in which a knight takes on a dragon.
       Emblazoned on his lance are the letters &quot;LALR&quot;.
-      From here on,
-      to speak lightly of LALR will be to besmirch the escutcheon
+      And indeed, by this point,
+      to speak lightly of LALR is to besmirch the escutcheon
       of parsing theory.
     &lt;/p&gt;
     &lt;p&gt;&lt;b&gt;1987&lt;/b&gt;:
@@ -141,14 +139,15 @@
       is that they are incorrect --
       the LALR tables provide little clue as to why.
       In Larry's words, LALR was &quot;fast but stupid&quot;.
-    &lt;/p&gt;&lt;p&gt;In
-      &lt;b&gt;2000&lt;/b&gt;, Larry Wall decides on a radical reimplementation
+    &lt;/p&gt;&lt;b&gt;2000&lt;/b&gt;:
+    Larry Wall decides on a radical reimplementation
       of Perl -- Perl 6.
       Larry does not even consider using LALR again.
       Discontent with LALR
       was also spreading inside academia ...
     &lt;/p&gt;
-    &lt;p &lt;b&gt;2002&lt;/b&gt;:
+    &lt;p
+    &lt;b&gt;2002&lt;/b&gt;:
       Aycock&amp;Horspool describe their attempt to speed up Earley's in practice.
       They do not include Joop Leo's improvement --
       they seem not to be aware of it.
@@ -156,11 +155,6 @@
       and introduces complications.
       But buried in their paper is a solution to the null-production bug --
       this time a solution that requires no additional bookkeeping.
-    &lt;/p&gt;
-    &lt;p&gt;
-      The Aycock&amp;Horpsool has little effect on practical parsing.
-      But LALR's plummet from favor is by now unstoppable.
-      completely rewritten.
     &lt;/p&gt;
     &lt;p&gt;&lt;b&gt;2006&lt;/b&gt;:
       For three decades,
