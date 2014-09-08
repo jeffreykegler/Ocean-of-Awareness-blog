@@ -44,8 +44,7 @@ A timeline of parsing
       Unlike the Irons algorithm, it does not backtrack.
       Earley's core idea was to
       track everything about the parse in tables.
-      Earley's algorithm is enticing, but it has four major issues.
-      Three of these are obvious at the time:
+      Earley's algorithm is enticing, but it has three major issues:
       <ul>
       <li>First, there is a bug in the handling of null productions.
       <li>Second, it is quadratic for right recursions.
@@ -65,8 +64,8 @@ A timeline of parsing
       recursive descent.
       The search for an efficient, powerful, syntax-driven algorithm
       seem to be at a dead-end until ...
-    </p><p>In
-      <b>1969</b>,
+    </p>
+    <p <b>1969</b>:
       a PhD thesis by Frank DeRemer described a new variant of Knuth's LR
       parsing.
       DeRemer's LALR algorithm requires only
@@ -74,42 +73,48 @@ A timeline of parsing
       manageable size.
       Gradually,
       the world takes notice.
-    </p><p>In
-      <b>1975</b>,
+    </p>
+    <p><b>1975</b>:
       Bell Labs converts its C compiler from hand-written recursive
       descent to DeRemer's LALR algorithm.
-    </p><p>In
-      <b>1977</b>,
-      the first "Dragon book" comes out.
+    </p>
+    <p><b>1977</b>:
+      The first "Dragon book" comes out.
       The nickname of this classic textbooks comes from the drawing
       on the front cover, in which a knight takes on a dragon.
       Emblazoned on his lance are the letters "LALR".
       From here on,
       to speak lightly of LALR will be to besmirch the escutcheon
       of parsing theory.
-    </p><p>If you want to date the high point of LALR's reign,
-      a good year might be
-      <b>1987</b>
-      That is the year that
+    </p>
+    <p><b>1987</b>:
+    If you want to date the high point of LALR's reign,
+    this might be the right year.
+      It is the year that
       Larry Wall introduced Perl 1.
       Perl embraced complexity like no previous language,
-      and to do it, is used LALR very aggressively.
-    </p><p>
-      Earley's algorithm was largely forgotten, but not completely.
-      In
-      <b>1991</b>, Joop Leo discovers a way of speeding up right
+      and to do it, Larry used LALR very aggressively --
+      to my knowledge more aggressively than anyone before
+      or since.
+    </p>
+    <p><b>1991</b>:
+      Joop Leo discovers a way of speeding up right
       recursions in Earley's algorithm.
-      While not noticed at the time, this is in fact a major discovery.
+      Not noticed at the time, this is a major discovery.
       Leo's algorithm
       is linear for just about every unambiguous grammar of
       practical interest, and many ambiguous ones as well.
-      And 1991 hardware was six orders of magnitude faster
+      And in 1991 hardware was six orders of magnitude faster
       than 1968 hardware, so the bookkeeping issue had receded
       in importance.
-      But by the point Earley's parsing was very far off the radar.
-      It took 20 years for anyone to write a practical
+      When it comes to the speed,
+      the game has changed, and very much in the Earley algorithm's
+      favor.
+      But when Leo publishes, Earley parsing has been forgotten by most.
+      It takes 20 years for anyone to write a practical
       implementation of Leo's algorithm.
-    </p><p>
+    </p>
+    <p>
       So, since Earley's is forgotten, everyone in
       LALR-land is content.  Right?
       Wrong. Far from it, in fact.
@@ -169,12 +174,12 @@ A timeline of parsing
       you would easily republish it as 
       as new and ground-breaking.
     </p>
-    <p><b>2010</b>: Earley's algorithm never completely lost its ability to entice,
-      and I'd come back to it again and again over the years.
-      Around
-      2010, I realized
-      that the long-abandoned vision --
-      an efficient, practical, general and syntax-driven parser --
+    <p><b>2010</b>:
+      Over the years, I'd come back to Earley's algorithm again and again.
+      Around 2010, I realized
+      that the vision
+      of an efficient, practical, general and syntax-driven parser --
+      abandoned so long it was almost 
       was now, in fact, quite possible.
       Over the years, unnoticed, the pieces had fallen into place.
     </p><p>

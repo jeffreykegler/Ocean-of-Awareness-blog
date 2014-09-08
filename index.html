@@ -83,8 +83,7 @@
       Unlike the Irons algorithm, it does not backtrack.
       Earley's core idea was to
       track everything about the parse in tables.
-      Earley's algorithm is enticing, but it has four major issues.
-      Three of these are obvious at the time:
+      Earley's algorithm is enticing, but it has three major issues:
       <ul>
       <li>First, there is a bug in the handling of null productions.
       <li>Second, it is quadratic for right recursions.
@@ -104,8 +103,8 @@
       recursive descent.
       The search for an efficient, powerful, syntax-driven algorithm
       seem to be at a dead-end until ...
-    </p><p>In
-      <b>1969</b>,
+    </p>
+    <p <b>1969</b>:
       a PhD thesis by Frank DeRemer described a new variant of Knuth's LR
       parsing.
       DeRemer's LALR algorithm requires only
@@ -113,48 +112,51 @@
       manageable size.
       Gradually,
       the world takes notice.
-    </p><p>In
-      <b>1975</b>,
+    </p>
+    <p><b>1975</b>:
       Bell Labs converts its C compiler from hand-written recursive
       descent to DeRemer's LALR algorithm.
-    </p><p>In
-      <b>1977</b>,
-      the first "Dragon book" comes out.
+    </p>
+    <p><b>1977</b>:
+      The first "Dragon book" comes out.
       The nickname of this classic textbooks comes from the drawing
       on the front cover, in which a knight takes on a dragon.
       Emblazoned on his lance are the letters "LALR".
       From here on,
       to speak lightly of LALR will be to besmirch the escutcheon
       of parsing theory.
-    </p><p>If you want to date the high point of LALR's reign,
-      a good year might be
-      <b>1987</b>
-      That is the year that
+    </p>
+    <p><b>1987</b>:
+    If you want to date the high point of LALR's reign,
+    this might be the right year.
+      It is the year that
       Larry Wall introduced Perl 1.
       Perl embraced complexity like no previous language,
-      and to do it, is used LALR very aggressively.
-    </p><p>
-      Earley's algorithm was largely forgotten, but not completely.
-      In
-      <b>1991</b>, Joop Leo discovers a way of speeding up right
+      and to do it, Larry used LALR very aggressively --
+      to my knowledge more aggressively than anyone before
+      or since.
+    </p>
+    <p><b>1991</b>:
+      Joop Leo discovers a way of speeding up right
       recursions in Earley's algorithm.
-      While not noticed at the time, this is in fact a major discovery.
+      Not noticed at the time, this is a major discovery.
       Leo's algorithm
       is linear for just about every unambiguous grammar of
       practical interest, and many ambiguous ones as well.
-      And 1991 hardware was six orders of magnitude faster
+      And in 1991 hardware was six orders of magnitude faster
       than 1968 hardware, so the bookkeeping issue had receded
       in importance.
-      But by the point Earley's parsing was very far off the radar.
-      It took 20 years for anyone to write a practical
+      When it comes to the speed,
+      the game has changed, and very much in the Earley algorithm's
+      favor.
+      But when Leo publishes, Earley parsing has been forgotten by most.
+      It takes 20 years for anyone to write a practical
       implementation of Leo's algorithm.
-    </p><p>
+    </p>
+    <p>
       So, since Earley's is forgotten, everyone in
       LALR-land is content.  Right?
-      Wrong. Far from it, in fact ...
-    </p><p>In
-      <b>2000</b>, Larry Wall decides on a radical reimplementation
-      of Perl -- Perl 6.  He does not even consider using LALR again.
+      Wrong. Far from it, in fact.
       Users of LALR had made some nasty discoveries about it.
       While LALR does automatically
       generates a parser for you,
@@ -165,10 +167,14 @@
       is that they are incorrect --
       the LALR tables provide little clue as to why.
       In Larry's words, LALR was "fast but stupid".
+    </p><p>In
+      <b>2000</b>, Larry Wall decides on a radical reimplementation
+      of Perl -- Perl 6.
+      Larry does not even consider using LALR again.
       Discontent with LALR
       was also spreading inside academia ...
-    </p><p>In
-      <b>2002</b>,
+    </p>
+    <p <b>2002</b>:
       Aycock&Horspool describe their attempt to speed up Earley's in practice.
       They do not include Joop Leo's improvement --
       they seem not to be aware of it.
@@ -176,46 +182,52 @@
       and introduces complications.
       But buried in their paper is a solution to the null-production bug --
       this time a solution that requires no additional bookkeeping.
-    </p><p>
+    </p>
+    <p>
       The Aycock&Horpsool has little effect on practical parsing.
-      But that does little to slow LALR plummet from favor.
+      But LALR's plummet from favor is by now unstoppable.
       completely rewritten.
+    </p>
+    <p><b>2006</b>:
       For three decades,
       the industry's flagship C compilers had been
       parsed with LALR --
       proof of the claim that LALR and serious
       parsing were equivalent.
-    </p><p>But in
-      <b>2006</b>, an era ends.
+      But in 2006,
       GNU announces that the GCC compiler's parser has been rewritten.
       LALR's replacement is the technology that
       it replaced a quarter century earlier:
       recursive descent.
-    </p><p>With the retreat from LALR comes a collapse in the
+    </p>
+    <p>With the retreat from LALR comes a collapse in the
       prestige of parsing theory.
       After a half century of
-      research, we seemed to have wound up where we started.
-      If you took Ned Iron's original 1961 algorithm,
-      filed off the names and dates,
-      an republished it, it would look quite modern.
-      In fact, you could easily present some of its features
+      research, it looks as if we wound up almost
+      exactly where we started.
+      In fact,
+      if you took Ned Iron's original 1961 algorithm,
+      changed the names and dates,
+      and translated from code from the mix of assembler and
+      ALGOL into Haskell,
+      you would easily republish it as 
       as new and ground-breaking.
-    </p><p>Earley's algorithm never completely lost its ability to entice,
-      and I'd come back to it again and again over the years.
-      Around
-      <b>2010</b>, I realized
-      that the long-abandoned vision --
-      an efficient, practical, general and syntax-driven parser --
+    </p>
+    <p><b>2010</b>:
+      Over the years, I'd come back to Earley's algorithm again and again.
+      Around 2010, I realized
+      that the vision
+      of an efficient, practical, general and syntax-driven parser --
+      abandoned so long it was almost 
       was now, in fact, quite possible.
       Over the years, unnoticed, the pieces had fallen into place.
     </p><p>
       Aycock&Hospool has solved the null-production bug.
       Joop Leo had found the speedup for right recursion.
-      Machines operations were now a billion times faster than in 1968,
-      which is probably irrelevant since they're no longer the best
-      metric for CPU efficiency --
+      And the issue of bookkeeping overhead had pretty much evaporated.
+      Machines operations are now a billion times faster than in 1968,
+      and probably no longer relevant in any case --
       caches misses are more important.
-      As an issue, bookkeeping overhead had pretty much evaporated.
     </p>
     <p>But while the original issues with Earley's disappeared,
       a new issue emerged.
