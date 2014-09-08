@@ -34,6 +34,134 @@
   </p>
   </div>
   <div style="margin-left:190px;border-left:2px solid #38B0C0;padding:25px;">
+<h3>Sun, 07 Sep 2014</h3>
+<br />
+<center><a name="chron"> <h2>A parsing chronology</h2> </a>
+</center>
+<html>
+  <head>
+  </head>
+  <body><p>
+      <!--
+      marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
+      -->
+    </p>
+<p>1960 -- The ALGOL 60 spec comes out.
+It specifies, for the first time, a block structured
+language.
+As the ALGOL committee is well aware,
+at this time
+nobody know how to parse such a language.
+<p>1961 -- Ned Irons 
+publishes the first paper
+ever to describe any parsing algorithm.
+It's a form of recursive descent.
+Ned's original variant of recursive descent is general
+and syntax-driven.
+General means it can parse anything written in BNF.
+Syntax driven (aka declarative) means that the algorithm
+creates the parser from the BNF.
+<p>1965 -- Don Knuth invents LR parsing.  Knuth was mainly interested
+in the mathematics, and the actual algorithms
+in his paper are not thought practical.
+<p>1968 -- Jay Earley invents the algorithm named after him.
+It is also syntax-driven and fully general.  The core idea is to 
+track everything about the parse in  tables.
+In the meantime, Ned's recursive descent has evolved
+into the hand-written algorithm that is familiar today.
+Jay Earley's table-building is quite efficient, but the machines
+of the 1960's were very slow, so that in
+<p>1969 a PhD thesis by Frank DeRemer describes a variant of Knuth's LR
+parsing that requires only a stack and a manageable state table,
+the world takes notice.
+DeRemer's LALR <b>is</b> thought of as practical,
+so much so that at Bell Labs in
+<p>1975 they convert their C compiler from hand-written recursive
+descent to DeRemer's LALR algorithm.
+LALR has also come to dominate the textbooks.  In ...
+<p>1977 the first Dragon book comes out, and the knight in
+the drawing on the front of this classic textbook
+carries a lance with LALR emblazoned along it.
+To make light of LALR is to besmirch the escutcheon
+or parsing theory.
+<p>Earley's algorithm is relegated to the back pages
+of these texts, when it's not omitted entirely.
+Earley's original algorithm had a bug, to which Aho
+and Ullman's vast two volume suggests a straightforward
+remedy, but this fix slows
+down an algorithm
+whose speed was already an issue.
+<p>In 1987, Larry Wall introduces Perl,
+it is parsed using LALR.
+The very complex Perl 1 through 5
+parsers represent a
+high water mark in the application of LALR to real life.
+<p>In 1991, Joop Leo discovers a way of speeding up right
+recursions in Earley's algorithm.  This means that Earley's
+is now linear for just about every unambiguous grammar of
+practical interest, and many ambiguous ones as well.
+But so badly eclipsed is Earley parsing,
+that Joop's paper
+attracts no practical implementations for almost 20 years.
+On the other hand, there's growing discontent
+in LALR-land.
+<p>In 2000, Larry Wall starts work on a radical reimplementation
+of Perl 6.  This time, he does not even consider an LALR.
+Practitioners have discovered that, while LALR automatically
+generates a parser for you, it is so hard to debug that it's
+just as easy to write one by hand.
+And even once written, an LALR parser, when it fails, provides
+little clue as to why.
+LALR has been discovered to be, in Larry's words,
+"fast but stupid".
+<p>2002 -- Discontent with LALR is spreading inside academia.
+A much-read paper by Aho&Ullman attempts a practical speedup.
+Less noticed, but more important, they discover a clever method
+for handling nulls, one that finally deals with the bug in Earley's
+algorithm without a speed penalty.
+But this innovation is buried in the Aho&Ullman paper, and
+they do not include Joop Leo's improvement -- they seem to
+be unaware of it.
+While widely noticed,
+Aho&Ullmann has no effect on practical parsing.
+But now nothing can slow the fall of LALR from favor.
+In ...
+<p>2006,
+GNU announces that the GCC compiler's parser has been
+completely rewritten.
+For 3 decades, the flagship C compilers have been
+parsed with LALR.
+That day is now over,
+and LALR
+is replaced by the 1960's technology that
+it originally replaced -- recursive descent.
+<p>With the fall comes a fall in the
+reputation of parsing theory.
+The result of more than a half century of
+research is exactly zero.
+We are back to a world in which,
+if Ned Iron's original 1961 paper were reissued,
+it could easily be presented as a
+ground-breaking new algorithm.
+<p>2010 --
+Marpa algorithm
+    <h3>Comments</h3>
+    <p>
+      Comments on this post can be made in
+      <a href="http://groups.google.com/group/marpa-parser">
+        Marpa's Google group</a>.
+    </p>
+  </body>
+</html>
+<br />
+<p>posted at: 16:50 |
+<a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2014/09/chron.html">direct link to this entry</a>
+</p>
+<div style="color:#38B0C0;padding:1px;text-align:center;">
+&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&sect;
+</div>
 <h3>Mon, 01 Sep 2014</h3>
 <br />
 <center><a name="website"> <h2>Marpa has a new web page</h2> </a>
@@ -631,168 +759,6 @@ Factor '*' Factor action =&gt; do_multiply Number ~ digits digits ~
 <br />
 <p>posted at: 15:30 |
 <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2014/02/semantic_ws.html">direct link to this entry</a>
-</p>
-<div style="color:#38B0C0;padding:1px;text-align:center;">
-&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-&sect;
-</div>
-<h3>Thu, 01 Aug 2013</h3>
-<br />
-<center><a name="c2ast"> <h2>A Marpa-powered C parser</h2> </a>
-</center>
-  <p>
-      <!--
-      marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
-      -->
-      Jean-Damien Durand has just released
-      <a href="https://metacpan.org/release/MarpaX-Languages-C-AST">
-        MarpaX::Languages::C::AST</a>,
-      which parses C language into an abstract syntax tree (AST).
-      MarpaX::Languages::C::AST has been tested against
-      Perl's C source code, as well as Marpa's own C source.
-    </p>
-    <p>
-      Because it is Marpa-powered,
-      MarpaX::Languages::C::AST works differently from other C parsers.
-      In the past,
-      C parsers have been syntax-driven -- parsing was based on a BNF description
-      of the C grammar.
-      More recently, C parsers have used hand-written
-      recursive descent -- they have been procedurally-driven.
-    </p>
-    <p>
-      MarpaX::Languages::C::AST uses both approaches.
-      Marpa has the advantage that it makes full knowledge of the state of the parse
-      available to the programmer,
-      so that procedural logic and syntax-driven parsing can reinforce each other.
-      The result is a combined lexer/parser
-      which is very compact and easy to understand.
-      Among the potential applications:
-    </p>
-    <ul>
-      <li>Customized "lints".
-        You can write programs to enforce C language standards
-        and restrictions specific to an individual, a company or a project.
-      </li>
-      <li>C interpreters.
-        By taking the AST and adding your own back end, you can create a special-purpose C interpreter
-        or a special-purpose compiler.
-      </li>
-      <li>C variants.
-        Because the code for the parser is compact and easy to modify,
-        it lends itself to language extension and experimentation.
-        For example,
-        you could reasonably implement compilers
-        to try out the proposals submitted to
-        a standards committee.
-      </li>
-      <li>C supersets.
-        Would you like to see some of the syntax from a favorite language available in C?
-        Here's your chance.
-      </li>
-    </ul>
-    <h3>The implementation</h3>
-    <p>A few of Jean-Damien's implementation choices are worth noting.
-      A C parser can take one of two strategies: approximate or precise.
-      A compiler has, of course, to be precise.
-      Tools, such as cross-referencers, often decide to be approximate, or sloppy.
-      Sloppiness is easier to implement and has other advantages:
-      A sloppy tool can tolerate missing C flags: what the C flags should be
-      can be one of the things it guesses at.
-    </p>
-    <p>Of the two strategies, Jean-Damien decided to go with "precise".
-      MarpaX::Languages::C::AST follows the C11 standard,
-      with either GCC or Microsoft extensions.
-      This has the advantage that
-      MarpaX::Languages::C::AST could be used as the front end of a compiler.
-    </p>
-    <p>
-      Because
-      MarpaX::Languages::C::AST purpose is to take things as far as an AST,
-      and let the user take over,
-      it does not implement those constraints usually implemented in post-processing.
-      One example of a post-syntactic constraint is the one that bans
-      "<tt>case</tt>" labels outside of switch statements.
-      Perhaps a future version can include a default "first phase" post-processor to enforce
-      the constraints from the standards.
-      As currently implemented, the user can check for and enforce these constraints in any
-      way he likes.
-      This makes it easier for extensions and customizations,
-      which I think of as the major purpose of MarpaX::Languages::C::AST.
-    </p>
-    <h3>The parsing strategy</h3>
-    <p>
-      Those familar with the C parsing and its special issues may be interested in
-      Jean-Damien's approach to them.
-      MarpaX::Languages::C::AST is, with a few exceptions, syntax-driven -- the parser works
-      from Marpa's SLIF, an extended BNF variant.
-      The SLIF-driven logic is sufficient to deal with the
-      <a href="http://en.wikipedia.org/wiki/Dangling_else">if-then-else issue</a>.
-      Marpa handles right recursion in linear time,
-      so that the if-then-else issue could have been dealt with by rewriting the relevant rules.
-      But Jean-Damien wanted to have his BNF follow closely the grammar in the standards,
-      and he decided to use Marpa's rule ranking facility instead.
-    </p>
-    <p>More complicated is the ambiguity in C between variable names and types,
-      which actually takes C beyond BNF and context-free grammars into context-sensitive
-      territory.
-      Most C parsers deal with this using
-      <a href="http://en.wikipedia.org/wiki/The_lexer_hack">lexer
-        or post-processing hacks</a>.
-      Marpa allows the parser to do this more elegantly.
-      Marpa knows the parsing context at all times and can comnunicate this to a user's
-      customized code.
-      Marpa also has the ability to use the parsing context to
-      decide when to
-      switch control from the syntax-driven logic to
-      a user's customized procedural logic,
-      and for the syntax-driven logic to take control back
-      when the procedural logic wants to give it back.
-      This allows the variable-name-versus-type ambiguity to be handled by specifically targeted code
-      which knows the full context of the decisions it needs to make.
-      This code can be written more directly, simply and clearly
-      than was possible with previous parsing methods.
-    </p>
-    <p>
-    </p><h3>Compilers?</h3>
-    <p>
-      Above I mentioned special-purpose compilers.
-      What about production compilers?
-      MarpaX::Languages::C::AST's upper layers are in Perl,
-      so the speed, while acceptable for special-purpose tools,
-      will probably not be adequate for production.
-      Perhaps a future Marpa-powered C parser will rewrite those
-      upper layers in C, and make the race more interesting.
-    </p>
-    <h3>To learn more</h3>
-    <p>
-      <a href="https://metacpan.org/module/Marpa::R2">Marpa::R2
-        is available on CPAN</a>.
-      A list of my Marpa tutorials can be found
-      <a href="http://jeffreykegler.github.io/Ocean-of-Awareness-blog/metapages/annotated.html#TUTORIAL">
-        here</a>.
-      There are
-      new tutorials by
-      <a href="http://marpa-guide.github.io/chapter1.html">Peter Stuifzand</a>
-      and
-      <a href="http://longanswers.blogspot.de/2013/06/transforming-syntax.html">amon</a>.
-      <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/">
-        The Ocean of Awareness blog</a>
-      focuses on Marpa,
-      and it has
-      <a href="http://jeffreykegler.github.io/Ocean-of-Awareness-blog/metapages/annotated.html">an annotated guide</a>.
-      Marpa also has
-      <a href="http://jeffreykegler.github.com/Marpa-web-site/">a web page</a>.
-      For questions, support and discussion, there is
-      <a href="http://groups.google.com/group/marpa-parser">
-        the "marpa parser"
-        Google Group.</a>
-      Comments on this post can be made there.
-    </p>
-<br />
-<p>posted at: 15:57 |
-<a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2013/08/c2ast.html">direct link to this entry</a>
 </p>
 <div style="color:#38B0C0;padding:1px;text-align:center;">
 &sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
