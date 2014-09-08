@@ -7,8 +7,8 @@ A timeline of parsing
       marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
       -->
     </p>
-    <p><b>1960</b>
-      -- The ALGOL 60 spec comes out.
+    <p><b>1960</b>:
+      The ALGOL 60 spec comes out.
       It specifies, for the first time, a block structured
       language.
       The ALGOL committee is well aware
@@ -16,9 +16,9 @@ A timeline of parsing
       nobody knows how to parse such a language.
       But they believe that if they specify a block-structured
       language, a parser for it will be invented.
-    </p><p>They turn out to be right.
-      In
-      <b>1961</b>, Ned Irons publishes his ALGOL parser.
+      Risky as this approach is, it pays off ...
+    </p>
+    <p><b>1961</b>: Ned Irons publishes his ALGOL parser.
       In fact, the Irons parser
       is the first parser of any kind to be described
       in print.
@@ -31,41 +31,38 @@ A timeline of parsing
       "Syntax-driven" (aka declarative) means that parser is
       actually created from the BNF -- an Irons parser does not need
       to be hand-written.
-    </p><p><b>1965</b>: Don Knuth invents LR parsing.
-      Knuth is mainly interested
+    </p>
+    <p><b>1965</b>: Don Knuth invents LR parsing.
+      Knuth is primarily interested
       in the mathematics.
       He describes a parsing algorithm,
       but it is not thought practical.
-    </p><p><b>1968</b>: Jay Earley invents the algorithm named after him.
+    </p>
+    <p><b>1968</b>: Jay Earley invents the algorithm named after him.
       Like the Irons algorithm,
       Earley's algorithm is also syntax-driven and fully general.
       Unlike the Irons algorithm, it does not backtrack.
       Earley's core idea was to
       track everything about the parse in tables.
-    </p><p>
       Earley's algorithm is enticing, but it has four major issues.
       Three of these are obvious at the time:
-      First, there is a bug in the handling of null productions.
-      Second, it is quadratic for right recursions.
-      Third, the bookkeeping required to set up the tables is,
+      <ul>
+      <li>First, there is a bug in the handling of null productions.
+      <li>Second, it is quadratic for right recursions.
+      <li>Third, the bookkeeping required to set up the tables is,
       by the standards of 1968 hardware, daunting.
-    </p><p>
-      The fourth problem is that Earley's syntax-driven algorithm
-      does not allow the application to switch over to
-      hand-written, procedural logic.
-      This problem does not seem to have been explicitly pointed
-      out -- quite probably Jay Earley would have solved it if it
-      had been.
-      But I do believe that the problem must have been felt.
-      Because by this time, most parsers are left-parsers,
-      like the original Irons algorithm.
-      But they are hand-written instead of syntax-driven.
-      Left parsing turned out to mix well with custom hacks.
-    </p><p>The textbooks continue to discuss Earley's algorithm.
+      </ul>
+    <p>The textbooks continue to discuss Earley's algorithm.
       In
       <b>1972</b>, Aho and Ullmann describe
       a straightforward fix to the null-production bug in Earley's original algorithm.
       Unfortunately, this fix involves adding even more bookkeeping to Earley's.
+    <p>Meanwhile, while Irons first left parser was syntax-driven,
+      hand-coding emerges as the more attractive approach to left parsing.
+      On one hand hand-coding is necessary to overcome the limits of a left-parsing approach.
+      On the other hand, left parsing and hand-coding do fit well together.
+      The approach to hand-writing parsers that emerges is now called
+      recursive descent.
       The search for an efficient, powerful, syntax-driven algorithm
       seem to be at a dead-end until ...
     </p><p>In
@@ -180,27 +177,31 @@ A timeline of parsing
       metric for CPU efficiency --
       caches misses are more important.
       As an issue, bookkeeping overhead had pretty much evaporated.
-    </p><p>But one issue with Earley's was now more relevant than ever.
-      In the 1970's programmers considered a 100% syntax-driven
-      parser to be, in the language of the time, cool.
-      With the experience with LALR in their collective consciousness,
+    </p>
+    <p>But while the original issues with Earley's disappeared,
+      a new issue emerged.
+      With a parsing algorithm as powerful as Earley's behind it,
+      a syntax-driven approach can do much more than it can with
+      a left parser.
+      But with the experience with LALR in their collective consciousness,
       few modern programmers are prepared
       to trust a purely declarative parser.
+      As Lincoln said, "Once a cat's been burned,
+      he won't even sit on a cold stove."
     </p>
     <p>
-      But, in the process of combining
+      In the process of combining
       the improvements from Aycock&Horspool and Leo,
       I found that the Earley's parse engine can be written so
       that it's easy to pause at any token.
       While paused,
-      you can switch to procedural logic
+      the application can switch to procedural logic
       and single-step forward token by token.
-      And the procedural logic can hand control back
+      The procedural logic can hand control back
       over to syntax-driven parsing at any point it likes.
-      Earley's algorithm is actually more helpful
-      to hand-written procedural logic than recursive descent is.
-      The algorithm's tables contain,
-      and can share with the procedural logic,
+      Earley's algorithm is actually a better companion
+      for hand-written procedural logic than recursive descent is.
+      The Earley tables can provide the procedural logic with
       full knowledge of the state of the
       parse so far:
       all rules recognized
