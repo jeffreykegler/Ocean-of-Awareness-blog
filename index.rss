@@ -161,19 +161,35 @@ and republished it today under another name,
 you could easily describe it as
 being not just state of the art,
 but as having ground-breaking new features as well.
-&lt;p&gt;&lt;b&gt;2010&lt;/b&gt;: Marpa.
-During all these years,
-I'd never lost that original vision -- efficient, practical, powerful
-syntax-driven parsing.
-In 2010, I noticed that the pieces were all now in place.
+&lt;p&gt;Around &lt;b&gt;2010&lt;/b&gt;, I noticed that the 
+long-abandoned vision of
+an efficient, practical, general and syntax-driven parser --
+was now quite possible.
+The pices were all there.
 Aycock&amp;Hospool has solved the null-production bug.
 Joop Leo had found the speedup for right recursion.
-The bookkeeping had long since ceased to be an issue -- not
-machines perform operations a billion faster than in 1968,
-and in any case have been replaced by caches misses as the most
-relevant metric for practical timings.
-&lt;p&gt;But if the cost of bookkeeping had receded into irrelevant,
-another issue had become even more important.
+As an issue, bookkeeping overhead had nearly lost relevance.
+machines operations are now a billion times faster than in 1968,
+and in any case
+have ceased to be the relevant metric --
+caches misses are more important.
+&lt;p&gt;But one issue had become more relevant.
+In the 1970's,
+a purely declarative approach to parsing -- 100% syntax-driven --
+was very acceptable to the 1970's programming community --
+syntax-driven was cool.
+Modern programmers has been
+forced to fall back on hand-written recursive descent,
+and are reluctant to abandon the methods which has proved reliable.
+&lt;p&gt;
+The Marpa algorithm combines the work of Jay Earley,
+Aycock&amp;Horspool and Leo, but it has an addition of my own --
+it allows the application to switch back and forth between
+declarative and procedural logic.
+Marpa is actually more helpful
+for procedural logic than recursive descent.
+Marpa's Earley engine has available, and can share,
+full information about the current state of the parse.
     &lt;h3&gt;Comments&lt;/h3&gt;
     &lt;p&gt;
       Comments on this post can be made in
