@@ -53,7 +53,8 @@
       The ALGOL committee is well aware
       that
       nobody knows how to parse such a language.
-      But they believe that if they specify a block-structured
+      But they believe that,
+      if they specify a block-structured
       language, a parser for it will be invented.
       Risky as this approach is, it pays off ...
     </p>
@@ -62,22 +63,24 @@
       is the first parser of any kind to be described
       in print.
       Ned's algorithm is a left parser --
-      in fact, a form of recursive descent.
+      a form of recursive descent.
       Unlike modern
       recursive descent,
       the Irons algorithm
       is general and syntax-driven.
       "General" means it can parse anything written in BNF.
       "Syntax-driven" (aka declarative) means that parser is
-      actually created from the BNF -- an Irons parser does not need
+      actually created from the BNF --
+      the parser does not need
       to be hand-written.
     </p>
     <p><b>1961</b>:
       Almost simultaneously, hand-coded approaches to left parsing
       appear.
       These we would now recognize as recursive descent.
-      Over the following years, hand-coding will become more popular
-      than syntax-driven algorithms like Irons 1961.
+      Over the following years, hand-coding approaches
+      will become more popular for left parsers
+      than syntax-driven algorithms.
       Three factors are at work:
       <ul>
       <li>
@@ -86,7 +89,8 @@
       <li>
       Pure left parsing is a very weak parsing technique.
       Hand-coding is often necessary
-      to overcome its limits -- something
+      to overcome its limits.
+      This is
       as true today as it is in 1961.
       <li>
       Left parsing works well in combination with hand-coding --
@@ -147,14 +151,14 @@
     <p><b>1991</b>:
       Joop Leo discovers a way of speeding up right
       recursions in Earley's algorithm.
-      Leo's algorithm is
+      Leo's algorithm
       is linear for just about every unambiguous grammar of
       practical interest, and many ambiguous ones as well.
-      And in 1991 hardware was six orders of magnitude faster
+      In 1991 hardware is six orders of magnitude faster
       than 1968 hardware, so that the
       issue of bookkeeping overhead had receded
       in importance.
-      So this is a major discovery.
+      This is a major discovery.
       When it comes to the speed,
       the game has changed in favor of Earley algorithm.
       But Earley parsing is almost forgotten.
@@ -165,12 +169,12 @@
       Earley's is forgotten.
       So everyone in LALR-land is content, right?
       Wrong. Far from it, in fact.
-      Users of LALR are making unpleasnat discoveries.
-      While LALR does automatically
+      Users of LALR are making unpleasant discoveries.
+      While LALR automatically
       generates their parsers,
       debugging them
-      so hard they might just as easily
-      written the parser by hand.
+      is so hard they could just as easily
+      write the parser by hand.
       Once debugged, their LALR parsers are fast for correct inputs.
       But almost all they tell the users about incorrect inputs
       is that they are incorrect.
@@ -196,7 +200,7 @@
       the industry's flagship C compilers have used
       LALR as their parser --
       proof of the claim that LALR and serious
-      parsing were equivalent.
+      parsing are equivalent.
       Now, GNU replaces
       LALR with the technology that
       it replaced a quarter century earlier:
@@ -233,7 +237,7 @@
       own.
       Machine operations are now a billion times faster than in 1968,
       and probably no longer relevant in any case --
-      caches misses are more important.
+      caches misses are now the bottleneck.
     </p>
     <p>But while the original issues with Earley's disappeared,
       a new issue emerged.
@@ -247,12 +251,14 @@
       he won't even sit on a cold stove."
     </p>
     <p>
-      In the process of combining
-      the improvements from Aycock&Horspool and Leo,
-      I found that the Earley's parse engine can be rewritten to
-      allow it to pause at any token.
+      To be accepted, Marpa needed to allow
+      procedure parsing,
+      not just declarative parsing.
+      So Marpa allows the user to specify events --
+      occurrences of symbols and rules --
+      at which declarative parsing pauses.
       While paused,
-      the application can switch to procedural logic
+      the application can call procedural logic
       and single-step forward token by token.
       The procedural logic can hand control back
       over to syntax-driven parsing at any point it likes.
