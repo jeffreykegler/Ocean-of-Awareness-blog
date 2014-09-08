@@ -36,7 +36,7 @@
   <div style="margin-left:190px;border-left:2px solid #38B0C0;padding:25px;">
 <h3>Sun, 07 Sep 2014</h3>
 <br />
-<center><a name="chron"> <h2>A parsing chronology</h2> </a>
+<center><a name="chron"> <h2>A timeline of parsing</h2> </a>
 </center>
 <html>
   <head>
@@ -46,177 +46,205 @@
       marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
       -->
     </p>
-<p><b>1960</b> -- The ALGOL 60 spec comes out.
-It specifies, for the first time, a block structured
-language.
-The ALGOL committee is well aware
-that
-nobody know how to parse such a language,
-but they are confident that if they specify a block-structured
-language, a parser for it will be invented.
-And they are right.
-<p>In <b>1961</b>, Ned Irons publishes an ALGOL parser --
-in fact the first parser of any kind ever described
-in print.
-Ned's algorithm was a form of recursive descent,
-but unlike modern
-recursive descent,
-the Irons algorithm
-is general and syntax-driven.
-"General" means it can parse anything written in BNF.
-"Syntax-driven" (aka declarative) means that parser is
-actually created from the BNF -- an Irons parser does not need
-to be hand-written.
-<p><b>1965</b> -- Don Knuth invents LR parsing.  Knuth is mainly interested
-in the mathematics.
-He describes a parsing algorithm,
-but it is not thought practical.
-<p><b>1968</b> -- Jay Earley invents the algorithm named after him.
-Like the Irons algorithm,
-it is also syntax-driven and fully general.
-Unlike the Irons algorithm, it does not backtrack.
-Earley's core idea was to 
-track everything about the parse in tables.
-Earley's algorithm is enticing, but it has four serious issues.
-First, there is a bug in the handling of null productions.
-Second, it is quadratic for right recursions.
-Third, the bookkeeping required to set up the tables is,
-by the standards of 1968 hardware, daunting.
-<p>
-A fourth problem might be noted with Earley's algorithm --
-there is no way to mix it with
-hand-written, procedural logic.
-This is not explicitly stated as a problem,
-at least anywhere that I have seen,
-but it definitely seems to have been felt.
-By now, most parsers are left-parsers,
-children of the Irons algorithm,
-but hand-written instead of syntax-driven.
-Left parsers turn out to be easy to custom hack.
-<p>But the textbooks continue to discuss Earley's algorithm.
-In <b>1972</b>, Aho and Ullmann describe
-a straightforward fix to the null-production bug in Earley's original algorithm.
-Unfortunately, this fix involves even more bookkeeping to the algorithm.
-The search for an efficient, powerful, syntax-driven algorithm
-seem to be at a dead-end until ...
-<p>In <b>1969</b>,
-a PhD thesis by Frank DeRemer describes a new variant of Knuth's LR
-parsing.
-DeRemer's LALR algorithm requires only
-a stack and a state table of quite
-manageable size.
-The world takes notice.
-<p>In <b>1975</b>,
-Bell Labs converts its C compiler from hand-written recursive
-descent to DeRemer's LALR algorithm.
-<p>In <b>1977</b>,
-the first "Dragon book" comes out.
-The nickname of this classic textbooks comes from the drawing
-on the front cover, in which a knight takes on a dragon.
-Emblazoned on his lance are the letters "LALR".
-From here on,
-to speak lightly of LALR will be to besmirch the escutcheon
-of parsing theory.
-Earley's original algorithm had a bug, to which Aho
-and Ullman's vast two volume suggests a straightforward
-remedy, but this fix slows
-down an algorithm
-whose speed was already an issue.
-<p>In <b>1987</b>, Larry Wall introduces Perl 1.
-The very complex parsers of Perls 1 through 5
-represent the
-high water mark in the application of LALR.
-Earley's algorithm, however,
-has not been forgotten by everyone, because ...
-<p>In <b>1991</b>, Joop Leo discovers a way of speeding up right
-recursions in Earley's algorithm.
-With Leo's improvement, Earley's algorithm
-is now linear for just about every unambiguous grammar of
-practical interest, and many ambiguous ones as well.
-And Earley's parsing is now very far off the radar.
-Joop's discovery is especially important,
-because since the bookkeeping issue had also become
-far less relevant.
-1991 hardware was six orders of magnitude faster
-than 1968 hardware.
-But Earley's parsing is now far off the radar.
-Despite the significance of this result,
-For the next 20 years,
-Joop's algorithm
-attracts no practical implementations.
-This is not to say that everyone in 
-LALR-land was content.
-Far from it, in fact ...
-<p>In <b>2000</b>, Larry Wall decides on a radical reimplementation
-of Perl -- Perl 6.  He does not even consider using LALR again.
-Practitioners have discovered that, while LALR automatically
-generates a parser for you, it is so hard to debug that it's
-just as easy to write one by hand.
-Worse, once written, an LALR parser,
-while efficient with correct inputs,
-provides little clue as to why an incorrect input is correct.
-In Larry's words, LALR is "fast but stupid".
-Discontent with LALR
-is also spreading inside academia ...
-<p>In <b>2002</b>
-Aycock&Horspool describe a attempt to speed up Earley's in practice.
-Buried in their paper is a solution to the null-production bug --
-one that requires no additional bookkeeping.
-They do not include Joop Leo's improvement --
-they seem not to be aware of it.
-And their own speedup is limited in what it achieves
-and introduces complications.
-The Aycock&Horpsool has little effect on practical parsing.
-On the other hand,
-nothing can slow the fall of LALR from favor.
-<p>In <b>2006</b>,
-GNU announces that the GCC compiler's parser has been
-completely rewritten.
-For past three decades, the flagship C compilers had been
-parsed with LALR.
-No more.
-LALR is replaced by the 1960's technology that
-it originally replaced.
-Recursive descent is the once-and-future algorithm.
-<p>The retreat from LALR causes a collapse in the
-prestige of parsing theory.
-The result of more than a half century of
-research is exactly zero.
-If you took Ned Iron's original 1961 algorithm,
-and republished it today under another name,
-you could easily describe it as
-being not just state of the art,
-but as having ground-breaking new features as well.
-<p>Around <b>2010</b>, I noticed that the 
-long-abandoned vision of
-an efficient, practical, general and syntax-driven parser --
-was now quite possible.
-The pices were all there.
-Aycock&Hospool has solved the null-production bug.
-Joop Leo had found the speedup for right recursion.
-As an issue, bookkeeping overhead had nearly lost relevance.
-machines operations are now a billion times faster than in 1968,
-and in any case
-have ceased to be the relevant metric --
-caches misses are more important.
-<p>But one issue had become more relevant.
-In the 1970's,
-a purely declarative approach to parsing -- 100% syntax-driven --
-was very acceptable to the 1970's programming community --
-syntax-driven was cool.
-Modern programmers has been
-forced to fall back on hand-written recursive descent,
-and are reluctant to abandon the methods which has proved reliable.
-<p>
-The Marpa algorithm combines the work of Jay Earley,
-Aycock&Horspool and Leo, but it has an addition of my own --
-it allows the application to switch back and forth between
-declarative and procedural logic.
-Marpa is actually more helpful
-for procedural logic than recursive descent.
-Marpa's Earley engine has available, and can share,
-full information about the current state of the parse.
-    <h3>Comments</h3>
+    <p><b>1960</b>
+      -- The ALGOL 60 spec comes out.
+      It specifies, for the first time, a block structured
+      language.
+      The ALGOL committee is well aware
+      that
+      nobody knows how to parse such a language.
+      But they believe that if they specify a block-structured
+      language, a parser for it will be invented.
+    </p><p>They turn out to be right.
+      In
+      <b>1961</b>, Ned Irons publishes his ALGOL parser.
+      In fact, the Irons parser
+      is the first parser of any kind to be described
+      in print.
+      Ned's algorithm was a form of recursive descent,
+      but unlike modern
+      recursive descent,
+      the Irons algorithm
+      is general and syntax-driven.
+      "General" means it can parse anything written in BNF.
+      "Syntax-driven" (aka declarative) means that parser is
+      actually created from the BNF -- an Irons parser does not need
+      to be hand-written.
+    </p><p><b>1965</b>: Don Knuth invents LR parsing.
+      Knuth is mainly interested
+      in the mathematics.
+      He describes a parsing algorithm,
+      but it is not thought practical.
+    </p><p><b>1968</b>: Jay Earley invents the algorithm named after him.
+      Like the Irons algorithm,
+      Earley's algorithm is also syntax-driven and fully general.
+      Unlike the Irons algorithm, it does not backtrack.
+      Earley's core idea was to
+      track everything about the parse in tables.
+    </p><p>
+      Earley's algorithm is enticing, but it has four major issues.
+      Three of these are obvious at the time:
+      First, there is a bug in the handling of null productions.
+      Second, it is quadratic for right recursions.
+      Third, the bookkeeping required to set up the tables is,
+      by the standards of 1968 hardware, daunting.
+    </p><p>
+      The fourth problem is that Earley's syntax-driven algorithm
+      does not allow the application to switch over to
+      hand-written, procedural logic.
+      This problem does not seem to have been explicitly pointed
+      out -- quite probably Jay Earley would have solved it if it
+      had been.
+      But I do believe that the problem must have been felt.
+      Because by this time, most parsers are left-parsers,
+      like the original Irons algorithm.
+      But they are hand-written instead of syntax-driven.
+      Left parsing turned out to mix well with custom hacks.
+    </p><p>The textbooks continue to discuss Earley's algorithm.
+      In
+      <b>1972</b>, Aho and Ullmann describe
+      a straightforward fix to the null-production bug in Earley's original algorithm.
+      Unfortunately, this fix involves adding even more bookkeeping to Earley's.
+      The search for an efficient, powerful, syntax-driven algorithm
+      seem to be at a dead-end until ...
+    </p><p>In
+      <b>1969</b>,
+      a PhD thesis by Frank DeRemer described a new variant of Knuth's LR
+      parsing.
+      DeRemer's LALR algorithm requires only
+      a stack and a state table of quite
+      manageable size.
+      Gradually,
+      the world takes notice.
+    </p><p>In
+      <b>1975</b>,
+      Bell Labs converts its C compiler from hand-written recursive
+      descent to DeRemer's LALR algorithm.
+    </p><p>In
+      <b>1977</b>,
+      the first "Dragon book" comes out.
+      The nickname of this classic textbooks comes from the drawing
+      on the front cover, in which a knight takes on a dragon.
+      Emblazoned on his lance are the letters "LALR".
+      From here on,
+      to speak lightly of LALR will be to besmirch the escutcheon
+      of parsing theory.
+    </p><p>If you want to date the high point of LALR's reign,
+      a good year might be
+      <b>1987</b>
+      That is the year that
+      Larry Wall introduced Perl 1.
+      Perl embraced complexity like no previous language,
+      and to do it, is used LALR very aggressively.
+    </p><p>
+      Earley's algorithm was largely forgotten, but not completely.
+      In
+      <b>1991</b>, Joop Leo discovers a way of speeding up right
+      recursions in Earley's algorithm.
+      While not noticed at the time, this is in fact a major discovery.
+      Leo's algorithm
+      is linear for just about every unambiguous grammar of
+      practical interest, and many ambiguous ones as well.
+      And 1991 hardware was six orders of magnitude faster
+      than 1968 hardware, so the bookkeeping issue had receded
+      in importance.
+      But by the point Earley's parsing was very far off the radar.
+      It took 20 years for anyone to write a practical
+      implementation of Leo's algorithm.
+    </p><p>
+      So, since Earley's is forgotten, everyone in
+      LALR-land is content.  Right?
+      Wrong. Far from it, in fact ...
+    </p><p>In
+      <b>2000</b>, Larry Wall decides on a radical reimplementation
+      of Perl -- Perl 6.  He does not even consider using LALR again.
+      Users of LALR had made some nasty discoveries about it.
+      While LALR does automatically
+      generates a parser for you,
+      it is so hard to debug that it's
+      usually just as easy to write one by hand.
+      Once written, an LALR parser is fast for correct inputs.
+      But almost all it can tell the users about incorrect inputs,
+      is that they are incorrect --
+      the LALR tables provide little clue as to why.
+      In Larry's words, LALR was "fast but stupid".
+      Discontent with LALR
+      was also spreading inside academia ...
+    </p><p>In
+      <b>2002</b>,
+      Aycock&Horspool describe their attempt to speed up Earley's in practice.
+      They do not include Joop Leo's improvement --
+      they seem not to be aware of it.
+      Their own speedup is limited in what it achieves
+      and introduces complications.
+      But buried in their paper is a solution to the null-production bug --
+      this time a solution that requires no additional bookkeeping.
+    </p><p>
+      The Aycock&Horpsool has little effect on practical parsing.
+      But that does little to slow LALR plummet from favor.
+      completely rewritten.
+      For three decades,
+      the industry's flagship C compilers had been
+      parsed with LALR --
+      proof of the claim that LALR and serious
+      parsing were equivalent.
+    </p><p>But in
+      <b>2006</b>, an era ends.
+      GNU announces that the GCC compiler's parser has been rewritten.
+      LALR's replacement is the technology that
+      it replaced a quarter century earlier:
+      recursive descent.
+    </p><p>With the retreat from LALR comes a collapse in the
+      prestige of parsing theory.
+      After a half century of
+      research, we seemed to have wound up where we started.
+      If you took Ned Iron's original 1961 algorithm,
+      filed off the names and dates,
+      an republished it, it would look quite modern.
+      In fact, you could easily present some of its features
+      as new and ground-breaking.
+    </p><p>Earley's algorithm never completely lost its ability to entice,
+      and I'd come back to it again and again over the years.
+      Around
+      <b>2010</b>, I realized
+      that the long-abandoned vision --
+      an efficient, practical, general and syntax-driven parser --
+      was now, in fact, quite possible.
+      Over the years, unnoticed, the pieces had fallen into place.
+    </p><p>
+      Aycock&Hospool has solved the null-production bug.
+      Joop Leo had found the speedup for right recursion.
+      Machines operations were now a billion times faster than in 1968,
+      which is probably irrelevant since they're no longer the best
+      metric for CPU efficiency --
+      caches misses are more important.
+      As an issue, bookkeeping overhead had pretty much evaporated.
+    </p><p>But one issue with Earley's was now more relevant than ever.
+      In the 1970's programmers considered a 100% syntax-driven
+      parser to be, in the language of the time, cool.
+      With the experience with LALR in their collective consciousness,
+      few modern programmers are prepared
+      to trust a purely declarative parser.
+    </p><p>
+      But, in the process of combining
+      the improvements from Aycock&Horspool and Leo,
+      I found that the Earley's parse engine can be written so
+      that it's easy to stop.
+      While paused,
+      you can single-step forward token by token.
+      And you can resume syntax-driver parsing at any point you
+      desire.
+      Earley's algorithm proves not just as friendly as recursive
+      descent to hand-written procedural logic, but in fact
+      more friendly.
+      Earley's tables contain,
+      and can share with the procedural logic,
+      full knowledge of the state of the
+      parse so far:
+      all rules recognized
+      in all possible parses so far,
+      and all symbols expected.
+    </p><h3>Comments</h3>
     <p>
       Comments on this post can be made in
       <a href="http://groups.google.com/group/marpa-parser">
