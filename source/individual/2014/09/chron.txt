@@ -39,13 +39,13 @@ Parsing: a timeline
       Almost simultaneously, hand-coded approaches to left parsing
       appear.
       These we would now recognize as recursive descent.
-      Over the following years, hand-coding approaches
+      Over the following years, hand-coded approaches
       will become more popular for left parsers
       than syntax-driven algorithms.
       Three factors are at work:
       <ul>
       <li>
-      In 1960's, memory and CPU are both extremely limited.
+      In the 1960's, memory and CPU are both extremely limited.
       Hand-coding pays off, even when the gains are small.
       <li>
       Pure left parsing is a very weak parsing technique.
