@@ -78,14 +78,18 @@
       Over the following years, hand-coding emerged as more popular
       than syntax-driven algorithms like Irons 1961,
       for perhaps three reasons.
-      First,
-      in the 1960's memory and CPU were both extremely limited,
+      <ul>
+      <li>
+      In the 1960's memory and CPU were both extremely limited,
       so that hand-coding to achieve even small savings made practical sense.
-      Second, pure left parsing is a very weak parsing technique --
+      <li>
+      Pure left parsing is a very weak parsing technique --
       to overcome its limits,
       hand-coding is almost a necessity, something
       that is as as true today as it was in 1961.
-      Finally, left parsing and hand-coding do fit together well.
+      <li>
+      Left parsing and hand-coding do fit together well.
+      </ul>
     </p>
     <p><b>1965</b>: Don Knuth invents LR parsing.
       Knuth is primarily interested
@@ -143,12 +147,13 @@
     <p><b>1991</b>:
       Joop Leo discovers a way of speeding up right
       recursions in Earley's algorithm.
-      Not noticed at the time, this is a major discovery.
+      This is a major discovery.
       Leo's algorithm
       is linear for just about every unambiguous grammar of
       practical interest, and many ambiguous ones as well.
       And in 1991 hardware was six orders of magnitude faster
-      than 1968 hardware, so the bookkeeping issue had receded
+      than 1968 hardware, so that the
+      issue of bookkeeping overhead had receded
       in importance.
       When it comes to the speed,
       the game has changed, and very much in the Earley algorithm's
@@ -157,7 +162,7 @@
       It takes 20 years for anyone to write a practical
       implementation of Leo's algorithm.
     </p>
-    <p>
+    <p><b>1990's</b>:
       So, since Earley's is forgotten, everyone in
       LALR-land is content.  Right?
       Wrong. Far from it, in fact.
@@ -175,8 +180,6 @@
     Larry Wall decides on a radical reimplementation
       of Perl -- Perl 6.
       Larry does not even consider using LALR again.
-      Discontent with LALR
-      was also spreading inside academia ...
     </p>
     <p><b>2002</b>:
       Aycock&Horspool publish their attempt to speed up Earley's in practice.
@@ -199,7 +202,8 @@
       it replaced a quarter century earlier:
       recursive descent.
     </p>
-    <p>With the retreat from LALR comes a collapse in the
+    <p><b>2000 to today</b>:
+    With the retreat from LALR comes a collapse in the
       prestige of parsing theory.
       After a half century of
       research, it looks as if we wound up almost
@@ -209,8 +213,9 @@
       changed the names and dates,
       and translated from code from the mix of assembler and
       ALGOL into Haskell,
-      you would easily republish it as 
-      as new and ground-breaking.
+      you would easily republish it today,
+      billing it as 
+      as a revolutionary new approach to parsing.
     </p>
     <p>
     <h3>Marpa</h3>
@@ -225,7 +230,8 @@
     <p>
       Aycock&Hospool has solved the zero-length rule bug.
       Joop Leo had found the speedup for right recursion.
-      And the issue of bookkeeping overhead had pretty much evaporated.
+      And the issue of bookkeeping overhead had pretty much evaporated on its
+      own.
       Machines operations are now a billion times faster than in 1968,
       and probably no longer relevant in any case --
       caches misses are more important.
@@ -251,7 +257,7 @@
       and single-step forward token by token.
       The procedural logic can hand control back
       over to syntax-driven parsing at any point it likes.
-      Earley's algorithm is actually a better companion
+      Earley's algorithm is actually a even better companion
       for hand-written procedural logic than recursive descent is.
       The Earley tables can provide the procedural logic with
       full knowledge of the state of the
