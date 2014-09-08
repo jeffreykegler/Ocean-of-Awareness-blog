@@ -112,10 +112,7 @@ A timeline of parsing
     </p><p>
       So, since Earley's is forgotten, everyone in
       LALR-land is content.  Right?
-      Wrong. Far from it, in fact ...
-    </p><p>In
-      <b>2000</b>, Larry Wall decides on a radical reimplementation
-      of Perl -- Perl 6.  He does not even consider using LALR again.
+      Wrong. Far from it, in fact.
       Users of LALR had made some nasty discoveries about it.
       While LALR does automatically
       generates a parser for you,
@@ -126,10 +123,14 @@ A timeline of parsing
       is that they are incorrect --
       the LALR tables provide little clue as to why.
       In Larry's words, LALR was "fast but stupid".
+    </p><p>In
+      <b>2000</b>, Larry Wall decides on a radical reimplementation
+      of Perl -- Perl 6.
+      Larry does not even consider using LALR again.
       Discontent with LALR
       was also spreading inside academia ...
-    </p><p>In
-      <b>2002</b>,
+    </p>
+    <p <b>2002</b>:
       Aycock&Horspool describe their attempt to speed up Earley's in practice.
       They do not include Joop Leo's improvement --
       they seem not to be aware of it.
@@ -137,34 +138,41 @@ A timeline of parsing
       and introduces complications.
       But buried in their paper is a solution to the null-production bug --
       this time a solution that requires no additional bookkeeping.
-    </p><p>
+    </p>
+    <p>
       The Aycock&Horpsool has little effect on practical parsing.
-      But that does little to slow LALR plummet from favor.
+      But LALR's plummet from favor is by now unstoppable.
       completely rewritten.
+    </p>
+    <p><b>2006</b>:
       For three decades,
       the industry's flagship C compilers had been
       parsed with LALR --
       proof of the claim that LALR and serious
       parsing were equivalent.
-    </p><p>But in
-      <b>2006</b>, an era ends.
+      But in 2006,
       GNU announces that the GCC compiler's parser has been rewritten.
       LALR's replacement is the technology that
       it replaced a quarter century earlier:
       recursive descent.
-    </p><p>With the retreat from LALR comes a collapse in the
+    </p>
+    <p>With the retreat from LALR comes a collapse in the
       prestige of parsing theory.
       After a half century of
-      research, we seemed to have wound up where we started.
-      If you took Ned Iron's original 1961 algorithm,
-      filed off the names and dates,
-      an republished it, it would look quite modern.
-      In fact, you could easily present some of its features
+      research, it looks as if we wound up almost
+      exactly where we started.
+      In fact,
+      if you took Ned Iron's original 1961 algorithm,
+      changed the names and dates,
+      and translated from code from the mix of assembler and
+      ALGOL into Haskell,
+      you would easily republish it as 
       as new and ground-breaking.
-    </p><p>Earley's algorithm never completely lost its ability to entice,
+    </p>
+    <p><b>2010</b>: Earley's algorithm never completely lost its ability to entice,
       and I'd come back to it again and again over the years.
       Around
-      <b>2010</b>, I realized
+      2010, I realized
       that the long-abandoned vision --
       an efficient, practical, general and syntax-driven parser --
       was now, in fact, quite possible.
@@ -172,11 +180,10 @@ A timeline of parsing
     </p><p>
       Aycock&Hospool has solved the null-production bug.
       Joop Leo had found the speedup for right recursion.
-      Machines operations were now a billion times faster than in 1968,
-      which is probably irrelevant since they're no longer the best
-      metric for CPU efficiency --
+      And the issue of bookkeeping overhead had pretty much evaporated.
+      Machines operations are now a billion times faster than in 1968,
+      and probably no longer relevant in any case --
       caches misses are more important.
-      As an issue, bookkeeping overhead had pretty much evaporated.
     </p>
     <p>But while the original issues with Earley's disappeared,
       a new issue emerged.
