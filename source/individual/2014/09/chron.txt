@@ -7,28 +7,36 @@ A parsing chronology
       marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
       -->
     </p>
-<p>1960 -- The ALGOL 60 spec comes out.
+<p><b>1960</b> -- The ALGOL 60 spec comes out.
 It specifies, for the first time, a block structured
 language.
-As the ALGOL committee is well aware,
-at this time
-nobody know how to parse such a language.
-<p>1961 -- Ned Irons publishes an ALGOL parser.
-This is in fact the first parser of any kind ever described
+The ALGOL committee is well aware
+that
+nobody know how to parse such a language,
+but they are confident that if they specify a block-structured
+language, a parser for it will be invented.
+And they are right.
+<p>In <b>1961</b>, Ned Irons publishes an ALGOL parser --
+in fact the first parser of any kind ever described
 in print.
-It's a form of recursive descent, but unlike modern
-recursive descent, the Irons algorithm
+Ned's algorithm was a form of recursive descent,
+but unlike modern
+recursive descent,
+the Irons algorithm
 is general and syntax-driven.
 "General" means it can parse anything written in BNF.
 "Syntax-driven" (aka declarative) means that parser is
 actually created from the BNF -- an Irons parser does not need
 to be hand-written.
-<p>1965 -- Don Knuth invents LR parsing.  Knuth is mainly interested
+<p><b>1965</b> -- Don Knuth invents LR parsing.  Knuth is mainly interested
 in the mathematics.
 He describes a parsing algorithm,
 but it is not thought practical.
-<p>1968 -- Jay Earley invents the algorithm named after him.
-It is also syntax-driven and fully general.  The core idea is to 
+<p><b>1968</b> -- Jay Earley invents the algorithm named after him.
+Like the Irons algorithm,
+it is also syntax-driven and fully general.
+Unlike the Irons algorithm, it does not backtrack.
+Earley's core idea was to 
 track everything about the parse in tables.
 Earley's algorithm is enticing, but it has four serious issues.
 First, there is a bug in the handling of null productions.
@@ -47,7 +55,7 @@ children of the Irons algorithm,
 but hand-written instead of syntax-driven.
 Left parsers turn out to be easy to custom hack.
 <p>But the textbooks continue to discuss Earley's algorithm.
-In 1972, one of these reports
+In <b>1972</b>, Aho and Ullmann describe
 a straightforward fix to the null-production bug in Earley's original algorithm.
 Unfortunately, this fix involves even more bookkeeping to the algorithm.
 The search for an efficient, powerful, syntax-driven algorithm
@@ -62,7 +70,7 @@ The world takes notice.
 <p>In <b>1975</b>,
 Bell Labs converts its C compiler from hand-written recursive
 descent to DeRemer's LALR algorithm.
-<p>In </b>1977<b>,
+<p>In <b>1977</b>,
 the first "Dragon book" comes out.
 The nickname of this classic textbooks comes from the drawing
 on the front cover, in which a knight takes on a dragon.
@@ -75,23 +83,32 @@ and Ullman's vast two volume suggests a straightforward
 remedy, but this fix slows
 down an algorithm
 whose speed was already an issue.
-<p>In 1987, Larry Wall introduces Perl 1.
+<p>In <b>1987</b>, Larry Wall introduces Perl 1.
 The very complex parsers of Perls 1 through 5
 represent the
 high water mark in the application of LALR.
 Earley's algorithm, however,
 has not been forgotten by everyone, because ...
-<p>In 1991, Joop Leo discovers a way of speeding up right
+<p>In <b>1991</b>, Joop Leo discovers a way of speeding up right
 recursions in Earley's algorithm.
 With Leo's improvement, Earley's algorithm
 is now linear for just about every unambiguous grammar of
 practical interest, and many ambiguous ones as well.
 And Earley's parsing is now very far off the radar.
-Joop's paper
-attracts no practical implementations for almost 20 years.
-But, back in LALR-land,
-there is growing discontent.
-<p>In 2000, Larry Wall decides on a radical reimplementation
+Joop's discovery is especially important,
+because since the bookkeeping issue had also become
+far less relevant.
+1991 hardware was six orders of magnitude faster
+than 1968 hardware.
+But Earley's parsing is now far off the radar.
+Despite the significance of this result,
+For the next 20 years,
+Joop's algorithm
+attracts no practical implementations.
+This is not to say that everyone in 
+LALR-land was content.
+Far from it, in fact ...
+<p>In <b>2000</b>, Larry Wall decides on a radical reimplementation
 of Perl -- Perl 6.  He does not even consider using LALR again.
 Practitioners have discovered that, while LALR automatically
 generates a parser for you, it is so hard to debug that it's
@@ -142,6 +159,8 @@ The bookkeeping had long since ceased to be an issue -- not
 machines perform operations a billion faster than in 1968,
 and in any case have been replaced by caches misses as the most
 relevant metric for practical timings.
+<p>But if the cost of bookkeeping had receded into irrelevant,
+another issue had become even more important.
     <h3>Comments</h3>
     <p>
       Comments on this post can be made in
