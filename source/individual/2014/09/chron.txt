@@ -186,27 +186,35 @@ A timeline of parsing
       With the experience with LALR in their collective consciousness,
       few modern programmers are prepared
       to trust a purely declarative parser.
-    </p><p>
+    </p>
+    <p>
       But, in the process of combining
       the improvements from Aycock&Horspool and Leo,
       I found that the Earley's parse engine can be written so
-      that it's easy to stop.
+      that it's easy to pause at any token.
       While paused,
-      you can single-step forward token by token.
-      And you can resume syntax-driver parsing at any point you
-      desire.
-      Earley's algorithm proves not just as friendly as recursive
-      descent to hand-written procedural logic, but in fact
-      more friendly.
-      Earley's tables contain,
+      you can switch to procedural logic
+      and single-step forward token by token.
+      And the procedural logic can hand control back
+      over to syntax-driven parsing at any point it likes.
+      Earley's algorithm is actually more helpful
+      to hand-written procedural logic than recursive descent is.
+      The algorithm's tables contain,
       and can share with the procedural logic,
       full knowledge of the state of the
       parse so far:
       all rules recognized
       in all possible parses so far,
       and all symbols expected.
-    </p><h3>Comments</h3>
+    </p>
+    <h3>For more</h3>
     <p>
+      For more about Marpa,
+      there's
+      <a href=http://savage.net.au/Marpa.html">the
+      official web site maintained by Ron Savage</a>:
+      I also have
+      <a href="http://jeffreykegler.github.io/Marpa-web-site/">a Marpa web site</a>.
       Comments on this post can be made in
       <a href="http://groups.google.com/group/marpa-parser">
         Marpa's Google group</a>.
