@@ -121,7 +121,7 @@ Parsing: a timeline
       in importance.
       This is a major discovery.
       When it comes to the speed,
-      the game has changed in favor of Earley algorithm.
+      the game has changed in favor of the Earley algorithm.
       But Earley parsing is almost forgotten.
       It will be 20 years before anyone writes a practical
       implementation of Leo's algorithm.
@@ -175,7 +175,7 @@ Parsing: a timeline
       where we started.
       If you took Ned Iron's original 1961 algorithm,
       changed the names and dates,
-      and translated from code from the mix of assembler and
+      and translated the code from the mix of assembler and
       ALGOL into Haskell,
       you would easily republish it today,
       and bill it as 
@@ -213,8 +213,8 @@ Parsing: a timeline
     </p>
     <p>
       To be accepted, Marpa needed to allow
-      procedure parsing,
-      not just declarative parsing.
+      not just declarative parsing,
+      but procedural parsing as well.
       So Marpa allows the user to specify events --
       occurrences of symbols and rules --
       at which declarative parsing pauses.
