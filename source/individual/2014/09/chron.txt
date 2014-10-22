@@ -7,6 +7,8 @@ Parsing: a timeline
       marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
       -->
     </p>
+    <p>[ Revised 22 Oct 2014 ]
+    </p>
     <p><b>1960</b>:
       The ALGOL 60 spec comes out.
       It specifies, for the first time, a block structured
