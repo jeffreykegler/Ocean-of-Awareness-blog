@@ -58,10 +58,11 @@ Parsing: a timeline
       they are a very good fit.
       </ul>
     </p>
-    <p><b>1965</b>: Don Knuth invents LR parsing.
+    <p><b>1965</b>:
+    Don Knuth invents LR parsing.
       Knuth is primarily interested
       in the mathematics.
-      He describes a parsing algorithm,
+      Knuth describes a parsing algorithm,
       but it is not thought practical.
     </p>
     <p><b>1968</b>: Jay Earley invents the algorithm named after him.
@@ -78,7 +79,7 @@ Parsing: a timeline
       by the standards of 1968 hardware, daunting.
       </ul>
     <p><b>1969</b>:
-      Frank DeRemer described a new variant of Knuth's LR
+      Frank DeRemer describes a new variant of Knuth's LR
       parsing.
       DeRemer's LALR algorithm requires only
       a stack and a state table of quite
@@ -101,6 +102,20 @@ Parsing: a timeline
       From here on out,
       to speak lightly of LALR will be to besmirch the escutcheon
       of parsing theory.
+    </p>
+    <p><b>1979</b>: Bell Laboratories releases Version 7 UNIX.
+	New in this release are components of what is,
+		by far,
+		the most comprehensive,
+		most convenient, best packaged and most widely available
+		language writing toolkit yet developed.
+	 Central to the toolkit is
+	 yacc, an LALR based parser generator.
+	  It takes a bit of hackery,
+	  but yacc parses its own input language,
+	  as well V7's main compiler, the portable C compiler.
+	  It took two decades of research,
+	  it seems that the parsing problem is now solved.
     </p>
     <p><b>1987</b>:
       Larry Wall introduces Perl 1.
