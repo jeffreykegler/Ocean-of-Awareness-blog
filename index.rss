@@ -20,6 +20,8 @@
       marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
       --&gt;
     &lt;/p&gt;
+    &lt;p&gt;[ Revised 22 Oct 2014 ]
+    &lt;/p&gt;
     &lt;p&gt;&lt;b&gt;1960&lt;/b&gt;:
       The ALGOL 60 spec comes out.
       It specifies, for the first time, a block structured
@@ -71,10 +73,11 @@
       they are a very good fit.
       &lt;/ul&gt;
     &lt;/p&gt;
-    &lt;p&gt;&lt;b&gt;1965&lt;/b&gt;: Don Knuth invents LR parsing.
+    &lt;p&gt;&lt;b&gt;1965&lt;/b&gt;:
+    Don Knuth invents LR parsing.
       Knuth is primarily interested
       in the mathematics.
-      He describes a parsing algorithm,
+      Knuth describes a parsing algorithm,
       but it is not thought practical.
     &lt;/p&gt;
     &lt;p&gt;&lt;b&gt;1968&lt;/b&gt;: Jay Earley invents the algorithm named after him.
@@ -91,7 +94,7 @@
       by the standards of 1968 hardware, daunting.
       &lt;/ul&gt;
     &lt;p&gt;&lt;b&gt;1969&lt;/b&gt;:
-      Frank DeRemer described a new variant of Knuth's LR
+      Frank DeRemer describes a new variant of Knuth's LR
       parsing.
       DeRemer's LALR algorithm requires only
       a stack and a state table of quite
@@ -115,6 +118,19 @@
       to speak lightly of LALR will be to besmirch the escutcheon
       of parsing theory.
     &lt;/p&gt;
+    &lt;p&gt;&lt;b&gt;1979&lt;/b&gt;: Bell Laboratories releases Version 7 UNIX.
+	V7 includes what is, by far,
+		the most comprehensive, useable and easily available
+		compiler writing toolkit yet developed.
+	 Central to the toolkit is
+	 yacc, an LALR based parser generator.
+	  With a bit of hackery,
+	  yacc parses its own input language,
+	  as well as the language of V7's main compiler,
+	  the portable C compiler.
+	  After two decades of research,
+	  it seems that the parsing problem is solved.
+    &lt;/p&gt;
     &lt;p&gt;&lt;b&gt;1987&lt;/b&gt;:
       Larry Wall introduces Perl 1.
       Perl embraces complexity like no previous language.
@@ -133,7 +149,7 @@
       issue of bookkeeping overhead had receded
       in importance.
       This is a major discovery.
-      When it comes to the speed,
+      When it comes to speed,
       the game has changed in favor of Earley algorithm.
       But Earley parsing is almost forgotten.
       It will be 20 years before anyone writes a practical

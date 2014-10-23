@@ -7,6 +7,8 @@ Parsing: a timeline
       marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
       -->
     </p>
+    <p>[ Revised 22 Oct 2014 ]
+    </p>
     <p><b>1960</b>:
       The ALGOL 60 spec comes out.
       It specifies, for the first time, a block structured
@@ -39,13 +41,13 @@ Parsing: a timeline
       Almost simultaneously, hand-coded approaches to left parsing
       appear.
       These we would now recognize as recursive descent.
-      Over the following years, hand-coded approaches
+      Over the following years, hand-coding approaches
       will become more popular for left parsers
       than syntax-driven algorithms.
       Three factors are at work:
       <ul>
       <li>
-      In the 1960's, memory and CPU are both extremely limited.
+      In 1960's, memory and CPU are both extremely limited.
       Hand-coding pays off, even when the gains are small.
       <li>
       Pure left parsing is a very weak parsing technique.
@@ -58,10 +60,11 @@ Parsing: a timeline
       they are a very good fit.
       </ul>
     </p>
-    <p><b>1965</b>: Don Knuth invents LR parsing.
+    <p><b>1965</b>:
+    Don Knuth invents LR parsing.
       Knuth is primarily interested
       in the mathematics.
-      He describes a parsing algorithm,
+      Knuth describes a parsing algorithm,
       but it is not thought practical.
     </p>
     <p><b>1968</b>: Jay Earley invents the algorithm named after him.
@@ -78,7 +81,7 @@ Parsing: a timeline
       by the standards of 1968 hardware, daunting.
       </ul>
     <p><b>1969</b>:
-      Frank DeRemer described a new variant of Knuth's LR
+      Frank DeRemer describes a new variant of Knuth's LR
       parsing.
       DeRemer's LALR algorithm requires only
       a stack and a state table of quite
@@ -102,6 +105,19 @@ Parsing: a timeline
       to speak lightly of LALR will be to besmirch the escutcheon
       of parsing theory.
     </p>
+    <p><b>1979</b>: Bell Laboratories releases Version 7 UNIX.
+	V7 includes what is, by far,
+		the most comprehensive, useable and easily available
+		compiler writing toolkit yet developed.
+	 Central to the toolkit is
+	 yacc, an LALR based parser generator.
+	  With a bit of hackery,
+	  yacc parses its own input language,
+	  as well as the language of V7's main compiler,
+	  the portable C compiler.
+	  After two decades of research,
+	  it seems that the parsing problem is solved.
+    </p>
     <p><b>1987</b>:
       Larry Wall introduces Perl 1.
       Perl embraces complexity like no previous language.
@@ -120,8 +136,8 @@ Parsing: a timeline
       issue of bookkeeping overhead had receded
       in importance.
       This is a major discovery.
-      When it comes to the speed,
-      the game has changed in favor of the Earley algorithm.
+      When it comes to speed,
+      the game has changed in favor of Earley algorithm.
       But Earley parsing is almost forgotten.
       It will be 20 years before anyone writes a practical
       implementation of Leo's algorithm.
@@ -175,7 +191,7 @@ Parsing: a timeline
       where we started.
       If you took Ned Iron's original 1961 algorithm,
       changed the names and dates,
-      and translated the code from the mix of assembler and
+      and translated from code from the mix of assembler and
       ALGOL into Haskell,
       you would easily republish it today,
       and bill it as 
@@ -213,8 +229,8 @@ Parsing: a timeline
     </p>
     <p>
       To be accepted, Marpa needed to allow
-      not just declarative parsing,
-      but procedural parsing as well.
+      procedure parsing,
+      not just declarative parsing.
       So Marpa allows the user to specify events --
       occurrences of symbols and rules --
       at which declarative parsing pauses.
@@ -236,7 +252,7 @@ Parsing: a timeline
     <p>
       For more about Marpa,
       there's
-      <a href="http://savage.net.au/Marpa.html">the
+      <a href=http://savage.net.au/Marpa.html">the
       official web site maintained by Ron Savage</a>.
       I also have
       <a href="http://jeffreykegler.github.io/Marpa-web-site/">a Marpa web site</a>.
