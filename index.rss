@@ -54,13 +54,13 @@
       Almost simultaneously, hand-coded approaches to left parsing
       appear.
       These we would now recognize as recursive descent.
-      Over the following years, hand-coded approaches
+      Over the following years, hand-coding approaches
       will become more popular for left parsers
       than syntax-driven algorithms.
       Three factors are at work:
       &lt;ul&gt;
       &lt;li&gt;
-      In the 1960's, memory and CPU are both extremely limited.
+      In 1960's, memory and CPU are both extremely limited.
       Hand-coding pays off, even when the gains are small.
       &lt;li&gt;
       Pure left parsing is a very weak parsing technique.
@@ -265,7 +265,7 @@
     &lt;p&gt;
       For more about Marpa,
       there's
-      &lt;a href=&quot;http://savage.net.au/Marpa.html&quot;&gt;the
+      &lt;a href=http://savage.net.au/Marpa.html&quot;&gt;the
       official web site maintained by Ron Savage&lt;/a&gt;.
       I also have
       &lt;a href=&quot;http://jeffreykegler.github.io/Marpa-web-site/&quot;&gt;a Marpa web site&lt;/a&gt;.
