@@ -106,18 +106,17 @@ Parsing: a timeline
       of parsing theory.
     </p>
     <p><b>1979</b>: Bell Laboratories releases Version 7 UNIX.
-	New in this release are components of what is,
-		by far,
-		the most comprehensive,
-		most convenient, best packaged and most widely available
-		language writing toolkit yet developed.
+	V7 includes what is, by far,
+		the most comprehensive, useable and easily available
+		compiler writing toolkit yet developed.
 	 Central to the toolkit is
 	 yacc, an LALR based parser generator.
-	  It takes a bit of hackery,
-	  but yacc parses its own input language,
-	  as well V7's main compiler, the portable C compiler.
-	  It took two decades of research,
-	  it seems that the parsing problem is now solved.
+	  With a bit of hackery,
+	  yacc parses its own input language,
+	  as well as the language of V7's main compiler,
+	  the portable C compiler.
+	  After two decades of research,
+	  it seems that the parsing problem is solved.
     </p>
     <p><b>1987</b>:
       Larry Wall introduces Perl 1.
@@ -137,7 +136,7 @@ Parsing: a timeline
       issue of bookkeeping overhead had receded
       in importance.
       This is a major discovery.
-      When it comes to the speed,
+      When it comes to speed,
       the game has changed in favor of Earley algorithm.
       But Earley parsing is almost forgotten.
       It will be 20 years before anyone writes a practical
