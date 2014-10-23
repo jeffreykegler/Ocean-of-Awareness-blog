@@ -191,7 +191,7 @@ Parsing: a timeline
       where we started.
       If you took Ned Iron's original 1961 algorithm,
       changed the names and dates,
-      and translated from code from the mix of assembler and
+      and translated the code from the mix of assembler and
       ALGOL into Haskell,
       you would easily republish it today,
       and bill it as 
