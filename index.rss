@@ -10,6 +10,126 @@
     <language>en</language>
 
   <item>
+    <title>Reporting mismatched delimiters</title>
+    <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2014/11/delimiter.html</link>
+    <description>&lt;html&gt;
+  &lt;head&gt;
+  &lt;/head&gt;
+  &lt;body&gt;&lt;p&gt;
+      &lt;!--
+      marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
+      --&gt;
+    &lt;/p&gt;&lt;p&gt;Computer languages need to identify
+      strings which need to treated as a single piece.
+      (Very often,
+      these pieces are often composed of other pieces.)
+      One way to mark the pieces is with pairs of delimiters,
+      one marking the start and the other the end of the various
+      pieces of text.
+    &lt;/p&gt;&lt;p&gt;
+      Delimiters can take many forms.
+      In the sense I am using the work &quot;delimiter&quot;
+      quote marks, parentheses, curly braces and square brackets
+      are all delimiters.
+      XML and HTML tags are also delimiters,
+      and they are complex enough for the delimiters themselves
+      to have an internal syntax which contains delimited text.
+    &lt;/p&gt;
+    &lt;p&gt;
+      Delimiters are powerful,
+      and mismatching them is a common mistake,
+      an error which traditional parsers are often poor at reporting.
+      This post outlines a method for more accurate
+      reporting of mismatched delimiters.
+    &lt;/p&gt;&lt;p&gt;
+      I will demonstrate this technique with an example.
+      While intended to demonstrate what can be done,
+      it is a useable tool --
+      you can use it immediately to check files for mismatched brackets.
+    &lt;/p&gt;
+    &lt;h3&gt;The example script&lt;/h3&gt;
+    &lt;p&gt;The example script
+      is a utility that reports mismatched brackets in the set:
+      &lt;tt&gt;() {} []&lt;/tt&gt;:
+      round brackets (parentheses), square bracets,
+      and curly brackets (braces),
+      They are required to nest in the usual way.
+      The rest of the text is treated as filler.
+      This example will not
+      be smart about other things,
+      such as strings or comments in whatever language is of
+      interest to you.
+    &lt;/p&gt;&lt;p&gt;
+      For purposes of demonstrating the technique,
+      this example is kept relatively simple --
+      simple enough that a recursive descent parser, for
+      example, might be able to emulate it.
+      I hope the reader who goes on to investigate the details
+      will see that,
+      unlike solutions that use traditional parsers,
+      this one scales.
+    &lt;/p&gt;
+    &lt;p&gt;
+      It was written as a demo, but is quite useable as it is --
+      you may find it more accurate than the native compiler/interpreter for your language.
+    &lt;/p&gt;
+    &lt;p&gt;
+      To be sure, ultimately it comes down to the programmer's intent,
+      but I think you'll find this utility is highly accurate in most practical situations.
+      The formatting of the reports is (I hope) helpful.
+      For the string '((([))', the diagnostics are:
+    &lt;/p&gt;&lt;blockquote&gt;&lt;pre&gt;
+* Line 1, column 1: Opening '(' never closed, problem detected at end of string
+((([))
+^
+====================
+* Line 1, column 4: Missing close ], problem detected at line 1, column 5
+((([))
+   ^^
+&lt;/pre&gt;&lt;/blockquote&gt;
+    &lt;p&gt;
+      Marpa is left-eidetic --
+      it knows everything about the parse to the left of the current position, and the utility exploits this.
+      For the string '[({({x[]x{}x()x)})]',
+      it spots the extra closing ')' at column 16, but it's also able to tell *why* it's wrong.
+      It cannot accept the ')' at column 16, without first closing the set of curly braces started at column 5.
+      Maybe your compiler is giving you this sort of feedback, but I doubt it.
+    &lt;/p&gt;
+    &lt;blockquote&gt;&lt;pre&gt;
+* Line 1, column 5: Missing close }, problem detected at line 1, column 16
+[({({x[]x{}x()x)})]
+    ^          ^
+&lt;/pre&gt;&lt;/blockquote&gt;
+    &lt;p&gt;
+      While this utility is already useful, I think of it as a prototype for what could be done.
+      This problem -- matching delimiters --
+      is in fact very general, and I believe these techniques have very wide application.
+    &lt;/p&gt;
+    &lt;h3&gt;How it works&lt;/h3&gt;
+    &lt;p&gt;
+      It works using the Ruby Slippers.
+      t uses the new rejection events to stop parsing whenever the parser rejects all lexemes, so that the application can dummy up a new &quot;Ruby Slippers&quot; token.
+      It makes its best guess as to how to correct the problem and proceeds.
+      This makes the parse &quot;self-correcting&quot;,
+      allowing the utility to accurately diagnose a series of mismatched parentheses.
+      Traditional parsers are usually hopeless after the first mismatch, and not any too clever about the first one.
+    &lt;/p&gt;
+    &lt;h3&gt;For more&lt;/h3&gt;
+    &lt;p&gt;
+      For more about Marpa,
+      there's
+      &lt;a href=http://savage.net.au/Marpa.html&quot;&gt;the
+        official web site maintained by Ron Savage&lt;/a&gt;.
+      I also have
+      &lt;a href=&quot;http://jeffreykegler.github.io/Marpa-web-site/&quot;&gt;a Marpa web site&lt;/a&gt;.
+      Comments on this post can be made in
+      &lt;a href=&quot;http://groups.google.com/group/marpa-parser&quot;&gt;
+        Marpa's Google group&lt;/a&gt;.
+    &lt;/p&gt;
+  &lt;/body&gt;
+&lt;/html&gt;</description>
+  </item>
+  <item>
     <title>Parsing: a timeline</title>
     <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2014/09/chron.html</link>
     <description>&lt;html&gt;
@@ -710,136 +830,6 @@ Length of symbol &quot;Statement&quot; at line 4, column 1 is ambiguous
       &lt;a href=&quot;http://groups.google.com/group/marpa-parser&quot;&gt;
       Marpa's Google group&lt;/a&gt;.
       &lt;/p&gt;
-  &lt;/body&gt;
-&lt;/html&gt;</description>
-  </item>
-  <item>
-    <title>Significant newlines?  Or semicolons?</title>
-    <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2014/02/semantic_ws.html</link>
-    <description>&lt;html&gt;
-  &lt;head&gt;
-  &lt;/head&gt;
-  &lt;body&gt;&lt;p&gt;
-      &lt;!--
-      marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
-      --&gt;
-      Should statements have explicit terminators, like the semicolon of Perl and
-      the C language?
-      Or should they avoid the clutter, and separate statements by giving whitespace
-      syntactic significance and a real effect on
-      the semantics,
-      as is done in Python and Javascript?
-    &lt;/p&gt;
-    &lt;p&gt;
-      Actually we don't have to go either way.
-      As an example, let's look at some BNF-ish DSL.
-      It defines a small calculator.
-      At first glance, it looks as if this language has taken the
-      significant-whitespace route -- there certainly are no explicit statement
-      terminators.
-    &lt;/p&gt;
-    &lt;blockquote&gt;
-      &lt;pre&gt;
-:default ::= action =&amp;gt; ::first
-:start ::= Expression
-Expression ::= Term
-Term ::=
-      Factor
-    | Term '+' Term action =&amp;gt; do_add
-Factor ::=
-      Number
-    | Factor '*' Factor action =&amp;gt; do_multiply
-Number ~ digits
-digits ~ [\d]+
-:discard ~ whitespace
-whitespace ~ [\s]+
-&lt;/pre&gt;
-    &lt;/blockquote&gt;
-    &lt;h3&gt;The rule is that there isn't one&lt;/h3&gt;
-    &lt;p&gt;
-      If we don't happen to like the layout of the above DSL,
-      and rearrange it in various ways,
-      we'll find that everything we try works.
-      If we become curious about what exactly what the rules for newlines are,
-      and look at
-      &lt;a href=&quot;https://metacpan.org/pod/distribution/Marpa-R2/pod/Scanless/DSL.pod&quot;&gt;
-        the documentation&lt;/a&gt;,
-      we won't find any.
-      That's because there aren't any.
-    &lt;/p&gt;
-    &lt;p&gt;
-      We can see this by thoroughly messing up the line structure:
-    &lt;/p&gt;
-    &lt;blockquote&gt;
-      &lt;pre&gt;
-:default ::= action =&amp;gt; ::first :start ::= Expression Expression ::= Term
-Term ::= Factor | Term '+' Term action =&amp;gt; do_add Factor ::= Number |
-Factor '*' Factor action =&amp;gt; do_multiply Number ~ digits digits ~
-[\d]+ :discard ~ whitespace whitespace ~ [\s]+
-&lt;/pre&gt;
-    &lt;/blockquote&gt;
-    &lt;p&gt;The &lt;a href=&quot;https://gist.github.com/jeffreykegler/9220695&quot;&gt;
-      script&lt;/a&gt; will continue to run just fine.
-    &lt;/p&gt;
-    &lt;h3&gt;How does it work?&lt;/h3&gt;
-    &lt;p&gt;How does it work?
-      Actually, pose the question this way:
-      Can a human reader tell where the statements end?
-      If the reader is not used to reading BNF,
-      he might have trouble with this
-      particular example but,
-      for a language that he knows, the answer is simple:
-      Yes, of course he can.
-      So really the question is,
-      why do we expect the parser to be so stupid that it cannot?
-    &lt;/p&gt;
-    &lt;p&gt;
-      The only trick is that this is done without trickery.
-      Marpa's DSL is
-      &lt;a href=&quot;https://metacpan.org/source/JKEGL/Marpa-R2-2.080000/lib/Marpa/R2/meta/metag.bnf&quot;&gt;
-        written in itself&lt;/a&gt;,
-      and Marpa's self-grammar describes exactly what a statement is
-      and what it is not.
-      The Marpa parser is powerful enough to simply take this self-describing DSL
-      and act on it, finding where statements begin and end,
-      much as a human reader is able to.
-    &lt;/p&gt;
-    &lt;h3&gt;To learn more&lt;/h3&gt;
-    &lt;p&gt;
-      This example was produced with the Marpa parser.
-      &lt;a href=&quot;https://metacpan.org/module/Marpa::R2&quot;&gt;Marpa::R2
-        is available on CPAN&lt;/a&gt;.
-      The code for this example is based on that in
-      the synopsis for its top-level document,
-      but it is isolated conveniently in
-      &lt;a href=&quot;https://gist.github.com/jeffreykegler/9220695&quot;&gt;
-        a Github gist&lt;/a&gt;.
-    &lt;/p&gt;&lt;p&gt;
-    &lt;/p&gt;&lt;p&gt;
-      A list of my Marpa tutorials can be found
-      &lt;a href=&quot;http://jeffreykegler.github.io/Ocean-of-Awareness-blog/metapages/annotated.html#TUTORIAL&quot;&gt;
-        here&lt;/a&gt;.
-      There are
-      new tutorials by
-      &lt;a href=&quot;http://marpa-guide.github.io/chapter1.html&quot;&gt;Peter Stuifzand&lt;/a&gt;
-      and
-      &lt;a href=&quot;http://longanswers.blogspot.de/2013/06/transforming-syntax.html&quot;&gt;amon&lt;/a&gt;.
-      &lt;a href=&quot;http://jeffreykegler.github.com/Ocean-of-Awareness-blog/&quot;&gt;
-        The Ocean of Awareness blog&lt;/a&gt;
-      focuses on Marpa,
-      and it has
-      &lt;a href=&quot;http://jeffreykegler.github.io/Ocean-of-Awareness-blog/metapages/annotated.html&quot;&gt;an annotated guide&lt;/a&gt;.
-      Marpa has
-      &lt;a href=&quot;http://jeffreykegler.github.com/Marpa-web-site/&quot;&gt;a web page that I maintain&lt;/a&gt;
-      and Ron Savage maintains
-      &lt;a href=&quot;http://savage.net.au/Perl-modules/html/marpa.papers/index.html&quot;&gt;
-        another&lt;/a&gt;.
-      For questions, support and discussion, there is
-      &lt;a href=&quot;http://groups.google.com/group/marpa-parser&quot;&gt;
-        the &quot;marpa parser&quot;
-        Google Group.&lt;/a&gt;
-      Comments on this post can be made there.
-    &lt;/p&gt;
   &lt;/body&gt;
 &lt;/html&gt;</description>
   </item>
