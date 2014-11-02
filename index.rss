@@ -298,9 +298,12 @@
     &lt;/p&gt;
     &lt;h3&gt;Implications&lt;/h3&gt;
     &lt;p&gt;
-      While this utility is already useable,
-      I think of it as a prototype for what could be done.
-      This problem -- matching delimiters --
+      While
+      &lt;tt&gt;bracket.pl&lt;/tt&gt;
+      is already useable,
+      I think of it as a prototype.
+      And beyond that,
+      the problem of matching delimiters
       is in fact very general, and I believe these techniques have very wide application.
     &lt;/p&gt;
     &lt;h3&gt;For more&lt;/h3&gt;
