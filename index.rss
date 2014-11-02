@@ -298,7 +298,8 @@
     &lt;/p&gt;
     &lt;h3&gt;Implications&lt;/h3&gt;
     &lt;p&gt;
-      While this utility is already useful, I think of it as a prototype for what could be done.
+      While this utility is already useable,
+      I think of it as a prototype for what could be done.
       This problem -- matching delimiters --
       is in fact very general, and I believe these techniques have very wide application.
     &lt;/p&gt;

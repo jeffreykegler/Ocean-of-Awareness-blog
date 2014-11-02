@@ -285,7 +285,8 @@ Reporting mismatched delimiters
     </p>
     <h3>Implications</h3>
     <p>
-      While this utility is already useful, I think of it as a prototype for what could be done.
+      While this utility is already useable,
+      I think of it as a prototype for what could be done.
       This problem -- matching delimiters --
       is in fact very general, and I believe these techniques have very wide application.
     </p>
