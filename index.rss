@@ -38,18 +38,20 @@
       and for that matter none too precise about the first one.
       This post outlines a scaleable method for the accurate
       reporting of mismatched delimiters.
-      I will illustrate the method with an example of a simple
+      I will illustrate the method with a simple
       but useable tool --
       a utility which reports mismatched brackets.
     &lt;/p&gt;
     &lt;h3&gt;The example script&lt;/h3&gt;
-    &lt;p&gt;The example script,
+    &lt;p&gt;The
+      &lt;a href=&quot;https://gist.github.com/jeffreykegler/b6bfeeadfcedeade6519&quot;&gt;example
+      script&lt;/a&gt;,
       &lt;tt&gt;bracket.pl&lt;/tt&gt;,
-      is a utility that reports mismatched brackets in the set:
-    &lt;/p&gt;&lt;blockquote&gt;&lt;pre&gt;
-      () {} []
-      &lt;/pre&gt;&lt;/blockquote&gt;&lt;p&gt;
-      They are expected to nest in the usual way.
+      reports mismatched brackets in the set:
+    &lt;/p&gt;
+    &lt;blockquote&gt;&lt;pre&gt;() {} []&lt;/pre&gt;&lt;/blockquote&gt;
+      &lt;p&gt;
+      They are expected to nest without overlaps.
       Other text is treated as filler, so that
       &lt;tt&gt;bracket.pl&lt;/tt&gt;
       will not be smart about things
@@ -63,12 +65,14 @@
       as an illustration of the technique,
       &lt;tt&gt;bracket.pl&lt;/tt&gt;
       is relatively simple.
-      It's simple enough that a recursive descent parser, for
-      example, could emulate it for this specific grammar.
+      The grammar
+      &lt;tt&gt;bracket.pl&lt;/tt&gt;
+      uses is basic
+      enough to allow a recursive descent parser to emulate this technique.
       I hope the reader who goes on to look at the details
       will see that this technique scales to more
       complex situations,
-      in a way in which a solution based on a traditional parser
+      in a way that a solution based on a traditional parser
       will not.
     &lt;/p&gt;
     &lt;h3&gt;Error reports&lt;/h3&gt;
@@ -83,7 +87,7 @@
       and it can do this.
       But single-line examples are easier to follow.
       All the examples in this post will be contained in a one line.
-      Consider the string '((([))':
+      Consider the string '&lt;tt&gt;((([))&lt;/tt&gt;'.
       &lt;tt&gt;bracket.pl&lt;/tt&gt;'s diagnostics are:
     &lt;/p&gt;&lt;blockquote&gt;&lt;pre&gt;
 * Line 1, column 1: Opening '(' never closed, problem detected at end of string
@@ -115,11 +119,12 @@
       most compilers, after they report a mismatched delimiter,
       are so unreliable that they are in practice useless.
       &lt;tt&gt;bracket.pl&lt;/tt&gt;
-      attempts to repair the damage fixing the unmatched brackets,
-      and it usually succeeds well enough to accurately report
-      the subsequent issues.
+      attempts to repair the damaged text before continuing,
+      so that it can do a reasonable job of analyzing the text
+      that follows.
+      It usually succeeds.
       Consider the text
-      &lt;tt&gt;'({]-[(}-[{)'&lt;/tt&gt;.
+      '&lt;tt&gt;({]-[(}-[{)&lt;/tt&gt;'.
       The output of
       &lt;tt&gt;bracket.pl&lt;/tt&gt;
       is
@@ -289,22 +294,21 @@
       the pessimistic one seems to provide better diagnostics.
       The pessimistic strategy does report some fixable problems
       as errors.
-      But the optmistic one can introduce spurious fixes.
+      But the optimistic one can introduce spurious fixes.
       These hide the real errors,
       and missing errors is worse than overreporting them.
       Even when the pessimistic strategy overreports,
-      its first error messages will always accurately identify a
-      a problem location.
+      its first error message will always accurately identify
+      the first problem location.
     &lt;/p&gt;
-    &lt;h3&gt;Implications&lt;/h3&gt;
     &lt;p&gt;
       While
       &lt;tt&gt;bracket.pl&lt;/tt&gt;
       is already useable,
       I think of it as a prototype.
-      And beyond that,
+      Beyond that,
       the problem of matching delimiters
-      is in fact very general, and I believe these techniques have very wide application.
+      is in fact very general, and I believe these techniques may have very wide application.
     &lt;/p&gt;
     &lt;h3&gt;For more&lt;/h3&gt;
     &lt;p&gt;

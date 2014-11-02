@@ -64,18 +64,20 @@
       and for that matter none too precise about the first one.
       This post outlines a scaleable method for the accurate
       reporting of mismatched delimiters.
-      I will illustrate the method with an example of a simple
+      I will illustrate the method with a simple
       but useable tool --
       a utility which reports mismatched brackets.
     </p>
     <h3>The example script</h3>
-    <p>The example script,
+    <p>The
+      <a href="https://gist.github.com/jeffreykegler/b6bfeeadfcedeade6519">example
+      script</a>,
       <tt>bracket.pl</tt>,
-      is a utility that reports mismatched brackets in the set:
-    </p><blockquote><pre>
-      () {} []
-      </pre></blockquote><p>
-      They are expected to nest in the usual way.
+      reports mismatched brackets in the set:
+    </p>
+    <blockquote><pre>() {} []</pre></blockquote>
+      <p>
+      They are expected to nest without overlaps.
       Other text is treated as filler, so that
       <tt>bracket.pl</tt>
       will not be smart about things
@@ -89,12 +91,14 @@
       as an illustration of the technique,
       <tt>bracket.pl</tt>
       is relatively simple.
-      It's simple enough that a recursive descent parser, for
-      example, could emulate it for this specific grammar.
+      The grammar
+      <tt>bracket.pl</tt>
+      uses is basic
+      enough to allow a recursive descent parser to emulate this technique.
       I hope the reader who goes on to look at the details
       will see that this technique scales to more
       complex situations,
-      in a way in which a solution based on a traditional parser
+      in a way that a solution based on a traditional parser
       will not.
     </p>
     <h3>Error reports</h3>
@@ -109,7 +113,7 @@
       and it can do this.
       But single-line examples are easier to follow.
       All the examples in this post will be contained in a one line.
-      Consider the string '((([))':
+      Consider the string '<tt>((([))</tt>'.
       <tt>bracket.pl</tt>'s diagnostics are:
     </p><blockquote><pre>
 * Line 1, column 1: Opening '(' never closed, problem detected at end of string
@@ -141,11 +145,12 @@
       most compilers, after they report a mismatched delimiter,
       are so unreliable that they are in practice useless.
       <tt>bracket.pl</tt>
-      attempts to repair the damage fixing the unmatched brackets,
-      and it usually succeeds well enough to accurately report
-      the subsequent issues.
+      attempts to repair the damaged text before continuing,
+      so that it can do a reasonable job of analyzing the text
+      that follows.
+      It usually succeeds.
       Consider the text
-      <tt>'({]-[(}-[{)'</tt>.
+      '<tt>({]-[(}-[{)</tt>'.
       The output of
       <tt>bracket.pl</tt>
       is
@@ -315,22 +320,21 @@
       the pessimistic one seems to provide better diagnostics.
       The pessimistic strategy does report some fixable problems
       as errors.
-      But the optmistic one can introduce spurious fixes.
+      But the optimistic one can introduce spurious fixes.
       These hide the real errors,
       and missing errors is worse than overreporting them.
       Even when the pessimistic strategy overreports,
-      its first error messages will always accurately identify a
-      a problem location.
+      its first error message will always accurately identify
+      the first problem location.
     </p>
-    <h3>Implications</h3>
     <p>
       While
       <tt>bracket.pl</tt>
       is already useable,
       I think of it as a prototype.
-      And beyond that,
+      Beyond that,
       the problem of matching delimiters
-      is in fact very general, and I believe these techniques have very wide application.
+      is in fact very general, and I believe these techniques may have very wide application.
     </p>
     <h3>For more</h3>
     <p>
