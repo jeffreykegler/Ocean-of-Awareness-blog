@@ -20,23 +20,20 @@
       marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
       --&gt;
     &lt;/p&gt;
-    &lt;p&gt;A modern computer languages divides
-      texts in that language into pieces.
-      One very direct way for a language to identify a piece
+    &lt;p&gt;A modern computer language divides
+      its texts into pieces.
+      One very direct way to demarcate a piece,
       is to mark its boundaries with a pair of delimiters,
-      where one delimiter marks the start and the other marks the end of the piece.
+      where one delimiter marks the start and the other marks the end.
     &lt;/p&gt;&lt;p&gt;
-      Delimiters, in the sense I am using the word,
-      can take many forms.
-      Quote marks, parentheses, curly braces and square brackets
+      Delimiters can take many forms.
+      Quote marks, parentheses, curly braces and square brackets,
+      and XML and HTML tags
       are all delimiters.
-      Delimiters can be much more complex.
-      XML and HTML tags are delimiters
-      that have an complex internal structure of their own.
     &lt;/p&gt;
     &lt;p&gt;
-      Mismatching delimiters is an easy mistake to make and
-      traditional parsers are often poor at reporting these:
+      Mismatching delimiters is easy to do and
+      traditional parsers are often poor at reporting these errors:
       hopeless after the first mismatch,
       and for that matter none too precise about the first one.
       This post outlines a scaleable method for the accurate
@@ -46,44 +43,47 @@
       a utility which reports mismatched brackets.
     &lt;/p&gt;
     &lt;h3&gt;The example script&lt;/h3&gt;
-    &lt;p&gt;The example script
+    &lt;p&gt;The example script,
+      &lt;tt&gt;bracket.pl&lt;/tt&gt;,
       is a utility that reports mismatched brackets in the set:
     &lt;/p&gt;&lt;blockquote&gt;&lt;pre&gt;
       () {} []
       &lt;/pre&gt;&lt;/blockquote&gt;&lt;p&gt;
-      They are required to nest in the usual way.
-      Other text is treated as filler, so that this utility
+      They are expected to nest in the usual way.
+      Other text is treated as filler, so that
+      &lt;tt&gt;bracket.pl&lt;/tt&gt;
       will not be smart about things
       like strings or comments.
-      This does have the advantage of making this utility mostly
-      language-agnostic.
+      This does have the advantage of making
+      &lt;tt&gt;bracket.pl&lt;/tt&gt;
+      mostly language-agnostic.
     &lt;/p&gt;
     &lt;p&gt;
       Because it's intended primarily to be read
       as an illustration of the technique,
-      this example is kept relatively simple.
+      &lt;tt&gt;bracket.pl&lt;/tt&gt;
+      is relatively simple.
       It's simple enough that a recursive descent parser, for
-      example, might be able to emulate it.
-      I hope the reader will see that this technique scales to more
+      example, could emulate it for this specific grammar.
+      I hope the reader who goes on to look at the details
+      will see that this technique scales to more
       complex situations,
       in a way in which a solution based on a traditional parser
-      could not.
+      will not.
     &lt;/p&gt;
     &lt;h3&gt;Error reports&lt;/h3&gt;
     &lt;p&gt;The description of how the method works will make more
-      sense after we've looked a some examples of the diagnostics
-      it produces.
-      But, peeking, ahead, the strategy is to pinpoint failures quickly
-      and correct them on the fly
-    &lt;/p&gt;&lt;p&gt;
+      sense after we've looked at some examples of the diagnostics
+      &lt;tt&gt;bracket.pl&lt;/tt&gt;
+      produces.
       To be truly useful,
       &lt;tt&gt;bracket.pl&lt;/tt&gt;
       must report mismatches that span
       many lines,
       and it can do this.
-      But single-line examples are easier to follow,
-      and all the examples in this post will be contained in a one line.
-      Consider the string '((([))', the
+      But single-line examples are easier to follow.
+      All the examples in this post will be contained in a one line.
+      Consider the string '((([))':
       &lt;tt&gt;bracket.pl&lt;/tt&gt;'s diagnostics are:
     &lt;/p&gt;&lt;blockquote&gt;&lt;pre&gt;
 * Line 1, column 1: Opening '(' never closed, problem detected at end of string
@@ -111,12 +111,13 @@
       But an important advantage of
       &lt;tt&gt;bracket.pl&lt;/tt&gt;
       has yet to be seen.
-      With most compilers, once they encounter one mismatched delimiter,
-      the rest of their error messages will be useless.
+      The error messages of
+      most compilers, after they report a mismatched delimiter,
+      are so unreliable that they are in practice useless.
       &lt;tt&gt;bracket.pl&lt;/tt&gt;
-      attempts to repair the damage,
-      and usually succeeds well enough to accurately report
-      some or all of the subsequent issues.
+      attempts to repair the damage fixing the unmatched brackets,
+      and it usually succeeds well enough to accurately report
+      the subsequent issues.
       Consider the text
       &lt;tt&gt;'({]-[(}-[{)'&lt;/tt&gt;.
       The output of
@@ -162,13 +163,13 @@
     &lt;p&gt;Each time,
       &lt;tt&gt;bracket.pl&lt;/tt&gt;
       corrects itself,
-      so that it can accurately spot later problems.
+      and accurately reports the next set of problems.
     &lt;/p&gt;&lt;h3&gt;A difficult error report&lt;/h3&gt;
     &lt;p&gt;
-      To be 100%,
+      To be 100% accurate,
       &lt;tt&gt;bracket.pl&lt;/tt&gt;
       would have to guess the programmer's intent.
-      This is of course not possible.
+      This is, of course, not possible.
       Let's look at a text where
       &lt;tt&gt;bracket.pl&lt;/tt&gt;'s guesses are not so good:
       &lt;tt&gt;{{]}&lt;/tt&gt;.
@@ -210,7 +211,8 @@
     &lt;p&gt;
       For full details of the workings of
       &lt;tt&gt;bracket.pl&lt;/tt&gt;
-      there is the code,
+      there is
+      &lt;a href=&quot;https://gist.github.com/jeffreykegler/b6bfeeadfcedeade6519&quot;&gt;the code&lt;/a&gt;,
       which is heavily commented.
       This section provides a conceptual overview.
     &lt;/p&gt;&lt;p&gt;
@@ -218,30 +220,42 @@
       uses two features of Marpa:
       left-eideticism and the Ruby Slippers.
       By left-eidetic, I mean that Marpa knows everything there is to know
-      about the parse and and to left of the current position.
-      This implies, it also knows exactly what symbols can lead to a successful parse,
-      and can stop as soon as it knows it cannot find one.
-    &lt;/p&gt;&lt;p&gt;
+      about the parse at, and to left of, the current position.
+      As a consequence,
+      Marpa
+      also knows exactly which of its input symbols
+      can lead to a successful parse,
+      and is able to stop as soon as it knows that the parse cannot succeed.
+    &lt;/p&gt;
+    &lt;p&gt;
       In the Ruby Slippers technique, we arrange for parsing to stop
-      whenever we reach a point where we are trying to read an input which
+      whenever we encounter an input which
       would cause parsing to fail.
-      The applications then uses Marpa's left-eideticism.
-      It asks Marpa, &quot;OK.  What input would allow the
+      The application then
+      asks Marpa, &quot;OK.  What input would allow the
       parse to continue?&quot;
-      The application then uses this information to provide
-      Marpa with the input it is looking for.
+      The application takes Marpa's answer to this
+      question, and uses it to concoct
+      an input that Marpa will accept.
+    &lt;/p&gt;
+    &lt;p&gt;
       In this case,
       &lt;tt&gt;bracket.pl&lt;/tt&gt;
-      concocts a virtual token which fixes the mismatch
-      of brackets --
-      whatever the bracket is that is missing,
+      creates a virtual token which fixes the mismatch
+      of brackets.
+      Whatever the missing bracket may be,
       &lt;tt&gt;bracket.pl&lt;/tt&gt;
-      invents it,
+      invents a bracket of that kind,
       and adds it to the virtual input.
-      This done, parsing,
-      and error detection
-      can proceed in a sensible way.
-    &lt;/p&gt;&lt;p&gt;
+      This done,
+      parsing and error detection
+      can proceed as if there was no problem.
+      Of course,
+      the error which made the Ruby Slippers token necessary
+      is recorded, and those records are the source of the
+      error reports we saw above.
+    &lt;/p&gt;
+    &lt;p&gt;
       To make its error messages as informative as possible
       in the case of missing closing brackets,
       &lt;tt&gt;bracket.pl&lt;/tt&gt;
@@ -260,25 +274,27 @@
       Finally, but importantly,
       when
       &lt;tt&gt;bracket.pl&lt;/tt&gt;
-      encounters a problem, at a point where there are unclosed opening
+      encounters a problem at a point where there are unclosed opening
       brackets, it has two choices.
       It can be optimistic or it can be pessimistic.
       &quot;Optimistic&quot; means it can hope that something later in the input will close
       the opening bracket.
-      &quot;Pessimistic&quot; means it can decided that &quot;all bets are off&quot; and use
+      &quot;Pessimistic&quot; means it can decide that &quot;all bets are off&quot; and use
       Ruby Slippers tokens to close all the currently active open brackets.
-    &lt;/p&gt;&lt;p&gt;
+    &lt;/p&gt;
+    &lt;p&gt;
+      &lt;tt&gt;bracket.pl&lt;/tt&gt;
+      uses the pessimistic strategy.
       While the optimistic strategy sounds better, in practice
       the pessimistic one seems to provide better diagnostics.
-      While the pessimistic strategy does report some fixable problems
-      as errors, the optmistic one can introduce spurious fixes,
-      and hide the real errors,
-      and that is far worse.
-      And even when the pessimistic strategy results in
-      too many error messages,
-      the first error messages
-      will always accurately identify the
-      first problem location.
+      The pessimistic strategy does report some fixable problems
+      as errors.
+      But the optmistic one can introduce spurious fixes.
+      These hide the real errors,
+      and missing errors is worse than overreporting them.
+      Even when the pessimistic strategy overreports,
+      its first error messages will always accurately identify a
+      a problem location.
     &lt;/p&gt;
     &lt;h3&gt;Implications&lt;/h3&gt;
     &lt;p&gt;
@@ -288,6 +304,8 @@
     &lt;/p&gt;
     &lt;h3&gt;For more&lt;/h3&gt;
     &lt;p&gt;
+      The example script of this post is
+      &lt;a href=&quot;https://gist.github.com/jeffreykegler/b6bfeeadfcedeade6519&quot;&gt;a Github gist&lt;/a&gt;.
       For more about Marpa,
       there's
       &lt;a href=http://savage.net.au/Marpa.html&quot;&gt;the

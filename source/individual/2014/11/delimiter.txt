@@ -7,23 +7,20 @@ Reporting mismatched delimiters
       marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
       -->
     </p>
-    <p>A modern computer languages divides
-      texts in that language into pieces.
-      One very direct way for a language to identify a piece
+    <p>A modern computer language divides
+      its texts into pieces.
+      One very direct way to demarcate a piece,
       is to mark its boundaries with a pair of delimiters,
-      where one delimiter marks the start and the other marks the end of the piece.
+      where one delimiter marks the start and the other marks the end.
     </p><p>
-      Delimiters, in the sense I am using the word,
-      can take many forms.
-      Quote marks, parentheses, curly braces and square brackets
+      Delimiters can take many forms.
+      Quote marks, parentheses, curly braces and square brackets,
+      and XML and HTML tags
       are all delimiters.
-      Delimiters can be much more complex.
-      XML and HTML tags are delimiters
-      that have an complex internal structure of their own.
     </p>
     <p>
-      Mismatching delimiters is an easy mistake to make and
-      traditional parsers are often poor at reporting these:
+      Mismatching delimiters is easy to do and
+      traditional parsers are often poor at reporting these errors:
       hopeless after the first mismatch,
       and for that matter none too precise about the first one.
       This post outlines a scaleable method for the accurate
@@ -33,44 +30,47 @@ Reporting mismatched delimiters
       a utility which reports mismatched brackets.
     </p>
     <h3>The example script</h3>
-    <p>The example script
+    <p>The example script,
+      <tt>bracket.pl</tt>,
       is a utility that reports mismatched brackets in the set:
     </p><blockquote><pre>
       () {} []
       </pre></blockquote><p>
-      They are required to nest in the usual way.
-      Other text is treated as filler, so that this utility
+      They are expected to nest in the usual way.
+      Other text is treated as filler, so that
+      <tt>bracket.pl</tt>
       will not be smart about things
       like strings or comments.
-      This does have the advantage of making this utility mostly
-      language-agnostic.
+      This does have the advantage of making
+      <tt>bracket.pl</tt>
+      mostly language-agnostic.
     </p>
     <p>
       Because it's intended primarily to be read
       as an illustration of the technique,
-      this example is kept relatively simple.
+      <tt>bracket.pl</tt>
+      is relatively simple.
       It's simple enough that a recursive descent parser, for
-      example, might be able to emulate it.
-      I hope the reader will see that this technique scales to more
+      example, could emulate it for this specific grammar.
+      I hope the reader who goes on to look at the details
+      will see that this technique scales to more
       complex situations,
       in a way in which a solution based on a traditional parser
-      could not.
+      will not.
     </p>
     <h3>Error reports</h3>
     <p>The description of how the method works will make more
-      sense after we've looked a some examples of the diagnostics
-      it produces.
-      But, peeking, ahead, the strategy is to pinpoint failures quickly
-      and correct them on the fly
-    </p><p>
+      sense after we've looked at some examples of the diagnostics
+      <tt>bracket.pl</tt>
+      produces.
       To be truly useful,
       <tt>bracket.pl</tt>
       must report mismatches that span
       many lines,
       and it can do this.
-      But single-line examples are easier to follow,
-      and all the examples in this post will be contained in a one line.
-      Consider the string '((([))', the
+      But single-line examples are easier to follow.
+      All the examples in this post will be contained in a one line.
+      Consider the string '((([))':
       <tt>bracket.pl</tt>'s diagnostics are:
     </p><blockquote><pre>
 * Line 1, column 1: Opening '(' never closed, problem detected at end of string
@@ -98,12 +98,13 @@ Reporting mismatched delimiters
       But an important advantage of
       <tt>bracket.pl</tt>
       has yet to be seen.
-      With most compilers, once they encounter one mismatched delimiter,
-      the rest of their error messages will be useless.
+      The error messages of
+      most compilers, after they report a mismatched delimiter,
+      are so unreliable that they are in practice useless.
       <tt>bracket.pl</tt>
-      attempts to repair the damage,
-      and usually succeeds well enough to accurately report
-      some or all of the subsequent issues.
+      attempts to repair the damage fixing the unmatched brackets,
+      and it usually succeeds well enough to accurately report
+      the subsequent issues.
       Consider the text
       <tt>'({]-[(}-[{)'</tt>.
       The output of
@@ -149,13 +150,13 @@ Reporting mismatched delimiters
     <p>Each time,
       <tt>bracket.pl</tt>
       corrects itself,
-      so that it can accurately spot later problems.
+      and accurately reports the next set of problems.
     </p><h3>A difficult error report</h3>
     <p>
-      To be 100%,
+      To be 100% accurate,
       <tt>bracket.pl</tt>
       would have to guess the programmer's intent.
-      This is of course not possible.
+      This is, of course, not possible.
       Let's look at a text where
       <tt>bracket.pl</tt>'s guesses are not so good:
       <tt>{{]}</tt>.
@@ -197,7 +198,8 @@ Reporting mismatched delimiters
     <p>
       For full details of the workings of
       <tt>bracket.pl</tt>
-      there is the code,
+      there is
+      <a href="https://gist.github.com/jeffreykegler/b6bfeeadfcedeade6519">the code</a>,
       which is heavily commented.
       This section provides a conceptual overview.
     </p><p>
@@ -206,28 +208,34 @@ Reporting mismatched delimiters
       left-eideticism and the Ruby Slippers.
       By left-eidetic, I mean that Marpa knows everything there is to know
       about the parse at, and to left of, the current position.
-      This means that Marpa
-      also knows exactly what symbols can lead to a successful parse,
-      and can stop as soon as it knows it cannot find one.
-    </p><p>
+      As a consequence,
+      Marpa
+      also knows exactly which of its input symbols
+      can lead to a successful parse,
+      and is able to stop as soon as it knows that the parse cannot succeed.
+    </p>
+    <p>
       In the Ruby Slippers technique, we arrange for parsing to stop
-      whenever we reach a point where we are trying to read an input which
+      whenever we encounter an input which
       would cause parsing to fail.
-      The applications next
+      The application then
       asks Marpa, "OK.  What input would allow the
       parse to continue?"
-      The application then uses this information to provide
-      Marpa with the input it is looking for.
+      The application takes Marpa's answer to this
+      question, and uses it to concoct
+      an input that Marpa will accept.
+    </p>
+    <p>
       In this case,
       <tt>bracket.pl</tt>
-      concocts a virtual token which fixes the mismatch
+      creates a virtual token which fixes the mismatch
       of brackets.
       Whatever the missing bracket may be,
       <tt>bracket.pl</tt>
       invents a bracket of that kind,
       and adds it to the virtual input.
-      This done, parsing,
-      and error detection
+      This done,
+      parsing and error detection
       can proceed as if there was no problem.
       Of course,
       the error which made the Ruby Slippers token necessary
@@ -253,14 +261,17 @@ Reporting mismatched delimiters
       Finally, but importantly,
       when
       <tt>bracket.pl</tt>
-      encounters a problem, at a point where there are unclosed opening
+      encounters a problem at a point where there are unclosed opening
       brackets, it has two choices.
       It can be optimistic or it can be pessimistic.
       "Optimistic" means it can hope that something later in the input will close
       the opening bracket.
       "Pessimistic" means it can decide that "all bets are off" and use
       Ruby Slippers tokens to close all the currently active open brackets.
-    </p><p>
+    </p>
+    <p>
+      <tt>bracket.pl</tt>
+      uses the pessimistic strategy.
       While the optimistic strategy sounds better, in practice
       the pessimistic one seems to provide better diagnostics.
       The pessimistic strategy does report some fixable problems
@@ -280,6 +291,8 @@ Reporting mismatched delimiters
     </p>
     <h3>For more</h3>
     <p>
+      The example script of this post is
+      <a href="https://gist.github.com/jeffreykegler/b6bfeeadfcedeade6519">a Github gist</a>.
       For more about Marpa,
       there's
       <a href=http://savage.net.au/Marpa.html">the
