@@ -7,22 +7,20 @@ Reporting mismatched delimiters
       marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
       -->
     </p>
-    <p>In many contexts, programs need to treat a text
-      as divided into into pieces.
-      One very direct way to indicate the pieces of a text
-      is to use pairs of delimiters.
+    <p>In many contexts, programs need to identify
+      non-overlapping pieces of a text.
+      One very direct way to indicate a piece within a text
+      is to use a pair of delimiters.
       One delimiter of the pair marks the start
       and the other marks the end.
+      Delimiters can take many forms:
+      Quote marks, parentheses, curly braces, square brackets,
+      XML tags, and HTML tags
+      are all delimiters in this sense.
     </p>
     <p>
-      Delimiters can take many forms.
-      Quote marks, parentheses, curly braces and square brackets,
-      and XML and HTML tags
-      are all delimiters.
-    </p>
-    <p>
-      Mismatching delimiters is easy to do and
-      traditional parsers are often poor at reporting these errors:
+      Mismatching delimiters is easy to do.
+      Traditional parsers are often poor at reporting these errors:
       hopeless after the first mismatch,
       and for that matter none too precise about the first one.
       This post outlines a scaleable method for the accurate
