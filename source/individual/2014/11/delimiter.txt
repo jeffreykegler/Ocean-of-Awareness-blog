@@ -7,12 +7,14 @@ Reporting mismatched delimiters
       marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
       -->
     </p>
-    <p>A modern computer language divides
-      its texts into pieces.
-      One very direct way to demarcate a piece,
-      is to mark its boundaries with a pair of delimiters,
-      where one delimiter marks the start and the other marks the end.
-    </p><p>
+    <p>In many contexts, programs need to treat a text
+      as divided into into pieces.
+      One very direct way to indicate the pieces of a text
+      is to use pairs of delimiters.
+      One delimiter of the pair marks the start
+      and the other marks the end.
+    </p>
+    <p>
       Delimiters can take many forms.
       Quote marks, parentheses, curly braces and square brackets,
       and XML and HTML tags
@@ -26,7 +28,7 @@ Reporting mismatched delimiters
       This post outlines a scaleable method for the accurate
       reporting of mismatched delimiters.
       I will illustrate the method with an example of a simple
-      but useful tool --
+      but useable tool --
       a utility which reports mismatched brackets.
     </p>
     <h3>The example script</h3>
