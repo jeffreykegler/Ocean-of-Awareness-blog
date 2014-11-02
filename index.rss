@@ -22,7 +22,7 @@
     &lt;/p&gt;
     &lt;p&gt;In many contexts, programs need to identify
       non-overlapping pieces of a text.
-      One very direct way to indicate a piece within a text
+      One very direct way to do this
       is to use a pair of delimiters.
       One delimiter of the pair marks the start
       and the other marks the end.
@@ -52,9 +52,9 @@
     &lt;blockquote&gt;&lt;pre&gt;() {} []&lt;/pre&gt;&lt;/blockquote&gt;
       &lt;p&gt;
       They are expected to nest without overlaps.
-      Other text is treated as filler, so that
+      Other text is treated as filler.
       &lt;tt&gt;bracket.pl&lt;/tt&gt;
-      will not be smart about things
+      is not smart about things
       like strings or comments.
       This does have the advantage of making
       &lt;tt&gt;bracket.pl&lt;/tt&gt;
@@ -63,13 +63,14 @@
     &lt;p&gt;
       Because it's intended primarily to be read
       as an illustration of the technique,
+      &lt;tt&gt;bracket.pl&lt;/tt&gt;'s grammar
+      is a basic one.
+      The grammar that
       &lt;tt&gt;bracket.pl&lt;/tt&gt;
-      is relatively simple.
-      The grammar
-      &lt;tt&gt;bracket.pl&lt;/tt&gt;
-      uses is basic
-      enough to allow a recursive descent parser to emulate this technique.
-      I hope the reader who goes on to look at the details
+      uses is so simple that
+      an emulator of &lt;tt&gt;bracket.pl&lt;/tt&gt;
+      could be written using recursive descent.
+      I hope the reader who goes on to look into the details
       will see that this technique scales to more
       complex situations,
       in a way that a solution based on a traditional parser
@@ -115,14 +116,15 @@
       But an important advantage of
       &lt;tt&gt;bracket.pl&lt;/tt&gt;
       has yet to be seen.
-      The error messages of
-      most compilers, after they report a mismatched delimiter,
-      are so unreliable that they are in practice useless.
+      Most compilers,
+      once they report a first mismatched delimiter,
+      produce error messages that are
+      unreliable --
+      so unreliable that they are useless in practice.
       &lt;tt&gt;bracket.pl&lt;/tt&gt;
-      attempts to repair the damaged text before continuing,
+      repairs a mismatched bracket before continuing,
       so that it can do a reasonable job of analyzing the text
       that follows.
-      It usually succeeds.
       Consider the text
       '&lt;tt&gt;({]-[(}-[{)&lt;/tt&gt;'.
       The output of
@@ -209,7 +211,8 @@
       It is reasonable to believe that a programmer, especially once
       he becomes used to this kind of mismatch reporting,
       will quickly find the first mismatch and fix it.
-      This may not be much better than the state of the art,
+      For this difficult case,
+      &lt;tt&gt;bracket.pl&lt;/tt&gt; may not be much better than the state of the art,
       but it is certainly no worse.
     &lt;/p&gt;
     &lt;h3&gt;How it works&lt;/h3&gt;
@@ -276,8 +279,7 @@
       with the exact location of
       the starting bracket.
     &lt;/p&gt;&lt;p&gt;
-      Finally, but importantly,
-      when
+      When
       &lt;tt&gt;bracket.pl&lt;/tt&gt;
       encounters a problem at a point where there are unclosed opening
       brackets, it has two choices.
@@ -296,7 +298,8 @@
       as errors.
       But the optimistic one can introduce spurious fixes.
       These hide the real errors,
-      and missing errors is worse than overreporting them.
+      and it is worse to miss errors
+      that it is to overreport them.
       Even when the pessimistic strategy overreports,
       its first error message will always accurately identify
       the first problem location.
