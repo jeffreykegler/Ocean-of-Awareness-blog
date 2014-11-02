@@ -45,13 +45,11 @@
       <!--
       marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
       -->
-    </p><p>To parse a computer languages you need to divide
-      a text in that language into pieces.
-      These pieces are not necessarily atomic.
-      In fact, almost always at least some of the pieces are composed of other pieces.
-    </p><p>
-      One way for a language to identify pieces
-      is to mark their boundaries with pairs of delimiters,
+    </p>
+    <p>A modern computer languages divides
+      texts in that language into pieces.
+      One very direct way for a language to identify a piece
+      is to mark its boundaries with a pair of delimiters,
       where one delimiter marks the start and the other marks the end of the piece.
     </p><p>
       Delimiters, in the sense I am using the word,
@@ -63,8 +61,10 @@
       that have an complex internal structure of their own.
     </p>
     <p>
-      Mismatching delimiters is an easy mistake to make,
-      and one which traditional parsers are often poor at reporting.
+      Mismatching delimiters is an easy mistake to make and
+      traditional parsers are often poor at reporting these:
+      hopeless after the first mismatch,
+      and for that matter none too precise about the first one.
       This post outlines a scaleable method for the accurate
       reporting of mismatched delimiters.
       I will illustrate the method with an example of a simple
@@ -78,13 +78,14 @@
       () {} []
       </pre></blockquote><p>
       They are required to nest in the usual way.
-      All other text is treated as filler, so that this utility
+      Other text is treated as filler, so that this utility
       will not be smart about things
-      like ths strings or comments
-      in your language of interest.
+      like strings or comments.
+      This does have the advantage of making this utility mostly
+      language-agnostic.
     </p>
     <p>
-      Because it's intended primarily for be read
+      Because it's intended primarily to be read
       as an illustration of the technique,
       this example is kept relatively simple.
       It's simple enough that a recursive descent parser, for
@@ -95,7 +96,12 @@
       could not.
     </p>
     <h3>Error reports</h3>
-    <p>
+    <p>The description of how the method works will make more
+      sense after we've looked a some examples of the diagnostics
+      it produces.
+      But, peeking, ahead, the strategy is to pinpoint failures quickly
+      and correct them on the fly
+    </p><p>
       To be truly useful,
       <tt>bracket.pl</tt>
       must report mismatches that span
@@ -135,7 +141,7 @@
       the rest of their error messages will be useless.
       <tt>bracket.pl</tt>
       attempts to repair the damage,
-      and usually succeeds well enough so that it can accurately report
+      and usually succeeds well enough to accurately report
       some or all of the subsequent issues.
       Consider the text
       <tt>'({]-[(}-[{)'</tt>.
@@ -182,20 +188,17 @@
     <p>Each time,
       <tt>bracket.pl</tt>
       corrects itself,
-      so that it can accurately spot the later problems.
+      so that it can accurately spot later problems.
     </p><h3>A difficult error report</h3>
     <p>
-      The magic does not always work.
       To be 100%,
       <tt>bracket.pl</tt>
-      would have to guess the programmer's intent,
-      and this is of course not possible.
+      would have to guess the programmer's intent.
+      This is of course not possible.
       Let's look at a text where
-      <tt>bracket.pl</tt>'s guesses are not so good as in the cases above:
+      <tt>bracket.pl</tt>'s guesses are not so good:
       <tt>{{]}</tt>.
       Here we will assume the closing square bracket is a typo for a closing parenthesis.
-      <tt>bracket.pl</tt>
-      does not guess this.
       Here's the result:
     </p><blockquote><pre>
 * Line 1, column 1: Missing close }, problem detected at line 1, column 3
@@ -221,23 +224,87 @@
       But even in this case, the method is fairly good, especially when
       compared with current practice.
       The problem is at line 1, column 3,
-      and the first three messages all identify this as one of their two
+      and the first three messages all identify this as one of their
       potential problem locations.
       It is reasonable to believe that a programmer, especially once
       he becomes used to this kind of mismatch reporting,
       will quickly find the first mismatch and fix it.
       This may not be much better than the state of the art,
       but it is certainly no worse.
-    </p><h3>How it works</h3>
+    </p>
+    <h3>How it works</h3>
     <p>
-      Marpa is left-eidetic --
-      it knows everything about the parse to the left of the current position, and the utility exploits this.
-      It works using the Ruby Slippers.
-      t uses the new rejection events to stop parsing whenever the parser rejects all lexemes, so that the application can dummy up a new "Ruby Slippers" token.
-      It makes its best guess as to how to correct the problem and proceeds.
-      This makes the parse "self-correcting",
-      allowing the utility to accurately diagnose a series of mismatched parentheses.
-      Traditional parsers are usually hopeless after the first mismatch, and not any too clever about the first one.
+      For full details of the workings of
+      <tt>bracket.pl</tt>
+      there is the code,
+      which is heavily commented.
+      This section provides a conceptual overview.
+    </p><p>
+      <tt>bracket.pl</tt>
+      uses two features of Marpa:
+      left-eideticism and the Ruby Slippers.
+      By left-eidetic, I mean that Marpa knows everything there is to know
+      about the parse and and to left of the current position.
+      This implies, it also knows exactly what symbols can lead to a successful parse,
+      and can stop as soon as it knows it cannot find one.
+    </p><p>
+      In the Ruby Slippers technique, we arrange for parsing to stop
+      whenever we reach a point where we are trying to read an input which
+      would cause parsing to fail.
+      The applications then uses Marpa's left-eideticism.
+      It asks Marpa, "OK.  What input would allow the
+      parse to continue?"
+      The application then uses this information to provide
+      Marpa with the input it is looking for.
+      In this case,
+      <tt>bracket.pl</tt>
+      concocts a virtual token which fixes the mismatch
+      of brackets --
+      whatever the bracket is that is missing,
+      <tt>bracket.pl</tt>
+      invents it,
+      and adds it to the virtual input.
+      This done, parsing,
+      and error detection
+      can proceed in a sensible way.
+    </p><p>
+      To make its error messages as informative as possible
+      in the case of missing closing brackets,
+      <tt>bracket.pl</tt>
+      needs to report the exact location of
+      the opening bracket.
+      Left-eideticism again comes in handy here.
+      Once the virtual closing bracket is supplied to Marpa,
+      <tt>bracket.pl</tt>
+      asks, "That bracketed text that I just closed -- where did it begin?"
+      The Marpa parser tracks the start location
+      of all symbol and rule instances,
+      so it is able to provide the application
+      with the exact location of
+      the starting bracket.
+    </p><p>
+      Finally, but importantly,
+      when
+      <tt>bracket.pl</tt>
+      encounters a problem, at a point where there are unclosed opening
+      brackets, it has two choices.
+      It can be optimistic or it can be pessimistic.
+      "Optimistic" means it can hope that something later in the input will close
+      the opening bracket.
+      "Pessimistic" means it can decided that "all bets are off" and use
+      Ruby Slippers tokens to close all the currently active open brackets.
+    </p><p>
+      While the optimistic strategy sounds better, in practice
+      the pessimistic one seems to provide better diagnostics.
+      While the pessimistic strategy does report some fixable problems
+      as errors, the optmistic one can introduce spurious fixes,
+      and hide the real errors,
+      and that is far worse.
+      And even when the pessimistic strategy results in
+      too many error messages,
+      the first error messages
+      will always accurately identify the
+      first problem location.
     </p>
     <h3>Implications</h3>
     <p>
