@@ -45,65 +45,66 @@
       <!--
       marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
       -->
-    </p><p>Computer languages need to identify
-      strings which need to treated as a single piece.
-      (Very often,
-      these pieces are often composed of other pieces.)
-      One way to mark the pieces is with pairs of delimiters,
-      one marking the start and the other the end of the various
-      pieces of text.
+    </p><p>To parse a computer languages you need to divide
+      a text in that language into pieces.
+      These pieces are not necessarily atomic.
+      In fact, almost always at least some of the pieces are composed of other pieces.
     </p><p>
-      Delimiters can take many forms.
-      In the sense I am using the work "delimiter"
-      quote marks, parentheses, curly braces and square brackets
+      One way for a language to identify pieces
+      is to mark their boundaries with pairs of delimiters,
+      where one delimiter marks the start and the other marks the end of the piece.
+    </p><p>
+      Delimiters, in the sense I am using the word,
+      can take many forms.
+      Quote marks, parentheses, curly braces and square brackets
       are all delimiters.
-      XML and HTML tags are also delimiters,
-      and they are complex enough for the delimiters themselves
-      to have an internal syntax which contains delimited text.
+      Delimiters can be much more complex.
+      XML and HTML tags are delimiters
+      that have an complex internal structure of their own.
     </p>
     <p>
-      Delimiters are powerful,
-      and mismatching them is a common mistake,
-      an error which traditional parsers are often poor at reporting.
-      This post outlines a method for more accurate
+      Mismatching delimiters is an easy mistake to make,
+      and one which traditional parsers are often poor at reporting.
+      This post outlines a scaleable method for the accurate
       reporting of mismatched delimiters.
-    </p><p>
-      I will demonstrate this technique with an example.
-      While intended to demonstrate what can be done,
-      it is a useable tool --
-      you can use it immediately to check files for mismatched brackets.
+      I will illustrate the method with an example of a simple
+      but useful tool --
+      a utility which reports mismatched brackets.
     </p>
     <h3>The example script</h3>
     <p>The example script
       is a utility that reports mismatched brackets in the set:
-      <tt>() {} []</tt>:
-      round brackets (parentheses), square bracets,
-      and curly brackets (braces),
+    </p><blockquote><pre>
+      () {} []
+      </pre></blockquote><p>
       They are required to nest in the usual way.
-      The rest of the text is treated as filler.
-      This example will not
-      be smart about other things,
-      such as strings or comments in whatever language is of
-      interest to you.
-    </p><p>
-      For purposes of demonstrating the technique,
-      this example is kept relatively simple --
-      simple enough that a recursive descent parser, for
+      All other text is treated as filler, so that this utility
+      will not be smart about things
+      like ths strings or comments
+      in your language of interest.
+    </p>
+    <p>
+      Because it's intended primarily for be read
+      as an illustration of the technique,
+      this example is kept relatively simple.
+      It's simple enough that a recursive descent parser, for
       example, might be able to emulate it.
-      I hope the reader who goes on to investigate the details
-      will see that,
-      unlike solutions that use traditional parsers,
-      this one scales.
+      I hope the reader will see that this technique scales to more
+      complex situations,
+      in a way in which a solution based on a traditional parser
+      could not.
     </p>
+    <h3>Error reports</h3>
     <p>
-      It was written as a demo, but is quite useable as it is --
-      you may find it more accurate than the native compiler/interpreter for your language.
-    </p>
-    <p>
-      To be sure, ultimately it comes down to the programmer's intent,
-      but I think you'll find this utility is highly accurate in most practical situations.
-      The formatting of the reports is (I hope) helpful.
-      For the string '((([))', the diagnostics are:
+      To be truly useful,
+      <tt>bracket.pl</tt>
+      must report mismatches that span
+      many lines,
+      and it can do this.
+      But single-line examples are easier to follow,
+      and all the examples in this post will be contained in a one line.
+      Consider the string '((([))', the
+      <tt>bracket.pl</tt>'s diagnostics are:
     </p><blockquote><pre>
 * Line 1, column 1: Opening '(' never closed, problem detected at end of string
 ((([))
@@ -114,12 +115,11 @@
    ^^
 </pre></blockquote>
     <p>
-      Marpa is left-eidetic --
-      it knows everything about the parse to the left of the current position, and the utility exploits this.
-      For the string '[({({x[]x{}x()x)})]',
-      it spots the extra closing ')' at column 16, but it's also able to tell *why* it's wrong.
-      It cannot accept the ')' at column 16, without first closing the set of curly braces started at column 5.
-      Maybe your compiler is giving you this sort of feedback, but I doubt it.
+      In the next example
+      <tt>bracket.pl</tt>
+      realizes that it
+      cannot accept the ')' at column 16, without first closing the set of curly braces started at column 5.
+      It identifies the problem, along with both of the locations involved.
     </p>
     <blockquote><pre>
 * Line 1, column 5: Missing close }, problem detected at line 1, column 16
@@ -127,18 +127,123 @@
     ^          ^
 </pre></blockquote>
     <p>
-      While this utility is already useful, I think of it as a prototype for what could be done.
-      This problem -- matching delimiters --
-      is in fact very general, and I believe these techniques have very wide application.
-    </p>
-    <h3>How it works</h3>
+      So far, so good.
+      But an important advantage of
+      <tt>bracket.pl</tt>
+      has yet to be seen.
+      With most compilers, once they encounter one mismatched delimiter,
+      the rest of their error messages will be useless.
+      <tt>bracket.pl</tt>
+      attempts to repair the damage,
+      and usually succeeds well enough so that it can accurately report
+      some or all of the subsequent issues.
+      Consider the text
+      <tt>'({]-[(}-[{)'</tt>.
+      The output of
+      <tt>bracket.pl</tt>
+      is
+    </p><blockquote><pre>
+* Line 1, column 1: Missing close ), problem detected at line 1, column 3
+({]-[(}-[{)
+^ ^
+====================
+* Line 1, column 2: Missing close }, problem detected at line 1, column 3
+({]-[(}-[{)
+ ^^
+====================
+* Line 1, column 3: Missing open [
+({]-[(}-[{)
+  ^
+====================
+* Line 1, column 5: Missing close ], problem detected at line 1, column 7
+({]-[(}-[{)
+    ^ ^
+====================
+* Line 1, column 6: Missing close ), problem detected at line 1, column 7
+({]-[(}-[{)
+     ^^
+====================
+* Line 1, column 7: Missing open {
+({]-[(}-[{)
+      ^
+====================
+* Line 1, column 9: Missing close ], problem detected at line 1, column 11
+({]-[(}-[{)
+        ^ ^
+====================
+* Line 1, column 10: Missing close }, problem detected at line 1, column 11
+({]-[(}-[{)
+         ^^
+====================
+* Line 1, column 11: Missing open (
+({]-[(}-[{)
+          ^
+</pre></blockquote>
+    <p>Each time,
+      <tt>bracket.pl</tt>
+      corrects itself,
+      so that it can accurately spot the later problems.
+    </p><h3>A difficult error report</h3>
     <p>
+      The magic does not always work.
+      To be 100%,
+      <tt>bracket.pl</tt>
+      would have to guess the programmer's intent,
+      and this is of course not possible.
+      Let's look at a text where
+      <tt>bracket.pl</tt>'s guesses are not so good as in the cases above:
+      <tt>{{]}</tt>.
+      Here we will assume the closing square bracket is a typo for a closing parenthesis.
+      <tt>bracket.pl</tt>
+      does not guess this.
+      Here's the result:
+    </p><blockquote><pre>
+* Line 1, column 1: Missing close }, problem detected at line 1, column 3
+{{]}
+^ ^
+====================
+* Line 1, column 2: Missing close }, problem detected at line 1, column 3
+{{]}
+ ^^
+====================
+* Line 1, column 3: Missing open [
+{{]}
+  ^
+====================
+* Line 1, column 4: Missing open {
+{{]}
+   ^
+</pre></blockquote><p>
+      Instead of one error,
+      <tt>bracket.pl</tt>
+      finds four.
+    </p><p>
+      But even in this case, the method is fairly good, especially when
+      compared with current practice.
+      The problem is at line 1, column 3,
+      and the first three messages all identify this as one of their two
+      potential problem locations.
+      It is reasonable to believe that a programmer, especially once
+      he becomes used to this kind of mismatch reporting,
+      will quickly find the first mismatch and fix it.
+      This may not be much better than the state of the art,
+      but it is certainly no worse.
+    </p><h3>How it works</h3>
+    <p>
+      Marpa is left-eidetic --
+      it knows everything about the parse to the left of the current position, and the utility exploits this.
       It works using the Ruby Slippers.
       t uses the new rejection events to stop parsing whenever the parser rejects all lexemes, so that the application can dummy up a new "Ruby Slippers" token.
       It makes its best guess as to how to correct the problem and proceeds.
       This makes the parse "self-correcting",
       allowing the utility to accurately diagnose a series of mismatched parentheses.
       Traditional parsers are usually hopeless after the first mismatch, and not any too clever about the first one.
+    </p>
+    <h3>Implications</h3>
+    <p>
+      While this utility is already useful, I think of it as a prototype for what could be done.
+      This problem -- matching delimiters --
+      is in fact very general, and I believe these techniques have very wide application.
     </p>
     <h3>For more</h3>
     <p>
