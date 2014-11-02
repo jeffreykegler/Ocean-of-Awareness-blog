@@ -205,30 +205,36 @@ Reporting mismatched delimiters
       uses two features of Marpa:
       left-eideticism and the Ruby Slippers.
       By left-eidetic, I mean that Marpa knows everything there is to know
-      about the parse and and to left of the current position.
-      This implies, it also knows exactly what symbols can lead to a successful parse,
+      about the parse at, and to left of, the current position.
+      This means that Marpa
+      also knows exactly what symbols can lead to a successful parse,
       and can stop as soon as it knows it cannot find one.
     </p><p>
       In the Ruby Slippers technique, we arrange for parsing to stop
       whenever we reach a point where we are trying to read an input which
       would cause parsing to fail.
-      The applications then uses Marpa's left-eideticism.
-      It asks Marpa, "OK.  What input would allow the
+      The applications next
+      asks Marpa, "OK.  What input would allow the
       parse to continue?"
       The application then uses this information to provide
       Marpa with the input it is looking for.
       In this case,
       <tt>bracket.pl</tt>
       concocts a virtual token which fixes the mismatch
-      of brackets --
-      whatever the bracket is that is missing,
+      of brackets.
+      Whatever the missing bracket may be,
       <tt>bracket.pl</tt>
-      invents it,
+      invents a bracket of that kind,
       and adds it to the virtual input.
       This done, parsing,
       and error detection
-      can proceed in a sensible way.
-    </p><p>
+      can proceed as if there was no problem.
+      Of course,
+      the error which made the Ruby Slippers token necessary
+      is recorded, and those records are the source of the
+      error reports we saw above.
+    </p>
+    <p>
       To make its error messages as informative as possible
       in the case of missing closing brackets,
       <tt>bracket.pl</tt>
@@ -252,20 +258,19 @@ Reporting mismatched delimiters
       It can be optimistic or it can be pessimistic.
       "Optimistic" means it can hope that something later in the input will close
       the opening bracket.
-      "Pessimistic" means it can decided that "all bets are off" and use
+      "Pessimistic" means it can decide that "all bets are off" and use
       Ruby Slippers tokens to close all the currently active open brackets.
     </p><p>
       While the optimistic strategy sounds better, in practice
       the pessimistic one seems to provide better diagnostics.
-      While the pessimistic strategy does report some fixable problems
-      as errors, the optmistic one can introduce spurious fixes,
-      and hide the real errors,
-      and that is far worse.
-      And even when the pessimistic strategy results in
-      too many error messages,
-      the first error messages
-      will always accurately identify the
-      first problem location.
+      The pessimistic strategy does report some fixable problems
+      as errors.
+      But the optmistic one can introduce spurious fixes.
+      These hide the real errors,
+      and missing errors is worse than overreporting them.
+      Even when the pessimistic strategy overreports,
+      its first error messages will always accurately identify a
+      a problem location.
     </p>
     <h3>Implications</h3>
     <p>
