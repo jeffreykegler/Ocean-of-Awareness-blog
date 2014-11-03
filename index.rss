@@ -299,7 +299,7 @@
       But the optimistic one can introduce spurious fixes.
       These hide the real errors,
       and it is worse to miss errors
-      that it is to overreport them.
+      than it is to overreport them.
       Even when the pessimistic strategy overreports,
       its first error message will always accurately identify
       the first problem location.
