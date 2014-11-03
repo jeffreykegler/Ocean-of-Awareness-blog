@@ -10,3 +10,4 @@ full: all
 
 ping:
 	wget 'www.google.com/webmasters/tools/ping?sitemap=http://jeffreykegler.github.com/Ocean-of-Awareness-blog/sitemap.xml' -O google_ping.out
+	cat google_ping.out
