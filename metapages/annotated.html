@@ -222,20 +222,20 @@
       </ul>
       <h2><a name="GENERAL"></a>About Marpa in general</h2>
       <ul>
-	<li><p>
-            <a href="http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2014/09/chron.html">
-	    Parsing: a timeline</a>
-	    A timeline of parsing research, describing how other algorithm pushed the parsers
-	    in the Earley lineage
-	    (like Marpa)
-	    aside, only for it all to come down twisted.
-	    This post focuses on the various algorithms (LALR, recursive descent, etc.)
-	    making it the most technical post I've ever dared put on this blog.
-	    Suprisingly, it was also my most popular post, by far.
-	    The development of the various parsing algorithms is an interesting story,
-	    one that has never really been told as a story before.
-	    Readers apparently liked this.
         <li><p>
+            <a href="http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2014/09/chron.html">
+              Parsing: a timeline</a>
+            A timeline of parsing research, describing how other algorithm pushed the parsers
+            in the Earley lineage
+            (like Marpa)
+            aside, only for it all to come down twisted.
+            This post focuses on the various algorithms (LALR, recursive descent, etc.)
+            making it the most technical post I've ever dared put on this blog.
+            Suprisingly, it was also my most popular post, by far.
+            The development of the various parsing algorithms is an interesting story,
+            one that has never really been told as a story before.
+            Readers apparently liked this.
+          </p></li><li><p>
             <a href="http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2013/05/table.html">
               Why Marpa works: table parsing</a>.
             Marpa is different from the other widely used parsers.
@@ -290,28 +290,28 @@
         </li>
       </ul>
       <h2><a name="DESIGN">Designing languages</a></h2>
-      <p>Marpa allows things to be done which 
-      could not be done before.
+      <p>Marpa allows things to be done which
+        could not be done before.
         Many of these things are significant for language design --
         they allow languages to take radically new and aggressive approaches
-	to their syntax.
+        to their syntax.
       </p>
       <ul>
         <li>
           <p>
             <a href="
             <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2014/08/ambig.html">Language
-	    Design: exploiting ambiguity</a>.
-	    Actual ambiguity is a show-stopper but
-	    in the present state of the art, even potential ambiguity is totally avoided in language design.
-	    That only make sense, right?
-	    <p>
-	    Well, actually, no.
-	    Our workhorse languages, the ones we humans use to communicate with each other,
-	    are full of potential ambiguities, and allowing them makes those languages more
-	    powerful and flexible.  Could that same work for computer languages?
-	    This post explores that possibility.
-        </li>
+              Design: exploiting ambiguity</a>.
+            Actual ambiguity is a show-stopper but
+            in the present state of the art, even potential ambiguity is totally avoided in language design.
+            That only make sense, right?
+          </p><p>
+            Well, actually, no.
+            Our workhorse languages, the ones we humans use to communicate with each other,
+            are full of potential ambiguities, and allowing them makes those languages more
+            powerful and flexible.  Could that same work for computer languages?
+            This post explores that possibility.
+          </p></li>
         <li>
           <p>
             <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2014/03/kv.html">Evolvable
@@ -324,7 +324,7 @@
           <p>
             But Marpa lets you keep extending your language and (essentially) as long as you can
             describe your language extension in BNF,
-	    or in BNF plus some hacks, you can still
+            or in BNF plus some hacks, you can still
             parse the language in linear time.
             "Language design has been like shooting
             crap in a casino that sets you up to win a lot of the first rolls
@@ -334,7 +334,6 @@
         </li>
         <li>
           <p>
-            Or take this issue:
             <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2014/02/semantic_ws.html">Significant newlines?
               Or semicolons?</a>.
             Currently a programming language designer must choose: either make whitespace semantically significant,
@@ -345,7 +344,24 @@
             rich as you want.
           </p>
         </li>
-      </ul>
+        <li>
+          <p>
+            <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2014/11/delimiter.html">
+              Reporting mismatched delimiters</a>
+            Delimiters are parentheses and brackets, but also quote marks and even HTML
+            and XML tags -- anything that explicitly marks the beginning and end of some text.
+            Delimiters are widely used,
+            easy to get wrong and,
+            in the current practice,
+            annoying to fix, in large because current parsers are not good at diagnosing.
+            Worse, a mismatched delimiter will almost certainly make the rest of a compiler's
+            error message so unreliable that they are effectively useless.
+          </p><p>Marpa allows more accurate reporting of delimiter mismatches than traditional
+            parsers,
+            and in most cases Marpa can recover and go on to accurately report other errors.
+            How? Read this blog post.
+            Hint: the Ruby Slippers get involved.
+          </p></li></ul>
       <h2><a name="PARSE_HTML">How to parse HTML</a></h2>
       <p>
         This series describes a new strategy for parsing liberal HTML,
