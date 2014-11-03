@@ -100,7 +100,7 @@
       <h2><a name="TUTORIAL">Tutorials</a></h2>
       <p>
         Practical general parsing makes writing a DSL much simpler than it has been in the past.
-        The posts in this series of tutorials are my most popular.
+        The posts in this series of tutorials are among my most popular.
         Although
         you can join the series starting at a topic of special interest,
         the easiest way to read (or at least skim)
@@ -110,7 +110,7 @@
         <li><p><a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2013/01/dsl_simpler2.html">
               Making DSL's even simpler</a>.
             The best place to start.
-            An updated version of my most popular post,
+            An updated version of one of my most popular posts,
             it describes Marpa's Scanless interface (SLIF).
           </p></li>
         <li><p><a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2013/01/announce_scanless.html">
@@ -222,6 +222,19 @@
       </ul>
       <h2><a name="GENERAL"></a>About Marpa in general</h2>
       <ul>
+	<li><p>
+            <a href="http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2014/09/chron.html">
+	    Parsing: a timeline</a>
+	    A timeline of parsing research, describing how other algorithm pushed the parsers
+	    in the Earley lineage
+	    (like Marpa)
+	    aside, only for it all to come down twisted.
+	    This post focuses on the various algorithms (LALR, recursive descent, etc.)
+	    making it the most technical post I've ever dared put on this blog.
+	    Suprisingly, it was also my most popular post, by far.
+	    The development of the various parsing algorithms is an interesting story,
+	    one that has never really been told as a story before.
+	    Readers apparently liked this.
         <li><p>
             <a href="http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2013/05/table.html">
               Why Marpa works: table parsing</a>.
@@ -277,13 +290,28 @@
         </li>
       </ul>
       <h2><a name="DESIGN">Designing languages</a></h2>
-      <p>Marpa allows things to be done which have never
-        been doable before.
+      <p>Marpa allows things to be done which 
+      could not be done before.
         Many of these things are significant for language design --
         they allow languages to take radically new and aggressive approaches
 	to their syntax.
       </p>
       <ul>
+        <li>
+          <p>
+            <a href="
+            <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2014/08/ambig.html">Language
+	    Design: exploiting ambiguity</a>.
+	    Actual ambiguity is a show-stopper but
+	    in the present state of the art, even potential ambiguity is totally avoided in language design.
+	    That only make sense, right?
+	    <p>
+	    Well, actually, no.
+	    Our workhorse languages, the ones we humans use to communicate with each other,
+	    are full of potential ambiguities, and allowing them makes those languages more
+	    powerful and flexible.  Could that same work for computer languages?
+	    This post explores that possibility.
+        </li>
         <li>
           <p>
             <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2014/03/kv.html">Evolvable
