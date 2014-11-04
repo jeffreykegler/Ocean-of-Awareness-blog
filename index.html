@@ -34,6 +34,73 @@
   </p>
   </div>
   <div style="margin-left:190px;border-left:2px solid #38B0C0;padding:25px;">
+<h3>Tue, 04 Nov 2014</h3>
+<br />
+<center><a name="backpan"> <h2>Removing obsolete versions of Marpa from CPAN</h2> </a>
+</center>
+<html>
+  <head>
+  </head>
+  <body><p>
+      <!--
+      marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
+      -->
+    </p>
+    <p>Marpa::XS, Marpa::PP and Marpa::HTML are obsolete versions of
+      Marpa, which I have been keeping on CPAN for the convenience of legacy
+      users.
+      All new users should look only at
+      <a href="https://metacpan.org/release/Marpa-R2">Marpa::R2</a>.
+    </p><p>
+      I plan to delete the obsolete releases from CPAN soon.
+      For legacy users who need copies, they would still be available on backPAN.
+    </p><p>
+      I do this because their placement on CPAN placement makes them "attractive nuisances" --
+      they show up in searches and generally make it harder to find
+      <a href="https://metacpan.org/release/Marpa-R2">Marpa::R2</a>,
+      which is the version that new users should be interested in.
+      There is also some danger a new user could, by mistake, use the
+      obsolete versions instead of Marpa::R2.
+    </p><p>
+      It's been some time since someone has reported a bug in their code,
+      so they should be stable for legacy applications.
+      I would usually promise to fix serious bugs that affect legacy users,
+      but unfortunately, especially in the case of Marpa::XS,
+      it is a promise I would have trouble keeping.
+      Marpa::XS depends on Glib, and uses a complex build which I last performed
+      on a machine I no longer use for development.
+    </p><p>
+      For this reason, a re-release to CPAN with deprecatory language is also not an option.
+      I probably would not want to do so anyway -- the CPAN infrastructure by default
+      pushes legacy
+      users into upgrading, which always carries some risk.
+      New deprecatory language would add no
+      value for the legacy users,
+      and they are the only audience these releases exist to serve.
+    </p>
+    <h3>>Comments</h3>
+    <p>Comments on this post can be made in
+      <a href="http://groups.google.com/group/marpa-parser">
+        Marpa's Google group</a>,
+      or on our IRC channel: #marpa at freenode.net.
+      To learn more about Marpa,
+      there's
+      <a href=http://savage.net.au/Marpa.html">the
+        official web site maintained by Ron Savage</a>.
+      I also have
+      <a href="http://jeffreykegler.github.io/Marpa-web-site/">a Marpa web site</a>.
+    </p>
+  </body>
+</html>
+<br />
+<p>posted at: 10:53 |
+<a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2014/11/backpan.html">direct link to this entry</a>
+</p>
+<div style="color:#38B0C0;padding:1px;text-align:center;">
+&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&sect;
+</div>
 <h3>Sat, 01 Nov 2014</h3>
 <br />
 <center><a name="delimiter"> <h2>Reporting mismatched delimiters</h2> </a>
@@ -896,208 +963,6 @@ Length of symbol "Statement" at line 4, column 1 is ambiguous
 <br />
 <p>posted at: 14:12 |
 <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2014/08/ambig.html">direct link to this entry</a>
-</p>
-<div style="color:#38B0C0;padding:1px;text-align:center;">
-&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-&sect;
-</div>
-<h3>Mon, 10 Mar 2014</h3>
-<br />
-<center><a name="kv"> <h2>Evolvable languages</h2> </a>
-</center>
-<html>
-  <head>
-  </head>
-  <body><p>
-      <!--
-      marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
-      -->
-      Ideally, if a syntax is useful and clear,
-      and a programmer can easily read it at a glance,
-      you should be able to add it to an existing language.
-      In this post, I will describe
-      a modest incremental change to the Perl syntax.
-    </p>
-    <p>
-      It's one I like, because that's beside the point, for two
-      reasons.
-      First, it's simply intended as an example of language evolution.
-      Second, regardless of its merits, it is unlikely to happen,
-      because of the way that Perl 5 is parsed.
-      In this post I will demonstrate a way of writing a parser,
-      so that this change,
-      or others, can be made in a straightforward way,
-      and without designing your language into a corner.
-    </p>
-    <p>
-      When initializing a hash, Perl 5 allows you to use not just commas,
-      but also the so-called "wide comma" (<tt>=&gt;</tt>).
-      The wide comma is suggestive visually, and it also has some smarts
-      about what a hash key is:
-      The hash key is always converted into a string, so that wide comma
-      knows that in a key-value pair like this:
-    </p><blockquote>
-      <pre>
-    key1 => 711,
-</pre>
-    </blockquote><p>
-      that
-      <tt>key1</tt>
-      is intended as a string.
-    </p>
-    <p>
-      But what about something like this?
-    </p>
-    <blockquote>
-      <pre>
-  {
-   company name => 'Kamamaya Technology',
-   employee 1 => first name => 'Jane',
-   employee 1 => last name => 'Doe',
-   employee 1 => title => 'President',
-   employee 2 => first name => 'John',
-   employee 2 => last name => 'Smith',
-   employee 3 => first name => 'Clarence',
-   employee 3 => last name => 'Darrow',
-  }
-</pre>
-    </blockquote><p>
-      Here I think the intent is obvious -- to create an employee database in the form
-      of a hash of hashes, allowing spaces in the keys.
-      In Data::Dumper format, the result would look like:
-    </p><blockquote>
-      <pre>
-{
-              'employee 2' => {
-                                'last name' => '\'Smith\'',
-                                'first name' => '\'John\''
-                              },
-              'company name' => '\'Kamamaya Technology\'',
-              'employee 3' => {
-                                'last name' => '\'Darrow\'',
-                                'first name' => '\'Clarence\''
-                              },
-              'employee 1' => {
-                                'title' => '\'President\'',
-                                'last name' => '\'Doe\'',
-                                'first name' => '\'Jane\''
-                              }
-            }
-</pre>
-    </blockquote>
-    <p>And in fact, that is the output of the script in
-      <a href="https://gist.github.com/jeffreykegler/9478391">
-    this Github gist</a>,
-        which parses the previous "extended Perl 5" snippet using a Marpa
-        grammar before passing it on to Perl.
-      </p>
-      <p>Perl 5 does not allow a syntax like this,
-      and looking at its parsing code will tell you why -- it's already
-      a maintenance nightmare.
-      The extension I've described above could, in theory, be added to Perl
-      5, but doing so would aggravate an already desperate maintenance situation.
-    <p>
-      Now, depending on taste,
-      you may be just as happy that you'll never
-      see the extensions I have just outlined in Perl 5.
-      But I don't think it is as easy to
-      be happy about a parsing technology that
-      quickly paints the languages which use it into a corner.
-    </p>
-    <h3>How it works</h3>
-    <p>
-      The code is in
-      <a href="https://gist.github.com/jeffreykegler/9478391">
-        a Github gist</a>.
-	For the purposes of the example, I've implemented
-	a toy subset of Perl.
-	But this approach has been shown to scale.
-	There are full Marpa-powered parsers of
-	<a href="https://metacpan.org/release/MarpaX-Languages-C-AST">C</a>,
-	<a href="https://metacpan.org/release/MarpaX-Languages-ECMAScript-AST">ECMAScript</a>,
-	<a href="https://metacpan.org/release/MarpaX-xPathLike">XPath</a>, and
-	<a href="https://metacpan.org/pod/distribution/Marpa-R2/html/pod/HTML.pod">liberal HTML</a>.
-    </p>
-    <p>Marpa is a general BNF parser, which means that anything you can write in BNF, Marpa can parse.
-    For practical parsing, what matters are those grammars that can be parsed in linear time,
-    and with Marpa that class is vast, including all the classes of grammar currently in practical use.
-    To describe the class of grammars that Marpa parses in linear time,
-    assume that you have either a left or right parser,
-    with infinite lookahead,
-    that uses regular expressions.
-    (A parser like this is called LR-regular.)
-    Assume that this LR-regular parser parses your grammar.
-    In that case,
-    you can be sure that
-    Marpa will parse that grammar in linear time, and without doing the lookahead.
-    (Instead Marpa tracks possibilities in a highly-optimized table.)
-    Marpa also parses many grammars that are not LR-regular in linear time,
-    but just LR-regular is very likely to include any class of grammar that you will be
-    interested in parsing.
-    The LR-regular grammars easily include all those that can be
-    parsed using yacc, recursive descent or regular expressions.
-    </p>
-    <p>
-    Marpa excels at those special hacks so necessary in recursive descent and other techniques.
-    Marpa allows you to define events that will stop it at symbols or rules, both before and after.
-    While stopped,
-    you can hand processing over to your own custom code.
-    Your custom code can feed your own tokens to the parse for as long as you like.
-    In doing so, it can
-    consult Marpa to determine exactly what symbols and rules have been recognized and
-    which ones are expected.
-    Once finished with custom processing,
-    you can then ask Marpa to pick up again at any point you wish.
-    </p>
-    <h3>The craps game is over</h3>
-    <p>The bottom line is that if you can describe your language extension in BNF,
-    or in BNF plus some hacks,
-    you can rely on Marpa parsing it in reasonable time.
-    Language design has been like shooting crap in a casino
-    that sets you up to
-    win a lot of the first rolls before
-    the laws of probability grind you down.
-    Marpa changes the game.
-    </p>
-    <h3>To learn more</h3>
-    <p>
-      <a href="https://metacpan.org/module/Marpa::R2">Marpa::R2
-        is available on CPAN</a>.
-      A list of my Marpa tutorials can be found
-      <a href="http://jeffreykegler.github.io/Ocean-of-Awareness-blog/metapages/annotated.html#TUTORIAL">
-        here</a>.
-      There are
-      new tutorials by
-      <a href="http://marpa-guide.github.io/chapter1.html">Peter Stuifzand</a>
-      and
-      <a href="http://longanswers.blogspot.de/2013/06/transforming-syntax.html">amon</a>.
-      <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/">
-        The Ocean of Awareness blog</a>
-      focuses on Marpa,
-      and it has
-      <a href="http://jeffreykegler.github.io/Ocean-of-Awareness-blog/metapages/annotated.html">an annotated guide</a>.
-      Marpa has
-      <a href="http://jeffreykegler.github.com/Marpa-web-site/">a web page that I maintain</a>
-      and Ron Savage maintains
-      <a href="http://savage.net.au/Perl-modules/html/marpa.papers/index.html">
-        another</a>.
-      For questions, support and discussion, there is
-      <a href="http://groups.google.com/group/marpa-parser">
-        the "marpa parser"
-        Google Group.</a>
-    </p>
-    <h3>Comments</h3>
-    <p>
-      Comments on this post can be made in
-      <a href="http://groups.google.com/group/marpa-parser">
-      Marpa's Google group</a>.
-      </p>
-  </body>
-</html>
-<br />
-<p>posted at: 19:48 |
-<a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2014/03/kv.html">direct link to this entry</a>
 </p>
 <div style="color:#38B0C0;padding:1px;text-align:center;">
 &sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
