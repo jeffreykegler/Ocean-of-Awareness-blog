@@ -7,14 +7,14 @@ Removing obsolete versions of Marpa from CPAN
       marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
       -->
     </p>
-    <p>Marpa::XS, Marpa::PP and Marpa::HTML are obsolete versions of
+    <p>Marpa::XS, Marpa::PP, and Marpa::HTML are obsolete versions of
       Marpa, which I have been keeping on CPAN for the convenience of legacy
       users.
       All new users should look only at
       <a href="https://metacpan.org/release/Marpa-R2">Marpa::R2</a>.
     </p><p>
       I plan to delete the obsolete releases from CPAN soon.
-      For legacy users who need copies, they would still be available on backPAN.
+      For legacy users who need copies, they will still be available on backPAN.
     </p><p>
       I do this because their placement on CPAN placement makes them "attractive nuisances" --
       they show up in searches and generally make it harder to find
@@ -39,7 +39,7 @@ Removing obsolete versions of Marpa from CPAN
       value for the legacy users,
       and they are the only audience these releases exist to serve.
     </p>
-    <h3>>Comments</h3>
+    <h3>Comments</h3>
     <p>Comments on this post can be made in
       <a href="http://groups.google.com/group/marpa-parser">
         Marpa's Google group</a>,
