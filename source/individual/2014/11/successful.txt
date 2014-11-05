@@ -8,26 +8,25 @@ What makes a parsing algorithm successful?
       -->
     </p>
     <p>What makes a parsing algorithm successful?
-      I believe that two factors,
-      are crucial.
-      First, does the algorithm parse a workably-defined language in linear time?
+      Two factors, I think.
+      First, does the algorithm parse a workably-defined set of grammars in linear time?
       Second, does it allow the application to intervene in the parse
       with custom code?
-      Neither of these is typically the focus of attention when
-      comparing parsing algorithms.
+      When parsing algorithms are compared,
+      typically neither of these gets much attention.
       But the successful algorithms do one or the other.
     </p>
     <h3>Does the algorithm parse a workably-defined set of grammars in linear time?</h3>
     <p>By "workably-defined" I do not just mean well-defined
       in the mathematical sense.
-      I mean something that goes beyond that.
-      For a set of grammars to be workably defined,
-      the definition has to be somethign that a programmer and,
+      I mean something that goes beyond that --
+      the set of grammars has to have a definiton that is workable.
+      Workable means that the
+      definition is something that,
       with reasonable effort,
-      use in practice.
-      The most prominent examples of a workably defined algorithms
-      are those in modern regular expression engines.
+      a programmer can use in practice.
     </p><p>
+      The algorithms in regular expression engines are workably-defined.
       A regular expression, in the pure sense consists of a sequence of symbols,
       usually shown by concatenation:
     </p><blockquote><pre>a b c</pre></blockquote><p>
@@ -36,29 +35,26 @@ What makes a parsing algorithm successful?
       or a repetition of any of the, typically shown with a star:
     </p><blockquote><pre>a*</pre></blockquote><p>
       or any recursive combination of these.
-      If this definition is new to you, it can take time to get
-      used to it.
+      True, if this definition is new to you, it can take time to get
+      used to.
       But vast numbers of working programming are very much "used to it",
-      and can quickly tell whether something is a regular
-      expression or not.
+      can think in terms of regular expressions,
+      and can determine if a particular problem will yield to treatment
+      as a regular expression, or not.
+      <p>
+      Parsers in the LALR family (yacc, bison, etc.)
+      do <b>not</b>
+      have a workably defined set of grammars.
+      LALR is perfectly well-defined mathematically,
+      but even experts in parsing theory are hard put to decide
+      if a particular grammar is LALR.
     </p><p>
-      Parsers whose languages are
-      <b>not</b>
-      workably defined are those in the LALR family (yacc, bison, etc.).
-      LALR is quite well-defined mathematically,
-      but even experts in parsing theory are hard put to look at
-      an arbitrary grammar and determine if it is LALR.
-    </p><p>
-      Other examples of parsers whose languages are not workably
-      defined are those written using recursive descent.
-      Recursive descent has, in theory, a mathematically well-defined
-      basis in the LL languages,
-      but in practice this is not relevant, for two reasons.
-      First, most recursive descent implementations do not exploit
-      LL fully by using LL tables.
-      Second, most implemenations extend the LL model with ad hoc
-      code, code which sometimes amount to
-      switching to  other parsing strategies.
+      Recursive descent also does not have a workably defined
+      set of grammars.
+      Recursive descent doesn't even have a precise mathematical description --
+      you can say they are LL, but in practice LL tables are rarely used.
+      Also in practice, the LL logic is extended with every other trick
+      imaginable, up to and including switching to other parsing algorithms.
     </p>
     <h3>Does it allow the user to intervene in the parse?</h3>
     <p>It is not easy for users to intervene in the processing
@@ -77,78 +73,89 @@ What makes a parsing algorithm successful?
       and will remain so,
       because the set of grammars
       they handle is very workably-defined.
-      You can, for example, have code that writes regular expressions, and
-      be confident they will work as long as they are well-formed.
-      And it is not at all hard to determine if the regular expression is well-formed.
+      Applications using regular expressions have to take what the algorithm
+      gives them, but what it gives them is very predictable.
+      <p>
+      For example, an application can write regular expressions on the fly, and
+      the programmer can be confident they will run as long as they are well-formed.
+      And it is easy to determine if the regular expression is well-formed.
       (Whether it actually does what you want is a separate issue.)
       <p>
-      Recursive descent does not handle a clearly-defined set of grammars,
+      Recursive descent does not handle a workably-defined set of grammars,
       and it also has to be hand-written.
       But it makes up for this by allowing the user to step into the parsing process
       anywhere, and "get his hands dirty".
-      For this reason, recursive descent is currently the algorithm of choice
+      Recursive descent does nothing for you, but it does allow you complete control.
+      This is enough to mkae recursive descent the current algorithm of choice
       for major parsing projects.
       <p>
       As I have
       <a href="http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2014/09/chron.html">chronicled
       elsewhere</a>,
-      LALR once was seen as
-      <b>the</b> solution to the parsing problem,
-      for strong theoretical reasons.
-      But LALR, while mathematically well-defined,
-      did not parse a workably defined set of grammars and
-      is very unfriendly to an application that tries to alter,
-      or even examine, its workings.
-      After decades of trying, at this point the profession
-      has almost totally abandoned LALR.
+      LALR was once,
+      on highly convincing theoretical grounds,
+      seen as
+      <b>the</b> solution to the parsing problem.
+      But while mathematically well-defined,
+      LALR was not workably defined,
+      it was very hostile to applications that tried to alter,
+      or even examine, its syntax-driven workings.
+      After decades of trying to make it work,
+      the profession has abandoned LALR almost totally.
     </p>
     <h3>What about Marpa?</h3>
-    <p>I've written an Earley-based parser named Marpa,
-      which has both properties:
-      its language is workably-defined
-      and, while syntax-driven like LALR and regular expressions,
+    <p>Marpa has both properties:
+      its set of grammars is workably-defined.
+      And, while Marpa is syntax-driven like LALR and regular expressions,
       it also allows the user to stop the parse engine,
       communicate with it about the state of the parse,
       do its own parsing for a while,
       and restart the parse engine at any point it wants.
-    </p><p>With the other parsers that have workably-defined
-      languages, linearity was a given -- they either worked in linear time
-      or (very often) could not handle the language.
-      Marpa parses anything
-      that can be written in BNF.
-      BNF can describe exactly the context-free languages,
-      is used to describe languages in standards,
-      and is the "gold standard" for workably-defined.
-      However, Marpa does
-      <b>not</b>
+    </p>
+    <p>Marpa's workable definition has a nuance that the one
+    for regular expressions does not.
+    For regular expression linearity is a given --
+    they parse in linear time or fail.
+      Marpa parses a much larger class of grammars, the context-free grammars --
+      anything that can be written in BNF.
+      BNF is used to describe languages in standards,
+      and is therefore the "gold standard" for a workable definition of a
+      set of grammars.
+      However, Marpa does <b>not</b>
       parse everything that can be written in BNF in linear time.
     </p>
-    <p>Marpa linearly-parsed language, however, while smaller,
-      is also workably-defined.
+    <p>Marpa linearly-parsed set of grammars is smaller than the context-free
+    grammars, but it is still very large, and it is still workably-defined.
       Marpa will parse any unambiguous language in linear time,
       unless it contains unmarked middle recursions.
       An example of a "marked" middle recursion is the language described
       by
     </p><blockquote><pre>S ::= a S a | x</pre></blockquote><p>
+    a string of which is "<tt>aaaxaaa</tt>",
       where the "<tt>x</tt>" marks the middle.
       An example of an "unmarked" middle recursion is the language described
       by
     </p><blockquote><pre>S ::= a S a | a</pre></blockquote><p>
-      where nothing marks the middle and you don't know until the end where the
+    a string of which is "<tt>aaaaaaa</tt>",
+      where nothing marks the middle, so that you don't know until the end where the
       middle of the recursion is.
       If a human can reliably find the middle by eyeball, the middle recursion is marked.
       If a human can't, then the middle recursion might be unmarked.
     </p>
     <p>Marpa also parses a large set of unambiguous grammars linearly,
-      and these are also workably-defined.
+      and this set of grammars is also workably-defined.
       Marpa parses an ambiguous grammar in linear time if
     </p><ul>
-      <li>As required for the unambiguous grammars, it has no unmarked middle
-        recursions.
+      <li>It has no unmarked middle recursions.
+      </li>
+      <li>All right recursions are unambiguous.
+      </li>
+      <li>There are no cycles.
+      A cycle occurs, when example, if there is a rule <tt>A ::= A</tt>
+      in the grammar.
       </li>
       <li>Marpa's level of ambiguity at any location is bounded by a constant.
-        There can be as many rules "in play" as you like, and that's OK,
-        your grammar is still linear.
+        There can be as many rules "in play" as you like.
         The key question is at how many points,
         earlier in the parse, can these rules have begun?
         That is, can a rule currently in play
@@ -158,14 +165,23 @@ What makes a parsing algorithm successful?
         ambiguity is "bounded".
         If not, the level of ambiguity is unbounded.
       </li>
-      <li>Finally, all right recursions must be unambiguous.
-      </li>
       </ul>
-    <p>For the unambigious case, Marpa's workable-defining is not more
+    <p>For the unambiguous case, Marpa's workable definition encompasses
+    a much larger class of grammars, and is no more
       complex than that for regular expressions.
-      For the ambiguous one, it's somewhat harder but still quite manageable,
-      and in return you get the advantage of dealing with a much larger
-      set of grammars.
+      If you want to extend even further into ambiguous grammars,
+      working with the definition is still quite manageable.
+      Of the 4 restrictions needed to ensure linearity,
+      typically the only one for bounded
+      ambiguity will ever require careful watching.
+      Cycles never occur in a practical grammars,
+      so that you just fix them when they happen.
+      Most recursions will be left recursions,
+      which are unrestricted.
+      For the rest, you just note where your middle
+      recursions and right recursions are,
+      and make sure the middle ones are marked
+      and the right ones are unambiguous.
     </p>
     <h3>More about Marpa</h3><p>
       To learn more about Marpa,
