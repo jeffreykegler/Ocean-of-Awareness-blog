@@ -17,8 +17,8 @@ What makes a parsing algorithm successful?
       But the successful algorithms do one or the other.
     </p>
     <h3>Does the algorithm parse a workably-defined set of grammars in linear time?</h3>
-    <p>"workably-defined" means more than well-defined
-      in the mathematical sense ==
+    <p>"Workably-defined" means more than well-defined
+      in the mathematical sense --
       the definition has to be <b>workable</b>.
       That is, the
       definition must be something that,
@@ -31,7 +31,7 @@ What makes a parsing algorithm successful?
     </p><blockquote><pre>a b c</pre></blockquote><p>
       or a choice among sequences, usually shown by a vertical bar:
     </p><blockquote><pre>a | b | c</pre></blockquote><p>
-      or a repetition of any of the, typically shown with a star:
+      or a repetition of any of the above, typically shown with a star:
     </p><blockquote><pre>a*</pre></blockquote><p>
       or any recursive combination of these.
       True, if this definition is new to you, it can take time to get
@@ -51,7 +51,8 @@ What makes a parsing algorithm successful?
       Recursive descent also does not have a workably defined
       set of grammars.
       Recursive descent doesn't even have a precise mathematical description --
-      you can say they are LL, but in practice LL tables are rarely used.
+      you can say that recursive descent is LL,
+      but in practice LL tables are rarely used.
       Also in practice, the LL logic is extended with every other trick
       imaginable, up to and including switching to other parsing algorithms.
     </p>
@@ -85,7 +86,7 @@ What makes a parsing algorithm successful?
       But it makes up for this by allowing the user to step into the parsing process
       anywhere, and "get his hands dirty".
       Recursive descent does nothing for you, but it does allow you complete control.
-      This is enough to mkae recursive descent the current algorithm of choice
+      This is enough to make recursive descent the current algorithm of choice
       for major parsing projects.
       <p>
       As I have
@@ -96,8 +97,8 @@ What makes a parsing algorithm successful?
       seen as
       <b>the</b> solution to the parsing problem.
       But while mathematically well-defined,
-      LALR was not workably defined,
-      it was very hostile to applications that tried to alter,
+      LALR was not workably defined.
+      And it was very hostile to applications that tried to alter,
       or even examine, its syntax-driven workings.
       After decades of trying to make it work,
       the profession has abandoned LALR almost totally.
@@ -108,17 +109,18 @@ What makes a parsing algorithm successful?
       And, while Marpa is syntax-driven like LALR and regular expressions,
       it also allows the user to stop the parse engine,
       communicate with it about the state of the parse,
-      do its own parsing for a while,
-      and restart the parse engine at any point it wants.
+      do her own parsing for a while,
+      and restart the parse engine at any point she wants.
     </p>
     <p>Marpa's workable definition has a nuance that the one
     for regular expressions does not.
-    For regular expression linearity is a given --
+    For regular expressions, linearity is a given --
     they parse in linear time or fail.
       Marpa parses a much larger class of grammars, the context-free grammars --
       anything that can be written in BNF.
       BNF is used to describe languages in standards,
-      and is therefore the "gold standard" for a workable definition of a
+      and is therefore itself a kind of "gold standard"
+      for a workable definition of a
       set of grammars.
       However, Marpa does <b>not</b>
       parse everything that can be written in BNF in linear time.
@@ -150,21 +152,26 @@ What makes a parsing algorithm successful?
       <li>All right recursions are unambiguous.
       </li>
       <li>There are no cycles.
-      A cycle occurs, when example, if there is a rule <tt>A ::= A</tt>
+      A cycle occurs, for example, if there is a rule <tt>A ::= A</tt>
       in the grammar.
       </li>
       <li>Marpa's level of ambiguity at any location is bounded by a constant.
-        There can be as many rules "in play" as you like.
-        The key question is at how many points,
-        earlier in the parse, can these rules have begun?
-        That is, can a rule currently in play
-        have begun only at 20 previous locations,
-        and could it have started at every location so far?
-        If the answer is 20 or some other constant, the level of
-        ambiguity is "bounded".
-        If not, the level of ambiguity is unbounded.
       </li>
       </ul>
+      <p>The term "level of ambiguity" requires a bit of explanation.
+	At any given location,
+        there can be as many rules "in play" as you like,
+	without affecting the level of ambiguity.
+        The key question: What is the maximum number of different origins
+	that a rule might have?
+	(The "origin" of a rule is the location where it begins.)
+        That is, can a rule currently in play
+	have at most 20 different origins?
+        Or could it have its origin at every location so far?
+        If the maximum number of origins is 20 or any other fixed constant, the level of
+        ambiguity is "bounded".
+	But if the maximum number of origins keeps growing as the length of the input
+	grows, the level of ambiguity is unbounded.
     <p>For the unambiguous case, Marpa's workable definition encompasses
     a much larger class of grammars, but is no more
       complex than that for regular expressions.
@@ -187,7 +194,6 @@ What makes a parsing algorithm successful?
       and ambiguous right recursions are not especially
       tempting features.
     </p>
-    <h3>More about Marpa</h3><p>
       To learn more about Marpa,
       there's
       <a href=http://savage.net.au/Marpa.html">the
