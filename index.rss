@@ -21,11 +21,11 @@
       --&gt;
     &lt;/p&gt;
     &lt;p&gt;What makes a parsing algorithm successful?
-    By success I mean something short of &quot;world domination&quot;.
-    A parsing algorithm is a success if it secures a lasting place for solving
-    a large class of parsing problems.
-    And I'll use the term &quot;parsing&quot; broadly,
-    so that a regular expression engine counts as a &quot;parser&quot;
+      By success I mean something short of &quot;world domination&quot;.
+      A parsing algorithm is a success if it secures a lasting place for solving
+      a large class of parsing problems.
+      And I'll use the term &quot;parsing&quot; broadly,
+      so that a regular expression engine counts as a &quot;parser&quot;
     &lt;/p&gt;
     &lt;p&gt;
       I believe that two factors are important.
@@ -39,60 +39,141 @@
     &lt;/p&gt;
     &lt;h3&gt;Does the algorithm parse a workably-defined language?&lt;/h3&gt;
     &lt;p&gt;By &quot;workably-defined&quot; I do not just mean well-defined
-    in the mathematical sense,
-    but something that goes beyond that.
-    To be workably-defined,
-    you have to be able to tell, with reasonable effort,
-    whether a language is parsed in linear time by the algorithm.
-    The most prominent examples of a workably defined parsers, in this sense,
-    are regular expression engines.
+      in the mathematical sense,
+      but something that goes beyond that.
+      To be workably-defined,
+      you have to be able to tell, with reasonable effort,
+      whether a language is parsed in linear time by the algorithm.
+      The most prominent examples of a workably defined parsers, in this sense,
+      are regular expression engines.
     &lt;/p&gt;&lt;p&gt;
-    A regular expression, in the pure sense consists of a sequence of symbols,
-    usually shown by concatenation:
-    &lt;blockquote&gt;&lt;pre&gt;a b c&lt;/pre&gt;&lt;/blockquote&gt;
-    or a choice among sequences, usually shown by a vertical bar:
-    &lt;blockquote&gt;&lt;pre&gt;a | b | c&lt;/pre&gt;&lt;/blockquote&gt;
-    or a repetition of any of the, typically shown with a star:
-    &lt;blockquote&gt;&lt;pre&gt;a*&lt;/pre&gt;&lt;/blockquote&gt;
-    or any recursive combination of these.
-    Most readers of these posts, I assume, are programmers
-    who get lots of practice with regular expressions,
-    to the point where they &quot;make sense&quot;.
-    With practice, you get to the point where you know one
-    when you see one.
-    &lt;p&gt;
-    Prominent examples of parsers whose languages are &lt;b&gt;not&lt;/b&gt;
-    workably defined at those in the LALR family (yacc, bison, etc.).
-    LALR is quite well-defined mathemtically,
-    but even experts in parsing theory are hard put to look at
-    an arbitrary grammar and determine if it is LALR.
-    &lt;p&gt;
-    Other examples of parsers whose languages are not workably
-    defined are those written using recursive descent.
-    Recursive descent has, in theory, a mathematically well-defined
-    basis in the LL languages,
-    but in practice this is not relevant, for two reasons.
-    First, most recursive descent implementations do not exploit
-    LL fully by using LL tables.
-    Second, most implemenations extend the LL model with ad hoc
-    code, code which sometimes amount to 
-    switching to  other parsing strategies.
+      A regular expression, in the pure sense consists of a sequence of symbols,
+      usually shown by concatenation:
+    &lt;/p&gt;&lt;blockquote&gt;&lt;pre&gt;a b c&lt;/pre&gt;&lt;/blockquote&gt;&lt;p&gt;
+      or a choice among sequences, usually shown by a vertical bar:
+    &lt;/p&gt;&lt;blockquote&gt;&lt;pre&gt;a | b | c&lt;/pre&gt;&lt;/blockquote&gt;&lt;p&gt;
+      or a repetition of any of the, typically shown with a star:
+    &lt;/p&gt;&lt;blockquote&gt;&lt;pre&gt;a*&lt;/pre&gt;&lt;/blockquote&gt;&lt;p&gt;
+      or any recursive combination of these.
+      Most readers of these posts, I assume, are programmers
+      who get lots of practice with regular expressions,
+      to the point where they &quot;make sense&quot;.
+      With practice, you get to the point where you know one
+      when you see one.
+    &lt;/p&gt;&lt;p&gt;
+      Prominent examples of parsers whose languages are
+      &lt;b&gt;not&lt;/b&gt;
+      workably defined at those in the LALR family (yacc, bison, etc.).
+      LALR is quite well-defined mathemtically,
+      but even experts in parsing theory are hard put to look at
+      an arbitrary grammar and determine if it is LALR.
+    &lt;/p&gt;&lt;p&gt;
+      Other examples of parsers whose languages are not workably
+      defined are those written using recursive descent.
+      Recursive descent has, in theory, a mathematically well-defined
+      basis in the LL languages,
+      but in practice this is not relevant, for two reasons.
+      First, most recursive descent implementations do not exploit
+      LL fully by using LL tables.
+      Second, most implemenations extend the LL model with ad hoc
+      code, code which sometimes amount to
+      switching to  other parsing strategies.
     &lt;/p&gt;
-    &lt;h3&gt;Does it allow the user to intervene in the parse?&lt;/a&gt;
+    &lt;h3&gt;Does it allow the user to intervene in the parse?&lt;/h3&gt;
     &lt;p&gt;It is not easy for users to intervene in the processing
-    of a regular expression, though some implementation attempt to
-    be friendly to such efforts.
-    LALR parsers are notoriously opaque, which has not
-    stopped the Perl parser from trying to supplement its abilities with
-    custom code, sometimes with problematic results.
-    &lt;h3&gt;More about Marpa&lt;/h3&gt;
+      of a regular expression, though some implementation attempt to
+      be friendly to such efforts.
+      LALR parsers are notoriously opaque.
+      Those who maintain the Perl parser have tried
+      to supplement its abilities with
+      custom code, with results that will not encourage
+      others making the same attempt.
+    &lt;/p&gt;&lt;p&gt;Recursive descent, on the other hand, has no parse engine --
+      it is 100% custom code.
+      You don't get much friendlier than that.
+    &lt;/p&gt;&lt;h3&gt;Conclusion&lt;/h3&gt;&lt;p&gt;
+      Regular expressions are a success because their core is clearly-defined.
+      You can, for example, have code that writes regular expressions, and
+      be confident they will work as long as they are well-formed.
+      Recursive descent does not have the advantage of a clearly-defined language,
+      but it makes up for it by allowing the user to step into the parsing process
+      anywhere, and &quot;get his hands dirty&quot;.
+      LALR has neither property and therefore was,
+      despite appearing in theory to be the solution to the parsing problem,
+      abandoned.
+    &lt;/p&gt;&lt;h3&gt;A final word about Marpa&lt;/h3&gt;
+    &lt;p&gt;I've written an Earley-based parser named Marpa,
+      which has both properties:
+      its language is workably-defined
+      and, while syntax-driven like LALR and regular expressions,
+      it also allows the user to stop the parse engine,
+      communicate with it about the state of the parse,
+      do its own parsing for a while,
+      and restart the parse engine at any point it wants.
+    &lt;/p&gt;&lt;p&gt;With the other parsers that have workably-defined
+      languages, linearity was a given -- they either worked in linear time
+      or (very often) could not handle the language.
+      Marpa parses anything
+      that can be written in BNF.
+      BNF can describe exactly the context-free languages,
+      is used to describe languages in standards,
+      and is the &quot;gold standard&quot; for workably-defined.
+      However, Marpa does
+      &lt;b&gt;not&lt;/b&gt;
+      parse everything that can be written in BNF in linear time.
+    &lt;/p&gt;
+    &lt;p&gt;Marpa linearly-parsed language, however, while smaller,
+      is also workably-defined.
+      Marpa will parse any unambiguous language in linear time,
+      unless it contains unmarked middle recursions.
+      An example of a &quot;marked&quot; middle recursion is the language described
+      by
+    &lt;/p&gt;&lt;blockquote&gt;&lt;pre&gt;S ::= a S a | x&lt;/pre&gt;&lt;/blockquote&gt;&lt;p&gt;
+      where the &quot;&lt;tt&gt;x&lt;/tt&gt;&quot; marks the middle.
+      An example of an &quot;unmarked&quot; middle recursion is the language described
+      by
+    &lt;/p&gt;&lt;blockquote&gt;&lt;pre&gt;S ::= a S a | a&lt;/pre&gt;&lt;/blockquote&gt;&lt;p&gt;
+      where nothing marks the middle and you don't know until the end where the
+      middle of the recursion is.
+      If a human can reliably find the middle by eyeball, the middle recursion is marked.
+      If a human can't, then the middle recursion might be unmarked.
+    &lt;/p&gt;
+    &lt;p&gt;Marpa also parses a large set of unambiguous grammars linearly,
+      and these are also workably-defined.
+      Marpa parses an ambiguous grammar in linear time if
+    &lt;/p&gt;&lt;ul&gt;
+      &lt;li&gt;As required for the unambiguous grammars, it has no unmarked middle
+        recursions.
+      &lt;/li&gt;
+      &lt;li&gt;Marpa's level of ambiguity at any location is bounded by a constant.
+        There can be as many rules &quot;in play&quot; as you like, and that's OK,
+        your grammar is still linear.
+        The key question is at how many points,
+        earlier in the parse, can these rules have begun?
+        That is, can a rule currently in play
+        have begun only at 20 previous locations,
+        and could it have started at every location so far?
+        If the answer is 20 or some other constant, the level of
+        ambiguity is &quot;bounded&quot;.
+        If not, the level of ambiguity is unbounded.
+      &lt;/li&gt;
+      &lt;li&gt;Finally, all right recursions must be unambiguous.
+      &lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;p&gt;For the unambigious case, Marpa's workable-defining is not more
+      complex than that for regular expressions.
+      For the ambiguous one, it's somewhat harder but still quite manageable,
+      and in return you get the advantage of dealing with a much larger
+      set of grammars.
+    &lt;/p&gt;
+    &lt;h3&gt;More about Marpa&lt;/h3&gt;&lt;p&gt;
       To learn more about Marpa,
       there's
       &lt;a href=http://savage.net.au/Marpa.html&quot;&gt;the
         official web site maintained by Ron Savage&lt;/a&gt;.
       I also have
       &lt;a href=&quot;http://jeffreykegler.github.io/Marpa-web-site/&quot;&gt;a Marpa web site&lt;/a&gt;.
-    &lt;h3&gt;Comments&lt;/h3&gt;
+    &lt;/p&gt;&lt;h3&gt;Comments&lt;/h3&gt;
     &lt;p&gt;Comments on this post can be made in
       &lt;a href=&quot;http://groups.google.com/group/marpa-parser&quot;&gt;
         Marpa's Google group&lt;/a&gt;,
