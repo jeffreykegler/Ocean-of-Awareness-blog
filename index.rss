@@ -21,31 +21,25 @@
       --&gt;
     &lt;/p&gt;
     &lt;p&gt;What makes a parsing algorithm successful?
-      By success I mean something short of &quot;world domination&quot;.
-      A parsing algorithm is a success if it secures a lasting place for solving
-      a large class of parsing problems.
-      And I'll use the term &quot;parsing&quot; broadly,
-      so that a regular expression engine counts as a &quot;parser&quot;
-    &lt;/p&gt;
-    &lt;p&gt;
-      I believe that two factors are important.
-      First, does the algorithm parse a workably-defined language?
+      I believe that two factors,
+      are crucial.
+      First, does the algorithm parse a workably-defined language in linear time?
       Second, does it allow the application to intervene in the parse
       with custom code?
-      The currently successful algorithms do one or the other.
-      LALR parsing, which dominated parsing for decades,
-      and whose rise and fall I have chronicled elsewhere,
-      does neither.
+      Neither of these is typically the focus of attention when
+      comparing parsing algorithms.
+      But the successful algorithms do one or the other.
     &lt;/p&gt;
-    &lt;h3&gt;Does the algorithm parse a workably-defined language?&lt;/h3&gt;
+    &lt;h3&gt;Does the algorithm parse a workably-defined set of grammars in linear time?&lt;/h3&gt;
     &lt;p&gt;By &quot;workably-defined&quot; I do not just mean well-defined
-      in the mathematical sense,
-      but something that goes beyond that.
-      To be workably-defined,
-      you have to be able to tell, with reasonable effort,
-      whether a language is parsed in linear time by the algorithm.
-      The most prominent examples of a workably defined parsers, in this sense,
-      are regular expression engines.
+      in the mathematical sense.
+      I mean something that goes beyond that.
+      For a set of grammars to be workably defined,
+      the definition has to be somethign that a programmer and,
+      with reasonable effort,
+      use in practice.
+      The most prominent examples of a workably defined algorithms
+      are those in modern regular expression engines.
     &lt;/p&gt;&lt;p&gt;
       A regular expression, in the pure sense consists of a sequence of symbols,
       usually shown by concatenation:
@@ -55,16 +49,16 @@
       or a repetition of any of the, typically shown with a star:
     &lt;/p&gt;&lt;blockquote&gt;&lt;pre&gt;a*&lt;/pre&gt;&lt;/blockquote&gt;&lt;p&gt;
       or any recursive combination of these.
-      Most readers of these posts, I assume, are programmers
-      who get lots of practice with regular expressions,
-      to the point where they &quot;make sense&quot;.
-      With practice, you get to the point where you know one
-      when you see one.
+      If this definition is new to you, it can take time to get
+      used to it.
+      But vast numbers of working programming are very much &quot;used to it&quot;,
+      and can quickly tell whether something is a regular
+      expression or not.
     &lt;/p&gt;&lt;p&gt;
-      Prominent examples of parsers whose languages are
+      Parsers whose languages are
       &lt;b&gt;not&lt;/b&gt;
-      workably defined at those in the LALR family (yacc, bison, etc.).
-      LALR is quite well-defined mathemtically,
+      workably defined are those in the LALR family (yacc, bison, etc.).
+      LALR is quite well-defined mathematically,
       but even experts in parsing theory are hard put to look at
       an arbitrary grammar and determine if it is LALR.
     &lt;/p&gt;&lt;p&gt;
@@ -81,8 +75,8 @@
     &lt;/p&gt;
     &lt;h3&gt;Does it allow the user to intervene in the parse?&lt;/h3&gt;
     &lt;p&gt;It is not easy for users to intervene in the processing
-      of a regular expression, though some implementation attempt to
-      be friendly to such efforts.
+      of a regular expression, though some implementations attempt to
+      allow such efforts.
       LALR parsers are notoriously opaque.
       Those who maintain the Perl parser have tried
       to supplement its abilities with
@@ -92,16 +86,36 @@
       it is 100% custom code.
       You don't get much friendlier than that.
     &lt;/p&gt;&lt;h3&gt;Conclusion&lt;/h3&gt;&lt;p&gt;
-      Regular expressions are a success because their core is clearly-defined.
+      Regular expressions are a success,
+      and will remain so,
+      because the set of grammars
+      they handle is very workably-defined.
       You can, for example, have code that writes regular expressions, and
       be confident they will work as long as they are well-formed.
-      Recursive descent does not have the advantage of a clearly-defined language,
-      but it makes up for it by allowing the user to step into the parsing process
+      And it is not at all hard to determine if the regular expression is well-formed.
+      (Whether it actually does what you want is a separate issue.)
+      &lt;p&gt;
+      Recursive descent does not handle a clearly-defined set of grammars,
+      and it also has to be hand-written.
+      But it makes up for this by allowing the user to step into the parsing process
       anywhere, and &quot;get his hands dirty&quot;.
-      LALR has neither property and therefore was,
-      despite appearing in theory to be the solution to the parsing problem,
-      abandoned.
-    &lt;/p&gt;&lt;h3&gt;A final word about Marpa&lt;/h3&gt;
+      For this reason, recursive descent is currently the algorithm of choice
+      for major parsing projects.
+      &lt;p&gt;
+      As I have
+      &lt;a href=&quot;http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2014/09/chron.html&quot;&gt;chronicled
+      elsewhere&lt;/a&gt;,
+      LALR once was seen as
+      &lt;b&gt;the&lt;/b&gt; solution to the parsing problem,
+      for strong theoretical reasons.
+      But LALR, while mathematically well-defined,
+      did not parse a workably defined set of grammars and
+      is very unfriendly to an application that tries to alter,
+      or even examine, its workings.
+      After decades of trying, at this point the profession
+      has almost totally abandoned LALR.
+    &lt;/p&gt;
+    &lt;h3&gt;What about Marpa?&lt;/h3&gt;
     &lt;p&gt;I've written an Earley-based parser named Marpa,
       which has both properties:
       its language is workably-defined
