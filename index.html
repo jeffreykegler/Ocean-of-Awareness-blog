@@ -206,21 +206,26 @@
       </li>
       </ul>
     <p>For the unambiguous case, Marpa's workable definition encompasses
-    a much larger class of grammars, and is no more
+    a much larger class of grammars, but is no more
       complex than that for regular expressions.
-      If you want to extend even further into ambiguous grammars,
-      working with the definition is still quite manageable.
-      Of the 4 restrictions needed to ensure linearity,
-      typically the only one for bounded
-      ambiguity will ever require careful watching.
-      Cycles never occur in a practical grammars,
-      so that you just fix them when they happen.
+      If you want to extend even further,
+      and work with ambiguous grammars,
+      the definition remains quite workable.
+      Of the four restrictions needed to ensure linearity,
+      the one requiring a bounded level of ambiguity is the only one
+      that might force you to exercise real vigliance --
+      once you get into ambiguity, unboundedness is easy to slip into.
+      <p>
+      As for the other three,
+      cycles never occur in a practical grammars,
+      and Marpa reports them,
+      so that you simply fix them when they happen.
       Most recursions will be left recursions,
       which are unrestricted.
-      For the rest, you just note where your middle
-      recursions and right recursions are,
-      and make sure the middle ones are marked
-      and the right ones are unambiguous.
+      And my experience so far has been that, in practical grammars,
+      unmarked middle recursions
+      and ambiguous right recursions are not especially
+      tempting features.
     </p>
     <h3>More about Marpa</h3><p>
       To learn more about Marpa,
