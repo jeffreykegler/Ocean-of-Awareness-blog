@@ -206,10 +206,10 @@
       unmarked middle recursions
       and ambiguous right recursions are not especially
       tempting features.
-      If
-      note whenever you use a right recursion,
-      checking that it is not ambiguous;
-      and you note whenever you use a middle recursion,
+      If you note
+      whenever you use a right recursion,
+      checking that it is not ambiguous,
+      and if you note whenever you use a middle recursion,
       checking that it is marked,
       then you will stay linear.
     &lt;/p&gt;
