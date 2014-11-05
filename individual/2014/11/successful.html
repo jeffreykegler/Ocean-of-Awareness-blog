@@ -100,14 +100,14 @@
       of a regular expression, though some implementations attempt to
       allow such efforts.
       LALR parsers are notoriously opaque.
-      Those who maintain the Perl parser have tried
+      Those who maintain the LALR-driven Perl parser have tried
       to supplement its abilities with
       custom code, with results that will not encourage
       others making the same attempt.
     </p><p>Recursive descent, on the other hand, has no parse engine --
       it is 100% custom code.
       You don't get much friendlier than that.
-    </p><h3>Conclusion</h3><p>
+    </p><h3>Conclusions</h3><p>
       Regular expressions are a success,
       and will remain so,
       because the set of grammars
@@ -228,10 +228,16 @@
       so that you simply fix them when they happen.
       Most recursions will be left recursions,
       which are unrestricted.
-      And my experience so far has been that, in practical grammars,
+      My experience has been that, in practical grammars,
       unmarked middle recursions
       and ambiguous right recursions are not especially
       tempting features.
+      If
+      note whenever you use a right recursion,
+      checking that it is not ambiguous;
+      and you note whenever you use a middle recursion,
+      checking that it is marked,
+      then you will stay linear.
     </p>
       To learn more about Marpa,
       there's
