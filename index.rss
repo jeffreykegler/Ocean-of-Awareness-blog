@@ -30,12 +30,11 @@
       But the successful algorithms do one or the other.
     &lt;/p&gt;
     &lt;h3&gt;Does the algorithm parse a workably-defined set of grammars in linear time?&lt;/h3&gt;
-    &lt;p&gt;By &quot;workably-defined&quot; I do not just mean well-defined
-      in the mathematical sense.
-      I mean something that goes beyond that --
-      the set of grammars has to have a definiton that is workable.
-      Workable means that the
-      definition is something that,
+    &lt;p&gt;&quot;workably-defined&quot; means more than well-defined
+      in the mathematical sense ==
+      the definition has to be &lt;b&gt;workable&lt;/b&gt;.
+      That is, the
+      definition must be something that,
       with reasonable effort,
       a programmer can use in practice.
     &lt;/p&gt;&lt;p&gt;

@@ -17,12 +17,11 @@ What makes a parsing algorithm successful?
       But the successful algorithms do one or the other.
     </p>
     <h3>Does the algorithm parse a workably-defined set of grammars in linear time?</h3>
-    <p>By "workably-defined" I do not just mean well-defined
-      in the mathematical sense.
-      I mean something that goes beyond that --
-      the set of grammars has to have a definiton that is workable.
-      Workable means that the
-      definition is something that,
+    <p>"workably-defined" means more than well-defined
+      in the mathematical sense ==
+      the definition has to be <b>workable</b>.
+      That is, the
+      definition must be something that,
       with reasonable effort,
       a programmer can use in practice.
     </p><p>
