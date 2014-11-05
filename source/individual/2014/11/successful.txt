@@ -1,0 +1,89 @@
+What makes a parsing algorithm successful?
+<html>
+  <head>
+  </head>
+  <body><p>
+      <!--
+      marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
+      -->
+    </p>
+    <p>What makes a parsing algorithm successful?
+    By success I mean something short of "world domination".
+    A parsing algorithm is a success if it secures a lasting place for solving
+    a large class of parsing problems.
+    And I'll use the term "parsing" broadly,
+    so that a regular expression engine counts as a "parser"
+    </p>
+    <p>
+      I believe that two factors are important.
+      First, does the algorithm parse a workably-defined language?
+      Second, does it allow the application to intervene in the parse
+      with custom code?
+      The currently successful algorithms do one or the other.
+      LALR parsing, which dominated parsing for decades,
+      and whose rise and fall I have chronicled elsewhere,
+      does neither.
+    </p>
+    <h3>Does the algorithm parse a workably-defined language?</h3>
+    <p>By "workably-defined" I do not just mean well-defined
+    in the mathematical sense,
+    but something that goes beyond that.
+    To be workably-defined,
+    you have to be able to tell, with reasonable effort,
+    whether a language is parsed in linear time by the algorithm.
+    The most prominent examples of a workably defined parsers, in this sense,
+    are regular expression engines.
+    </p><p>
+    A regular expression, in the pure sense consists of a sequence of symbols,
+    usually shown by concatenation:
+    <blockquote><pre>a b c</pre></blockquote>
+    or a choice among sequences, usually shown by a vertical bar:
+    <blockquote><pre>a | b | c</pre></blockquote>
+    or a repetition of any of the, typically shown with a star:
+    <blockquote><pre>a*</pre></blockquote>
+    or any recursive combination of these.
+    Most readers of these posts, I assume, are programmers
+    who get lots of practice with regular expressions,
+    to the point where they "make sense".
+    With practice, you get to the point where you know one
+    when you see one.
+    <p>
+    Prominent examples of parsers whose languages are <b>not</b>
+    workably defined at those in the LALR family (yacc, bison, etc.).
+    LALR is quite well-defined mathemtically,
+    but even experts in parsing theory are hard put to look at
+    an arbitrary grammar and determine if it is LALR.
+    <p>
+    Other examples of parsers whose languages are not workably
+    defined are those written using recursive descent.
+    Recursive descent has, in theory, a mathematically well-defined
+    basis in the LL languages,
+    but in practice this is not relevant, for two reasons.
+    First, most recursive descent implementations do not exploit
+    LL fully by using LL tables.
+    Second, most implemenations extend the LL model with ad hoc
+    code, code which sometimes amount to 
+    switching to  other parsing strategies.
+    </p>
+    <h3>Does it allow the user to intervene in the parse?</a>
+    <p>It is not easy for users to intervene in the processing
+    of a regular expression, though some implementation attempt to
+    be friendly to such efforts.
+    LALR parsers are notoriously opaque, which has not
+    stopped the Perl parser from trying to supplement its abilities with
+    custom code, sometimes with problematic results.
+    <h3>More about Marpa</h3>
+      To learn more about Marpa,
+      there's
+      <a href=http://savage.net.au/Marpa.html">the
+        official web site maintained by Ron Savage</a>.
+      I also have
+      <a href="http://jeffreykegler.github.io/Marpa-web-site/">a Marpa web site</a>.
+    <h3>Comments</h3>
+    <p>Comments on this post can be made in
+      <a href="http://groups.google.com/group/marpa-parser">
+        Marpa's Google group</a>,
+      or on our IRC channel: #marpa at freenode.net.
+    </p>
+  </body>
+</html>

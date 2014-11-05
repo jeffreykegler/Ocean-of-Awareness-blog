@@ -36,6 +36,106 @@
   <div style="margin-left:190px;border-left:2px solid #38B0C0;padding:25px;">
 <h3>Tue, 04 Nov 2014</h3>
 <br />
+<center><a name="successful"> <h2>What makes a parsing algorithm successful?</h2> </a>
+</center>
+<html>
+  <head>
+  </head>
+  <body><p>
+      <!--
+      marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
+      -->
+    </p>
+    <p>What makes a parsing algorithm successful?
+    By success I mean something short of "world domination".
+    A parsing algorithm is a success if it secures a lasting place for solving
+    a large class of parsing problems.
+    And I'll use the term "parsing" broadly,
+    so that a regular expression engine counts as a "parser"
+    </p>
+    <p>
+      I believe that two factors are important.
+      First, does the algorithm parse a workably-defined language?
+      Second, does it allow the application to intervene in the parse
+      with custom code?
+      The currently successful algorithms do one or the other.
+      LALR parsing, which dominated parsing for decades,
+      and whose rise and fall I have chronicled elsewhere,
+      does neither.
+    </p>
+    <h3>Does the algorithm parse a workably-defined language?</h3>
+    <p>By "workably-defined" I do not just mean well-defined
+    in the mathematical sense,
+    but something that goes beyond that.
+    To be workably-defined,
+    you have to be able to tell, with reasonable effort,
+    whether a language is parsed in linear time by the algorithm.
+    The most prominent examples of a workably defined parsers, in this sense,
+    are regular expression engines.
+    </p><p>
+    A regular expression, in the pure sense consists of a sequence of symbols,
+    usually shown by concatenation:
+    <blockquote><pre>a b c</pre></blockquote>
+    or a choice among sequences, usually shown by a vertical bar:
+    <blockquote><pre>a | b | c</pre></blockquote>
+    or a repetition of any of the, typically shown with a star:
+    <blockquote><pre>a*</pre></blockquote>
+    or any recursive combination of these.
+    Most readers of these posts, I assume, are programmers
+    who get lots of practice with regular expressions,
+    to the point where they "make sense".
+    With practice, you get to the point where you know one
+    when you see one.
+    <p>
+    Prominent examples of parsers whose languages are <b>not</b>
+    workably defined at those in the LALR family (yacc, bison, etc.).
+    LALR is quite well-defined mathemtically,
+    but even experts in parsing theory are hard put to look at
+    an arbitrary grammar and determine if it is LALR.
+    <p>
+    Other examples of parsers whose languages are not workably
+    defined are those written using recursive descent.
+    Recursive descent has, in theory, a mathematically well-defined
+    basis in the LL languages,
+    but in practice this is not relevant, for two reasons.
+    First, most recursive descent implementations do not exploit
+    LL fully by using LL tables.
+    Second, most implemenations extend the LL model with ad hoc
+    code, code which sometimes amount to 
+    switching to  other parsing strategies.
+    </p>
+    <h3>Does it allow the user to intervene in the parse?</a>
+    <p>It is not easy for users to intervene in the processing
+    of a regular expression, though some implementation attempt to
+    be friendly to such efforts.
+    LALR parsers are notoriously opaque, which has not
+    stopped the Perl parser from trying to supplement its abilities with
+    custom code, sometimes with problematic results.
+    <h3>More about Marpa</h3>
+      To learn more about Marpa,
+      there's
+      <a href=http://savage.net.au/Marpa.html">the
+        official web site maintained by Ron Savage</a>.
+      I also have
+      <a href="http://jeffreykegler.github.io/Marpa-web-site/">a Marpa web site</a>.
+    <h3>Comments</h3>
+    <p>Comments on this post can be made in
+      <a href="http://groups.google.com/group/marpa-parser">
+        Marpa's Google group</a>,
+      or on our IRC channel: #marpa at freenode.net.
+    </p>
+  </body>
+</html>
+<br />
+<p>posted at: 21:10 |
+<a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2014/11/successful.html">direct link to this entry</a>
+</p>
+<div style="color:#38B0C0;padding:1px;text-align:center;">
+&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&sect;
+</div>
+<br />
 <center><a name="backpan"> <h2>Removing obsolete versions of Marpa from CPAN</h2> </a>
 </center>
 <html>
@@ -776,193 +876,6 @@
 <br />
 <p>posted at: 20:17 |
 <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2014/09/website.html">direct link to this entry</a>
-</p>
-<div style="color:#38B0C0;padding:1px;text-align:center;">
-&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-&sect;
-</div>
-<h3>Mon, 18 Aug 2014</h3>
-<br />
-<center><a name="ambig"> <h2>Language design: Exploiting ambiguity</h2> </a>
-</center>
-<html>
-  <head>
-  </head>
-  <body><p>
-      <!--
-      marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
-      -->
-      Currently, in designing languages,
-      we don't allow ambiguities --
-      not even potential ones.
-      We insist that it must not be
-      even
-      <b>possible</b>
-      to write an ambiguous program.
-      This is unnecessarily restrictive.
-    </p>
-    <p>
-      This post is written in English, which is full of ambiguities.
-      Natural languages are always ambiguous,
-      because human beings find that that's best way for versatile,
-      rapid, easy communication.
-      Human beings arrange things so that every
-      sentence is unambiguous in context.
-      Mistakes happen, and ambiguous sentences occur,
-      but in practice, the problem is manageable.
-      In a conversation, for example,
-      we would just ask for clarification.
-    </p>
-    <p>
-      If we allow our computer languages to take their most natural forms,
-      they will often have the
-      <b>potential</b>
-      for ambiguity.
-      This is even less of a problem on a computer than it is in
-      conversation -- a computer can always spot an actual ambiguity
-      immediately.
-      When
-      <b>actual</b>
-      ambiguities occur, we can deal with them
-      in exactly the same way that we deal with
-      any other syntax problem:
-      The computer catches it and reports it,
-      and we fix it.
-    </p>
-    <h3>An example</h3>
-    <p>
-      To illustrate,
-      I'll use a DSL-writing DSL language.
-      It'll be tiny -- just lexeme declarations and BNF rules.
-      Newlines will
-      <b>not</b>
-      be significant.
-      Statements can end with a semicolon, but that's optional.
-      (The code for this post is in
-      <a href="https://gist.github.com/jeffreykegler/ed64bf00983f7be666bc">
-        a Github gist</a>.)
-    </p>
-    <p>Here is a toy calculator written in our tiny DSL-writing language:
-    </p><blockquote>
-      <pre>
-  Number matches '\d+'
-  E ::= T '*' F
-  E ::= T
-  T ::= F '+' Number
-  T ::= Number
-</pre>
-    </blockquote>
-    <h3>Trying an improvement</h3>
-    <p>With a grammar this small, just about
-      <b>anything</b>
-      is readable.
-      But let's assume we want to improve it, and that we decide
-      that the lexeme declaration of
-      <tt>Number</tt>
-      really belongs
-      after the rules which use it.
-      (If our grammar was longer, this could make a real difference.)
-      So we move the lexeme declaration to the end:
-    </p><blockquote>
-      <pre>
-  E ::= T '*' F
-  E ::= T
-  T ::= F '+' Number
-  T ::= Number
-  Number matches '\d+'
-</pre>
-    </blockquote>
-    <h3>But there's an issue</h3>
-    <p>
-      It turns out the grammar for our toy DSL-writer is ambiguous.
-      When a lexeme declaration follows a BNF rule,
-      there's no way to tell whether or not it is actually a
-      lexeme declaration, or part of the BNF rule.
-      Our parser catches that:
-    </p><blockquote>
-      <pre>
-Parse of BNF/Scanless source is ambiguous
-Length of symbol "Statement" at line 4, column 1 is ambiguous
-  Choices start with: T ::= Number
-  Choice 1, length=12, ends at line 4, column 12
-  Choice 1: T ::= Number
-  Choice 2, length=33, ends at line 5, column 20
-  Choice 2: T ::= Number\nNumber matches '\\d
-</pre></blockquote>
-    <p>
-      Here Marpa tells you why it thinks your script is ambiguous.
-      Two different statements can start at line 4.
-      Both of them are BNF rules, but one is longer than the other.
-    </p>
-    <h3>Just another syntax error</h3>
-    <p>Instead of having to design a language where ambiguity was not
-      even possible, we designed one where ambiguities can happen.
-      This allows us to design a much more flexible language,
-      like the ones we choose when we humans communicate with each other.
-      The downside is that actual ambiguities will occur,
-      but they can be reported, and fixed,
-      just like any other syntax error.
-    </p><p>In this case, we
-      recall we allowed semi-colons to terminate a rule,
-      and our fix is easy:
-    </p>
-    <p>
-    </p><blockquote>
-      <pre>
-  E ::= T '*' F
-  E ::= T
-  T ::= F '+' Number
-  T ::= Number ;
-  Number matches '\d+'
-</pre>
-    </blockquote>
-    <h3>To learn more</h3>
-    <p>
-      The code for this post is
-      <a href="https://gist.github.com/jeffreykegler/ed64bf00983f7be666bc">
-        a gist on Github</a>.
-      It was written using
-      <a href="https://metacpan.org/module/Marpa::R2">Marpa::R2,
-        which is available on CPAN</a>.
-      A list of my Marpa tutorials can be found
-      <a href="http://jeffreykegler.github.io/Ocean-of-Awareness-blog/metapages/annotated.html#TUTORIAL">
-        here</a>.
-      There are
-      new tutorials by
-      <a href="http://marpa-guide.github.io/chapter1.html">Peter Stuifzand</a>
-      and
-      <a href="http://longanswers.blogspot.de/2013/06/transforming-syntax.html">amon</a>.
-      <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/">
-        The Ocean of Awareness blog</a>
-      focuses on Marpa,
-      and it has
-      <a href="http://jeffreykegler.github.io/Ocean-of-Awareness-blog/metapages/annotated.html">an annotated guide</a>.
-      Marpa has
-      <a href="http://jeffreykegler.github.com/Marpa-web-site/">a web page that I maintain</a>
-      and Ron Savage maintains
-      <a href="http://savage.net.au/Perl-modules/html/marpa.papers/index.html">
-        another</a>.
-      For questions, support and discussion, there is
-      <a href="http://groups.google.com/group/marpa-parser">
-        a "marpa parser"
-        Google Group</a>
-      and an IRC channel:
-      <tt>#marpa</tt>
-      at
-      <tt>irc.freenode.net</tt>.
-    </p>
-    <h3>Comments</h3>
-    <p>
-      Comments on this post can be made in
-      <a href="http://groups.google.com/group/marpa-parser">
-        Marpa's Google group</a>.
-    </p>
-  </body>
-</html>
-<br />
-<p>posted at: 14:12 |
-<a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2014/08/ambig.html">direct link to this entry</a>
 </p>
 <div style="color:#38B0C0;padding:1px;text-align:center;">
 &sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
