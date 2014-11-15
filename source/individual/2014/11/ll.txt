@@ -8,9 +8,10 @@ Left Parsing
       -->
     </p>
     <p>Parsing has a reputation of being an esoteric
-        mathematical discipline -- which it can be.
-        But, in spite of the way it is usually presented,
-        its basic concepts are not especially difficult.
+        mathematical discipline -- which it can be,
+        and that it is how it is usually presented.
+        But its basic concepts, especially those in widespread use,
+        are not especially difficult.
         </p>
         <p>Left parsing's basic idea is as simple as they come --
         you look at the next symbol and make your parsing decision
@@ -36,9 +37,35 @@ Left Parsing
         but all of them involve trying to make left parsing into
         something it is not.
     <h3>Advantages of left parsing</h3>
-    <p>Left parsing is now the dominant approach in parsing which,
-    considering how myopic it is, should surprise more people than it
-    does.
+    <p>It is hard to believe that an approach
+    as myopic as left parsing is as good as we can do.
+    But before looking at alternative,
+    I should point out that in left parsing's brutish simplicity
+    lies its greatest strength -- because it does next to nothing,
+    it is very easy to figure out what it is doing.
+    And easy to figure out,
+    means easy to customize.
+    <p>
+    Take another of the many constructs incomprehensible to
+    a left parser:
+    <blockquote><pre>
+    2 * 3 * 4 + 5 * 6
+    </pre></blockquote>
+    How do left parser languages handle this?
+    Simple: as soon as they realize they are faced
+    an expression, they away from the left
+    parser to a specialized parser.
+    <p>These two properties have catapulted left parsing
+    to the top of the heap.
+    Behind their different presentations,
+    combinator parsing, PEG, and recursive descent are
+    all left parsers.
+    <h3>Right parsing</h3>
+    <p>Few theoreticians of the 1970's imagined that left parsing would
+    be the end of the story.
+    That there is no some systematic way of using anything to the right
+    of the current location for making parse decisons did not seem
+    likely.
     <h3>Comments</h3>
     <p>Comments on this post can be made in
       <a href="http://groups.google.com/group/marpa-parser">
