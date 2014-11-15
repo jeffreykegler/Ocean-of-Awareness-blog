@@ -1,0 +1,55 @@
+Left Parsing
+<html>
+  <head>
+  </head>
+  <body><p>
+      <!--
+      marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
+      -->
+    </p>
+    <p>Parsing has a reputation of being an esoteric
+        mathematical discipline -- which it can be.
+        But, in spite of the way it is usually presented,
+        its basic concepts are not especially difficult.
+        </p>
+        <p>Left parsing's basic idea is as simple as they come --
+        you look at the next symbol and make your parsing decision
+        based on it.
+        This is simple but limited, so left parsing is almost
+        combined with with lookahead.
+        Lookahead of one character helps a lot, but for lookahead
+        of more than one character
+        the size of the parser grows exponentially, and its
+        usefulness plummets.
+        <p>It's straightforward to see that this approach will have
+        problems with left recursion.
+        If you have an expression like
+        <blockquote><pre>
+        a + b + c + d + e + f + [....]
+        </pre></blockquote>
+        where the plus signs continue off to the right,
+        you cannot make the parsing decision at the first '+' unless
+        you know how many more to come.
+        And, without doing a lot of looking to the right,
+        you cannot know.
+        There are a lot of approaches to dealing with this difficulty,
+        but all of them involve trying to make left parsing into
+        something it is not.
+    <h3>Advantages of left parsing</h3>
+    <p>Left parsing is now the dominant approach in parsing which,
+    considering how myopic it is, should surprise more people than it
+    does.
+    <h3>Comments</h3>
+    <p>Comments on this post can be made in
+      <a href="http://groups.google.com/group/marpa-parser">
+        Marpa's Google group</a>,
+      or on our IRC channel: #marpa at freenode.net.
+      To learn more about Marpa,
+      there's
+      <a href=http://savage.net.au/Marpa.html">the
+        official web site maintained by Ron Savage</a>.
+      I also have
+      <a href="http://jeffreykegler.github.io/Marpa-web-site/">a Marpa web site</a>.
+    </p>
+  </body>
+</html>
