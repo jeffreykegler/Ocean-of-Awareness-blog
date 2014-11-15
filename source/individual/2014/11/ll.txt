@@ -119,7 +119,11 @@ Left Parsing
     left parsing.
     After years of experience, left parsing re-emerged as the
     algorithm of choice.
-    <h3>Looking forward</h3>
+    <h3>Non-determinism</h3>
+    <p>Assumed in all of this was that,
+    for an algorithm to be linear,
+    in practice it would also have to be deterministic.
+    But is that the case?
     <h3>Comments</h3>
     <p>Comments on this post can be made in
       <a href="http://groups.google.com/group/marpa-parser">
