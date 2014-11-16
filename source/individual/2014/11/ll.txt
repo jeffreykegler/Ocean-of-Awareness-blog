@@ -7,22 +7,33 @@ Top-down and bottom-up
       marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
       -->
     </p>
-    <p>Parsing has a reputation of being an esoteric
-      discipline -- which it can be,
-      and which is how it is usually presented.
-      But its basic concepts are simple and intuitive.
+    <p>The level at which parsing strategies 
+    are explained tends to be either too high or too low.
+    Some discussions toss buzzwords around.
+    Others immerse you immediately into every last detail of
+    stack handling.
+    At either extreme, it is hard to get a feel for the
+    strategies,
+    and to understand why those who developed the field
+    went in the directions they did.
     </p>
     <h3>Top-down parsing</h3>
     <p>Certainly the basic idea of top-down parsing is
       as brutally simple as a programming strategy gets:
       you look at the next symbol and decide then and there
       where it fits into the parse.
-      In its pure form, this is too simple, so top-down parsing is almost
-      combined with with lookahead.
-      Lookahead of one token helps a lot, but longer lookaheads
-      are sparsely used.
-      The number of possible lookaheads grows exponentially,
-      and longer lookaheads rapidly grow less helpful.
+      This idea, in its purest form,
+      is too simple to get anything done,
+      so top-down parsing is almost
+      always combined with with lookahead.
+    <p>
+      Lookahead of one token helps a lot.
+      But longer lookaheads
+      are very sparsely used.
+      They just aren't that helpful,
+      and since
+      the number of possible lookaheads grows exponentially,
+      they get very expensive very fast.
     </p><p>Top-down parsing has an issue with left recursion.
       It's straightforward to see why.
       If we have an open-ended expression like
