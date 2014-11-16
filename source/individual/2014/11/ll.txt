@@ -84,6 +84,10 @@ Top-down and bottom-up
     but cannot decide its full context, you push it on the stack ("shift").
     When you encounter the context, you pop it off the stack ("reduce")
     and make the full decision.
+    <p>Like top-down parsing, bottom-up parsing is usually combined with lookahead.
+    And for the same lookahead, a bottom-up parser parses not just everything that a
+    top-down parser can handle,
+    and more.
     <p>
     To preserve determinism,
     you have to know whether to shift or reduce,
@@ -130,7 +134,7 @@ Top-down and bottom-up
     and when the textbooks focused on bottom-up parsing came out,
     they were not always able to restrain the urge
     to portray parser writers as knights in armor.
-    <p>But not all medieval romances have happy endings and
+    <p>But not every medieval romance has a happy ending and
     as I've described elsewhere, this story ended badly.
     Bottom-up parsing was driven by tables which made the algorithm fast
     for correct inputs, but unable to accurately diagnose faulty ones.
@@ -144,11 +148,49 @@ Top-down and bottom-up
     After years of experience,
     top-down parsing has re-emerged as the
     algorithm of choice.
-    <h3>Non-determinism</h3>
+    <h3>Table parsing</h3>
+    <p>For many, the return to top-down parsing
+    answers the question that we asked earlier.
+    The response to
+    "Is there any systematic way to exploit right context when parsing?"
+    turns out to be a rather surprising "No".
+    But is this really the end of the story?
     <p>Assumed in all of this was that,
     for an algorithm to be linear,
     in practice it would also have to be deterministic.
-    But is that the case?
+    But is this actually the case?
+    <p>It's not, in fact.
+    To keep bottom-up parsing deterministic, we restricted ourselves to a stack.
+    But what if we keep all possible subdecisions linked and in tables,
+    and make the final decisions in another pass,
+    once the tables are complete.
+    (The second pass replaces the stack based
+    see-sawing back and forth of the deterministic algorithm,
+    so it's not an inefficiency.)
+    Jay Earley in 19-- came up with an algorithm to do this,
+    and in 1991 Joop Leo added a memoization to Earley's
+    algorithm which makes it linear for all deterministic grammars.
+    <p>The "deterministic grammars"
+    are exactly the bottom-up parseable grammars
+    with lookahead.
+    So that means the Earley/Leo algorithm parses,
+    in linear time,
+    everything that a deterministic bottom-up parser can parse,
+    and therefore every grammar that
+    a deterministic top-down parser can parse.
+    parseable by any of the algorithm
+    (And in fact, the Earley/Leo algorithm is linear for a lot of
+    ambiguous grammars as well.)
+    <p>Top-down parsing had the advantage that it was easy to know where
+    you are.  But the Earley/Leo algorithm has an equivalent advantage -- its
+    tables know where it is, and it is easy to query them programmatically.
+    In 2010, I added to the Earley/Leo algorithm the other big advantage of
+    top-down parsing:
+    This blogger's Marpa parser rearranges the Earley/Leo parse engine so that you can
+    stop it, perform your own logic, and restart where you left off.
+    The Marpa algorithm is very much implementable.
+    <a href=http://savage.net.au/Marpa.html">A quite useable parser based on it</a>
+    exists.
     <h3>Comments</h3>
     <p>Comments on this post can be made in
       <a href="http://groups.google.com/group/marpa-parser">
