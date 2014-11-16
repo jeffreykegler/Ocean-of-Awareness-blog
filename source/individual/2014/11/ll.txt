@@ -13,48 +13,52 @@ Top-down and bottom-up
       But its basic concepts are simple and intuitive.
     </p>
     <h3>Top-down parsing</h3>
-    <p>Certainly the basic idea behind being top-down parsing is
-      as about as simple as a programming strategy gets:
-      you look at the next symbol and make your parsing decision
-      based on it.
-      This is simple but limited, so top-down parsing is almost
+    <p>Certainly the basic idea of top-down parsing is
+      as brutally simple as a programming strategy gets:
+      you look at the next symbol and decide then and there
+      where it fits into the parse.
+      In its pure form, this is too simple, so top-down parsing is almost
       combined with with lookahead.
-      Lookahead of one character helps a lot, but longer lookahead
-      very rapidly becomes less useful,
-      at the same time as they make the size of the parser grows exponentially.
-    </p><p>Top-down parsing approaches notoriously have an issue with left recursion.
+      Lookahead of one token helps a lot, but longer lookaheads
+      are sparsely used.
+      The number of possible lookaheads grows exponentially,
+      and longer lookaheads rapidly grow less helpful.
+    </p><p>Top-down parsing has an issue with left recursion.
       It's straightforward to see why.
       If we have an open-ended expression like
     </p><blockquote><pre>
-    a + b + c + d + e + f + [....]
-        </pre></blockquote><p>
+    a + b + c + d + e + f + [....]</pre></blockquote>
+    <p>
       where the plus signs continue off to the right,
-      we cannot make the parsing decision at the first '+' unless
-      we know how many more to come.
-      And we cannot do this without doing a lot of looking to the right.
+      we cannot make the final parsing decision at the first plus sign unless
+      we know how many more plus signs are to come.
+      And there is no way of counting plus signs
+      without looking to the right.
+      For anything but the simplest expressions,
+      this rightward-looking has to be
+      rather sophisticated
       There are a lot of approaches to dealing with this difficulty,
       but all of them involve trying to make top-down parsing into
       something it is not.
     </p><h3>Advantages of top-down parsing</h3>
-    <p>It is hard to believe that an approach
-      as myopic as top-down parsing is as good as we can do.
-      But before looking at alternative,
-      I want to emphasize that simplicity
-      is top-down parsing's great strength.
-      Because a top-down parsing does next to nothing,
+    <p>In the 1970's it was hard to believe that an approach
+      that as as good as we can do.
+      But before looking at alternatives,
+      I want to emphasize that its extreme simplicity
+      is also top-down parsing's great strength.
+      Because a top-down parsing is extremely simple,
       it is very easy to figure out what it is doing.
-      And easy to figure out,
-      means easy to customize.
+      And easy to figure out means easy to customize.
     </p><p>
       Take another of the many constructs incomprehensible to
       a top-down parser:
     </p><blockquote><pre>
     2 * 3 * 4 + 5 * 6
     </pre></blockquote><p>
-      How do top-down parser languages handle this?
+      How do top-down parsers typically handle this?
       Simple: as soon as they realize they are faced
-      an expression, they switch away from top-down
-      parser to a specialized algorithm.
+      with an expression, they give up on top-down
+      parsing and switch to a special-purpose algorithm.
     </p><p>These two properties -- easy to understand
       and easy to customize --
       have catapulted top-down parsing
@@ -65,27 +69,34 @@ Top-down and bottom-up
     </p><h3>Bottom-up parsing</h3>
     <p>Few theoreticians of the 1970's imagined that top-down parsing would
       be the end of the story.
-      That the only way to exploit right context is ad hoc hackery
-      just did not make sense --
-      it certainly does not seem to be the way a human reads
-      sentences like these, for example.
+      They thought there had to be some systematic way to
+      to exploit the right context.
+      For example,
+      when reading sentences like these, you'd think
+      a human must be using the right context.
     </p><p>Don Knuth in 19xx found a way to use
-      right context, that was, like top-down parsing as I have described it,
+      right context.
+      Knuth's LR algorithm was,
+      like top-down parsing as I have described it,
       deterministic.
-      Deterministic was thought very important because it determinism
-      avoids an explosion of choices.
-      And no explosion of choices means the parse can be done in linear time.
-    </p><p>Very simplistically, Don's suggestion was to, instead of fully deciding the
+      Determinism was thought to be essential because determinism
+      allowing more than one choice easily leads to an explosion in the
+      number possibilities being considered at once.
+      Preventing an explosion in the number of possibilities
+      guaranteed that the parse can be done in linear time.
+    </p><p>Simplistically, Knuth's suggestion was to,
+      instead of fully deciding the
       parse at every location, to make what I will call "subdecisions" --
       decisions as to how the
-      piece at that location is used, but which leave context to be decided
-      separately.
-      Don proposed a stack of subdecisions -- if you have a subdecision
-      but cannot decide its full context, you push it on the stack ("shift").
-      When you encounter the context, you pop it off the stack ("reduce")
-      and make the full decision.
+      piece at that location is used, but which allow the subdecision
+      to be put into a larger context,
+      to be decided later.
+      Don proposed a stack of subdecisions -- if we have a subdecision
+      but we cannot decide its full context, we push it onto a stack ("shift").
+      When you encounter the context, you pop it off the stack
+      and make the full decision ("reduce").
     </p><p>Like top-down parsing, bottom-up parsing is usually combined with lookahead.
-      And for the same lookahead, a bottom-up parser parses not just everything that a
+      For the same lookahead, a bottom-up parser parses not everything that a
       top-down parser can handle,
       and more.
     </p><p>
@@ -96,53 +107,62 @@ Top-down and bottom-up
       But the problem with left recursion disappeared.
       In the example from above
     </p><blockquote><pre>
-    a + b + c + d + e + f + [....]
-        </pre></blockquote><p>
+    a + b + c + d + e + f + [....]</pre></blockquote>
+    <p>
       you reduce until you run out of plus signs.
       Each reduced addition becomes the left hand side of the next addition,
       and this continues until you run out of plus signs.
     </p><p>For a bottom-up parser, right recursion is harder, but not much
       harder.
     </p><blockquote><pre>
-    a = b = c = d = e = f = [....]
-        </pre></blockquote><p>
+    a = b = c = d = e = f = [....]</pre></blockquote>
+  <p>
       At every equal sign you "shift" the subdecision onto the stack.
       When you hit the end, you pop the subdecisions off the stack
       one by one and "reduce" them.
       Essentially, you do the same thing you did for left recursion,
       only in reverse.
-      As simple at that.
+      <p>
       Arithmetic expressions like
     </p><blockquote><pre>
-    2 * 3 * 4 + 5 * 6
-    </pre></blockquote><p>
+    2 * 3 * 4 + 5 * 6</pre></blockquote>
+    <p>
       are solved by combining the approaches.
       For this one
       you "reduce" all the multiplications,
       at which point you "shift" the result onto the stack.
       Then you "reduce" the next set of multiplications.
       At the end you pop the addition off the stack and "reduce" it.
-    </p><p>In the above discussion,
-      I assumed that we had some way to figure out when to reduce and when to shift.
-      Finding a practical way to make the shift/reduce decision took some doing,
-      but a way was found for what looked like a
-      practical subset of grammars,
-      and around 19-- it was released as yacc.
+    </p><p>
+      To preserve determinism,
+      we have to know,
+      at every location,
+      whether to shift or reduce,
+      and when reducing, what reduction to make.
+      Above, we assumed that we had a way to figure this out.
+      In fact,
+      finding what seemed a practical way to make these shift/reduce and
+      reduce/reduce decisions took some doing.
+      By the 197-, it was thought a practical way had been found,
+      and around 19-- a parser generator based on it was released as yacc.
       (Readers today may be more familiar with yacc's successor, bison.)
     </p><p>
-      With yacc, theoreticians thought they'd found the Holy Grail,
-      and when the textbooks focused on bottom-up parsing came out,
+      With yacc, theoreticians thought they'd found the Holy Grail.
+      When the textbooks focused on bottom-up parsing came out,
       they were not always able to restrain the urge
       to portray parser writers as knights in armor.
-    </p><p>But not every medieval romance has a happy ending and
-      as I've described elsewhere, this story ended badly.
+    </p><p>But not every medieval romance has a happy ending.
+      As I've
+      <a href="http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2014/09/chron.html">described
+      elsewhere</a>,
+      this story ended badly.
       Bottom-up parsing was driven by tables which made the algorithm fast
       for correct inputs, but unable to accurately diagnose faulty ones.
-      The subset of grammars parsed still was not quite large enough even
-      for conservative language designers.
+      The subset of grammars parsed was still not quite large enough,
+      even for conservative language designers.
       And bottom-up parsing was very unfriendly to custom hacks,
-      so that its shortcomings loomed large.
-      It was much harder to work around a problem in a right
+      which made its shortcomings loom large.
+      It is much harder to work around a problem in a bottom-up
       parser than than it was to deal with a similar problem
       in a top-down parser.
       After years of experience,
@@ -150,10 +170,9 @@ Top-down and bottom-up
       algorithm of choice.
     </p><h3>Table parsing</h3>
     <p>For many, the return to top-down parsing
-      answers the question that we asked earlier.
-      The response to
+      answers the question that we posed earlier:
       "Is there any systematic way to exploit right context when parsing?"
-      turns out to be a rather surprising "No".
+      This answer turns out to be a rather startling "No".
       But is this really the end of the story?
     </p><p>Assumed in all of this was that,
       for an algorithm to be linear,
@@ -178,19 +197,17 @@ Top-down and bottom-up
       everything that a deterministic bottom-up parser can parse,
       and therefore every grammar that
       a deterministic top-down parser can parse.
-      parseable by any of the algorithm
-      (And in fact, the Earley/Leo algorithm is linear for a lot of
+      (In fact, the Earley/Leo algorithm is linear for a lot of
       ambiguous grammars as well.)
     </p><p>Top-down parsing had the advantage that it was easy to know where
       you are.  But the Earley/Leo algorithm has an equivalent advantage -- its
       tables know where it is, and it is easy to query them programmatically.
-      In 2010, I added to the Earley/Leo algorithm the other big advantage of
-      top-down parsing:
-      This blogger's Marpa parser rearranges the Earley/Leo parse engine so that you can
+      In 2010, this blogger added to the Earley/Leo algorithm
+      the other big advantage of top-down parsing:
+      The Marpa algorithm rearranges the Earley/Leo parse engine so that you can
       stop it, perform your own logic, and restart where you left off.
-      The Marpa algorithm is very much implementable.
-      <a href=http://savage.net.au/Marpa.html">A quite useable parser based on it</a>
-      exists.
+      <a href=http://savage.net.au/Marpa.html">A quite useable parser based on the Marpa algorithm</a>
+      is available as open source.
     </p><h3>Comments</h3>
     <p>Comments on this post can be made in
       <a href="http://groups.google.com/group/marpa-parser">
