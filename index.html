@@ -34,6 +34,158 @@
   </p>
   </div>
   <div style="margin-left:190px;border-left:2px solid #38B0C0;padding:25px;">
+<h3>Sat, 15 Nov 2014</h3>
+<br />
+<center><a name="ll"> <h2>Left Parsing</h2> </a>
+</center>
+<html>
+  <head>
+  </head>
+  <body><p>
+      <!--
+      marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
+      -->
+    </p>
+    <p>Parsing has a reputation of being an esoteric
+        mathematical discipline -- which it can be,
+        and that it is how it is usually presented.
+        But its basic concepts, especially those in widespread use,
+        are not especially difficult.
+        </p>
+        <p>Left parsing's basic idea is as simple as they come --
+        you look at the next symbol and make your parsing decision
+        based on it.
+        This is simple but limited, so left parsing is almost
+        combined with with lookahead.
+        Lookahead of one character helps a lot, but for lookahead
+        of more than one character
+        the size of the parser grows exponentially, and its
+        usefulness plummets.
+        <p>It's straightforward to see that this approach will have
+        problems with left recursion.
+        If you have an expression like
+        <blockquote><pre>
+        a + b + c + d + e + f + [....]
+        </pre></blockquote>
+        where the plus signs continue off to the right,
+        you cannot make the parsing decision at the first '+' unless
+        you know how many more to come.
+        And, without doing a lot of looking to the right,
+        you cannot know.
+        There are a lot of approaches to dealing with this difficulty,
+        but all of them involve trying to make left parsing into
+        something it is not.
+    <h3>Advantages of left parsing</h3>
+    <p>It is hard to believe that an approach
+    as myopic as left parsing is as good as we can do.
+    But before looking at alternative,
+    I should point out that in left parsing's brutish simplicity
+    lies its greatest strength -- because it does next to nothing,
+    it is very easy to figure out what it is doing.
+    And easy to figure out,
+    means easy to customize.
+    <p>
+    Take another of the many constructs incomprehensible to
+    a left parser:
+    <blockquote><pre>
+    2 * 3 * 4 + 5 * 6
+    </pre></blockquote>
+    How do left parser languages handle this?
+    Simple: as soon as they realize they are faced
+    an expression, they away from the left
+    parser to a specialized parser.
+    <p>These two properties have catapulted left parsing
+    to the top of the heap.
+    Behind their different presentations,
+    combinator parsing, PEG, and recursive descent are
+    all left parsers.
+    <h3>Right parsing</h3>
+    <p>Few theoreticians of the 1970's imagined that left parsing would
+    be the end of the story.
+    That the only way to exploit right context is ad hoc hackery
+    just did not make sense --
+    it certainly does not seem to be the way a human reads
+    sentences like these, for example.
+    <p>Don Knuth in 19xx found a way to use
+    right context, that was, like left parsing as I have described it,
+    deterministic.
+    Deterministic was thought very important because it determinism
+    avoids an explosion of choices.
+    And no explosion of choices means the parse can be done in linear time.
+    <p>Very simplistically, Don's suggestion was to, instead of fully deciding the
+    parse at every location, to make what I will call "subdecisions" --
+    decisions as to how the
+    piece at that location is used, but which leave context to be decided
+    separately.
+    Don proposed a stack of subdecisions -- if you have a subdecision
+    but cannot decide its full context, you push it on the stack ("shift").
+    When you encounter the context, you pop it off the stack ("reduce")
+    and make the full decision.
+    <p>
+    To preserve determinism,
+    you have to know whether to shift or reduce,
+    and if reducing, what reduction to make,
+    at every location.
+    But the problem with left recursion disappeared.
+    In the example from above
+        <blockquote><pre>
+        a + b + c + d + e + f + [....]
+        </pre></blockquote>
+        you shift until you run out of plus signs.
+        At that point you reduce all the subdecisions on the stack.
+        It was as simple at that.
+        Expressions like
+    <blockquote><pre>
+    2 * 3 * 4 + 5 * 6
+    </pre></blockquote>
+    solved in much the same way.
+    You shift all '*' subdecisions until you hit the '+',
+    the reduce them off the stack.
+    <p>Finding a practical way to make all the shift-reduce and reduce-reduce
+    decisions took some doing, but a way was found for what looked like a
+    practicl subset of grammars.
+    Theoreticians thought they'd found the Holy Grail,
+    and were not able to restrain the urge to portray themselves as Grail
+    Knights.
+    <p>This story did not have a happy ending,
+    as I've described elsewhere.
+    Right parsing was driven by tables which made the algorithm fast
+    for correct inputs, but unable to accurately diagnose faulty ones.
+    The subset of grammars parsed still was not quite large enough even 
+    for conservative language designers.
+    And LR was very unfriendly to custom hacks, which meant
+    its shortcomings were much harder to work arond than those of
+    left parsing.
+    After years of experience, left parsing re-emerged as the
+    algorithm of choice.
+    <h3>Non-determinism</h3>
+    <p>Assumed in all of this was that,
+    for an algorithm to be linear,
+    in practice it would also have to be deterministic.
+    But is that the case?
+    <h3>Comments</h3>
+    <p>Comments on this post can be made in
+      <a href="http://groups.google.com/group/marpa-parser">
+        Marpa's Google group</a>,
+      or on our IRC channel: #marpa at freenode.net.
+      To learn more about Marpa,
+      there's
+      <a href=http://savage.net.au/Marpa.html">the
+        official web site maintained by Ron Savage</a>.
+      I also have
+      <a href="http://jeffreykegler.github.io/Marpa-web-site/">a Marpa web site</a>.
+    </p>
+  </body>
+</html>
+<br />
+<p>posted at: 17:53 |
+<a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2014/11/ll.html">direct link to this entry</a>
+</p>
+<div style="color:#38B0C0;padding:1px;text-align:center;">
+&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&sect;
+</div>
 <h3>Tue, 04 Nov 2014</h3>
 <br />
 <center><a name="successful"> <h2>What makes a parsing algorithm successful?</h2> </a>
@@ -928,81 +1080,6 @@
 <br />
 <p>posted at: 16:50 |
 <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2014/09/chron.html">direct link to this entry</a>
-</p>
-<div style="color:#38B0C0;padding:1px;text-align:center;">
-&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-&sect;
-</div>
-<h3>Mon, 01 Sep 2014</h3>
-<br />
-<center><a name="website"> <h2>Marpa has a new web page</h2> </a>
-</center>
-<html>
-  <head>
-  </head>
-  <body><p>
-      <!--
-      marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
-      -->
-      Marpa has
-      <a href="http://savage.net.au/Marpa.html">a
-      new official public website</a>,
-      which Ron Savage has generously agreed to manage.
-      For those who have not heard of it,
-      Marpa is a parsing algorithm.
-      It is new, but very much based
-      on earlier work by Jay Earley, Joop Leo, John Aycock and R. Nigel Horspool.
-      Marpa is intended to replace, and to go well beyond,
-      recursive descent and the yacc family of parsers.
-    </p><ul>
-      <li>
-        Marpa is fast. It parses in linear time:
-        <ul>
-          <li>all the grammar classes that recursive descent parses;</li>
-          <li>the grammar class that the yacc family parses;</li>
-          <li>in fact, all unambiguous grammars, as long as they are free of unmarked middle recursions;
-	  and</li>
-	  <li>all
-	  ambiguous grammars that are unions of a finite set of any of the above grammars.</li>
-        </ul>
-      </li>
-      <li>
-        Marpa is powerful. Marpa will parse anything that can be
-	written in BNF.
-	This includes any mixture of left, right and middle recursions.
-      </li>
-      <li>Marpa is convenient.
-      Unlike recursive descent, you do not have to write a parser --
-      Marpa generates one from BNF.
-      Unlike PEG or yacc, parser generation is unrestricted and exact.
-      Marpa converts any grammar which can be written as BNF
-      into a parser which recognizes everything
-      in the language described by that BNF, and which rejects everything that is
-      not in that language.
-      The programmer is not forced to make arbitrary choices while parsing.
-      If a rule has several alternatives,
-      all of the alternatives are considered for as long as they might yield a valid parse.
-      </li>
-      <li>
-        Marpa is flexible. Like recursive descent, Marpa allows you to stop and
-        do your own custom processing. Unlike recursive descent, Marpa makes available
-        to you detailed information about the parse so far --
-        which rules and symbols have been recognized, with their locations,
-        and which rules and symbols are expected next.
-      </li>
-      </ul>
-    <h3>Comments</h3>
-    <p>
-      Comments on this post can be made in
-      <a href="http://groups.google.com/group/marpa-parser">
-        Marpa's Google group</a>.
-    </p>
-  </body>
-</html>
-<br />
-<p>posted at: 20:17 |
-<a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2014/09/website.html">direct link to this entry</a>
 </p>
 <div style="color:#38B0C0;padding:1px;text-align:center;">
 &sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
