@@ -108,18 +108,22 @@ Parsing right and left
     decisions took some doing, but a way was found for what looked like a
     practicl subset of grammars.
     Theoreticians thought they'd found the Holy Grail,
-    and were not able to restrain the urge to portray themselves as Grail
-    Knights.
-    <p>This story did not have a happy ending,
-    as I've described elsewhere.
+    and when the textbooks focused on right parsing came out,
+    they were not always able to restrain the urge
+    to portray parser writers as knights in armor.
+    <p>But not all medieval romances have happy endings and
+    as I've described elsewhere, this story ended badly.
     Right parsing was driven by tables which made the algorithm fast
     for correct inputs, but unable to accurately diagnose faulty ones.
     The subset of grammars parsed still was not quite large enough even 
     for conservative language designers.
-    And LR was very unfriendly to custom hacks, which meant
-    its shortcomings were much harder to work arond than those of
-    left parsing.
-    After years of experience, left parsing re-emerged as the
+    And right parsing was very unfriendly to custom hacks,
+    so that its shortcomings loomed large.
+    It was much harder to work around a problem in a right
+    parser than than it was to deal with a similar problem
+    in a left parser.
+    After years of experience,
+    left parsing has re-emerged as the
     algorithm of choice.
     <h3>Non-determinism</h3>
     <p>Assumed in all of this was that,
