@@ -10,7 +10,7 @@
     <language>en</language>
 
   <item>
-    <title>Left Parsing</title>
+    <title>Parsing right and left</title>
     <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2014/11/ll.html</link>
     <description>&lt;html&gt;
   &lt;head&gt;
@@ -21,31 +21,30 @@
       --&gt;
     &lt;/p&gt;
     &lt;p&gt;Parsing has a reputation of being an esoteric
-        mathematical discipline -- which it can be,
-        and that it is how it is usually presented.
-        But its basic concepts, especially those in widespread use,
-        are not especially difficult.
+        discipline -- which it can be,
+        and which is how it is usually presented.
+        But its basic concepts are simple and intuitive.
         &lt;/p&gt;
-        &lt;p&gt;Left parsing's basic idea is as simple as they come --
+	&lt;h3&gt;Left parsing&lt;/h3&gt;
+        &lt;p&gt;Certainly the basic idea behind being left parsing is
+	as about as simple as a programming strategy gets:
         you look at the next symbol and make your parsing decision
         based on it.
         This is simple but limited, so left parsing is almost
         combined with with lookahead.
-        Lookahead of one character helps a lot, but for lookahead
-        of more than one character
-        the size of the parser grows exponentially, and its
-        usefulness plummets.
-        &lt;p&gt;It's straightforward to see that this approach will have
-        problems with left recursion.
-        If you have an expression like
+        Lookahead of one character helps a lot, but longer lookahead
+	very rapidly becomes less useful,
+        at the same time as they make the size of the parser grows exponentially.
+        &lt;p&gt;Left parsing approaches notoriously have an issue with left recursion.
+	It's straightforward to see why.
+        If we have an open-ended expression like
         &lt;blockquote&gt;&lt;pre&gt;
         a + b + c + d + e + f + [....]
         &lt;/pre&gt;&lt;/blockquote&gt;
         where the plus signs continue off to the right,
-        you cannot make the parsing decision at the first '+' unless
-        you know how many more to come.
-        And, without doing a lot of looking to the right,
-        you cannot know.
+        we cannot make the parsing decision at the first '+' unless
+        we know how many more to come.
+        And we cannot do this without doing a lot of looking to the right.
         There are a lot of approaches to dealing with this difficulty,
         but all of them involve trying to make left parsing into
         something it is not.
@@ -53,8 +52,9 @@
     &lt;p&gt;It is hard to believe that an approach
     as myopic as left parsing is as good as we can do.
     But before looking at alternative,
-    I should point out that in left parsing's brutish simplicity
-    lies its greatest strength -- because it does next to nothing,
+    I want to emphasize that simplicity
+    is left parsing's great strength.
+    Because a left parsing does next to nothing,
     it is very easy to figure out what it is doing.
     And easy to figure out,
     means easy to customize.
@@ -68,7 +68,9 @@
     Simple: as soon as they realize they are faced
     an expression, they away from the left
     parser to a specialized parser.
-    &lt;p&gt;These two properties have catapulted left parsing
+    &lt;p&gt;These two properties -- easy to understand
+    and easy to customize --
+    have catapulted left parsing
     to the top of the heap.
     Behind their different presentations,
     combinator parsing, PEG, and recursive descent are
