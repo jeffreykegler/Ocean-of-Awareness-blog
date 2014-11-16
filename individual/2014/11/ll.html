@@ -36,7 +36,7 @@
   <div style="margin-left:190px;border-left:2px solid #38B0C0;padding:25px;">
 <h3>Sat, 15 Nov 2014</h3>
 <br />
-<center><a name="ll"> <h2>Parsing right and left</h2> </a>
+<center><a name="ll"> <h2>Top-down and bottom-up</h2> </a>
 </center>
 <html>
   <head>
@@ -51,17 +51,17 @@
         and which is how it is usually presented.
         But its basic concepts are simple and intuitive.
         </p>
-	<h3>Left parsing</h3>
-        <p>Certainly the basic idea behind being left parsing is
+	<h3>Top-down parsing</h3>
+        <p>Certainly the basic idea behind being top-down parsing is
 	as about as simple as a programming strategy gets:
         you look at the next symbol and make your parsing decision
         based on it.
-        This is simple but limited, so left parsing is almost
+        This is simple but limited, so top-down parsing is almost
         combined with with lookahead.
         Lookahead of one character helps a lot, but longer lookahead
 	very rapidly becomes less useful,
         at the same time as they make the size of the parser grows exponentially.
-        <p>Left parsing approaches notoriously have an issue with left recursion.
+        <p>Top-down parsing approaches notoriously have an issue with left recursion.
 	It's straightforward to see why.
         If we have an open-ended expression like
         <blockquote><pre>
@@ -72,44 +72,44 @@
         we know how many more to come.
         And we cannot do this without doing a lot of looking to the right.
         There are a lot of approaches to dealing with this difficulty,
-        but all of them involve trying to make left parsing into
+        but all of them involve trying to make top-down parsing into
         something it is not.
-    <h3>Advantages of left parsing</h3>
+    <h3>Advantages of top-down parsing</h3>
     <p>It is hard to believe that an approach
-    as myopic as left parsing is as good as we can do.
+    as myopic as top-down parsing is as good as we can do.
     But before looking at alternative,
     I want to emphasize that simplicity
-    is left parsing's great strength.
-    Because a left parsing does next to nothing,
+    is top-down parsing's great strength.
+    Because a top-down parsing does next to nothing,
     it is very easy to figure out what it is doing.
     And easy to figure out,
     means easy to customize.
     <p>
     Take another of the many constructs incomprehensible to
-    a left parser:
+    a top-down parser:
     <blockquote><pre>
     2 * 3 * 4 + 5 * 6
     </pre></blockquote>
-    How do left parser languages handle this?
+    How do top-down parser languages handle this?
     Simple: as soon as they realize they are faced
-    an expression, they away from the left
-    parser to a specialized parser.
+    an expression, they switch away from top-down
+    parser to a specialized algorithm.
     <p>These two properties -- easy to understand
     and easy to customize --
-    have catapulted left parsing
+    have catapulted top-down parsing
     to the top of the heap.
     Behind their different presentations,
     combinator parsing, PEG, and recursive descent are
-    all left parsers.
-    <h3>Right parsing</h3>
-    <p>Few theoreticians of the 1970's imagined that left parsing would
+    all top-down parsers.
+    <h3>Bottom-up parsing</h3>
+    <p>Few theoreticians of the 1970's imagined that top-down parsing would
     be the end of the story.
     That the only way to exploit right context is ad hoc hackery
     just did not make sense --
     it certainly does not seem to be the way a human reads
     sentences like these, for example.
     <p>Don Knuth in 19xx found a way to use
-    right context, that was, like left parsing as I have described it,
+    right context, that was, like top-down parsing as I have described it,
     deterministic.
     Deterministic was thought very important because it determinism
     avoids an explosion of choices.
@@ -133,36 +133,55 @@
         <blockquote><pre>
         a + b + c + d + e + f + [....]
         </pre></blockquote>
-        you shift until you run out of plus signs.
-        At that point you reduce all the subdecisions on the stack.
-        It was as simple at that.
-        Expressions like
+        you reduce until you run out of plus signs.
+	Each reduced addition becomes the left hand side of the next addition,
+	and this continues until you run out of plus signs.
+	<p>For a bottom-up parser, right recursion is harder, but not much
+	harder.
+        <blockquote><pre>
+        a = b = c = d = e = f = [....]
+        </pre></blockquote>
+        At every equal sign you "shift" the subdecision onto the stack.
+	When you hit the end, you pop the subdecisions off the stack
+	one by one and "reduce" them.
+	Essentially, you do the same thing you did for left recursion,
+	only in reverse.
+        As simple at that.
+        Arithmetic expressions like
     <blockquote><pre>
     2 * 3 * 4 + 5 * 6
     </pre></blockquote>
-    solved in much the same way.
-    You shift all '*' subdecisions until you hit the '+',
-    the reduce them off the stack.
-    <p>Finding a practical way to make all the shift-reduce and reduce-reduce
-    decisions took some doing, but a way was found for what looked like a
-    practicl subset of grammars.
-    Theoreticians thought they'd found the Holy Grail,
-    and when the textbooks focused on right parsing came out,
+    are solved by combining the approaches.
+    For this one
+    you "reduce" all the multiplications,
+    at which point you "shift" the result onto the stack.
+    Then you "reduce" the next set of multiplications.
+    At the end you pop the addition off the stack and "reduce" it.
+    <p>In the above discussion,
+    I assumed that we had some way to figure out when to reduce and when to shift.
+    Finding a practical way to make the shift/reduce decision took some doing,
+    but a way was found for what looked like a
+    practical subset of grammars,
+    and around 19-- it was released as yacc.
+    (Readers today may be more familiar with yacc's successor, bison.)
+    <p>
+    With yacc, theoreticians thought they'd found the Holy Grail,
+    and when the textbooks focused on bottom-up parsing came out,
     they were not always able to restrain the urge
     to portray parser writers as knights in armor.
     <p>But not all medieval romances have happy endings and
     as I've described elsewhere, this story ended badly.
-    Right parsing was driven by tables which made the algorithm fast
+    Bottom-up parsing was driven by tables which made the algorithm fast
     for correct inputs, but unable to accurately diagnose faulty ones.
     The subset of grammars parsed still was not quite large enough even 
     for conservative language designers.
-    And right parsing was very unfriendly to custom hacks,
+    And bottom-up parsing was very unfriendly to custom hacks,
     so that its shortcomings loomed large.
     It was much harder to work around a problem in a right
     parser than than it was to deal with a similar problem
-    in a left parser.
+    in a top-down parser.
     After years of experience,
-    left parsing has re-emerged as the
+    top-down parsing has re-emerged as the
     algorithm of choice.
     <h3>Non-determinism</h3>
     <p>Assumed in all of this was that,
