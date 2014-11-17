@@ -117,7 +117,7 @@ Parsing: Top-down versus bottom-up
       parse, which are intended
       to be assembled later into a larger subparses,
       and eventually into a full parse tree.
-      <p>
+    </p><p>
       Knuth's algorithm stored subparses by shifting them onto a stack.
       The operation to do this was called a "shift".
       (Single tokens of the input are treated as subparses with a single node.)
@@ -228,7 +228,7 @@ Parsing: Top-down versus bottom-up
       The solution in Knuth's paper was considered (and apparently intended)
       to be mathematically provocative, rather than practical.
       But by 1979, it was thought a practical way to make stack decisions
-      had been found 
+      had been found
       and yacc, a parser generator based on bottom-up parsing, was released.
       (Readers today may be more familiar with yacc's successor, bison.)
     </p>
@@ -270,7 +270,7 @@ Parsing: Top-down versus bottom-up
       Progress like this seems like a lot to walk away from,
       and especially to walk back all the way to what is
       essentially a brute force algorithm.
-      This perhaps explains why lectures 
+      This perhaps explains why lectures
       and textbooks persist in teaching bottom-up parsing to
       students who are very unlikely to use it.
       Because the verdict from practitioners seems to be in,
