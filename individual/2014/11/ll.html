@@ -151,10 +151,10 @@
       they will run in linear time.
     </p><p>Simplistically, Knuth's suggestion was,
       instead of fully deciding the
-      parse at every location, to create what I will call "subpieces" --
+      parse at every location, to create what I will call "subparses" --
       pieces that embody partial decisions about the
       parse, which are intended
-      to be assembled later into a larger subpieces,
+      to be assembled later into a larger subparses,
       and eventually into a full parse tree.
       <p>
       Knuth's algorithm stored subparses by shifting them onto a stack.
@@ -206,8 +206,9 @@
       In the terminology of shift/reduce,
       whenever we can reduce, we do.
       When we run out of tokens,
-      and have reduced until there is only one element on the stack,
-      that one element is our parse tree.
+      and have reduced until there is only one element on the stack.
+      That one remaining element is the subparse that is also,
+      in fact, our full parse tree.
     </p><p>
       The top-down parser had a problem with left recursion
       precisely because it needed to build top-down.
@@ -252,10 +253,10 @@
       In all other cases, if there is a shift/reduce choice, we shift.
     </p>
     <p>
-      In this discussion,
-      I have pulled the right strategy for making stack decisions
+      In the discussion above,
+      I have pulled the strategy for making stack decisions
       (shift/reduce and reduce/reduce)
-      out of the air.
+      out of thin air.
       Clearly, if bottom-up parsing was going to be
       a practical parsing algorithm,
       the stack decisions
@@ -288,7 +289,7 @@
       And bottom-up parsing was very unfriendly to custom hacks,
       which made every shortcoming loom large.
       It is much harder to work around a problem in a bottom-up
-      parser than than it was to deal with a similar shortcoming
+      parser than than it is to deal with a similar shortcoming
       in a top-down parser.
       After decades of experience with bottom-up parsing,
       top-down parsing has re-emerged as the
@@ -310,14 +311,15 @@
       essentially a brute force algorithm.
       This perhaps explains why lectures 
       and textbooks persist in teaching bottom-up parsing to
-      student who are very unlikely to use it.
+      students who are very unlikely to use it.
       Because the verdict from practitioners seems to be in,
       and likely to hold up on appeal.
-    </p><p>
-    </p><p>Assumed both by fans of deterministic top-down parsing,
-      and proponents of deterministic bottom-up parsing is that,
-      for a practical algorithm to be linear,
-      it must also be deterministic.
+    </p>
+    <p>Fans of deterministic top-down parsing,
+      and proponents of deterministic bottom-up parsing share
+      an assumption:
+      For a practical algorithm to be linear,
+      it has to be deterministic.
       But is this actually the case?
     </p>
     <p>It's not, in fact.
