@@ -36,7 +36,7 @@
   <div style="margin-left:190px;border-left:2px solid #38B0C0;padding:25px;">
 <h3>Sat, 15 Nov 2014</h3>
 <br />
-<center><a name="ll"> <h2>Top-down and bottom-up</h2> </a>
+<center><a name="ll"> <h2>Parsing: Top-down versus bottom-up</h2> </a>
 </center>
 <html>
   <head>
@@ -46,15 +46,25 @@
       marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
       -->
     </p>
-    <p>The level at which parsing strategies 
-    are explained tends to be either too high or too low.
-    Some discussions toss buzzwords around.
-    Others immerse you immediately into every last detail of
-    stack handling.
-    At either extreme, it is hard to get a feel for the
-    strategies,
-    and to understand why those who developed the field
-    went in the directions they did.
+    <p>Why did the invention of bottom-up parsing bring
+    with it such hope?
+    Indeed, despite bottom-up parsings
+     near-total abandonment in favor of top-dwon by practitioners,
+     among theoreticians it still has not lost its hold.
+     To this day,
+    Bottom-up parsing frequently occupies the place of honor
+    in parsing texts and courses.
+    Why?
+    <p>There are many treatments of these two approaches,
+    but most are either too high-level or two low-level.
+    Overly high-level treatments reduce the two approaches to buzzwords,
+    and the comparision to a recitation of received wisdom.
+    Overly low-level treatments get immersed in the minutiae of implementation,
+    and the comparison ends up like two unrelated code listings
+    placed side by side.
+    In this post I hope to clarify why the two sides take the stands
+    they do,
+    and to suggest a way forward.
     </p>
     <h3>Top-down parsing</h3>
     <p>Certainly the basic idea of top-down parsing is
