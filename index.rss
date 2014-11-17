@@ -65,24 +65,31 @@
       they get very expensive very fast.
     &lt;/p&gt;&lt;p&gt;Top-down parsing has an issue with left recursion.
       It's straightforward to see why.
-      If we have an open-ended expression like
+      Take
+      an open-ended expression like
     &lt;/p&gt;&lt;blockquote&gt;&lt;pre&gt;
     a + b + c + d + e + f + [....]&lt;/pre&gt;&lt;/blockquote&gt;
     &lt;p&gt;
-      where the plus signs continue off to the right,
-      we cannot make the final parsing decision at the first plus sign unless
-      we know how many more plus signs are to come.
-      And there is no way of counting plus signs
-      without looking to the right.
-      For anything but the simplest expressions,
-      this rightward-looking has to be
+      Here the plus signs continue off to the right,
+      and all of them should go above the first one in the parse tree.
+      So we put the first plus sign into a top-down parse
+      tree without having dealt with all those plus signs that follow it.
+      Even in the simplest expression,
+      there is no way of even counting the plus signs
+      without looking to the right,
+      quite possibly a very long way to the right.
+      And for anything but the simplest expressions,
+      this rightward-looking needs to get
       rather sophisticated
-      There are a lot of approaches to dealing with this difficulty,
-      but all of them involve trying to make top-down parsing into
-      something it is not.
+      There are ways dealing with this difficulty,
+      but all of them share one thing in common --
+      they are trying to make top-down parsing into
+      something that it is not.
     &lt;/p&gt;&lt;h3&gt;Advantages of top-down parsing&lt;/h3&gt;
-    &lt;p&gt;In the 1970's it was hard to believe that an approach
+    &lt;p&gt;Top-down parsing does not look at the right context in any systematic way,
+    and in the 1970's it was hard to believe that
       that as as good as we can do.
+      (It's not all that easy to believe today.)
       But before looking at alternatives,
       I want to emphasize that its extreme simplicity
       is also top-down parsing's great strength.
@@ -109,12 +116,14 @@
     &lt;/p&gt;&lt;h3&gt;Bottom-up parsing&lt;/h3&gt;
     &lt;p&gt;Few theoreticians of the 1970's imagined that top-down parsing would
       be the end of the story.
-      They thought there had to be some systematic way to
+      It seemed almost paradoxical that, while looking to the right in
+      ad hoc ways
+      migh help, there was no systematic way to
       to exploit the right context.
-      For example,
+      Certainly,
       when reading sentences like these, you'd think
-      a human must be using the right context.
-    &lt;/p&gt;&lt;p&gt;Don Knuth in 19xx found a way to use
+      a human must be making more than casual use of right context.
+    &lt;/p&gt;&lt;p&gt;Don Knuth in 19xx found an algorithm to exploit
       right context.
       Knuth's LR algorithm was,
       like top-down parsing as I have described it,
@@ -132,62 +141,106 @@
       to be put into a larger context,
       to be decided later.
       Don proposed a stack of subdecisions -- if we have a subdecision
-      but we cannot decide its full context, we push it onto a stack (&quot;shift&quot;).
+      but we cannot decide its full context, we push it onto a stack.
       When you encounter the context, you pop it off the stack
-      and make the full decision (&quot;reduce&quot;).
+      and make the full decision.
+      &lt;p&gt;This approach is called shift/reduce parsing,
+      where shift mean &quot;shift onto the stack&quot;
+      and reduce meant &quot;use a rule to reduce the top to the stack, in effect
+      deciding one piece of the parse from the bottom up.&quot;
+      My descriptions below will not describe all the details of shift/reduction --
+      Instead I will simplify matters by looking only at the operators,
+      and these two crucial decisions about them:
+      &lt;ul&gt;
+      &lt;dl&gt;
+      &lt;dd&gt;subdeciding&lt;dt&gt;making a bottom-up subdecision immediately; or
+      &lt;dd&gt;LIFOing&lt;dt&gt;postponing the subdecision in a last-in-first-out manner.
+      &lt;/dl&gt;
+      &lt;/ul&gt;
+      Actually implementing a shift-reduce parser is more complicated,
+      but the details are well-covered in a number of place.
+      &lt;a href=http://en.wikipedia.org/wiki/Shift-reduce_parser:&gt;The Wikipedia article&lt;/a&gt;,
+      for example, is excellent.
     &lt;/p&gt;&lt;p&gt;Like top-down parsing, bottom-up parsing is usually combined with lookahead.
       For the same lookahead, a bottom-up parser parses not everything that a
       top-down parser can handle,
       and more.
     &lt;/p&gt;&lt;p&gt;
       To preserve determinism,
-      you have to know whether to shift or reduce,
-      and if reducing, what reduction to make,
-      at every location.
+      you have to know,
+      at every location,
+      whether to &quot;subdecide&quot; or &quot;LIFO&quot;,
+      and if &quot;subdeciding&quot;, which rule to use to make the subdecision,
       But the problem with left recursion disappeared.
-      In the example from above
+      In the example from above,
     &lt;/p&gt;&lt;blockquote&gt;&lt;pre&gt;
     a + b + c + d + e + f + [....]&lt;/pre&gt;&lt;/blockquote&gt;
     &lt;p&gt;
-      you reduce until you run out of plus signs.
-      Each reduced addition becomes the left hand side of the next addition,
-      and this continues until you run out of plus signs.
-    &lt;/p&gt;&lt;p&gt;For a bottom-up parser, right recursion is harder, but not much
-      harder.
+      you never need to use LIFO -- you just simply make one subdecision after another
+      until you run out of plus signs.
+      The problem that the top-down parser had
+      because we don't need to know about the plus signs to come -- they
+      will go into nodes of the parse tree above the one we are building,
+      and we are building bottom-up.
+      When we run out of plus signs, we also have hit the top of the parse tree
+      and we are done.
+    &lt;/p&gt;
+    &lt;p&gt;For a bottom-up parser, right recursion is harder, but not much.
     &lt;/p&gt;&lt;blockquote&gt;&lt;pre&gt;
     a = b = c = d = e = f = [....]&lt;/pre&gt;&lt;/blockquote&gt;
   &lt;p&gt;
-      At every equal sign you &quot;shift&quot; the subdecision onto the stack.
-      When you hit the end, you pop the subdecisions off the stack
-      one by one and &quot;reduce&quot; them.
-      Essentially, you do the same thing you did for left recursion,
-      only in reverse.
+      Here you simply push every token onto the LIFO.
+      Once your LIFO contains the entire input,
+       you pop the assignments off the stack
+      one by one, building the tree bottom-up.
+      When the stack is empty you are done.
+      Essentially, you do the exactly same thing you did for left recursion,
+      but you use the LIFO to reverse the order.
       &lt;p&gt;
       Arithmetic expressions like
     &lt;/p&gt;&lt;blockquote&gt;&lt;pre&gt;
     2 * 3 * 4 + 5 * 6&lt;/pre&gt;&lt;/blockquote&gt;
     &lt;p&gt;
-      are solved by combining the approaches.
+      are handled by combining the methods just described.
       For this one
-      you &quot;reduce&quot; all the multiplications,
-      at which point you &quot;shift&quot; the result onto the stack.
-      Then you &quot;reduce&quot; the next set of multiplications.
-      At the end you pop the addition off the stack and &quot;reduce&quot; it.
+      you immediately build all the multiplications in the first set
+      in a subparse,
+      and push it onto the LIFO.
+      Next, you push the plus sign onto the LIFO.
+      Then you build all the multiplications in the next set into a subparse,
+      pushing the result
+      onto the LIFO.
+      At this point, the stack contains a subparses,
+      an addition sign,
+      and another subparse.
+      The two subparses will be the operands for the addition.
+      You pop it the subparse operands, and the addition sign,
+      and build a new subparse from them.
+      This subparse is your parse tree.
     &lt;/p&gt;&lt;p&gt;
-      To preserve determinism,
+      As mentioned, I omitted a lot of details,
+      and most of which will stay omitted.
+      But one omission requires attention:
+      to preserve determinism,
       we have to know,
       at every location,
       whether to shift or reduce,
       and when reducing, what reduction to make.
-      Above, we assumed that we had a way to figure this out.
+      Above, I assumed that we had a way to figure this out.
       In fact,
-      finding what seemed a practical way to make these shift/reduce and
-      reduce/reduce decisions took some doing.
+      finding what a practical way to make the necessary
+      shift/reduce and reduce/reduce decisions was a very far from trivial
+      task.
       By the 197-, it was thought a practical way had been found,
       and around 19-- a parser generator based on it was released as yacc.
       (Readers today may be more familiar with yacc's successor, bison.)
-    &lt;/p&gt;&lt;p&gt;
-      With yacc, theoreticians thought they'd found the Holy Grail.
+    &lt;/p&gt;
+    &lt;h3&gt;The advantages and disadvantages of bottom-up parsing&lt;/h3&gt;
+    &lt;p&gt;
+      With yacc, it looked as if all the most failures of top-down parsing were solved.
+      We now had a parsing algorithm that could readily and directly
+      parse left recursions and arithmetic expressions.
+      Theoreticians thought they'd found the Holy Grail.
       When the textbooks focused on bottom-up parsing came out,
       they were not always able to restrain the urge
       to portray parser writers as knights in armor.
