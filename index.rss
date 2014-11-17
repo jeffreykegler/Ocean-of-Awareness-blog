@@ -135,98 +135,113 @@
       guaranteed that the parse can be done in linear time.
     &lt;/p&gt;&lt;p&gt;Simplistically, Knuth's suggestion was to,
       instead of fully deciding the
-      parse at every location, to make what I will call &quot;subdecisions&quot; --
-      decisions as to how the
-      piece at that location is used, but which allow the subdecision
-      to be put into a larger context,
-      to be decided later.
-      Don proposed a stack of subdecisions -- if we have a subdecision
-      but we cannot decide its full context, we push it onto a stack.
-      When you encounter the context, you pop it off the stack
-      and make the full decision.
+      parse at every location, to make what I will call &quot;subpieces&quot; --
+      pieces that embody partial decisions about the
+      parse, which are intended
+      to be assembled later into a larger subpieces,
+      and eventually into a full parse tree.
+      In Knuth's algorithm, the subpieces were bottom-up subparses.
+      Knuth proposed a stack of subparses -- while a subparse
+      but is waiting for its context, we push it onto a stack.
+      When we encounter the context, we pop one or more subpieces off the stack
+      and assemble a larger subpiece.
       &lt;p&gt;This approach is called shift/reduce parsing,
-      where shift mean &quot;shift onto the stack&quot;
-      and reduce meant &quot;use a rule to reduce the top to the stack, in effect
-      deciding one piece of the parse from the bottom up.&quot;
-      My descriptions below will not describe all the details of shift/reduction --
-      Instead I will simplify matters by looking only at the operators,
-      and these two crucial decisions about them:
-      &lt;ul&gt;
-      &lt;dl&gt;
-      &lt;dd&gt;subdeciding&lt;dt&gt;making a bottom-up subdecision immediately; or
-      &lt;dd&gt;LIFOing&lt;dt&gt;postponing the subdecision in a last-in-first-out manner.
-      &lt;/dl&gt;
-      &lt;/ul&gt;
-      Actually implementing a shift-reduce parser is more complicated,
-      but the details are well-covered in a number of place.
+      My descriptions below will skip over details of shift/reduction --
+      including some details crucial to successful implementation.
+      These details are well-covered in many of places.
       &lt;a href=http://en.wikipedia.org/wiki/Shift-reduce_parser:&gt;The Wikipedia article&lt;/a&gt;,
       for example, is excellent.
     &lt;/p&gt;&lt;p&gt;Like top-down parsing, bottom-up parsing is usually combined with lookahead.
-      For the same lookahead, a bottom-up parser parses not everything that a
+      For the same lookahead, a bottom-up parser parses everything that a
       top-down parser can handle,
       and more.
     &lt;/p&gt;&lt;p&gt;
       To preserve determinism,
       you have to know,
       at every location,
-      whether to &quot;subdecide&quot; or &quot;LIFO&quot;,
-      and if &quot;subdeciding&quot;, which rule to use to make the subdecision,
-      But the problem with left recursion disappeared.
+      whether to push the subpiece onto the LIFO,
+      and or to build it into a larger subpiece.
+      And if we do decide to build the larger subpiece,
+      we also need to know which rule to use to make the subpieces.
+      &lt;p&gt;
+      Bottom-up parsing solved
+      the problem of left recursion.
       In the example from above,
     &lt;/p&gt;&lt;blockquote&gt;&lt;pre&gt;
     a + b + c + d + e + f + [....]&lt;/pre&gt;&lt;/blockquote&gt;
     &lt;p&gt;
-      you never need to use LIFO -- you just simply make one subdecision after another
+      you never need to use LIFO -- you just simply build one subpiece after another
       until you run out of plus signs.
-      The problem that the top-down parser had
-      because we don't need to know about the plus signs to come -- they
-      will go into nodes of the parse tree above the one we are building,
-      and we are building bottom-up.
-      When we run out of plus signs, we also have hit the top of the parse tree
+      The top-down parser had a problem because it needed to build top-down,
+      so that it needed to know about the plus signs to come -- plus signs
+      that will go into nodes of the parse tree above the subparse we are
+      building.
+      But if we are building a bottom-up subparse, we don't need to know anything about
+      the plus signs to the right.
+      We can easily wait until when and if we encounter them.
+      When we run out of tokens, we also have hit the top of the parse tree
       and we are done.
     &lt;/p&gt;
-    &lt;p&gt;For a bottom-up parser, right recursion is harder, but not much.
+    &lt;p&gt;But if working bottom-up solves the left recursion problem,
+    doesn't it create a new right recursion problem?
+    In fact,
+    for a bottom-up parser, right recursion is harder, but not much.
+    Because unlike the top-down parsers,
+    shift-reduce parsers have a LIFO.
+    For a right recursion like this:
     &lt;/p&gt;&lt;blockquote&gt;&lt;pre&gt;
     a = b = c = d = e = f = [....]&lt;/pre&gt;&lt;/blockquote&gt;
   &lt;p&gt;
-      Here you simply push every token onto the LIFO.
+      we simply push every token onto the LIFO.
       Once your LIFO contains the entire input,
-       you pop the assignments off the stack
-      one by one, building the tree bottom-up.
-      When the stack is empty you are done.
-      Essentially, you do the exactly same thing you did for left recursion,
-      but you use the LIFO to reverse the order.
+       we pop the assignments off the stack
+      one by one, building the tree bottom-up,
+      and pushing the result back onto the LIFO.
+      Since every time we pop three items (the equal sign and its two operands),
+      we only push one result back one,
+      eventually the stack will empty.
+      When the stack is empty, we are done.
+      Essentially, what we do the exactly same thing we did for left recursion,
+      except that we use the LIFO to reverse the order.
       &lt;p&gt;
       Arithmetic expressions like
     &lt;/p&gt;&lt;blockquote&gt;&lt;pre&gt;
     2 * 3 * 4 + 5 * 6&lt;/pre&gt;&lt;/blockquote&gt;
     &lt;p&gt;
-      are handled by combining the methods just described.
-      For this one
-      you immediately build all the multiplications in the first set
-      in a subparse,
-      and push it onto the LIFO.
-      Next, you push the plus sign onto the LIFO.
-      Then you build all the multiplications in the next set into a subparse,
-      pushing the result
-      onto the LIFO.
-      At this point, the stack contains a subparses,
-      an addition sign,
-      and another subparse.
-      The two subparses will be the operands for the addition.
-      You pop it the subparse operands, and the addition sign,
-      and build a new subparse from them.
-      This subparse is your parse tree.
+      are handled by mixing the methods just described.
+      For the expression above,
+      &lt;ul&gt;
+      &lt;li&gt;We immediately build all the multiplications in the first set
+      into a subparse as soon as possible,
+      treating it the same as we did a left recursion,
+      until we reach the plus sign.
+      &lt;li&gt;When we reach the plus sign, we push that sign onto the LIFO.
+      &lt;li&gt;After the plus sign
+      we build all the multiplications in the next set into a subparse,
+      much as we did with the first set.
+      &lt;li&gt;A this point the LIFO will contain three items: a subparse,
+      the addition sign,
+      and a subparse.
+      The two subparses are the operands of the addition.
+      We build these three elements into a new subparse.
+      &lt;li&gt;
+      This subparse is, in fact, our parse tree.
+      We are done.
+      &lt;/ul&gt;
     &lt;/p&gt;&lt;p&gt;
       As mentioned, I omitted a lot of details,
-      and most of which will stay omitted.
+      and most of them will stay omitted.
       But one omission requires attention:
       to preserve determinism,
       we have to know,
       at every location,
-      whether to shift or reduce,
-      and when reducing, what reduction to make.
-      Above, I assumed that we had a way to figure this out.
+      whether to push the next symbol onto the stack,
+      or to build a new subparse immediately
+      from whatever is at the top of the LIFO.
+      And if we do decide to build a new subparse,
+      so we also need to decide what rule to use.
+      (There may be a choice.)
+      Above, we assumed that we had a way to figure this out.
       In fact,
       finding what a practical way to make the necessary
       shift/reduce and reduce/reduce decisions was a very far from trivial
@@ -273,7 +288,7 @@
       But is this actually the case?
     &lt;/p&gt;&lt;p&gt;It's not, in fact.
       To keep bottom-up parsing deterministic, we restricted ourselves to a stack.
-      But what if we keep all possible subdecisions linked and in tables,
+      But what if we keep all possible subpieces linked and in tables,
       and make the final decisions in another pass,
       once the tables are complete.
       (The second pass replaces the stack based
