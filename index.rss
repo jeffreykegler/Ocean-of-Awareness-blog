@@ -22,10 +22,10 @@
     &lt;/p&gt;&lt;p&gt;Comparisons between top-down and bottom-up parsing
       are often either too high-level or too low-level.
       Overly high-level treatments reduce the two approaches to buzzwords,
-      and the comparision to a recitation of received wisdom.
+      and the comparison to a recitation of received wisdom.
       Overly low-level treatments get immersed in the minutiae of implementation,
-      and the resulting comparison is about as helpful as placing
-      two unrelated code listings side by side.
+      and the resulting comparison is as revealing as placing
+      two abstractly related code listings side by side.
       In this post I hope to find the middle level;
       to shed light on why advocates of bottom-up
       and top-down parsing approaches take the positions
@@ -44,7 +44,7 @@
       In its purest form,
       this idea is too simple for practical parsing,
       so top-down parsing is almost
-      always combined with with lookahead.
+      always combined with lookahead.
       Lookahead of one token helps a lot.
       Longer lookaheads
       are very sparsely used.
@@ -118,12 +118,12 @@
       deterministic.
       Determinism was thought to be essential --
       allowing more than one choice easily leads to
-      an combinatorial explosion in the
+      a combinatorial explosion in the
       number of possibilities that have to considered at once.
-      If parsers were restricted to dealing with a single choice,
-      it was much easier to guarantee that
-      they could be run in linear time.
-    &lt;/p&gt;&lt;p&gt;Simplistically, Knuth's suggestion was to,
+      When parsers are restricted to dealing with a single choice,
+      it is much easier to guarantee that
+      they will run in linear time.
+    &lt;/p&gt;&lt;p&gt;Simplistically, Knuth's suggestion was,
       instead of fully deciding the
       parse at every location, to create what I will call &quot;subpieces&quot; --
       pieces that embody partial decisions about the
@@ -131,22 +131,24 @@
       to be assembled later into a larger subpieces,
       and eventually into a full parse tree.
       &lt;p&gt;
-      Knuth's algorithm stored subparses by them shifting onto a stack.
+      Knuth's algorithm stored subparses by shifting them onto a stack.
       The operation to do this was called a &quot;shift&quot;.
-      (Single tokens count as subparses.)
+      (Single tokens of the input are treated as subparses with a single node.)
       When there was enough context to build a larger subparse,
       the algorithm popped one or more subparses off the stack,
       assembled a larger subparse,
       and put the resulting subparse back on the stack.
-      This operation was called a &quot;reduce&quot;.
+      This operation was called a &quot;reduce&quot;,
+      based on the idea that its repeated application
+      eventually &quot;reduces&quot; the parse tree to its root node.
     &lt;/p&gt;&lt;p&gt;
       In handling the stack, we will often be faced with
       choices.
       One kind of choice is between using what we already have
-      on the stack to assemble a larger subparse
-      or adding more subparses instead (&quot;shift/reduce&quot;).
+      on top of the stack to assemble a larger subparse;
+      or pushing more subparses on top of the stack instead (&quot;shift/reduce&quot;).
       When we decide to reduce,
-      we encounter the other kind of choice --
+      we may encounter the other kind of choice --
       we have to decide which rule to use (&quot;reduce/reduce&quot;).
     &lt;/p&gt;
     &lt;p&gt;Like top-down parsing, bottom-up parsing is usually combined with lookahead.
@@ -160,9 +162,9 @@
       I'll describe how it works on some examples,
       including two very important ones that
       stump top-down parsers: arithmetic expressions and left-recursion.
-      My purpose here is conceptual,
+      My purpose here is bring to light the basic concepts,
       and not to guide an implementor.
-      The full details are well-covered in many other places.
+      There are excellent implementation-oriented presentations in many other places.
       &lt;a href=http://en.wikipedia.org/wiki/Shift-reduce_parser:&gt;The Wikipedia article&lt;/a&gt;,
       for example, is excellent.
     &lt;/p&gt;
@@ -225,17 +227,21 @@
     &lt;/p&gt;
     &lt;p&gt;
       In this discussion,
-      I have assumed we know the right strategy for choosing between
-      shift and reduce.
-      For this to be a parsing algorithm, the shift/reduce and reduce/reduce choices
-      have to be
+      I have pulled the right strategy for making stack decisions
+      (shift/reduce and reduce/reduce)
+      out of the air.
+      Clearly, if bottom-up parsing was going to be
+      a practical parsing algorithm,
+      the stack decisions
+      would have to be
       made algorithmically.
       In fact, discovering a practical way to do this
       was a far from trivial task.
-      The solution in Knuth's paper were considered (and apparently intended)
+      The solution in Knuth's paper was considered (and apparently intended)
       to be mathematically provocative, rather than practical.
-      But by 1979, it was thought a practical way had been found,
-      and yacc, a parser generator based on it, was released.
+      But by 1979, it was thought a practical way to make stack decisions
+      had been found 
+      and yacc, a parser generator based on bottom-up parsing, was released.
       (Readers today may be more familiar with yacc's successor, bison.)
     &lt;/p&gt;
     &lt;h3&gt;The fate of bottom-up parsing&lt;/h3&gt;
@@ -254,9 +260,9 @@
       The subset of grammars parsed was still not quite large enough,
       even for conservative language designers.
       And bottom-up parsing was very unfriendly to custom hacks,
-      and this made every shortcoming loom large.
+      which made every shortcoming loom large.
       It is much harder to work around a problem in a bottom-up
-      parser than than it was to deal with a similar problem
+      parser than than it was to deal with a similar shortcoming
       in a top-down parser.
       After decades of experience with bottom-up parsing,
       top-down parsing has re-emerged as the
@@ -266,28 +272,31 @@
     &lt;p&gt;For many, the return to top-down parsing
       answers the question that we posed earlier:
       &quot;Is there any systematic way to exploit right context when parsing?&quot;
-      This answer turns out to be a rather startling &quot;No&quot;.
-      But is this really the end of the story?
+      So far, the answer seems to be a rather startling &quot;No&quot;.
+      Can this really be the end of the story?
     &lt;/p&gt;&lt;p&gt;
       It would be very strange if the best basic parsing algorithm we know is top-down.
-      I described at some length grammars that can be parsed bottom-up can
-      be parsed bottom-up but top-down, at least not directly.
-      This progress seems like a lot to lose,
-      and this perhaps explains the persistence of bottom-up in lectures
-      and textbooks.
-      On the other hand,
-      the verdict from practitioners seems to be in,
-      and is almost certain to hold up against any appeal.
+      Above, I described at some length some very important grammars that
+      can be parsed bottom-up
+      but not top-down, at least not directly.
+      Progress like this seems like a lot to walk away from,
+      and especially to walk back all the way to what is
+      essentially a brute force algorithm.
+      This perhaps explains why lectures 
+      and textbooks persist in teaching bottom-up parsing to
+      student who are very unlikely to use it.
+      Because the verdict from practitioners seems to be in,
+      and likely to hold up on appeal.
     &lt;/p&gt;&lt;p&gt;
-    &lt;/p&gt;&lt;p&gt;Assumed by both advocates of deterministic top-down parsing,
-      and deterministic bottom-up parsing is that,
-      for an algorithm to be linear,
-      in practice it must also be deterministic.
+    &lt;/p&gt;&lt;p&gt;Assumed both by fans of deterministic top-down parsing,
+      and proponents of deterministic bottom-up parsing is that,
+      for a practical algorithm to be linear,
+      it must also be deterministic.
       But is this actually the case?
     &lt;/p&gt;
     &lt;p&gt;It's not, in fact.
       To keep bottom-up parsing deterministic, we restricted ourselves to a stack.
-      But what if we track all possible subpieces of parses.
+      But what if we track all possible subpieces of parses?
       For efficiency, we can link them and put them into tables,
       making the final decisions in a second pass,
       once the tables are complete.
@@ -308,10 +317,10 @@
       (In fact, the Earley/Leo algorithm is linear for a lot of
       ambiguous grammars as well.)
     &lt;/p&gt;&lt;p&gt;Top-down parsing had the advantage that it was easy to know where
-      you are.  But the Earley/Leo algorithm has an equivalent advantage -- its
+      you are.  The Earley/Leo algorithm has an equivalent advantage -- its
       tables know where it is, and it is easy to query them programmatically.
-      In 2010, this blogger added to the Earley/Leo algorithm
-      the other big advantage of top-down parsing:
+      In 2010, this blogger modified the Earley/Leo algorithm
+      to have the other big advantage of top-down parsing:
       The Marpa algorithm rearranges the Earley/Leo parse engine so that we can
       stop it, perform our own logic, and restart where we left off.
       &lt;a href=http://savage.net.au/Marpa.html&quot;&gt;A quite useable parser based on the Marpa algorithm&lt;/a&gt;
