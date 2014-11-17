@@ -57,7 +57,7 @@
     attention than
     the more widely used top-down parsing.
     Why?
-    <p>Many treatments of these two approaches,
+    <p>Many treatments of these two approaches
     are either too high-level or two low-level.
     Overly high-level treatments reduce the two approaches to buzzwords,
     and the comparision to a recitation of received wisdom.
@@ -71,14 +71,17 @@
     </p>
     <h3>Top-down parsing</h3>
     <p>The basic idea of top-down parsing is
-      as brutally simple as a programming strategy gets:
-      you look at the next symbol and decide then and there
-      where it fits into the parse.
+      as brutally simple as anything in programming:
+      you look at the next token and decide then and there
+      where it fits into the parse tree.
+      Starting at the top, you add pieces and once
+      you've looked at every token,
+      you have your parse tree.
+      <p>
       Since this idea, in its purest form,
       is too simple to get anything done,
       top-down parsing is almost
       always combined with with lookahead.
-    <p>
       Lookahead of one token helps a lot.
       But longer lookaheads
       are very sparsely used.
