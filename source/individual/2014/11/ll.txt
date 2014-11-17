@@ -9,32 +9,35 @@ Parsing: Top-down versus bottom-up
     </p>
     <p>Why did the invention of bottom-up parsing bring
     with it such hope?
-    Indeed, despite bottom-up parsings
-     near-total abandonment in favor of top-dwon by practitioners,
-     among theoreticians it still has not lost its hold.
-     To this day,
-    Bottom-up parsing frequently occupies the place of honor
-    in parsing texts and courses.
+    Indeed, despite bottom-up parsing's
+     near-total abandonment by practitioners,
+     among theoreticians bottom-up still has not lost its hold.
+     Even today,
+    in parsing texts and courses,
+    bottom-up parsing frequently gets as much or more
+    attention than
+    the more widely used top-down parsing.
     Why?
-    <p>There are many treatments of these two approaches,
-    but most are either too high-level or two low-level.
+    <p>Many treatments of these two approaches,
+    are either too high-level or two low-level.
     Overly high-level treatments reduce the two approaches to buzzwords,
     and the comparision to a recitation of received wisdom.
     Overly low-level treatments get immersed in the minutiae of implementation,
-    and the comparison ends up like two unrelated code listings
-    placed side by side.
-    In this post I hope to clarify why the two sides take the stands
-    they do,
+    so that the comparison ends up no more helpful than placing
+    two unrelated code listings placed side by side.
+    In this post I hope to clarify why the two advocates of each
+    parsing approach took that positions
+    they did,
     and to suggest a way forward.
     </p>
     <h3>Top-down parsing</h3>
-    <p>Certainly the basic idea of top-down parsing is
+    <p>The basic idea of top-down parsing is
       as brutally simple as a programming strategy gets:
       you look at the next symbol and decide then and there
       where it fits into the parse.
-      This idea, in its purest form,
+      Since this idea, in its purest form,
       is too simple to get anything done,
-      so top-down parsing is almost
+      top-down parsing is almost
       always combined with with lookahead.
     <p>
       Lookahead of one token helps a lot.
