@@ -312,7 +312,7 @@ Parsing: Top-down versus bottom-up
       to have the other big advantage of top-down parsing:
       The Marpa algorithm rearranges the Earley/Leo parse engine so that we can
       stop it, perform our own logic, and restart where we left off.
-      <a href=http://savage.net.au/Marpa.html">A quite useable parser based on the Marpa algorithm</a>
+      <a href="http://savage.net.au/Marpa.html">A quite useable parser based on the Marpa algorithm</a>
       is available as open source.
     </p><h3>Comments</h3>
     <p>Comments on this post can be made in
