@@ -42,6 +42,10 @@
           About Marpa in general</a>
       </p>
       <p class="view">
+        <a href="#PARSING">
+          About parsing in general</a>
+      </p>
+      <p class="view">
         <a href="#DESIGN">
           Language design</a>
       </p>
@@ -222,7 +226,8 @@
       </ul>
       <h2><a name="GENERAL"></a>About Marpa in general</h2>
       <ul>
-        <li><p>
+        <li>
+          <p>
             <a href="http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2014/09/chron.html">
               Parsing: a timeline</a>
             A timeline of parsing research, describing how other algorithm pushed the parsers
@@ -232,11 +237,13 @@
             This is
             the most technical post I've ever dared put on this blog.
             Suprisingly, it was also a runaway hit.
-	    Within its first two weeks it became my most popular post, by far.
+            Within its first two weeks it became my most popular post, by far.
             The development of the various parsing algorithms is an interesting story,
             one that has never really been told as a story before.
             Readers apparently liked this.
-          </p></li><li><p>
+          </p>
+        </li>
+        <li><p>
             <a href="http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2013/05/table.html">
               Why Marpa works: table parsing</a>.
             Marpa is different from the other widely used parsers.
@@ -290,7 +297,50 @@
           </p>
         </li>
       </ul>
-      <h2><a name="DESIGN">Designing languages</a></h2>
+      <h2><a name="PARSING"></a>About parsing in general</h2>
+      <p>In the process of writing Marpa, I read and thought a lot
+        about the various approaches to parsing,
+        and how they developed.
+        When I came to share my thoughts, it turned quite a few people
+        were interested.
+        There is also some discussion in these posts about the ideas behind
+        Marpa, and how they relate to other parsing algorithms.
+      </p>
+      <ul><li>
+          <p>
+            <a href="http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2014/09/chron.html">
+              Parsing: a timeline</a>
+            A timeline of parsing research, describing how other algorithm pushed the parsers
+            in the Earley lineage
+            (like Marpa)
+            aside, only for it all to come down twisted.
+            This is
+            the most technical post I've ever dared put on this blog.
+            Suprisingly, it was also a runaway hit.
+            Within its first two weeks it became my most popular post, by far.
+            The development of the various parsing algorithms is an interesting story,
+            one that has never really been told as a story before.
+            Readers apparently liked this.
+          </p>
+        </li>
+        <li>
+          <p>
+            <a href="http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2014/11/ll.html">
+              Parsing: top-down and bottom-up</a>
+            If "Parsing: a timeline" was about "when and how?",
+            then this is about "why?"
+            It describes the concepts behind the two major traditional approaches to
+            parsing and confronts some questions:
+            Why did
+            the invention of bottom-up parsing create so much
+            enthusiasm?
+            Why, despite bottom-up's abandonment by practitioners,
+            does it still play such a big role in classrooms and in textbooks?
+            What does this say about the way forward?
+            Is there one?
+          </p>
+        </li>
+      </ul><h2><a name="DESIGN">Designing languages</a></h2>
       <p>Marpa allows things to be done which
         could not be done before.
         Many of these things are significant for language design --
@@ -304,8 +354,8 @@
             <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2014/08/ambig.html">Language
               Design: exploiting ambiguity</a>.
             Actual ambiguity is a show-stopper.
-	    But in the present state of the art,
-	    even potential ambiguity is totally avoided in language design.
+            But in the present state of the art,
+            even potential ambiguity is totally avoided in language design.
             Which only makes sense, right?
           </p><p>
             Well, actually, no.
@@ -356,7 +406,7 @@
             easy to get wrong and,
             in current practice,
             annoying to fix, in large part because current parsers are not good at diagnosing
-	    delimiter mismatches.
+            delimiter mismatches.
             Worse, a mismatched delimiter will almost certainly make the rest of a compiler's
             error message so unreliable that they are effectively useless.
           </p><p>Marpa allows more accurate reporting of delimiter mismatches than traditional
