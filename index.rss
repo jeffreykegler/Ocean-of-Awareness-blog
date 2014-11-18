@@ -119,7 +119,7 @@
       Determinism was thought to be essential --
       allowing more than one choice easily leads to
       a combinatorial explosion in the
-      number of possibilities that have to considered at once.
+      number of possibilities that have to be considered at once.
       When parsers are restricted to dealing with a single choice,
       it is much easier to guarantee that
       they will run in linear time.
@@ -165,7 +165,7 @@
       My purpose here is bring to light the basic concepts,
       and not to guide an implementor.
       There are excellent implementation-oriented presentations in many other places.
-      &lt;a href=http://en.wikipedia.org/wiki/Shift-reduce_parser:&gt;The Wikipedia article&lt;/a&gt;,
+      &lt;a href=http://en.wikipedia.org/wiki/Shift-reduce_parser&gt;The Wikipedia article&lt;/a&gt;,
       for example, is excellent.
     &lt;/p&gt;
     &lt;p&gt;
@@ -325,7 +325,7 @@
       to have the other big advantage of top-down parsing:
       The Marpa algorithm rearranges the Earley/Leo parse engine so that we can
       stop it, perform our own logic, and restart where we left off.
-      &lt;a href=http://savage.net.au/Marpa.html&quot;&gt;A quite useable parser based on the Marpa algorithm&lt;/a&gt;
+      &lt;a href=&quot;http://savage.net.au/Marpa.html&quot;&gt;A quite useable parser based on the Marpa algorithm&lt;/a&gt;
       is available as open source.
     &lt;/p&gt;&lt;h3&gt;Comments&lt;/h3&gt;
     &lt;p&gt;Comments on this post can be made in
