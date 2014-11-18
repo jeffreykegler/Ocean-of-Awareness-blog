@@ -106,7 +106,7 @@ Parsing: Top-down versus bottom-up
       Determinism was thought to be essential --
       allowing more than one choice easily leads to
       a combinatorial explosion in the
-      number of possibilities that have to considered at once.
+      number of possibilities that have to be considered at once.
       When parsers are restricted to dealing with a single choice,
       it is much easier to guarantee that
       they will run in linear time.
