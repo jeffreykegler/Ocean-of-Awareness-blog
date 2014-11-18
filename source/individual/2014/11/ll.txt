@@ -152,7 +152,7 @@ Parsing: Top-down versus bottom-up
       My purpose here is bring to light the basic concepts,
       and not to guide an implementor.
       There are excellent implementation-oriented presentations in many other places.
-      <a href=http://en.wikipedia.org/wiki/Shift-reduce_parser:>The Wikipedia article</a>,
+      <a href=http://en.wikipedia.org/wiki/Shift-reduce_parser>The Wikipedia article</a>,
       for example, is excellent.
     </p>
     <p>
