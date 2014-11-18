@@ -175,7 +175,7 @@
     &lt;/p&gt;&lt;blockquote&gt;&lt;pre&gt;
     a + b + c + d + e + f + [....]&lt;/pre&gt;&lt;/blockquote&gt;
     &lt;p&gt;
-      we just simply build one subparse after another,
+      we simply build one subparse after another,
       as rapidly as we can.
       In the terminology of shift/reduce,
       whenever we can reduce, we do.
