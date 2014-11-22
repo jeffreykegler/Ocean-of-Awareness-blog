@@ -149,13 +149,33 @@
       When parsers are restricted to dealing with a single choice,
       it is much easier to guarantee that
       they will run in linear time.
-    </p><p>Simplistically, Knuth's suggestion was,
-      instead of fully deciding the
-      parse at every location, to create what I will call "subparses" --
-      pieces that embody partial decisions about the
-      parse, which are intended
-      to be assembled later into a larger subparses,
-      and eventually into a full parse tree.
+    </p>
+    <p>Knuth's algorithm did <b>not</b>
+      try to hang
+      each token from a branch of a top-down parse tree
+      as soon as it was encountered.
+      Instead, Knuth suggested delaying that decision.
+      Knuth's algorithm collected
+      "subparses".
+      <p>
+      When I say "subparses" in this discussion,
+      I mean pieces of the parse that 
+      contain all the decisions necessary to construct
+      the part of the parse tree that is below them.
+      But subparses do not contain any decisions about what is above them
+      in the parse tree.
+      Put another way, subparses know who they are,
+      but not where they belong.
+    <p></p>
+      Subparses may not know where they belong,
+      but knowing who they are is enough for them
+      to be assembled into larger subparses.
+      And, if we keep assembling the subparses,
+      eventually we will have a "subparse" that
+      is the full parse tree.
+      And at that point we will
+      know both who everyone is 
+      and where everyone belongs.
     </p><p>
       Knuth's algorithm stored subparses by shifting them onto a stack.
       The operation to do this was called a "shift".
