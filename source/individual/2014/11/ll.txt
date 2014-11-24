@@ -341,7 +341,7 @@ Parsing: Top-down versus bottom-up
       or on our IRC channel: #marpa at freenode.net.
       To learn more about Marpa,
       there's
-      <a href=http://savage.net.au/Marpa.html">the
+      <a href="http://savage.net.au/Marpa.html">the
         official web site maintained by Ron Savage</a>.
       I also have
       <a href="http://jeffreykegler.github.io/Marpa-web-site/">a Marpa web site</a>.
