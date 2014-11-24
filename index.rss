@@ -199,8 +199,8 @@
       as rapidly as we can.
       In the terminology of shift/reduce,
       whenever we can reduce, we do.
-      When we run out of tokens,
-      and have reduced until there is only one element on the stack.
+      Eventually we will have run out of tokens,
+      and will have reduced until there is only one element on the stack.
       That one remaining element is the subparse that is also,
       in fact, our full parse tree.
     &lt;/p&gt;&lt;p&gt;
@@ -228,7 +228,7 @@
       For left recursion, we reduced whenever we could.
       For right recursion, when we have a choice, we always shift.
       This means we will immediately shift the entire input onto the stack.
-      Once the entire input in on the stack,
+      Once the entire input is on the stack,
       we have no choice but to start reducing.
       Eventually we will reduce the stack to a single element.
       At that point, we are done.
