@@ -126,7 +126,7 @@ element ::= string | array
       tell Marpa what the semantics will be.
       The default (which will be set below) is for a rule to return its first child.
       <tt>::array</tt>
-      semantics tell Marpa to return all every
+      semantics tell Marpa to return every
       <tt>element</tt>
       of
       <tt>elements</tt>
