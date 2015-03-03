@@ -152,7 +152,7 @@
       and often useful in itself.
       PEG will only deliver one of those parses.
       But without
-      an easy way of knowing which parse
+      an easy way of knowing which parse,
       the underlying ambiguity is not addressed --
       it is just ignored.
     &lt;/p&gt;
@@ -247,7 +247,7 @@
       &lt;a href=&quot;http://www.romanredz.se/papers/FI2014.pdf&quot;&gt;Redziejowski 2014&lt;/a&gt;
       seek to extend this result by defining the language class LL(1p) --
       those top-down languages with one
-      &lt;b&gt;procedure&lt;/b&gt;
+      &quot;parsing procedure&quot;
       of lookahead.
       The LL(1p) languages are also well-behaved for PEG.
     &lt;/p&gt;
@@ -260,7 +260,7 @@
       I don't know of any followup,
       but it's possible this approach could produce
       well-behaved top-down parsers which are
-      improvement over direct-from-PEG parsing.
+      an improvement over direct-from-PEG parsing.
       But for those who are open to leaving top-down parsing behind,
       a parser which handles languages in all these classes
       and more is already available.
@@ -270,7 +270,7 @@
       In this post,
       I have adopted the point of view of programmers using PEG,
       or thinking of doing so.
-      But my own belief in this matter is that
+      My own belief in this matter is that
       very few programmers
       should want to bother with the issues I've just described.
       My reason for this is the Marpa parser --
