@@ -192,7 +192,7 @@ PEG: Ambiguity, precision and confusion
     <p>Roberto Ierusalimschy, author of Lua and one of the best
       programmers of our time,
       has written a PEG-based parser of his own.
-      Roberto's is fully aware of PEG's limits,
+      Roberto is fully aware of PEG's limits,
       but he makes a very good case for choosing PEG
       as the basis of LPEG, his parser generator.
       LPEG is intended for use with Lua,
