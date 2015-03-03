@@ -34,6 +34,251 @@
   </p>
   </div>
   <div style="margin-left:190px;border-left:2px solid #38B0C0;padding:25px;">
+<h3>Mon, 02 Mar 2015</h3>
+<br />
+<center><a name="peg"> <h2>PEG: Ambiguity, precision and plain old confusion</h2> </a>
+</center>
+<html>
+  <head>
+  </head>
+  <body><p>
+      <!--
+      marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
+      -->
+    </p>
+    <h3>ambiguity Hoffa and precision</h3>
+    <p><a href="http://bford.info/packrat/">>PEG parsing</a>
+      is a new notation
+      for a notorously tricky algorithm with a history that goes back
+      the days of the earliest computers.
+      In its PEG form,
+      this algorithm acquired an seductive new interface,
+      one that looks like the best of
+      extended BNF combined with the best of regular expressions.
+      Looking at a sample of it gives the impression
+      that writing a parser has suddenly become a very straightforward
+      matter.
+    </p><p>For those not yet in the know on this,
+      I'll explain with a pair of examples from
+      <a href="http://www.romanredz.se/papers/FI2008.pdf">
+        an excellent 2008 paper by Redziejowski</a>.
+      Let's start with these two PEG grammars.
+    </p><blockquote><pre>
+    ("a"|"aa")"a"
+    ("aa"|"a")"a"
+    </pre></blockquote><p>
+      One of these two PEG grammars accepts
+      the string "<tt>aaa</tt>" and "<tt>aa</tt>".
+      The other accepts the string
+      the string "<tt>aa</tt>" and "<tt>aaa</tt>".
+      Can you tell which one?
+      Could you sort this out
+      if this logic was buried in a large specification?
+      (For the answer to the first question,
+      see page 4 of
+      <a href="http://www.romanredz.se/papers/FI2008.pdf">
+        Redziejowski 2008</a>.
+    </p><p>
+      Here is another example:
+    </p><blockquote><pre>
+    A = "a"A"a"/"aa"
+    </pre></blockquote><p>
+      What language does this describe?
+      It's obviously string of the letter "<tt>a</tt>",
+      but which ones?
+      Again the answer is on
+      page 4 of
+      <a href="http://www.romanredz.se/papers/FI2008.pdf">
+        Redziejowski 2008</a>
+      -- it's exactly those strings
+      whose length is a power of 2.
+    </p><p>With PEG, what you see is not what you get.
+      PEG parsing is sometimes called "precise",
+      on the idea that PEG parsing is in a sense unambiguous.
+      In this case "precise" is taken as synonymous with
+      "unique".
+      That is, PEG parsing is precise in exactly the same
+      sense as the location of Jimmy Hoffa's body
+      is a precise location.
+      We know there is exactly one such place, but
+      without necessarily being able to specify it.
+    </p>
+    <h3>Syntax-driven?</h3>
+    <p>It's important to emphasize that the point of
+      a syntax-driven parser generator is that the syntax,
+      in fact, describe, in some way the programmer can
+      in practice predict, the parser which is generated.
+      This is, for most practical grammars, not the case
+      with PEG.
+      Below I will describe the work of several
+      PEG researchers who understand this this issue,
+      and who are trying to deal with it.
+    </p><p>Before moving on,
+      I want to point out why these PEG researchers
+      take knowing precisely what language you are parsing
+      very seriously.
+      This is much more at stake than bragging rights
+      over which algorithm is really syntax-driven and
+      which is not.
+    </p><p>Let me identify two problems.
+      The least serious of these is that your PEG grammar
+      might not parse all the strings in your language.
+      There is, in usual practice, no way to determine
+      this from the PEG specification,
+      so you have to rely on your test suite.
+      But test suites are not adequate to catch all
+      possible errors in most applications,
+      and this is especially the case with languages.
+    </p><p>The second, more serious problem, is often forgotten.
+      Your PEG parser might accept strings that are
+      <b>not</b>
+      in your language.
+      No test suite can catch all of these, and few try.
+      But if a parser accepts unexpected inputs,
+      and applications come to rely on this,
+      it becomes a huge problem for maintaining compatibility.
+      Failure to accept correct input can be coped with
+      in straightforward fashion,
+      -- you simply fix the parser to accept the correct input.
+      But if you discover you have been accepting incorrect input,
+      you have a more difficult choice -- break compatiblity,
+      or leave the problem unfixed.
+      Leaving the problem unfixed is problematic, because
+      acceptance of unexpected inputs is also
+      a potential security risk.
+    </p><p>The burden of maintaining a PEG parser is worth
+      considering carefully.
+      Even if you do know the current behavior of your PEG parser,
+      you cannot expect to know what it will be if you need to
+      change it.
+      Small changes in PEG specifications often have big
+      implications,
+      implications which are hard to predict,
+      and hard even to discover when your revised
+      PEG parser seems to be working.
+      And the larger the PEG parser gets, the worse the
+      maintenance problem gets.
+    </p><h3>Is PEG unambiguous?</h3>
+    <p>PEG is not unambiguous in any
+      helpful sense of that word.
+      BNF allows you to specify ambiguous grammars,
+      and that feature is tied to its power and flexibility
+      and often useful in itself.
+      PEG will only deliver one of those parses, but without
+      an easy way of specifying, or even knowing, which one
+      the underlying problem of ambiguity has not really been addressed.
+    </p><p>My Marpa parser,
+      for example, which is a general BNF parser based on Earley's,
+      can simply throw all but one of the parses in an ambiguous
+      parse away.
+      But I would not say that, if you have an issue with ambiguity,
+      Marpa has solved it by arbitrarily throwing away results.
+      Marpa, in fact, does allow you to control which parses
+      are tossed, by ranking some rules over others,
+      and in Marpa's case the ranking works in an intuitive
+      way.
+      But in all cases, whether you call them ambiguous or not,
+      Marpa delivers precisely the parses the grammar and the rule
+      rankings specify,
+      and it is "precision" in this sense that a grammar writer needs.
+    </p><h3>Is there a sensible way to use PEG?</h3><p>
+      I've already mentioned my own parser, Marpa,
+      and I'll return to that.
+      But suppose that you refuse to use Marpa,
+      and insist on making
+      the best of PEG.
+      There are
+      several excellent programmers who have committed themselves
+      to PEG, while being fully honest about its limitations.
+      I've already mentioned one important paper
+      Redziejowski -- his collected papers can be
+      found here, and many of them treat PEG,
+      and they are trustworthy.
+      Redziejowski, in his effort to promote PEG,
+      can be relied not to sugarcoat PEG's problems.
+    </p><p>Roberto Ierusalimschy, author of Lua and one of the best
+      programmers of our time,
+      has written a PEG-based parser of his own.
+      Roberto's is fully aware of PEG's limits,
+      and makes a good case for choosing PEG for his parser.
+      First, LPEG's is intended for use Lua,
+      a ruthlessly minimal language,
+      so there is an almost unique emphasis on the size of the code.
+      And, indeed, Roberto's version of PEG (LPEG) is small.
+      Second, Roberto's intention
+      is not to create a syntax-driven competitor of recursive descent,
+      but instead to extend regular expressions in a disciplined way.
+    </p><h3>Matching the BNF to the PEG spec</h3><p>
+      Redziejowski, Ierusalimschy and the other authors
+      of
+      <a href="x">X</a>
+      recognize that inability to know the the language you are
+      parsing is no minor issue -- in many applications,
+      it is a show-stopper, or at least should be.
+      The solution they are pursuing is finding the subset of
+      BNF for which the PEG spec
+      <b>does</b>
+      accept exactly
+      the language specified by the BNF.
+      This subset is in fact, very restricted -- it is essentially
+      LL(1) --
+      those languages a top-down parser can parse based on at
+      most one character of input.
+      A syntax-driven parser for LL(1) was described in 1961(?),
+      but there was no followup,
+      because LL(1) is just not sufficient for
+      most practical languages.
+      Redziejowski believes this class of languages which are well-behaved
+      for PEG can be extended somewhat --
+      those interested can look at his paper.
+    </p><h3>Marpa</h3><p>
+      In this post,
+      I have taken the point of view of programmers using PEG,
+      or thinking of doing so.
+      My own belief in this matter is that
+      very few programmers
+      will want to deal with the issues I've just described.
+      My reason for this is the Marpa parser --
+      a general BNF Earley-drived parser that
+    </p>
+    <ul>
+      <li>has an implementation you can use today;</li>
+      <li>allows the application to combine syntax-driven parsing
+        with custom procedural logic;</li>
+      <li>makes available full, left-eidetic knowledge of the parse to
+        the procedural logic;</li>
+      <li>and parses a vast class of grammars the linear time,
+        including all the LR-regular grammars.</li>
+    </ul>
+    <p>
+      The LR-regular grammars include the LR(k) and LL(k)
+      grammars for all
+      <i>k</i>, and which can be expected to include any
+      grammar that will be found to be well-behaved under PEG.
+    </p>
+    <h3>Comments</h3>
+    <p>Comments on this post can be made in
+      <a href="http://groups.google.com/group/marpa-parser">
+        Marpa's Google group</a>,
+      or on our IRC channel: #marpa at freenode.net.
+      To learn more about Marpa,
+      there's
+      <a href="http://savage.net.au/Marpa.html">the
+        official web site maintained by Ron Savage</a>.
+      I also have
+      <a href="http://jeffreykegler.github.io/Marpa-web-site/">a Marpa web site</a>.
+    </p>
+  </body>
+</html>
+<br />
+<p>posted at: 19:56 |
+<a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2015/03/peg.html">direct link to this entry</a>
+</p>
+<div style="color:#38B0C0;padding:1px;text-align:center;">
+&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&sect;
+</div>
 <h3>Sat, 15 Nov 2014</h3>
 <br />
 <center><a name="ll"> <h2>Parsing: Top-down versus bottom-up</h2> </a>
@@ -1014,282 +1259,6 @@
 <br />
 <p>posted at: 11:11 |
 <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2014/11/delimiter.html">direct link to this entry</a>
-</p>
-<div style="color:#38B0C0;padding:1px;text-align:center;">
-&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-&sect;
-</div>
-<h3>Sun, 07 Sep 2014</h3>
-<br />
-<center><a name="chron"> <h2>Parsing: a timeline</h2> </a>
-</center>
-<html>
-  <head>
-  </head>
-  <body><p>
-      <!--
-      marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
-      -->
-    </p>
-    <p>[ Revised 22 Oct 2014 ]
-    </p>
-    <p><b>1960</b>:
-      The ALGOL 60 spec comes out.
-      It specifies, for the first time, a block structured
-      language.
-      The ALGOL committee is well aware
-      that
-      nobody knows how to parse such a language.
-      But they believe that,
-      if they specify a block-structured
-      language, a parser for it will be invented.
-      Risky as this approach is, it pays off ...
-    </p>
-    <p><b>1961</b>: Ned Irons publishes his ALGOL parser.
-      In fact, the Irons parser
-      is the first parser of any kind to be described
-      in print.
-      Ned's algorithm is a left parser --
-      a form of recursive descent.
-      Unlike modern
-      recursive descent,
-      the Irons algorithm
-      is general and syntax-driven.
-      "General" means it can parse anything written in BNF.
-      "Syntax-driven" (aka declarative) means that parser is
-      actually created from the BNF --
-      the parser does not need
-      to be hand-written.
-    </p>
-    <p><b>1961</b>:
-      Almost simultaneously, hand-coded approaches to left parsing
-      appear.
-      These we would now recognize as recursive descent.
-      Over the following years, hand-coding approaches
-      will become more popular for left parsers
-      than syntax-driven algorithms.
-      Three factors are at work:
-      <ul>
-      <li>
-      In 1960's, memory and CPU are both extremely limited.
-      Hand-coding pays off, even when the gains are small.
-      <li>
-      Pure left parsing is a very weak parsing technique.
-      Hand-coding is often necessary
-      to overcome its limits.
-      This is
-      as true today as it is in 1961.
-      <li>
-      Left parsing works well in combination with hand-coding --
-      they are a very good fit.
-      </ul>
-    </p>
-    <p><b>1965</b>:
-    Don Knuth invents LR parsing.
-      Knuth is primarily interested
-      in the mathematics.
-      Knuth describes a parsing algorithm,
-      but it is not thought practical.
-    </p>
-    <p><b>1968</b>: Jay Earley invents the algorithm named after him.
-      Like the Irons algorithm,
-      Earley's algorithm is syntax-driven and fully general.
-      Unlike the Irons algorithm, it does not backtrack.
-      Earley's core idea is to
-      track everything about the parse in tables.
-      Earley's algorithm is enticing, but it has three major issues:
-      <ul>
-      <li>First, there is a bug in the handling of zero-length rules.
-      <li>Second, it is quadratic for right recursions.
-      <li>Third, the bookkeeping required to set up the tables is,
-      by the standards of 1968 hardware, daunting.
-      </ul>
-    <p><b>1969</b>:
-      Frank DeRemer describes a new variant of Knuth's LR
-      parsing.
-      DeRemer's LALR algorithm requires only
-      a stack and a state table of quite
-      manageable size.
-    </p>
-    <p><b>1972</b>:
-      Aho and Ullmann describe
-      a straightforward fix to the zero-length rule bug in Earley's original algorithm.
-      Unfortunately, this fix involves adding even more bookkeeping to Earley's.
-    <p><b>1975</b>:
-      Bell Labs converts its C compiler from hand-written recursive
-      descent to DeRemer's LALR algorithm.
-    </p>
-    <p><b>1977</b>:
-      The first "Dragon book" comes out.
-      This soon-to-be classic textbook is nicknamed after
-      the drawing on the front cover,
-      in which a knight takes on a dragon.
-      Emblazoned on the knight's lance are the letters "LALR".
-      From here on out,
-      to speak lightly of LALR will be to besmirch the escutcheon
-      of parsing theory.
-    </p>
-    <p><b>1979</b>: Bell Laboratories releases Version 7 UNIX.
-	V7 includes what is, by far,
-		the most comprehensive, useable and easily available
-		compiler writing toolkit yet developed.
-	 Central to the toolkit is
-	 yacc, an LALR based parser generator.
-	  With a bit of hackery,
-	  yacc parses its own input language,
-	  as well as the language of V7's main compiler,
-	  the portable C compiler.
-	  After two decades of research,
-	  it seems that the parsing problem is solved.
-    </p>
-    <p><b>1987</b>:
-      Larry Wall introduces Perl 1.
-      Perl embraces complexity like no previous language.
-      Larry uses LALR very aggressively --
-      to my knowledge more aggressively than anyone before
-      or since.
-    </p>
-    <p><b>1991</b>:
-      Joop Leo discovers a way of speeding up right
-      recursions in Earley's algorithm.
-      Leo's algorithm
-      is linear for just about every unambiguous grammar of
-      practical interest, and many ambiguous ones as well.
-      In 1991 hardware is six orders of magnitude faster
-      than 1968 hardware, so that the
-      issue of bookkeeping overhead had receded
-      in importance.
-      This is a major discovery.
-      When it comes to speed,
-      the game has changed in favor of Earley algorithm.
-      But Earley parsing is almost forgotten.
-      It will be 20 years before anyone writes a practical
-      implementation of Leo's algorithm.
-    </p>
-    <p><b>1990's</b>:
-      Earley's is forgotten.
-      So everyone in LALR-land is content, right?
-      Wrong. Far from it, in fact.
-      Users of LALR are making unpleasant discoveries.
-      While LALR automatically
-      generates their parsers,
-      debugging them
-      is so hard they could just as easily
-      write the parser by hand.
-      Once debugged, their LALR parsers are fast for correct inputs.
-      But almost all they tell the users about incorrect inputs
-      is that they are incorrect.
-      In Larry's words, LALR is "fast but stupid".
-    </p><b>2000</b>:
-    Larry Wall decides on a radical reimplementation
-      of Perl -- Perl 6.
-      Larry does not even consider using LALR again.
-    </p>
-    <p><b>2002</b>:
-      Aycock&Horspool publish their attempt at a fast, practical Earley's parser.
-      Missing from it is Joop Leo's improvement --
-      they seem not to be aware of it.
-      Their own speedup is limited in what it achieves
-      and the complications it introduces
-      can be counter-productive at evaluation time.
-      But buried in their paper is a solution to the zero-length rule bug.
-      And this time the solution requires no additional bookkeeping.
-    </p>
-    <p><b>2006</b>:
-      GNU announces that the GCC compiler's parser has been rewritten.
-      For three decades,
-      the industry's flagship C compilers have used
-      LALR as their parser --
-      proof of the claim that LALR and serious
-      parsing are equivalent.
-      Now, GNU replaces
-      LALR with the technology that
-      it replaced a quarter century earlier:
-      recursive descent.
-    </p>
-    <p><b>2000 to today</b>:
-    With the retreat from LALR comes a collapse in the
-      prestige of parsing theory.
-      After a half century,
-      we seem to be back
-      where we started.
-      If you took Ned Iron's original 1961 algorithm,
-      changed the names and dates,
-      and translated the code from the mix of assembler and
-      ALGOL into Haskell,
-      you would easily republish it today,
-      and bill it as 
-      as revolutionary and new.
-    </p>
-    <p>
-    <h3>Marpa</h3>
-      Over the years,
-      I had come back to Earley's algorithm again and again.
-      Around 2010, I realized
-      that the original, long-abandoned vision --
-      an efficient, practical, general and syntax-driven parser --
-      was now, in fact, quite possible.
-      The necessary pieces had fallen into place.
-    </p>
-    <p>
-      Aycock&Horspool have solved the zero-length rule bug.
-      Joop Leo had found the speedup for right recursion.
-      And the issue of bookkeeping overhead had pretty much evaporated on its
-      own.
-      Machine operations are now a billion times faster than in 1968,
-      and probably no longer relevant in any case --
-      caches misses are now the bottleneck.
-    </p>
-    <p>But while the original issues with Earley's disappeared,
-      a new issue emerged.
-      With a parsing algorithm as powerful as Earley's behind it,
-      a syntax-driven approach can do much more than it can with
-      a left parser.
-      But with the experience with LALR in their collective consciousness,
-      few modern programmers are prepared
-      to trust a purely declarative parser.
-      As Lincoln said, "Once a cat's been burned,
-      he won't even sit on a cold stove."
-    </p>
-    <p>
-      To be accepted, Marpa needed to allow
-      procedure parsing,
-      not just declarative parsing.
-      So Marpa allows the user to specify events --
-      occurrences of symbols and rules --
-      at which declarative parsing pauses.
-      While paused,
-      the application can call procedural logic
-      and single-step forward token by token.
-      The procedural logic can hand control back
-      over to syntax-driven parsing at any point it likes.
-      The Earley tables can provide the procedural logic with
-      full knowledge of the state of the
-      parse so far:
-      all rules recognized
-      in all possible parses so far,
-      and all symbols expected.
-      Earley's algorithm is now a even better companion
-      for hand-written procedural logic than recursive descent.
-    </p>
-    <h3>For more</h3>
-    <p>
-      For more about Marpa,
-      there's
-      <a href=http://savage.net.au/Marpa.html">the
-      official web site maintained by Ron Savage</a>.
-      I also have
-      <a href="http://jeffreykegler.github.io/Marpa-web-site/">a Marpa web site</a>.
-      Comments on this post can be made in
-      <a href="http://groups.google.com/group/marpa-parser">
-        Marpa's Google group</a>.
-    </p>
-  </body>
-</html>
-<br />
-<p>posted at: 16:50 |
-<a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2014/09/chron.html">direct link to this entry</a>
 </p>
 <div style="color:#38B0C0;padding:1px;text-align:center;">
 &sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
