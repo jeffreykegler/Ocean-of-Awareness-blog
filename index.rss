@@ -21,7 +21,7 @@
       --&gt;
     &lt;/p&gt;
     &lt;h3&gt;Precise?&lt;/h3&gt;
-    &lt;p&gt;&lt;a href=&quot;http://bford.info/packrat/&quot;&gt;&gt;PEG parsing&lt;/a&gt;
+    &lt;p&gt;&lt;a href=&quot;http://bford.info/packrat/&quot;&gt;PEG parsing&lt;/a&gt;
       is a new notation
       for a notorously tricky algorithm with a history that goes back
       the days of the earliest computers.
@@ -183,11 +183,11 @@
       I've already mentioned one important paper
       by Redziejowski -- many of
       &lt;a href=&quot;http://www.romanredz.se/pubs.htm&quot;&gt;
-      his collected papers&lt;/a&gt;
-        are about PEG,
-        and Redziejowski, in his attempts to use PEG,
-        never sugarcoat its problems.
-      &lt;/p&gt;
+        his collected papers&lt;/a&gt;
+      are about PEG,
+      and Redziejowski, in his attempts to use PEG,
+      never sugarcoat its problems.
+    &lt;/p&gt;
     &lt;p&gt;Roberto Ierusalimschy, author of Lua and one of the best
       programmers of our time,
       has written a PEG-based parser of his own.
@@ -253,18 +253,18 @@
       &lt;i&gt;k&lt;/i&gt;, and which can be expected to include any
       grammar that will be found to be well-behaved under PEG.
     &lt;/p&gt;
-      &lt;h3&gt;Comments&lt;/h3&gt;
-      &lt;p&gt;Comments on this post can be made in
-	&lt;a href=&quot;http://groups.google.com/group/marpa-parser&quot;&gt;
-	  Marpa's Google group&lt;/a&gt;,
-	or on our IRC channel: #marpa at freenode.net.
-	To learn more about Marpa,
-	there's
-	&lt;a href=&quot;http://savage.net.au/Marpa.html&quot;&gt;the
-	  official web site maintained by Ron Savage&lt;/a&gt;.
-	I also have
-	&lt;a href=&quot;http://jeffreykegler.github.io/Marpa-web-site/&quot;&gt;a Marpa web site&lt;/a&gt;.
-      &lt;/p&gt;
+    &lt;h3&gt;Comments&lt;/h3&gt;
+    &lt;p&gt;Comments on this post can be made in
+      &lt;a href=&quot;http://groups.google.com/group/marpa-parser&quot;&gt;
+        Marpa's Google group&lt;/a&gt;,
+      or on our IRC channel: #marpa at freenode.net.
+      To learn more about Marpa,
+      there's
+      &lt;a href=&quot;http://savage.net.au/Marpa.html&quot;&gt;the
+        official web site maintained by Ron Savage&lt;/a&gt;.
+      I also have
+      &lt;a href=&quot;http://jeffreykegler.github.io/Marpa-web-site/&quot;&gt;a Marpa web site&lt;/a&gt;.
+    &lt;/p&gt;
   &lt;/body&gt;
 &lt;/html&gt;</description>
   </item>
