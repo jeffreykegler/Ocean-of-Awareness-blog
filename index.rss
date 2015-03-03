@@ -10,7 +10,7 @@
     <language>en</language>
 
   <item>
-    <title>PEG: Ambiguity, precision and unpredictability</title>
+    <title>PEG: Ambiguity, precision and confusion</title>
     <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2015/03/peg.html</link>
     <description>&lt;html&gt;
   &lt;head&gt;
@@ -96,7 +96,7 @@
       I will talk about their work below.
       This is much more at stake than bragging rights
       over which algorithm is really syntax-driven and
-      which is not,
+      which is not.
     &lt;/p&gt;
     &lt;p&gt;When you do not know the language your parser is
       parsing, you of course have the problem that
@@ -140,9 +140,9 @@
       the PEG parser is for a language with a life cycle that may
       involves bug fixes or other changes.
       The impact of even
-      small changes to a PEG specifications
-      is hard to predict --
-      hard even to discover after the fact.
+      small changes to a PEG specification
+      is hard to predict and
+      hard to discover after the fact.
     &lt;/p&gt;
     &lt;h3&gt;Is PEG unambiguous?&lt;/h3&gt;
     &lt;p&gt;PEG is not unambiguous in any
@@ -150,17 +150,19 @@
       BNF allows you to specify ambiguous grammars,
       and that feature is tied to its power and flexibility
       and often useful in itself.
-      PEG will only deliver one of those parses, but without
+      PEG will only deliver one of those parses.
+      But without
       an easy way of knowing which parse
-      the underlying ambiguity is addressed -- it is just ignored.
+      the underlying ambiguity is not addressed --
+      it is just ignored.
     &lt;/p&gt;
-    &lt;p&gt;My Marpa parser,
+    &lt;p&gt;My Marpa parser
       is a general BNF parser based on Earley's.
-      It also could simply throw all but one of the parses in an ambiguous
+      It also can simply throw all but one of the parses in an ambiguous
       parse away.
-      I would not feel justified in saying to a user who has an
+      But I would not feel justified in saying to a user who has an
       issue with ambiguity,
-      that Marpa has solved
+      that Marpa has solved her problem
       by throwing all but one arbitrarily chosen result.
     &lt;/p&gt;
     &lt;p&gt;
@@ -172,7 +174,7 @@
       so that all but the highest ranking rules are not used
       in a parse.
       Marpa's rule rankings are specified in its BNF,
-      and work together with the BNF
+      and they work together with the BNF
       in an intuitive way.
       In every case,
       Marpa delivers precisely the parses its BNF and its rule
@@ -193,12 +195,12 @@
       without blinding themselves to its limitations.
       I've already mentioned one important paper
       by Redziejowski.
-      many of
+      Many of
       &lt;a href=&quot;http://www.romanredz.se/pubs.htm&quot;&gt;
         Redziejowski's collected papers&lt;/a&gt;
       are about PEG,
       and Redziejowski, in his attempts to use PEG,
-      never sugarcoat its problems.
+      does not sugarcoat its problems.
     &lt;/p&gt;
     &lt;p&gt;Roberto Ierusalimschy, author of Lua and one of the best
       programmers of our time,
@@ -207,8 +209,7 @@
       but he makes a very good case for choosing PEG
       as the basis of LPEG, his parser generator.
       LPEG is intended for use with Lua,
-      a ruthlessly minimal language
-      which has an almost unique emphasis on the size of the codebase.
+      a ruthlessly minimal language.
       Roberto's minimalist implementation limits the power of his parser,
       but his aim is to extend regular expressions in a disciplined way,
       and a compact parser of limited power is quite acceptable for his
@@ -231,12 +232,16 @@
       According to
       &lt;a href=&quot;http://arxiv.org/abs/1304.3177&quot;&gt;Mascarenhas et al, 2013&lt;/a&gt;,
       the LL(1) languages are well-behaved.
-      The LL(1) languages are the languages
+      (The LL(1) languages are the languages
       a top-down parser can parse based on at
-      most one character of input.
-      A syntax-driven parser for LL(1) was described in 1961(?),
-      but there was no followup,
-      because most practical languages are not LL(1).
+      most one character of input.)
+      Syntax-driven parsers for LL(1) have been around
+      for much longer than PEG --
+      one such parser is described
+      in the first paper to describe recursive descent
+      (&lt;a href=&quot;http://archive.computerhistory.org/resources/text/algol/algol_bulletin/AS16/AS16.HTM&quot;&gt;Peter
+        Lucas, 1961&lt;/a&gt;).
+      But most practical languages are not LL(1).
       &lt;a href=&quot;http://www.romanredz.se/papers/FI2013.pdf&quot;&gt;Redziejowski 2013&lt;/a&gt;
       and
       &lt;a href=&quot;http://www.romanredz.se/papers/FI2014.pdf&quot;&gt;Redziejowski 2014&lt;/a&gt;
@@ -250,16 +255,15 @@
       &lt;a href=&quot;http://arxiv.org/abs/1304.3177&quot;&gt;Mascarenhas et al, 2013&lt;/a&gt;
       also look at a different approach -- instead of writing a PEG specification
       and trying to keep it well-behaved,
-      they look at taking a languages from one of the larger top-down classes
+      they look at taking languages from larger top-down classes
       and translating them to PEG.
       I don't know of any followup,
       but it's possible this approach could produce
       well-behaved top-down parsers which are
       improvement over direct-from-PEG parsing.
-      But a parser which handles languages in all these classes
-      and more,
-      is already available
-      to those who open to leaving top-down parsing behind.
+      But for those who are open to leaving top-down parsing behind,
+      a parser which handles languages in all these classes
+      and more is already available.
     &lt;/p&gt;
     &lt;h3&gt;Marpa&lt;/h3&gt;
     &lt;p&gt;
@@ -278,7 +282,7 @@
         with custom procedural logic;&lt;/li&gt;
       &lt;li&gt;makes available full, left-eidetic knowledge of the parse to
         the procedural logic;&lt;/li&gt;
-      &lt;li&gt;and parses a vast class of grammars the linear time,
+      &lt;li&gt;and parses a vast class of grammars in linear time,
         including all the LR-regular grammars.&lt;/li&gt;
     &lt;/ul&gt;
     &lt;p&gt;
@@ -287,7 +291,9 @@
       &lt;i&gt;k&lt;/i&gt;.
       LR-regular includes all the languages
       which are well-behaved under PEG,
-      or which could be translated to PEG.
+      and all of those that
+      &lt;a href=&quot;http://arxiv.org/abs/1304.3177&quot;&gt;Mascarenhas et al, 2013&lt;/a&gt;
+      consider translating into PEG.
     &lt;/p&gt;
     &lt;h3&gt;Comments&lt;/h3&gt;
     &lt;p&gt;Comments on this post can be made in
