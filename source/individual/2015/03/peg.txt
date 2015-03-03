@@ -39,7 +39,7 @@ PEG: Ambiguity, precision and plain old confusion
       (For the answer to the first question,
       see page 4 of
       <a href="http://www.romanredz.se/papers/FI2008.pdf">
-        Redziejowski 2008</a>.
+        Redziejowski 2008</a>.)
     </p><p>
       Here is another example:
     </p><blockquote><pre>
@@ -65,7 +65,7 @@ PEG: Ambiguity, precision and plain old confusion
       sense that Jimmy Hoffa's body
       is at a precise location.
       There is (presumably) exactly one such place,
-      but we are not necessarily able to specify it.
+      but we are hard put to be any more specific about the matter.
     </p>
     <h3>Syntax-driven?</h3>
     <p>The point of having
