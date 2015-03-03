@@ -10,16 +10,17 @@ PEG: Ambiguity, precision and plain old confusion
     <h3>Precise?</h3>
     <p><a href="http://bford.info/packrat/">PEG parsing</a>
       is a new notation
-      for a notorously tricky algorithm with a history that goes back
-      the days of the earliest computers.
+      for a notorously tricky algorithm that goes back
+      to the earliest computers.
       In its PEG form,
       this algorithm acquired an seductive new interface,
       one that looks like the best of
       extended BNF combined with the best of regular expressions.
-      Looking at a sample of it gives the impression
+      Looking at a sample of it, you are tempted to imagine
       that writing a parser has suddenly become a very straightforward
-      matter.
-    </p><p>For those not yet in the know on this,
+      matter.  Not so.
+    </p>
+    <p>For those not yet in the know on this,
       I'll explain with a pair of examples from
       <a href="http://www.romanredz.se/papers/FI2008.pdf">
         an excellent 2008 paper by Redziejowski</a>.

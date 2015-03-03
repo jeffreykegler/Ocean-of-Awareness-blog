@@ -23,16 +23,17 @@
     &lt;h3&gt;Precise?&lt;/h3&gt;
     &lt;p&gt;&lt;a href=&quot;http://bford.info/packrat/&quot;&gt;PEG parsing&lt;/a&gt;
       is a new notation
-      for a notorously tricky algorithm with a history that goes back
-      the days of the earliest computers.
+      for a notorously tricky algorithm that goes back
+      to the earliest computers.
       In its PEG form,
       this algorithm acquired an seductive new interface,
       one that looks like the best of
       extended BNF combined with the best of regular expressions.
-      Looking at a sample of it gives the impression
+      Looking at a sample of it, you are tempted to imagine
       that writing a parser has suddenly become a very straightforward
-      matter.
-    &lt;/p&gt;&lt;p&gt;For those not yet in the know on this,
+      matter.  Not so.
+    &lt;/p&gt;
+    &lt;p&gt;For those not yet in the know on this,
       I'll explain with a pair of examples from
       &lt;a href=&quot;http://www.romanredz.se/papers/FI2008.pdf&quot;&gt;
         an excellent 2008 paper by Redziejowski&lt;/a&gt;.
