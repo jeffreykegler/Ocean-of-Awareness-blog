@@ -8,16 +8,16 @@ PEG: Ambiguity, precision and plain old confusion
       -->
     </p>
     <h3>ambiguity Hoffa and precision</h3>
-    <p>PEG parsing has been called "precise",
-    because PEG parsing is in a sense unambiguous.
-    In this case "precise" is taken as synonymous with
-    "unique".
-    That is, PEG parsing is precise in exactly the same
-    sense as the location of Jimmy Hoffa's body
-    is a precise location.
-    We know there is exactly one such place, but
-    without necessarily being able to specify it.
-    </p>
+    <p>PEG parsing is a new notation
+    based on an algorithm with a history that goes back
+    the days of the earliest computers.
+    In its PEG form,
+    this notoriously tricky algorithm acquired an seductive new interface,
+    one that looks like the best of
+    extended BNF combined with the best of regular expressions.
+    Looking at a sample of it gives the impression
+    that writing a parser has suddenly become a very straightforward
+    matter.
     <p>For those not yet in the know on this,
     I'll explain with a pair of examples from
     <a href="http://www.romanredz.se/papers/FI2008.pdf">
@@ -51,6 +51,55 @@ PEG: Ambiguity, precision and plain old confusion
     <a href="http://www.romanredz.se/papers/FI2008.pdf">
     Redziejowski 2008</a> -- it's exactly those strings
     whose length is a power of 2.
+    <p>With PEG, what you see is not what you get.
+    PEG parsing is sometimes called "precise",
+    on the idea that PEG parsing is in a sense unambiguous.
+    In this case "precise" is taken as synonymous with
+    "unique".
+    That is, PEG parsing is precise in exactly the same
+    sense as the location of Jimmy Hoffa's body
+    is a precise location.
+    We know there is exactly one such place, but
+    without necessarily being able to specify it.
+    </p>
+    <h3>Is PEG unambiguous?</h3>
+    <p>For that matter, PEG's is not unambiguous in any
+    helpful sense.
+    BNF allows you to specify ambiguous grammars,
+    and that feature is tied to its power and flexibility
+    and often useful in itself.
+    PEG will only deliver one of those parses, but without
+    an easy way of specifying, or even knowing, which one
+    the underlying problem of ambiguity has not really been addressed.
+    <p>My Marpa parser,
+    for example, which is a general BNF parser based on Earley's,
+    can simply throw all but one of the parses in an ambiguous
+    parse away.
+    But I would not say that, if you have an issue with ambiguity,
+    Marpa has solved it by arbitrarily throwing away results.
+    Marpa, in fact, does allow you to control which parses
+    are tossed, by ranking some rules over others,
+    and in Marpa's case the ranking works in an intuitive
+    way.
+    But in all cases, whether you call them ambiguous or not,
+    Marpa delivers precisely the parses the grammar and the rule
+    rankings specify,
+    and it is "precision" in this sense that a grammar writer needs.
+    <h3>Making the best of PEG</h3>
+    I've already mentioned my own parser, Marpa,
+    and I'll return to that.
+    But suppose you refuse to use Marpa, and insist on making
+    the best of PEG.
+    In that case, I'd strongly recommend looking at the writings of
+    several excellent programmers who have committed themselves
+    to, while being honest about its limitations,
+    making the best of PEG.
+    <p>I've already mentioned one important paper
+    Redziejowski -- his collected papers can be
+    found here, and many of them treat PEG.
+    Redziejowski, in his effort to promote PEG,
+    can be relied not to sugarcoat PEG's problems.
+    <h3>Marpa</h3>
     <h3>Comments</h3>
     <p>Comments on this post can be made in
       <a href="http://groups.google.com/group/marpa-parser">
