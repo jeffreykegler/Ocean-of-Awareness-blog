@@ -36,7 +36,7 @@
   <div style="margin-left:190px;border-left:2px solid #38B0C0;padding:25px;">
 <h3>Mon, 02 Mar 2015</h3>
 <br />
-<center><a name="peg"> <h2>PEG: Ambiguity, precision and plain old confusion</h2> </a>
+<center><a name="peg"> <h2>PEG: Ambiguity, precision and unpredictability</h2> </a>
 </center>
 <html>
   <head>
@@ -60,10 +60,10 @@
       matter. Not so.
     </p>
     <p>For those not yet in the know on this,
-      I'll explain with a pair of examples from
+      I'll illustrate with a pair of examples from
       <a href="http://www.romanredz.se/papers/FI2008.pdf">
         an excellent 2008 paper by Redziejowski</a>.
-      Let's start with these two PEG grammars.
+      Let's start with these two PEG specifications.
     </p><blockquote><pre>
     ("a"|"aa")"a"
     ("aa"|"a")"a"
@@ -73,9 +73,7 @@
       The other accepts the string
       the string "<tt>aa</tt>" and "<tt>aaa</tt>".
       Can you tell which one?
-      Could you sort this out
-      if this logic was buried in a large specification?
-      (For the answer to the first question,
+      (For the answer,
       see page 4 of
       <a href="http://www.romanredz.se/papers/FI2008.pdf">
         Redziejowski 2008</a>.)
@@ -85,8 +83,12 @@
     A = "a"A"a"/"aa"
     </pre></blockquote><p>
       What language does this describe?
-      It's obviously string of the letter "<tt>a</tt>",
-      but which ones?
+      All the strings in the
+      language are obviously
+      the letter "<tt>a</tt>",
+      repeated some number of times.
+      But which string lengths are in the language,
+      and which are not?
       Again the answer is on
       page 4 of
       <a href="http://www.romanredz.se/papers/FI2008.pdf">
@@ -94,10 +96,11 @@
       -- it's exactly those strings
       whose length is a power of 2.
     </p>
-    <p>With PEG, what you see is not what you get.
+    <p>With PEG, what you see in the extended BNF
+      is not what you get.
       PEG parsing has been called "precise",
-      perhaps based on
-      the idea that PEG parsing is in some sense unambiguous.
+      apparently based on
+      the idea that PEG parsing is in a certain sense unambiguous.
       In this case "precise" is taken as synonymous with
       "unique".
       That is, PEG parsing is precise in exactly the same
@@ -107,23 +110,19 @@
       but we are hard put to be any more specific about the matter.
     </p>
     <h3>Syntax-driven?</h3>
-    <p>The point of having
-      a syntax-driven parser generator is having the syntax,
-      describe,
-      in some way the programmer can
-      in practice predict,
-      the parser which is generated.
+    <p>The advantage of using
+      a syntax-driven parser generator is that
+      the syntax you specify describes
+      the language that will be parsed.
       For most practical grammars, PEG is not syntax-driven
       in this sense.
-      Below I will describe the work of several
-      PEG researchers who understand this this issue,
-      and who are trying to deal with it.
+      Several important
+      PEG researchers understand this issue,
+      and have tried to deal with it.
+      I will talk about their work below.
       This is much more at stake than bragging rights
       over which algorithm is really syntax-driven and
       which is not,
-      and this is why
-      those PEG researchers
-      have focused on this issue.
     </p>
     <p>When you do not know the language your parser is
       parsing, you of course have the problem that
@@ -133,7 +132,7 @@
       fixing the parser to accept the correct input,
       as you encounter problems.
     </p>
-    <p>But a second, more serious, problem is often forgotten.
+    <p>A second, more serious, problem is often forgotten.
       Your PEG parser might accept strings that are
       <b>not</b>
       in your language.
@@ -178,46 +177,51 @@
       and that feature is tied to its power and flexibility
       and often useful in itself.
       PEG will only deliver one of those parses, but without
-      an easy way of specifying, or even knowing, which parse
-      the underlying problem of ambiguity has not really been addressed.
+      an easy way of knowing which parse
+      the underlying ambiguity is addressed -- it is just ignored.
     </p>
     <p>My Marpa parser,
-      for example, which is a general BNF parser based on Earley's,
-      can simply throw all but one of the parses in an ambiguous
+      is a general BNF parser based on Earley's.
+      It also could simply throw all but one of the parses in an ambiguous
       parse away.
-      But I would not say that, if you have ambiguity is an issue for you,
-      that Marpa has solved that issue
-      simply by throwing all but
-      one arbitrarily chosen result.
-      More helpfully, in many cases,
-      Marpa allows you to control which parses
-      are tossed, by ranking some rules over others,
-      and in Marpa's case the ranking works
-      together with the BNF
+      I would not feel justified in saying to a user who has an
+      issue with ambiguity,
+      that Marpa has solved
+      by throwing all but one arbitrarily chosen result.
+    </p>
+    <p>
+      Sticking with Marpa for a moment,
+      we can see one
+      example of a more helpful approach
+      to ambiguity.
+      Marpa allows a user to rank rules,
+      so that all but the highest ranking rules are not used
+      in a parse.
+      Marpa's rule rankings are specified in its BNF,
+      and work together with the BNF
       in an intuitive way.
-      But in all cases, whether you call them ambiguous or not,
-      Marpa delivers precisely the parses the grammar and the rule
+      In every case,
+      Marpa delivers precisely the parses its BNF and its rule
       rankings specify.
-      It is "precision" in this sense that a grammar writer is looking for.
+      And it
+      is "precision" in this sense that a parser writer is looking for.
     </p>
     <h3>Is there a sensible way to use PEG?</h3>
     <p>
-      I've brought up my own parser, Marpa,
-      and I'll return to it.
-      But, for now,
+      I'll return to Marpa at the end of this post.
+      For now,
       let's assume
-      that you are not interested in using Marpa.
-      Let's assume
-      that you are not committed to PEG,
-      and want to make the best of that.
-      There are
-      several excellent programmers who have focused
+      that you are not interested in using Marpa --
+      you are committed to PEG,
+      and you want to make the best of PEG.
+      Several excellent programmers have focused
       on PEG,
       without blinding themselves to its limitations.
       I've already mentioned one important paper
-      by Redziejowski -- many of
+      by Redziejowski.
+      many of
       <a href="http://www.romanredz.se/pubs.htm">
-        his collected papers</a>
+        Redziejowski's collected papers</a>
       are about PEG,
       and Redziejowski, in his attempts to use PEG,
       never sugarcoat its problems.
@@ -226,49 +230,71 @@
       programmers of our time,
       has written a PEG-based parser of his own.
       Roberto's is fully aware of PEG's limits,
-      but he has a good case for choosing PEG
-      as the basis of his parser generator.
-      First, LPEG is intended for use with Lua,
+      but he makes a very good case for choosing PEG
+      as the basis of LPEG, his parser generator.
+      LPEG is intended for use with Lua,
       a ruthlessly minimal language
       which has an almost unique emphasis on the size of the codebase.
-      And, indeed, Roberto's version of PEG (LPEG) is small.
-      Second, Roberto's intention
-      is to extend regular expressions in a disciplined way,
-      so that he is willing to accept a parser of limited power.
+      Roberto's minimalist implementation limits the power of his parser,
+      but his aim is to extend regular expressions in a disciplined way,
+      and a compact parser of limited power is quite acceptable for his
+      purposes.
     </p>
     <h3>Matching the BNF to the PEG spec</h3>
     <p>
-      Redziejowski, Ierusalimschy and the other authors
+      As Redziejowski and Ierusalimschy and the other authors
       of
-      <a href="x">X</a>
-      recognize that inability to know the the language you are
-      parsing is no minor issue -- in many applications,
-      it is a show-stopper, or at least should be.
-      The solution they are pursuing is finding the subset of
-      BNF for which the PEG spec
-      <b>does</b>
-      accept exactly
-      the language specified by the BNF.
-      This subset is in fact, very restricted -- it is essentially
-      LL(1) --
-      those languages a top-down parser can parse based on at
+      <a href="http://arxiv.org/abs/1304.3177">Mascarenhas et al, 2013</a>
+      recognize,
+      inability to know the the language you are
+      parsing is more than an annoyance.
+      We can call a language
+      "well-behaved for PEG"
+      if the PEG spec delivers exactly
+      the language the BNF describes.
+    </p>
+    <p>Which languages are are well-behaved for PEG?
+      According to
+      <a href="http://arxiv.org/abs/1304.3177">Mascarenhas et al, 2013</a>,
+      the LL(1) languages are well-behaved.
+      The LL(1) languages are the languages
+      a top-down parser can parse based on at
       most one character of input.
       A syntax-driven parser for LL(1) was described in 1961(?),
       but there was no followup,
-      because LL(1) is just not sufficient for
-      most practical languages.
-      Redziejowski believes this class of languages which are well-behaved
-      for PEG can be extended somewhat --
-      those interested can look at his paper.
+      because most practical languages are not LL(1).
+      <a href="http://www.romanredz.se/papers/FI2013.pdf">Redziejowski 2013</a>
+      and
+      <a href="http://www.romanredz.se/papers/FI2014.pdf">Redziejowski 2014</a>
+      seek to extend this result by defining the language class LL(1p) --
+      those top-down languages with one
+      <b>procedure</b>
+      of lookahead.
+      The LL(1p) languages are also well-behaved for PEG.
+    </p>
+    <p>
+      <a href="http://arxiv.org/abs/1304.3177">Mascarenhas et al, 2013</a>
+      also look at a different approach -- instead of writing a PEG specification
+      and trying to keep it well-behaved,
+      they look at taking a languages from one of the larger top-down classes
+      and translating them to PEG.
+      I don't know of any followup,
+      but it's possible this approach could produce
+      well-behaved top-down parsers which are
+      improvement over direct-from-PEG parsing.
+      But a parser which handles languages in all these classes
+      and more,
+      is already available
+      to those who open to leaving top-down parsing behind.
     </p>
     <h3>Marpa</h3>
     <p>
       In this post,
-      I have taken the point of view of programmers using PEG,
+      I have adopted the point of view of programmers using PEG,
       or thinking of doing so.
-      My own belief in this matter is that
+      But my own belief in this matter is that
       very few programmers
-      will want to deal with the issues I've just described.
+      should want to bother with the issues I've just described.
       My reason for this is the Marpa parser --
       a general BNF Earley-drived parser that
     </p>
@@ -284,8 +310,10 @@
     <p>
       The LR-regular grammars include the LR(k) and LL(k)
       grammars for all
-      <i>k</i>, and which can be expected to include any
-      grammar that will be found to be well-behaved under PEG.
+      <i>k</i>.
+      LR-regular includes all the languages
+      which are well-behaved under PEG,
+      or which could be translated to PEG.
     </p>
     <h3>Comments</h3>
     <p>Comments on this post can be made in
