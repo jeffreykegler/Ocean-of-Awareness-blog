@@ -57,7 +57,7 @@
       extended BNF combined with the best of regular expressions.
       Looking at a sample of it, you are tempted to imagine
       that writing a parser has suddenly become a very straightforward
-      matter.  Not so.
+      matter. Not so.
     </p>
     <p>For those not yet in the know on this,
       I'll explain with a pair of examples from
@@ -78,7 +78,7 @@
       (For the answer to the first question,
       see page 4 of
       <a href="http://www.romanredz.se/papers/FI2008.pdf">
-        Redziejowski 2008</a>.
+        Redziejowski 2008</a>.)
     </p><p>
       Here is another example:
     </p><blockquote><pre>
@@ -104,7 +104,7 @@
       sense that Jimmy Hoffa's body
       is at a precise location.
       There is (presumably) exactly one such place,
-      but we are not necessarily able to specify it.
+      but we are hard put to be any more specific about the matter.
     </p>
     <h3>Syntax-driven?</h3>
     <p>The point of having
@@ -126,43 +126,50 @@
       have focused on this issue.
     </p>
     <p>When you do not know the language your parser is
-      parsing, you have two problems.
-      The first, and least serious, of these is that your PEG grammar
+      parsing, you of course have the problem that
+      your parser
       might not parse all the strings in your language.
-      If you cannot determine that all acceptable strings
-      are parsed by your parser from the PEG specification,
-      so you have only your test suite to go by,
-      and that is just not enough.
+      That can be dealt with by
+      fixing the parser to accept the correct input,
+      as you encounter problems.
     </p>
-    <p>The second problem is more and often forgotten.
+    <p>But a second, more serious, problem is often forgotten.
       Your PEG parser might accept strings that are
       <b>not</b>
       in your language.
-      Rarely do test suites even try to catch more
-      than a few of these,
-      and no test suite could catch all of them.
-      But, while
-      failure to accept correct input can be coped with
-      simply by fixing the parser to accept the correct input,
-      the situation is more complicated
-      if you discover you have been accepting incorrect input.
-      You have the choice of breaking compatiblity,
-      or leaving the problem unfixed.
-      As a final thought,
-      a parser which
-      accepts unacceptable inputs can create
-      a security loophole.
-    </p><p>The burden of maintaining a PEG parser is worth
-      considering.
-      Even if you do know the current behavior of your PEG parser,
-      you cannot expect to know what it will be if you need to
-      change it.
-      Small changes in PEG specifications often have big
-      implications.
-      These implications are not just hard to predict,
-      they are hard even to discover after the fact.
-      And the larger the PEG parser gets, the worse the
-      maintenance problem gets.
+      At worst, this creates a security loophole.
+      At best, it leaves with a choice:
+      break compatiblity,
+      or leave the problem unfixed.
+    </p>
+    <p>It's important to be able to be able to convince
+      yourself
+      that your code is correct by examining and thinking
+      about the code.
+      Beginning programmers often simply hack things,
+      and call code complete once it passes the test suite.
+      Test suites don't catch everything,
+      but there is a worse problem with the beginner's approach.
+    </p>
+    <p>
+      Since the beginner has no clear idea of why his code
+      works, even when it does,
+      it is unlikely to be well-organized or readable.
+      Programming techniques like PEG,
+      where the code can be made to work,
+      but where it is much harder,
+      and in practice usually not possible,
+      to be sure why the code works,
+      become maintenance nightmares.
+    </p>
+    <p>
+      The maintenance implications are especially worrisome if
+      the PEG parser is for a language with a life cycle that may
+      involves bug fixes or other changes.
+      The impact of even
+      small changes to a PEG specifications
+      is hard to predict --
+      hard even to discover after the fact.
     </p>
     <h3>Is PEG unambiguous?</h3>
     <p>PEG is not unambiguous in any
