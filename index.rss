@@ -43,9 +43,9 @@
     (&quot;aa&quot;|&quot;a&quot;)&quot;a&quot;
     &lt;/pre&gt;&lt;/blockquote&gt;&lt;p&gt;
       One of these two PEG grammars accepts
-      the string &quot;&lt;tt&gt;aaa&lt;/tt&gt;&quot; and &quot;&lt;tt&gt;aa&lt;/tt&gt;&quot;.
-      The other accepts the string
-      the string &quot;&lt;tt&gt;aa&lt;/tt&gt;&quot; and &quot;&lt;tt&gt;aaa&lt;/tt&gt;&quot;.
+      the string &quot;&lt;tt&gt;aaa&lt;/tt&gt;&quot; but not the string &quot;&lt;tt&gt;aa&lt;/tt&gt;&quot;.
+      The other does the opposite -- it accepts the string
+      the string &quot;&lt;tt&gt;aa&lt;/tt&gt;&quot; but not the string &quot;&lt;tt&gt;aaa&lt;/tt&gt;&quot;.
       Can you tell which one?
       (For the answer,
       see page 4 of
