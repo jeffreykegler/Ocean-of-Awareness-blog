@@ -46,7 +46,7 @@
       marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
       -->
     </p>
-    <h3>ambiguity Hoffa and precision</h3>
+    <h3>Precise?</h3>
     <p><a href="http://bford.info/packrat/">>PEG parsing</a>
       is a new notation
       for a notorously tricky algorithm with a history that goes back
@@ -92,123 +92,144 @@
         Redziejowski 2008</a>
       -- it's exactly those strings
       whose length is a power of 2.
-    </p><p>With PEG, what you see is not what you get.
-      PEG parsing is sometimes called "precise",
-      on the idea that PEG parsing is in a sense unambiguous.
+    </p>
+    <p>With PEG, what you see is not what you get.
+      PEG parsing has been called "precise",
+      perhaps based on
+      the idea that PEG parsing is in some sense unambiguous.
       In this case "precise" is taken as synonymous with
       "unique".
       That is, PEG parsing is precise in exactly the same
-      sense as the location of Jimmy Hoffa's body
-      is a precise location.
-      We know there is exactly one such place, but
-      without necessarily being able to specify it.
+      sense that Jimmy Hoffa's body
+      is at a precise location.
+      There is (presumably) exactly one such place,
+      but we are not necessarily able to specify it.
     </p>
     <h3>Syntax-driven?</h3>
-    <p>It's important to emphasize that the point of
-      a syntax-driven parser generator is that the syntax,
-      in fact, describe, in some way the programmer can
-      in practice predict, the parser which is generated.
-      This is, for most practical grammars, not the case
-      with PEG.
+    <p>The point of having
+      a syntax-driven parser generator is having the syntax,
+      describe,
+      in some way the programmer can
+      in practice predict,
+      the parser which is generated.
+      For most practical grammars, PEG is not syntax-driven
+      in this sense.
       Below I will describe the work of several
       PEG researchers who understand this this issue,
       and who are trying to deal with it.
-    </p><p>Before moving on,
-      I want to point out why these PEG researchers
-      take knowing precisely what language you are parsing
-      very seriously.
       This is much more at stake than bragging rights
       over which algorithm is really syntax-driven and
-      which is not.
-    </p><p>Let me identify two problems.
-      The least serious of these is that your PEG grammar
+      which is not,
+      and this is why
+      those PEG researchers
+      have focused on this issue.
+    </p>
+    <p>When you do not know the language your parser is
+      parsing, you have two problems.
+      The first, and least serious, of these is that your PEG grammar
       might not parse all the strings in your language.
-      There is, in usual practice, no way to determine
-      this from the PEG specification,
-      so you have to rely on your test suite.
-      But test suites are not adequate to catch all
-      possible errors in most applications,
-      and this is especially the case with languages.
-    </p><p>The second, more serious problem, is often forgotten.
+      If you cannot determine that all acceptable strings
+      are parsed by your parser from the PEG specification,
+      so you have only your test suite to go by,
+      and that is just not enough.
+    </p>
+    <p>The second problem is more and often forgotten.
       Your PEG parser might accept strings that are
       <b>not</b>
       in your language.
-      No test suite can catch all of these, and few try.
-      But if a parser accepts unexpected inputs,
-      and applications come to rely on this,
-      it becomes a huge problem for maintaining compatibility.
-      Failure to accept correct input can be coped with
-      in straightforward fashion,
-      -- you simply fix the parser to accept the correct input.
-      But if you discover you have been accepting incorrect input,
-      you have a more difficult choice -- break compatiblity,
-      or leave the problem unfixed.
-      Leaving the problem unfixed is problematic, because
-      acceptance of unexpected inputs is also
-      a potential security risk.
+      Rarely do test suites even try to catch more
+      than a few of these,
+      and no test suite could catch all of them.
+      But, while
+      failure to accept correct input can be coped with
+      simply by fixing the parser to accept the correct input,
+      the situation is more complicated
+      if you discover you have been accepting incorrect input.
+      You have the choice of breaking compatiblity,
+      or leaving the problem unfixed.
+      As a final thought,
+      a parser which
+      accepts unacceptable inputs can create
+      a security loophole.
     </p><p>The burden of maintaining a PEG parser is worth
-      considering carefully.
+      considering.
       Even if you do know the current behavior of your PEG parser,
       you cannot expect to know what it will be if you need to
       change it.
       Small changes in PEG specifications often have big
-      implications,
-      implications which are hard to predict,
-      and hard even to discover when your revised
-      PEG parser seems to be working.
+      implications.
+      These implications are not just hard to predict,
+      they are hard even to discover after the fact.
       And the larger the PEG parser gets, the worse the
       maintenance problem gets.
-    </p><h3>Is PEG unambiguous?</h3>
+    </p>
+    <h3>Is PEG unambiguous?</h3>
     <p>PEG is not unambiguous in any
       helpful sense of that word.
       BNF allows you to specify ambiguous grammars,
       and that feature is tied to its power and flexibility
       and often useful in itself.
       PEG will only deliver one of those parses, but without
-      an easy way of specifying, or even knowing, which one
+      an easy way of specifying, or even knowing, which parse
       the underlying problem of ambiguity has not really been addressed.
-    </p><p>My Marpa parser,
+    </p>
+    <p>My Marpa parser,
       for example, which is a general BNF parser based on Earley's,
       can simply throw all but one of the parses in an ambiguous
       parse away.
-      But I would not say that, if you have an issue with ambiguity,
-      Marpa has solved it by arbitrarily throwing away results.
-      Marpa, in fact, does allow you to control which parses
+      But I would not say that, if you have ambiguity is an issue for you,
+      that Marpa has solved that issue
+      simply by throwing all but
+      one arbitrarily chosen result.
+      More helpfully, in many cases,
+      Marpa allows you to control which parses
       are tossed, by ranking some rules over others,
-      and in Marpa's case the ranking works in an intuitive
-      way.
+      and in Marpa's case the ranking works
+      together with the BNF
+      in an intuitive way.
       But in all cases, whether you call them ambiguous or not,
       Marpa delivers precisely the parses the grammar and the rule
-      rankings specify,
-      and it is "precision" in this sense that a grammar writer needs.
-    </p><h3>Is there a sensible way to use PEG?</h3><p>
-      I've already mentioned my own parser, Marpa,
-      and I'll return to that.
-      But suppose that you refuse to use Marpa,
-      and insist on making
-      the best of PEG.
+      rankings specify.
+      It is "precision" in this sense that a grammar writer is looking for.
+    </p>
+    <h3>Is there a sensible way to use PEG?</h3>
+    <p>
+      I've brought up my own parser, Marpa,
+      and I'll return to it.
+      But, for now,
+      let's assume
+      that you are not interested in using Marpa.
+      Let's assume
+      that you are not committed to PEG,
+      and want to make the best of that.
       There are
-      several excellent programmers who have committed themselves
-      to PEG, while being fully honest about its limitations.
+      several excellent programmers who have focused
+      on PEG,
+      without blinding themselves to its limitations.
       I've already mentioned one important paper
-      Redziejowski -- his collected papers can be
-      found here, and many of them treat PEG,
-      and they are trustworthy.
-      Redziejowski, in his effort to promote PEG,
-      can be relied not to sugarcoat PEG's problems.
-    </p><p>Roberto Ierusalimschy, author of Lua and one of the best
+      by Redziejowski -- many of
+      <a href="http://www.romanredz.se/pubs.htm">
+      his collected papers</a>
+        are about PEG,
+        and Redziejowski, in his attempts to use PEG,
+        never sugarcoat its problems.
+      </p>
+    <p>Roberto Ierusalimschy, author of Lua and one of the best
       programmers of our time,
       has written a PEG-based parser of his own.
       Roberto's is fully aware of PEG's limits,
-      and makes a good case for choosing PEG for his parser.
-      First, LPEG's is intended for use Lua,
-      a ruthlessly minimal language,
-      so there is an almost unique emphasis on the size of the code.
+      but he has a good case for choosing PEG
+      as the basis of his parser generator.
+      First, LPEG is intended for use with Lua,
+      a ruthlessly minimal language
+      which has an almost unique emphasis on the size of the codebase.
       And, indeed, Roberto's version of PEG (LPEG) is small.
       Second, Roberto's intention
-      is not to create a syntax-driven competitor of recursive descent,
-      but instead to extend regular expressions in a disciplined way.
-    </p><h3>Matching the BNF to the PEG spec</h3><p>
+      is to extend regular expressions in a disciplined way,
+      so that he is willing to accept a parser of limited power.
+    </p>
+    <h3>Matching the BNF to the PEG spec</h3>
+    <p>
       Redziejowski, Ierusalimschy and the other authors
       of
       <a href="x">X</a>
@@ -231,7 +252,9 @@
       Redziejowski believes this class of languages which are well-behaved
       for PEG can be extended somewhat --
       those interested can look at his paper.
-    </p><h3>Marpa</h3><p>
+    </p>
+    <h3>Marpa</h3>
+    <p>
       In this post,
       I have taken the point of view of programmers using PEG,
       or thinking of doing so.
@@ -256,18 +279,18 @@
       <i>k</i>, and which can be expected to include any
       grammar that will be found to be well-behaved under PEG.
     </p>
-    <h3>Comments</h3>
-    <p>Comments on this post can be made in
-      <a href="http://groups.google.com/group/marpa-parser">
-        Marpa's Google group</a>,
-      or on our IRC channel: #marpa at freenode.net.
-      To learn more about Marpa,
-      there's
-      <a href="http://savage.net.au/Marpa.html">the
-        official web site maintained by Ron Savage</a>.
-      I also have
-      <a href="http://jeffreykegler.github.io/Marpa-web-site/">a Marpa web site</a>.
-    </p>
+      <h3>Comments</h3>
+      <p>Comments on this post can be made in
+	<a href="http://groups.google.com/group/marpa-parser">
+	  Marpa's Google group</a>,
+	or on our IRC channel: #marpa at freenode.net.
+	To learn more about Marpa,
+	there's
+	<a href="http://savage.net.au/Marpa.html">the
+	  official web site maintained by Ron Savage</a>.
+	I also have
+	<a href="http://jeffreykegler.github.io/Marpa-web-site/">a Marpa web site</a>.
+      </p>
   </body>
 </html>
 <br />
