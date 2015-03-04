@@ -115,10 +115,10 @@
       break compatiblity,
       or leave the problem unfixed.
     &lt;/p&gt;
-    &lt;p&gt;It's important to be able to be able to convince
+    &lt;p&gt;It's important to be able to convince
       yourself
-      that your code is correct by examining and thinking
-      about the code.
+      that your code is correct by examining it and thinking
+      about it.
       Beginning programmers often simply hack things,
       and call code complete once it passes the test suite.
       Test suites don't catch everything,
