@@ -274,7 +274,7 @@
       very few programmers
       should want to bother with the issues I've just described.
       My reason for this is the Marpa parser --
-      a general BNF Earley-drived parser that
+      a general BNF Earley-driven parser that
     &lt;/p&gt;
     &lt;ul&gt;
       &lt;li&gt;has an implementation you can use today;&lt;/li&gt;
