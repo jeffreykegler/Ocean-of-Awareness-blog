@@ -1,4 +1,4 @@
-Linear for all those grammars?  I don't believe it
+Linear?  Yeah right.
 <html>
   <head>
   </head>
@@ -8,18 +8,19 @@ Linear for all those grammars?  I don't believe it
       -->
     </p>
     <h3>Linear?</h3>
-    <p>I repeatedly stated that my new parser, Marpa,
+    <p>I have repeatedly stated that my new parser, Marpa,
     is linear for vast classes of grammars,
-    going well beyond
-    But there are skeptics out there,
-    and in this case skepticism is justified.
-    When it comes to parsing algorithms,
-    you see a lot of time complexity claims
+    going well beyond what the traditional parsers can do.
+    But there are skeptics out there.
+    And in this case skepticism is justified.
+    Because when it comes to parsing algorithms,
+    there have been a lot of time complexity claims
     that are hand-wavy, misleading or just
     plain false.
     <p>
-    Marpa's linearity claims are,
-    by the standards of traditional parsers,
+    Marpa's linearity claims are certainly,
+    in comparison with the other parsers in practical use
+    today,
     very bold.
     Marpa claims linearity
     for every grammar that
@@ -27,9 +28,9 @@ Linear for all those grammars?  I don't believe it
     and then some.
     yacc is linear for LALR, which is a subset of LR(1).
     If you use GLR, bison claims linearity for LR(1).
-    As used in practice,
-    recursive descent is LL(k), where k is 1 or maybe
-    a bit larger.
+    Recursive descent is LL(k), where k depend on how
+    it is implemented --
+    in practice 1 or maybe a bit larger.
     With packratting,
     PEG can be made linear for everything it
     parses but only in limited cases do you know
@@ -40,12 +41,120 @@ Linear for all those grammars?  I don't believe it
     <p>
     Marpa claims to be linear for LR-regular grammars,
     which include the LR(k) grammars for every k.
+    So Marpa is linear for LR(1), LR(2), LR(8675309), etc.
     LR-regular includes LL-regular,
     and, for every k, LR(k) includes LL(k),
     which means that every class of grammar under discussion
     in the PEG literature is
     already parsed in linear time by Marpa.
     <h3>Why should I believe that?</h3>
+    <p>The traditional way to convince yourself of claims like I've just
+    made is via proofs.
+    And these exist.
+    There's a Marpa paper.
+    <h3>Get real, dude</h3>
+    <p>But the paper is not short, not easy and requires a lot of
+    the knowledge of Theory of Parsing which was never widespread
+    and at the moment seems to be in danger of going extinct.
+    As a practical matter, few people are to go through it line by line.
+    And in practice, even the experts often rely on taking each others word
+    for things, checking only when claims are borderline.
+    Claims that are clearly correct, or that
+    seem obviously false, usually aren't checked.
+    The exception is in those fields which are hot enough
+    to confer bragging rights, not just for results,
+    but even for confirming or refuting the results of others.
+    And these days a parsing paper couldn't get itself arrested.
+    <h3>So what's the alternative?</h3>
+    <p>
+    Fortunately, in the Marpa case, there are two much easier ways.
+    First, the result is basically already in the refereed literature --
+    has been for two decades.
+    It's Leo 1991.
+    Marpa's is derived from the Leo and Earley algorithms,
+    and make no time complexity claims not already proved for
+    them by Joop Leo and Jay Earley themselves.
+    Marpa contains some improvements to the Leo and Earley algorithms,
+    so it is only necessary to convince yourself that these improvements
+    didn't break anything.
+    <p>
+    When it comes to breaking the Leo/Earley time bounds,
+    the most suspicious of my changes is my rearrangement of the parse
+    engine -- I've reordered some of the Leo/Earley operations.
+    That it is possible to do this and still preserve the speed
+    is not difficult to believe.
+    And the proof is not difficult
+    and does not require any techniques new to the literature.
+    It works through all the operations step by step,
+    showing that, when all is said and done,
+    whatever Leo/Earley does, Marpa does.
+    Some proofs require brilliance, while others take
+    persistance.  Marpa's time complexity proofs are of
+    the second kind.
+    <h3>What is still hard to believe</h3>
+    <p>So it's not hard to believe that I've build upon
+    and implemented the Leo/Earley algorithm.
+    What <b>IS</b> hard to believe is that a result as
+    important as Leo 1991 could just sit gathering dust
+    for two decades.
+    I certainly find it surprising.
+    But surprising or not, it is a fact.
+    <h3>Another way to convince yourself</h3>
+    <p>There's a second way to increase your degree of conviction
+    in Marpa's linearity claims, and it is quite simple.
+    Create examples of problematic grammars,
+    run it and time them.
+    This is not as satisfying as a mathematical proof,
+    because no set of test grammars can be exhaustive.
+    But the fact that you can't find a counter-example
+    to Marpa's linearity claims should help erase
+    any remaining doubts.
+    <p>Marpa is, in fact, in wide use at this point,
+    and much of that use is for automatically generated
+    grammars.
+    Users would notice if Marpa was going quadratic,
+    and if Marpa was doing so on grammars
+    for which it claimed to be linear,
+    this too would very likely have been noticed by now.
+    <h3>Why no refereed publication?</h3>
+    <p>A traditional way to increase the level of assurance
+    in a claim, is refereed publication.
+    In fact, while I do hear complaints about the referee system,
+    my experiences with it were on the whole good.
+    I have a refereed mathematical publication,
+    one which I was able, as someone without an academic post,
+    to get accepted on its merits.
+    <p>But, the academic publishing system has turned seriously dysfunctional,
+    enough to have claimed at least
+    <a href="http://en.wikipedia.org/wiki/Aaron_Swartz">
+    one casualty</a>.
+    Access to the referee process, even if you are professional
+    academic, has become very problematic.
+    In the best of times,
+    publishing in the traditional way took time.
+    These days, it is arguably counter-productive --
+    the paper once published goes behind a paywall.
+    Other avenues, like arxiv.org, are closed to those
+    without academica posts.
+    (There's an alternative mechanism, "endorsement",
+    but its use
+    <a href="http://vixra.org/why">
+    seems to be strongly discouraged</a>,
+    and I have not pursued it.)
+    Ironically, the Marpa paper is cited <b>from</b>
+    archiv.org.
+    <p>Finally, there is the state of
+    academic Parsing Theory itself.
+    As I mentioned,
+    my "unbelievable" time complexity results are in the literature --
+    and have been for two decades.
+    Leo's paper appeared in a major publication but,
+    for whatever reason,
+    that result went unused.
+    If I had not noticed it,
+    Leo's result would have gone into a fourth decade
+    without any attempt at followup or implementation.
+    I realized that, with Marpa,
     <h3>Comments</h3>
     <p>Comments on this post can be made in
       <a href="http://groups.google.com/group/marpa-parser">
