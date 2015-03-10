@@ -1,0 +1,62 @@
+Linear for all those grammars?  I don't believe it
+<html>
+  <head>
+  </head>
+  <body><p>
+      <!--
+      marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
+      -->
+    </p>
+    <h3>Linear?</h3>
+    <p>I repeatedly stated that my new parser, Marpa,
+    is linear for vast classes of grammars,
+    going well beyond
+    But there are skeptics out there,
+    and in this case skepticism is justified.
+    When it comes to parsing algorithms,
+    you see a lot of time complexity claims
+    that are hand-wavy, misleading or just
+    plain false.
+    <p>
+    Marpa's linearity claims are,
+    by the standards of traditional parsers,
+    very bold.
+    Marpa claims linearity
+    for every grammar that
+    yacc/bison, PEG and recursive descent claim,
+    and then some.
+    yacc is linear for LALR, which is a subset of LR(1).
+    If you use GLR, bison claims linearity for LR(1).
+    As used in practice,
+    recursive descent is LL(k), where k is 1 or maybe
+    a bit larger.
+    With packratting,
+    PEG can be made linear for everything it
+    parses but only in limited cases do you know
+    what language your PEG grammar actually parses.
+    PEG researchers are trying to extend this,
+    but, in current practice, that means your PEG grammar
+    must be LL(1).
+    <p>
+    Marpa claims to be linear for LR-regular grammars,
+    which include the LR(k) grammars for every k.
+    LR-regular includes LL-regular,
+    and, for every k, LR(k) includes LL(k),
+    which means that every class of grammar under discussion
+    in the PEG literature is
+    already parsed in linear time by Marpa.
+    <h3>Why should I believe that?</h3>
+    <h3>Comments</h3>
+    <p>Comments on this post can be made in
+      <a href="http://groups.google.com/group/marpa-parser">
+        Marpa's Google group</a>,
+      or on our IRC channel: #marpa at freenode.net.
+      To learn more about Marpa,
+      there's
+      <a href="http://savage.net.au/Marpa.html">the
+        official web site maintained by Ron Savage</a>.
+      I also have
+      <a href="http://jeffreykegler.github.io/Marpa-web-site/">a Marpa web site</a>.
+    </p>
+  </body>
+</html>
