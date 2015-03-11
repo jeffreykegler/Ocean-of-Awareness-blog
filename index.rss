@@ -227,7 +227,8 @@
       So every class of grammar under discussion
       in the PEG literature is
       already parsed in linear time by Marpa.
-      From this is also safe to conclude that,
+      From this,
+      it is also safe to conclude that,
       if a grammar can be parsed by
       anything reasonably described as recursive descent,
       it can be parsed in linear time by Marpa.
