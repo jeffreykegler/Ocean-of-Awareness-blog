@@ -43,7 +43,7 @@
       in comparison with the other parsers in practical use
       today,
       bold.
-      Marpa also claims linearity,
+      Marpa claims linearity,
       not just for every class of grammar for which
       yacc/bison, PEG and recursive descent currently claim linearity,
       but for considerably more.
@@ -109,7 +109,7 @@
       Usually these are minor,
       and don't affect the result.
       On the other hand, Jay Earley's paper contained a very
-      serious error, one which slipped past his Ph.D committee and
+      serious error, one which slipped past his Ph.D. committee and
       his referees.
       Mathematical arguments and proofs do not allow us to achieve
       absolute certainty.
