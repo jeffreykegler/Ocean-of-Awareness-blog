@@ -34,6 +34,211 @@
   </p>
   </div>
   <div style="margin-left:190px;border-left:2px solid #38B0C0;padding:25px;">
+<h3>Tue, 10 Mar 2015</h3>
+<br />
+<center><a name="linear"> <h2>Linear?  Yeah right.</h2> </a>
+</center>
+<html>
+  <head>
+  </head>
+  <body><p>
+      <!--
+      marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
+      -->
+    </p>
+    <h3>Linear?</h3>
+    <p>I have claimed that my new parser,
+      <a href="http://savage.net.au/Marpa.html">Marpa</a>,
+      is linear for vast classes of grammars,
+      going well beyond what the traditional parsers can do.
+      But skepticism is justified.
+      When it comes to parsing algorithms,
+      there have been a lot of time complexity claims
+      that are hand-wavy, misleading or just
+      plain false.
+      This post describes how someone,
+      who
+      is exercising the appropriate degree of skepticism,
+      might conclude that believing Marpa's claims is a reasonable
+      and prudent thing to do.
+    </p>
+    <p>
+      Marpa's linearity claims seem to be,
+      in comparison with the other parsers in practical use
+      today,
+      bold.
+      Marpa claims linearity,
+      not just for every class of grammar for which
+      yacc/bison, PEG and recursive descent currently claim linearity,
+      but for considerably more.
+      (The mathematical details of these claims
+      are in a
+      <a href="#DETAILS">section at the end</a>.)
+      It seems too good to be true.
+    </p>
+    <h3>Why should I believe you?</h3>
+    <p>The most important thing to realize,
+      in assessing the believability of Marpa's time complexity claims,
+      is that they are not new.
+      They were already proved in a long-accepted paper in the refereed literature.
+      They are the time complexity claims proved by Joop Leo for his algorithm
+      in 1991, over two decades ago.
+      Marpa is derived from Leo's algorithm, and its time complexity claims
+      are those proved for Leo's algorithm.
+    </p>
+    <p>Above I said that Marpa's time complexity claims "seem" bold.
+      On any objective assessment, they are in fact a bit of a yawn.
+      The claims
+      <b>seem</b>
+      surprising only because a lot of people
+      are unaware of Leo's results.
+      That is, they are surprising in the same sense that someone who
+      had avoided hearing about radio waves would be surprised
+      to learn that he can
+      communicate with someone on the other side of the world
+      instantly.
+    </p>
+    <p>So, if there's so little to prove, why does the
+      <a href="https://www.academia.edu/10341474/Marpa_A_practical_general_parser_the_recognizer">
+        Marpa paper</a>
+      have proofs?
+      In Marpa, I made many implementation decisions about,
+      and some changes to, the Leo/Earley algorithm.
+      None of my changes produced better time complexity results --
+      my only claim is that I did not change the Leo/Earley
+      algorithm in a way that slowed it down.
+      To convince myself of this claim, I reworked Leo and Earley's
+      original proofs, changing them to reflect my changes,
+      and demonstrated that the results Leo had obtained still held.
+    </p>
+    <p>Proofs of this kind,
+      which introduce no new mathematical techniques,
+      but simply take a previous result and march from
+      here to there by well-know means,
+      are called "tedious".
+      In journals, where there's a need to conserve space,
+      they are usually omitted,
+      especially if,
+      as is the case with Marpa's time complexity proofs,
+      the results are intuitively quite plausible.
+    </p>
+    <h3>Getting from plausible to near-certain</h3>
+    <p>So let's say you are not going to work through every line
+      of Marpa's admittedly tedious proofs.
+      We've seen that the results are intuitively plausible,
+      as long as you don't reject the previous literature.
+      But can we do better than merely "plausible"?
+    </p><p>As an aside, many people misunderstand the phrase
+      "mathematically proven", especially as it applies to branches
+      of math like parsing theory.
+      The fact is that proofs in papers often contain errors.
+      Usually these are minor,
+      and don't affect the result.
+      On the other hand, Jay Earley's paper contained a very
+      serious error, one which slipped past his Ph.D. committee and
+      his referees.
+      Mathematical arguments and proofs do not allow us to achieve
+      absolute certainty.
+      They can only improve the degree of certainty.
+    </p>
+    <p>There's a second way to dramatically increase
+      your degree of conviction
+      in Marpa's linearity claims, and it is quite simple.
+      Create examples of problematic grammars,
+      run them and time them.
+      This is not as satisfying as a mathematical proof,
+      because no set of test grammars can be exhaustive.
+      But if you can't find a counter-example
+      to Marpa's linearity claims among the grammars of
+      most interest to you,
+      that should help lift
+      your level of certainty to "certain for
+      all practical purposes".
+    </p>
+    <p>Much of this increase in certainty can be
+      achieved without bothering to run your own tests.
+      Marpa is in wide use at this point.
+      If Marpa was going quadratic on grammars
+      for which it claimed to be linear,
+      and these were grammars of practical interest,
+      that would very likely have been noticed by now.
+    </p>
+    <h3>Comments</h3>
+    <p>Comments on this post can be made in
+      <a href="http://groups.google.com/group/marpa-parser">
+        Marpa's Google group</a>,
+      or on our IRC channel: #marpa at freenode.net.
+      To learn more about Marpa,
+      there's
+      <a href="http://savage.net.au/Marpa.html">the
+        official web site maintained by Ron Savage</a>.
+      I also have
+      <a href="http://jeffreykegler.github.io/Marpa-web-site/">a Marpa web site</a>.
+    </p>
+    <h3>Appendix: Some technical details</h3>
+    <p>
+      <a name="DETAILS">Above</a>
+      I talked about algorithms, classes of grammars and their
+      linearity claims.
+      I didn't give details because most folks aren't interested.
+      For those who are, they are in this section.
+    </p>
+    <p>
+      yacc is linear for a grammar class called LALR,
+      which is a subset of another grammar class
+      called LR(1).
+      If you are willing to hassle with GLR,
+      bison claims linearity for all of LR(1).
+      Recursive descent is a technique, not an algorithm,
+      but it is top-down with look-ahead,
+      and therefore can be seen as some form of LL(k),
+      where k depends on how it is implemented.
+      In practice, I suspect k is never much bigger than 3,
+      and usually pretty close to 1.
+      With packratting,
+      PEG can be made linear for everything it
+      parses but there is a catch --
+      <a href="http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2015/03/peg.html">
+        only in limited cases do you know
+        what language your PEG grammar actually parses</a>.
+      In current practice, that means your PEG grammar
+      must be LL(1).
+      Some of the PEG literature looks at techniques for
+      extending this as far as LL-regular, but there are no
+      implementations, and it remains to be seen if the
+      algorithms described are practical.
+    </p>
+    <p>
+      The
+      <a href="https://www.academia.edu/10341474/Marpa_A_practical_general_parser_the_recognizer">
+        Marpa paper</a>
+      contains a proof,
+      based on a proof of the same claim by
+      Joop Leo,
+      that Marpa is linear for LR-regular grammars.
+      The LR-regular grammars
+      include the LR(k) grammars for every k.
+      So Marpa is linear for LR(1), LR(2), LR(8675309), etc.
+      LR-regular also includes LL-regular.
+      So every class of grammar under discussion
+      in the PEG literature is
+      already parsed in linear time by Marpa.
+      From this is also safe to conclude that,
+      if a grammar can be parsed by
+      anything reasonably described as recursive descent,
+      it can be parsed in linear time by Marpa.
+    </p>
+  </body>
+</html>
+<br />
+<p>posted at: 22:01 |
+<a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2015/03/linear.html">direct link to this entry</a>
+</p>
+<div style="color:#38B0C0;padding:1px;text-align:center;">
+&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&sect;
+</div>
 <h3>Mon, 02 Mar 2015</h3>
 <br />
 <center><a name="peg"> <h2>PEG: Ambiguity, precision and confusion</h2> </a>
@@ -994,336 +1199,6 @@
 <br />
 <p>posted at: 10:53 |
 <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2014/11/backpan.html">direct link to this entry</a>
-</p>
-<div style="color:#38B0C0;padding:1px;text-align:center;">
-&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-&sect;
-</div>
-<h3>Sat, 01 Nov 2014</h3>
-<br />
-<center><a name="delimiter"> <h2>Reporting mismatched delimiters</h2> </a>
-</center>
-<html>
-  <head>
-  </head>
-  <body><p>
-      <!--
-      marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
-      -->
-    </p>
-    <p>In many contexts, programs need to identify
-      non-overlapping pieces of a text.
-      One very direct way to do this
-      is to use a pair of delimiters.
-      One delimiter of the pair marks the start
-      and the other marks the end.
-      Delimiters can take many forms:
-      Quote marks, parentheses, curly braces, square brackets,
-      XML tags, and HTML tags
-      are all delimiters in this sense.
-    </p>
-    <p>
-      Mismatching delimiters is easy to do.
-      Traditional parsers are often poor at reporting these errors:
-      hopeless after the first mismatch,
-      and for that matter none too precise about the first one.
-      This post outlines a scaleable method for the accurate
-      reporting of mismatched delimiters.
-      I will illustrate the method with a simple
-      but useable tool --
-      a utility which reports mismatched brackets.
-    </p>
-    <h3>The example script</h3>
-    <p>The
-      <a href="https://gist.github.com/jeffreykegler/b6bfeeadfcedeade6519">example
-      script</a>,
-      <tt>bracket.pl</tt>,
-      reports mismatched brackets in the set:
-    </p>
-    <blockquote><pre>() {} []</pre></blockquote>
-      <p>
-      They are expected to nest without overlaps.
-      Other text is treated as filler.
-      <tt>bracket.pl</tt>
-      is not smart about things
-      like strings or comments.
-      This does have the advantage of making
-      <tt>bracket.pl</tt>
-      mostly language-agnostic.
-    </p>
-    <p>
-      Because it's intended primarily to be read
-      as an illustration of the technique,
-      <tt>bracket.pl</tt>'s grammar
-      is a basic one.
-      The grammar that
-      <tt>bracket.pl</tt>
-      uses is so simple that
-      an emulator of <tt>bracket.pl</tt>
-      could be written using recursive descent.
-      I hope the reader who goes on to look into the details
-      will see that this technique scales to more
-      complex situations,
-      in a way that a solution based on a traditional parser
-      will not.
-    </p>
-    <h3>Error reports</h3>
-    <p>The description of how the method works will make more
-      sense after we've looked at some examples of the diagnostics
-      <tt>bracket.pl</tt>
-      produces.
-      To be truly useful,
-      <tt>bracket.pl</tt>
-      must report mismatches that span
-      many lines,
-      and it can do this.
-      But single-line examples are easier to follow.
-      All the examples in this post will be contained in a one line.
-      Consider the string '<tt>((([))</tt>'.
-      <tt>bracket.pl</tt>'s diagnostics are:
-    </p><blockquote><pre>
-* Line 1, column 1: Opening '(' never closed, problem detected at end of string
-((([))
-^
-====================
-* Line 1, column 4: Missing close ], problem detected at line 1, column 5
-((([))
-   ^^
-</pre></blockquote>
-    <p>
-      In the next example
-      <tt>bracket.pl</tt>
-      realizes that it
-      cannot accept the ')' at column 16, without first closing the set of curly braces started at column 5.
-      It identifies the problem, along with both of the locations involved.
-    </p>
-    <blockquote><pre>
-* Line 1, column 5: Missing close }, problem detected at line 1, column 16
-[({({x[]x{}x()x)})]
-    ^          ^
-</pre></blockquote>
-    <p>
-      So far, so good.
-      But an important advantage of
-      <tt>bracket.pl</tt>
-      has yet to be seen.
-      Most compilers,
-      once they report a first mismatched delimiter,
-      produce error messages that are
-      unreliable --
-      so unreliable that they are useless in practice.
-      <tt>bracket.pl</tt>
-      repairs a mismatched bracket before continuing,
-      so that it can do a reasonable job of analyzing the text
-      that follows.
-      Consider the text
-      '<tt>({]-[(}-[{)</tt>'.
-      The output of
-      <tt>bracket.pl</tt>
-      is
-    </p><blockquote><pre>
-* Line 1, column 1: Missing close ), problem detected at line 1, column 3
-({]-[(}-[{)
-^ ^
-====================
-* Line 1, column 2: Missing close }, problem detected at line 1, column 3
-({]-[(}-[{)
- ^^
-====================
-* Line 1, column 3: Missing open [
-({]-[(}-[{)
-  ^
-====================
-* Line 1, column 5: Missing close ], problem detected at line 1, column 7
-({]-[(}-[{)
-    ^ ^
-====================
-* Line 1, column 6: Missing close ), problem detected at line 1, column 7
-({]-[(}-[{)
-     ^^
-====================
-* Line 1, column 7: Missing open {
-({]-[(}-[{)
-      ^
-====================
-* Line 1, column 9: Missing close ], problem detected at line 1, column 11
-({]-[(}-[{)
-        ^ ^
-====================
-* Line 1, column 10: Missing close }, problem detected at line 1, column 11
-({]-[(}-[{)
-         ^^
-====================
-* Line 1, column 11: Missing open (
-({]-[(}-[{)
-          ^
-</pre></blockquote>
-    <p>Each time,
-      <tt>bracket.pl</tt>
-      corrects itself,
-      and accurately reports the next set of problems.
-    </p><h3>A difficult error report</h3>
-    <p>
-      To be 100% accurate,
-      <tt>bracket.pl</tt>
-      would have to guess the programmer's intent.
-      This is, of course, not possible.
-      Let's look at a text where
-      <tt>bracket.pl</tt>'s guesses are not so good:
-      <tt>{{]}</tt>.
-      Here we will assume the closing square bracket is a typo for a closing parenthesis.
-      Here's the result:
-    </p><blockquote><pre>
-* Line 1, column 1: Missing close }, problem detected at line 1, column 3
-{{]}
-^ ^
-====================
-* Line 1, column 2: Missing close }, problem detected at line 1, column 3
-{{]}
- ^^
-====================
-* Line 1, column 3: Missing open [
-{{]}
-  ^
-====================
-* Line 1, column 4: Missing open {
-{{]}
-   ^
-</pre></blockquote><p>
-      Instead of one error,
-      <tt>bracket.pl</tt>
-      finds four.
-    </p><p>
-      But even in this case, the method is fairly good, especially when
-      compared with current practice.
-      The problem is at line 1, column 3,
-      and the first three messages all identify this as one of their
-      potential problem locations.
-      It is reasonable to believe that a programmer, especially once
-      he becomes used to this kind of mismatch reporting,
-      will quickly find the first mismatch and fix it.
-      For this difficult case,
-      <tt>bracket.pl</tt> may not be much better than the state of the art,
-      but it is certainly no worse.
-    </p>
-    <h3>How it works</h3>
-    <p>
-      For full details of the workings of
-      <tt>bracket.pl</tt>
-      there is
-      <a href="https://gist.github.com/jeffreykegler/b6bfeeadfcedeade6519">the code</a>,
-      which is heavily commented.
-      This section provides a conceptual overview.
-    </p><p>
-      <tt>bracket.pl</tt>
-      uses two features of Marpa:
-      left-eideticism and the Ruby Slippers.
-      By left-eidetic, I mean that Marpa knows everything there is to know
-      about the parse at, and to left of, the current position.
-      As a consequence,
-      Marpa
-      also knows exactly which of its input symbols
-      can lead to a successful parse,
-      and is able to stop as soon as it knows that the parse cannot succeed.
-    </p>
-    <p>
-      In the Ruby Slippers technique, we arrange for parsing to stop
-      whenever we encounter an input which
-      would cause parsing to fail.
-      The application then
-      asks Marpa, "OK.  What input would allow the
-      parse to continue?"
-      The application takes Marpa's answer to this
-      question, and uses it to concoct
-      an input that Marpa will accept.
-    </p>
-    <p>
-      In this case,
-      <tt>bracket.pl</tt>
-      creates a virtual token which fixes the mismatch
-      of brackets.
-      Whatever the missing bracket may be,
-      <tt>bracket.pl</tt>
-      invents a bracket of that kind,
-      and adds it to the virtual input.
-      This done,
-      parsing and error detection
-      can proceed as if there was no problem.
-      Of course,
-      the error which made the Ruby Slippers token necessary
-      is recorded, and those records are the source of the
-      error reports we saw above.
-    </p>
-    <p>
-      To make its error messages as informative as possible
-      in the case of missing closing brackets,
-      <tt>bracket.pl</tt>
-      needs to report the exact location of
-      the opening bracket.
-      Left-eideticism again comes in handy here.
-      Once the virtual closing bracket is supplied to Marpa,
-      <tt>bracket.pl</tt>
-      asks, "That bracketed text that I just closed -- where did it begin?"
-      The Marpa parser tracks the start location
-      of all symbol and rule instances,
-      so it is able to provide the application
-      with the exact location of
-      the starting bracket.
-    </p><p>
-      When
-      <tt>bracket.pl</tt>
-      encounters a problem at a point where there are unclosed opening
-      brackets, it has two choices.
-      It can be optimistic or it can be pessimistic.
-      "Optimistic" means it can hope that something later in the input will close
-      the opening bracket.
-      "Pessimistic" means it can decide that "all bets are off" and use
-      Ruby Slippers tokens to close all the currently active open brackets.
-    </p>
-    <p>
-      <tt>bracket.pl</tt>
-      uses the pessimistic strategy.
-      While the optimistic strategy sounds better, in practice
-      the pessimistic one seems to provide better diagnostics.
-      The pessimistic strategy does report some fixable problems
-      as errors.
-      But the optimistic one can introduce spurious fixes.
-      These hide the real errors,
-      and it is worse to miss errors
-      than it is to overreport them.
-      Even when the pessimistic strategy overreports,
-      its first error message will always accurately identify
-      the first problem location.
-    </p>
-    <p>
-      While
-      <tt>bracket.pl</tt>
-      is already useable,
-      I think of it as a prototype.
-      Beyond that,
-      the problem of matching delimiters
-      is in fact very general, and I believe these techniques may have very wide application.
-    </p>
-    <h3>For more</h3>
-    <p>
-      The example script of this post is
-      <a href="https://gist.github.com/jeffreykegler/b6bfeeadfcedeade6519">a Github gist</a>.
-      For more about Marpa,
-      there's
-      <a href=http://savage.net.au/Marpa.html">the
-        official web site maintained by Ron Savage</a>.
-      I also have
-      <a href="http://jeffreykegler.github.io/Marpa-web-site/">a Marpa web site</a>.
-      Comments on this post can be made in
-      <a href="http://groups.google.com/group/marpa-parser">
-        Marpa's Google group</a>.
-    </p>
-  </body>
-</html>
-<br />
-<p>posted at: 11:11 |
-<a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2014/11/delimiter.html">direct link to this entry</a>
 </p>
 <div style="color:#38B0C0;padding:1px;text-align:center;">
 &sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
