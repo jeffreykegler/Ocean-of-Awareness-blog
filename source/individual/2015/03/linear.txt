@@ -8,7 +8,7 @@ Linear?  Yeah right.
       -->
     </p>
     <h3>Linear?</h3>
-    <p>I have repeatedly stated that my new parser, Marpa,
+    <p>I have repeatedly claimed that my new parser, Marpa,
     is linear for vast classes of grammars,
     going well beyond what the traditional parsers can do.
     But there are skeptics out there.
@@ -17,15 +17,24 @@ Linear?  Yeah right.
     there have been a lot of time complexity claims
     that are hand-wavy, misleading or just
     plain false.
+    This post describes how someone,
+    exercising the appropriate degree of skepticism,
+    might conclude that believing these claims is a reasonable
+    and prudent thing to do.
     <p>
-    Marpa's linearity claims are certainly,
+    I cannot deny that
+    Marpa's linearity claims are,
     in comparison with the other parsers in practical use
     today,
-    very bold.
-    Marpa claims linearity
-    for every grammar that
-    yacc/bison, PEG and recursive descent claim,
-    and then some.
+    bold.
+    For every class of grammar for which
+    yacc/bison, PEG and recursive descent currently claim linearity,
+    Marpa also claims linearity.
+    The PEG research literature hopes for well-behaved linearity
+    with larger classes of grammar,
+    but these are also already linear for Marpa.
+    Marpa also claims linearity for every class of grammar
+    that is even under discussion for use with PEG.
     yacc is linear for LALR, which is a subset of LR(1).
     If you use GLR, bison claims linearity for LR(1).
     Recursive descent is LL(k), where k depend on how
@@ -143,18 +152,94 @@ Linear?  Yeah right.
     and I have not pursued it.)
     Ironically, the Marpa paper is cited <b>from</b>
     archiv.org.
-    <p>Finally, there is the state of
-    academic Parsing Theory itself.
-    As I mentioned,
-    my "unbelievable" time complexity results are in the literature --
-    and have been for two decades.
-    Leo's paper appeared in a major publication but,
-    for whatever reason,
-    that result went unused.
-    If I had not noticed it,
-    Leo's result would have gone into a fourth decade
-    without any attempt at followup or implementation.
-    I realized that, with Marpa,
+    <p>Important as these reasons are they are not
+    the most important reason not to waste time
+    trying to make a broken system work.
+    The most important reason is that, if I did,
+    it would accomplish nothing.
+    Leo's 1991 paper was in the literature for
+    over two decades before some person came along
+    and gave it its first real implementation.
+    That person was me, and there is every reason
+    to suspect that if I hadn't come along,
+    Leo's paper might have gathered dust for another
+    20 years.
+    <p>
+    I have no reason to suppose that if I spend
+    weeks and months trying to get a broken
+    academic publishing system to work,
+    the Marpa paper would accomplish more.
+    <p>In the 1960's and 1970's,
+    theoreticians drove,
+    not only the theory of Parsing,
+    but its practice as well.
+    Papers received immediate attention.
+    You had a good chance of getting published,
+    and researchers scanned not just the prestigious
+    refereed journals, but reports and bulletins.
+    However you put it out,
+    if your algorithm looked promising to the eager
+    readership of that time,
+    it had an excellent chance of being implemented.
+    <p>That clearly had changed by 1991.
+    Joop Leo published a ground-breaking result
+    and his paper disappeared into a black hole.
+    I realized that if I went the purely academic route,
+    even if I
+    somehow I got a badly broken academic system to work,
+    my paper would probably suffer the same fate as Leo's.
+    <p>So with Marpa I took a new approach,
+    I would publish, not just a paper,
+    but an implementation.
+    Fifty years ago the theoreticians drove parsing both
+    theory and practice.
+    Today, if practitioners want better parsing algorithms,
+    they are going to have to take the lead.
+   <h3>Some technical details</h3>
+   <p>
+   Above I talked about algorithms, classes of grammars and their 
+   linearity claims.
+   I didn't give details because most folks aren't interested.
+   For those who are, they are in this section.
+   <p>
+    yacc is linear for a grammar class called LALR,
+    which is a subset of another grammar class
+    called LR(1).
+    If you are willing to hassle with GLR,
+    bison claims linearity for LR(1).
+    Recursive descent is a technique, not an algorithm,
+    but it is top-down with look-ahead,
+    and therefore can be seen as some form of LL(k),
+    where k depend on how it is implemented.
+    In practice, I suspect k is never much bigger than 3,
+    and usually pretty close to 1.
+    With packratting,
+    PEG can be made linear for everything it
+    parses but there is a catch -- 
+    only in limited cases do you know
+    what language your PEG grammar actually parses.
+    In current practice, that means your PEG grammar
+    must be LL(1).
+    Some of the PEG literature looks at techniques for
+    extending this as far as LL-regular, but it there are no
+    implementations, and it remains to be seen if the
+    algorithms described are practical.
+    <p>
+    The Marpa paper contains a proof,
+    based on a proof of the same claim by
+    Joop Leo,
+    that Marpa is linear for LR-regular grammars.
+    The LR-regular grammars
+    include the LR(k) grammars for every k.
+    So Marpa is linear for LR(1), LR(2), LR(8675309), etc.
+    LR-regular also includes LL-regular.
+    So every class of grammar under discussion
+    in the PEG literature is
+    already parsed in linear time by Marpa.
+    From this is also safe to conclude that
+    every grammar likely to be parsed by
+    anything reasonably described as recursive descent
+    is parsed in linear time by Marpa.
     <h3>Comments</h3>
     <p>Comments on this post can be made in
       <a href="http://groups.google.com/group/marpa-parser">
