@@ -25,9 +25,8 @@
       &lt;a href=&quot;http://savage.net.au/Marpa.html&quot;&gt;Marpa&lt;/a&gt;,
       is linear for vast classes of grammars,
       going well beyond what the traditional parsers can do.
-      But there are skeptics out there.
-      These skeptics are justified.
-      Because when it comes to parsing algorithms,
+      But skepticism is justified.
+      When it comes to parsing algorithms,
       there have been a lot of time complexity claims
       that are hand-wavy, misleading or just
       plain false.
@@ -38,7 +37,6 @@
       and prudent thing to do.
     &lt;/p&gt;
     &lt;p&gt;
-      I cannot deny that
       Marpa's linearity claims seem to be,
       in comparison with the other parsers in practical use
       today,
@@ -55,10 +53,12 @@
     &lt;h3&gt;Why should I believe you?&lt;/h3&gt;
     &lt;p&gt;The most important thing to realize,
       in assessing the believability of Marpa's time complexity claims,
-      is that, essentially, they are not new --
-      they are already in a long-accepted paper in the refereed literature --
-      they are the time complexity claims made by Joop Leo for his algorithm
+      is that they are not new.
+      They were already proved in a long-accepted paper in the refereed literature.
+      They are the time complexity claims proved by Joop Leo for his algorithm
       in 1991, over two decades ago.
+      Marpa is derived from Leo's algorithm, and its time complexity claims
+      are those proved for Leo's algorithm.
     &lt;/p&gt;
     &lt;p&gt;Above I said that Marpa's time complexity claims &quot;seem&quot; bold.
       On any objective assessment, they are in fact a bit of a yawn.
@@ -69,7 +69,7 @@
       That is, they are surprising in the same sense that someone who
       had avoided hearing about radio waves would be surprised
       to learn that he can
-      communicate with someone of the other side of the world
+      communicate with someone on the other side of the world
       instantly.
     &lt;/p&gt;
     &lt;p&gt;So, if there's so little to prove, why does the
@@ -88,7 +88,7 @@
     &lt;p&gt;Proofs of this kind,
       which introduce no new mathematical techniques,
       but simply take a previous result and march from
-      here to there by well-know means
+      here to there by well-know means,
       are called &quot;tedious&quot;.
       In journals, where there's a need to conserve space,
       they are usually omitted,
