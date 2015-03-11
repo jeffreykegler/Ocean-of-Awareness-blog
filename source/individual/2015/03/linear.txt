@@ -56,8 +56,8 @@ Linear?  Yeah right.
       That is, they are surprising in the same sense that someone who
       had avoided hearing about radio waves would be surprised
       to learn that he can
-      communicate with someone on the other side of the world
-      instantly.
+      communicate instantly
+      with someone on the other side of the world.
     </p>
     <p>So, if there's so little to prove, why does the
       <a href="https://www.academia.edu/10341474/Marpa_A_practical_general_parser_the_recognizer">
@@ -68,9 +68,12 @@ Linear?  Yeah right.
       None of my changes produced better time complexity results --
       my only claim is that I did not change the Leo/Earley
       algorithm in a way that slowed it down.
-      To convince myself of this claim, I reworked Leo and Earley's
-      original proofs, changing them to reflect my changes,
-      and demonstrated that the results Leo had obtained still held.
+      To convince myself of this claim, I reworked
+      the original proofs of
+      Leo and Earley,
+      changing them to reflect my changes,
+      and demonstrated that the results
+      that Leo had obtained still held.
     </p>
     <p>Proofs of this kind,
       which introduce no new mathematical techniques,
@@ -95,8 +98,11 @@ Linear?  Yeah right.
       The fact is that proofs in papers often contain errors.
       Usually these are minor,
       and don't affect the result.
-      On the other hand, Jay Earley's paper contained a very
-      serious error, one which slipped past his Ph.D. committee and
+      On the other hand, Jay Earley's paper,
+      while one of the best Computer Science papers ever published,
+      also contained a very
+      serious error.
+      And this error slipped past his Ph.D. committee and
       his referees.
       Mathematical arguments and proofs do not allow us to achieve
       absolute certainty.
@@ -124,7 +130,31 @@ Linear?  Yeah right.
       and these were grammars of practical interest,
       that would very likely have been noticed by now.
     </p>
-    <h3>Comments</h3>
+    <h3>I'm still not convinced</h3>
+    <p>Let's suppose all this has not brought you to
+      the level of certainty you need to use Marpa.
+      That means the reasonable thing is to continue to
+      struggle to work with the restrictions of the
+      traditional algorithms, right?
+      No, absolutely not.
+    </p>
+    <p>OK, so you don't believe that Marpa preserves
+      the advances in power and speed made by Leo.
+      Does that mean that parsers have to stay underpowered?
+      No, it simply means that there should be a
+      more direct implementation of Leo's 1991,
+      bypassing Marpa.
+    </p><p>But if you are looking for an implementation of Leo's
+      1991 algorithm,
+      I think you may end up coming back to Marpa as the most
+      reasonable choice.
+      Marpa's additional features
+      include the ability to use custom,
+      procedural logic,
+      as you can with recursive descent.
+      And Marpa has worked out a lot of the
+      implementation details for you.
+    </p><h3>Comments</h3>
     <p>Comments on this post can be made in
       <a href="http://groups.google.com/group/marpa-parser">
         Marpa's Google group</a>,
