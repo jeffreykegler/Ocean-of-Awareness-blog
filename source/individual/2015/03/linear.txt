@@ -155,7 +155,7 @@ Linear?  Yeah right.
       Recursive descent is a technique, not an algorithm,
       but it is top-down with look-ahead,
       and therefore can be seen as some form of LL(k),
-      where k depend on how it is implemented.
+      where k depends on how it is implemented.
       In practice, I suspect k is never much bigger than 3,
       and usually pretty close to 1.
       With packratting,
