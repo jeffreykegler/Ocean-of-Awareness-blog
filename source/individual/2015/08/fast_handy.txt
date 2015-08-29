@@ -81,47 +81,141 @@ Fast handy languages
       Since the modern tools for parsing impose severe limits,
       Marpa is almost certainly fast for any language,
       that a modern programmer has in mind.
-      But for more ambitious uses of Marpa,
-      such as second-order languages,
-      it is useful to be more exact.
-      You can guarantee that Marpa is fast for your BNF language,
+      Without peeking ahead at the hints I am about to give you,
+      in fact, it is actually
+      <b>hard</b>
+      to write an unambiguous
+      grammar that goes non-linear on Marpa.
+      Simply mixing up lots of left, right and middle recursions
+      will
+      <b>not</b>
+      be enough to make an
+      unambiguous grammar go non-linear.
+      You will also need to violate one of the set of rule
+      I am about to give you.
+    </p><p>You can guarantee that Marpa is fast for your BNF language,
       if you follow three rules:
-    </p><ul>
+    </p>
+    <ul>
       <li>Rule 1: Your BNF must be unambiguous.
-      </li><li>Rule 2: Your BNF must have no "unmarked" middle recursions.
-      </li><li>Rule 3: All of the right-recursive symbols
+      </li>
+      <li>Rule 2: Your BNF must have no "unmarked" middle recursions.
+      </li>
+      <li>Rule 3: All of the right-recursive symbols
         in your BNF must be dedicated
         to that right recursion.
-      </li></ul>
-    <p>Rule 3 is easy to obey.
+      </li>
+    </ul>
+    <p>Rule 3 turns out to be very easy to obey.
+      I discuss it in detail in the next section,
+      which will be about how to breaking these rules and
+      get away with it.
+    </p><p>First, let's look at what an "unmarked" middle recursion is.
+      Here's an example of a "marked" middle recursion:
+    </p><blockquote><pre>
+       M ::= 'b'
+       M ::= 'a' M 'a'
+    </pre></blockquote><p>
+      Here the "b" symbol is the marker.
+      This recursion generates sequences like
+    </p><blockquote><pre>
+       b
+       a b a
+       a a b aa
+    </pre></blockquote><p>
+      Now for an "unmarked" variant of this middle recursion
+    </p><blockquote><pre>
+       M ::= 'a' 'a'
+       M ::= 'a' M 'a'
+    </pre></blockquote><p>
+      This recursion generates sequences like
+    </p><blockquote><pre>
+       a a
+       a a a a
+       a a a a a a
+    </pre></blockquote><p>
+      In this middle recursion there is no marker.
+      To know where the middle is.
+      you have to scan all the way to the end,
+      and then count back.
+    </p><p>A rule of thumb is that if you can "eyeball" the middle
+      of a long sequence,
+      the recursion is marked.
+      If you can't it is unmarked.
+      Unfortunately, we can't characterize exactly what a marker
+      must look like -- a marker can encode the moves of a Turing machine.
+      That mean that, in the general case, determining whether a middle
+      recursion is marked is an undecidable problem.
+    </p><h3>How to get away with breaking the rules</h3>
+    <p>If your grammar is unambiguous, rule 3 will be easy to obey.
       A right recursive symbol is "dedicated" if it appears only
       as part of a right recursion.
-      If for some reason your BNF does not happen obey rule 3,
-      you can easily rewrite it to do so.
-      Just take your "undedicated" symbol and create two symbols
-      with the same semantics
-    </p><p>
-      [ to here ]
-    </p><p>For those not yet in the know on this,
-      I'll illustrate with a pair of examples from
-      <a href="http://www.romanredz.se/papers/FI2008.pdf">
-        an excellent 2008 paper by Redziejowski</a>.
-      Let's start with these two PEG specifications.
-    </p><blockquote><pre>
-    ("a"|"aa")"a"
-    ("aa"|"a")"a"
-    </pre></blockquote><p>
-      One of these two PEG grammars accepts
-      the string "<tt>aaa</tt>" but not the string "<tt>aa</tt>".
-      The other does the opposite -- it accepts the string
-      the string "<tt>aa</tt>" but not the string "<tt>aaa</tt>".
-      Can you tell which one?
-      (For the answer,
-      see page 4 of
-      <a href="http://www.romanredz.se/papers/FI2008.pdf">
-        Redziejowski 2008</a>.)
+      To bring an unambiguous grammar into obedience to rule 3,
+      find the "undedicated" right recursive symbols, and convert
+      them into two symbols with identical semantics.
+      Let one become the dedicated right-recursive symbol, and
+      let the other be used in the non-right recursive contexts.
     </p>
-    <h3>Comments</h3>
+    <h3>When NOT to use Marpa</h3>
+    <p>The languages I have described as "fast" for Marpa
+      include all those in practical use and many more.
+      But do you really want to use Marpa for all of them?
+      Here are three cases for which Marpa is probably not
+      your best alternative.
+    </p><p>First, if your language parses easily with a regular
+      expression,
+      a regular expression will be much faster.
+      Don't walk away from a good thing.
+    </p><p>Second, if your language is easily parsed using a single
+      loop that keeps a constant amount of state,
+      Marpa's convenience and extensibility will come at a heavy
+      price in space.
+      But in its current implementation, Marpa's keeps all its
+      parse tables forever, and on long parses this becomes a real
+      issue.
+      Marpa's parse engine is written is C, and if you're pitting
+      Marpa's optimized C language
+      against a much slower higher level language,
+      there may be a win on CPU speed.
+      But if your parser works with state that fits in constant space,
+      Marpa's current implementation will lose on long parses.
+    </p><p>Thirdly, suppose your application
+    </p><ul>
+      <li>is very small;
+      </li><li>is very small;
+      </li><li>changes slowly or not at all, and does not grow in complexity;
+      </li><li>merits careful hand-optimization, and has available the staff
+        to do it; and
+      </li><li>merits and has available the kind of on-going support that will
+        keep your code optimized under changing circumstances; and
+      </li><li>is easily parseable via recursive descent
+      </li></ul><p>
+      It is rare that all of these are the case,
+      but when that happens,
+      recursive descent is often preferable to Marpa.
+      Lua and JSON
+      are two which meet all of the above criteria.
+      In Lua's case, it targets platforms with very restricted memories,
+      which is an additional reason to prefer recursive descent --
+      Marpa has a relatively large footprint.
+    </p><p>It was not good luck that made
+      both Lua and JSON good targets for recursive descent --
+      they were designed around its limits.
+      JSON is a favorite test target of Marpa for just these reasons.
+      There are carefully hand-optimized C language parsers for us to
+      benchmark against.
+      We will never beat them, but we get closer and closer.
+      Since the Marpa-powered parsers have much smaller representations,
+      and are much more extensible, close may be good enough.
+    </p><p>And, while recursive descent is a technique for hand-writing parsers,
+      Marpa is a mathematical algorithm.
+      Someday,
+      instructions for manipulating Earley items could be implemented directly
+      in silicon.
+      And when that day comes,
+      Earley's algorithm will beat recursive descent even at
+      parsing grammars designed for it.
+    </p><h3>Comments</h3>
     <p>Comments on this post can be made in
       <a href="http://groups.google.com/group/marpa-parser">
         Marpa's Google group</a>,
