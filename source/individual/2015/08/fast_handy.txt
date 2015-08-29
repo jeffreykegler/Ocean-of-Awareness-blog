@@ -121,36 +121,6 @@ Fast handy languages
       <a href="http://www.romanredz.se/papers/FI2008.pdf">
         Redziejowski 2008</a>.)
     </p>
-    <h3>Marpa</h3>
-    <p>
-      In this post,
-      I have adopted the point of view of programmers using PEG,
-      or thinking of doing so.
-      My own belief in this matter is that
-      very few programmers
-      should want to bother with the issues I've just described.
-      My reason for this is the Marpa parser --
-      a general BNF Earley-driven parser that
-    </p>
-    <ul>
-      <li>has an implementation you can use today;</li>
-      <li>allows the application to combine syntax-driven parsing
-        with custom procedural logic;</li>
-      <li>makes available full, left-eidetic knowledge of the parse to
-        the procedural logic;</li>
-      <li>and parses a vast class of grammars in linear time,
-        including all the LR-regular grammars.</li>
-    </ul>
-    <p>
-      The LR-regular grammars include the LR(k) and LL(k)
-      grammars for all
-      <i>k</i>.
-      LR-regular includes all the languages
-      which are well-behaved under PEG,
-      and all of those that
-      <a href="http://arxiv.org/abs/1304.3177">Mascarenhas et al, 2013</a>
-      consider translating into PEG.
-    </p>
     <h3>Comments</h3>
     <p>Comments on this post can be made in
       <a href="http://groups.google.com/group/marpa-parser">
