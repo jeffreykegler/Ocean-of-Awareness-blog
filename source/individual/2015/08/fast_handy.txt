@@ -28,21 +28,79 @@ Fast handy languages
       To make an unpleasant story a short one,
       I eventually gave up on yacc
       and solved my problem another way.
-      <p>Few people like to noise it about that they are unable
-      to get state-of-the-art tools to work.
-      The conclusions that will be drawn may be about them,
-      instead of the tools.
-      <p>But more experience must have been more than common.
-      LALR's claim to fame was that it was the basis of the
+      <p>Few people complained about yacc on the Internet.
+      If you noise it about that you are unable
+      to get the state-of-the-art tools to work for you,
+      and conclusions are drawn,
+      they may not be the ones you want.
+      But my experience must have been more than common.
+      <p>LALR's claim to fame was that it was the basis of the
       new industry-standard C compiler.
-      But its maintainers must also have been suffering silently,
-      and after 4 decades they'd had enough.
-      In 19--, the LALR engine was ripped out
-      of GCC (the new industry standard).
-      By then they were part of a trend.
-      <p>
-      [ to here ]
+      Over 4 decades,
+      its maintainers suffered in silence,
+      but by 19--, they'd had enough.
+      GCC (the new industry standard)
+      ripped its LALR engine out.
+      The trend ever since, has been back to recursive descent.
+      <h3>A surprise discovery</h3>
+      <p>Even back in the 1970's,
+      there had been more powerful alternatives
+      to LALR and recursive descent.
+      But they were reputed to be slow.
+      <p>But there are some applications where slow is OK,
+      and in 2007 I decided a parsing tool that parsed
+      all context-free languages at state-of-the-art speeds,
+      slow or fast as the case may be,
+      would be a useful addition to programmer toolkits.
+      And I ran into a surprise.
+    <p>Hidden in the literature was an amazing discovery --
+    an 1991 article by Joop Leo described how to modify Earley's
+    algorithm to be fast for every language class in practical use.
+    (When I say "fast" in this article, I will mean "linear".)
+    Leo's article had been almost completely ignored --
+    my project (Marpa) would be its first
+    practical implementation.
+      <h3>Second-order languages</h3>
+      <p>The implications of Leo's discovery go well beyond speed.
+      <b>If</b>
+      you can rely on the BNF that you write always producing
+      a practical parser, you can auto-generate your language.
+      In fact,
+      you can write languages which write languages.
+      <h3>Which are the fast languages></h3>
+      <p>The Leo/Earley algorithm is not fast
+      for every BNF-expressible language.
+      BNF is powerful, and you can write exponentially
+      ambiguous languages in it.
+      But programmers these days only care about unambiguous languages --
+      they are accustomed to tools which parse only a subset of these.
     </p>
+    <p>
+    As I've said, Marpa is fast for every language in
+    a class in practical use today.
+    Since the modern tools for parsing impose severe limits,
+    Marpa is almost certainly fast for any language,
+    that a modern programmer has in mind.
+    But for more ambitious uses of Marpa,
+    such as second-order languages,
+    it is useful to be more exact.
+    You can guarantee that Marpa is fast for your BNF language,
+    if you follow three rules:
+    <ul>
+    <li>Rule 1: Your BNF must be unambiguous.
+    <li>Rule 2: Your BNF must have no "unmarked" middle recursions.
+    <li>Rule 3: All of the right-recursive symbols
+    in your BNF must be dedicated
+    to that right recursion.
+    </ul>
+    <p>Rule 3 is easy to obey.
+    A right recursive symbol is "dedicated" if it appears only
+    as part of a right recursion.
+    If for some reason your BNF does not happen obey rule 3,
+    you can easily rewrite it to do so.
+    Just take your "undedicated" symbol and create two symbols
+    with the same semantics
+    <p> [ to here ]
     <p>For those not yet in the know on this,
       I'll illustrate with a pair of examples from
       <a href="http://www.romanredz.se/papers/FI2008.pdf">
