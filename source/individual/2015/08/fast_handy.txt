@@ -1,0 +1,108 @@
+Fast handy languages
+<html>
+  <head>
+  </head>
+  <body><p>
+      <!--
+      marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
+      -->
+    </p>
+    <p>Back around 19--, I had a language I wanted to parse
+      and access to UNIX,
+      a system which I knew had all the latest CS tools.
+      So I expected type in my BNF and "Presto, Language!".
+      <p>Not so easy, I was told.
+      Languages were difficult things created by complex tools
+      written by experts who understood the difficulties.
+      I recall thinking that English had a syntax that is
+      as hard as they come, yet toddlers manage to parse it
+      just fine.
+      But experts can be hard to convince,
+      and second-hand experts even more so.
+      <p>I was steered to an LALR-based parser called yacc.
+      (Readers may be more familiar bison, a yacc successor.)
+      LALR had extended the class of quickly parseable grammars a bit
+      over recursive descent,
+      but where recursive descent was easy to understand and hack,
+      debugging LALR challenges the experts.
+      To make an unpleasant story a short one,
+      I eventually gave up on yacc
+      and solved my problem another way.
+      <p>Few people like to noise it about that they are unable
+      to get state-of-the-art tools to work.
+      The conclusions that will be drawn may be about them,
+      instead of the tools.
+      <p>But more experience must have been more than common.
+      LALR's claim to fame was that it was the basis of the
+      new industry-standard C compiler.
+      But its maintainers must also have been suffering silently,
+      and after 4 decades they'd had enough.
+      In 19--, the LALR engine was ripped out
+      of GCC (the new industry standard).
+      By then they were part of a trend.
+      <p>
+      [ to here ]
+    </p>
+    <p>For those not yet in the know on this,
+      I'll illustrate with a pair of examples from
+      <a href="http://www.romanredz.se/papers/FI2008.pdf">
+        an excellent 2008 paper by Redziejowski</a>.
+      Let's start with these two PEG specifications.
+    </p><blockquote><pre>
+    ("a"|"aa")"a"
+    ("aa"|"a")"a"
+    </pre></blockquote><p>
+      One of these two PEG grammars accepts
+      the string "<tt>aaa</tt>" but not the string "<tt>aa</tt>".
+      The other does the opposite -- it accepts the string
+      the string "<tt>aa</tt>" but not the string "<tt>aaa</tt>".
+      Can you tell which one?
+      (For the answer,
+      see page 4 of
+      <a href="http://www.romanredz.se/papers/FI2008.pdf">
+        Redziejowski 2008</a>.)
+    </p>
+    <h3>Marpa</h3>
+    <p>
+      In this post,
+      I have adopted the point of view of programmers using PEG,
+      or thinking of doing so.
+      My own belief in this matter is that
+      very few programmers
+      should want to bother with the issues I've just described.
+      My reason for this is the Marpa parser --
+      a general BNF Earley-driven parser that
+    </p>
+    <ul>
+      <li>has an implementation you can use today;</li>
+      <li>allows the application to combine syntax-driven parsing
+        with custom procedural logic;</li>
+      <li>makes available full, left-eidetic knowledge of the parse to
+        the procedural logic;</li>
+      <li>and parses a vast class of grammars in linear time,
+        including all the LR-regular grammars.</li>
+    </ul>
+    <p>
+      The LR-regular grammars include the LR(k) and LL(k)
+      grammars for all
+      <i>k</i>.
+      LR-regular includes all the languages
+      which are well-behaved under PEG,
+      and all of those that
+      <a href="http://arxiv.org/abs/1304.3177">Mascarenhas et al, 2013</a>
+      consider translating into PEG.
+    </p>
+    <h3>Comments</h3>
+    <p>Comments on this post can be made in
+      <a href="http://groups.google.com/group/marpa-parser">
+        Marpa's Google group</a>,
+      or on our IRC channel: #marpa at freenode.net.
+      To learn more about Marpa,
+      there's
+      <a href="http://savage.net.au/Marpa.html">the
+        official web site maintained by Ron Savage</a>.
+      I also have
+      <a href="http://jeffreykegler.github.io/Marpa-web-site/">a Marpa web site</a>.
+    </p>
+  </body>
+</html>
