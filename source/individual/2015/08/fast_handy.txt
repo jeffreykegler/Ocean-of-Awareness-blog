@@ -52,7 +52,7 @@ Fast handy languages
       ripped its LALR engine out.
       By then
       <a href="http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2014/09/chron.html">the
-      trend back to recursive descent</a>
+        trend back to recursive descent</a>
       was well underway.
     </p>
     <h3>A surprise discovery</h3>
@@ -64,7 +64,7 @@ Fast handy languages
         to be slow</a>.
     </p>
     <p>For some applications slow is OK.
-      In 2007 I decided a parsing tool that parsed
+      In 2007 I decided that a parsing tool that parsed
       all context-free languages at state-of-the-art speeds,
       slow or fast as the case might be,
       would be a useful addition to programmer toolkits.
@@ -81,8 +81,7 @@ Fast handy languages
     </p>
     <h3>Second-order languages</h3>
     <p>The implications of Leo's discovery go well beyond speed.
-      <b>If</b>
-      you can rely on the BNF that you write always producing
+      If you can rely on the BNF that you write always producing
       a practical parser, you can auto-generate your language.
       In fact,
       you can write languages which write languages.
@@ -99,9 +98,9 @@ Fast handy languages
       As I've said, Marpa is fast for every language in
       a class in practical use today.
       Since the modern tools for parsing impose severe limits,
-      Marpa is almost certainly fast for any language,
+      Marpa is almost certainly fast for any language
       that a modern programmer has in mind.
-      Without peeking ahead at the hints I am about to give you,
+      Unless you peek ahead at the hints I am about to give you,
       in fact, it is actually
       <b>hard</b>
       to write an unambiguous
@@ -111,10 +110,12 @@ Fast handy languages
       <b>not</b>
       be enough to make an
       unambiguous grammar go non-linear.
-      You will also need to violate one of the set of rule
+      You will also need to violate a rule
+      in the set that
       I am about to give you.
-    </p><p>You can guarantee that Marpa is fast for your BNF language,
-      if you follow three rules:
+    </p>
+    <p>To guarantee that Marpa is fast for your BNF language,
+      follow three rules:
     </p>
     <ul>
       <li>Rule 1: Your BNF must be unambiguous.
@@ -123,33 +124,34 @@ Fast handy languages
       </li>
       <li>Rule 3: All of the right-recursive symbols
         in your BNF must be dedicated
-        to that right recursion.
+        to right recursion.
       </li>
     </ul>
     <p>Rule 3 turns out to be very easy to obey.
       I discuss it in detail in the next section,
-      which will be about how to breaking these rules and
+      which will be about how to break these rules and
       get away with it.
     </p>
-    <p>First, let's look at what an "unmarked" middle recursion is.
+    <p>Before we do that,
+      let's look at what an "unmarked" middle recursion is.
       Here's an example of a "marked" middle recursion:
     </p><blockquote><pre>
        M ::= 'b'
        M ::= 'a' M 'a'
     </pre></blockquote><p>
       Here the "b" symbol is the marker.
-      This recursion generates sequences like
+      This marked middle recursion generates sequences like
     </p><blockquote><pre>
        b
        a b a
        a a b aa
-    </pre></blockquote><p>
-      Now for an "unmarked" variant of this middle recursion
+    </pre></blockquote>
+    <p>Now for an "unmarked" middle recursion:
     </p><blockquote><pre>
        M ::= 'a' 'a'
        M ::= 'a' M 'a'
     </pre></blockquote><p>
-      This recursion generates sequences like
+      This unmarked middle recursion generates sequences like
     </p><blockquote><pre>
        a a
        a a a a
@@ -165,9 +167,11 @@ Fast handy languages
       the recursion is marked.
       If you can't it is unmarked.
       Unfortunately, we can't characterize exactly what a marker
-      must look like -- a marker can encode the moves of a Turing machine.
-      That mean that, in the general case, determining whether a middle
-      recursion is marked is an undecidable problem.
+      must look like -- a marker can encode the moves of a Turing machine,
+      so marker detection is Turing-equivalent.
+      And this Turing-equivalence
+      means that, in the general case, determining whether a middle
+      recursion is marked is not undecidable.
     </p>
     <h3>How to get away with breaking the rules</h3>
     <p>The rule about ambiguity is "soft".
@@ -219,7 +223,7 @@ Fast handy languages
       Marpa may lose due to its the space requirements.
     </p>
     <p>The third case:
-    a language that
+      a language that
     </p><ul>
       <li>is very small;
       </li>

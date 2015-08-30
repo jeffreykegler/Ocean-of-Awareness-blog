@@ -65,7 +65,7 @@
       ripped its LALR engine out.
       By then
       &lt;a href=&quot;http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2014/09/chron.html&quot;&gt;the
-      trend back to recursive descent&lt;/a&gt;
+        trend back to recursive descent&lt;/a&gt;
       was well underway.
     &lt;/p&gt;
     &lt;h3&gt;A surprise discovery&lt;/h3&gt;
@@ -77,7 +77,7 @@
         to be slow&lt;/a&gt;.
     &lt;/p&gt;
     &lt;p&gt;For some applications slow is OK.
-      In 2007 I decided a parsing tool that parsed
+      In 2007 I decided that a parsing tool that parsed
       all context-free languages at state-of-the-art speeds,
       slow or fast as the case might be,
       would be a useful addition to programmer toolkits.
@@ -94,8 +94,7 @@
     &lt;/p&gt;
     &lt;h3&gt;Second-order languages&lt;/h3&gt;
     &lt;p&gt;The implications of Leo's discovery go well beyond speed.
-      &lt;b&gt;If&lt;/b&gt;
-      you can rely on the BNF that you write always producing
+      If you can rely on the BNF that you write always producing
       a practical parser, you can auto-generate your language.
       In fact,
       you can write languages which write languages.
@@ -112,9 +111,9 @@
       As I've said, Marpa is fast for every language in
       a class in practical use today.
       Since the modern tools for parsing impose severe limits,
-      Marpa is almost certainly fast for any language,
+      Marpa is almost certainly fast for any language
       that a modern programmer has in mind.
-      Without peeking ahead at the hints I am about to give you,
+      Unless you peek ahead at the hints I am about to give you,
       in fact, it is actually
       &lt;b&gt;hard&lt;/b&gt;
       to write an unambiguous
@@ -124,10 +123,12 @@
       &lt;b&gt;not&lt;/b&gt;
       be enough to make an
       unambiguous grammar go non-linear.
-      You will also need to violate one of the set of rule
+      You will also need to violate a rule
+      in the set that
       I am about to give you.
-    &lt;/p&gt;&lt;p&gt;You can guarantee that Marpa is fast for your BNF language,
-      if you follow three rules:
+    &lt;/p&gt;
+    &lt;p&gt;To guarantee that Marpa is fast for your BNF language,
+      follow three rules:
     &lt;/p&gt;
     &lt;ul&gt;
       &lt;li&gt;Rule 1: Your BNF must be unambiguous.
@@ -136,33 +137,34 @@
       &lt;/li&gt;
       &lt;li&gt;Rule 3: All of the right-recursive symbols
         in your BNF must be dedicated
-        to that right recursion.
+        to right recursion.
       &lt;/li&gt;
     &lt;/ul&gt;
     &lt;p&gt;Rule 3 turns out to be very easy to obey.
       I discuss it in detail in the next section,
-      which will be about how to breaking these rules and
+      which will be about how to break these rules and
       get away with it.
     &lt;/p&gt;
-    &lt;p&gt;First, let's look at what an &quot;unmarked&quot; middle recursion is.
+    &lt;p&gt;Before we do that,
+      let's look at what an &quot;unmarked&quot; middle recursion is.
       Here's an example of a &quot;marked&quot; middle recursion:
     &lt;/p&gt;&lt;blockquote&gt;&lt;pre&gt;
        M ::= 'b'
        M ::= 'a' M 'a'
     &lt;/pre&gt;&lt;/blockquote&gt;&lt;p&gt;
       Here the &quot;b&quot; symbol is the marker.
-      This recursion generates sequences like
+      This marked middle recursion generates sequences like
     &lt;/p&gt;&lt;blockquote&gt;&lt;pre&gt;
        b
        a b a
        a a b aa
-    &lt;/pre&gt;&lt;/blockquote&gt;&lt;p&gt;
-      Now for an &quot;unmarked&quot; variant of this middle recursion
+    &lt;/pre&gt;&lt;/blockquote&gt;
+    &lt;p&gt;Now for an &quot;unmarked&quot; middle recursion:
     &lt;/p&gt;&lt;blockquote&gt;&lt;pre&gt;
        M ::= 'a' 'a'
        M ::= 'a' M 'a'
     &lt;/pre&gt;&lt;/blockquote&gt;&lt;p&gt;
-      This recursion generates sequences like
+      This unmarked middle recursion generates sequences like
     &lt;/p&gt;&lt;blockquote&gt;&lt;pre&gt;
        a a
        a a a a
@@ -178,9 +180,11 @@
       the recursion is marked.
       If you can't it is unmarked.
       Unfortunately, we can't characterize exactly what a marker
-      must look like -- a marker can encode the moves of a Turing machine.
-      That mean that, in the general case, determining whether a middle
-      recursion is marked is an undecidable problem.
+      must look like -- a marker can encode the moves of a Turing machine,
+      so marker detection is Turing-equivalent.
+      And this Turing-equivalence
+      means that, in the general case, determining whether a middle
+      recursion is marked is not undecidable.
     &lt;/p&gt;
     &lt;h3&gt;How to get away with breaking the rules&lt;/h3&gt;
     &lt;p&gt;The rule about ambiguity is &quot;soft&quot;.
@@ -232,7 +236,7 @@
       Marpa may lose due to its the space requirements.
     &lt;/p&gt;
     &lt;p&gt;The third case:
-    a language that
+      a language that
     &lt;/p&gt;&lt;ul&gt;
       &lt;li&gt;is very small;
       &lt;/li&gt;
