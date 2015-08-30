@@ -20,19 +20,22 @@
       marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
       --&gt;
     &lt;/p&gt;
-    &lt;p&gt;Back around 19--, I had a language I wanted to parse
-      and access to UNIX,
-      a system which I knew had all the latest CS tools.
-      So I expected type in my BNF and &quot;Presto, Language!&quot;.
-    &lt;/p&gt;&lt;p&gt;Not so easy, I was told.
-      Languages were difficult things created by complex tools
+    &lt;p&gt;Back around 1980, I had access to UNIX and a language I wanted to parse.
+      I knew the UNIX had all the latest CS tools.
+      So I expected to type in my BNF and &quot;Presto, Language!&quot;.
+    &lt;/p&gt;
+    &lt;p&gt;Not so easy, I was told.
+      Languages were difficult things created with complex tools
       written by experts who understood the difficulties.
-      I recall thinking that English had a syntax that is
-      as hard as they come, yet toddlers manage to parse it
+      I recall thinking that,
+      while English had a syntax that is
+      as hard as they come,
+      toddlers manage to parse it
       just fine.
-      But experts can be hard to convince,
-      and second-hand experts even more so.
-    &lt;/p&gt;&lt;p&gt;I was steered to an LALR-based parser called yacc.
+      But experts are experts,
+      and second-hand experts are even more so.
+    &lt;/p&gt;
+    &lt;p&gt;I was steered to an LALR-based parser called yacc.
       (Readers may be more familiar bison, a yacc successor.)
       LALR had extended the class of quickly parseable grammars a bit
       over recursive descent,
@@ -40,40 +43,49 @@
       debugging LALR challenges the experts.
       To make an unpleasant story a short one,
       I eventually gave up on yacc
-      and solved my problem another way.
-    &lt;/p&gt;&lt;p&gt;Few people complained about yacc on the Internet.
+      and found another way to solve my problem.
+    &lt;/p&gt;
+    &lt;p&gt;Few people complained about yacc on the Internet.
       If you noise it about that you are unable
       to get the state-of-the-art tools to work for you,
       and conclusions are drawn,
       they may not be the ones you want.
       But my experience must have been more than common.
-    &lt;/p&gt;&lt;p&gt;LALR's claim to fame was that it was the basis of the
+    &lt;/p&gt;
+    &lt;p&gt;LALR's claim to fame was that it was the basis of the
       new industry-standard C compiler.
-      Over 4 decades,
-      its maintainers suffered in silence,
+      Over three decades,
+      its maintainers suffered amid the general silence,
       but by 19--, they'd had enough.
       GCC (the new industry standard)
       ripped its LALR engine out.
-      The trend ever since, has been back to recursive descent.
-    &lt;/p&gt;&lt;h3&gt;A surprise discovery&lt;/h3&gt;
-    &lt;p&gt;Even back in the 1970's,
+      By then the trend back to recursive descent
+      was well underway.
+    &lt;/p&gt;
+    &lt;h3&gt;A surprise discovery&lt;/h3&gt;
+    &lt;p&gt;Back in the 1970's,
       there had been more powerful alternatives
       to LALR and recursive descent.
-      But they were reputed to be slow.
-    &lt;/p&gt;&lt;p&gt;But there are some applications where slow is OK,
-      and in 2007 I decided a parsing tool that parsed
+      But they were
+      &lt;a href=&quot;http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2013/04/fast_enough.html&quot;&gt;reputed
+        to be slow&lt;/a&gt;.
+    &lt;/p&gt;
+    &lt;p&gt;But there are some applications where slow is OK.
+      In 2007 I decided a parsing tool that parsed
       all context-free languages at state-of-the-art speeds,
       slow or fast as the case may be,
       would be a useful addition to programmer toolkits.
       And I ran into a surprise.
-    &lt;/p&gt;&lt;p&gt;Hidden in the literature was an amazing discovery --
+    &lt;/p&gt;
+    &lt;p&gt;Hidden in the literature was an amazing discovery --
       an 1991 article by Joop Leo described how to modify Earley's
       algorithm to be fast for every language class in practical use.
       (When I say &quot;fast&quot; in this article, I will mean &quot;linear&quot;.)
       Leo's article had been almost completely ignored --
       my project (Marpa) would be its first
       practical implementation.
-    &lt;/p&gt;&lt;h3&gt;Second-order languages&lt;/h3&gt;
+    &lt;/p&gt;
+    &lt;h3&gt;Second-order languages&lt;/h3&gt;
     &lt;p&gt;The implications of Leo's discovery go well beyond speed.
       &lt;b&gt;If&lt;/b&gt;
       you can rely on the BNF that you write always producing
@@ -123,7 +135,8 @@
       I discuss it in detail in the next section,
       which will be about how to breaking these rules and
       get away with it.
-    &lt;/p&gt;&lt;p&gt;First, let's look at what an &quot;unmarked&quot; middle recursion is.
+    &lt;/p&gt;
+    &lt;p&gt;First, let's look at what an &quot;unmarked&quot; middle recursion is.
       Here's an example of a &quot;marked&quot; middle recursion:
     &lt;/p&gt;&lt;blockquote&gt;&lt;pre&gt;
        M ::= 'b'
@@ -151,7 +164,8 @@
       To know where the middle is.
       you have to scan all the way to the end,
       and then count back.
-    &lt;/p&gt;&lt;p&gt;A rule of thumb is that if you can &quot;eyeball&quot; the middle
+    &lt;/p&gt;
+    &lt;p&gt;A rule of thumb is that if you can &quot;eyeball&quot; the middle
       of a long sequence,
       the recursion is marked.
       If you can't it is unmarked.
@@ -159,15 +173,22 @@
       must look like -- a marker can encode the moves of a Turing machine.
       That mean that, in the general case, determining whether a middle
       recursion is marked is an undecidable problem.
-    &lt;/p&gt;&lt;h3&gt;How to get away with breaking the rules&lt;/h3&gt;
-    &lt;p&gt;If your grammar is unambiguous, rule 3 will be easy to obey.
+    &lt;/p&gt;
+    &lt;h3&gt;How to get away with breaking the rules&lt;/h3&gt;
+    &lt;p&gt;The rule about ambiguity is &quot;soft&quot;.
+      If you don't break it by much, your parser will stay linear.
+      In particular, if you only allow limited ambiguity and
+      keep your rule-breaking recursions short, your grammar will stay
+      fast.&lt;/p&gt;
+    &lt;p&gt;Above, I promised to explain rule 3, which insisted that
+      a right recursive symbol be &quot;dedicated&quot;.
       A right recursive symbol is &quot;dedicated&quot; if it appears only
-      as part of a right recursion.
-      To bring an unambiguous grammar into obedience to rule 3,
-      find the &quot;undedicated&quot; right recursive symbols, and convert
-      them into two symbols with identical semantics.
-      Let one become the dedicated right-recursive symbol, and
-      let the other be used in the non-right recursive contexts.
+      as the recursive symbol in a right recursion.
+      If your grammar is unambiguous, but you've used an &quot;undedicated&quot;
+      right-recursive symbol, that is easy to fix.
+      Just rewrite the grammar using two symbols.
+      Dedicate one to the right recursion,
+      and use the other in the non-right recursive contexts.
     &lt;/p&gt;
     &lt;h3&gt;When NOT to use Marpa&lt;/h3&gt;
     &lt;p&gt;The languages I have described as &quot;fast&quot; for Marpa
@@ -195,32 +216,38 @@
     &lt;/p&gt;&lt;p&gt;Thirdly, suppose your application
     &lt;/p&gt;&lt;ul&gt;
       &lt;li&gt;is very small;
-      &lt;/li&gt;&lt;li&gt;is very small;
-      &lt;/li&gt;&lt;li&gt;changes slowly or not at all, and does not grow in complexity;
-      &lt;/li&gt;&lt;li&gt;merits careful hand-optimization, and has available the staff
-        to do it; and
-      &lt;/li&gt;&lt;li&gt;merits and has available the kind of on-going support that will
+      &lt;/li&gt;
+      &lt;li&gt;changes slowly or not at all, and does not grow in complexity;
+      &lt;/li&gt;
+      &lt;li&gt;merits careful hand-optimization, and has available the staff
+        to do it;
+      &lt;/li&gt;
+      &lt;li&gt;merits and has available the kind of on-going support that will
         keep your code optimized under changing circumstances; and
-      &lt;/li&gt;&lt;li&gt;is easily parseable via recursive descent
-      &lt;/li&gt;&lt;/ul&gt;&lt;p&gt;
+      &lt;/li&gt;
+      &lt;li&gt;is easily parseable via recursive descent&lt;/li&gt;
+    &lt;/ul&gt;
+    &lt;p&gt;
       It is rare that all of these are the case,
       but when that happens,
       recursive descent is often preferable to Marpa.
       Lua and JSON
-      are two which meet all of the above criteria.
+      are two languages which meet the above criteria.
       In Lua's case, it targets platforms with very restricted memories,
       which is an additional reason to prefer recursive descent --
       Marpa has a relatively large footprint.
-    &lt;/p&gt;&lt;p&gt;It was not good luck that made
+    &lt;/p&gt;
+    &lt;p&gt;It was not good luck that made
       both Lua and JSON good targets for recursive descent --
       they were designed around its limits.
       JSON is a favorite test target of Marpa for just these reasons.
       There are carefully hand-optimized C language parsers for us to
       benchmark against.
-      We will never beat them, but we get closer and closer.
-      Since the Marpa-powered parsers have much smaller representations,
-      and are much more extensible, close may be good enough.
-    &lt;/p&gt;&lt;p&gt;And, while recursive descent is a technique for hand-writing parsers,
+    &lt;/p&gt;
+    &lt;p&gt;We get closer and closer.
+      But, in software,
+      we'll never beat small hand-optimzed JSON parsers.
+      However, while recursive descent is a technique for hand-writing parsers,
       Marpa is a mathematical algorithm.
       Someday,
       instructions for manipulating Earley items could be implemented directly
@@ -228,7 +255,8 @@
       And when that day comes,
       Earley's algorithm will beat recursive descent even at
       parsing grammars designed for it.
-    &lt;/p&gt;&lt;h3&gt;Comments&lt;/h3&gt;
+    &lt;/p&gt;
+    &lt;h3&gt;Comments&lt;/h3&gt;
     &lt;p&gt;Comments on this post can be made in
       &lt;a href=&quot;http://groups.google.com/group/marpa-parser&quot;&gt;
         Marpa's Google group&lt;/a&gt;,
