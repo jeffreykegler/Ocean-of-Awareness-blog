@@ -213,11 +213,11 @@
       recursion is marked is not undecidable.
     </p>
     <h3>How to get away with breaking the rules</h3>
-    <p>The rule about ambiguity is "soft".
-      If you don't break it by much, your parser will stay linear.
-      In particular, if you only allow limited ambiguity and
-      keep your rule-breaking recursions short, your grammar will stay
-      fast.</p>
+    <p>The rules about ambiguity and recursions are "soft".
+      If you only allow limited ambiguity and
+      keep your rule-breaking recursions short,
+      your parser will stay linear.
+      </p>
     <p>Above, I promised to explain rule 3, which insisted that
       a right recursive symbol be "dedicated".
       A right recursive symbol is "dedicated" if it appears only
@@ -232,7 +232,7 @@
     <p>The languages I have described as "fast" for Marpa
       include all those in practical use and many more.
       But do you really want to use Marpa for all of them?
-      Here are three cases for which Marpa is probably not
+      Here are four cases for which Marpa is probably not
       your best alternative.
     </p>
     <p>The first case: a language that parses easily with a regular
@@ -241,27 +241,34 @@
       Don't walk away from a good thing.
     </p>
     <p>The second case:
-      A language
+      a language
       that is easily parsed using a single
       loop and some state that fits into constant space.
-      Essentially this is the SAX-ish approach.
-      In its current implementation, Marpa's keeps all of its
-      parse tables forever.
-      This allows it to deal with the full structure of the
-      input, in a way that a SAX-ish approaches cannot.
-      But it does take space,
-      and on long parses this is a real issue,
-      an issue that SAX-ish parsers typically do not have.
-      Marpa's parse engine is written is C, and if you're pitting
+      This parser might be very easy to write and maintain.
+      If you are using a much slower higher level language,
       Marpa's optimized C language
-      against a much slower higher level language,
-      there may be a win on CPU speed.
-      But if you are comparing Marpa against a simple SAX
-      parser,
-      and you need to parse large files,
-      Marpa may lose due to its the space requirements.
-    </p>
+      may be a win on CPU speed.
+      But, as before, if you have a good thing,
+      don't walk away from it.
     <p>The third case:
+      a variation on the second.
+      Here your single loop might be getting out of hand,
+      making you yearn for the syntax-driven convenience
+      of Marpa,
+      but your state still fits into constant space.
+      In its current implementation, Marpa keeps all of its
+      parse tables forever, so Marpa does <b>not</b>
+      parse in constant space.
+      Keeping the tables
+      allows Marpa to deal with the full structure of its
+      input, in a way that a SAX-ish approaches cannot.
+      But if space requirements are an issue,
+      and your application allows a simplified constant-space
+      approach,
+      Marpa's power and convenience may not be enough to
+      make up for that.
+    </p>
+    <p>The fourth case:
       a language that
     </p><ul>
       <li>is very small;
