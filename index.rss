@@ -59,8 +59,8 @@
     &lt;p&gt;LALR's claim to fame was that it was the basis of the
       industry-standard C compiler.
       Over three decades,
-      its maintainers suffered amid the general silence,
-      but by 2006, they'd had enough.
+      its maintainers suffered amid the general silence.
+      But by 2006, they'd had enough.
       GCC (the new industry standard)
       ripped its LALR engine out.
       By then
@@ -84,7 +84,8 @@
       And I ran into a surprise.
     &lt;/p&gt;
     &lt;p&gt;Hidden in the literature was an amazing discovery --
-      an 1991 article by Joop Leo described how to modify Earley's
+      an 1991 article by Joop Leo that
+      described how to modify Earley's
       algorithm to be fast for every language class in practical use.
       (When I say &quot;fast&quot; in this article, I will mean &quot;linear&quot;.)
       Leo's article had been almost completely ignored --
@@ -104,13 +105,14 @@
       for every BNF-expressible language.
       BNF is powerful, and you can write exponentially
       ambiguous languages in it.
-      But programmers these days only care about unambiguous languages --
-      they are accustomed to tools which parse only a subset of these.
+      But programmers these days
+      mostly care about unambiguous languages --
+      we are accustomed to tools and techniques
+      that parse only a subset of these.
     &lt;/p&gt;
     &lt;p&gt;
-      As I've said, Marpa is fast for every language in
-      a class in practical use today.
-      Since the modern tools for parsing impose severe limits,
+      As I've said, Marpa is fast for every language
+      class in practical use today.
       Marpa is almost certainly fast for any language
       that a modern programmer has in mind.
       Unless you peek ahead at the hints I am about to give you,
@@ -171,36 +173,34 @@
        a a a a a a
     &lt;/pre&gt;&lt;/blockquote&gt;&lt;p&gt;
       In this middle recursion there is no marker.
-      To know where the middle is.
+      To know where the middle is,
       you have to scan all the way to the end,
       and then count back.
     &lt;/p&gt;
     &lt;p&gt;A rule of thumb is that if you can &quot;eyeball&quot; the middle
       of a long sequence,
       the recursion is marked.
-      If you can't it is unmarked.
+      If you can't, it is unmarked.
       Unfortunately, we can't characterize exactly what a marker
       must look like -- a marker can encode the moves of a Turing machine,
-      so marker detection is Turing-equivalent.
-      And this Turing-equivalence
-      means that, in the general case, determining whether a middle
-      recursion is marked is not undecidable.
+      so marker detection is undecidable.
     &lt;/p&gt;
     &lt;h3&gt;How to get away with breaking the rules&lt;/h3&gt;
     &lt;p&gt;The rules about ambiguity and recursions are &quot;soft&quot;.
-      If you only allow limited ambiguity and
+      If you only use limited ambiguity and
       keep your rule-breaking recursions short,
-      your parser will stay linear.
-      &lt;/p&gt;
+      your parser will stay fast.
+    &lt;/p&gt;
     &lt;p&gt;Above, I promised to explain rule 3, which insisted that
       a right recursive symbol be &quot;dedicated&quot;.
       A right recursive symbol is &quot;dedicated&quot; if it appears only
       as the recursive symbol in a right recursion.
       If your grammar is unambiguous, but you've used an &quot;undedicated&quot;
       right-recursive symbol, that is easy to fix.
-      Just rewrite the grammar using two symbols.
-      Dedicate one to the right recursion,
-      and use the other in the non-right recursive contexts.
+      Just rewrite the grammar, replacing the &quot;undedicated&quot; symbol
+      with two different symbols.
+      Dedicate one of the two to the right recursion,
+      and use the other symbol everywhere else.
     &lt;/p&gt;
     &lt;h3&gt;When NOT to use Marpa&lt;/h3&gt;
     &lt;p&gt;The languages I have described as &quot;fast&quot; for Marpa
@@ -224,14 +224,15 @@
       may be a win on CPU speed.
       But, as before, if you have a good thing,
       don't walk away from it.
-    &lt;p&gt;The third case:
+    &lt;/p&gt;&lt;p&gt;The third case:
       a variation on the second.
       Here your single loop might be getting out of hand,
       making you yearn for the syntax-driven convenience
       of Marpa,
       but your state still fits into constant space.
       In its current implementation, Marpa keeps all of its
-      parse tables forever, so Marpa does &lt;b&gt;not&lt;/b&gt;
+      parse tables forever, so Marpa does
+      &lt;b&gt;not&lt;/b&gt;
       parse in constant space.
       Keeping the tables
       allows Marpa to deal with the full structure of its
@@ -275,7 +276,8 @@
       benchmark against.
     &lt;/p&gt;
     &lt;p&gt;We get closer and closer,
-      but we'll never beat small hand-optimzed JSON parsers in software.
+      but Marpa will
+      never beat small hand-optimized JSON parsers in software.
       However, while recursive descent is a technique for hand-writing parsers,
       Marpa is a mathematical algorithm.
       Someday,
