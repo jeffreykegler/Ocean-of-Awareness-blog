@@ -191,24 +191,35 @@ Fast handy languages
       But do you really want to use Marpa for all of them?
       Here are three cases for which Marpa is probably not
       your best alternative.
-    </p><p>First, if your language parses easily with a regular
-      expression,
-      a regular expression will be much faster.
+    </p>
+    <p>The first case: a language that parses easily with a regular
+      expression.
+      The regular expression will be much faster.
       Don't walk away from a good thing.
-    </p><p>Second, if your language is easily parsed using a single
-      loop that keeps a constant amount of state,
-      Marpa's convenience and extensibility will come at a heavy
-      price in space.
-      But in its current implementation, Marpa's keeps all its
-      parse tables forever, and on long parses this becomes a real
-      issue.
+    </p>
+    <p>The second case:
+      A language
+      that is easily parsed using a single
+      loop and some state that fits into constant space.
+      Essentially this is the SAX-ish approach.
+      In its current implementation, Marpa's keeps all of its
+      parse tables forever.
+      This allows it to deal with the full structure of the
+      input, in a way that a SAX-ish approaches cannot.
+      But it does take space,
+      and on long parses this is a real issue,
+      an issue that SAX-ish parsers typically do not have.
       Marpa's parse engine is written is C, and if you're pitting
       Marpa's optimized C language
       against a much slower higher level language,
       there may be a win on CPU speed.
-      But if your parser works with state that fits in constant space,
-      Marpa's current implementation will lose on long parses.
-    </p><p>Thirdly, suppose your application
+      But if you are comparing Marpa against a simple SAX
+      parser,
+      and you need to parse large files,
+      Marpa may lose due to its the space requirements.
+    </p>
+    <p>The third case:
+    a language that
     </p><ul>
       <li>is very small;
       </li>
@@ -220,7 +231,7 @@ Fast handy languages
       <li>merits and has available the kind of on-going support that will
         keep your code optimized under changing circumstances; and
       </li>
-      <li>is easily parseable via recursive descent</li>
+      <li>is easily parseable via recursive descent:</li>
     </ul>
     <p>
       It is rare that all of these are the case,
