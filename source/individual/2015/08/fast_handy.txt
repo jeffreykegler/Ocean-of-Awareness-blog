@@ -7,19 +7,22 @@ Fast handy languages
       marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
       -->
     </p>
-    <p>Back around 19--, I had a language I wanted to parse
-      and access to UNIX,
-      a system which I knew had all the latest CS tools.
-      So I expected type in my BNF and "Presto, Language!".
-    </p><p>Not so easy, I was told.
-      Languages were difficult things created by complex tools
+    <p>Back around 1980, I had access to UNIX and a language I wanted to parse.
+      I knew the UNIX had all the latest CS tools.
+      So I expected to type in my BNF and "Presto, Language!".
+    </p>
+    <p>Not so easy, I was told.
+      Languages were difficult things created with complex tools
       written by experts who understood the difficulties.
-      I recall thinking that English had a syntax that is
-      as hard as they come, yet toddlers manage to parse it
+      I recall thinking that,
+      while English had a syntax that is
+      as hard as they come,
+      toddlers manage to parse it
       just fine.
-      But experts can be hard to convince,
-      and second-hand experts even more so.
-    </p><p>I was steered to an LALR-based parser called yacc.
+      But experts are experts,
+      and second-hand experts are even more so.
+    </p>
+    <p>I was steered to an LALR-based parser called yacc.
       (Readers may be more familiar bison, a yacc successor.)
       LALR had extended the class of quickly parseable grammars a bit
       over recursive descent,
@@ -27,40 +30,49 @@ Fast handy languages
       debugging LALR challenges the experts.
       To make an unpleasant story a short one,
       I eventually gave up on yacc
-      and solved my problem another way.
-    </p><p>Few people complained about yacc on the Internet.
+      and found another way to solve my problem.
+    </p>
+    <p>Few people complained about yacc on the Internet.
       If you noise it about that you are unable
       to get the state-of-the-art tools to work for you,
       and conclusions are drawn,
       they may not be the ones you want.
       But my experience must have been more than common.
-    </p><p>LALR's claim to fame was that it was the basis of the
+    </p>
+    <p>LALR's claim to fame was that it was the basis of the
       new industry-standard C compiler.
-      Over 4 decades,
-      its maintainers suffered in silence,
+      Over three decades,
+      its maintainers suffered amid the general silence,
       but by 19--, they'd had enough.
       GCC (the new industry standard)
       ripped its LALR engine out.
-      The trend ever since, has been back to recursive descent.
-    </p><h3>A surprise discovery</h3>
-    <p>Even back in the 1970's,
+      By then the trend back to recursive descent
+      was well underway.
+    </p>
+    <h3>A surprise discovery</h3>
+    <p>Back in the 1970's,
       there had been more powerful alternatives
       to LALR and recursive descent.
-      But they were reputed to be slow.
-    </p><p>But there are some applications where slow is OK,
-      and in 2007 I decided a parsing tool that parsed
+      But they were
+      <a href="http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2013/04/fast_enough.html">reputed
+      to be slow</a>.
+    </p>
+    <p>But there are some applications where slow is OK.
+      In 2007 I decided a parsing tool that parsed
       all context-free languages at state-of-the-art speeds,
       slow or fast as the case may be,
       would be a useful addition to programmer toolkits.
       And I ran into a surprise.
-    </p><p>Hidden in the literature was an amazing discovery --
+    </p>
+    <p>Hidden in the literature was an amazing discovery --
       an 1991 article by Joop Leo described how to modify Earley's
       algorithm to be fast for every language class in practical use.
       (When I say "fast" in this article, I will mean "linear".)
       Leo's article had been almost completely ignored --
       my project (Marpa) would be its first
       practical implementation.
-    </p><h3>Second-order languages</h3>
+    </p>
+    <h3>Second-order languages</h3>
     <p>The implications of Leo's discovery go well beyond speed.
       <b>If</b>
       you can rely on the BNF that you write always producing
@@ -138,7 +150,8 @@ Fast handy languages
       To know where the middle is.
       you have to scan all the way to the end,
       and then count back.
-    </p><p>A rule of thumb is that if you can "eyeball" the middle
+    </p>
+    <p>A rule of thumb is that if you can "eyeball" the middle
       of a long sequence,
       the recursion is marked.
       If you can't it is unmarked.
@@ -146,15 +159,22 @@ Fast handy languages
       must look like -- a marker can encode the moves of a Turing machine.
       That mean that, in the general case, determining whether a middle
       recursion is marked is an undecidable problem.
-    </p><h3>How to get away with breaking the rules</h3>
-    <p>If your grammar is unambiguous, rule 3 will be easy to obey.
+    </p>
+    <h3>How to get away with breaking the rules</h3>
+    <p>The rule about ambiguity is "soft".
+    If you don't break it by much, your parser will stay linear.
+    In particular, if you only allow limited ambiguity and
+    keep your rule-breaking recursions short, your grammar will stay
+    fast.</p>
+    <p>Above, I promised to explain rule 3, which insisted that
+    a right recursive symbol be "dedicated".
       A right recursive symbol is "dedicated" if it appears only
       as part of a right recursion.
-      To bring an unambiguous grammar into obedience to rule 3,
-      find the "undedicated" right recursive symbols, and convert
-      them into two symbols with identical semantics.
-      Let one become the dedicated right-recursive symbol, and
-      let the other be used in the non-right recursive contexts.
+    If your grammar is unambiguous, but you've used an "undedicated"
+    right-recursive symbol, that is easy to fix.
+    Just rewrite the grammar using two symbols.
+    Dedicate one to the right recursion,
+    and use the other in the non-right recursive contexts.
     </p>
     <h3>When NOT to use Marpa</h3>
     <p>The languages I have described as "fast" for Marpa
@@ -182,32 +202,38 @@ Fast handy languages
     </p><p>Thirdly, suppose your application
     </p><ul>
       <li>is very small;
-      </li><li>is very small;
-      </li><li>changes slowly or not at all, and does not grow in complexity;
-      </li><li>merits careful hand-optimization, and has available the staff
-        to do it; and
-      </li><li>merits and has available the kind of on-going support that will
+      </li>
+      <li>changes slowly or not at all, and does not grow in complexity;
+      </li>
+      <li>merits careful hand-optimization, and has available the staff
+        to do it;
+      </li>
+      <li>merits and has available the kind of on-going support that will
         keep your code optimized under changing circumstances; and
-      </li><li>is easily parseable via recursive descent
-      </li></ul><p>
+      </li>
+      <li>is easily parseable via recursive descent</li>
+      </ul>
+      <p>
       It is rare that all of these are the case,
       but when that happens,
       recursive descent is often preferable to Marpa.
       Lua and JSON
-      are two which meet all of the above criteria.
+      are two languages which meet the above criteria.
       In Lua's case, it targets platforms with very restricted memories,
       which is an additional reason to prefer recursive descent --
       Marpa has a relatively large footprint.
-    </p><p>It was not good luck that made
+    </p>
+    <p>It was not good luck that made
       both Lua and JSON good targets for recursive descent --
       they were designed around its limits.
       JSON is a favorite test target of Marpa for just these reasons.
       There are carefully hand-optimized C language parsers for us to
       benchmark against.
-      We will never beat them, but we get closer and closer.
-      Since the Marpa-powered parsers have much smaller representations,
-      and are much more extensible, close may be good enough.
-    </p><p>And, while recursive descent is a technique for hand-writing parsers,
+    </p>
+    <p>We get closer and closer.
+    But, in software,
+    we'll never beat small hand-optimzed JSON parsers.
+    However, while recursive descent is a technique for hand-writing parsers,
       Marpa is a mathematical algorithm.
       Someday,
       instructions for manipulating Earley items could be implemented directly
@@ -215,7 +241,8 @@ Fast handy languages
       And when that day comes,
       Earley's algorithm will beat recursive descent even at
       parsing grammars designed for it.
-    </p><h3>Comments</h3>
+    </p>
+    <h3>Comments</h3>
     <p>Comments on this post can be made in
       <a href="http://groups.google.com/group/marpa-parser">
         Marpa's Google group</a>,
