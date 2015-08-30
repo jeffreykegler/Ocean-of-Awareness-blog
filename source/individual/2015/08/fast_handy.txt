@@ -144,7 +144,7 @@ Fast handy languages
     </p><blockquote><pre>
        b
        a b a
-       a a b aa
+       a a b a a
     </pre></blockquote>
     <p>Now for an "unmarked" middle recursion:
     </p><blockquote><pre>

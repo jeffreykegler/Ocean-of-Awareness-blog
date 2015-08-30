@@ -157,7 +157,7 @@
     &lt;/p&gt;&lt;blockquote&gt;&lt;pre&gt;
        b
        a b a
-       a a b aa
+       a a b a a
     &lt;/pre&gt;&lt;/blockquote&gt;
     &lt;p&gt;Now for an &quot;unmarked&quot; middle recursion:
     &lt;/p&gt;&lt;blockquote&gt;&lt;pre&gt;
