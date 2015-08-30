@@ -8,45 +8,51 @@ Fast handy languages
       -->
     </p>
     <p>Back around 1980, I had access to UNIX and a language I wanted to parse.
-      I knew the UNIX had all the latest CS tools.
+      I knew that UNIX had all the latest CS tools.
       So I expected to type in my BNF and "Presto, Language!".
     </p>
     <p>Not so easy, I was told.
       Languages were difficult things created with complex tools
-      written by experts who understood the difficulties.
+      written by experts who understood the issues.
       I recall thinking that,
       while English had a syntax that is
       as hard as they come,
       toddlers manage to parse it
       just fine.
       But experts are experts,
-      and second-hand experts are even more so.
+      and more so at second-hand.
     </p>
     <p>I was steered to an LALR-based parser called yacc.
-      (Readers may be more familiar bison, a yacc successor.)
+      (Readers may be more familiar with bison, a yacc successor.)
       LALR had extended the class of quickly parseable grammars a bit
-      over recursive descent,
-      but where recursive descent was easy to understand and hack,
-      debugging LALR challenges the experts.
-      To make an unpleasant story a short one,
-      I eventually gave up on yacc
+      beyond recursive descent.
+      But recursive descent was simple in principle,
+      and its limits were easy to discover and work around.
+      LALR, on the hand, was OK when it worked, but
+      figuring out why it failed when it failed
+      was more like decryption than debugging,
+      and this was the case both with parser development
+      and run-time errors.
+      I soon gave up on yacc
       and found another way to solve my problem.
     </p>
     <p>Few people complained about yacc on the Internet.
       If you noise it about that you are unable
-      to get the state-of-the-art tools to work for you,
-      and conclusions are drawn,
-      they may not be the ones you want.
-      But my experience must have been more than common.
+      to figure out how to use
+      what everybody says is the state-of-the-art tool,
+      the conclusions drawn may not be the ones you want.
+      But my experience seems to have been more than common.
     </p>
     <p>LALR's claim to fame was that it was the basis of the
-      new industry-standard C compiler.
+      industry-standard C compiler.
       Over three decades,
       its maintainers suffered amid the general silence,
-      but by 19--, they'd had enough.
+      but by 2006, they'd had enough.
       GCC (the new industry standard)
       ripped its LALR engine out.
-      By then the trend back to recursive descent
+      By then
+      <a href="http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2014/09/chron.html">the
+      trend back to recursive descent</a>
       was well underway.
     </p>
     <h3>A surprise discovery</h3>
@@ -57,10 +63,10 @@ Fast handy languages
       <a href="http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2013/04/fast_enough.html">reputed
         to be slow</a>.
     </p>
-    <p>But there are some applications where slow is OK.
+    <p>For some applications slow is OK.
       In 2007 I decided a parsing tool that parsed
       all context-free languages at state-of-the-art speeds,
-      slow or fast as the case may be,
+      slow or fast as the case might be,
       would be a useful addition to programmer toolkits.
       And I ran into a surprise.
     </p>
@@ -69,7 +75,8 @@ Fast handy languages
       algorithm to be fast for every language class in practical use.
       (When I say "fast" in this article, I will mean "linear".)
       Leo's article had been almost completely ignored --
-      my project (Marpa) would be its first
+      my project (<a href="http://savage.net.au/Marpa.html">Marpa</a>)
+      would become its first
       practical implementation.
     </p>
     <h3>Second-order languages</h3>
@@ -79,7 +86,8 @@ Fast handy languages
       a practical parser, you can auto-generate your language.
       In fact,
       you can write languages which write languages.
-    </p><h3>Which are the fast languages></h3>
+    </p>
+    <h3>Which languages are fast?</h3>
     <p>The Leo/Earley algorithm is not fast
       for every BNF-expressible language.
       BNF is powerful, and you can write exponentially
@@ -231,17 +239,16 @@ Fast handy languages
       There are carefully hand-optimized C language parsers for us to
       benchmark against.
     </p>
-    <p>We get closer and closer.
-      But, in software,
-      we'll never beat small hand-optimzed JSON parsers.
+    <p>We get closer and closer,
+      but we'll never beat small hand-optimzed JSON parsers in software.
       However, while recursive descent is a technique for hand-writing parsers,
       Marpa is a mathematical algorithm.
       Someday,
       instructions for manipulating Earley items could be implemented directly
       in silicon.
-      And when that day comes,
+      When and if that day comes,
       Earley's algorithm will beat recursive descent even at
-      parsing grammars designed for it.
+      parsing the grammars that were designed for it.
     </p>
     <h3>Comments</h3>
     <p>Comments on this post can be made in
