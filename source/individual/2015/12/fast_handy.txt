@@ -7,11 +7,67 @@ Composing grammars
       marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
       -->
     </p>
-    <p>A recent Perl 6 advent post presented a nice, concise list
-    of the features that the next generation of parsers should have.
-    However, the link of approach it suggested is one that is
-    unlikely to succeed.
+    <p>A recent Perl 6 advent post presented a very nice vision of
+    a future of language-driven programming, one I share.
+    It goes on to encourage that its readers follow up on this vision.
+    However, 
+    I do not think the specific approach that it suggests would be fruitful.
+    In this post I'll explain why.
     </p>
+    <h2>Composability</h2>
+    <p>I will talk about language-driven programming at some point,
+    but the points I want to make will be easier to make if I make them
+    in terms of another aspect of the vision from the advent post presents
+    -- grammar composibility.
+    Grammar composibility is nothing but "reuse" in the language-driven programming context.
+    Most programmers will be very familiar with it from regular expressions.
+    </p>
+    <p>
+    In the regular expression world reuse is very much both practical and practiced --
+    the culture of reuse is so strong there is
+    is even a backlash against what some writers call "cargo cult programming".
+    </p>
+    <p>
+    Composability is the ability to take two grammars, or pieces of grammars,
+    and to put them together ("compose" them).
+    In this post, I will treat both regular expressions and BNF as ways of representing the
+    grammar of a language.
+    Ideally, when you compose two grammars will parse
+    <ul>
+    <li>a language you can reasonably predict, that is also
+    <li>the language you can intuitively expect from a composition, and
+    <li>if each of the two grammars can be parsed in reasonable time,
+    the composed language can also be parsed in reasonable time.
+    <p>
+    Not all language representation are composabile.
+    Regular expressions are, and BNF is.
+    PEG, which looks like a combination of BNF and regular expressions,
+    is in fact, neither, and is in fact, among all the ways commonly used
+    to represent language, perhaps the least composable.
+    <h2>Composing regular expressions</h2>
+    <p>We'll start with regular expressions, which are as well-behaved under
+    composition as a language representation can get.
+    The combination of two regular expressions is always another regular expression,
+    and is always exactly the one described by the combined regular expression.
+    Further, every regular expression is parseable in linear time.
+    <p>The one downside, oft mentioned by critics, is that regular expression
+    do not scale in terms of readability.
+    Here, however, the problem is not really one of composability.
+    The problem is that regular expressions are quite limited in their capabilities,
+    and programmers often use their excellent behavior under composability
+    to extent regular expressions to tasks for which they are not well-adopted.
+    <h2>PEG, Perl 6 grammars and composability
+    <p>When programmers first look at PEG syntax, they often think they've encountered
+    paradise.  They see both BNF and regular expressions, and imagine they'll have the
+    best of each.
+    <p>
+    But the convenient behavior of
+    regular expressions depends on their ambiguity -- you simply cannot write
+    an ambiguous regular expression -- it's impossible.
+    More powerful and more flexible, BNF allows you to describe many more grammars --
+    including ambiguous ones.
+    <p>How does PEG resolve this?  With a Gordian knot approach.
+    Whenever it encounters an ambiguity, it throws all but one of the choices away.
     <p>TODO</p>
     <h3>Comments</h3>
     <p>Comments on this post can be made in
