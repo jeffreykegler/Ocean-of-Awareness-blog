@@ -10,6 +10,104 @@
     <language>en</language>
 
   <item>
+    <title>Composing grammars</title>
+    <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2015/12/fast_handy.html</link>
+    <description>&lt;html&gt;
+  &lt;head&gt;
+  &lt;/head&gt;
+  &lt;body&gt;&lt;p&gt;
+      &lt;!--
+      marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
+      --&gt;
+    &lt;/p&gt;
+    &lt;p&gt;A recent Perl 6 advent post presented a very nice vision of
+      a future of language-driven programming, one I share.
+      It goes on to encourage that its readers to follow up on this vision.
+      However,
+      I do not think the specific approach that it suggests would be fruitful.
+      In this post I'll explain why.
+    &lt;/p&gt;
+    &lt;h2&gt;Composability&lt;/h2&gt;
+    &lt;p&gt;I will talk about language-driven programming at some point,
+      but the points I want to make will be easier to make if I make them
+      in terms of another aspect of the vision from the advent post presents
+      -- grammar composibility.
+      Grammar composibility is nothing but &quot;reuse&quot; in the language-driven programming context.
+      Most programmers will be very familiar with it from regular expressions.
+    &lt;/p&gt;
+    &lt;p&gt;
+      In the regular expression world reuse is very much both practical and practiced --
+      the culture of reuse is so strong there is
+      is even a backlash against what some writers call &quot;cargo cult programming&quot;.
+    &lt;/p&gt;
+    &lt;p&gt;
+      Composability is the ability to take two grammars, or pieces of grammars,
+      and to put them together (&quot;compose&quot; them).
+      In this post, I will treat both regular expressions and BNF as ways of representing the
+      grammar of a language.
+      Ideally, when you compose two grammars will parse
+    &lt;/p&gt;&lt;ul&gt;
+      &lt;li&gt;a language you can reasonably predict, that is also
+      &lt;/li&gt;
+      &lt;li&gt;the language you can intuitively expect from a composition, and
+      &lt;/li&gt;
+      &lt;li&gt;if each of the two grammars can be parsed in reasonable time,
+        the composed language can also be parsed in reasonable time.
+      &lt;/li&gt;
+    &lt;/ul&gt;
+    &lt;p&gt;
+      Not all language representation are composabile.
+      Regular expressions are, and BNF is.
+      PEG, which looks like a combination of BNF and regular expressions,
+      is in fact, neither, and is in fact, among all the ways commonly used
+      to represent language, perhaps the least composable.
+    &lt;/p&gt;
+    &lt;h2&gt;Composing regular expressions&lt;/h2&gt;
+    &lt;p&gt;We'll start with regular expressions, which are as well-behaved under
+      composition as a language representation can get.
+      The combination of two regular expressions is always another regular expression,
+      and is always exactly the one described by the combined regular expression.
+      Further, every regular expression is parseable in linear time.
+    &lt;/p&gt;
+    &lt;p&gt;The one downside, oft mentioned by critics, is that regular expression
+      do not scale in terms of readability.
+      Here, however, the problem is not really one of composability.
+      The problem is that regular expressions are quite limited in their capabilities,
+      and programmers often use their excellent behavior under composability
+      to extent regular expressions to tasks for which they are not well-adopted.
+    &lt;/p&gt;
+    &lt;h2&gt;PEG, Perl 6 grammars and composability&lt;/h2&gt;
+    &lt;p&gt;When programmers first look at PEG syntax, they often think they've encountered
+      paradise. They see both BNF and regular expressions, and imagine they'll have the
+      best of each.
+    &lt;/p&gt;
+    &lt;p&gt;
+      But the convenient behavior of
+      regular expressions depends on their ambiguity -- you simply cannot write
+      an ambiguous regular expression -- it's impossible.
+      More powerful and more flexible, BNF allows you to describe many more grammars --
+      including ambiguous ones.
+    &lt;/p&gt;
+    &lt;p&gt;How does PEG resolve this?  With a Gordian knot approach.
+      Whenever it encounters an ambiguity, it throws all but one of the choices away.
+    &lt;/p&gt;
+    &lt;p&gt;TODO&lt;/p&gt;
+    &lt;h3&gt;Comments&lt;/h3&gt;
+    &lt;p&gt;Comments on this post can be made in
+      &lt;a href=&quot;http://groups.google.com/group/marpa-parser&quot;&gt;
+        Marpa's Google group&lt;/a&gt;,
+      or on our IRC channel: #marpa at freenode.net.
+      To learn more about Marpa,
+      there's
+      &lt;a href=&quot;http://savage.net.au/Marpa.html&quot;&gt;the
+        official web site maintained by Ron Savage&lt;/a&gt;.
+      I also have
+      &lt;a href=&quot;http://jeffreykegler.github.io/Marpa-web-site/&quot;&gt;a Marpa web site&lt;/a&gt;.
+    &lt;/p&gt;
+  &lt;/body&gt;
+&lt;/html&gt;</description>
+  </item>
+  <item>
     <title>Fast handy languages</title>
     <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2015/08/fast_handy.html</link>
     <description>&lt;html&gt;
@@ -1179,225 +1277,6 @@
         official web site maintained by Ron Savage&lt;/a&gt;.
       I also have
       &lt;a href=&quot;http://jeffreykegler.github.io/Marpa-web-site/&quot;&gt;a Marpa web site&lt;/a&gt;.
-    &lt;/p&gt;
-  &lt;/body&gt;
-&lt;/html&gt;</description>
-  </item>
-  <item>
-    <title>What makes a parsing algorithm successful?</title>
-    <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2014/11/successful.html</link>
-    <description>&lt;html&gt;
-  &lt;head&gt;
-  &lt;/head&gt;
-  &lt;body&gt;&lt;p&gt;
-      &lt;!--
-      marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
-      --&gt;
-    &lt;/p&gt;
-    &lt;p&gt;What makes a parsing algorithm successful?
-      Two factors, I think.
-      First, does the algorithm parse a workably-defined set of grammars in linear time?
-      Second, does it allow the application to intervene in the parse
-      with custom code?
-      When parsing algorithms are compared,
-      typically neither of these gets much attention.
-      But the successful algorithms do one or the other.
-    &lt;/p&gt;
-    &lt;h3&gt;Does the algorithm parse a workably-defined set of grammars in linear time?&lt;/h3&gt;
-    &lt;p&gt;&quot;Workably-defined&quot; means more than well-defined
-      in the mathematical sense --
-      the definition has to be &lt;b&gt;workable&lt;/b&gt;.
-      That is, the
-      definition must be something that,
-      with reasonable effort,
-      a programmer can use in practice.
-    &lt;/p&gt;&lt;p&gt;
-      The algorithms in regular expression engines are workably-defined.
-      A regular expression, in the pure sense consists of a sequence of symbols,
-      usually shown by concatenation:
-    &lt;/p&gt;&lt;blockquote&gt;&lt;pre&gt;a b c&lt;/pre&gt;&lt;/blockquote&gt;&lt;p&gt;
-      or a choice among sequences, usually shown by a vertical bar:
-    &lt;/p&gt;&lt;blockquote&gt;&lt;pre&gt;a | b | c&lt;/pre&gt;&lt;/blockquote&gt;&lt;p&gt;
-      or a repetition of any of the above, typically shown with a star:
-    &lt;/p&gt;&lt;blockquote&gt;&lt;pre&gt;a*&lt;/pre&gt;&lt;/blockquote&gt;&lt;p&gt;
-      or any recursive combination of these.
-      True, if this definition is new to you, it can take time to get
-      used to.
-      But vast numbers of working programming are very much &quot;used to it&quot;,
-      can think in terms of regular expressions,
-      and can determine if a particular problem will yield to treatment
-      as a regular expression, or not.
-      &lt;p&gt;
-      Parsers in the LALR family (yacc, bison, etc.)
-      do &lt;b&gt;not&lt;/b&gt;
-      have a workably defined set of grammars.
-      LALR is perfectly well-defined mathematically,
-      but even experts in parsing theory are hard put to decide
-      if a particular grammar is LALR.
-    &lt;/p&gt;&lt;p&gt;
-      Recursive descent also does not have a workably defined
-      set of grammars.
-      Recursive descent doesn't even have a precise mathematical description --
-      you can say that recursive descent is LL,
-      but in practice LL tables are rarely used.
-      Also in practice, the LL logic is extended with every other trick
-      imaginable, up to and including switching to other parsing algorithms.
-    &lt;/p&gt;
-    &lt;h3&gt;Does it allow the user to intervene in the parse?&lt;/h3&gt;
-    &lt;p&gt;It is not easy for users to intervene in the processing
-      of a regular expression, though some implementations attempt to
-      allow such efforts.
-      LALR parsers are notoriously opaque.
-      Those who maintain the LALR-driven Perl parser have tried
-      to supplement its abilities with
-      custom code, with results that will not encourage
-      others making the same attempt.
-    &lt;/p&gt;&lt;p&gt;Recursive descent, on the other hand, has no parse engine --
-      it is 100% custom code.
-      You don't get much friendlier than that.
-    &lt;/p&gt;&lt;h3&gt;Conclusions&lt;/h3&gt;&lt;p&gt;
-      Regular expressions are a success,
-      and will remain so,
-      because the set of grammars
-      they handle is very workably-defined.
-      Applications using regular expressions have to take what the algorithm
-      gives them, but what it gives them is very predictable.
-      &lt;p&gt;
-      For example, an application can write regular expressions on the fly, and
-      the programmer can be confident they will run as long as they are well-formed.
-      And it is easy to determine if the regular expression is well-formed.
-      (Whether it actually does what you want is a separate issue.)
-      &lt;p&gt;
-      Recursive descent does not handle a workably-defined set of grammars,
-      and it also has to be hand-written.
-      But it makes up for this by allowing the user to step into the parsing process
-      anywhere, and &quot;get his hands dirty&quot;.
-      Recursive descent does nothing for you, but it does allow you complete control.
-      This is enough to make recursive descent the current algorithm of choice
-      for major parsing projects.
-      &lt;p&gt;
-      As I have
-      &lt;a href=&quot;http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2014/09/chron.html&quot;&gt;chronicled
-      elsewhere&lt;/a&gt;,
-      LALR was once,
-      on highly convincing theoretical grounds,
-      seen as
-      &lt;b&gt;the&lt;/b&gt; solution to the parsing problem.
-      But while mathematically well-defined,
-      LALR was not workably defined.
-      And it was very hostile to applications that tried to alter,
-      or even examine, its syntax-driven workings.
-      After decades of trying to make it work,
-      the profession has abandoned LALR almost totally.
-    &lt;/p&gt;
-    &lt;h3&gt;What about Marpa?&lt;/h3&gt;
-    &lt;p&gt;Marpa has both properties:
-      its set of grammars is workably-defined.
-      And, while Marpa is syntax-driven like LALR and regular expressions,
-      it also allows the user to stop the parse engine,
-      communicate with it about the state of the parse,
-      do her own parsing for a while,
-      and restart the parse engine at any point she wants.
-    &lt;/p&gt;
-    &lt;p&gt;Marpa's workable definition has a nuance that the one
-    for regular expressions does not.
-    For regular expressions, linearity is a given --
-    they parse in linear time or fail.
-      Marpa parses a much larger class of grammars, the context-free grammars --
-      anything that can be written in BNF.
-      BNF is used to describe languages in standards,
-      and is therefore itself a kind of &quot;gold standard&quot;
-      for a workable definition of a
-      set of grammars.
-      However, Marpa does &lt;b&gt;not&lt;/b&gt;
-      parse everything that can be written in BNF in linear time.
-    &lt;/p&gt;
-    &lt;p&gt;Marpa linearly-parsed set of grammars is smaller than the context-free
-    grammars, but it is still very large, and it is still workably-defined.
-      Marpa will parse any unambiguous language in linear time,
-      unless it contains unmarked middle recursions.
-      An example of a &quot;marked&quot; middle recursion is the language described
-      by
-    &lt;/p&gt;&lt;blockquote&gt;&lt;pre&gt;S ::= a S a | x&lt;/pre&gt;&lt;/blockquote&gt;&lt;p&gt;
-    a string of which is &quot;&lt;tt&gt;aaaxaaa&lt;/tt&gt;&quot;,
-      where the &quot;&lt;tt&gt;x&lt;/tt&gt;&quot; marks the middle.
-      An example of an &quot;unmarked&quot; middle recursion is the language described
-      by
-    &lt;/p&gt;&lt;blockquote&gt;&lt;pre&gt;S ::= a S a | a&lt;/pre&gt;&lt;/blockquote&gt;&lt;p&gt;
-    a string of which is &quot;&lt;tt&gt;aaaaaaa&lt;/tt&gt;&quot;,
-      where nothing marks the middle, so that you don't know until the end where the
-      middle of the recursion is.
-      If a human can reliably find the middle by eyeball, the middle recursion is marked.
-      If a human can't, then the middle recursion might be unmarked.
-    &lt;/p&gt;
-    &lt;p&gt;Marpa also parses a large set of unambiguous grammars linearly,
-      and this set of grammars is also workably-defined.
-      Marpa parses an ambiguous grammar in linear time if
-    &lt;/p&gt;&lt;ul&gt;
-      &lt;li&gt;It has no unmarked middle recursions.
-      &lt;/li&gt;
-      &lt;li&gt;All right recursions are unambiguous.
-      &lt;/li&gt;
-      &lt;li&gt;There are no cycles.
-      A cycle occurs, for example, if there is a rule &lt;tt&gt;A ::= A&lt;/tt&gt;
-      in the grammar.
-      &lt;/li&gt;
-      &lt;li&gt;Marpa's level of ambiguity at any location is bounded by a constant.
-      &lt;/li&gt;
-      &lt;/ul&gt;
-      &lt;p&gt;The term &quot;level of ambiguity&quot; requires a bit of explanation.
-	At any given location,
-        there can be as many rules &quot;in play&quot; as you like,
-	without affecting the level of ambiguity.
-        The key question: What is the maximum number of different origins
-	that a rule might have?
-	(The &quot;origin&quot; of a rule is the location where it begins.)
-        That is, can a rule currently in play
-	have at most 20 different origins?
-        Or could it have its origin at every location so far?
-        If the maximum number of origins is 20 or any other fixed constant, the level of
-        ambiguity is &quot;bounded&quot;.
-	But if the maximum number of origins keeps growing as the length of the input
-	grows, the level of ambiguity is unbounded.
-    &lt;p&gt;For the unambiguous case, Marpa's workable definition encompasses
-    a much larger class of grammars, but is no more
-      complex than that for regular expressions.
-      If you want to extend even further,
-      and work with ambiguous grammars,
-      the definition remains quite workable.
-      Of the four restrictions needed to ensure linearity,
-      the one requiring a bounded level of ambiguity is the only one
-      that might force you to exercise real vigliance --
-      once you get into ambiguity, unboundedness is easy to slip into.
-      &lt;p&gt;
-      As for the other three,
-      cycles never occur in a practical grammars,
-      and Marpa reports them,
-      so that you simply fix them when they happen.
-      Most recursions will be left recursions,
-      which are unrestricted.
-      My experience has been that, in practical grammars,
-      unmarked middle recursions
-      and ambiguous right recursions are not especially
-      tempting features.
-      If you note
-      whenever you use a right recursion,
-      checking that it is not ambiguous,
-      and if you note whenever you use a middle recursion,
-      checking that it is marked,
-      then you will stay linear.
-    &lt;/p&gt;
-      To learn more about Marpa,
-      there's
-      &lt;a href=http://savage.net.au/Marpa.html&quot;&gt;the
-        official web site maintained by Ron Savage&lt;/a&gt;.
-      I also have
-      &lt;a href=&quot;http://jeffreykegler.github.io/Marpa-web-site/&quot;&gt;a Marpa web site&lt;/a&gt;.
-    &lt;/p&gt;&lt;h3&gt;Comments&lt;/h3&gt;
-    &lt;p&gt;Comments on this post can be made in
-      &lt;a href=&quot;http://groups.google.com/group/marpa-parser&quot;&gt;
-        Marpa's Google group&lt;/a&gt;,
-      or on our IRC channel: #marpa at freenode.net.
     &lt;/p&gt;
   &lt;/body&gt;
 &lt;/html&gt;</description>
