@@ -21,16 +21,16 @@
       --&gt;
     &lt;/p&gt;
     &lt;p&gt;Every year the Perl 6 community creates an &quot;Advent&quot; series of posts.
-      I usually follow these, but
+      I always follow these, but
       &lt;a href=&quot;https://perl6advent.wordpress.com/2015/12/08/day-8-grammars-generating-grammars/&quot;&gt;one
         in particular&lt;/a&gt;
       caught my attention this year.
       It presents a vision of a future where programming is language-driven.
       A vision that I share.
-      The post went on to encourage that its readers to follow up on this vision,
+      The post went on to encourage its readers to follow up on this vision,
       and suggested an approach.
       But I do not think the particular approach suggested would be fruitful.
-      In this post I'll start to explain why.
+      In this post I'll explain why.
     &lt;/p&gt;
     &lt;h2&gt;Reuse&lt;/h2&gt;
     &lt;p&gt;The focus of the Advent post was language-driven programming,
@@ -41,18 +41,18 @@
     &lt;/p&gt;
     &lt;p&gt;
       Most programmers will be very familiar with grammar reuse from regular expressions.
-      In the regular expression (&quot;RE&quot;) world programming by cutting and pasting
-      is very practical and often practiced --
-      so much so that there
-      is even a backlash against what some writers call &quot;cargo cult programming&quot;.
+      In the regular expression (&quot;RE&quot;) world,
+      programming by cutting and pasting
+      is very practical and often practiced.
     &lt;/p&gt;
     &lt;p&gt;
       For this post I will consider grammar reusability to be the ability
       to join two grammars and create a third.
       This is also sometimes called grammar composition.
-      I will widen the term &quot;grammar&quot; to include
+      For this purpose, I will widen the term &quot;grammar&quot; to include
       RE's and PEG parser specifications.
-      Ideally, when you compose two grammars, What you get is
+      Ideally, when you compose two grammars,
+      what you get is
     &lt;/p&gt;&lt;ul&gt;
       &lt;li&gt;a language you can reasonably predict, and
       &lt;/li&gt;
@@ -103,28 +103,45 @@
       and in practice PEG is
       the nitroglycerin of parsing -- marvelous when it works,
       but tricky and dangerous.
-    &lt;/p&gt;&lt;p&gt;
-      Consider these two PEG grammars:
+    &lt;/p&gt;
+    &lt;p&gt;
+      Consider these 3 PEG specifications:
     &lt;/p&gt;&lt;blockquote&gt;&lt;pre&gt;
-	 (&quot;a&quot;|&quot;aa&quot;)&quot;a&quot;
-	 (&quot;aa&quot;|&quot;a&quot;)&quot;a&quot;
-       &lt;/pre&gt;&lt;/blockquote&gt;&lt;p&gt;
-      One accepts &quot;aaa&quot; but not &quot;aa&quot;.  The other does the reverse.
-      Which one?
-      For the answer to this, a discussion of which classes of grammar
-      &lt;b&gt;are&lt;/b&gt;
-      predictable for PEG, and more,
+	(&quot;a&quot;|&quot;aa&quot;)&quot;a&quot;
+	(&quot;aa&quot;|&quot;a&quot;)&quot;a&quot;
+	A = &quot;a&quot;A&quot;a&quot;/&quot;aa&quot;&lt;/pre&gt;&lt;/blockquote&gt;
+    &lt;p&gt;
+      All three clearly accept only strings which are repetitions
+      of the letter &quot;&lt;tt&gt;a&lt;/tt&gt;&quot;?
+      But which strings?
+      For the answers,
+      suggestions for dealing with PEG if you are committed to it,
+      and more,
       look at
       &lt;a href=&quot;http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2015/03/peg.html&quot;&gt;
         my previous post on PEG&lt;/a&gt;.
     &lt;/p&gt;
-    &lt;p&gt;Once you get a PEG specification to pass the test suite for a practical-sized grammars,
-    you are usually very happy to leave it alone.
-      Merging two PEG specifications is rolling the dice with the odds against you.
+    &lt;p&gt;
+      When getting an RE or a BNF grammar to work,
+      you can go back to the grammar and ask
+      yourself &quot;Does my grammar look like my intended language?&quot;.
+      With PEG, this is not really possible.
+      With practice, you might get used to figuring out single line PEG specs
+      like the first two above.
+      (If you can get the last one, you're amazing.)
+      But tracing these through multiple rule layers required by useful grammars is,
+      in practice, not really possible.
+    &lt;/p&gt;
+    &lt;p&gt;
+      In real life,
+      PEG specifications are written by hacking them until the test suite works.
+      And, once you get a PEG specification to pass the test suite for a practical-sized grammar,
+      you are very happy to leave it alone.
+      Trying to compose two PEG specifications is rolling the dice with the odds against you.
     &lt;/p&gt;
     &lt;h2&gt;Reuse and the native Perl 6 parser&lt;/h2&gt;
     &lt;p&gt;
-      The native Perl 6 parser, is an extended PEG parser.
+      The native Perl 6 parser is an extended PEG parser.
       The extensions are very interesting from the PEG point of view.
       The PEG &quot;tie breaking&quot; has been changed,
       and backtracking can be used.
@@ -136,7 +153,8 @@
     &lt;/p&gt;
     &lt;h2&gt;Reuse and general BNF parsing&lt;/h2&gt;
     &lt;p&gt;
-      As mentioned, general BNF is reusable, and so general BNF parsers like Marpa
+      As mentioned, general BNF is reusable, and so general BNF parsers like
+      &lt;a href=&quot;http://savage.net.au/Marpa.html&quot;&gt;Marpa&lt;/a&gt;
       are as reusable as regular expressions, with two caveats.
       First, if the two grammars are not doing their own lexing, their lexers will have
       to be compatible.
@@ -169,7 +187,7 @@
       Marpa opens the road to language-driven programming.
     &lt;/p&gt;
     &lt;h2&gt;Perl 6&lt;/h2&gt;
-    &lt;p&gt;I'd like to emphasize that I'm a fan of the Perl 6 effort.
+    &lt;p&gt;I'm a fan of the Perl 6 effort.
       I certainly
       &lt;b&gt;should&lt;/b&gt;
       be a supporter, after the many favors they've done for me
@@ -181,16 +199,17 @@
       of which I will be an eager student over the coming months.
     &lt;/p&gt;
     &lt;h2&gt;Comments&lt;/h2&gt;
-    &lt;p&gt;Comments on this post can be made in
-      &lt;a href=&quot;http://groups.google.com/group/marpa-parser&quot;&gt;
-        Marpa's Google group&lt;/a&gt;,
-      or on our IRC channel: #marpa at freenode.net.
+    &lt;p&gt;
       To learn more about Marpa,
       there's
       &lt;a href=&quot;http://savage.net.au/Marpa.html&quot;&gt;the
         official web site maintained by Ron Savage&lt;/a&gt;.
       I also have
       &lt;a href=&quot;http://jeffreykegler.github.io/Marpa-web-site/&quot;&gt;a Marpa web site&lt;/a&gt;.
+      Comments on this post can be made in
+      &lt;a href=&quot;http://groups.google.com/group/marpa-parser&quot;&gt;
+        Marpa's Google group&lt;/a&gt;,
+      or on our IRC channel: #marpa at freenode.net.
     &lt;/p&gt;
   &lt;/body&gt;
 &lt;/html&gt;</description>

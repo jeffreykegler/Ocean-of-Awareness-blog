@@ -8,16 +8,16 @@ Grammar reuse
       -->
     </p>
     <p>Every year the Perl 6 community creates an "Advent" series of posts.
-      I usually follow these, but
+      I always follow these, but
       <a href="https://perl6advent.wordpress.com/2015/12/08/day-8-grammars-generating-grammars/">one
         in particular</a>
       caught my attention this year.
       It presents a vision of a future where programming is language-driven.
       A vision that I share.
-      The post went on to encourage that its readers to follow up on this vision,
+      The post went on to encourage its readers to follow up on this vision,
       and suggested an approach.
       But I do not think the particular approach suggested would be fruitful.
-      In this post I'll start to explain why.
+      In this post I'll explain why.
     </p>
     <h2>Reuse</h2>
     <p>The focus of the Advent post was language-driven programming,
@@ -28,18 +28,18 @@ Grammar reuse
     </p>
     <p>
       Most programmers will be very familiar with grammar reuse from regular expressions.
-      In the regular expression ("RE") world programming by cutting and pasting
-      is very practical and often practiced --
-      so much so that there
-      is even a backlash against what some writers call "cargo cult programming".
+      In the regular expression ("RE") world,
+      programming by cutting and pasting
+      is very practical and often practiced.
     </p>
     <p>
       For this post I will consider grammar reusability to be the ability
       to join two grammars and create a third.
       This is also sometimes called grammar composition.
-      I will widen the term "grammar" to include
+      For this purpose, I will widen the term "grammar" to include
       RE's and PEG parser specifications.
-      Ideally, when you compose two grammars, What you get is
+      Ideally, when you compose two grammars,
+      what you get is
     </p><ul>
       <li>a language you can reasonably predict, and
       </li>
@@ -90,28 +90,45 @@ Grammar reuse
       and in practice PEG is
       the nitroglycerin of parsing -- marvelous when it works,
       but tricky and dangerous.
-    </p><p>
-      Consider these two PEG grammars:
+    </p>
+    <p>
+      Consider these 3 PEG specifications:
     </p><blockquote><pre>
-	 ("a"|"aa")"a"
-	 ("aa"|"a")"a"
-       </pre></blockquote><p>
-      One accepts "aaa" but not "aa".  The other does the reverse.
-      Which one?
-      For the answer to this, a discussion of which classes of grammar
-      <b>are</b>
-      predictable for PEG, and more,
+	("a"|"aa")"a"
+	("aa"|"a")"a"
+	A = "a"A"a"/"aa"</pre></blockquote>
+    <p>
+      All three clearly accept only strings which are repetitions
+      of the letter "<tt>a</tt>"?
+      But which strings?
+      For the answers,
+      suggestions for dealing with PEG if you are committed to it,
+      and more,
       look at
       <a href="http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2015/03/peg.html">
         my previous post on PEG</a>.
     </p>
-    <p>Once you get a PEG specification to pass the test suite for a practical-sized grammars,
-    you are usually very happy to leave it alone.
-      Merging two PEG specifications is rolling the dice with the odds against you.
+    <p>
+      When getting an RE or a BNF grammar to work,
+      you can go back to the grammar and ask
+      yourself "Does my grammar look like my intended language?".
+      With PEG, this is not really possible.
+      With practice, you might get used to figuring out single line PEG specs
+      like the first two above.
+      (If you can get the last one, you're amazing.)
+      But tracing these through multiple rule layers required by useful grammars is,
+      in practice, not really possible.
+    </p>
+    <p>
+      In real life,
+      PEG specifications are written by hacking them until the test suite works.
+      And, once you get a PEG specification to pass the test suite for a practical-sized grammar,
+      you are very happy to leave it alone.
+      Trying to compose two PEG specifications is rolling the dice with the odds against you.
     </p>
     <h2>Reuse and the native Perl 6 parser</h2>
     <p>
-      The native Perl 6 parser, is an extended PEG parser.
+      The native Perl 6 parser is an extended PEG parser.
       The extensions are very interesting from the PEG point of view.
       The PEG "tie breaking" has been changed,
       and backtracking can be used.
@@ -123,7 +140,8 @@ Grammar reuse
     </p>
     <h2>Reuse and general BNF parsing</h2>
     <p>
-      As mentioned, general BNF is reusable, and so general BNF parsers like Marpa
+      As mentioned, general BNF is reusable, and so general BNF parsers like
+      <a href="http://savage.net.au/Marpa.html">Marpa</a>
       are as reusable as regular expressions, with two caveats.
       First, if the two grammars are not doing their own lexing, their lexers will have
       to be compatible.
@@ -156,7 +174,7 @@ Grammar reuse
       Marpa opens the road to language-driven programming.
     </p>
     <h2>Perl 6</h2>
-    <p>I'd like to emphasize that I'm a fan of the Perl 6 effort.
+    <p>I'm a fan of the Perl 6 effort.
       I certainly
       <b>should</b>
       be a supporter, after the many favors they've done for me
@@ -168,16 +186,17 @@ Grammar reuse
       of which I will be an eager student over the coming months.
     </p>
     <h2>Comments</h2>
-    <p>Comments on this post can be made in
-      <a href="http://groups.google.com/group/marpa-parser">
-        Marpa's Google group</a>,
-      or on our IRC channel: #marpa at freenode.net.
+    <p>
       To learn more about Marpa,
       there's
       <a href="http://savage.net.au/Marpa.html">the
         official web site maintained by Ron Savage</a>.
       I also have
       <a href="http://jeffreykegler.github.io/Marpa-web-site/">a Marpa web site</a>.
+      Comments on this post can be made in
+      <a href="http://groups.google.com/group/marpa-parser">
+        Marpa's Google group</a>,
+      or on our IRC channel: #marpa at freenode.net.
     </p>
   </body>
 </html>
