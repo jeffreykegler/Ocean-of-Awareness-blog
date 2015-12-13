@@ -119,7 +119,7 @@
     &lt;p&gt;For practical grammars, using even one PEG grammar
       means giving up on knowing more much about the language you are actually parsing
       than that you got it to pass your test suite.
-      Combine two PEG grammars is rolling the dice.
+      Combining two PEG grammars is rolling the dice.
     &lt;/p&gt;
     &lt;h2&gt;Reuse and the native Perl 6 parser&lt;/h2&gt;
     &lt;p&gt;
@@ -154,7 +154,7 @@
     &lt;/p&gt;
     &lt;ul&gt;
       &lt;li&gt;keep the grammar unambiguous;&lt;/li&gt;
-      &lt;li&gt;don't use an unmarked middle recursions.&lt;/li&gt;
+      &lt;li&gt;don't use an unmarked middle recursion.&lt;/li&gt;
     &lt;/ul&gt;
     &lt;p&gt;
       Unmarked middle recursions are not things you're likely to need a lot: they

@@ -141,7 +141,7 @@ Grammar reuse
     </p>
     <ul>
       <li>keep the grammar unambiguous;</li>
-      <li>don't use an unmarked middle recursions.</li>
+      <li>don't use an unmarked middle recursion.</li>
     </ul>
     <p>
       Unmarked middle recursions are not things you're likely to need a lot: they
