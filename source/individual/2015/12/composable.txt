@@ -16,10 +16,10 @@ Grammar reuse
       A vision that I share.
       The post went on to encourage that its readers to follow up on this vision,
       and suggested an approach.
-      I do not think the particular approach suggested would be fruitful.
+      But I do not think the particular approach suggested would be fruitful.
       In this post I'll start to explain why.
     </p>
-    <h2>Composability</h2>
+    <h2>Reuse</h2>
     <p>The focus of the Advent post was language-driven programming,
       and that is the aspect that excites me most.
       But the points that wish to make are probably more easily understand if
@@ -56,7 +56,7 @@ Grammar reuse
       and PEG parser specifications are
       one of the least reusable language representations ever invented.
     </p>
-    <h2>Reusing regular expressions</h2>
+    <h2>Regular expressions and reuse</h2>
     <p>We'll start with RE's, which are as well-behaved under
       reuse as a language representation can get.
       The combination of two RE's is always another RE,
