@@ -89,10 +89,9 @@
     <p>
       Not all language representations are reusable.
       RE's are, and BNF is.
-      PEG, which looks like a combination of BNF and RE's.
-      But a PEG description is a parser specification,
-      not BNF and is not an RE,
-      and PEG parser specifications are
+      PEG looks like a combination of BNF and RE's.
+      But PEG, in fact, is a very special form of parser specification.
+      And PEG parser specifications are
       one of the least reusable language representations ever invented.
     </p>
     <h2>Reuse and regular expressions</h2>
@@ -137,7 +136,9 @@
        </pre></blockquote><p>
       One accepts "aaa" but not "aa".  The other does the reverse.
       Which one?
-      For the answer to this, a discussion of which classes of grammar <b>are</b> predictable for PEG, and more,
+      For the answer to this, a discussion of which classes of grammar
+      <b>are</b>
+      predictable for PEG, and more,
       look at
       <a href="http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2015/03/peg.html">
         my previous post on PEG</a>.
@@ -164,21 +165,21 @@
       As mentioned, general BNF is reusable, and so general BNF parsers like Marpa
       are as reusable as regular expressions, with two caveats.
       First, if the two grammars are not doing their own lexing, their lexers will have
-      to be reusable.
-    </p><p>Second,
+      to be compatible.
+    </p>
+    <p>Second,
       with regular expressions you had the advantage that
       <b>every</b>
-      regular expression parses in linear time, so that speed will be acceptable.
+      regular expression parses in linear time, so that speed was guaranteed to be acceptable.
       Marpa users reuse grammars and pieces of grammars all the time.
       The result is always the language specified by the merged BNF,
-      and in fact, I've never heard anyone complain that performance deterioriated.
-      <p>
-      But, while it usually does not happen,
+      and I've never heard anyone complain that performance deterioriated.
+    </p><p>
+      But, while it may not happen often,
       it is possible to combine two Marpa grammars that run in linear time
       and end up with one that does not.
       You can guarantee your merged Marpa grammar will stay linear if you follow 2 rules:
-    </p>
-    <ul>
+    </p><ul>
       <li>keep the grammar unambiguous;</li>
       <li>don't use an unmarked middle recursion.</li>
     </ul>
