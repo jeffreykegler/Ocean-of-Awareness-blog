@@ -61,10 +61,11 @@
     <h2>Reuse</h2>
     <p>The focus of the Advent post was language-driven programming,
       and that is the aspect that excites me most.
-      But the points that wish to make are probably more easily understand if
-      I root them in more familiar ground
+      But the points that I wish to make are more easily understood if
+      I root them in a narrower, but more familiar issue
       -- grammar reuse.
-    </p><p>
+    </p>
+    <p>
       Most programmers will be very familiar with grammar reuse from regular expressions.
       In the regular expression ("RE") world programming by cutting and pasting
       is very practical and often practiced --
@@ -75,27 +76,26 @@
       For this post I will consider grammar reusability to be the ability
       to join two grammars and create a third.
       This is also sometimes called grammar composition.
-      I will use the term "grammar" somewhat loosely,
-      and include RE's and PEG descriptions
-      among the things that I call "grammars".
-      Ideally, when you compose two grammars, the result will be
+      I will widen the term "grammar" to include
+      RE's and PEG parser specifications.
+      Ideally, when you compose two grammars, What you get is
     </p><ul>
-      <li>a language you can reasonably predict,
+      <li>a language you can reasonably predict, and
       </li>
-      <li>and, if each of the two original grammars can be parsed in reasonable time,
+      <li>if each of the two original grammars can be parsed in reasonable time,
         a language that can be parsed in reasonable time.
       </li>
     </ul>
     <p>
       Not all language representations are reusable.
       RE's are, and BNF is.
-      PEG looks like a combination of BNF and RE's.
-      But PEG, in fact, is a very special form of parser specification.
+      PEG looks like a combination of BNF and RE's,
+      but PEG, in fact, is its own very special form of parser specification.
       And PEG parser specifications are
       one of the least reusable language representations ever invented.
     </p>
     <h2>Reuse and regular expressions</h2>
-    <p>We'll start with RE's, which are as well-behaved under
+    <p>RE's are as well-behaved under
       reuse as a language representation can get.
       The combination of two RE's is always another RE,
       and you can reasonably determine what language the combined RE recognizes by
@@ -114,20 +114,21 @@
       paradise. They see both BNF and RE's, and imagine they'll have the
       best of each.
       But the convenient behavior of
-      RE's depends on their ambiguity.
+      RE's depends on their unambiguity.
       You simply cannot write
-      an ambiguous RE -- it's impossible.
+      an unambiguous RE -- it's impossible.
     </p>
     <p>
       More powerful and more flexible, BNF allows you to describe many more grammars --
       including ambiguous ones.
       How does PEG resolve this?  With a Gordian knot approach.
       Whenever it encounters an ambiguity, it throws all but one of the choices away.
-      The author of the PEG description gets some control over which choice is thrown away --
+      The author of the PEG specification gets some control over what is thrown away --
       he specifies an order of preference for the choices.
       But degree of control is less than it seems,
-      and in practice PEG grammars have all
-      the predictability of nitroglycerin.
+      and in practice PEG is
+      the nitroglycerin of parsing -- marvelous when it works,
+      but tricky and dangerous.
     </p><p>
       Consider these two PEG grammars:
     </p><blockquote><pre>
@@ -143,20 +144,19 @@
       <a href="http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2015/03/peg.html">
         my previous post on PEG</a>.
     </p>
-    <p>For practical grammars, using even one PEG grammar
-      means giving up on knowing more much about the language you are actually parsing
-      than that you got it to pass your test suite.
-      Combining two PEG grammars is rolling the dice.
+    <p>Once you get a PEG specification to pass the test suite for a practical-sized grammars,
+    you are usually very happy to leave it alone.
+      Merging two PEG specifications is rolling the dice with the odds against you.
     </p>
     <h2>Reuse and the native Perl 6 parser</h2>
     <p>
       The native Perl 6 parser, is an extended PEG parser.
-      These extensions are very interesting from the PEG point of view.
+      The extensions are very interesting from the PEG point of view.
       The PEG "tie breaking" has been changed,
       and backtracking can be used.
       These features mean the Perl 6 parser can be extended to languages
       well beyond what
-      ordinary PEG parsers cannot handle.
+      ordinary PEG parsers can handle.
       But, if you use the extra features, reuse will be even trickier than
       if you stuck with vanilla PEG.
     </p>
@@ -187,7 +187,7 @@
       Unmarked middle recursions are not things you're likely to need a lot: they
       are those palindromes where you have to count to find the middle:
       grammars like "<tt>A ::= a | a A a</tt>".
-      If you do use a middle recursions at all, it is almost certainly going to
+      If you use a middle recursion at all, it is almost certainly going to
       be marked, like "<tt>A ::= b | a A a</tt>",
       which generates strings like "<tt>aabaa</tt>".
       With Marpa, as with RE's, resuse is easy and practical.
@@ -200,8 +200,8 @@
       <b>should</b>
       be a supporter, after the many favors they've done for me
       and the Marpa community over the years.
-      If the points of this post are taken,
-      they will disappoint some of the
+      The considerations of this post
+      will disappoint some of the
       hopes for applications of the native Perl 6 parser.
       But these applications have not been central to the Perl 6 effort,
       of which I will be an eager student over the coming months.

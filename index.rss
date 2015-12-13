@@ -35,10 +35,11 @@
     &lt;h2&gt;Reuse&lt;/h2&gt;
     &lt;p&gt;The focus of the Advent post was language-driven programming,
       and that is the aspect that excites me most.
-      But the points that wish to make are probably more easily understand if
-      I root them in more familiar ground
+      But the points that I wish to make are more easily understood if
+      I root them in a narrower, but more familiar issue
       -- grammar reuse.
-    &lt;/p&gt;&lt;p&gt;
+    &lt;/p&gt;
+    &lt;p&gt;
       Most programmers will be very familiar with grammar reuse from regular expressions.
       In the regular expression (&quot;RE&quot;) world programming by cutting and pasting
       is very practical and often practiced --
@@ -49,27 +50,26 @@
       For this post I will consider grammar reusability to be the ability
       to join two grammars and create a third.
       This is also sometimes called grammar composition.
-      I will use the term &quot;grammar&quot; somewhat loosely,
-      and include RE's and PEG descriptions
-      among the things that I call &quot;grammars&quot;.
-      Ideally, when you compose two grammars, the result will be
+      I will widen the term &quot;grammar&quot; to include
+      RE's and PEG parser specifications.
+      Ideally, when you compose two grammars, What you get is
     &lt;/p&gt;&lt;ul&gt;
-      &lt;li&gt;a language you can reasonably predict,
+      &lt;li&gt;a language you can reasonably predict, and
       &lt;/li&gt;
-      &lt;li&gt;and, if each of the two original grammars can be parsed in reasonable time,
+      &lt;li&gt;if each of the two original grammars can be parsed in reasonable time,
         a language that can be parsed in reasonable time.
       &lt;/li&gt;
     &lt;/ul&gt;
     &lt;p&gt;
       Not all language representations are reusable.
       RE's are, and BNF is.
-      PEG looks like a combination of BNF and RE's.
-      But PEG, in fact, is a very special form of parser specification.
+      PEG looks like a combination of BNF and RE's,
+      but PEG, in fact, is its own very special form of parser specification.
       And PEG parser specifications are
       one of the least reusable language representations ever invented.
     &lt;/p&gt;
     &lt;h2&gt;Reuse and regular expressions&lt;/h2&gt;
-    &lt;p&gt;We'll start with RE's, which are as well-behaved under
+    &lt;p&gt;RE's are as well-behaved under
       reuse as a language representation can get.
       The combination of two RE's is always another RE,
       and you can reasonably determine what language the combined RE recognizes by
@@ -88,20 +88,21 @@
       paradise. They see both BNF and RE's, and imagine they'll have the
       best of each.
       But the convenient behavior of
-      RE's depends on their ambiguity.
+      RE's depends on their unambiguity.
       You simply cannot write
-      an ambiguous RE -- it's impossible.
+      an unambiguous RE -- it's impossible.
     &lt;/p&gt;
     &lt;p&gt;
       More powerful and more flexible, BNF allows you to describe many more grammars --
       including ambiguous ones.
       How does PEG resolve this?  With a Gordian knot approach.
       Whenever it encounters an ambiguity, it throws all but one of the choices away.
-      The author of the PEG description gets some control over which choice is thrown away --
+      The author of the PEG specification gets some control over what is thrown away --
       he specifies an order of preference for the choices.
       But degree of control is less than it seems,
-      and in practice PEG grammars have all
-      the predictability of nitroglycerin.
+      and in practice PEG is
+      the nitroglycerin of parsing -- marvelous when it works,
+      but tricky and dangerous.
     &lt;/p&gt;&lt;p&gt;
       Consider these two PEG grammars:
     &lt;/p&gt;&lt;blockquote&gt;&lt;pre&gt;
@@ -117,20 +118,19 @@
       &lt;a href=&quot;http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2015/03/peg.html&quot;&gt;
         my previous post on PEG&lt;/a&gt;.
     &lt;/p&gt;
-    &lt;p&gt;For practical grammars, using even one PEG grammar
-      means giving up on knowing more much about the language you are actually parsing
-      than that you got it to pass your test suite.
-      Combining two PEG grammars is rolling the dice.
+    &lt;p&gt;Once you get a PEG specification to pass the test suite for a practical-sized grammars,
+    you are usually very happy to leave it alone.
+      Merging two PEG specifications is rolling the dice with the odds against you.
     &lt;/p&gt;
     &lt;h2&gt;Reuse and the native Perl 6 parser&lt;/h2&gt;
     &lt;p&gt;
       The native Perl 6 parser, is an extended PEG parser.
-      These extensions are very interesting from the PEG point of view.
+      The extensions are very interesting from the PEG point of view.
       The PEG &quot;tie breaking&quot; has been changed,
       and backtracking can be used.
       These features mean the Perl 6 parser can be extended to languages
       well beyond what
-      ordinary PEG parsers cannot handle.
+      ordinary PEG parsers can handle.
       But, if you use the extra features, reuse will be even trickier than
       if you stuck with vanilla PEG.
     &lt;/p&gt;
@@ -161,7 +161,7 @@
       Unmarked middle recursions are not things you're likely to need a lot: they
       are those palindromes where you have to count to find the middle:
       grammars like &quot;&lt;tt&gt;A ::= a | a A a&lt;/tt&gt;&quot;.
-      If you do use a middle recursions at all, it is almost certainly going to
+      If you use a middle recursion at all, it is almost certainly going to
       be marked, like &quot;&lt;tt&gt;A ::= b | a A a&lt;/tt&gt;&quot;,
       which generates strings like &quot;&lt;tt&gt;aabaa&lt;/tt&gt;&quot;.
       With Marpa, as with RE's, resuse is easy and practical.
@@ -174,8 +174,8 @@
       &lt;b&gt;should&lt;/b&gt;
       be a supporter, after the many favors they've done for me
       and the Marpa community over the years.
-      If the points of this post are taken,
-      they will disappoint some of the
+      The considerations of this post
+      will disappoint some of the
       hopes for applications of the native Perl 6 parser.
       But these applications have not been central to the Perl 6 effort,
       of which I will be an eager student over the coming months.
