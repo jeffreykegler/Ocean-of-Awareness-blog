@@ -1,7 +1,7 @@
 <html>
 <head>
 <link rel="alternate" title="Ocean of Awareness RSS" type="application/rss+xml" title="RSS" href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/index.rss" />
-<title>Composing grammars</title>
+<title>Grammar reuse</title>
 <style type="text/css">
    strong {font-weight: 700;}
 </style>
@@ -36,7 +36,7 @@
   <div style="margin-left:190px;border-left:2px solid #38B0C0;padding:25px;">
 <h3>Sat, 12 Dec 2015</h3>
 <br />
-<center><a name="fast_handy"> <h2>Composing grammars</h2> </a>
+<center><a name="composable"> <h2>Grammar reuse</h2> </a>
 </center>
 <html>
   <head>
@@ -46,71 +46,79 @@
       marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
       -->
     </p>
-    <p>A recent Perl 6 advent post presented a very nice vision of
-      a future of language-driven programming, one I share.
-      It goes on to encourage that its readers to follow up on this vision.
-      However,
-      I do not think the specific approach that it suggests would be fruitful.
-      In this post I'll explain why.
+    <p>Every year the Perl 6 community creates an "Advent" series of posts.
+      I usually follow these, but
+      <a href="https://perl6advent.wordpress.com/2015/12/08/day-8-grammars-generating-grammars/">one
+        in particular</a>
+      caught my attention this year.
+      It presents a vision of a future where programming is language-driven.
+      A vision that I share.
+      The post went on to encourage that its readers to follow up on this vision,
+      and suggested an approach.
+      I do not think the particular approach suggested would be fruitful.
+      In this post I'll start to explain why.
     </p>
     <h2>Composability</h2>
-    <p>I will talk about language-driven programming at some point,
-      but the points I want to make will be easier to make if I make them
-      in terms of another aspect of the vision from the advent post presents
-      -- grammar composibility.
-      Grammar composibility is nothing but "reuse" in the language-driven programming context.
-      Most programmers will be very familiar with it from regular expressions.
-    </p>
-    <p>
-      In the regular expression world reuse is very much both practical and practiced --
-      the culture of reuse is so strong there is
+    <p>The focus of the Advent post was language-driven programming,
+      and that is the aspect that excites me most.
+      But the points that wish to make are probably more easily understand if
+      I root them in more familiar ground
+      -- grammar reuse.
+    </p><p>
+      Most programmers will be very familiar with grammar reuse from regular expressions.
+      In the regular expression ("RE") world programming by cutting and pasting
+      is very practical and often practiced --
+      so much so that there
       is even a backlash against what some writers call "cargo cult programming".
     </p>
     <p>
-      Composability is the ability to take two grammars, or pieces of grammars,
-      and to put them together ("compose" them).
-      In this post, I will treat both regular expressions and BNF as ways of representing the
-      grammar of a language.
-      Ideally, when you compose two grammars will parse
+      For this post I will consider grammar reusability to be the ability
+      to join two grammars and create a third.
+      This is also sometimes called grammar composition.
+      I will use the term "grammar" somewhat loosely,
+      and include RE's and PEG descriptions
+      among the things that I call "grammars".
+      Ideally, when you compose two grammars, the result will be
     </p><ul>
-      <li>a language you can reasonably predict, that is also
+      <li>a language you can reasonably predict,
       </li>
-      <li>the language you can intuitively expect from a composition, and
-      </li>
-      <li>if each of the two grammars can be parsed in reasonable time,
-        the composed language can also be parsed in reasonable time.
+      <li>and, if each of the two original grammars can be parsed in reasonable time,
+        a language that can be parsed in reasonable time.
       </li>
     </ul>
     <p>
-      Not all language representation are composabile.
-      Regular expressions are, and BNF is.
-      PEG, which looks like a combination of BNF and regular expressions,
-      is in fact, neither, and is in fact, among all the ways commonly used
-      to represent language, perhaps the least composable.
+      Not all language representations are reusable.
+      RE's are, and BNF is.
+      PEG, which looks like a combination of BNF and RE's.
+      But a PEG description is a parser specification,
+      not BNF and is not an RE,
+      and PEG parser specifications are
+      one of the least reusable language representations ever invented.
     </p>
-    <h2>Composing regular expressions</h2>
-    <p>We'll start with regular expressions, which are as well-behaved under
-      composition as a language representation can get.
-      The combination of two regular expressions is always another regular expression,
-      and is always exactly the one described by the combined regular expression.
-      Further, every regular expression is parseable in linear time.
+    <h2>Reusing regular expressions</h2>
+    <p>We'll start with RE's, which are as well-behaved under
+      reuse as a language representation can get.
+      The combination of two RE's is always another RE,
+      and you can reasonably determine what language the combined RE recognizes by
+      examining it.
+      Further, every RE is parseable in linear time.
     </p>
-    <p>The one downside, oft mentioned by critics, is that regular expression
+    <p>The one downside, often mentioned by critics, is that RE's
       do not scale in terms of readability.
-      Here, however, the problem is not really one of composability.
-      The problem is that regular expressions are quite limited in their capabilities,
-      and programmers often use their excellent behavior under composability
-      to extent regular expressions to tasks for which they are not well-adopted.
+      Here, however, the problem is not really one of reusability.
+      The problem is that RE's are quite limited in their capabilities,
+      and programmers often exploit the excellent behavior of RE's under reuse
+      to push them into applications for which RE's just do not have the power.
     </p>
-    <h2>PEG, Perl 6 grammars and composability</h2>
+    <h2>Reuse and PEG</h2>
     <p>When programmers first look at PEG syntax, they often think they've encountered
-      paradise. They see both BNF and regular expressions, and imagine they'll have the
+      paradise. They see both BNF and RE's, and imagine they'll have the
       best of each.
     </p>
     <p>
       But the convenient behavior of
-      regular expressions depends on their ambiguity -- you simply cannot write
-      an ambiguous regular expression -- it's impossible.
+      RE's depends on their ambiguity -- you simply cannot write
+      an ambiguous RE -- it's impossible.
       More powerful and more flexible, BNF allows you to describe many more grammars --
       including ambiguous ones.
     </p>
@@ -120,66 +128,71 @@
       the predictability of nitroglycerin.
       A PEG grammar does not have to be large to be tricky.
       Consider these two:
-       </p>
-       <blockquote><pre>
+    </p>
+    <blockquote><pre>
 	 ("a"|"aa")"a"
 	 ("aa"|"a")"a"
-       </pre></blockquote>
-       On accepts "aaa" but not "aa".  The other does the reverse.
-       For the answer to this, a discussion of what grammars are predictable for PEG and more,
-       look at
-       <a href="http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2015/03/peg.html">
-       my previous post on PEG</a>.
+       </pre></blockquote><p>
+      On accepts "aaa" but not "aa".  The other does the reverse.
+      For the answer to this, a discussion of what grammars are predictable for PEG and more,
+      look at
+      <a href="http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2015/03/peg.html">
+        my previous post on PEG</a>.
     </p>
     <p>Bottom line, for practical grammars, using even one PEG grammar
-    means giving up on knowing much about the language you are actually parsing
-    except that it passes your test suite.
-    If you combine two of them, the odds are against getting anything useful.
+      means giving up on knowing much about the language you are actually parsing
+      except that it passes your test suite.
+      If you combine two of them, the odds are against getting anything useful.
+    </p>
     <h2>So what about Perl 6?</h2>
-    I devoted some time to PEG, because the parser recommended in the advent post,
-    the native Perl 6 parser, is an extended PEG parser.
-    These extensions are very interesting from the PEG point of view.
-    The PEG "tie breaking" has been changed,
-    and backtracking can be used.
-    These features mean the Perl 6 parser can be extended to languages
-    well beyond what
-    ordinary PEG parsers cannot handle.
-    But, if you use the extra features, your language descriptions will be even less
-    composable than ordinary PEG.
-    <h3>A general BNF parser</h3>
-    As mentioned, general BNF is composable, and so general BNF parsers like Marpa
-    are as composable as regular expressions, with two caveats.
-    First, if the two grammars are not doing their own lexing, their lexers will have
-    to be compatible.
-    <p>Second,
-    with regular expressions you had the advantage that <b>every</b>
-    regular expression parses in linear time, so that speed will be acceptable.
-    Marpa users compose grammars all the time, and have the same result,
-    but in Marpa it's not guaranteed -- if you are not careful, and have
-    bad luck, your grammar could go cubic.
     <p>
-    You can quarantee your Marpa grammar will stay linear if you follow 2 rules:
-    <ul>
-    <li>keep the grammar unambiguous;</li>
-    <li>don't use an unmarked middle recursions.</li>
-    </ul>
-    Unmarked middle recursions are not things you're likely to need a lot: they
-    are those palindromes where you have to count to find the middle:
-    grammars like "A ::= a | a A a".
-    If you do use a middle recursions at all, it is almost certainly going to
-    be marked, like "A ::= b | a A a", which generates strings like "aabaa".
-    With Marpa, composability is reality,
-    And, as I hope to show in a future post, so is language-driven programming.
-    <h2>Closing</h2>
+      I devoted some time to PEG, because the parser recommended in the advent post,
+      the native Perl 6 parser, is an extended PEG parser.
+      These extensions are very interesting from the PEG point of view.
+      The PEG "tie breaking" has been changed,
+      and backtracking can be used.
+      These features mean the Perl 6 parser can be extended to languages
+      well beyond what
+      ordinary PEG parsers cannot handle.
+      But, if you use the extra features, your language descriptions will be even less
+      composable than ordinary PEG.
+    </p><h3>A general BNF parser</h3><p>
+      As mentioned, general BNF is composable, and so general BNF parsers like Marpa
+      are as composable as regular expressions, with two caveats.
+      First, if the two grammars are not doing their own lexing, their lexers will have
+      to be compatible.
+    </p><p>Second,
+      with regular expressions you had the advantage that
+      <b>every</b>
+      regular expression parses in linear time, so that speed will be acceptable.
+      Marpa users compose grammars all the time, and have the same result,
+      but in Marpa it's not guaranteed -- if you are not careful, and have
+      bad luck, your grammar could go cubic.
+    </p><p>
+      You can quarantee your Marpa grammar will stay linear if you follow 2 rules:
+    </p><ul>
+      <li>keep the grammar unambiguous;</li>
+      <li>don't use an unmarked middle recursions.</li>
+    </ul><p>
+      Unmarked middle recursions are not things you're likely to need a lot: they
+      are those palindromes where you have to count to find the middle:
+      grammars like "A ::= a | a A a".
+      If you do use a middle recursions at all, it is almost certainly going to
+      be marked, like "A ::= b | a A a", which generates strings like "aabaa".
+      With Marpa, composability is reality,
+      And, as I hope to show in a future post, so is language-driven programming.
+    </p><h2>Closing</h2>
     <p>I'd like to emphasize that I'm a supporter of the Perl 6 effort.
-    I certainly <b>should</b> be, after the many favors they've done for me
-    and the Marpa community over the years.
-    If the points of this post are taken,
-    they will disappoint some of the
-    hopes for applications of the native Perl 6 parser.
-    But these applications have not been central to the Perl 6 effort,
-    of which I will be an eager student over the coming months.
-    <h3>Comments</h3>
+      I certainly
+      <b>should</b>
+      be, after the many favors they've done for me
+      and the Marpa community over the years.
+      If the points of this post are taken,
+      they will disappoint some of the
+      hopes for applications of the native Perl 6 parser.
+      But these applications have not been central to the Perl 6 effort,
+      of which I will be an eager student over the coming months.
+    </p><h3>Comments</h3>
     <p>Comments on this post can be made in
       <a href="http://groups.google.com/group/marpa-parser">
         Marpa's Google group</a>,
@@ -194,8 +207,8 @@
   </body>
 </html>
 <br />
-<p>posted at: 15:18 |
-<a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2015/12/fast_handy.html">direct link to this entry</a>
+<p>posted at: 20:21 |
+<a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2015/12/composable.html">direct link to this entry</a>
 </p>
 <div style="color:#38B0C0;padding:1px;text-align:center;">
 &sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
