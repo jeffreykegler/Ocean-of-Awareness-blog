@@ -77,8 +77,69 @@ Composing grammars
     </p>
     <p>How does PEG resolve this?  With a Gordian knot approach.
       Whenever it encounters an ambiguity, it throws all but one of the choices away.
+      This certainly takes care of the ambiguity, but it gives PEG grammars all
+      the predictability of nitroglycerin.
+      A PEG grammar does not have to be large to be tricky.
+      Consider these two:
+       </p>
+       <blockquote><pre>
+	 ("a"|"aa")"a"
+	 ("aa"|"a")"a"
+       </pre></blockquote>
+       On accepts "aaa" but not "aa".  The other does the reverse.
+       For the answer to this, a discussion of what grammars are predictable for PEG and more,
+       look at
+       <a href="http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2015/03/peg.html">
+       my previous post on PEG</a>.
     </p>
-    <p>TODO</p>
+    <p>Bottom line, for practical grammars, using even one PEG grammar
+    means giving up on knowing much about the language you are actually parsing
+    except that it passes your test suite.
+    If you combine two of them, the odds are against getting anything useful.
+    <h2>So what about Perl 6?</h2>
+    I devoted some time to PEG, because the parser recommended in the advent post,
+    the native Perl 6 parser, is an extended PEG parser.
+    These extensions are very interesting from the PEG point of view.
+    The PEG "tie breaking" has been changed,
+    and backtracking can be used.
+    These features mean the Perl 6 parser can be extended to languages
+    well beyond what
+    ordinary PEG parsers cannot handle.
+    But, if you use the extra features, your language descriptions will be even less
+    composable than ordinary PEG.
+    <h3>A general BNF parser</h3>
+    As mentioned, general BNF is composable, and so general BNF parsers like Marpa
+    are as composable as regular expressions, with two caveats.
+    First, if the two grammars are not doing their own lexing, their lexers will have
+    to be compatible.
+    <p>Second,
+    with regular expressions you had the advantage that <b>every</b>
+    regular expression parses in linear time, so that speed will be acceptable.
+    Marpa users compose grammars all the time, and have the same result,
+    but in Marpa it's not guaranteed -- if you are not careful, and have
+    bad luck, your grammar could go cubic.
+    <p>
+    You can quarantee your Marpa grammar will stay linear if you follow 2 rules:
+    <ul>
+    <li>keep the grammar unambiguous;</li>
+    <li>don't use an unmarked middle recursions.</li>
+    </ul>
+    Unmarked middle recursions are not things you're likely to need a lot: they
+    are those palindromes where you have to count to find the middle:
+    grammars like "A ::= a | a A a".
+    If you do use a middle recursions at all, it is almost certainly going to
+    be marked, like "A ::= b | a A a", which generates strings like "aabaa".
+    With Marpa, composability is reality,
+    And, as I hope to show in a future post, so is language-driven programming.
+    <h2>Closing</h2>
+    <p>I'd like to emphasize that I'm a supporter of the Perl 6 effort.
+    I certainly <b>should</b> be, after the many favors they've done for me
+    and the Marpa community over the years.
+    If the points of this post are taken,
+    they will disappoint some of the
+    hopes for applications of the native Perl 6 parser.
+    But these applications have not been central to the Perl 6 effort,
+    of which I will be an eager student over the coming months.
     <h3>Comments</h3>
     <p>Comments on this post can be made in
       <a href="http://groups.google.com/group/marpa-parser">
