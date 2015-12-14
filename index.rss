@@ -112,7 +112,7 @@
 	A = &quot;a&quot;A&quot;a&quot;/&quot;aa&quot;&lt;/pre&gt;&lt;/blockquote&gt;
     &lt;p&gt;
       All three clearly accept only strings which are repetitions
-      of the letter &quot;&lt;tt&gt;a&lt;/tt&gt;&quot;?
+      of the letter &quot;&lt;tt&gt;a&lt;/tt&gt;&quot;.
       But which strings?
       For the answers,
       suggestions for dealing with PEG if you are committed to it,
@@ -182,7 +182,7 @@
       If you use a middle recursion at all, it is almost certainly going to
       be marked, like &quot;&lt;tt&gt;A ::= b | a A a&lt;/tt&gt;&quot;,
       which generates strings like &quot;&lt;tt&gt;aabaa&lt;/tt&gt;&quot;.
-      With Marpa, as with RE's, resuse is easy and practical.
+      With Marpa, as with RE's, reuse is easy and practical.
       And, as I hope to show in a future post, unlike RE's,
       Marpa opens the road to language-driven programming.
     &lt;/p&gt;
