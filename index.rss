@@ -119,7 +119,6 @@
       bottom-up operator precedence parser for expressions,
       which I mentioned above,
       is built into Perl 6 and automated.
-      This, as far as I know, is a new feature in top-down parsers.
     &lt;/p&gt;
     &lt;p&gt;But, while the new syntax may prove handy for duplicating what is done
       in recursive descent parsers,
