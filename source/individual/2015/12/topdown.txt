@@ -19,6 +19,16 @@ What is top-down parsing?
     component of parsers is "prediction".
     And prediction is, indeed, a very useful component of a parser,
     when used in combination with other techniques.
+    <h2>OK, but why bring this up?</h2>
+    <p>If someone finds it necessary to use striking language to make a point,
+    it is often a sign that the point itself is not all that striking.
+    But I <b>do</b> think it is helpful to be clear about the basis of top-down
+    parsing.
+    <p>
+    More importantly, I think a clearer understanding of what top-down parsing
+    is can help us assess the odds that it can be the platform for
+    futures such as language-oriented parsing.
+    And 
     <h2>So why does top-down parsing work?</h2>
     <p>Of course, if a parser does nothing but guess, it can only parse
     exactly one input.
@@ -36,17 +46,30 @@ What is top-down parsing?
     To be sure, recursive descent parsers get very large and confusing,
     but the size and confusion are of a kind where the mathematician has
     no advantage over the seasoned, far-thinking programmer.
-    <h2>Approaches to top-down</h2>
-    <p>Within top-down, competitors of recursive descent exist.
-    In particular, a lot of attention is given to trying to eliminate
-    or automate
-    the need to hand-write the parser.
-    The syntax-driven approaches to top-down run squarely into the essential
-    limits of the top-down approach.
-    An impressive amount of brain-power
-    had been devoted to top-down syntax-driven without, however,
-    results that are anywhere near as impressive.
-    <h2>Perl 6</h2>
+    <h2>Switching grammars</h2>
+    <p>You can even use the flexibility of top-down to switch
+    away from top-down to another parser.
+    For example, you could claim that a top-down parser could do anything my
+    own parser (Marpa) could do, because a recursive descent parser can call
+    a Marpa parser.
+    <p>A less dramatic switchoff is very common -- in fact, it's present
+    in just about every recursive descent parser for a computer language,
+    because one of the many things beyond the power of top-down are arithmetic
+    and other expressions.
+    Recursive descent parsers handle these by handing control over to an operator
+    precedence parser.
+    The top-down is not extremely smart about the hand-over and hand-back
+    -- it is up to the programmer to make sure the two play together nicely.
+    But experienced language designers know that not to adventurous
+    with expressions,
+    and used with caution, this approach works.
+    <h2>Perl 6 Grammars</h2>
+    <p>Perl 6 grammars are PEG with extensions,
+    including backtracking, backtracking control,
+    a new style of tie-breaking and lots of opportunity
+    for the programmer to intervene and customize everything.
+    <p>As one example, the parsing of expressions using operator precedence
+    is automated in Perl 6 grammars.
     <p>I'm a fan of the Perl 6 effort.
       I certainly
       <b>should</b>

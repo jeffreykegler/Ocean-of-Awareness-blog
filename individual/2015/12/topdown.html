@@ -1,0 +1,144 @@
+<html>
+<head>
+<link rel="alternate" title="Ocean of Awareness RSS" type="application/rss+xml" title="RSS" href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/index.rss" />
+<title>What is top-down parsing?</title>
+<style type="text/css">
+   strong {font-weight: 700;}
+</style>
+</head>
+<body>
+<div
+  style="color:white;background-color:#38B0C0;padding:1em;clear:left;text-align:center;">
+<h1>Ocean of Awareness</h1>
+</div>
+  <div style="margin:0;padding:10px 30px 10px 10px;width:150px;float:left;border-right:2px solid #38B0C0">
+  <p>
+  <strong>Jeffrey Kegler's blog</strong>
+  about Marpa, his new parsing algorithm,
+    and other topics of interest</p>
+  <p><a href="http://www.jeffreykegler.com/">Jeffrey's personal website</a></p>
+      <p>
+	<a href="https://twitter.com/jeffreykegler" class="twitter-follow-button" data-show-count="false">Follow @jeffreykegler</a>
+      </p>
+      <p style="text-align:center">
+	<!-- Place this code where you want the badge to render. -->
+	<a href="//plus.google.com/101567692867247957860?prsrc=3" rel="publisher" style="text-decoration:none;">
+	<img src="//ssl.gstatic.com/images/icons/gplus-32.png" alt="Google+" style="border:0;width:32px;height:32px;"/></a>
+      </p>
+  <h3>Marpa resources</h3>
+  <p><a href="http://jeffreykegler.github.com/Marpa-web-site/">The Marpa website</a></p>
+  <p>The Ocean of Awareness blog: <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog">home page</a>,
+  <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/metapages/chronological.html">chronological index</a>,
+  and
+  <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/metapages/annotated.html">annotated index</a>.
+  </p>
+  </div>
+  <div style="margin-left:190px;border-left:2px solid #38B0C0;padding:25px;">
+<h3>Sat, 19 Dec 2015</h3>
+<br />
+<center><a name="topdown"> <h2>What is top-down parsing?</h2> </a>
+</center>
+<html>
+  <head>
+  </head>
+  <body><p>
+      <!--
+      marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
+      -->
+    </p>
+    Top-down parsing is guessing.  Literally.
+    Bottom-up parsing is looking.
+    </p>
+    <p>The way you'll often hear that phrased is that top-down parsing is
+    looking, starting at the top,
+    and bottom-up parsing is looking, starting at the bottom.
+    But that is misleading, because the input is at the bottom --
+    at the top there is nothing to look at.
+    <p>A more generous, but still accurate, way to describe the top-down
+    component of parsers is "prediction".
+    And prediction is, indeed, a very useful component of a parser,
+    when used in combination with other techniques.
+    <h2>So why does top-down parsing work?</h2>
+    <p>Of course, if a parser does nothing but guess, it can only parse
+    exactly one input.
+    So top-down parsing, in practice, is always combined with a bottom-up
+    component.
+    This bottom-up component may be as modest as lookahead, but it <b>must</b>
+    be there or else top-down parsing is really not parsing at all.
+    <p>The big advantage of the top-down structure is its flexibility.
+    You can write a top-down parser as a series of subroutine calls --
+    a technique called recursive descent --
+    and this allows you to hook in custom-written bottom-up logic at every
+    top-down choice point.
+    <p>A major advantage of the recursive descent approach is that it is
+    completely understandable for ordinary programmers.
+    To be sure, recursive descent parsers get very large and confusing,
+    but the size and confusion are of a kind where the mathematician has
+    no advantage over the seasoned, far-thinking programmer.
+    <h2>Advanced approaches to top-down</h2>
+    <p>Many of the best minds in the field have tried to improve top-down parsing.
+    But as we've seen, they are literally starting with nothing.
+    And, as they move over to a more syntax-driven approach, they move
+    away from the flexibility of recursive descent.
+    <p>I've dealt with PEG here and here.
+    The PEG syntax presents an alluring vision -- a perfect meld of regular expressions
+    and BNF.
+    Combined with an underlying magic that delivered the best of both,
+    this would be the one parsing technique to rule them all.
+    Alas, the combination 
+    <h2>Perl 6</h2>
+    <p>I'm a fan of the Perl 6 effort.
+      I certainly
+      <b>should</b>
+      be a supporter, after the many favors they've done for me
+      and the Marpa community over the years.
+      The considerations of this post
+      will disappoint some of the
+      hopes for applications of the native Perl 6 parser.
+      But these applications have not been central to the Perl 6 effort,
+      of which I will be an eager student over the coming months.
+    </p>
+    <h2>Comments</h2>
+    <p>
+      To learn more about Marpa,
+      there's
+      <a href="http://savage.net.au/Marpa.html">the
+        official web site maintained by Ron Savage</a>.
+      I also have
+      <a href="http://jeffreykegler.github.io/Marpa-web-site/">a Marpa web site</a>.
+      Comments on this post can be made in
+      <a href="http://groups.google.com/group/marpa-parser">
+        Marpa's Google group</a>,
+      or on our IRC channel: #marpa at freenode.net.
+    </p>
+  </body>
+</html>
+<br />
+<p>posted at: 15:27 |
+<a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2015/12/topdown.html">direct link to this entry</a>
+</p>
+<div style="color:#38B0C0;padding:1px;text-align:center;">
+&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&sect;
+</div>
+</div>
+</div>
+<div id="footer" style="border-top:thick solid #38B0C0;clear:left;padding:1em;">
+<p>This is Ocean of Awareness's
+  new home.  This blog has been hosted at
+  <a href="http://blogs.perl.org/users/jeffrey_kegler/">blogs.perl.org</a>
+  but I have succumbed to the lure of static blogging.
+</div>
+	<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+              <script type="text/javascript">
+            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+          </script>
+          <script type="text/javascript">
+            try {
+              var pageTracker = _gat._getTracker("UA-33430331-1");
+            pageTracker._trackPageview();
+            } catch(err) {}
+          </script>
+</body></html>
