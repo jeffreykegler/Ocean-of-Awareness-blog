@@ -121,16 +121,15 @@
       But used with caution, this approach works.
     </p>
     <h2>Top-down parsing and language-oriented programming</h2>
-    <p>In
-      <a href="http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2015/12/composable.html">past</a>,
-      and probably in future, posts, I argue that,
-      when it comes to advancing into new territory,
-      top-down techniques simply do not have the horsepower.
+    <p>But what about taking top-down methods into the future of language-oriented programmers,
+    extensible languages, and grammars which write grammars?
+    Here we are forced to confront the reality -- that the effectiveness of
+    top-down parsing comes entirely from the foreign elements that are added to it.
       Starting from a basis of top-down parsing is literally starting
       with nothing.
-      If you also attempt to adopt top-down to syntax-driven methods,
-      then you also move away from the flexibility that is top-down's greatest
-      strength.
+      As I have shown in more detail
+    <a href="http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2015/12/composable.html">elsewhere</a>,
+      top-down techniques simply do not have enough horsepower to deal with grammar-driven programming.
     </p>
     <p>Perl 6 grammars are top-down -- PEG with lots of extensions.
       These extensions
@@ -144,15 +143,15 @@
       That trick of switching over to a
       bottom-up operator precedence parser for expressions,
       which I mentioned above,
-      is built into Perl 6 and automated.
+      is built into Perl 6 and semi-automated.
+      (I say semi-automated because making sure the two parsers "play nice"
+      with each other is not automated -- that's still up to the programmer.)
     </p>
-    <p>But, while the new syntax may prove handy for duplicating what is done
-      in recursive descent parsers,
-      it adds nothing to the techniques they are already using.
-      Making sure the two levels of parsing "play nice"
-      with each other is still up to the programmer,
-      who must either stick to the tried and true,
-      or experiment very carefully.
+    <p>As far as I know, this semi-automation of expression handling
+    is new with Perl 6 grammars, and it
+    may prove handy for duplicating what is done
+      in recursive descent parsers.
+      But it adds no new technique to those already in use.
       And features
       like
     </p><ul>
