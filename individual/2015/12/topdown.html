@@ -1,7 +1,7 @@
 <html>
 <head>
 <link rel="alternate" title="Ocean of Awareness RSS" type="application/rss+xml" title="RSS" href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/index.rss" />
-<title>What is top-down parsing?</title>
+<title>Top-down parsing is guessing</title>
 <style type="text/css">
    strong {font-weight: 700;}
 </style>
@@ -36,7 +36,7 @@
   <div style="margin-left:190px;border-left:2px solid #38B0C0;padding:25px;">
 <h3>Sat, 19 Dec 2015</h3>
 <br />
-<center><a name="topdown"> <h2>What is top-down parsing?</h2> </a>
+<center><a name="topdown"> <h2>Top-down parsing is guessing</h2> </a>
 </center>
 <html>
   <head>
@@ -66,7 +66,7 @@
       when used in combination with other techniques.
     </p>
     <p>Of course, if a parser does nothing but predict,
-    it can predict only one input.
+      it can predict only one input.
       Top-down parsing must always be combined with a bottom-up
       component.
       This bottom-up component may be as modest as lookahead, but it
@@ -121,7 +121,9 @@
       But used with caution, this approach works.
     </p>
     <h2>Top-down parsing and language-oriented programming</h2>
-    <p>In past, and probably in future, posts, I've argued that,
+    <p>In
+      <a href="http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2015/12/composable.html">past</a>,
+      and probably in future, posts, I argue that,
       when it comes to advancing into new territory,
       top-down techniques simply do not have the horsepower.
       Starting from a basis of top-down parsing is literally starting
@@ -153,14 +155,14 @@
       or experiment very carefully.
       And features
       like
-      <ul>
+    </p><ul>
       <li>mulitple kinds of expression, which can be told apart
-      based on their context,</li>
+        based on their context,</li>
       <li>n-ary expressions for arbitrary n, and</li>
       <li>the autogeneration of multiple rules, each allowing
-      a different precedence scheme for
-      expressions of arbitrary arity and associativity,
-      </ul>
+        a different precedence scheme for
+        expressions of arbitrary arity and associativity,
+      </li></ul><p>
       all of which are available and in current use in
       <a href="http://jeffreykegler.github.io/Marpa-web-site/">Marpa</a>,
       are impossible for the technology behind Perl 6 grammars.

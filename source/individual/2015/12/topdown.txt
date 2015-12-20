@@ -1,4 +1,4 @@
-What is top-down parsing?
+Top-down parsing is guessing
 <html>
   <head>
   </head>
@@ -27,7 +27,7 @@ What is top-down parsing?
       when used in combination with other techniques.
     </p>
     <p>Of course, if a parser does nothing but predict,
-    it can predict only one input.
+      it can predict only one input.
       Top-down parsing must always be combined with a bottom-up
       component.
       This bottom-up component may be as modest as lookahead, but it
@@ -82,7 +82,9 @@ What is top-down parsing?
       But used with caution, this approach works.
     </p>
     <h2>Top-down parsing and language-oriented programming</h2>
-    <p>In past, and probably in future, posts, I've argued that,
+    <p>In
+      <a href="http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2015/12/composable.html">past</a>,
+      and probably in future, posts, I argue that,
       when it comes to advancing into new territory,
       top-down techniques simply do not have the horsepower.
       Starting from a basis of top-down parsing is literally starting
@@ -114,14 +116,14 @@ What is top-down parsing?
       or experiment very carefully.
       And features
       like
-      <ul>
+    </p><ul>
       <li>mulitple kinds of expression, which can be told apart
-      based on their context,</li>
+        based on their context,</li>
       <li>n-ary expressions for arbitrary n, and</li>
       <li>the autogeneration of multiple rules, each allowing
-      a different precedence scheme for
-      expressions of arbitrary arity and associativity,
-      </ul>
+        a different precedence scheme for
+        expressions of arbitrary arity and associativity,
+      </li></ul><p>
       all of which are available and in current use in
       <a href="http://jeffreykegler.github.io/Marpa-web-site/">Marpa</a>,
       are impossible for the technology behind Perl 6 grammars.

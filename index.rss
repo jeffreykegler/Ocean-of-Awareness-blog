@@ -10,7 +10,7 @@
     <language>en</language>
 
   <item>
-    <title>What is top-down parsing?</title>
+    <title>Top-down parsing is guessing</title>
     <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2015/12/topdown.html</link>
     <description>&lt;html&gt;
   &lt;head&gt;
@@ -40,7 +40,7 @@
       when used in combination with other techniques.
     &lt;/p&gt;
     &lt;p&gt;Of course, if a parser does nothing but predict,
-    it can predict only one input.
+      it can predict only one input.
       Top-down parsing must always be combined with a bottom-up
       component.
       This bottom-up component may be as modest as lookahead, but it
@@ -95,7 +95,9 @@
       But used with caution, this approach works.
     &lt;/p&gt;
     &lt;h2&gt;Top-down parsing and language-oriented programming&lt;/h2&gt;
-    &lt;p&gt;In past, and probably in future, posts, I've argued that,
+    &lt;p&gt;In
+      &lt;a href=&quot;http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2015/12/composable.html&quot;&gt;past&lt;/a&gt;,
+      and probably in future, posts, I argue that,
       when it comes to advancing into new territory,
       top-down techniques simply do not have the horsepower.
       Starting from a basis of top-down parsing is literally starting
@@ -127,14 +129,14 @@
       or experiment very carefully.
       And features
       like
-      &lt;ul&gt;
+    &lt;/p&gt;&lt;ul&gt;
       &lt;li&gt;mulitple kinds of expression, which can be told apart
-      based on their context,&lt;/li&gt;
+        based on their context,&lt;/li&gt;
       &lt;li&gt;n-ary expressions for arbitrary n, and&lt;/li&gt;
       &lt;li&gt;the autogeneration of multiple rules, each allowing
-      a different precedence scheme for
-      expressions of arbitrary arity and associativity,
-      &lt;/ul&gt;
+        a different precedence scheme for
+        expressions of arbitrary arity and associativity,
+      &lt;/li&gt;&lt;/ul&gt;&lt;p&gt;
       all of which are available and in current use in
       &lt;a href=&quot;http://jeffreykegler.github.io/Marpa-web-site/&quot;&gt;Marpa&lt;/a&gt;,
       are impossible for the technology behind Perl 6 grammars.
