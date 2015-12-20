@@ -74,7 +74,7 @@ Top-down parsing is guessing
       Even so, most computer languages these days are parsed top-down --
       by recursive descent.
       These recursive descent parsers deal with expressions
-      by temporarily handing control over to an operator
+      by temporarily handing control over to an bottom-up operator
       precedence parser.
       Neither of these parsers is
       extremely smart about the hand-over and hand-back
@@ -90,11 +90,12 @@ Top-down parsing is guessing
       Starting from a basis of top-down parsing is literally starting
       with nothing.
       If you also attempt to adopt top-down to syntax-driven methods,
-      then you also move away from of the flexibility that is top-down's greatest
+      then you also move away from the flexibility that is top-down's greatest
       strength.
     </p>
-    <p>Perl 6 grammars are top-down -- PEG with extensions,
-      including backtracking, backtracking control,
+    <p>Perl 6 grammars are top-down -- PEG with lots of extensions.
+      These extensions
+      include backtracking, backtracking control,
       a new style of tie-breaking and lots of opportunity
       for the programmer to intervene and customize everything.
       But behind it all is a top-down parse engine.
@@ -105,7 +106,6 @@ Top-down parsing is guessing
       bottom-up operator precedence parser for expressions,
       which I mentioned above,
       is built into Perl 6 and automated.
-      This, as far as I know, is a new feature in top-down parsers.
     </p>
     <p>But, while the new syntax may prove handy for duplicating what is done
       in recursive descent parsers,
