@@ -46,57 +46,129 @@
       marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
       -->
     </p>
-    Top-down parsing is guessing.  Literally.
-    Bottom-up parsing is looking.
+    <p>
+      Top-down parsing is guessing.  Literally.
+      Bottom-up parsing is looking.
     </p>
     <p>The way you'll often hear that phrased is that top-down parsing is
-    looking, starting at the top,
-    and bottom-up parsing is looking, starting at the bottom.
-    But that is misleading, because the input is at the bottom --
-    at the top there is nothing to look at.
+      looking, starting at the top,
+      and bottom-up parsing is looking, starting at the bottom.
+      But that is misleading, because the input is at the bottom --
+      at the top there is nothing to look at.
+      A useable top-down parser
+      <b>must</b>
+      have a bottom-up component,
+      even if that component is just lookahead.
+    </p>
     <p>A more generous, but still accurate, way to describe the top-down
-    component of parsers is "prediction".
-    And prediction is, indeed, a very useful component of a parser,
-    when used in combination with other techniques.
-    <h2>So why does top-down parsing work?</h2>
-    <p>Of course, if a parser does nothing but guess, it can only parse
-    exactly one input.
-    So top-down parsing, in practice, is always combined with a bottom-up
-    component.
-    This bottom-up component may be as modest as lookahead, but it <b>must</b>
-    be there or else top-down parsing is really not parsing at all.
-    <p>The big advantage of the top-down structure is its flexibility.
-    You can write a top-down parser as a series of subroutine calls --
-    a technique called recursive descent --
-    and this allows you to hook in custom-written bottom-up logic at every
-    top-down choice point.
-    <p>A major advantage of the recursive descent approach is that it is
-    completely understandable for ordinary programmers.
-    To be sure, recursive descent parsers get very large and confusing,
-    but the size and confusion are of a kind where the mathematician has
-    no advantage over the seasoned, far-thinking programmer.
-    <h2>Advanced approaches to top-down</h2>
-    <p>Many of the best minds in the field have tried to improve top-down parsing.
-    But as we've seen, they are literally starting with nothing.
-    And, as they move over to a more syntax-driven approach, they move
-    away from the flexibility of recursive descent.
-    <p>I've dealt with PEG here and here.
-    The PEG syntax presents an alluring vision -- a perfect meld of regular expressions
-    and BNF.
-    Combined with an underlying magic that delivered the best of both,
-    this would be the one parsing technique to rule them all.
-    Alas, the combination 
-    <h2>Perl 6</h2>
-    <p>I'm a fan of the Perl 6 effort.
-      I certainly
-      <b>should</b>
-      be a supporter, after the many favors they've done for me
-      and the Marpa community over the years.
-      The considerations of this post
-      will disappoint some of the
-      hopes for applications of the native Perl 6 parser.
-      But these applications have not been central to the Perl 6 effort,
-      of which I will be an eager student over the coming months.
+      component of parsers is "prediction".
+      And prediction is, indeed, a very useful component of a parser,
+      when used in combination with other techniques.
+    </p>
+    <p>Of course, if a parser does nothing but predict,
+    it can predict only one input.
+      Top-down parsing must always be combined with a bottom-up
+      component.
+      This bottom-up component may be as modest as lookahead, but it
+      <b>must</b>
+      be there or else top-down parsing is really not parsing at all.
+    </p>
+    <h2>So why is top-down parsing used so much?</h2>
+    <p>Top-down parsing may be unuseable in its pure form,
+      but from one point of view that is irrelevant.
+      Top-down parsing's biggest advantage is that it is highly flexible --
+      there's no reason to stick to its "pure" form.
+    </p>
+    <p>A top-down parser can be written as a series of subroutine calls --
+      a technique called recursive descent.
+      Recursive descent
+      allows you to hook in custom-written bottom-up logic at every
+      top-down choice point,
+      and it is a technique which is
+      completely understandable to programmers with little or no training
+      in parsing theory.
+      When dealing with recursive descent parsers,
+      it is more useful to be a seasoned, far-thinking programmer
+      than it is to be a mathematician.
+      This makes recursive descent very appealing to
+      seasoned, far-thinking programmers,
+      and they are the audience that counts.
+    </p>
+    <h2>Switching techniques</h2>
+    <p>You can even use the flexibility of top-down to switch
+      away from top-down parsing.
+      For example, you could claim that a top-down parser could do anything my
+      own parser
+      (<a href="http://jeffreykegler.github.io/Marpa-web-site/">Marpa</a>)
+      could do, because a recursive descent parser can call
+      a Marpa parser.
+    </p>
+    <p>
+      A less dramatic switchoff, and one that still leaves the parser with a good claim to be
+      basically top-down, is very common.
+      Arithmetic expressions are essential for a computer language.
+      But they are also
+      among the many things
+      top-down parsing cannot handle, even with ordinary lookahead.
+      Even so, most computer languages these days are parsed top-down --
+      by recursive descent.
+      These recursive descent parsers deal with expressions
+      by temporarily handing control over to an operator
+      precedence parser.
+      Neither of these parsers is
+      extremely smart about the hand-over and hand-back
+      -- it is up to the programmer to make sure the two play together nicely.
+      But used with caution, this approach works.
+    </p>
+    <h2>Top-down parsing and language-oriented programming</h2>
+    <p>In past, and probably in future, posts, I've argued that,
+      when it comes to advancing into new territory,
+      top-down techniques simply do not have the horsepower.
+      Starting from a basis of top-down parsing is literally starting
+      with nothing.
+      If you also attempt to adopt top-down to syntax-driven methods,
+      then you also move away from of the flexibility that is top-down's greatest
+      strength.
+    </p>
+    <p>Perl 6 grammars are top-down -- PEG with extensions,
+      including backtracking, backtracking control,
+      a new style of tie-breaking and lots of opportunity
+      for the programmer to intervene and customize everything.
+      But behind it all is a top-down parse engine.
+    </p>
+    <p>One aspect of Perl 6 grammars might be seen as breaking
+      out of the top-down trap.
+      That trick of switching over to a
+      bottom-up operator precedence parser for expressions,
+      which I mentioned above,
+      is built into Perl 6 and automated.
+      This, as far as I know, is a new feature in top-down parsers.
+    </p>
+    <p>But, while the new syntax may prove handy for duplicating what is done
+      in recursive descent parsers,
+      it adds nothing to the techniques they are already using.
+      Making sure the two levels of parsing "play nice"
+      with each other is still up to the programmer,
+      who must either stick to the tried and true,
+      or experiment very carefully.
+      And features
+      like
+      <ul>
+      <li>mulitple kinds of expression, which can be told apart
+      based on their context,</li>
+      <li>n-ary expressions for arbitrary n, and</li>
+      <li>the autogeneration of multiple rules, each allowing
+      a different precedence scheme for
+      expressions of arbitrary arity and associativity,
+      </ul>
+      all of which are available and in current use in
+      <a href="http://jeffreykegler.github.io/Marpa-web-site/">Marpa</a>,
+      are impossible for the technology behind Perl 6 grammars.
+    </p>
+    <p>I am a fan of the Perl 6 effort.
+      Obviously, I have doubts about one specific set of hopes for Perl 6 grammars.
+      But these hopes have not been central to the Perl 6 effort,
+      and I will be an eager student of the Perl 6 team's work over the coming months.
     </p>
     <h2>Comments</h2>
     <p>
