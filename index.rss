@@ -96,13 +96,13 @@
     &lt;/p&gt;
     &lt;h2&gt;Top-down parsing and language-oriented programming&lt;/h2&gt;
     &lt;p&gt;But what about taking top-down methods into the future of language-oriented programming,
-    extensible languages, and grammars which write grammars?
-    Here we are forced to confront the reality -- that the effectiveness of
-    top-down parsing comes entirely from the foreign elements that are added to it.
+      extensible languages, and grammars which write grammars?
+      Here we are forced to confront the reality -- that the effectiveness of
+      top-down parsing comes entirely from the foreign elements that are added to it.
       Starting from a basis of top-down parsing is literally starting
       with nothing.
       As I have shown in more detail
-    &lt;a href=&quot;http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2015/12/composable.html&quot;&gt;elsewhere&lt;/a&gt;,
+      &lt;a href=&quot;http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2015/12/composable.html&quot;&gt;elsewhere&lt;/a&gt;,
       top-down techniques simply do not have enough horsepower to deal with grammar-driven programming.
     &lt;/p&gt;
     &lt;p&gt;Perl 6 grammars are top-down -- PEG with lots of extensions.
@@ -122,8 +122,8 @@
       with each other is not automated -- that's still up to the programmer.)
     &lt;/p&gt;
     &lt;p&gt;As far as I know, this semi-automation of expression handling
-    is new with Perl 6 grammars, and it
-    may prove handy for duplicating what is done
+      is new with Perl 6 grammars, and it
+      may prove handy for duplicating what is done
       in recursive descent parsers.
       But it adds no new technique to those already in use.
       And features
@@ -131,11 +131,14 @@
     &lt;/p&gt;&lt;ul&gt;
       &lt;li&gt;mulitple types of expression, which can be told apart
         based on their context,&lt;/li&gt;
-      &lt;li&gt;&lt;i&gt;n&lt;/i&gt;-ary expressions for arbitrary &lt;i&gt;n&lt;/i&gt;, and&lt;/li&gt;
+      &lt;li&gt;&lt;i&gt;n&lt;/i&gt;-ary expressions for arbitrary
+        &lt;i&gt;n&lt;/i&gt;, and&lt;/li&gt;
       &lt;li&gt;the autogeneration of multiple rules, each allowing
-        a different precedence scheme for
-        expressions of arbitrary arity and associativity,
-      &lt;/li&gt;&lt;/ul&gt;&lt;p&gt;
+        a different precedence scheme,
+        for expressions of arbitrary arity and associativity,
+      &lt;/li&gt;
+    &lt;/ul&gt;
+    &lt;p&gt;
       all of which are available and in current use in
       &lt;a href=&quot;http://jeffreykegler.github.io/Marpa-web-site/&quot;&gt;Marpa&lt;/a&gt;,
       are impossible for the technology behind Perl 6 grammars.

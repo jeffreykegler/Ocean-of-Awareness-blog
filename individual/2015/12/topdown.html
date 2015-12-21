@@ -122,13 +122,13 @@
     </p>
     <h2>Top-down parsing and language-oriented programming</h2>
     <p>But what about taking top-down methods into the future of language-oriented programming,
-    extensible languages, and grammars which write grammars?
-    Here we are forced to confront the reality -- that the effectiveness of
-    top-down parsing comes entirely from the foreign elements that are added to it.
+      extensible languages, and grammars which write grammars?
+      Here we are forced to confront the reality -- that the effectiveness of
+      top-down parsing comes entirely from the foreign elements that are added to it.
       Starting from a basis of top-down parsing is literally starting
       with nothing.
       As I have shown in more detail
-    <a href="http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2015/12/composable.html">elsewhere</a>,
+      <a href="http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2015/12/composable.html">elsewhere</a>,
       top-down techniques simply do not have enough horsepower to deal with grammar-driven programming.
     </p>
     <p>Perl 6 grammars are top-down -- PEG with lots of extensions.
@@ -148,8 +148,8 @@
       with each other is not automated -- that's still up to the programmer.)
     </p>
     <p>As far as I know, this semi-automation of expression handling
-    is new with Perl 6 grammars, and it
-    may prove handy for duplicating what is done
+      is new with Perl 6 grammars, and it
+      may prove handy for duplicating what is done
       in recursive descent parsers.
       But it adds no new technique to those already in use.
       And features
@@ -157,11 +157,14 @@
     </p><ul>
       <li>mulitple types of expression, which can be told apart
         based on their context,</li>
-      <li><i>n</i>-ary expressions for arbitrary <i>n</i>, and</li>
+      <li><i>n</i>-ary expressions for arbitrary
+        <i>n</i>, and</li>
       <li>the autogeneration of multiple rules, each allowing
-        a different precedence scheme for
-        expressions of arbitrary arity and associativity,
-      </li></ul><p>
+        a different precedence scheme,
+        for expressions of arbitrary arity and associativity,
+      </li>
+    </ul>
+    <p>
       all of which are available and in current use in
       <a href="http://jeffreykegler.github.io/Marpa-web-site/">Marpa</a>,
       are impossible for the technology behind Perl 6 grammars.
