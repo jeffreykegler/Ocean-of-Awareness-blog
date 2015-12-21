@@ -29,7 +29,7 @@
       and bottom-up parsing is looking, starting at the bottom.
       But that is misleading, because the input is at the bottom --
       at the top there is nothing to look at.
-      A useable top-down parser
+      A usable top-down parser
       &lt;b&gt;must&lt;/b&gt;
       have a bottom-up component,
       even if that component is just lookahead.
@@ -48,7 +48,7 @@
       be there or else top-down parsing is really not parsing at all.
     &lt;/p&gt;
     &lt;h2&gt;So why is top-down parsing used so much?&lt;/h2&gt;
-    &lt;p&gt;Top-down parsing may be unuseable in its pure form,
+    &lt;p&gt;Top-down parsing may be unusable in its pure form,
       but from one point of view that is irrelevant.
       Top-down parsing's biggest advantage is that it is highly flexible --
       there's no reason to stick to its &quot;pure&quot; form.
@@ -95,7 +95,7 @@
       But used with caution, this approach works.
     &lt;/p&gt;
     &lt;h2&gt;Top-down parsing and language-oriented programming&lt;/h2&gt;
-    &lt;p&gt;But what about taking top-down methods into the future of language-oriented programmers,
+    &lt;p&gt;But what about taking top-down methods into the future of language-oriented programming,
     extensible languages, and grammars which write grammars?
     Here we are forced to confront the reality -- that the effectiveness of
     top-down parsing comes entirely from the foreign elements that are added to it.
@@ -129,9 +129,9 @@
       And features
       like
     &lt;/p&gt;&lt;ul&gt;
-      &lt;li&gt;mulitple kinds of expression, which can be told apart
+      &lt;li&gt;mulitple types of expression, which can be told apart
         based on their context,&lt;/li&gt;
-      &lt;li&gt;n-ary expressions for arbitrary n, and&lt;/li&gt;
+      &lt;li&gt;&lt;i&gt;n&lt;/i&gt;-ary expressions for arbitrary &lt;i&gt;n&lt;/i&gt;, and&lt;/li&gt;
       &lt;li&gt;the autogeneration of multiple rules, each allowing
         a different precedence scheme for
         expressions of arbitrary arity and associativity,
