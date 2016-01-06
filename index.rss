@@ -46,11 +46,12 @@
       &lt;li&gt;They would want to extend their grammars with new syntax,
       including new
       kinds of expressions.&lt;/li&gt;
-      &lt;li&gt;They would also use want to use tools that automatically generated new syntax.&lt;/li&gt;
-      &lt;li&gt;Users would not want to, and in the case of auto-generated syntax
+      &lt;li&gt;They would also want to use tools that automatically generated new syntax.&lt;/li&gt;
+      &lt;li&gt;Users would not want to, and especially
+      in the case of auto-generated syntax
       would usually not be able to,
       massage the syntax into very restricted forms.
-      Instead users would create grammars and languages
+      Instead, users would create grammars and languages
       which required unlimited lookahead to disambiguate,
       and they would require parsers which could handle these grammars.&lt;/li&gt;
       &lt;li&gt;Finally, users would need to be able to rely on
