@@ -26,30 +26,34 @@
     &lt;/blockquote&gt;
     &lt;p&gt;
       In the 1960's and 1970's computer languages were evolving rapidly.
-      It was not clear that which way they were headed.
+      It was not clear which way they were headed.
       Would most programming be done with
       general-purpose languages?
       Or would programmers create a language for every task domain?
       Or even for every project?
-      And, if a lots of languages were going to be created,
-      what kinds of languages would be reasonable to use?
+      And, if lots of languages were going to be created,
+      what kinds of languages would be needed?
     &lt;/p&gt;
     &lt;p&gt;
-      In was in that context that &amp;#268;ulik and Cohen,
+      It was in that context that &amp;#268;ulik and Cohen,
       in
       &lt;a href=&quot;http://www.sciencedirect.com/science/article/pii/S0022000073800509&quot;&gt;a 
-      1973 paper&lt;/a&gt;
+      1973 paper&lt;/a&gt;,
       outlined what they thought programmers would want and should have.
-      In keeping with the times,
+      In keeping with the spirit of the time,
       it was quite a lot:
       &lt;ul&gt;
       &lt;li&gt;They would want to extend their grammars with new syntax,
       including new
       kinds of expressions.&lt;/li&gt;
-      &lt;li&gt;They would also use tools that automatically generated new syntax.&lt;/li&gt;
-      &lt;li&gt;Especially for auto-generated syntax, users would want to parse
-      inputs which needed unlimited lookahead to disambiguate.&lt;/li&gt;
-      &lt;li&gt;Finally, users would want to be able to rely on
+      &lt;li&gt;They would also use want to use tools that automatically generated new syntax.&lt;/li&gt;
+      &lt;li&gt;Users would not want to, and in the case of auto-generated syntax
+      would usually not be able to,
+      massage the syntax into very restricted forms.
+      Instead users would create grammars and languages
+      which required unlimited lookahead to disambiguate,
+      and they would require parsers which could handle these grammars.&lt;/li&gt;
+      &lt;li&gt;Finally, users would need to be able to rely on
       all of this parsing being done in linear time.&lt;/li&gt;
       &lt;/ul&gt;
       Today, we think we know that
