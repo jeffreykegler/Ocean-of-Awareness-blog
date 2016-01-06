@@ -34,7 +34,8 @@ What are the reasonable computer languages?
       including new
       kinds of expressions.</li>
       <li>They would also use want to use tools that automatically generated new syntax.</li>
-      <li>Users would not want to, and in the case of auto-generated syntax
+      <li>Users would not want to, and especially
+      in the case of auto-generated syntax
       would usually not be able to,
       massage the syntax into very restricted forms.
       Instead users would create grammars and languages
