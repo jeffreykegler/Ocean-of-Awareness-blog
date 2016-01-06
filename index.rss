@@ -21,8 +21,9 @@
       --&gt;
     &lt;/p&gt;
     &lt;blockquote&gt;
-    &quot;You see things; and you say 'Why?' But I dream things that never were; and I say 'Why not?'&quot;
-    -- &lt;a href=&quot;http://www.bartleby.com/73/465.html&quot;&gt;George Bernard Shaw&lt;/a&gt;
+      &quot;You see things; and you say 'Why?' But I dream things that never were; and I say 'Why not?'&quot;
+      --
+      &lt;a href=&quot;http://www.bartleby.com/73/465.html&quot;&gt;George Bernard Shaw&lt;/a&gt;
     &lt;/blockquote&gt;
     &lt;p&gt;
       In the 1960's and 1970's computer languages were evolving rapidly.
@@ -37,26 +38,26 @@
     &lt;p&gt;
       It was in that context that &amp;#268;ulik and Cohen,
       in
-      &lt;a href=&quot;http://www.sciencedirect.com/science/article/pii/S0022000073800509&quot;&gt;a 
-      1973 paper&lt;/a&gt;,
+      &lt;a href=&quot;http://www.sciencedirect.com/science/article/pii/S0022000073800509&quot;&gt;a
+        1973 paper&lt;/a&gt;,
       outlined what they thought programmers would want and should have.
       In keeping with the spirit of the time,
       it was quite a lot:
-      &lt;ul&gt;
-      &lt;li&gt;They would want to extend their grammars with new syntax,
-      including new
-      kinds of expressions.&lt;/li&gt;
-      &lt;li&gt;They would also want to use tools that automatically generated new syntax.&lt;/li&gt;
-      &lt;li&gt;Users would not want to, and especially
-      in the case of auto-generated syntax
-      would usually not be able to,
-      massage the syntax into very restricted forms.
-      Instead, users would create grammars and languages
-      which required unlimited lookahead to disambiguate,
-      and they would require parsers which could handle these grammars.&lt;/li&gt;
-      &lt;li&gt;Finally, users would need to be able to rely on
-      all of this parsing being done in linear time.&lt;/li&gt;
-      &lt;/ul&gt;
+    &lt;/p&gt;&lt;ul&gt;
+      &lt;li&gt;Programmers would want to extend their grammars with new syntax,
+        including new
+        kinds of expressions.&lt;/li&gt;
+      &lt;li&gt;Programmers would also want to use tools that automatically generated new syntax.&lt;/li&gt;
+      &lt;li&gt;Programmers would not want to, and especially
+        in the case of auto-generated syntax
+        would usually not be able to,
+        massage the syntax into very restricted forms.
+        Instead, programmers would create grammars and languages
+        which required unlimited lookahead to disambiguate,
+        and they would require parsers which could handle these grammars.&lt;/li&gt;
+      &lt;li&gt;Finally, programmers would need to be able to rely on
+        all of this parsing being done in linear time.&lt;/li&gt;
+    &lt;/ul&gt;&lt;p&gt;
       Today, we think we know that
       &amp;#268;ulik and Cohen's vision was naive,
       because we think we know that parsing technology cannot support it.
@@ -69,15 +70,18 @@
       If a grammar is in the eyeball class,
       but a computer cannot parse it,
       it presents an interesting choice.  Either,
-    &lt;/p&gt;&lt;ul&gt;
+    &lt;/p&gt;
+    &lt;ul&gt;
       &lt;li&gt;your computer is not using the strongest practical algorithm; or
-      &lt;/li&gt;&lt;li&gt;your mind is using some power which cannot be reduced to a machine computation.
-      &lt;/li&gt;&lt;/ul&gt;&lt;p&gt;
+      &lt;/li&gt;
+      &lt;li&gt;your mind is using some power which cannot be reduced to a machine computation.&lt;/li&gt;
+    &lt;/ul&gt;
+    &lt;p&gt;
       There are some people out there (I am one of them)
-      who don't believe everything the mind can do reduces
+      who don't believe that everything the mind can do reduces
       to a machine computation.
       But even those people
-      will tend to go for the first choice in this case:
+      will tend to go for the choice in this case:
       There must be some practical computer parsing algorithm which
       can do at least as well at parsing as a human
       can do by &quot;eyeball&quot;.

@@ -8,8 +8,9 @@ What are the reasonable computer languages?
       -->
     </p>
     <blockquote>
-    "You see things; and you say 'Why?' But I dream things that never were; and I say 'Why not?'"
-    -- <a href="http://www.bartleby.com/73/465.html">George Bernard Shaw</a>
+      "You see things; and you say 'Why?' But I dream things that never were; and I say 'Why not?'"
+      --
+      <a href="http://www.bartleby.com/73/465.html">George Bernard Shaw</a>
     </blockquote>
     <p>
       In the 1960's and 1970's computer languages were evolving rapidly.
@@ -24,26 +25,26 @@ What are the reasonable computer languages?
     <p>
       It was in that context that &#268;ulik and Cohen,
       in
-      <a href="http://www.sciencedirect.com/science/article/pii/S0022000073800509">a 
-      1973 paper</a>,
+      <a href="http://www.sciencedirect.com/science/article/pii/S0022000073800509">a
+        1973 paper</a>,
       outlined what they thought programmers would want and should have.
       In keeping with the spirit of the time,
       it was quite a lot:
-      <ul>
+    </p><ul>
       <li>Programmers would want to extend their grammars with new syntax,
-      including new
-      kinds of expressions.</li>
+        including new
+        kinds of expressions.</li>
       <li>Programmers would also want to use tools that automatically generated new syntax.</li>
       <li>Programmers would not want to, and especially
-      in the case of auto-generated syntax
-      would usually not be able to,
-      massage the syntax into very restricted forms.
-      Instead, programmers would create grammars and languages
-      which required unlimited lookahead to disambiguate,
-      and they would require parsers which could handle these grammars.</li>
+        in the case of auto-generated syntax
+        would usually not be able to,
+        massage the syntax into very restricted forms.
+        Instead, programmers would create grammars and languages
+        which required unlimited lookahead to disambiguate,
+        and they would require parsers which could handle these grammars.</li>
       <li>Finally, programmers would need to be able to rely on
-      all of this parsing being done in linear time.</li>
-      </ul>
+        all of this parsing being done in linear time.</li>
+    </ul><p>
       Today, we think we know that
       &#268;ulik and Cohen's vision was naive,
       because we think we know that parsing technology cannot support it.
@@ -56,10 +57,13 @@ What are the reasonable computer languages?
       If a grammar is in the eyeball class,
       but a computer cannot parse it,
       it presents an interesting choice.  Either,
-    </p><ul>
+    </p>
+    <ul>
       <li>your computer is not using the strongest practical algorithm; or
-      </li><li>your mind is using some power which cannot be reduced to a machine computation.
-      </li></ul><p>
+      </li>
+      <li>your mind is using some power which cannot be reduced to a machine computation.</li>
+    </ul>
+    <p>
       There are some people out there (I am one of them)
       who don't believe that everything the mind can do reduces
       to a machine computation.
