@@ -46,45 +46,50 @@
       marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
       -->
     </p>
+    <blockquote>
+    "You see things; and you say 'Why?' But I dream things that never were; and I say 'Why not?'"
+    -- <a href="http://www.bartleby.com/73/465.html">George Bernard Shaw</a>
+    </blockquote>
     <p>
-      In the 1960's and 1970's computer languages were evolving rapidly
-      and even the most basic questions were up in the air.
-      In the future, they wondered, would programmers use
-      General-purpose languages?
-      Or special languages for specific kinds of tasks, what
-      today we would call them DSL's?
-      The questions they asked then were bolder
-      than the questions being asked today,
-      and their answers were bolder.
+      In the 1960's and 1970's computer languages were evolving rapidly.
+      It was not clear that which way they were headed.
+      Would most programming be done with
+      general-purpose languages?
+      Or would programmers create a language for every task domain?
+      Or even for every project?
+      And, if a lots of languages were going to be created,
+      what kinds of languages would be reasonable to use?
     </p>
     <p>
-      In a 19xx paper, Culik and Cohen asked
-      "What kinds of languages are reasonable to use as programming languages?"
-      Culik and Cohen thought
-      that users would want,
-      in routine practice, to extend the syntax of their languages with new
-      kinds of expressions.
-      Further, they expected programmers would be using tools which auto-generated
-      new syntax.
-      Tools of this kind, they pointed out, are likely to generate syntax which
-      requires unlimited lookahead to disambiguate.
-      But they thought that
-      users could and should be able to rely on
-      these languages to be parsed in linear time.
-    </p>
-    <p>
+      In was in that context that &#268;ulik and Cohen,
+      in
+      <a href="http://www.sciencedirect.com/science/article/pii/S0022000073800509">a 
+      1973 paper</a>
+      outlined what they thought programmers would want and should have.
+      In keeping with the times,
+      it was quite a lot:
+      <ul>
+      <li>They would want to extend their grammars with new syntax,
+      including new
+      kinds of expressions.</li>
+      <li>They would also use tools that automatically generated new syntax.</li>
+      <li>Especially for auto-generated syntax, users would want to parse
+      inputs which needed unlimited lookahead to disambiguate.</li>
+      <li>Finally, users would want to be able to rely on
+      all of this parsing being done in linear time.</li>
+      </ul>
       Today, we think we know that
-      Culik and Cohen's vision was naive,
-      because parsing technology cannot support it.
-      That's what makes it important -- it shows what we would be thinking
-      if we didn't "know" that parsing is hard.
+      &#268;ulik and Cohen's vision was naive,
+      because we think we know that parsing technology cannot support it.
+      We think we know that parsing is much harder than they thought.
     </p>
-    <h2>The eyeball test</h2>
-    <p>As a thought problem, consider the "eyeball test".
-      The class of languages that pass the "eyeball test" are those where
-      you can "eyeball" the parse.
-      If you can eyeball a parse, and the computer cannot,
-      it creates an interesting choice.  Either,
+    <h2>The eyeball grammars</h2>
+    <p>As a thought problem, consider the "eyeball" class of grammars.
+      The "eyeball" class of grammars contains all the grammars that a human
+      can parse at a glance.
+      If a grammar is in the eyeball class,
+      but a computer cannot parse it,
+      it presents an interesting choice.  Either,
     </p><ul>
       <li>your computer is not using the strongest practical algorithm; or
       </li><li>your mind is using some power which cannot be reduced to a machine computation.
@@ -96,34 +101,36 @@
       will tend to go for the first choice in this case:
       There must be some practical computer parsing algorithm which
       can do at least as well at parsing as a human
-      can do by "eyeballing" a text.
-      In other words, the class of "reasonable languages" should
-      contain the class of "eyeball languages".
+      can do by "eyeball".
+      In other words, the class of "reasonable grammars" should
+      contain the eyeball class.
     </p>
     <p>
-      Culik and Cohen's candidate for the class of "reasonable languages"
-      were the languages that
+      &#268;ulik and Cohen's candidate for the class of "reasonable grammars"
+      were the grammars that
       a deterministic parse engine
       could parse if it had a lookahead that was infinite,
       but restricted to distinguishing between regular expressions.
-      And this
-      <b>does</b>
+      They called these the LR-regular, or LRR, grammars.
+      And the LRR grammars
+      <b>do</b>
       in fact seem to be a good first approximation
-      to the "eyeball class".
-      It does not allow lookahead that contains things
+      to the eyeball class.
+      They do not allow lookahead that contains things
       that you have to count, like palindromes.
-      True, I'd be hard put to eyeball every possible string for every possible regular expression,
-      but intuitively it does seem to capture the idea of "skimming" the lookahead for a telltale pattern.
+      And, while I'd be hard put to eyeball every possible string for every possible regular expression,
+      intuitively the concept of scanning for a regular expression
+      does seem close to capturing the idea of glancing through a text looking for a telltale pattern.
     </p>
     <h2>So what happened?</h2>
     <p>
-      Alas, the algorithm in the Culik and Cohen paper turned out to be impractical.
+      Alas, the algorithm in the &#268;ulik and Cohen paper turned out to be impractical.
       But in 1991, Joop Leo discovered a way to adopt Earley's algorithm to parse the LRR grammars
       in linear time, without doing the lookahead.
       And Leo's algorithm does have a practical implementation:
       <a href="http://jeffreykegler.github.io/Marpa-web-site/">Marpa</a>.
     </p>
-    <h2>Comments</h2>
+    <h2>References, comments, etc.</h2>
     <p>
       To learn more about Marpa,
       there's
