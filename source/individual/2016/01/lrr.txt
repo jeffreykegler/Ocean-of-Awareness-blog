@@ -30,18 +30,18 @@ What are the reasonable computer languages?
       In keeping with the spirit of the time,
       it was quite a lot:
       <ul>
-      <li>They would want to extend their grammars with new syntax,
+      <li>Programmers would want to extend their grammars with new syntax,
       including new
       kinds of expressions.</li>
-      <li>They would also want to use tools that automatically generated new syntax.</li>
-      <li>Users would not want to, and especially
+      <li>Programmers would also want to use tools that automatically generated new syntax.</li>
+      <li>Programmers would not want to, and especially
       in the case of auto-generated syntax
       would usually not be able to,
       massage the syntax into very restricted forms.
-      Instead, users would create grammars and languages
+      Instead, programmers would create grammars and languages
       which required unlimited lookahead to disambiguate,
       and they would require parsers which could handle these grammars.</li>
-      <li>Finally, users would need to be able to rely on
+      <li>Finally, programmers would need to be able to rely on
       all of this parsing being done in linear time.</li>
       </ul>
       Today, we think we know that
@@ -61,10 +61,10 @@ What are the reasonable computer languages?
       </li><li>your mind is using some power which cannot be reduced to a machine computation.
       </li></ul><p>
       There are some people out there (I am one of them)
-      who don't believe everything the mind can do reduces
+      who don't believe that everything the mind can do reduces
       to a machine computation.
       But even those people
-      will tend to go for the first choice in this case:
+      will tend to go for the choice in this case:
       There must be some practical computer parsing algorithm which
       can do at least as well at parsing as a human
       can do by "eyeball".
