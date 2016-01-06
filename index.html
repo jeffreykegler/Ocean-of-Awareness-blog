@@ -34,6 +34,119 @@
   </p>
   </div>
   <div style="margin-left:190px;border-left:2px solid #38B0C0;padding:25px;">
+<h3>Tue, 05 Jan 2016</h3>
+<br />
+<center><a name="lrr"> <h2>What are the reasonable computer languages?</h2> </a>
+</center>
+<html>
+  <head>
+  </head>
+  <body><p>
+      <!--
+      marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
+      -->
+    </p>
+    <p>
+      In the 1960's and 1970's computer languages were evolving rapidly
+      and even the most basic questions were up in the air.
+      In the future, they wondered, would programmers use
+      General-purpose languages?
+      Or special languages for specific kinds of tasks, what
+      today we would call them DSL's?
+      The questions they asked then were bolder
+      than the questions being asked today,
+      and their answers were bolder.
+    </p>
+    <p>
+      In a 19xx paper, Culik and Cohen asked
+      "What kinds of languages are reasonable to use as programming languages?"
+      Culik and Cohen thought
+      that users would want,
+      in routine practice, to extend the syntax of their languages with new
+      kinds of expressions.
+      Further, they expected programmers would be using tools which auto-generated
+      new syntax.
+      Tools of this kind, they pointed out, are likely to generate syntax which
+      requires unlimited lookahead to disambiguate.
+      But they thought that
+      users could and should be able to rely on
+      these languages to be parsed in linear time.
+    </p>
+    <p>
+      Today, we think we know that
+      Culik and Cohen's vision was naive,
+      because parsing technology cannot support it.
+      That's what makes it important -- it shows what we would be thinking
+      if we didn't "know" that parsing is hard.
+    </p>
+    <h2>The eyeball test</h2>
+    <p>As a thought problem, consider the "eyeball test".
+      The class of languages that pass the "eyeball test" are those where
+      you can "eyeball" the parse.
+      If you can eyeball a parse, and the computer cannot,
+      it creates an interesting choice.  Either,
+    </p><ul>
+      <li>your computer is not using the strongest practical algorithm; or
+      </li><li>your mind is using some power which cannot be reduced to a machine computation.
+      </li></ul><p>
+      There are some people out there (I am one of them)
+      who don't believe everything the mind can do reduces
+      to a machine computation.
+      But even those people
+      will tend to go for the first choice in this case:
+      There must be some practical computer parsing algorithm which
+      can do at least as well at parsing as a human
+      can do by "eyeballing" a text.
+      In other words, the class of "reasonable languages" should
+      contain the class of "eyeball languages".
+    </p>
+    <p>
+      Culik and Cohen's candidate for the class of "reasonable languages"
+      were the languages that
+      a deterministic parse engine
+      could parse if it had a lookahead that was infinite,
+      but restricted to distinguishing between regular expressions.
+      And this
+      <b>does</b>
+      in fact seem to be a good first approximation
+      to the "eyeball class".
+      It does not allow lookahead that contains things
+      that you have to count, like palindromes.
+      True, I'd be hard put to eyeball every possible string for every possible regular expression,
+      but intuitively it does seem to capture the idea of "skimming" the lookahead for a telltale pattern.
+    </p>
+    <h2>So what happened?</h2>
+    <p>
+      Alas, the algorithm in the Culik and Cohen paper turned out to be impractical.
+      But in 1991, Joop Leo discovered a way to adopt Earley's algorithm to parse the LRR grammars
+      in linear time, without doing the lookahead.
+      And Leo's algorithm does have a practical implementation:
+      <a href="http://jeffreykegler.github.io/Marpa-web-site/">Marpa</a>.
+    </p>
+    <h2>Comments</h2>
+    <p>
+      To learn more about Marpa,
+      there's
+      <a href="http://savage.net.au/Marpa.html">the
+        official web site maintained by Ron Savage</a>.
+      I also have
+      <a href="http://jeffreykegler.github.io/Marpa-web-site/">a Marpa web site</a>.
+      Comments on this post can be made in
+      <a href="http://groups.google.com/group/marpa-parser">
+        Marpa's Google group</a>,
+      or on our IRC channel: #marpa at freenode.net.
+    </p>
+  </body>
+</html>
+<br />
+<p>posted at: 21:55 |
+<a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2016/01/lrr.html">direct link to this entry</a>
+</p>
+<div style="color:#38B0C0;padding:1px;text-align:center;">
+&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&sect;
+</div>
 <h3>Sun, 20 Dec 2015</h3>
 <br />
 <center><a name="topdown"> <h2>Top-down parsing is guessing</h2> </a>
@@ -944,316 +1057,6 @@
 <br />
 <p>posted at: 22:01 |
 <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2015/03/linear.html">direct link to this entry</a>
-</p>
-<div style="color:#38B0C0;padding:1px;text-align:center;">
-&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-&sect;
-</div>
-<h3>Mon, 02 Mar 2015</h3>
-<br />
-<center><a name="peg"> <h2>PEG: Ambiguity, precision and confusion</h2> </a>
-</center>
-<html>
-  <head>
-  </head>
-  <body><p>
-      <!--
-      marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
-      -->
-    </p>
-    <h3>Precise?</h3>
-    <p><a href="http://bford.info/packrat/">PEG parsing</a>
-      is a new notation
-      for a notorously tricky algorithm that goes back
-      to the earliest computers.
-      In its PEG form,
-      this algorithm acquired an seductive new interface,
-      one that looks like the best of
-      extended BNF combined with the best of regular expressions.
-      Looking at a sample of it, you are tempted to imagine
-      that writing a parser has suddenly become a very straightforward
-      matter. Not so.
-    </p>
-    <p>For those not yet in the know on this,
-      I'll illustrate with a pair of examples from
-      <a href="http://www.romanredz.se/papers/FI2008.pdf">
-        an excellent 2008 paper by Redziejowski</a>.
-      Let's start with these two PEG specifications.
-    </p><blockquote><pre>
-    ("a"|"aa")"a"
-    ("aa"|"a")"a"
-    </pre></blockquote><p>
-      One of these two PEG grammars accepts
-      the string "<tt>aaa</tt>" but not the string "<tt>aa</tt>".
-      The other does the opposite -- it accepts the string
-      the string "<tt>aa</tt>" but not the string "<tt>aaa</tt>".
-      Can you tell which one?
-      (For the answer,
-      see page 4 of
-      <a href="http://www.romanredz.se/papers/FI2008.pdf">
-        Redziejowski 2008</a>.)
-    </p><p>
-      Here is another example:
-    </p><blockquote><pre>
-    A = "a"A"a"/"aa"
-    </pre></blockquote><p>
-      What language does this describe?
-      All the strings in the
-      language are obviously
-      the letter "<tt>a</tt>",
-      repeated some number of times.
-      But which string lengths are in the language,
-      and which are not?
-      Again the answer is on
-      page 4 of
-      <a href="http://www.romanredz.se/papers/FI2008.pdf">
-        Redziejowski 2008</a>
-      -- it's exactly those strings
-      whose length is a power of 2.
-    </p>
-    <p>With PEG, what you see in the extended BNF
-      is not what you get.
-      PEG parsing has been called "precise",
-      apparently based on
-      the idea that PEG parsing is in a certain sense unambiguous.
-      In this case "precise" is taken as synonymous with
-      "unique".
-      That is, PEG parsing is precise in exactly the same
-      sense that Jimmy Hoffa's body
-      is at a precise location.
-      There is (presumably) exactly one such place,
-      but we are hard put to be any more specific about the matter.
-    </p>
-    <h3>Syntax-driven?</h3>
-    <p>The advantage of using
-      a syntax-driven parser generator is that
-      the syntax you specify describes
-      the language that will be parsed.
-      For most practical grammars, PEG is not syntax-driven
-      in this sense.
-      Several important
-      PEG researchers understand this issue,
-      and have tried to deal with it.
-      I will talk about their work below.
-      This is much more at stake than bragging rights
-      over which algorithm is really syntax-driven and
-      which is not.
-    </p>
-    <p>When you do not know the language your parser is
-      parsing, you of course have the problem that
-      your parser
-      might not parse all the strings in your language.
-      That can be dealt with by
-      fixing the parser to accept the correct input,
-      as you encounter problems.
-    </p>
-    <p>A second, more serious, problem is often forgotten.
-      Your PEG parser might accept strings that are
-      <b>not</b>
-      in your language.
-      At worst, this creates a security loophole.
-      At best, it leaves with a choice:
-      break compatiblity,
-      or leave the problem unfixed.
-    </p>
-    <p>It's important to be able to convince
-      yourself
-      that your code is correct by examining it and thinking
-      about it.
-      Beginning programmers often simply hack things,
-      and call code complete once it passes the test suite.
-      Test suites don't catch everything,
-      but there is a worse problem with the beginner's approach.
-    </p>
-    <p>
-      Since the beginner has no clear idea of why his code
-      works, even when it does,
-      it is unlikely to be well-organized or readable.
-      Programming techniques like PEG,
-      where the code can be made to work,
-      but where it is much harder,
-      and in practice usually not possible,
-      to be sure why the code works,
-      become maintenance nightmares.
-    </p>
-    <p>
-      The maintenance implications are especially worrisome if
-      the PEG parser is for a language with a life cycle that may
-      involve bug fixes or other changes.
-      The impact of even
-      small changes to a PEG specification
-      is hard to predict and
-      hard to discover after the fact.
-    </p>
-    <h3>Is PEG unambiguous?</h3>
-    <p>PEG is not unambiguous in any
-      helpful sense of that word.
-      BNF allows you to specify ambiguous grammars,
-      and that feature is tied to its power and flexibility
-      and often useful in itself.
-      PEG will only deliver one of those parses.
-      But without
-      an easy way of knowing which parse,
-      the underlying ambiguity is not addressed --
-      it is just ignored.
-    </p>
-    <p>My Marpa parser
-      is a general BNF parser based on Earley's.
-      It also can simply throw all but one of the parses in an ambiguous
-      parse away.
-      But I would not feel justified in saying to a user who has an
-      issue with ambiguity,
-      that Marpa has solved her problem
-      by throwing all but one arbitrarily chosen result.
-    </p>
-    <p>
-      Sticking with Marpa for a moment,
-      we can see one
-      example of a more helpful approach
-      to ambiguity.
-      Marpa allows a user to rank rules,
-      so that all but the highest ranking rules are not used
-      in a parse.
-      Marpa's rule rankings are specified in its BNF,
-      and they work together with the BNF
-      in an intuitive way.
-      In every case,
-      Marpa delivers precisely the parses its BNF and its rule
-      rankings specify.
-      And it
-      is "precision" in this sense that a parser writer is looking for.
-    </p>
-    <h3>Is there a sensible way to use PEG?</h3>
-    <p>
-      I'll return to Marpa at the end of this post.
-      For now,
-      let's assume
-      that you are not interested in using Marpa --
-      you are committed to PEG,
-      and you want to make the best of PEG.
-      Several excellent programmers have focused
-      on PEG,
-      without blinding themselves to its limitations.
-      I've already mentioned one important paper
-      by Redziejowski.
-      Many of
-      <a href="http://www.romanredz.se/pubs.htm">
-        Redziejowski's collected papers</a>
-      are about PEG,
-      and Redziejowski, in his attempts to use PEG,
-      does not sugarcoat its problems.
-    </p>
-    <p>Roberto Ierusalimschy, author of Lua and one of the best
-      programmers of our time,
-      has written a PEG-based parser of his own.
-      Roberto is fully aware of PEG's limits,
-      but he makes a very good case for choosing PEG
-      as the basis of LPEG, his parser generator.
-      LPEG is intended for use with Lua,
-      a ruthlessly minimal language.
-      Roberto's minimalist implementation limits the power of his parser,
-      but his aim is to extend regular expressions in a disciplined way,
-      and a compact parser of limited power is quite acceptable for his
-      purposes.
-    </p>
-    <h3>Matching the BNF to the PEG spec</h3>
-    <p>
-      As Redziejowski and Ierusalimschy and the other authors
-      of
-      <a href="http://arxiv.org/abs/1304.3177">Mascarenhas et al, 2013</a>
-      recognize,
-      not knowing what language you are
-      parsing is more than an annoyance.
-      We can call a language
-      "well-behaved for PEG"
-      if the PEG spec delivers exactly
-      the language the BNF describes.
-    </p>
-    <p>Which languages are are well-behaved for PEG?
-      According to
-      <a href="http://arxiv.org/abs/1304.3177">Mascarenhas et al, 2013</a>,
-      the LL(1) languages are well-behaved.
-      (The LL(1) languages are the languages
-      a top-down parser can parse based on at
-      most one character of input.)
-      Syntax-driven parsers for LL(1) have been around
-      for much longer than PEG --
-      one such parser is described
-      in the first paper to describe recursive descent
-      (<a href="http://archive.computerhistory.org/resources/text/algol/algol_bulletin/AS16/AS16.HTM">Peter
-        Lucas, 1961</a>).
-      But most practical languages are not LL(1).
-      <a href="http://www.romanredz.se/papers/FI2013.pdf">Redziejowski 2013</a>
-      and
-      <a href="http://www.romanredz.se/papers/FI2014.pdf">Redziejowski 2014</a>
-      seek to extend this result by defining the language class LL(1p) --
-      those top-down languages with one
-      "parsing procedure"
-      of lookahead.
-      The LL(1p) languages are also well-behaved for PEG.
-    </p>
-    <p>
-      <a href="http://arxiv.org/abs/1304.3177">Mascarenhas et al, 2013</a>
-      also look at a different approach -- instead of writing a PEG specification
-      and trying to keep it well-behaved,
-      they look at taking languages from larger top-down classes
-      and translating them to PEG.
-      I don't know of any followup,
-      but it's possible this approach could produce
-      well-behaved top-down parsers which are
-      an improvement over direct-from-PEG parsing.
-      But for those who are open to leaving top-down parsing behind,
-      a parser which handles languages in all these classes
-      and more is already available.
-    </p>
-    <h3>Marpa</h3>
-    <p>
-      In this post,
-      I have adopted the point of view of programmers using PEG,
-      or thinking of doing so.
-      My own belief in this matter is that
-      very few programmers
-      should want to bother with the issues I've just described.
-      My reason for this is the Marpa parser --
-      a general BNF Earley-driven parser that
-    </p>
-    <ul>
-      <li>has an implementation you can use today;</li>
-      <li>allows the application to combine syntax-driven parsing
-        with custom procedural logic;</li>
-      <li>makes available full, left-eidetic knowledge of the parse to
-        the procedural logic;</li>
-      <li>and parses a vast class of grammars in linear time,
-        including all the LR-regular grammars.</li>
-    </ul>
-    <p>
-      The LR-regular grammars include the LR(k) and LL(k)
-      grammars for all
-      <i>k</i>.
-      LR-regular includes all the languages
-      which are well-behaved under PEG,
-      and all of those that
-      <a href="http://arxiv.org/abs/1304.3177">Mascarenhas et al, 2013</a>
-      consider translating into PEG.
-    </p>
-    <h3>Comments</h3>
-    <p>Comments on this post can be made in
-      <a href="http://groups.google.com/group/marpa-parser">
-        Marpa's Google group</a>,
-      or on our IRC channel: #marpa at freenode.net.
-      To learn more about Marpa,
-      there's
-      <a href="http://savage.net.au/Marpa.html">the
-        official web site maintained by Ron Savage</a>.
-      I also have
-      <a href="http://jeffreykegler.github.io/Marpa-web-site/">a Marpa web site</a>.
-    </p>
-  </body>
-</html>
-<br />
-<p>posted at: 19:56 |
-<a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2015/03/peg.html">direct link to this entry</a>
 </p>
 <div style="color:#38B0C0;padding:1px;text-align:center;">
 &sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
