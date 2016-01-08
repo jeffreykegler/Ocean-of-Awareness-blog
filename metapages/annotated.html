@@ -34,12 +34,16 @@
           Tutorials</a>
       </p>
       <p class="view">
-        <a href="#DSL">
-          Language-driven programming</a>
+        <a href="#LOP">
+          Language-oriented programming</a>
       </p>
       <p class="view">
         <a href="#GENERAL">
           About Marpa in general</a>
+      </p>
+      <p class="view">
+        <a href="#PERL6">
+          Marpa and Perl 6</a>
       </p>
       <p class="view">
         <a href="#PARSING">
@@ -193,7 +197,7 @@
         They contain many useful examples,
         and most of the code in them carries over to SLIF line-for-line.
       </p>
-      <h2><a name="DSL"></a>Language-driven programming</h2>
+      <h2><a name="LOP"></a>Language-oriented programming</h2>
       <ul>
         <li>
           <p>
@@ -225,10 +229,21 @@
             falls toward zero?
           </p>
         </li>
-      </ul>
+	</ul>
+          <p>If you're interested in language-oriented programming with Marpa,
+	    the blog posts
+            <a href=
+	    "http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2015/08/fast_handy.html">
+              Fast, handy languages</a>,
+	     <a href="http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2015/12/composable.html">
+	       Grammar reuse</a>
+	      and <a href="http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2016/01/lrr.html">
+		 What are the reasonable computer languages</a>
+		 will also be of interest.
       <h2><a name="GENERAL"></a>About Marpa in general</h2>
       <ul>
-        <li><p>
+        <li>
+          <p>
             <a href="http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2013/05/table.html">
               Why Marpa works: table parsing</a>.
             Marpa is different from the other widely used parsers.
@@ -263,10 +278,30 @@
         <li>
           <p>
             <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2011/11/marpa-and-the-ruby-slippers.html">
-              Marpa and the Ruby Slippers</a>
+              Marpa and the Ruby Slippers</a>:
             An older post,
             but one with a nice explanation of one of Marpa's significant new features:
             Ruby Slippers parsing.
+          </p>
+        </li>
+        <li>
+          <p>
+            <a href=
+	    "http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2015/08/fast_handy.html">
+              Fast, handy languages</a>:
+            Which languages are fast (that is, linear) for Marpa?
+            Also, when should you NOT use Marpa?
+          </p>
+        </li>
+        <li>
+          <p>
+            <a href=
+	    "http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2015/03/linear.html">
+              Linear? Yeah, right</a>:
+            Marpa is linear for all the deterministic context-free grammars, and
+            therefore all the classes of of grammar currently in practical use,
+            or so I claim.
+            Why should you believe that?
           </p>
         </li>
         <li>
@@ -282,6 +317,59 @@
           </p>
         </li>
       </ul>
+      <h2><a name="PERL6"></a>Marpa versus Perl 6 grammars</h2>
+      <p>In these blog posts, I discuss Perl 6 grammars, and compare them with Marpa.
+      My particular focus is on language-oriented programming.
+      I argue that, unlike Marpa, Perl 6 grammars
+      lack the horsepower to advance the state of the art
+      in this respect.
+      </p>
+      <ul>
+          <li>
+	      <p>
+	         <a href="http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2015/12/composable.html">
+		 Grammar reuse</a>
+		 Language-oriented programming requires the ability to piece grammars
+		 together from other grammars.
+		 The Perl 6 syntax makes this convenient, but the underlying parse engine
+		 does not adequately support it.
+	      </p>
+          </li>
+          <li>
+	      <p>
+	      <a href="http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2015/12/topdown.html">
+		 Top-down parsing is guessing</a>
+		 Perl 6 grammars have a top-down, PEG, parse engine.
+		 In this post I describe at a very basic level what it means to parse top-down
+		 and argue that the current successes of top-down cannot be taken as
+		 evidence that the top-down approach can power language-oriented programming.
+	      </p>
+          </li>
+          <li>
+	      <p>
+	      <a href="http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2016/01/lrr.html">
+		 What are the reasonable computer languages</a>
+		 If you are doing language-oriented programming, what kinds of language should you
+		 support?
+		 A clue is provided by going back to the research of the 1960's and 1970's,
+		 when the researchers took an 'anything is possible' approach to language design,
+		 and asked for what they really wanted.
+		 These researchers did not "know", as we think we do today,
+		 that they were demanding the impossible.
+	      </p>
+          </li>
+      </ul>
+      <p>
+	I'm a fan of the Perl 6 effort.
+	And I certainly should be their supporter,
+	after the many favors they've done for me and the Marpa community over the years.
+	The considerations of these post will disappoint the hopes for LOP
+	applications of the native Perl 6 parser.
+	But Perl 6 is much more than that.
+	It would be a mistake to read these posts as
+	part of a dismissal of the Perl 6 effort as
+	a whole.
+      </p>
       <h2><a name="PARSING"></a>About parsing in general</h2>
       <p>In the process of writing Marpa, I read and thought a lot
         about the various approaches to parsing,
@@ -329,17 +417,24 @@
           <p>
             <a href="http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2015/03/peg.html">
               PEG: ambiguity, precision and confusion</a>
-	      PEG is a new notation for a notorously tricky
-	      algorithm that goes back to the earliest computers. In
-	      its PEG form, this algorithm acquired an seductive new
-	      interface, one that looks like the best of extended BNF
-	      combined with the best of regular expressions. Looking at
-	      a sample of it, you are tempted to imagine that writing
-	      a parser has suddenly become a very straightforward
-	      matter. Not so.
+            PEG is a new notation for a notorously tricky
+            algorithm that goes back to the earliest computers. In
+            its PEG form, this algorithm acquired an seductive new
+            interface, one that looks like the best of extended BNF
+            combined with the best of regular expressions. Looking at
+            a sample of it, you are tempted to imagine that writing
+            a parser has suddenly become a very straightforward
+            matter. Not so.
           </p>
         </li>
-      </ul><h2><a name="DESIGN">Designing languages</a></h2>
+      </ul>
+	<p>
+	If the discussions of the posts in this section interest you,
+	you may also want to look at the blog post
+	<a href="http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2015/12/topdown.html">
+	     Top-down parsing is guessing</a>.
+	</p>
+      <h2><a name="DESIGN">Designing languages</a></h2>
       <p>Marpa allows things to be done which
         could not be done before.
         Many of these things are significant for language design --
