@@ -40,7 +40,7 @@ What parser do birds use?
       <a href="http://mdaines.github.io/grammophone/#">
         new tool</a>
       for classifying grammars.
-      It's own parser is somewhat limited, so that it requires a period
+      Its own parser is somewhat limited, so that it requires a period
       to mark the end of a rule.
       The above grammar is in Marpa's SLIF format, which is smart enough to
       use the "<tt>::=</tt>"
@@ -63,15 +63,24 @@ What parser do birds use?
       including recursive descent, PEG,
       and Perl 6 grammars.
       All of these parsers fall short of dealing with the Parus major language.
-    </p><p>
-      LALR(1) can handle this subset of Parus's language,
-      but we can assume they would also reject it.
-      LALR(1), in the form of bison and yacc,
-      had been popular, but it has horrible error handling properties.
+    </p>
+    <p>
+      LALR(1) is probably most well-known from its implementations in
+      bison and yacc.
+      While able to handle this subset of Parus's language,
+      LALR(1) has its own, very strict, limits.
+      Whether LALR(1) could handle the full
+      complexity of Parus
+      language is a serious question.
+      But it's a question that in practice would probably not arise.
+      LALR(1) has horrible error handling properties.
+    </p>
+    <p>
       When the input is correct and within its limits,
-      an LALR-driven parser can produce a parse,
-      But if the input is not correct, LALR parsers do not produce
-      a useful analysis of what went wrong.
+      an LALR-driven parser is fast and works well.
+      But if the input is not perfectly correct,
+      LALR parsers produce
+      no useful analysis of what went wrong.
       If Parus hears "d abc d",
       a parser like Marpa, on the other hand, can produce something like
       this:
@@ -82,11 +91,6 @@ What parser do birds use?
 # * here: d
     </pre></blockquote>
     <p>
-      LALR(1), while able to handle this subset of Parus's language,
-      has its own limits, and whether it could handle the full
-      complexity of Parus
-      language is a serious question.
-      But it's a question that in practice would probably not arise.
       Parus uses its language in predatory contexts,
       and one can assume that a Parus with a preference for parsers whose
       error handling is on an LALR(1) level
