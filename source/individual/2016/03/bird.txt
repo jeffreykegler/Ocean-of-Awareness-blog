@@ -1,0 +1,93 @@
+What parser do birds use?
+<html>
+  <head>
+  </head>
+  <body><p>
+      <!--
+      marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
+      -->
+    </p>
+    <blockquote>
+    "Here we provide, to our knowledge, the first unambiguous experimental evidence for compositional syntax in a non-human vocal system."
+      --
+      <a href="http://www.nature.com/ncomms/2016/160308/ncomms10986/full/ncomms10986.html">
+      "Experimental evidence for compositional syntax in bird calls"
+          Toshitaka N. Suzuki,	David Wheatcroft	&amp; Michael Griesser	
+	  <emph>Nature Communications</emph> 7, Article number: 10986 
+      </a>
+    </blockquote>
+    <p>
+      In this post I investigate the question of which is more powerful --
+      standard modern computer parsing methods,
+      or bird brains,
+      specifically the brain of the
+      <a href="https://en.wikipedia.org/wiki/Great_tit">
+      Japanese great tit</a>,
+      also known as Parus major.
+      From the above quoted article, I extract the following grammar,
+      which is a subset -- probably a tiny one --
+      of that used by Parus major.
+    </p><blockquote><pre>
+      S ::= ABC
+      S ::= D
+      S ::= ABC D
+      S ::= D ABC
+    </pre></blockquote><p>
+    </p>
+    <h2>Classifying the Parus major grammar</h2>
+    <p>Grammophone is a very handy
+    <a href="http://mdaines.github.io/grammophone/#">
+    new tool</a>
+    for classifying grammars.
+    It's own parser is somewhat limited, so that it requires a period
+    to mark the end of a rule.
+    The above grammar is in Marpa's SLIF format, which is smart enough to
+    use the "<tt>::=</tt:>" operator to spot the beginning and end of rules,
+    which is how the human eye does it.
+    Here's the same grammar in a form acceptable to Grammophone:
+    </p><blockquote><pre>
+      S -> ABC .
+      S -> D .
+      S -> ABC D .
+      S -> D ABC .
+    </pre></blockquote>
+    </p>
+    </p>
+    Grammophone tells us that the Parus major grammar is not LL(1),
+    but it is LALR(1).
+    <h2>What does this mean?</h2>
+    <p>LL(1) is the class of grammar parseable by top-down methods:
+    it's the best class for characterizing most parsers in current use,
+    including recursive descent, PEG,
+    and Perl 6 grammars.
+    All of these parsers fall short of dealing with the Parus major language.
+    <p>
+    LALR(1) can handle this set of Parus's language,
+    but we can assume they would also reject it.
+    LALR(1), in the form of bison and yacc,
+    had been popular, but they have horrible error handling properties --
+    when the input is correct and within their limits,
+    they can produce a parse, but if it is not they produce not
+    useful analysis of why.
+    If Parus hears "d abc d",
+    a parser like Marpa, on the other hand, can produce something like
+    this:
+    </p><blockquote><pre>
+    </pre></blockquote>
+    <h2>References, comments, etc.</h2>
+    <p>
+      Those readers content with traditional parsing methods may stop reading here.
+      Those whose ambitions are as great as Parus major, however, may
+      wish to learn more about Marpa.
+      For these pioneering souls, there is
+      <a href="http://savage.net.au/Marpa.html">the
+        official web site maintained by Ron Savage</a>.
+      I also have
+      <a href="http://jeffreykegler.github.io/Marpa-web-site/">a personal Marpa web site</a>.
+      Comments on this post can be made in
+      <a href="http://groups.google.com/group/marpa-parser">
+        Marpa's Google group</a>,
+      or on our IRC channel: #marpa at freenode.net.
+    </p>
+  </body>
+</html>
