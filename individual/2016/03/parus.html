@@ -1,0 +1,184 @@
+<html>
+<head>
+<link rel="alternate" title="Ocean of Awareness RSS" type="application/rss+xml" title="RSS" href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/index.rss" />
+<title>What parser do birds use?</title>
+<style type="text/css">
+   strong {font-weight: 700;}
+</style>
+</head>
+<body>
+<div
+  style="color:white;background-color:#38B0C0;padding:1em;clear:left;text-align:center;">
+<h1>Ocean of Awareness</h1>
+</div>
+  <div style="margin:0;padding:10px 30px 10px 10px;width:150px;float:left;border-right:2px solid #38B0C0">
+  <p>
+  <strong>Jeffrey Kegler's blog</strong>
+  about Marpa, his new parsing algorithm,
+    and other topics of interest</p>
+  <p><a href="http://www.jeffreykegler.com/">Jeffrey's personal website</a></p>
+      <p>
+	<a href="https://twitter.com/jeffreykegler" class="twitter-follow-button" data-show-count="false">Follow @jeffreykegler</a>
+      </p>
+      <p style="text-align:center">
+	<!-- Place this code where you want the badge to render. -->
+	<a href="//plus.google.com/101567692867247957860?prsrc=3" rel="publisher" style="text-decoration:none;">
+	<img src="//ssl.gstatic.com/images/icons/gplus-32.png" alt="Google+" style="border:0;width:32px;height:32px;"/></a>
+      </p>
+  <h3>Marpa resources</h3>
+  <p><a href="http://jeffreykegler.github.com/Marpa-web-site/">The Marpa website</a></p>
+  <p>The Ocean of Awareness blog: <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog">home page</a>,
+  <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/metapages/chronological.html">chronological index</a>,
+  and
+  <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/metapages/annotated.html">annotated index</a>.
+  </p>
+  </div>
+  <div style="margin-left:190px;border-left:2px solid #38B0C0;padding:25px;">
+<h3>Wed, 09 Mar 2016</h3>
+<br />
+<center><a name="parus"> <h2>What parser do birds use?</h2> </a>
+</center>
+<html>
+  <head>
+  </head>
+  <body><p>
+      <!--
+      marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
+      -->
+    </p>
+    <blockquote>
+      "Here we provide, to our knowledge, the first unambiguous experimental evidence for compositional syntax in a non-human vocal system."
+      --
+      <a href="http://www.nature.com/ncomms/2016/160308/ncomms10986/full/ncomms10986.html">
+        "Experimental evidence for compositional syntax in bird calls",
+        Toshitaka N. Suzuki,	David Wheatcroft	&amp; Michael Griesser
+        <emph>Nature Communications</emph>
+        7, Article number: 10986
+      </a>
+    </blockquote>
+    <p>
+      In this post I look at a subset of the language
+      of the
+      <a href="https://en.wikipedia.org/wiki/Great_tit">
+        Japanese great tit</a>,
+      also known as Parus major.
+      The above cited article presents evidence
+      that bird brains can parse this language.
+      What about standard modern computer parsing methods?
+      Here is the subset -- probably a tiny one --
+      of the language actually used by Parus major.
+    </p><blockquote><pre>
+      S ::= ABC
+      S ::= D
+      S ::= ABC D
+      S ::= D ABC
+    </pre></blockquote><p>
+    </p>
+    <h2>Classifying the Parus major grammar</h2>
+    <p>Grammophone is a very handy
+      <a href="http://mdaines.github.io/grammophone/#">
+        new tool</a>
+      for classifying grammars.
+      Its own parser is somewhat limited, so that it requires a period
+      to mark the end of a rule.
+      The above grammar is in Marpa's SLIF format, which is smart enough to
+      use the "<tt>::=</tt>"
+      operator to spot the beginning and end of rules,
+      just as the human eye does.
+      Here's the same grammar converted into a form acceptable to Grammophone:
+    </p><blockquote><pre>
+      S -> ABC .
+      S -> D .
+      S -> ABC D .
+      S -> D ABC .
+    </pre></blockquote>
+    <p>
+      Grammophone tells us that the Parus major grammar is not LL(1),
+      but that it is LALR(1).
+    </p>
+    <h2>What does this mean?</h2>
+    <p>LL(1) is the class of grammar parseable by top-down methods:
+      it's the best class for characterizing most parsers in current use,
+      including recursive descent, PEG,
+      and Perl 6 grammars.
+      All of these parsers fall short of dealing with the Parus major language.
+    </p>
+    <p>
+      LALR(1) is probably most well-known from its implementations in
+      bison and yacc.
+      While able to handle this subset of Parus's language,
+      LALR(1) has its own, very strict, limits.
+      Whether LALR(1) could handle the full
+      complexity of Parus
+      language is a serious question.
+      But it's a question that in practice would probably not arise.
+      LALR(1) has horrible error handling properties.
+    </p>
+    <p>
+      When the input is correct and within its limits,
+      an LALR-driven parser is fast and works well.
+      But if the input is not perfectly correct,
+      LALR parsers produce
+      no useful analysis of what went wrong.
+      If Parus hears "d abc d",
+      a parser like Marpa, on the other hand, can produce something like
+      this:
+    </p>
+    <blockquote><pre>
+# * String before error: abc d\s
+# * The error was at line 1, column 7, and at character 0x0064 'd', ...
+# * here: d
+    </pre></blockquote>
+    <p>
+      Parus uses its language in predatory contexts,
+      and one can assume that a Parus with a preference for parsers whose
+      error handling is on an LALR(1) level
+      will not be keeping its alleles in the gene pool for very
+      long.
+    </p><h2>References, comments, etc.</h2>
+    <p>
+      Those readers content with sub-Parus parsing methods may stop reading here.
+      Those with greater parsing ambitions, however, may
+      wish to learn more about Marpa.
+      A Marpa test script for parsing the Parus subset is in
+      <a href=https://gist.github.com/jeffreykegler/b5b8ba349b8c6e5c2e54>a Github gist.</a>
+      Marpa has a
+      <a href="http://savage.net.au/Marpa.html">semi-official web site, maintained by Ron Savage</a>.
+      The official, but more limited, Marpa website
+      <a href="http://jeffreykegler.github.io/Marpa-web-site/">is my personal one</a>.
+      Comments on this post can be made in
+      <a href="http://groups.google.com/group/marpa-parser">
+        Marpa's Google group</a>,
+      or on our IRC channel: #marpa at freenode.net.
+    </p>
+  </body>
+</html>
+<br />
+<p>posted at: 19:13 |
+<a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2016/03/parus.html">direct link to this entry</a>
+</p>
+<div style="color:#38B0C0;padding:1px;text-align:center;">
+&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&sect;
+</div>
+</div>
+</div>
+<div id="footer" style="border-top:thick solid #38B0C0;clear:left;padding:1em;">
+<p>This is Ocean of Awareness's
+  new home.  This blog has been hosted at
+  <a href="http://blogs.perl.org/users/jeffrey_kegler/">blogs.perl.org</a>
+  but I have succumbed to the lure of static blogging.
+</div>
+	<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+              <script type="text/javascript">
+            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+          </script>
+          <script type="text/javascript">
+            try {
+              var pageTracker = _gat._getTracker("UA-33430331-1");
+            pageTracker._trackPageview();
+            } catch(err) {}
+          </script>
+</body></html>
