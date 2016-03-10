@@ -1,20 +1,4 @@
 #!/usr/bin/perl
-# Copyright 2014 Jeffrey Kegler
-# This file is part of Marpa::R2.  Marpa::R2 is free software: you can
-# redistribute it and/or modify it under the terms of the GNU Lesser
-# General Public License as published by the Free Software Foundation,
-# either version 3 of the License, or (at your option) any later version.
-#
-# Marpa::R2 is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-# Lesser General Public License for more details.
-#
-# You should have received a copy of the GNU Lesser
-# General Public License along with Marpa::R2.  If not, see
-# http://www.gnu.org/licenses/.
-
-# Example for blog post on ambiguous languages
 
 use 5.010;
 use strict;
@@ -87,18 +71,6 @@ sub doit {
             "  length read = $length_read\n",
             "  the cause may be an unexpected event";
     } ## end if ( $length_read != length $input_length )
-    if ( $recce->ambiguity_metric() > 1 ) {
-
-        # The calls in this section are experimental as of Marpa::R2 2.090
-        my $asf = Marpa::R2::ASF->new( { slr => $recce } );
-        say STDERR 'No ASF' if not defined $asf;
-        my $ambiguities = Marpa::R2::Internal::ASF::ambiguities($asf);
-        my @ambiguities = grep {defined} @{$ambiguities}[ 0 .. 1 ];
-        die
-            "Parse of BNF/Scanless source is ambiguous\n",
-            Marpa::R2::Internal::ASF::ambiguities_show( $asf, \@ambiguities );
-    } ## end if ( $recce->ambiguity_metric() > 1 )
-
     my $value_ref = $recce->value();
     if ( !$value_ref ) {
         die "input read, but there was no parse";

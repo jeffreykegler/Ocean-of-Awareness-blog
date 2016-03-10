@@ -34,6 +34,130 @@
   </p>
   </div>
   <div style="margin-left:190px;border-left:2px solid #38B0C0;padding:25px;">
+<h3>Wed, 09 Mar 2016</h3>
+<br />
+<center><a name="parus"> <h2>What parser do birds use?</h2> </a>
+</center>
+<html>
+  <head>
+  </head>
+  <body><p>
+      <!--
+      marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
+      -->
+    </p>
+    <blockquote>
+      "Here we provide, to our knowledge, the first unambiguous experimental evidence for compositional syntax in a non-human vocal system."
+      --
+      <a href="http://www.nature.com/ncomms/2016/160308/ncomms10986/full/ncomms10986.html">
+        "Experimental evidence for compositional syntax in bird calls"
+        Toshitaka N. Suzuki,	David Wheatcroft	&amp; Michael Griesser
+        <emph>Nature Communications</emph>
+        7, Article number: 10986
+      </a>
+    </blockquote>
+    <p>
+      In this post I look at a subset of the language
+      of the
+      <a href="https://en.wikipedia.org/wiki/Great_tit">
+        Japanese great tit</a>,
+      also known as Parus major.
+      The above cited article presents evidence
+      that bird brains can parse this language.
+      What about standard modern computer parsing methods?
+      Here is the subset -- probably a tiny one --
+      of the language actually used by Parus major.
+    </p><blockquote><pre>
+      S ::= ABC
+      S ::= D
+      S ::= ABC D
+      S ::= D ABC
+    </pre></blockquote><p>
+    </p>
+    <h2>Classifying the Parus major grammar</h2>
+    <p>Grammophone is a very handy
+      <a href="http://mdaines.github.io/grammophone/#">
+        new tool</a>
+      for classifying grammars.
+      It's own parser is somewhat limited, so that it requires a period
+      to mark the end of a rule.
+      The above grammar is in Marpa's SLIF format, which is smart enough to
+      use the "<tt>::=</tt>"
+      operator to spot the beginning and end of rules,
+      just as the human eye does.
+      Here's the same grammar converted into a form acceptable to Grammophone:
+    </p><blockquote><pre>
+      S -> ABC .
+      S -> D .
+      S -> ABC D .
+      S -> D ABC .
+    </pre></blockquote>
+    <p>
+      Grammophone tells us that the Parus major grammar is not LL(1),
+      but that it is LALR(1).
+    </p>
+    <h2>What does this mean?</h2>
+    <p>LL(1) is the class of grammar parseable by top-down methods:
+      it's the best class for characterizing most parsers in current use,
+      including recursive descent, PEG,
+      and Perl 6 grammars.
+      All of these parsers fall short of dealing with the Parus major language.
+    </p><p>
+      LALR(1) can handle this subset of Parus's language,
+      but we can assume they would also reject it.
+      LALR(1), in the form of bison and yacc,
+      had been popular, but it has horrible error handling properties.
+      When the input is correct and within its limits,
+      an LALR-driven parser can produce a parse,
+      But if the input is not correct, LALR parsers do not produce
+      a useful analysis of what went wrong.
+      If Parus hears "d abc d",
+      a parser like Marpa, on the other hand, can produce something like
+      this:
+    </p>
+    <blockquote><pre>
+# * String before error: abc d\s
+# * The error was at line 1, column 7, and at character 0x0064 'd', ...
+# * here: d
+    </pre></blockquote>
+    <p>
+      LALR(1), while able to handle this subset of Parus's language,
+      has its own limits, and whether it could handle the full
+      complexity of Parus
+      language is a serious question.
+      But it's a question that in practice would probably not arise.
+      Parus uses its language in predatory contexts,
+      and one can assume that a Parus with a preference for parsers whose
+      error handling is on an LALR(1) level
+      will not be keeping its alleles in the gene pool for very
+      long.
+    </p><h2>References, comments, etc.</h2>
+    <p>
+      Those readers content with sub-Parus parsing methods may stop reading here.
+      Those with greater parsing ambitions, however, may
+      wish to learn more about Marpa.
+      A Marpa test script for parsing the Parus subset is in
+      <a href=https://gist.github.com/jeffreykegler/b5b8ba349b8c6e5c2e54>a Github gist.</a>
+      Marpa has a
+      <a href="http://savage.net.au/Marpa.html">semi-official web site, maintained by Ron Savage</a>.
+      The official, but more limited, Marpa website
+      <a href="http://jeffreykegler.github.io/Marpa-web-site/">is my personal one</a>.
+      Comments on this post can be made in
+      <a href="http://groups.google.com/group/marpa-parser">
+        Marpa's Google group</a>,
+      or on our IRC channel: #marpa at freenode.net.
+    </p>
+  </body>
+</html>
+<br />
+<p>posted at: 19:13 |
+<a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2016/03/parus.html">direct link to this entry</a>
+</p>
+<div style="color:#38B0C0;padding:1px;text-align:center;">
+&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&sect;
+</div>
 <h3>Wed, 06 Jan 2016</h3>
 <br />
 <center><a name="lrr"> <h2>What are the reasonable computer languages?</h2> </a>
@@ -837,242 +961,6 @@
 <br />
 <p>posted at: 16:36 |
 <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2015/08/fast_handy.html">direct link to this entry</a>
-</p>
-<div style="color:#38B0C0;padding:1px;text-align:center;">
-&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-&sect;
-</div>
-<h3>Tue, 10 Mar 2015</h3>
-<br />
-<center><a name="linear"> <h2>Linear?  Yeah right.</h2> </a>
-</center>
-<html>
-  <head>
-  </head>
-  <body><p>
-      <!--
-      marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
-      -->
-    </p>
-    <h3>Linear?</h3>
-    <p>I have claimed that my new parser,
-      <a href="http://savage.net.au/Marpa.html">Marpa</a>,
-      is linear for vast classes of grammars,
-      going well beyond what the traditional parsers can do.
-      But skepticism is justified.
-      When it comes to parsing algorithms,
-      there have been a lot of time complexity claims
-      that are hand-wavy, misleading or just
-      plain false.
-      This post describes how someone,
-      who
-      is exercising the appropriate degree of skepticism,
-      might conclude that believing Marpa's claims is a reasonable
-      and prudent thing to do.
-    </p>
-    <p>
-      Marpa's linearity claims seem to be,
-      in comparison with the other parsers in practical use
-      today,
-      bold.
-      Marpa claims linearity,
-      not just for every class of grammar for which
-      yacc/bison, PEG and recursive descent currently claim linearity,
-      but for considerably more.
-      (The mathematical details of these claims
-      are in a
-      <a href="#DETAILS">section at the end</a>.)
-      It seems too good to be true.
-    </p>
-    <h3>Why should I believe you?</h3>
-    <p>The most important thing to realize,
-      in assessing the believability of Marpa's time complexity claims,
-      is that they are not new.
-      They were already proved in a long-accepted paper in the refereed literature.
-      They are the time complexity claims proved by Joop Leo for his algorithm
-      in 1991, over two decades ago.
-      Marpa is derived from Leo's algorithm, and its time complexity claims
-      are those proved for Leo's algorithm.
-    </p>
-    <p>Above I said that Marpa's time complexity claims "seem" bold.
-      On any objective assessment, they are in fact a bit of a yawn.
-      The claims
-      <b>seem</b>
-      surprising only because a lot of people
-      are unaware of Leo's results.
-      That is, they are surprising in the same sense that someone who
-      had avoided hearing about radio waves would be surprised
-      to learn that he can
-      communicate instantly
-      with someone on the other side of the world.
-    </p>
-    <p>So, if there's so little to prove, why does the
-      <a href="https://www.academia.edu/10341474/Marpa_A_practical_general_parser_the_recognizer">
-        Marpa paper</a>
-      have proofs?
-      In Marpa, I made many implementation decisions about,
-      and some changes to, the Leo/Earley algorithm.
-      None of my changes produced better time complexity results --
-      my only claim is that I did not change the Leo/Earley
-      algorithm in a way that slowed it down.
-      To convince myself of this claim, I reworked
-      the original proofs of
-      Leo and Earley,
-      changing them to reflect my changes,
-      and demonstrated that the results
-      that Leo had obtained still held.
-    </p>
-    <p>Proofs of this kind,
-      which introduce no new mathematical techniques,
-      but simply take a previous result and march from
-      here to there by well-know means,
-      are called "tedious".
-      In journals, where there's a need to conserve space,
-      they are usually omitted,
-      especially if,
-      as is the case with Marpa's time complexity proofs,
-      the results are intuitively quite plausible.
-    </p>
-    <h3>Getting from plausible to near-certain</h3>
-    <p>So let's say you are not going to work through every line
-      of Marpa's admittedly tedious proofs.
-      We've seen that the results are intuitively plausible,
-      as long as you don't reject the previous literature.
-      But can we do better than merely "plausible"?
-    </p><p>As an aside, many people misunderstand the phrase
-      "mathematically proven", especially as it applies to branches
-      of math like parsing theory.
-      The fact is that proofs in papers often contain errors.
-      Usually these are minor,
-      and don't affect the result.
-      On the other hand, Jay Earley's paper,
-      while one of the best Computer Science papers ever published,
-      also contained a very
-      serious error.
-      And this error slipped past his Ph.D. committee and
-      his referees.
-      Mathematical arguments and proofs do not allow us to achieve
-      absolute certainty.
-      They can only improve the degree of certainty.
-    </p>
-    <p>There's a second way to dramatically increase
-      your degree of conviction
-      in Marpa's linearity claims, and it is quite simple.
-      Create examples of problematic grammars,
-      run them and time them.
-      This is not as satisfying as a mathematical proof,
-      because no set of test grammars can be exhaustive.
-      But if you can't find a counter-example
-      to Marpa's linearity claims among the grammars of
-      most interest to you,
-      that should help lift
-      your level of certainty to "certain for
-      all practical purposes".
-    </p>
-    <p>Much of this increase in certainty can be
-      achieved without bothering to run your own tests.
-      Marpa is in wide use at this point.
-      If Marpa was going quadratic on grammars
-      for which it claimed to be linear,
-      and these were grammars of practical interest,
-      that would very likely have been noticed by now.
-    </p>
-    <h3>I'm still not convinced</h3>
-    <p>Let's suppose all this has not brought you to
-      the level of certainty you need to use Marpa.
-      That means the reasonable thing is to continue to
-      struggle to work with the restrictions of the
-      traditional algorithms, right?
-      No, absolutely not.
-    </p>
-    <p>OK, so you don't believe that Marpa preserves
-      the advances in power and speed made by Leo.
-      Does that mean that parsers have to stay underpowered?
-      No, it simply means that there should be a
-      more direct implementation of Leo's 1991,
-      bypassing Marpa.
-    </p><p>But if you are looking for an implementation of Leo's
-      1991 algorithm,
-      I think you may end up coming back to Marpa as the most
-      reasonable choice.
-      Marpa's additional features
-      include the ability to use custom,
-      procedural logic,
-      as you can with recursive descent.
-      And Marpa has worked out a lot of the
-      implementation details for you.
-    </p><h3>Comments</h3>
-    <p>Comments on this post can be made in
-      <a href="http://groups.google.com/group/marpa-parser">
-        Marpa's Google group</a>,
-      or on our IRC channel: #marpa at freenode.net.
-      To learn more about Marpa,
-      there's
-      <a href="http://savage.net.au/Marpa.html">the
-        official web site maintained by Ron Savage</a>.
-      I also have
-      <a href="http://jeffreykegler.github.io/Marpa-web-site/">a Marpa web site</a>.
-    </p>
-    <h3>Appendix: Some technical details</h3>
-    <p>
-      <a name="DETAILS">Above</a>
-      I talked about algorithms, classes of grammars and their
-      linearity claims.
-      I didn't give details because most folks aren't interested.
-      For those who are, they are in this section.
-    </p>
-    <p>
-      yacc is linear for a grammar class called LALR,
-      which is a subset of another grammar class
-      called LR(1).
-      If you are willing to hassle with GLR,
-      bison claims linearity for all of LR(1).
-      Recursive descent is a technique, not an algorithm,
-      but it is top-down with look-ahead,
-      and therefore can be seen as some form of LL(k),
-      where k depends on how it is implemented.
-      In practice, I suspect k is never much bigger than 3,
-      and usually pretty close to 1.
-      With packratting,
-      PEG can be made linear for everything it
-      parses but there is a catch --
-      <a href="http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2015/03/peg.html">
-        only in limited cases do you know
-        what language your PEG grammar actually parses</a>.
-      In current practice, that means your PEG grammar
-      must be LL(1).
-      Some of the PEG literature looks at techniques for
-      extending this as far as LL-regular, but there are no
-      implementations, and it remains to be seen if the
-      algorithms described are practical.
-    </p>
-    <p>
-      The
-      <a href="https://www.academia.edu/10341474/Marpa_A_practical_general_parser_the_recognizer">
-        Marpa paper</a>
-      contains a proof,
-      based on a proof of the same claim by
-      Joop Leo,
-      that Marpa is linear for LR-regular grammars.
-      The LR-regular grammars
-      include the LR(k) grammars for every k.
-      So Marpa is linear for LR(1), LR(2), LR(8675309), etc.
-      LR-regular also includes LL-regular.
-      So every class of grammar under discussion
-      in the PEG literature is
-      already parsed in linear time by Marpa.
-      From this,
-      it is also safe to conclude that,
-      if a grammar can be parsed by
-      anything reasonably described as recursive descent,
-      it can be parsed in linear time by Marpa.
-    </p>
-  </body>
-</html>
-<br />
-<p>posted at: 22:01 |
-<a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2015/03/linear.html">direct link to this entry</a>
 </p>
 <div style="color:#38B0C0;padding:1px;text-align:center;">
 &sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
