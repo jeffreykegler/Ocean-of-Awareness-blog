@@ -150,7 +150,7 @@ Introduction to Marpa Book in progress
       As implemented,
       Marpa::R2
       allows the user to define "events".
-      Events can defined that trigger when a specified rule is complete,
+      Events can be defined that trigger when a specified rule is complete,
       when a specified rule is predicted,
       when a specified symbol is nulled,
       when a user-specified lexeme has been scanned,
