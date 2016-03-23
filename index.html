@@ -34,6 +34,341 @@
   </p>
   </div>
   <div style="margin-left:190px;border-left:2px solid #38B0C0;padding:25px;">
+<h3>Tue, 22 Mar 2016</h3>
+<br />
+<center><a name="book_intro"> <h2>Introduction to Marpa Book in progress</h2> </a>
+</center>
+<html>
+  <head>
+  </head>
+  <body><p>
+      <!--
+      marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
+      -->
+    </p><p>
+      What follows is a summary of the features
+      of the Marpa algorithm,
+      followed by a discussion of potential
+      applications.
+      It refers to itself as a "monograph", because it
+      is a draft of part of the introduction to
+      a technical monograph on the Marpa algorithm.
+      I hope the entire monograph will appear in a few
+      weeks.
+    </p>
+    <h2>The Marpa project</h2>
+    <p>
+      The Marpa project was intended to create
+      a practical and highly available tool
+      to generate and use general context-free
+      parsers.
+      Tools of this kind
+      had long existed
+      for LALR and
+      regular expressions.
+      But, despite a devoted academic literature,
+      no such tool had existed for context-free parsing.
+      The first stable version of Marpa was uploaded to
+      a public archive on Solstice Day 2011.
+      This monograph describes the algorithm used
+      in the most recent version of Marpa,
+      Marpa::R2.
+      It is a simplification of the algorithm presented
+      in
+      <a href="https://www.academia.edu/10341474/Marpa_A_practical_general_parser_the_recognizer">my
+      earlier paper</a>.
+      <h2>A proven algorithm</h2>
+      While the presentation in this monograph is theoretical,
+      the approach is practical.
+      The Marpa::R2 implementation has been widely available
+      for some time,
+      and has seen considerable use,
+      including in production environments.
+      Many of the ideas in the parsing literature
+      satisfy theoretical criteria,
+      but in practice turn out to face significant obstacles.
+      An algorithm may be as fast as reported, but may turn
+      out not to allow
+      adequate error reporting.
+      Or a modification may speed up the recognizer,
+      but require additional processing at evaluation time,
+      leaving no advantage to compensate for
+      the additional complexity.
+      </p>
+      <p>
+      In this monograph, I describe the Marpa
+      algorithm
+      as it was implemented for Marpa::R2.
+      In many cases,
+      I believe there are better approaches than those I
+      have described.
+      But I treat these techniques,
+      however solid their theory,
+      as conjectures.
+      Whenever I mention a technique
+      that was not actually implemented in
+      Marpa::R2,
+      I will always explicitly state that
+      that technique is not in Marpa as implemented.
+      <h2>Features</h2>
+      <h3>General context-free parsing</h3>
+      As implemented,
+      Marpa parses
+      all "proper" context-free grammars.
+      The
+      proper context-free grammars are those which
+      are free of cycles,
+      unproductive symbols,
+      and
+      inaccessible symbols.
+      Worst case time bounds are never worse than
+      those of Earley's algorithm,
+      and therefore never worse than O(n**3).
+      <h3>Linear time for practical grammars</h3>
+      Currently, the grammars suitable for practical
+      use are thought to be a subset
+      of the determistic context-free grammars.
+      Using a technique discovered by
+      Joop Leo,
+      Marpa parses all of these in linear time.
+      Leo's modification of Earley's algorithm is
+      O(n) for LR-regular grammars.
+      Leo's modification
+      also parses many ambiguous grammars in linear
+      time.
+      <h3>Left-eidetic</h3>
+      The original Earley algorithm kept full information
+      about the parse ---
+      including partial and fully
+      recognized rule instances ---
+      in its tables.
+      At every parse location,
+      before any symbols
+      are scanned,
+      Marpa's parse engine makes available
+      its
+      information about the state of the parse so far.
+      This information is
+      in useful form,
+      and can be accessed efficiently.
+      <h3>Recoverable from read errors</h3>
+      When
+      Marpa reads a token which it cannot accept,
+      the error is fully recoverable.
+      An application can try to read another
+      token.
+      The application can do this repeatedly
+      as long as none of the tokens are accepted.
+      Once the application provides
+      a token that is accepted by the parser,
+      parsing will continue
+      as if the unsuccessful read attempts had never been made.
+      <h3>Ambiguous tokens</h3>
+      Marpa allows ambiguous tokens.
+      These are often useful in natural language processing
+      where, for example,
+      the same word might be a verb or a noun.
+      Use of ambiguous tokens can be combined with
+      recovery from rejected tokens so that,
+      for example, an application could react to the
+      rejection of a token by reading two others.
+      <h2>Using the features</h2>
+      <h3>Error reporting</h3>
+      An obvious application of left-eideticism is error
+      reporting.
+      Marpa's abilities in this respect are
+      ground-breaking.
+      For example,
+      users typically regard an ambiguity as an error
+      in the grammar.
+      Marpa, as currently implemented,
+      can detect an ambiguity and report
+      specifically where it occurred
+      and what the alternatives were.
+      <h3>Event driven parsing</h3>
+      As implemented,
+      Marpa::R2
+      allows the user to define "events".
+      Events can defined that trigger when a specified rule is complete,
+      when a specified rule is predicted,
+      when a specified symbol is nulled,
+      when a user-specified lexeme has been scanned,
+      or when a user-specified lexeme is about to be scanned.
+      A mid-rule event can be defined by adding a nulling symbol
+      at the desired point in the rule,
+      and defining an event which triggers when the symbol is nulled.
+      <h3>Ruby slippers parsing</h3>
+      Left-eideticism, efficient error recovery,
+      and the event mechanism can be combined to allow
+      the application to change the input in response to
+      feedback from the parser.
+      In traditional parser practice,
+      error detection is an act of desperation.
+      In contrast,
+      Marpa's error detection is so painless
+      that it can be used as the foundation
+      of new parsing techniques.
+      </p>
+      <p>
+      For example,
+      if a token is rejected,
+      the lexer is free to create a new token
+      in the light of the parser's expectations.
+      This approach can be seen
+      as making the parser's
+      "wishes" come true,
+      and I have called it
+      "Ruby Slippers Parsing".
+      </p>
+      <p>
+      One use of the Ruby Slippers technique is to
+      parse with a clean
+      but oversimplified grammar,
+      programming the lexical analyzer to make up for the grammar's
+      short-comings on the fly.
+      As part of Marpa::R2,
+      the author has implemented an HTML parser,
+      based on a grammar that assumes that all start
+      and end tags are present.
+      Such an HTML grammar is too simple even to describe perfectly
+      standard-conformant HTML,
+      but the lexical analyzer is
+      programmed to supply start and end tags as requested by the parser.
+      The result is a simple and cleanly designed parser
+      that parses very liberal HTML
+      and accepts all input files,
+      in the worst case
+      treating them as highly defective HTML.
+      <h3>Ambiguity as a language design technique</h3>
+      In current practice, ambiguity is avoided in language design.
+      This is very different from the practice in the languages humans choose
+      when communicating with each other.
+      Human languages exploit ambiguity in order to design highly flexible,
+      powerfully expressive languages.
+      For example,
+      the language of this monograph, English, is notoriously
+      ambiguous.
+      </p>
+      <p>
+      Ambiguity of course can present a problem.
+      A sentence in an ambiguous
+      language may have undesired meanings.
+      But note that this is not a reason to ban potential ambiguity ---
+      it is only a problem with actual ambiguity.
+      </p>
+      <p>
+      Syntax errors, for example, are undesired, but nobody tries
+      to design languages to make syntax errors impossible.
+      A language in which every input was well-formed and meaningful
+      would be cumbersome and even dangerous:
+      all typos in such a language would be meaningful,
+      and parser would never warn the user about errors, because
+      there would be no such thing.
+      </p>
+      <p>
+      With Marpa, ambiguity can be dealt with in the same way
+      that syntax errors are dealt with in current practice.
+      The language can be designed to be ambiguous,
+      but any actual ambiguity can be detected
+      and reported at parse time.
+      This exploits Marpa's ability
+      to report exactly where
+      and what the ambiguity is.
+      Marpa::R2's own parser description language, the SLIF,
+      uses ambiguity in this way.
+      <h3>Auto-generated languages</h3>
+      In 1973, 
+      <a href="http://www.sciencedirect.com/science/article/pii/S0022000073800509">
+      &#x10c;ulik and Cohen</a> pointed out that the ability
+      to efficiently parse LR-regular languages
+      opens the way to auto-generated languages.
+      In particular,
+      &#x10c;ulik and Cohen note that a parser which
+      can parse any LR-regular language will be
+      able to parse a language generated using syntax macros.
+      <h3>Second order languages</h3>
+      In the literature, the term "second order language"
+      is usually used to describe languages with features
+      which are useful for second-order programming.
+      True second-order languages --- languages which
+      are auto-generated
+      from other languages ---
+      have not been seen as practical,
+      since there was no guarantee that the auto-generated
+      language could be efficiently parsed.
+      </p>
+      <p>
+      With Marpa, this barrier is raised.
+      As an example,
+      Marpa::R2's own parser description language, the SLIF,
+      allows "precedenced rules".
+      Precedenced rules are specified in an extended BNF.
+      The BNF extensions allow precedence and associativity
+      to be specified for each RHS.
+      </p>
+      <p>
+      Marpa::R2's precedenced rules are implemented as
+      a true second order language.
+      The SLIF representation of the precedenced rule
+      is parsed to create a BNF grammar which is equivalent,
+      and which has the desired precedence.
+      Essentially,
+      the SLIF does a standard textbook transformation.
+      The transformation starts
+      with a set of rules,
+      each of which has a precedence and
+      an associativity specified.
+      The result of the transformation is a set of
+      rules in pure BNF.
+      The SLIF's advantage is that it is powered by Marpa,
+      and therefore the SLIF can be certain that the grammar
+      that it auto-generates will
+      parse in linear time.
+      </p>
+      <p>
+      Notationally, Marpa's precedenced rules
+      are an improvement over
+      similar features
+      in LALR-based parser generators like
+      yacc or bison.
+      In the SLIF,
+      there are two important differences.
+      First, in the SLIF's precedenced rules,
+      precedence is generalized, so that it does
+      not depend on the operators:
+      there is no need to identify operators,
+      much less class them as binary, unary, etc.
+      This more powerful and flexible precedence notation
+      allows the definition of multiple ternary operators,
+      and multiple operators with arity above three.
+      </p>
+      <p>
+      Second, and more important, a SLIF user is guaranteed
+      to get exactly the language that the precedenced rule specifies.
+      The user of the yacc equivalent must hope their
+      syntax falls within the limits of LALR.</p>
+    <h2>References, comments, etc.</h2>
+    <p>
+      Marpa has a
+      <a href="http://savage.net.au/Marpa.html">semi-official web site, maintained by Ron Savage</a>.
+      The official, but more limited, Marpa website
+      <a href="http://jeffreykegler.github.io/Marpa-web-site/">is my personal one</a>.
+      Comments on this post can be made in
+      <a href="http://groups.google.com/group/marpa-parser">
+        Marpa's Google group</a>,
+      or on our IRC channel: #marpa at freenode.net.
+    </p>
+  </body>
+</html>
+<br />
+<p>posted at: 17:56 |
+<a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2016/03/book_intro.html">direct link to this entry</a>
+</p>
+<div style="color:#38B0C0;padding:1px;text-align:center;">
+&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&sect;
+</div>
 <h3>Wed, 09 Mar 2016</h3>
 <br />
 <center><a name="parus"> <h2>What parser do birds use?</h2> </a>
@@ -663,308 +998,6 @@
 <br />
 <p>posted at: 10:13 |
 <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2015/12/composable.html">direct link to this entry</a>
-</p>
-<div style="color:#38B0C0;padding:1px;text-align:center;">
-&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-&sect;
-</div>
-<h3>Sat, 29 Aug 2015</h3>
-<br />
-<center><a name="fast_handy"> <h2>Fast handy languages</h2> </a>
-</center>
-<html>
-  <head>
-  </head>
-  <body><p>
-      <!--
-      marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
-      -->
-    </p>
-    <p>Back around 1980, I had access to UNIX and a language I wanted to parse.
-      I knew that UNIX had all the latest CS tools.
-      So I expected to type in my BNF and "Presto, Language!".
-    </p>
-    <p>Not so easy, I was told.
-      Languages were difficult things created with complex tools
-      written by experts who understood the issues.
-      I recall thinking that,
-      while English had a syntax that is
-      as hard as they come,
-      toddlers manage to parse it
-      just fine.
-      But experts are experts,
-      and more so at second-hand.
-    </p>
-    <p>I was steered to an LALR-based parser called yacc.
-      (Readers may be more familiar with bison, a yacc successor.)
-      LALR had extended the class of quickly parseable grammars a bit
-      beyond recursive descent.
-      But recursive descent was simple in principle,
-      and its limits were easy to discover and work around.
-      LALR, on the hand, was OK when it worked, but
-      figuring out why it failed when it failed
-      was more like decryption than debugging,
-      and this was the case both with parser development
-      and run-time errors.
-      I soon gave up on yacc
-      and found another way to solve my problem.
-    </p>
-    <p>Few people complained about yacc on the Internet.
-      If you noise it about that you are unable
-      to figure out how to use
-      what everybody says is the state-of-the-art tool,
-      the conclusions drawn may not be the ones you want.
-      But my experience seems to have been more than common.
-    </p>
-    <p>LALR's claim to fame was that it was the basis of the
-      industry-standard C compiler.
-      Over three decades,
-      its maintainers suffered amid the general silence.
-      But by 2006, they'd had enough.
-      GCC (the new industry standard)
-      ripped its LALR engine out.
-      By then
-      <a href="http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2014/09/chron.html">the
-        trend back to recursive descent</a>
-      was well underway.
-    </p>
-    <h3>A surprise discovery</h3>
-    <p>Back in the 1970's,
-      there had been more powerful alternatives
-      to LALR and recursive descent.
-      But they were
-      <a href="http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2013/04/fast_enough.html">reputed
-        to be slow</a>.
-    </p>
-    <p>For some applications slow is OK.
-      In 2007 I decided that a parsing tool that parsed
-      all context-free languages at state-of-the-art speeds,
-      slow or fast as the case might be,
-      would be a useful addition to programmer toolkits.
-      And I ran into a surprise.
-    </p>
-    <p>Hidden in the literature was an amazing discovery --
-      an 1991 article by Joop Leo that
-      described how to modify Earley's
-      algorithm to be fast for every language class in practical use.
-      (When I say "fast" in this article, I will mean "linear".)
-      Leo's article had been almost completely ignored --
-      my project (<a href="http://savage.net.au/Marpa.html">Marpa</a>)
-      would become its first
-      practical implementation.
-    </p>
-    <h3>Second-order languages</h3>
-    <p>The implications of Leo's discovery go well beyond speed.
-      If you can rely on the BNF that you write always producing
-      a practical parser, you can auto-generate your language.
-      In fact,
-      you can write languages which write languages.
-    </p>
-    <h3>Which languages are fast?</h3>
-    <p>The Leo/Earley algorithm is not fast
-      for every BNF-expressible language.
-      BNF is powerful, and you can write exponentially
-      ambiguous languages in it.
-      But programmers these days
-      mostly care about unambiguous languages --
-      we are accustomed to tools and techniques
-      that parse only a subset of these.
-    </p>
-    <p>
-      As I've said, Marpa is fast for every language
-      class in practical use today.
-      Marpa is almost certainly fast for any language
-      that a modern programmer has in mind.
-      Unless you peek ahead at the hints I am about to give you,
-      in fact, it is actually
-      <b>hard</b>
-      to write an unambiguous
-      grammar that goes non-linear on Marpa.
-      Simply mixing up lots of left, right and middle recursions
-      will
-      <b>not</b>
-      be enough to make an
-      unambiguous grammar go non-linear.
-      You will also need to violate a rule
-      in the set that
-      I am about to give you.
-    </p>
-    <p>To guarantee that Marpa is fast for your BNF language,
-      follow three rules:
-    </p>
-    <ul>
-      <li>Rule 1: Your BNF must be unambiguous.
-      </li>
-      <li>Rule 2: Your BNF must have no "unmarked" middle recursions.
-      </li>
-      <li>Rule 3: All of the right-recursive symbols
-        in your BNF must be dedicated
-        to right recursion.
-      </li>
-    </ul>
-    <p>Rule 3 turns out to be very easy to obey.
-      I discuss it in detail in the next section,
-      which will be about how to break these rules and
-      get away with it.
-    </p>
-    <p>Before we do that,
-      let's look at what an "unmarked" middle recursion is.
-      Here's an example of a "marked" middle recursion:
-    </p><blockquote><pre>
-       M ::= 'b'
-       M ::= 'a' M 'a'
-    </pre></blockquote><p>
-      Here the "b" symbol is the marker.
-      This marked middle recursion generates sequences like
-    </p><blockquote><pre>
-       b
-       a b a
-       a a b a a
-    </pre></blockquote>
-    <p>Now for an "unmarked" middle recursion:
-    </p><blockquote><pre>
-       M ::= 'a' 'a'
-       M ::= 'a' M 'a'
-    </pre></blockquote><p>
-      This unmarked middle recursion generates sequences like
-    </p><blockquote><pre>
-       a a
-       a a a a
-       a a a a a a
-    </pre></blockquote><p>
-      In this middle recursion there is no marker.
-      To know where the middle is,
-      you have to scan all the way to the end,
-      and then count back.
-    </p>
-    <p>A rule of thumb is that if you can "eyeball" the middle
-      of a long sequence,
-      the recursion is marked.
-      If you can't, it is unmarked.
-      Unfortunately, we can't characterize exactly what a marker
-      must look like -- a marker can encode the moves of a Turing machine,
-      so marker detection is undecidable.
-    </p>
-    <h3>How to get away with breaking the rules</h3>
-    <p>The rules about ambiguity and recursions are "soft".
-      If you only use limited ambiguity and
-      keep your rule-breaking recursions short,
-      your parser will stay fast.
-    </p>
-    <p>Above, I promised to explain rule 3, which insisted that
-      a right recursive symbol be "dedicated".
-      A right recursive symbol is "dedicated" if it appears only
-      as the recursive symbol in a right recursion.
-      If your grammar is unambiguous, but you've used an "undedicated"
-      right-recursive symbol, that is easy to fix.
-      Just rewrite the grammar, replacing the "undedicated" symbol
-      with two different symbols.
-      Dedicate one of the two to the right recursion,
-      and use the other symbol everywhere else.
-    </p>
-    <h3>When NOT to use Marpa</h3>
-    <p>The languages I have described as "fast" for Marpa
-      include all those in practical use and many more.
-      But do you really want to use Marpa for all of them?
-      Here are four cases for which Marpa is probably not
-      your best alternative.
-    </p>
-    <p>The first case: a language that parses easily with a regular
-      expression.
-      The regular expression will be much faster.
-      Don't walk away from a good thing.
-    </p>
-    <p>The second case:
-      a language
-      that is easily parsed using a single
-      loop and some state that fits into constant space.
-      This parser might be very easy to write and maintain.
-      If you are using a much slower higher level language,
-      Marpa's optimized C language
-      may be a win on CPU speed.
-      But, as before, if you have a good thing,
-      don't walk away from it.
-    </p><p>The third case:
-      a variation on the second.
-      Here your single loop might be getting out of hand,
-      making you yearn for the syntax-driven convenience
-      of Marpa,
-      but your state still fits into constant space.
-      In its current implementation, Marpa keeps all of its
-      parse tables forever, so Marpa does
-      <b>not</b>
-      parse in constant space.
-      Keeping the tables
-      allows Marpa to deal with the full structure of its
-      input, in a way that a SAX-ish approaches cannot.
-      But if space requirements are an issue,
-      and your application allows a simplified constant-space
-      approach,
-      Marpa's power and convenience may not be enough to
-      make up for that.
-    </p>
-    <p>The fourth case:
-      a language that
-    </p><ul>
-      <li>is very small;
-      </li>
-      <li>changes slowly or not at all, and does not grow in complexity;
-      </li>
-      <li>merits careful hand-optimization, and has available the staff
-        to do it;
-      </li>
-      <li>merits and has available the kind of on-going support that will
-        keep your code optimized under changing circumstances; and
-      </li>
-      <li>is easily parseable via recursive descent:</li>
-    </ul>
-    <p>
-      It is rare that all of these are the case,
-      but when that happens,
-      recursive descent is often preferable to Marpa.
-      Lua and JSON
-      are two languages which meet the above criteria.
-      In Lua's case, it targets platforms with very restricted memories,
-      which is an additional reason to prefer recursive descent --
-      Marpa has a relatively large footprint.
-    </p>
-    <p>It was not good luck that made
-      both Lua and JSON good targets for recursive descent --
-      they were designed around its limits.
-      JSON is a favorite test target of Marpa for just these reasons.
-      There are carefully hand-optimized C language parsers for us to
-      benchmark against.
-    </p>
-    <p>We get closer and closer,
-      but Marpa will
-      never beat small hand-optimized JSON parsers in software.
-      However, while recursive descent is a technique for hand-writing parsers,
-      Marpa is a mathematical algorithm.
-      Someday,
-      instructions for manipulating Earley items could be implemented directly
-      in silicon.
-      When and if that day comes,
-      Earley's algorithm will beat recursive descent even at
-      parsing the grammars that were designed for it.
-    </p>
-    <h3>Comments</h3>
-    <p>Comments on this post can be made in
-      <a href="http://groups.google.com/group/marpa-parser">
-        Marpa's Google group</a>,
-      or on our IRC channel: #marpa at freenode.net.
-      To learn more about Marpa,
-      there's
-      <a href="http://savage.net.au/Marpa.html">the
-        official web site maintained by Ron Savage</a>.
-      I also have
-      <a href="http://jeffreykegler.github.io/Marpa-web-site/">a Marpa web site</a>.
-    </p>
-  </body>
-</html>
-<br />
-<p>posted at: 16:36 |
-<a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2015/08/fast_handy.html">direct link to this entry</a>
 </p>
 <div style="color:#38B0C0;padding:1px;text-align:center;">
 &sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
