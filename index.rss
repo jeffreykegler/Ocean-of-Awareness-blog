@@ -40,7 +40,7 @@
       had long existed
       for LALR and
       regular expressions.
-      But, despite a devoted academic literature,
+      But, despite an encouraging academic literature,
       no such tool had existed for context-free parsing.
       The first stable version of Marpa was uploaded to
       a public archive on Solstice Day 2011.
