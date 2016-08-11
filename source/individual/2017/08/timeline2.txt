@@ -8,37 +8,82 @@ Parsing: an expanded timeline
       -->
     </p>
     <p>[ Revised 10 Aug 2016 ]
-    To my surprise,
-    my previous "timeline" history of parsing proved extremely popular.
-    This expansion of it adds more material about top-down parsing.
     </p>
-    <p><b>The 1950's</b>:
-    No paper on parsing appears until 1961, so the 1950's are
-    the "pre-history" of parsing.
-    Some parsing is done, and late in the 1950's actual languages
-    appear.
-    Notable are LISP (1958),
-    which requires the programmer to specify the
-    syntax herself, using parentheses;
-    and FORTRAN (1957), which is structured line-by-line
-    instead of in blocks.
-    <p>Readers of the literature from and about this period
-    may get the impression that the 1950's were a kind of Atlantean Age for software,
-    in which
-    the first programmers used tools whose sophistication
-    surpasses that of later ages.
-    It should be understood that the term "compiler" at this time
-    was used in its original meaning of "bring things together"
-    and was used for any tool which aided the programming progress.
+    <p><b>The fourth century BCE</b>:
+    In India, Pannini creates a grammar of Sanskrit.
+    Pannini's grammar is probably the first formal system of any kind, predating Euclid.
+    It is a sophisticated and exact description of the Sanskrit language,
+    including pronunciation.
+    Sanskrit could be recreated from scratch using Pannini's grammar.
+    To this date,
+    nothing like it exists for any other natural language of Sanskrit's
+    with Sanskrit's complexity,
+    or with a comparable corpus.
+    </p>Similar work appears in the Greek and Latin worlds, but by the 1950's
+    Pannini is almost completely forgotten.
+    Recently, Pannini's work is receiving attention,
+    but it will have no influence on later events in this timeline.
+    <p>
+    <p><b>1952<b>:
+    Grace Hopper writes a linker-loader and
+    <a href="https://en.wikipedia.org/wiki/History_of_compiler_construction#First_compilers">
+    describes it
+    as a "compiler"</a>.
+    She seems to be the first person to use this term for a computer program.
+    The term
+    "compile" here is being used in its basic sense,
+    meaning "to bring things together".
+    <p><b>1957</b>:
+    Noam Chomsky publishes the first book
+    on his theory of language,
+    <b>Syntactic Structures</b>.
+    One of the most influential book of all time.
+    It includes the "Chomsky hierarchy". 
+    From least to most powerful,
+    and using modern terminology, this is
+    context-free languages,
+    context-sensitive languages
+    and Turing-complete languages.
+    In Chomsky's theory language is processed
+    in multiple passes,
+    and there is a morphophonemic pass,
+    a syntactic pass, and a transformation pass.
+    There are resemble, and inspired the lexical,
+    syntactic and AST processing passes of later compilers.
+    </p>
+    <p>Chomsky's most important contribution is so basic
+    it may be overlooked.
+    At the time he wrote, linguists believed they had to work
+    from the data, only constructing grammars or other representations
+    as and when justified.
+    Chomsky argued that this is impossible --
+    the data is simply noise until there is
+    a theory about its structure, and that the theory must come first.
+    Chomsky made syntax-driven approaches to parsing academically 
+    and philosophically respectable.
+    Chomsky's effect on what follows is pervasive.
+    </p>
+    <p><b>1957</b>John Backus' team creates FORTRAN.
+    FORTRAN is not a block structured language, and is parsed line-by-line,
+    using ad hoc methods.
+    <p><b>1958</b>John McCarthy's LISP appears.
+    LISP is block structured,
+    but requires the programmer to indicate the structure herself,
+    with parentheses.
+    <p><b>Compilers</b>:
+    Readers of the literature about the 1950's will sometimes get the impression
+    of an Atlantean or Panninian Age,
+    a period which had access to technology more sophisticated
+    that that of later times.
+    This is misleading.
+    The term "compiler" in the 1950's was used far more widely than it is now
+    and in particular did not imply that it's output was ready to be executed by
+    a computer.
     John Backus, for example,
     <a href="http://www.softwarepreservation.org/projects/FORTRAN/paper/Backus-ProgrammingInAmerica-1976.pdf">
     describes (pp. 133-134)</a> a 1954 "compiler"
     which produces relative addresses, that needed to be translated to
     absolute addresses by hand.
-    <a href="https://en.wikipedia.org/wiki/History_of_compiler_construction#First_compilers">
-    The first person to use the term "compiler"</a> may have been Grace Hopper.
-    Her 1952 "compiler" seems to have been what we today
-    would call a linker-loader.
     </p>
     <p><b>1960</b>:
       The ALGOL 60 spec comes out.
