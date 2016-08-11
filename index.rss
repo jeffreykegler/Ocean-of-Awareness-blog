@@ -10,6 +10,302 @@
     <language>en</language>
 
   <item>
+    <title>Parsing: an expanded timeline</title>
+    <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2017/08/timeline2.html</link>
+    <description>&lt;html&gt;
+  &lt;head&gt;
+  &lt;/head&gt;
+  &lt;body&gt;&lt;p&gt;
+      &lt;!--
+      marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
+      --&gt;
+    &lt;/p&gt;
+    &lt;p&gt;[ Revised 10 Aug 2016 ]
+    To my surprise,
+    my previous &quot;timeline&quot; history of parsing proved extremely popular.
+    This expansion of it adds more material about top-down parsing.
+    &lt;/p&gt;
+    &lt;p&gt;&lt;b&gt;The 1950's&lt;/b&gt;:
+    No paper on parsing appears until 1961, so the 1950's are
+    the &quot;pre-history&quot; of parsing.
+    Some parsing is done, and late in the 1950's actual languages
+    appear.
+    Notable are LISP (1958),
+    which requires the programmer to specify the
+    syntax herself, using parentheses;
+    and FORTRAN (1957), which is structured line-by-line
+    instead of in blocks.
+    &lt;p&gt;Readers of the literature from and about this period
+    may get the impression that the 1950's were a kind of Atlantean Age for software,
+    in which
+    the first programmers used tools whose sophistication
+    surpasses that of later ages.
+    It should be understood that the term &quot;compiler&quot; at this time
+    was used in its original meaning of &quot;bring things together&quot;
+    and was used for any tool which aided the programming progress.
+    John Backus, for example,
+    &lt;a href=&quot;http://www.softwarepreservation.org/projects/FORTRAN/paper/Backus-ProgrammingInAmerica-1976.pdf&quot;&gt;
+    describes (pp. 133-134)&lt;/a&gt; a 1954 &quot;compiler&quot;
+    which produces relative addresses, that needed to be translated to
+    absolute addresses by hand.
+    &lt;a href=&quot;https://en.wikipedia.org/wiki/History_of_compiler_construction#First_compilers&quot;&gt;
+    The first person to use the term &quot;compiler&quot;&lt;/a&gt; may have been Grace Hopper.
+    Her 1952 &quot;compiler&quot; seems to have been what we today
+    would call a linker-loader.
+    &lt;/p&gt;
+    &lt;p&gt;&lt;b&gt;1960&lt;/b&gt;:
+      The ALGOL 60 spec comes out.
+      It specifies, for the first time, a block structured
+      language.
+      The ALGOL committee is well aware
+      that
+      nobody knows how to parse such a language.
+      But they believe that,
+      if they specify a block-structured
+      language, a parser for it will be invented.
+      Risky as this approach is, it pays off ...
+    &lt;/p&gt;
+    &lt;p&gt;&lt;b&gt;1961&lt;/b&gt;:
+    Ned Irons publishes the a paper describing his ALGOL
+    parser.
+    It is the first paper to describe any parser.
+      The Irons algorithm is a left parser --
+      a form of recursive descent.
+      Unlike modern
+      recursive descent,
+      the Irons algorithm
+      is general and syntax-driven.
+      &quot;General&quot; means it can parse anything written in BNF.
+      &quot;Syntax-driven&quot; (aka declarative) means that parser is
+      actually created from the BNF --
+      the parser does not need
+      to be hand-written.
+    &lt;/p&gt;
+    &lt;p&gt;&lt;b&gt;1961&lt;/b&gt;:
+      Almost simultaneously, hand-coded approaches to left parsing
+      appear.
+      These we would now recognize as recursive descent.
+      Over the following years, hand-coding approaches
+      will become more popular for left parsers
+      than syntax-driven algorithms.
+      Three factors are at work:
+      &lt;ul&gt;
+      &lt;li&gt;
+      In 1960's, memory and CPU are both extremely limited.
+      Hand-coding pays off, even when the gains are small.
+      &lt;li&gt;
+      Pure left parsing is a very weak parsing technique.
+      Hand-coding is often necessary
+      to overcome its limits.
+      This is
+      as true today as it is in 1961.
+      &lt;li&gt;
+      Left parsing works well in combination with hand-coding --
+      they are a very good fit.
+      &lt;/ul&gt;
+    &lt;/p&gt;
+    &lt;p&gt;&lt;b&gt;1965&lt;/b&gt;:
+    Don Knuth invents LR parsing.
+      Knuth is primarily interested
+      in the mathematics.
+      Knuth describes a parsing algorithm,
+      but it is not thought practical.
+    &lt;/p&gt;
+    &lt;p&gt;&lt;b&gt;1968&lt;/b&gt;: Jay Earley invents the algorithm named after him.
+      Like the Irons algorithm,
+      Earley's algorithm is syntax-driven and fully general.
+      Unlike the Irons algorithm, it does not backtrack.
+      Earley's core idea is to
+      track everything about the parse in tables.
+      Earley's algorithm is enticing, but it has three major issues:
+      &lt;ul&gt;
+      &lt;li&gt;First, there is a bug in the handling of zero-length rules.
+      &lt;li&gt;Second, it is quadratic for right recursions.
+      &lt;li&gt;Third, the bookkeeping required to set up the tables is,
+      by the standards of 1968 hardware, daunting.
+      &lt;/ul&gt;
+    &lt;p&gt;&lt;b&gt;1969&lt;/b&gt;:
+      Frank DeRemer describes a new variant of Knuth's LR
+      parsing.
+      DeRemer's LALR algorithm requires only
+      a stack and a state table of quite
+      manageable size.
+    &lt;/p&gt;
+    &lt;p&gt;&lt;b&gt;1972&lt;/b&gt;:
+      Aho and Ullmann describe
+      a straightforward fix to the zero-length rule bug in Earley's original algorithm.
+      Unfortunately, this fix involves adding even more bookkeeping to Earley's.
+    &lt;p&gt;&lt;b&gt;1975&lt;/b&gt;:
+      Bell Labs converts its C compiler from hand-written recursive
+      descent to DeRemer's LALR algorithm.
+    &lt;/p&gt;
+    &lt;p&gt;&lt;b&gt;1977&lt;/b&gt;:
+      The first &quot;Dragon book&quot; comes out.
+      This soon-to-be classic textbook is nicknamed after
+      the drawing on the front cover,
+      in which a knight takes on a dragon.
+      Emblazoned on the knight's lance are the letters &quot;LALR&quot;.
+      From here on out,
+      to speak lightly of LALR will be to besmirch the escutcheon
+      of parsing theory.
+    &lt;/p&gt;
+    &lt;p&gt;&lt;b&gt;1979&lt;/b&gt;: Bell Laboratories releases Version 7 UNIX.
+	V7 includes what is, by far,
+		the most comprehensive, useable and easily available
+		compiler writing toolkit yet developed.
+	 Central to the toolkit is
+	 yacc, an LALR based parser generator.
+	  With a bit of hackery,
+	  yacc parses its own input language,
+	  as well as the language of V7's main compiler,
+	  the portable C compiler.
+	  After two decades of research,
+	  it seems that the parsing problem is solved.
+    &lt;/p&gt;
+    &lt;p&gt;&lt;b&gt;1987&lt;/b&gt;:
+      Larry Wall introduces Perl 1.
+      Perl embraces complexity like no previous language.
+      Larry uses LALR very aggressively --
+      to my knowledge more aggressively than anyone before
+      or since.
+    &lt;/p&gt;
+    &lt;p&gt;&lt;b&gt;1991&lt;/b&gt;:
+      Joop Leo discovers a way of speeding up right
+      recursions in Earley's algorithm.
+      Leo's algorithm
+      is linear for just about every unambiguous grammar of
+      practical interest, and many ambiguous ones as well.
+      In 1991 hardware is six orders of magnitude faster
+      than 1968 hardware, so that the
+      issue of bookkeeping overhead had receded
+      in importance.
+      This is a major discovery.
+      When it comes to speed,
+      the game has changed in favor of Earley algorithm.
+      But Earley parsing is almost forgotten.
+      It will be 20 years before anyone writes a practical
+      implementation of Leo's algorithm.
+    &lt;/p&gt;
+    &lt;p&gt;&lt;b&gt;1990's&lt;/b&gt;:
+      Earley's is forgotten.
+      So everyone in LALR-land is content, right?
+      Wrong. Far from it, in fact.
+      Users of LALR are making unpleasant discoveries.
+      While LALR automatically
+      generates their parsers,
+      debugging them
+      is so hard they could just as easily
+      write the parser by hand.
+      Once debugged, their LALR parsers are fast for correct inputs.
+      But almost all they tell the users about incorrect inputs
+      is that they are incorrect.
+      In Larry's words, LALR is &quot;fast but stupid&quot;.
+    &lt;/p&gt;&lt;b&gt;2000&lt;/b&gt;:
+    Larry Wall decides on a radical reimplementation
+      of Perl -- Perl 6.
+      Larry does not even consider using LALR again.
+    &lt;/p&gt;
+    &lt;p&gt;&lt;b&gt;2002&lt;/b&gt;:
+      Aycock&amp;Horspool publish their attempt at a fast, practical Earley's parser.
+      Missing from it is Joop Leo's improvement --
+      they seem not to be aware of it.
+      Their own speedup is limited in what it achieves
+      and the complications it introduces
+      can be counter-productive at evaluation time.
+      But buried in their paper is a solution to the zero-length rule bug.
+      And this time the solution requires no additional bookkeeping.
+    &lt;/p&gt;
+    &lt;p&gt;&lt;b&gt;2006&lt;/b&gt;:
+      GNU announces that the GCC compiler's parser has been rewritten.
+      For three decades,
+      the industry's flagship C compilers have used
+      LALR as their parser --
+      proof of the claim that LALR and serious
+      parsing are equivalent.
+      Now, GNU replaces
+      LALR with the technology that
+      it replaced a quarter century earlier:
+      recursive descent.
+    &lt;/p&gt;
+    &lt;p&gt;&lt;b&gt;2000 to today&lt;/b&gt;:
+    With the retreat from LALR comes a collapse in the
+      prestige of parsing theory.
+      After a half century,
+      we seem to be back
+      where we started.
+      If you took Ned Iron's original 1961 algorithm,
+      changed the names and dates,
+      and translated the code from the mix of assembler and
+      ALGOL into Haskell,
+      you would easily republish it today,
+      and bill it as 
+      as revolutionary and new.
+    &lt;/p&gt;
+    &lt;p&gt;
+    &lt;h3&gt;Marpa&lt;/h3&gt;
+      Over the years,
+      I had come back to Earley's algorithm again and again.
+      Around 2010, I realized
+      that the original, long-abandoned vision --
+      an efficient, practical, general and syntax-driven parser --
+      was now, in fact, quite possible.
+      The necessary pieces had fallen into place.
+    &lt;/p&gt;
+    &lt;p&gt;
+      Aycock&amp;Horspool have solved the zero-length rule bug.
+      Joop Leo had found the speedup for right recursion.
+      And the issue of bookkeeping overhead had pretty much evaporated on its
+      own.
+      Machine operations are now a billion times faster than in 1968,
+      and probably no longer relevant in any case --
+      caches misses are now the bottleneck.
+    &lt;/p&gt;
+    &lt;p&gt;But while the original issues with Earley's disappeared,
+      a new issue emerged.
+      With a parsing algorithm as powerful as Earley's behind it,
+      a syntax-driven approach can do much more than it can with
+      a left parser.
+      But with the experience with LALR in their collective consciousness,
+      few modern programmers are prepared
+      to trust a purely declarative parser.
+      As Lincoln said, &quot;Once a cat's been burned,
+      he won't even sit on a cold stove.&quot;
+    &lt;/p&gt;
+    &lt;p&gt;
+      To be accepted, Marpa needed to allow
+      procedure parsing,
+      not just declarative parsing.
+      So Marpa allows the user to specify events --
+      occurrences of symbols and rules --
+      at which declarative parsing pauses.
+      While paused,
+      the application can call procedural logic
+      and single-step forward token by token.
+      The procedural logic can hand control back
+      over to syntax-driven parsing at any point it likes.
+      The Earley tables can provide the procedural logic with
+      full knowledge of the state of the
+      parse so far:
+      all rules recognized
+      in all possible parses so far,
+      and all symbols expected.
+      Earley's algorithm is now a even better companion
+      for hand-written procedural logic than recursive descent.
+    &lt;h2&gt;References, comments, etc.&lt;/h2&gt;
+    &lt;p&gt;
+      For more about Marpa, there is the
+      &lt;a href=&quot;http://savage.net.au/Marpa.html&quot;&gt;semi-official web site, maintained by Ron Savage&lt;/a&gt;.
+      The official, but more limited, Marpa website
+      &lt;a href=&quot;http://jeffreykegler.github.io/Marpa-web-site/&quot;&gt;is my personal one&lt;/a&gt;.
+      Comments on this post can be made in
+      &lt;a href=&quot;http://groups.google.com/group/marpa-parser&quot;&gt;
+        Marpa's Google group&lt;/a&gt;,
+      or on our IRC channel: #marpa at freenode.net.
+    &lt;/p&gt;
+  &lt;/body&gt;
+&lt;/html&gt;</description>
+  </item>
+  <item>
     <title>Introduction to Marpa Book in progress</title>
     <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2016/03/book_intro.html</link>
     <description>&lt;html&gt;
@@ -712,211 +1008,6 @@
       Obviously, I have doubts about one specific set of hopes for Perl 6 grammars.
       But these hopes have not been central to the Perl 6 effort,
       and I will be an eager student of the Perl 6 team's work over the coming months.
-    &lt;/p&gt;
-    &lt;h2&gt;Comments&lt;/h2&gt;
-    &lt;p&gt;
-      To learn more about Marpa,
-      there's
-      &lt;a href=&quot;http://savage.net.au/Marpa.html&quot;&gt;the
-        official web site maintained by Ron Savage&lt;/a&gt;.
-      I also have
-      &lt;a href=&quot;http://jeffreykegler.github.io/Marpa-web-site/&quot;&gt;a Marpa web site&lt;/a&gt;.
-      Comments on this post can be made in
-      &lt;a href=&quot;http://groups.google.com/group/marpa-parser&quot;&gt;
-        Marpa's Google group&lt;/a&gt;,
-      or on our IRC channel: #marpa at freenode.net.
-    &lt;/p&gt;
-  &lt;/body&gt;
-&lt;/html&gt;</description>
-  </item>
-  <item>
-    <title>Grammar reuse</title>
-    <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2015/12/composable.html</link>
-    <description>&lt;html&gt;
-  &lt;head&gt;
-  &lt;/head&gt;
-  &lt;body&gt;&lt;p&gt;
-      &lt;!--
-      marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
-      --&gt;
-    &lt;/p&gt;
-    &lt;p&gt;Every year the Perl 6 community creates an &quot;Advent&quot; series of posts.
-      I always follow these, but
-      &lt;a href=&quot;https://perl6advent.wordpress.com/2015/12/08/day-8-grammars-generating-grammars/&quot;&gt;one
-        in particular&lt;/a&gt;
-      caught my attention this year.
-      It presents a vision of a future where programming is language-driven.
-      A vision that I share.
-      The post went on to encourage its readers to follow up on this vision,
-      and suggested an approach.
-      But I do not think the particular approach suggested would be fruitful.
-      In this post I'll explain why.
-    &lt;/p&gt;
-    &lt;h2&gt;Reuse&lt;/h2&gt;
-    &lt;p&gt;The focus of the Advent post was language-driven programming,
-      and that is the aspect that excites me most.
-      But the points that I wish to make are more easily understood if
-      I root them in a narrower, but more familiar issue
-      -- grammar reuse.
-    &lt;/p&gt;
-    &lt;p&gt;
-      Most programmers will be very familiar with grammar reuse from regular expressions.
-      In the regular expression (&quot;RE&quot;) world,
-      programming by cutting and pasting
-      is very practical and often practiced.
-    &lt;/p&gt;
-    &lt;p&gt;
-      For this post I will consider grammar reusability to be the ability
-      to join two grammars and create a third.
-      This is also sometimes called grammar composition.
-      For this purpose, I will widen the term &quot;grammar&quot; to include
-      RE's and PEG parser specifications.
-      Ideally, when you compose two grammars,
-      what you get is
-    &lt;/p&gt;&lt;ul&gt;
-      &lt;li&gt;a language you can reasonably predict, and
-      &lt;/li&gt;
-      &lt;li&gt;if each of the two original grammars can be parsed in reasonable time,
-        a language that can be parsed in reasonable time.
-      &lt;/li&gt;
-    &lt;/ul&gt;
-    &lt;p&gt;
-      Not all language representations are reusable.
-      RE's are, and BNF is.
-      PEG looks like a combination of BNF and RE's,
-      but PEG, in fact, is its own very special form of parser specification.
-      And PEG parser specifications are
-      one of the least reusable language representations ever invented.
-    &lt;/p&gt;
-    &lt;h2&gt;Reuse and regular expressions&lt;/h2&gt;
-    &lt;p&gt;RE's are as well-behaved under
-      reuse as a language representation can get.
-      The combination of two RE's is always another RE,
-      and you can reasonably determine what language the combined RE recognizes by
-      examining it.
-      Further, every RE is parseable in linear time.
-    &lt;/p&gt;
-    &lt;p&gt;The one downside, often mentioned by critics, is that RE's
-      do not scale in terms of readability.
-      Here, however, the problem is not really one of reusability.
-      The problem is that RE's are quite limited in their capabilities,
-      and programmers often exploit the excellent behavior of RE's under reuse
-      to push them into applications for which RE's just do not have the power.
-    &lt;/p&gt;
-    &lt;h2&gt;Reuse and PEG&lt;/h2&gt;
-    &lt;p&gt;When programmers first look at PEG syntax, they often think they've encountered
-      paradise. They see both BNF and RE's, and imagine they'll have the
-      best of each.
-      But the convenient behavior of
-      RE's depends on their unambiguity.
-      You simply cannot write
-      an unambiguous RE -- it's impossible.
-    &lt;/p&gt;
-    &lt;p&gt;
-      More powerful and more flexible, BNF allows you to describe many more grammars --
-      including ambiguous ones.
-      How does PEG resolve this?  With a Gordian knot approach.
-      Whenever it encounters an ambiguity, it throws all but one of the choices away.
-      The author of the PEG specification gets some control over what is thrown away --
-      he specifies an order of preference for the choices.
-      But degree of control is less than it seems,
-      and in practice PEG is
-      the nitroglycerin of parsing -- marvelous when it works,
-      but tricky and dangerous.
-    &lt;/p&gt;
-    &lt;p&gt;
-      Consider these 3 PEG specifications:
-    &lt;/p&gt;&lt;blockquote&gt;&lt;pre&gt;
-	(&quot;a&quot;|&quot;aa&quot;)&quot;a&quot;
-	(&quot;aa&quot;|&quot;a&quot;)&quot;a&quot;
-	A = &quot;a&quot;A&quot;a&quot;/&quot;aa&quot;&lt;/pre&gt;&lt;/blockquote&gt;
-    &lt;p&gt;
-      All three clearly accept only strings which are repetitions
-      of the letter &quot;&lt;tt&gt;a&lt;/tt&gt;&quot;.
-      But which strings?
-      For the answers,
-      suggestions for dealing with PEG if you are committed to it,
-      and more,
-      look at
-      &lt;a href=&quot;http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2015/03/peg.html&quot;&gt;
-        my previous post on PEG&lt;/a&gt;.
-    &lt;/p&gt;
-    &lt;p&gt;
-      When getting an RE or a BNF grammar to work,
-      you can go back to the grammar and ask
-      yourself &quot;Does my grammar look like my intended language?&quot;.
-      With PEG, this is not really possible.
-      With practice, you might get used to figuring out single line PEG specs
-      like the first two above.
-      (If you can get the last one, you're amazing.)
-      But tracing these through multiple rule layers required by useful grammars is,
-      in practice, not really possible.
-    &lt;/p&gt;
-    &lt;p&gt;
-      In real life,
-      PEG specifications are written by hacking them until the test suite works.
-      And, once you get a PEG specification to pass the test suite for a practical-sized grammar,
-      you are very happy to leave it alone.
-      Trying to compose two PEG specifications is rolling the dice with the odds against you.
-    &lt;/p&gt;
-    &lt;h2&gt;Reuse and the native Perl 6 parser&lt;/h2&gt;
-    &lt;p&gt;
-      The native Perl 6 parser is an extended PEG parser.
-      The extensions are very interesting from the PEG point of view.
-      The PEG &quot;tie breaking&quot; has been changed,
-      and backtracking can be used.
-      These features mean the Perl 6 parser can be extended to languages
-      well beyond what
-      ordinary PEG parsers can handle.
-      But, if you use the extra features, reuse will be even trickier than
-      if you stuck with vanilla PEG.
-    &lt;/p&gt;
-    &lt;h2&gt;Reuse and general BNF parsing&lt;/h2&gt;
-    &lt;p&gt;
-      As mentioned, general BNF is reusable, and so general BNF parsers like
-      &lt;a href=&quot;http://savage.net.au/Marpa.html&quot;&gt;Marpa&lt;/a&gt;
-      are as reusable as regular expressions, with two caveats.
-      First, if the two grammars are not doing their own lexing, their lexers will have
-      to be compatible.
-    &lt;/p&gt;
-    &lt;p&gt;Second,
-      with regular expressions you had the advantage that
-      &lt;b&gt;every&lt;/b&gt;
-      regular expression parses in linear time, so that speed was guaranteed to be acceptable.
-      Marpa users reuse grammars and pieces of grammars all the time.
-      The result is always the language specified by the merged BNF,
-      and I've never heard anyone complain that performance deterioriated.
-    &lt;/p&gt;&lt;p&gt;
-      But, while it may not happen often,
-      it is possible to combine two Marpa grammars that run in linear time
-      and end up with one that does not.
-      You can guarantee your merged Marpa grammar will stay linear if you follow 2 rules:
-    &lt;/p&gt;&lt;ul&gt;
-      &lt;li&gt;keep the grammar unambiguous;&lt;/li&gt;
-      &lt;li&gt;don't use an unmarked middle recursion.&lt;/li&gt;
-    &lt;/ul&gt;
-    &lt;p&gt;
-      Unmarked middle recursions are not things you're likely to need a lot: they
-      are those palindromes where you have to count to find the middle:
-      grammars like &quot;&lt;tt&gt;A ::= a | a A a&lt;/tt&gt;&quot;.
-      If you use a middle recursion at all, it is almost certainly going to
-      be marked, like &quot;&lt;tt&gt;A ::= b | a A a&lt;/tt&gt;&quot;,
-      which generates strings like &quot;&lt;tt&gt;aabaa&lt;/tt&gt;&quot;.
-      With Marpa, as with RE's, reuse is easy and practical.
-      And, as I hope to show in a future post, unlike RE's,
-      Marpa opens the road to language-driven programming.
-    &lt;/p&gt;
-    &lt;h2&gt;Perl 6&lt;/h2&gt;
-    &lt;p&gt;I'm a fan of the Perl 6 effort.
-      I certainly
-      &lt;b&gt;should&lt;/b&gt;
-      be a supporter, after the many favors they've done for me
-      and the Marpa community over the years.
-      The considerations of this post
-      will disappoint some of the
-      hopes for applications of the native Perl 6 parser.
-      But these applications have not been central to the Perl 6 effort,
-      of which I will be an eager student over the coming months.
     &lt;/p&gt;
     &lt;h2&gt;Comments&lt;/h2&gt;
     &lt;p&gt;
