@@ -24,26 +24,44 @@ Parsing: an expanded timeline
     Recently, Pannini's work is receiving attention,
     but it will have no influence on later events in this timeline.
     <p>
-    <p><b>1952<b>:
+    <p><b>1943</b>:
+    After two millenia, the West starts to catch up to Pannini.
+    Emil post defines and studies a formal rewriting system using
+    productions.
+    <p><b>1952</b>:
     Grace Hopper writes a linker-loader and
     <a href="https://en.wikipedia.org/wiki/History_of_compiler_construction#First_compilers">
     describes it
     as a "compiler"</a>.
     She seems to be the first person to use this term for a computer program.
-    The term
-    "compile" here is being used in its basic sense,
-    meaning "to bring things together".
+    Hopper used the term
+    "compiler" in its original sense:
+    "something or someone that bring other things together".
+    <p><b>1949</b>:
+    Markov publishes an article on finite state processes.
+    <p><b>1956</b>:
+    Chomsky publishes a paper with the the original form
+    of what is
+    now known as the Chomsky hierarchy:
+    <ul>
+    <li>Markov's finite state processes;
+    <li>Context-free grammars, and
+    <li>Context-sensitive grammars.
+    </ul>
+    The last two seem to be Chomsky's own formulations --
+    Chomsky does not cite Post's work.
+    This paper marks the beginning for Western formal language theory.
+    <p><b>1957</b>:
+    Steven Kleene discovers regular expressions,
+    a very handy notation for Markov's processes.
+    These turn out also to describe exactly the same class of languages
+    that is also being studied in two other forms: neural nets
+    and finite state automata.
     <p><b>1957</b>:
     Noam Chomsky publishes the first book
     on his theory of language,
     <b>Syntactic Structures</b>.
-    One of the most influential book of all time.
-    It includes the "Chomsky hierarchy". 
-    From least to most powerful,
-    and using modern terminology, this is
-    context-free languages,
-    context-sensitive languages
-    and Turing-complete languages.
+    This is one of the most influential books of all time.
     In Chomsky's theory language is processed
     in multiple passes,
     and there is a morphophonemic pass,
@@ -63,10 +81,12 @@ Parsing: an expanded timeline
     and philosophically respectable.
     Chomsky's effect on what follows is pervasive.
     </p>
-    <p><b>1957</b>John Backus' team creates FORTRAN.
+    <p><b>1957</b>:
+    John Backus' team creates FORTRAN.
     FORTRAN is not a block structured language, and is parsed line-by-line,
     using ad hoc methods.
-    <p><b>1958</b>John McCarthy's LISP appears.
+    <p><b>1958</b>:
+    John McCarthy's LISP appears.
     LISP is block structured,
     but requires the programmer to indicate the structure herself,
     with parentheses.
@@ -85,9 +105,20 @@ Parsing: an expanded timeline
     which produces relative addresses, that needed to be translated to
     absolute addresses by hand.
     </p>
+    <p><b>1959</b>:
+    Backus invents a new notation to describe
+    the IAL language.
+    Backus's notation is influenced by Post.
     <p><b>1960</b>:
-      The ALGOL 60 spec comes out.
-      It specifies, for the first time, a block structured
+    Peter Nauer, the author of the ALGOL 60 report, 
+    improved the notation Backus used to IAL,
+    and uses it to describe the new language.
+    It will become known as Backus-Nauer form.
+    The grammars describable by BNF are soon found to
+    be exactly Chomsky's context-free grammars.
+    <p><b>1960</b>:
+      The ALGOL 60 report
+      specifies, for the first time, a block structured
       language.
       The ALGOL committee is well aware
       that
@@ -98,7 +129,7 @@ Parsing: an expanded timeline
       Risky as this approach is, it pays off ...
     </p>
     <p><b>1961</b>:
-    Ned Irons publishes the a paper describing his ALGOL
+    Ned Irons publishes a paper describing his ALGOL 60
     parser.
     It is the first paper to describe any parser.
       The Irons algorithm is a left parser --

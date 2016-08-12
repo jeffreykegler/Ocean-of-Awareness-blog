@@ -21,37 +21,103 @@
       --&gt;
     &lt;/p&gt;
     &lt;p&gt;[ Revised 10 Aug 2016 ]
-    To my surprise,
-    my previous &quot;timeline&quot; history of parsing proved extremely popular.
-    This expansion of it adds more material about top-down parsing.
     &lt;/p&gt;
-    &lt;p&gt;&lt;b&gt;The 1950's&lt;/b&gt;:
-    No paper on parsing appears until 1961, so the 1950's are
-    the &quot;pre-history&quot; of parsing.
-    Some parsing is done, and late in the 1950's actual languages
-    appear.
-    Notable are LISP (1958),
-    which requires the programmer to specify the
-    syntax herself, using parentheses;
-    and FORTRAN (1957), which is structured line-by-line
-    instead of in blocks.
-    &lt;p&gt;Readers of the literature from and about this period
-    may get the impression that the 1950's were a kind of Atlantean Age for software,
-    in which
-    the first programmers used tools whose sophistication
-    surpasses that of later ages.
-    It should be understood that the term &quot;compiler&quot; at this time
-    was used in its original meaning of &quot;bring things together&quot;
-    and was used for any tool which aided the programming progress.
+    &lt;p&gt;&lt;b&gt;The fourth century BCE&lt;/b&gt;:
+    In India, Pannini creates a grammar of Sanskrit.
+    Pannini's grammar is probably the first formal system of any kind, predating Euclid.
+    It is a sophisticated and exact description of the Sanskrit language,
+    including pronunciation.
+    Sanskrit could be recreated from scratch using Pannini's grammar.
+    To this date,
+    nothing like it exists for any other natural language of Sanskrit's
+    with Sanskrit's complexity,
+    or with a comparable corpus.
+    &lt;/p&gt;Similar work appears in the Greek and Latin worlds, but by the 1950's
+    Pannini is almost completely forgotten.
+    Recently, Pannini's work is receiving attention,
+    but it will have no influence on later events in this timeline.
+    &lt;p&gt;
+    &lt;p&gt;&lt;b&gt;1943&lt;/b&gt;:
+    After two millenia, the West starts to catch up to Pannini.
+    Emil post defines and studies a formal rewriting system using
+    productions.
+    But it is unclear how much influence Post's writings had on Chomsky
+    and therefore on later work.
+    &lt;p&gt;&lt;b&gt;1952&lt;/b&gt;:
+    Grace Hopper writes a linker-loader and
+    &lt;a href=&quot;https://en.wikipedia.org/wiki/History_of_compiler_construction#First_compilers&quot;&gt;
+    describes it
+    as a &quot;compiler&quot;&lt;/a&gt;.
+    She seems to be the first person to use this term for a computer program.
+    Hopper used the term
+    &quot;compiler&quot; in its original sense:
+    &quot;something or someone that bring other things together&quot;.
+    &lt;p&gt;&lt;b&gt;1949&lt;/b&gt;:
+    Markov publishes an article on finite state processes.
+    &lt;p&gt;&lt;b&gt;1956&lt;/b&gt;:
+    Chomsky publishes a paper with the the original form
+    of what is
+    now known as the Chomsky hierarchy:
+    &lt;ul&gt;
+    &lt;li&gt;Markov's finite state processes;
+    &lt;li&gt;Context-free grammars, and
+    &lt;li&gt;Context-sensitive grammars.
+    &lt;/ul&gt;
+    The last two are Chomsky's own formulations.
+    This paper marks the beginning for Western formal language theory.
+    &lt;p&gt;&lt;b&gt;1957&lt;/b&gt;:
+    Steven Kleene discovers regular expressions,
+    a very handy notation for Markov's processes.
+    These turn out also to describe exactly the same class of languages
+    that is also being studied in two other forms: neural nets
+    and finite state automata.
+    &lt;p&gt;&lt;b&gt;1957&lt;/b&gt;:
+    Noam Chomsky publishes the first book
+    on his theory of language,
+    &lt;b&gt;Syntactic Structures&lt;/b&gt;.
+    This is one of the most influential books of all time.
+    In Chomsky's theory language is processed
+    in multiple passes,
+    and there is a morphophonemic pass,
+    a syntactic pass, and a transformation pass.
+    There are resemble, and inspired the lexical,
+    syntactic and AST processing passes of later compilers.
+    &lt;/p&gt;
+    &lt;p&gt;Chomsky's most important contribution is so basic
+    it may be overlooked.
+    At the time he wrote, linguists believed they had to work
+    from the data, only constructing grammars or other representations
+    as and when justified.
+    Chomsky argued that this is impossible --
+    the data is simply noise until there is
+    a theory about its structure, and that the theory must come first.
+    Chomsky made syntax-driven approaches to parsing academically 
+    and philosophically respectable.
+    Chomsky's effect on what follows is pervasive.
+    &lt;/p&gt;
+    &lt;p&gt;&lt;b&gt;1957&lt;/b&gt;:
+    John Backus' team creates FORTRAN.
+    FORTRAN is not a block structured language, and is parsed line-by-line,
+    using ad hoc methods.
+    &lt;p&gt;&lt;b&gt;1958&lt;/b&gt;:
+    John McCarthy's LISP appears.
+    LISP is block structured,
+    but requires the programmer to indicate the structure herself,
+    with parentheses.
+    &lt;p&gt;&lt;b&gt;Compilers&lt;/b&gt;:
+    Readers of the literature about the 1950's will sometimes get the impression
+    of an Atlantean or Panninian Age,
+    a period which had access to technology more sophisticated
+    that that of later times.
+    This is misleading.
+    The term &quot;compiler&quot; in the 1950's was used far more widely than it is now
+    and in particular did not imply that it's output was ready to be executed by
+    a computer.
     John Backus, for example,
     &lt;a href=&quot;http://www.softwarepreservation.org/projects/FORTRAN/paper/Backus-ProgrammingInAmerica-1976.pdf&quot;&gt;
     describes (pp. 133-134)&lt;/a&gt; a 1954 &quot;compiler&quot;
     which produces relative addresses, that needed to be translated to
     absolute addresses by hand.
-    &lt;a href=&quot;https://en.wikipedia.org/wiki/History_of_compiler_construction#First_compilers&quot;&gt;
-    The first person to use the term &quot;compiler&quot;&lt;/a&gt; may have been Grace Hopper.
-    Her 1952 &quot;compiler&quot; seems to have been what we today
-    would call a linker-loader.
     &lt;/p&gt;
     &lt;p&gt;&lt;b&gt;1960&lt;/b&gt;:
       The ALGOL 60 spec comes out.
