@@ -25,24 +25,19 @@
     &lt;p&gt;&lt;b&gt;The fourth century BCE&lt;/b&gt;:
     In India, Pannini creates a grammar of Sanskrit.
     Pannini's grammar is probably the first formal system of any kind, predating Euclid.
-    It is a sophisticated and exact description of the Sanskrit language,
-    including pronunciation.
-    Sanskrit could be recreated from scratch using Pannini's grammar.
-    To this date,
-    nothing like it exists for any other natural language of Sanskrit's
-    with Sanskrit's complexity,
-    or with a comparable corpus.
-    &lt;/p&gt;Similar work appears in the Greek and Latin worlds, but by the 1950's
-    Pannini is almost completely forgotten.
+    It is a sophisticated description of the Sanskrit language,
+    exact and complete, including pronunciation.
+    To this date, nothing like it exists for any other natural language of Sanskrit's,
+    size and complexity,
+    or with its corpus.
     Recently, Pannini's work is receiving attention,
-    but it will have no influence on later events in this timeline.
-    &lt;p&gt;
+    but in the 1950's Pannini was almost completely forgotten,
+    and he had no influence on the other events in this timeline.
+    &lt;/p&gt;
     &lt;p&gt;&lt;b&gt;1943&lt;/b&gt;:
-    After two millenia, the West starts to catch up to Pannini.
     Emil post defines and studies a formal rewriting system using
     productions.
-    But it is unclear how much influence Post's writings had on Chomsky
-    and therefore on later work.
+    After two millenia, the West starts the process of catching with Pannini.
     &lt;p&gt;&lt;b&gt;1952&lt;/b&gt;:
     Grace Hopper writes a linker-loader and
     &lt;a href=&quot;https://en.wikipedia.org/wiki/History_of_compiler_construction#First_compilers&quot;&gt;
@@ -63,7 +58,8 @@
     &lt;li&gt;Context-free grammars, and
     &lt;li&gt;Context-sensitive grammars.
     &lt;/ul&gt;
-    The last two are Chomsky's own formulations.
+    The last two seem to be Chomsky's own formulations --
+    Chomsky does not cite Post's work.
     This paper marks the beginning for Western formal language theory.
     &lt;p&gt;&lt;b&gt;1957&lt;/b&gt;:
     Steven Kleene discovers regular expressions,
@@ -119,9 +115,20 @@
     which produces relative addresses, that needed to be translated to
     absolute addresses by hand.
     &lt;/p&gt;
+    &lt;p&gt;&lt;b&gt;1959&lt;/b&gt;:
+    Backus invents a new notation to describe
+    the IAL language.
+    Backus's notation is influenced by Post.
     &lt;p&gt;&lt;b&gt;1960&lt;/b&gt;:
-      The ALGOL 60 spec comes out.
-      It specifies, for the first time, a block structured
+    Peter Nauer, the author of the ALGOL 60 report, 
+    improved the notation Backus used to IAL,
+    and uses it to describe the new language.
+    It will become known as Backus-Nauer form.
+    The grammars describable by BNF are soon found to
+    be exactly Chomsky's context-free grammars.
+    &lt;p&gt;&lt;b&gt;1960&lt;/b&gt;:
+      The ALGOL 60 report
+      specifies, for the first time, a block structured
       language.
       The ALGOL committee is well aware
       that
@@ -132,7 +139,7 @@
       Risky as this approach is, it pays off ...
     &lt;/p&gt;
     &lt;p&gt;&lt;b&gt;1961&lt;/b&gt;:
-    Ned Irons publishes the a paper describing his ALGOL
+    Ned Irons publishes a paper describing his ALGOL 60
     parser.
     It is the first paper to describe any parser.
       The Irons algorithm is a left parser --
@@ -148,26 +155,28 @@
       to be hand-written.
     &lt;/p&gt;
     &lt;p&gt;&lt;b&gt;1961&lt;/b&gt;:
-      Almost simultaneously, hand-coded approaches to left parsing
-      appear.
-      These we would now recognize as recursive descent.
-      Over the following years, hand-coding approaches
-      will become more popular for left parsers
-      than syntax-driven algorithms.
-      Three factors are at work:
+    Lucas publishes the first description of recursive descent
+    in its pure form.
+    &lt;/p&gt;
+    &lt;p&gt;&lt;b&gt;Left parsing&lt;/b&gt;:
+    Lucas described a syntax-driven implementation, useable only for
+    a restricted class of grammars.
+    In the 1960's hand-coded approaches to recursive descent
+    become more popular.
+      Three factors were at work:
       &lt;ul&gt;
       &lt;li&gt;
-      In 1960's, memory and CPU are both extremely limited.
-      Hand-coding pays off, even when the gains are small.
+      Memory and CPU were both extremely limited.
+      Hand-coding paid off, even when the gains were small.
       &lt;li&gt;
-      Pure left parsing is a very weak parsing technique.
-      Hand-coding is often necessary
-      to overcome its limits.
-      This is
-      as true today as it is in 1961.
+      Pure left parsing, of the kind Lucas's syntax driven
+      approach allowed, is a very weak parsing technique.
+      It was often necessary
+      to go beyond its limits.
       &lt;li&gt;
-      Left parsing works well in combination with hand-coding --
-      they are a very good fit.
+      Left parsing is intuitive, requiring little or
+      no knowledge of parsing theory.
+      This makes it a good fit for hand-coding.
       &lt;/ul&gt;
     &lt;/p&gt;
     &lt;p&gt;&lt;b&gt;1965&lt;/b&gt;:
@@ -177,6 +186,11 @@
       Knuth describes a parsing algorithm,
       but it is not thought practical.
     &lt;/p&gt;
+    &lt;p&gt;&lt;b&gt;1965&lt;/b&gt;:
+    McClure publishes a description of a non-Chomskian parser.
+    It consists of a set of routines which, on success,
+    absorb input and produce output,
+    and on failure pass control on to the next option.
     &lt;p&gt;&lt;b&gt;1968&lt;/b&gt;: Jay Earley invents the algorithm named after him.
       Like the Irons algorithm,
       Earley's algorithm is syntax-driven and fully general.
@@ -249,7 +263,8 @@
       When it comes to speed,
       the game has changed in favor of Earley algorithm.
       But Earley parsing is almost forgotten.
-      It will be 20 years before anyone writes a practical
+      Twenty years will pass
+      before anyone writes a practical
       implementation of Leo's algorithm.
     &lt;/p&gt;
     &lt;p&gt;&lt;b&gt;1990's&lt;/b&gt;:
@@ -281,6 +296,19 @@
       But buried in their paper is a solution to the zero-length rule bug.
       And this time the solution requires no additional bookkeeping.
     &lt;/p&gt;
+    &lt;p&gt;&lt;b&gt;2004&lt;/b&gt;:
+    Ford publishes his paper on PEG.
+    Implementers by now are avoiding YACC,
+    and the Irons, Earley and  Lucas algorithms are forgotten, so it seemed
+    as if there would soon be no syntax-driven algorithms in practical
+    use.
+    Ford's PEG fills this looming gap.
+    PEG has an attractive new syntax,
+    but the underlying algorithm is
+    that of the old compiler-compilers,
+    and nothing has been done to change
+    &lt;a href=&quot;http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2015/03/peg.html&quot;&gt;
+    their tricky behaviors&lt;/a&gt;.
     &lt;p&gt;&lt;b&gt;2006&lt;/b&gt;:
       GNU announces that the GCC compiler's parser has been rewritten.
       For three decades,
