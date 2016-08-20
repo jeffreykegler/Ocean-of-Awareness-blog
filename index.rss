@@ -11,7 +11,7 @@
 
   <item>
     <title>Parsing: an expanded timeline</title>
-    <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2017/08/timeline2.html</link>
+    <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2016/08/timeline2.html</link>
     <description>&lt;html&gt;
   &lt;head&gt;
   &lt;/head&gt;
@@ -23,21 +23,22 @@
     &lt;p&gt;[ Revised 10 Aug 2016 ]
     &lt;/p&gt;
     &lt;p&gt;&lt;b&gt;The fourth century BCE&lt;/b&gt;:
-    In India, Pannini creates a grammar of Sanskrit.
+    In India, Pannini creates a grammar of the Sanskrit language.
+    This is a sophisticated description of the Sanskrit language,
+    exact and complete, and including pronunciation, so that Sanskrit
+    could be recreated using nothing but Pannini's grammar.
     Pannini's grammar is probably the first formal system of any kind, predating Euclid.
-    It is a sophisticated description of the Sanskrit language,
-    exact and complete, including pronunciation.
-    To this date, nothing like it exists for any other natural language of Sanskrit's,
-    size and complexity,
-    or with its corpus.
-    Recently, Pannini's work is receiving attention,
-    but in the 1950's Pannini was almost completely forgotten,
-    and he had no influence on the other events in this timeline.
+    Even today, nothing like it exists for any other natural language
+    of comparable size or corpus.
+    Pannini is the object of serious study today.
+    But in the 1940's and 1950's Pannini is almost unknown in the West and,
+    if it has an effect on the other events in this timeline,
+    it is very indirect.
     &lt;/p&gt;
     &lt;p&gt;&lt;b&gt;1943&lt;/b&gt;:
-    Emil post defines and studies a formal rewriting system using
+    Emil Post defines and studies a formal rewriting system using
     productions.
-    After two millenia, the West starts the process of catching with Pannini.
+    With this, the process of reinventing Pannini begins.
     &lt;p&gt;&lt;b&gt;1952&lt;/b&gt;:
     Grace Hopper writes a linker-loader and
     &lt;a href=&quot;https://en.wikipedia.org/wiki/History_of_compiler_construction#First_compilers&quot;&gt;
@@ -48,9 +49,9 @@
     &quot;compiler&quot; in its original sense:
     &quot;something or someone that bring other things together&quot;.
     &lt;p&gt;&lt;b&gt;1949&lt;/b&gt;:
-    Markov publishes an article on finite state processes.
+    Andrey Markov publishes an article on finite state processes.
     &lt;p&gt;&lt;b&gt;1956&lt;/b&gt;:
-    Chomsky publishes a paper with the the original form
+    Noam Chomsky publishes a paper with the the original form
     of what is
     now known as the Chomsky hierarchy:
     &lt;ul&gt;
@@ -60,12 +61,12 @@
     &lt;/ul&gt;
     The last two seem to be Chomsky's own formulations --
     Chomsky does not cite Post's work.
-    This paper marks the beginning for Western formal language theory.
+    This paper is usually considered the beginning of Western formal language theory.
     &lt;p&gt;&lt;b&gt;1957&lt;/b&gt;:
     Steven Kleene discovers regular expressions,
     a very handy notation for Markov's processes.
-    These turn out also to describe exactly the same class of languages
-    that is also being studied in two other forms: neural nets
+    These turn out also to describe exactly the class of languages
+    that is also the object of the research into neural nets
     and finite state automata.
     &lt;p&gt;&lt;b&gt;1957&lt;/b&gt;:
     Noam Chomsky publishes the first book
