@@ -38,75 +38,76 @@ Parsing: an expanded timeline
     Hopper used the term
     "compiler" in its original sense:
     "something or someone that bring other things together".
+    <p><b>1954</b>:
+    At IBM, a team under John Backus begins working
+    on the language which will be called FORTRAN.
+    <p><b>1955</b>:
+    Noam Chomsky, just graduated, accepts a post at MIT.
+    Chomsky's approach to languages is highly mathematical.
+    MIT does not have a linguistics department to tell him
+    what to teach,
+    so the linguistics course that Chomsky
+    teaches is based on his approach,
+    which is new and highly mathematical.
     <p><b>1956</b>:
-    Noam Chomsky the paper which
+    <-- "Three models" -->
+    Chomsky publishes the paper which
     is usually considered the foundation of Western formal language theory.
-    It contains one form
-    of what we now know as the Chomsky hierarchy:
+    The paper advocates a natural language approach that involves
     <ul>
-    <li>Markov's finite state processes, which probably came to
-    Chomsky via Shannon;
-    <li>Context-free grammars, and
-    <li>Context-sensitive grammars.
+    <li>a bottom layer, using Markov's finite state processes;
+    <li>a middle, syntactic layer, using context-free grammars and
+    context-sensitive grammars; and
+    <li>a top layer, which involves mappings or "transformations"
+    of the output of the syntactic layer.
     </ul>
-    For his finite state processes, Chomsky acknowledges Markov,
-    who may have come to the attention of linguists via Shannon's
-    work.
-    The last two seem to be Chomsky's own formulations --
+    These layers resemble, and will inspire,
+    the lexical, syntactic and AST transformation phases
+    of modern parsers.
+    These layers will evolve into what we now call the
+    "Chomsky hierarchy".
+    For finite state processes, Chomsky acknowledges Markov.
+    The other layers seem to be Chomsky's own formulations --
     Chomsky does not cite Post's work.
     <p><b>1957</b>:
     Steven Kleene discovers regular expressions,
     a very handy notation for Markov's processes.
-    These turn out also to describe exactly the class of languages
-    that is also the object of the research into neural nets
-    and finite state automata.
+    Regular expressions turn out describe exactly the mathematical
+    objects being studied as
+    finite state automata,
+    as will as other objects being studied by researcher into
+    neural nets.
     <p><b>1957</b>:
-    Noam Chomsky publishes the first book
-    on his theory of language,
-    <b>Syntactic Structures</b>.
-    This is one of the most influential books of all time.
-    In Chomsky's theory language is processed
-    in multiple passes,
-    and there is a morphophonemic pass,
-    a syntactic pass, and a transformation pass.
-    There are resemble, and inspired the lexical,
-    syntactic and AST processing passes of later compilers.
-    </p>
-    <p>Depending on your outlook,
-    Chomsky either discovers a new,
-    or rehabilitates a traditional,
-    viewpoint of languages.
-    The orthodoxy in 1967 is structural linguistics,
+    Noam Chomsky publishes what he has been teaching
+    at MIT as a book.
+    Titled <b>Syntactic Structures</b>,
+    it becomes one of the most influential books of all time.
+    The orthodoxy in 1957 is structural linguistics,
     which argued, with Sherlock Holmes, that
     "it is a capital mistake to theorize in advance of the facts".
-    Chomsky reversed this, claiming that without a theory there
+    Chomsky, on the other hand, claiming that without a theory there
     are no facts: there is only noise.
-    The structuralist approach is to start with the utterances in a language,
-    and build the structure up from that.
-    The Chomskyite approach is to start with a grammar, and use the corpus of
+    Structuralists start with the utterances in a language,
+    and build upward.
+    The Chomskyan approach is to start with a grammar, and use the corpus of
     the language to check its accuracy.
-    Within linguistics and philosophy, Chomsky claim is earth-shaking
-    and still controversial.
-    </p>
-    <p>
-    In computer science, the effect is revolutionary.
-    Interest in computer languages picks up,
-    the ambition of the work increases sharply,
-    and a Chomskian grammar-driven or syntax-driven approach dominates.
+    <-- Point out that Chomsky comes to dominate computer language theory. -->
     </p>
     <p><b>1957</b>:
-    The first FORTRAN compiler
-    is made available to IBM customers.
-    FORTRAN is the creation of a team which has been working since 1954 under
-    the lead of John Backus,
+    Backus's team makes the first FORTRAN compiler
+    available to IBM customers.
     FORTRAN is the first high-level language
-    that will find widespread implementation
-    and, as of this writing,
-    the oldest one that survives in practical use.
+    that will find widespread implementation.
+    As of this writing,
+    it is the oldest language that survives in practical use.
+    FORTRAN is a line-by-line language
+    and its parsing is primitive.
     <p><b>1958</b>:
     John McCarthy's LISP appears.
-    LISP is recursively structured,
-    but LISP interpreter is of little help in its parsing --
+    LISP goes beyond the line-by-line syntax --
+    it is recursively structured.
+    But the LISP interpreter does not find the
+    recursive structure:
     the programmer must indicate the structure herself,
     using parentheses.
     <p><b>Compilers</b>:
