@@ -50,7 +50,7 @@ Parsing: an expanded timeline
     teaches is based on his approach,
     which is new and highly mathematical.
     <p><b>1956</b>:
-    <-- "Three models" -->
+    <!-- "Three models" -->
     Chomsky publishes the paper which
     is usually considered the foundation of Western formal language theory.
     The paper advocates a natural language approach that involves
@@ -91,7 +91,7 @@ Parsing: an expanded timeline
     and build upward.
     The Chomskyan approach is to start with a grammar, and use the corpus of
     the language to check its accuracy.
-    <-- Point out that Chomsky comes to dominate computer language theory. -->
+    <!-- Point out that Chomsky comes to dominate computer language theory. -->
     </p>
     <p><b>1957</b>:
     Backus's team makes the first FORTRAN compiler
@@ -156,7 +156,7 @@ Parsing: an expanded timeline
     parser.
     It is the first paper to describe any parser.
       The Irons algorithm is a left parser --
-      a form of recursive descent.
+      a variant of recursive descent.
       Unlike modern
       recursive descent,
       the Irons algorithm
@@ -168,7 +168,8 @@ Parsing: an expanded timeline
       to be hand-written.
     </p>
     <p><b>1961</b>:
-    Lucas publishes the first description of recursive descent
+    Peter Lucas publishes the first
+    description of recursive descent
     in its pure form.
     </p>
     <p><b>Left parsing</b>:
@@ -224,6 +225,15 @@ Parsing: an expanded timeline
       a stack and a state table of quite
       manageable size.
     </p>
+    <p><b>1969</b>:
+    Ken Thompson writes the "ed" editor as one of the first components
+    of UNIX.
+    At this point, regular expressions are an esoteric mathematical formalism.
+    Through the "ed" editor and its descendants,
+    regular expressions become
+    an everyday
+    part of the working programmer's toolkit.
+    </p>
     <p><b>1972</b>:
       Aho and Ullmann describe
       a straightforward fix to the zero-length rule bug in Earley's original algorithm.
@@ -246,7 +256,8 @@ Parsing: an expanded timeline
 	V7 includes what is, by far,
 		the most comprehensive, useable and easily available
 		compiler writing toolkit yet developed.
-	 Central to the toolkit is
+    <p><b>Compiler compilers</b>:
+	 Central to Bell Labs V7 is
 	 yacc, an LALR based parser generator.
 	  With a bit of hackery,
 	  yacc parses its own input language,
@@ -334,16 +345,29 @@ Parsing: an expanded timeline
       it replaced a quarter century earlier:
       recursive descent.
     </p>
-    <p><b>2000 to today</b>:
-    With the retreat from LALR comes a collapse in the
-      prestige of parsing theory.
-      After a half century,
-      we seem to be back
+    <p><b>2004</b>:
+    Bryan Ford introduces PEG.
+    PEG is the pre-Chomsky algorithm, GTDPL,
+    with two changes:
+    Ford adds a new and very seductive interface,
+    and he show how to use "packratting"
+    so that the algortihm so is always linear.
+    The capabilities, however, are still those of GTDPL,
+    abandoned decades earlier because of its
+    tricky behavior.
+    But, Irons, Lucas and Earley are all largely forgotten,
+    and with the downfall of LALR,
+    GTDPL looks like it will have to do.
+    <!-- Ford PEG paper -->
+    <p><b>Today</b>:
+      After five decades of parsing theory,
+      the state of the are seems to be back
       where we started.
-      If you took Ned Iron's original 1961 algorithm,
-      changed the names and dates,
-      and translated the code from the mix of assembler and
-      ALGOL into Haskell,
+      If you took the first paper ever published describing a parsing,
+      Ned Iron'original 1961 algorithm,
+      changed the date,
+      and translated its code from the mix of assembler and
+      ALGOL into something more fashionable, say Haskell,
       you would easily republish it today,
       and bill it as 
       as revolutionary and new.

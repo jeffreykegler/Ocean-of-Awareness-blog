@@ -51,72 +51,76 @@
     Hopper used the term
     &quot;compiler&quot; in its original sense:
     &quot;something or someone that bring other things together&quot;.
+    &lt;p&gt;&lt;b&gt;1954&lt;/b&gt;:
+    At IBM, a team under John Backus begins working
+    on the language which will be called FORTRAN.
+    &lt;p&gt;&lt;b&gt;1955&lt;/b&gt;:
+    Noam Chomsky, just graduated, accepts a post at MIT.
+    Chomsky's approach to languages is highly mathematical.
+    MIT does not have a linguistics department to tell him
+    what to teach,
+    so the linguistics course that Chomsky
+    teaches is based on his approach,
+    which is new and highly mathematical.
     &lt;p&gt;&lt;b&gt;1956&lt;/b&gt;:
-    Noam Chomsky the paper which
+    &lt;!-- &quot;Three models&quot; --&gt;
+    Chomsky publishes the paper which
     is usually considered the foundation of Western formal language theory.
-    It contains one form
-    of what we now know as the Chomsky hierarchy:
+    The paper advocates a natural language approach that involves
     &lt;ul&gt;
-    &lt;li&gt;Markov's finite state processes, which probably came to
-    Chomsky via Shannon;
-    &lt;li&gt;Context-free grammars, and
-    &lt;li&gt;Context-sensitive grammars.
+    &lt;li&gt;a bottom layer, using Markov's finite state processes;
+    &lt;li&gt;a middle, syntactic layer, using context-free grammars and
+    context-sensitive grammars; and
+    &lt;li&gt;a top layer, which involves mappings or &quot;transformations&quot;
+    of the output of the syntactic layer.
     &lt;/ul&gt;
-    For his finite state processes, Chomsky acknowledges Markov,
-    who may have come to the attention of linguists via Shannon's
-    work.
-    The last two seem to be Chomsky's own formulations --
+    These layers resemble, and will inspire,
+    the lexical, syntactic and AST transformation phases
+    of modern parsers.
+    These layers will evolve into what we now call the
+    &quot;Chomsky hierarchy&quot;.
+    For finite state processes, Chomsky acknowledges Markov.
+    The other layers seem to be Chomsky's own formulations --
     Chomsky does not cite Post's work.
     &lt;p&gt;&lt;b&gt;1957&lt;/b&gt;:
     Steven Kleene discovers regular expressions,
     a very handy notation for Markov's processes.
-    These turn out also to describe exactly the class of languages
-    that is also the object of the research into neural nets
-    and finite state automata.
+    Regular expressions turn out describe exactly the mathematical
+    objects being studied as
+    finite state automata,
+    as will as other objects being studied by researcher into
+    neural nets.
     &lt;p&gt;&lt;b&gt;1957&lt;/b&gt;:
-    Noam Chomsky publishes the first book
-    on his theory of language,
-    &lt;b&gt;Syntactic Structures&lt;/b&gt;.
-    This is one of the most influential books of all time.
-    In Chomsky's theory language is processed
-    in multiple passes,
-    and there is a morphophonemic pass,
-    a syntactic pass, and a transformation pass.
-    There are resemble, and inspired the lexical,
-    syntactic and AST processing passes of later compilers.
-    &lt;/p&gt;
-    &lt;p&gt;Depending on your outlook,
-    Chomsky either discovers a new,
-    or rehabilitates a traditional,
-    viewpoint of languages.
-    The orthodoxy in 1967 is structural linguistics,
+    Noam Chomsky publishes what he has been teaching
+    at MIT as a book.
+    Titled &lt;b&gt;Syntactic Structures&lt;/b&gt;,
+    it becomes one of the most influential books of all time.
+    The orthodoxy in 1957 is structural linguistics,
     which argued, with Sherlock Holmes, that
     &quot;it is a capital mistake to theorize in advance of the facts&quot;.
-    Chomsky reversed this, claiming that without a theory there
+    Chomsky, on the other hand, claiming that without a theory there
     are no facts: there is only noise.
-    The structuralist approach is to start with the utterances in a language,
-    and build the structure up from that.
-    The Chomskyite approach is to start with a grammar, and use the corpus of
+    Structuralists start with the utterances in a language,
+    and build upward.
+    The Chomskyan approach is to start with a grammar, and use the corpus of
     the language to check its accuracy.
-    Within linguistics and philosophy, Chomsky claim is earth-shaking
-    and still controversial.
-    &lt;/p&gt;
-    &lt;p&gt;
-    In computer science, the effect is revolutionary.
-    Interest in computer languages picks up,
-    the ambition of the work increases sharply,
-    and a Chomskian grammar-driven or syntax-driven approach dominates.
+    &lt;!-- Point out that Chomsky comes to dominate computer language theory. --&gt;
     &lt;/p&gt;
     &lt;p&gt;&lt;b&gt;1957&lt;/b&gt;:
-    John Backus' team creates FORTRAN.
-    This is the first high-level language
+    Backus's team makes the first FORTRAN compiler
+    available to IBM customers.
+    FORTRAN is the first high-level language
     that will find widespread implementation.
-    FORTRAN is not a block structured language, and is parsed line-by-line,
-    using ad hoc methods.
+    As of this writing,
+    it is the oldest language that survives in practical use.
+    FORTRAN is a line-by-line language
+    and its parsing is primitive.
     &lt;p&gt;&lt;b&gt;1958&lt;/b&gt;:
     John McCarthy's LISP appears.
-    LISP is recursively structured,
-    but LISP interpreter is of little help in its parsing --
+    LISP goes beyond the line-by-line syntax --
+    it is recursively structured.
+    But the LISP interpreter does not find the
+    recursive structure:
     the programmer must indicate the structure herself,
     using parentheses.
     &lt;p&gt;&lt;b&gt;Compilers&lt;/b&gt;:
@@ -165,7 +169,7 @@
     parser.
     It is the first paper to describe any parser.
       The Irons algorithm is a left parser --
-      a form of recursive descent.
+      a variant of recursive descent.
       Unlike modern
       recursive descent,
       the Irons algorithm
@@ -177,7 +181,8 @@
       to be hand-written.
     &lt;/p&gt;
     &lt;p&gt;&lt;b&gt;1961&lt;/b&gt;:
-    Lucas publishes the first description of recursive descent
+    Peter Lucas publishes the first
+    description of recursive descent
     in its pure form.
     &lt;/p&gt;
     &lt;p&gt;&lt;b&gt;Left parsing&lt;/b&gt;:
@@ -233,6 +238,15 @@
       a stack and a state table of quite
       manageable size.
     &lt;/p&gt;
+    &lt;p&gt;&lt;b&gt;1969&lt;/b&gt;:
+    Ken Thompson writes the &quot;ed&quot; editor as one of the first components
+    of UNIX.
+    At this point, regular expressions are an esoteric mathematical formalism.
+    Through the &quot;ed&quot; editor and its descendants,
+    regular expressions become
+    an everyday
+    part of the working programmer's toolkit.
+    &lt;/p&gt;
     &lt;p&gt;&lt;b&gt;1972&lt;/b&gt;:
       Aho and Ullmann describe
       a straightforward fix to the zero-length rule bug in Earley's original algorithm.
@@ -255,7 +269,8 @@
 	V7 includes what is, by far,
 		the most comprehensive, useable and easily available
 		compiler writing toolkit yet developed.
-	 Central to the toolkit is
+    &lt;p&gt;&lt;b&gt;Compiler compilers&lt;/b&gt;:
+	 Central to Bell Labs V7 is
 	 yacc, an LALR based parser generator.
 	  With a bit of hackery,
 	  yacc parses its own input language,
@@ -343,16 +358,29 @@
       it replaced a quarter century earlier:
       recursive descent.
     &lt;/p&gt;
-    &lt;p&gt;&lt;b&gt;2000 to today&lt;/b&gt;:
-    With the retreat from LALR comes a collapse in the
-      prestige of parsing theory.
-      After a half century,
-      we seem to be back
+    &lt;p&gt;&lt;b&gt;2004&lt;/b&gt;:
+    Bryan Ford introduces PEG.
+    PEG is the pre-Chomsky algorithm, GTDPL,
+    with two changes:
+    Ford adds a new and very seductive interface,
+    and he show how to use &quot;packratting&quot;
+    so that the algortihm so is always linear.
+    The capabilities, however, are still those of GTDPL,
+    abandoned decades earlier because of its
+    tricky behavior.
+    But, Irons, Lucas and Earley are all largely forgotten,
+    and with the downfall of LALR,
+    GTDPL looks like it will have to do.
+    &lt;!-- Ford PEG paper --&gt;
+    &lt;p&gt;&lt;b&gt;Today&lt;/b&gt;:
+      After five decades of parsing theory,
+      the state of the are seems to be back
       where we started.
-      If you took Ned Iron's original 1961 algorithm,
-      changed the names and dates,
-      and translated the code from the mix of assembler and
-      ALGOL into Haskell,
+      If you took the first paper ever published describing a parsing,
+      Ned Iron'original 1961 algorithm,
+      changed the date,
+      and translated its code from the mix of assembler and
+      ALGOL into something more fashionable, say Haskell,
       you would easily republish it today,
       and bill it as 
       as revolutionary and new.
