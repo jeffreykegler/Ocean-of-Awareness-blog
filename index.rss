@@ -39,6 +39,9 @@
     Emil Post defines and studies a formal rewriting system using
     productions.
     With this, the process of reinventing Pannini begins.
+    &lt;p&gt;&lt;b&gt;1948&lt;/b&gt;:
+    Claude Shannon publishes the foundation paper of information theory.
+    Andrey Markov's finite state processes are used heavily.
     &lt;p&gt;&lt;b&gt;1952&lt;/b&gt;:
     Grace Hopper writes a linker-loader and
     &lt;a href=&quot;https://en.wikipedia.org/wiki/History_of_compiler_construction#First_compilers&quot;&gt;
@@ -48,20 +51,22 @@
     Hopper used the term
     &quot;compiler&quot; in its original sense:
     &quot;something or someone that bring other things together&quot;.
-    &lt;p&gt;&lt;b&gt;1949&lt;/b&gt;:
-    Andrey Markov publishes an article on finite state processes.
     &lt;p&gt;&lt;b&gt;1956&lt;/b&gt;:
-    Noam Chomsky publishes a paper with the the original form
-    of what is
-    now known as the Chomsky hierarchy:
+    Noam Chomsky the paper which
+    is usually considered the foundation of Western formal language theory.
+    It contains one form
+    of what we now know as the Chomsky hierarchy:
     &lt;ul&gt;
-    &lt;li&gt;Markov's finite state processes;
+    &lt;li&gt;Markov's finite state processes, which probably came to
+    Chomsky via Shannon;
     &lt;li&gt;Context-free grammars, and
     &lt;li&gt;Context-sensitive grammars.
     &lt;/ul&gt;
+    For his finite state processes, Chomsky acknowledges Markov,
+    who may have come to the attention of linguists via Shannon's
+    work.
     The last two seem to be Chomsky's own formulations --
     Chomsky does not cite Post's work.
-    This paper is usually considered the beginning of Western formal language theory.
     &lt;p&gt;&lt;b&gt;1957&lt;/b&gt;:
     Steven Kleene discovers regular expressions,
     a very handy notation for Markov's processes.
@@ -80,36 +85,49 @@
     There are resemble, and inspired the lexical,
     syntactic and AST processing passes of later compilers.
     &lt;/p&gt;
-    &lt;p&gt;Chomsky's most important contribution is so basic
-    it may be overlooked.
-    At the time he wrote, linguists believed they had to work
-    from the data, only constructing grammars or other representations
-    as and when justified.
-    Chomsky argued that this is impossible --
-    the data is simply noise until there is
-    a theory about its structure, and that the theory must come first.
-    Chomsky made syntax-driven approaches to parsing academically 
-    and philosophically respectable.
-    Chomsky's effect on what follows is pervasive.
+    &lt;p&gt;Depending on your outlook,
+    Chomsky either discovers a new,
+    or rehabilitates a traditional,
+    viewpoint of languages.
+    The orthodoxy in 1967 is structural linguistics,
+    which argued, with Sherlock Holmes, that
+    &quot;it is a capital mistake to theorize in advance of the facts&quot;.
+    Chomsky reversed this, claiming that without a theory there
+    are no facts: there is only noise.
+    The structuralist approach is to start with the utterances in a language,
+    and build the structure up from that.
+    The Chomskyite approach is to start with a grammar, and use the corpus of
+    the language to check its accuracy.
+    Within linguistics and philosophy, Chomsky claim is earth-shaking
+    and still controversial.
+    &lt;/p&gt;
+    &lt;p&gt;
+    In computer science, the effect is revolutionary.
+    Interest in computer languages picks up,
+    the ambition of the work increases sharply,
+    and a Chomskian grammar-driven or syntax-driven approach dominates.
     &lt;/p&gt;
     &lt;p&gt;&lt;b&gt;1957&lt;/b&gt;:
     John Backus' team creates FORTRAN.
+    This is the first high-level language
+    that will find widespread implementation.
     FORTRAN is not a block structured language, and is parsed line-by-line,
     using ad hoc methods.
     &lt;p&gt;&lt;b&gt;1958&lt;/b&gt;:
     John McCarthy's LISP appears.
-    LISP is block structured,
-    but requires the programmer to indicate the structure herself,
-    with parentheses.
+    LISP is recursively structured,
+    but LISP interpreter is of little help in its parsing --
+    the programmer must indicate the structure herself,
+    using parentheses.
     &lt;p&gt;&lt;b&gt;Compilers&lt;/b&gt;:
     Readers of the literature about the 1950's will sometimes get the impression
-    of an Atlantean or Panninian Age,
+    of an Atlantean Age,
     a period which had access to technology more sophisticated
     that that of later times.
     This is misleading.
-    The term &quot;compiler&quot; in the 1950's was used far more widely than it is now
-    and in particular did not imply that it's output was ready to be executed by
-    a computer.
+    The term &quot;compiler&quot; in the 1950's was used far more widely than it is now.
+    In particular, there was no implication that the output of a &quot;compiler&quot;
+    was something ready for execution by a computer.
     John Backus, for example,
     &lt;a href=&quot;http://www.softwarepreservation.org/projects/FORTRAN/paper/Backus-ProgrammingInAmerica-1976.pdf&quot;&gt;
     describes (pp. 133-134)&lt;/a&gt; a 1954 &quot;compiler&quot;
@@ -119,14 +137,15 @@
     &lt;p&gt;&lt;b&gt;1959&lt;/b&gt;:
     Backus invents a new notation to describe
     the IAL language.
-    Backus's notation is influenced by Post.
+    Backus's notation is influenced by Post,
     &lt;p&gt;&lt;b&gt;1960&lt;/b&gt;:
     Peter Nauer, the author of the ALGOL 60 report, 
     improved the notation Backus used to IAL,
     and uses it to describe the new language.
     It will become known as Backus-Nauer form.
-    The grammars describable by BNF are soon found to
-    be exactly Chomsky's context-free grammars.
+    Backus's work seems to be independent of Chomsky,
+    but the grammars described by BNF will soon be found to
+    be the exact equivalent of Chomsky's context-free grammars.
     &lt;p&gt;&lt;b&gt;1960&lt;/b&gt;:
       The ALGOL 60 report
       specifies, for the first time, a block structured
@@ -134,12 +153,14 @@
       The ALGOL committee is well aware
       that
       nobody knows how to parse such a language.
+      In fact, nobody has ever published a paper describing
+      a parser.
       But they believe that,
       if they specify a block-structured
       language, a parser for it will be invented.
       Risky as this approach is, it pays off ...
     &lt;/p&gt;
-    &lt;p&gt;&lt;b&gt;1961&lt;/b&gt;:
+    &lt;p&gt;&lt;b&gt;January 1961&lt;/b&gt;:
     Ned Irons publishes a paper describing his ALGOL 60
     parser.
     It is the first paper to describe any parser.
