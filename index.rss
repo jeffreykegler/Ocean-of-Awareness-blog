@@ -167,52 +167,117 @@
     &lt;/p&gt;
     &lt;p&gt;&lt;b&gt;1960&lt;/b&gt;:
       A.E. Gleenie publishes his description of a compiler-compiler.
-      Glennie's &quot;universal compiler&quot; is not automated -- the compilers must be written by hand.
-      Glennie uses a BNF-like notation, but notes &quot;an important difference.
-      Whereas the notation of Backus enables texts conformable with the rules of syntax to be derived by substitutions,
-      the present notation is used to express a decision procedure that tests whether an example of text conforms to the rules.&quot;
-      This distinction, between a BNF-like notation used to express a decision procedure,
-      and BNF used to describe a grammar, is one that will be overlooked repeatedly in the years to come.
+      &lt;!-- http://www.chilton-computing.org.uk/acl/literature/reports/p024.htm --&gt;
+      Glennie's &quot;universal compiler&quot; is more of a methodology than
+      an implementation -- the compilers must be written by hand.
+      Glennie credits both Chomsky and Backus, and observes that the two
+      notations are &quot;related&quot;.
+      He also mentions Post's productions.
     &lt;/p&gt;
-    &lt;p&gt;&lt;b&gt;January 1961&lt;/b&gt;:
+    &lt;p&gt;
+      Glennie may have been the first to use BNF as a description of a &lt;b&gt;procedure&lt;/b&gt;
+      instead of as the description of a &lt;b&gt;Chomsky grammar&lt;/b&gt;,
+      and he notes the distinction and calls it &quot;important&quot;.
+      In later years, this often be overlooked.
+      BNF, when used as a Chomsky grammar, describes a set of strings,
+      and does &lt;b&gt;not&lt;/b&gt; describe how to parse strings according to the grammar.
+      BNF notation, if used to describe a procedure, is a set of instructions, to be
+      tried in some order, and used to process a string.
+      Procedural describes a procedure first, and a language only indirectly.
+      BNF used as a Chomsky grammar describes a language first, and does not
+      describe a parsing procedure.
+      Both procedural and Chomskyan BNF describe languages,
+      but (and this is often missed) usually
+      &lt;b&gt;not the same&lt;/b&gt; language.
+      That is, suppose D is some BNF description.
+      Let P(D) be D interpreted as a procedure,
+      let G(P(D)) be the language which the procedure P(D) parses,
+      and let G(D) be D interpreted as a Chomsky grammar.
+      Then, usually, G(D) != G(P(D)).
+    &lt;/p&gt;
+    &lt;p&gt;
+    This distinction between Chomskyan and pre-Chomskyan parsing mirrors
+    the distinction between Chomskyan and non-Chomskyan linguistics.
+    Non-Chomskyan parsing starts with strings and created grammars only
+    when and if justified by the strings.
+    Chomskyan parsing starts with the grammar,
+    requires the programmer to figure out how to parse the grammar,
+    and uses successful parsing strings to confirm the accuracy
+    of the choice of grammar.
+    &lt;/p&gt;
+    &lt;p&gt;
+    Note that the pre-Chomsky approach is far more natural
+    if your background is computer programming
+    and not language theory.
+    The parsing problem appears to the programmer in the form of
+    strings to be parsed, exactly the starting point of pre-Chomsky
+    parsing.
+    Not only that, but even once the Chomskyan approach is
+    pointed out,
+    it does not seem very attractive.
+    With the pre-Chomskyan approach,
+    the examples more or less naturally lead to a parser --
+    in the Chomskyan approach
+    the programmer has to search for a
+    black box to handle his grammar,
+    and a search which has proved surprisingly
+    long and difficult.
+    Handling
+    semantics is more natural with a Chomksyan approach,
+    But, using captures, semantics
+    can be added to a pre-Chomskyan parser
+    and, with practice, this seems natural enough.
+    It is surprising then,
+    and a tribute to Chomsky's influence,
+    that the first parsers were
+    Chomskyan parsers,
+    and that they have been dominant ever since.
+    &lt;/p&gt;
+    &lt;p&gt;&lt;b&gt;1961&lt;/b&gt;:
+      In January,
       Ned Irons publishes a paper describing his ALGOL 60
       parser.
       It is the first paper to describe any parser.
-      The Irons algorithm is a left parser --
-      a variant of recursive descent.
-      Unlike modern
-      recursive descent,
-      the Irons algorithm
-      is general and syntax-driven.
-      &quot;General&quot; means it can parse anything written in BNF.
-      &quot;Syntax-driven&quot; (aka declarative) means that parser is
+      The Irons algorithm is Chomskyan and top-down
+      with a &quot;left corner&quot; element.
+      The Irons algorithm
+      is general,
+      meaning that it can parse anything written in BNF.
+      It is syntax-driven (aka declarative),
+      meaning that the parser is
       actually created from the BNF --
       the parser does not need
       to be hand-written.
     &lt;/p&gt;
     &lt;p&gt;&lt;b&gt;1961&lt;/b&gt;:
       Peter Lucas publishes the first
-      description of recursive descent
-      in its pure form.
-    &lt;/p&gt;
-    &lt;p&gt;&lt;b&gt;Left parsing&lt;/b&gt;:
-      Lucas described a syntax-driven implementation, useable only for
+      description of a purely top-down parser.
+      This can be considered to be recursive descent,
+      though in Lucas's
+      paper the algorithm is given
+      syntax-driven implementation, useable only for
       a restricted class of grammars.
-      In the 1960's hand-coded approaches to recursive descent
-      become more popular.
-      Three factors were at work:
+      Today we think of recursive descent as a methodology for
+      writing parsers by hand.
+      Hand-coded approaches became more popular
+      in the 1960's due to three factors:
     &lt;/p&gt;
     &lt;ul&gt;
       &lt;li&gt;
         Memory and CPU were both extremely limited.
         Hand-coding paid off, even when the gains were small.
-      &lt;/li&gt;&lt;li&gt;
-        Pure left parsing, of the kind Lucas's syntax driven
+      &lt;/li&gt;
+      &lt;li&gt;
+        Non-hand coded top-down parsing,
+	of the kind Lucas's syntax-driven
         approach allowed, is a very weak parsing technique.
-        It was often necessary
+        It was (and still is) often necessary
         to go beyond its limits.
-      &lt;/li&gt;&lt;li&gt;
-        Left parsing is intuitive, requiring little or
+      &lt;/li&gt;
+      &lt;li&gt;
+        Top-down parsing is intuitive -- it essentially means calling
+	subroutines.
+	It therefore requires little or
         no knowledge of parsing theory.
         This makes it a good fit for hand-coding.
       &lt;/li&gt;
@@ -228,6 +293,8 @@
       Schorre cites both Backus and Chomsky as sources
       for Meta II's notation, but notes that his approach
       is &quot;entirely different&quot; from that of Irons 1961.
+      Indeed, while the parser is only sketched,
+      it is clearly pre-Chomkyan.
       While Meta II is intended as a template, rather
       than something that readers can use,
       in principle it can be turned
