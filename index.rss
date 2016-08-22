@@ -23,15 +23,17 @@
     &lt;p&gt;&lt;b&gt;The fourth century BCE&lt;/b&gt;:
       In India, Pannini creates a grammar of the Sanskrit language.
       This is a sophisticated description of the Sanskrit language,
-      exact and complete, and including pronunciation, so that Sanskrit
+      exact and complete, and including pronunciation.
+      Sanskrit
       could be recreated using nothing but Pannini's grammar.
       Pannini's grammar is probably the first formal system of any kind, predating Euclid.
       Even today, nothing like it exists for any other natural language
       of comparable size or corpus.
+    &lt;/p&gt;
+    &lt;p&gt;
       Pannini is the object of serious study today.
-      But in the 1940's and 1950's Pannini is almost unknown in the West and,
-      if it has an effect on the other events in this timeline,
-      it is very indirect.
+      But in the 1940's and 1950's Pannini is almost unknown in the West.
+      His work had no direct effect on the other events in this timeline.
     &lt;/p&gt;
     &lt;p&gt;&lt;b&gt;1943&lt;/b&gt;:
       Emil Post defines and studies a formal rewriting system using
@@ -49,17 +51,27 @@
       Hopper used the term
       &quot;compiler&quot; in its original sense:
       &quot;something or someone that bring other things together&quot;.
-    &lt;/p&gt;&lt;p&gt;&lt;b&gt;1954&lt;/b&gt;:
+    &lt;/p&gt;
+    &lt;p&gt;&lt;b&gt;1954&lt;/b&gt;:
       At IBM, a team under John Backus begins working
       on the language which will be called FORTRAN.
+      As of 1954, the term &quot;compiler&quot; is still being used in Hooper's looser sense,
+      instead of its modern one.
+      In particular, there was no implication that the output of a &quot;compiler&quot;
+      was ready for execution by a computer.
+      &lt;!-- &quot;http://www.softwarepreservation.org/projects/FORTRAN/paper/Backus-ProgrammingInAmerica-1976.pdf
+        pp. 133-134
+      --&gt;
+      The output of one 1954 &quot;compiler&quot;,
+      for example, produced relative addresses,
+      which needed to be translated by hand before a machine could execute it.
+    &lt;/p&gt;
     &lt;/p&gt;&lt;p&gt;&lt;b&gt;1955&lt;/b&gt;:
-      Noam Chomsky, just graduated, accepts a post at MIT.
-      Chomsky's approach to languages is highly mathematical.
+      Noam Chomsky is awarded a Ph.D. in linguistics and accepts a teaching post at MIT.
       MIT does not have a linguistics department to tell him
-      what to teach,
-      so the linguistics course that Chomsky
-      teaches is based on his approach,
-      which is new and highly mathematical.
+      what to teach in his linguistics course,
+      so Chomsky teaches his own approach,
+      highly original and very mathematical.
     &lt;/p&gt;&lt;p&gt;&lt;b&gt;1956&lt;/b&gt;:
       &lt;!-- &quot;Three models&quot; --&gt;
       Chomsky publishes the paper which
@@ -75,8 +87,6 @@
       These layers resemble, and will inspire,
       the lexical, syntactic and AST transformation phases
       of modern parsers.
-      These layers will evolve into what we now call the
-      &quot;Chomsky hierarchy&quot;.
       For finite state processes, Chomsky acknowledges Markov.
       The other layers seem to be Chomsky's own formulations --
       Chomsky does not cite Post's work.
@@ -86,21 +96,23 @@
       Regular expressions turn out describe exactly the mathematical
       objects being studied as
       finite state automata,
-      as will as other objects being studied by researcher into
+      as well as some of the objects being studied as
       neural nets.
     &lt;/p&gt;&lt;p&gt;&lt;b&gt;1957&lt;/b&gt;:
       Noam Chomsky publishes what he has been teaching
       at MIT as a book.
       Titled
       &lt;b&gt;Syntactic Structures&lt;/b&gt;,
-      it becomes one of the most influential books of all time.
+      it is one of the most influential books of all time.
       The orthodoxy in 1957 is structural linguistics,
       which argued, with Sherlock Holmes, that
       &quot;it is a capital mistake to theorize in advance of the facts&quot;.
-      Chomsky, on the other hand, claiming that without a theory there
-      are no facts: there is only noise.
       Structuralists start with the utterances in a language,
       and build upward.
+    &lt;/p&gt;
+    &lt;p&gt;
+      Chomsky, on the other hand, claiming that without a theory there
+      are no facts: there is only noise.
       The Chomskyan approach is to start with a grammar, and use the corpus of
       the language to check its accuracy.
       It will soon come to dominate linguistics.
@@ -114,55 +126,44 @@
       it is the oldest language that survives in practical use.
       FORTRAN is a line-by-line language
       and its parsing is primitive.
-    &lt;/p&gt;&lt;p&gt;&lt;b&gt;1958&lt;/b&gt;:
+    &lt;/p&gt;
+    &lt;p&gt;&lt;b&gt;1958&lt;/b&gt;:
       John McCarthy's LISP appears.
       LISP goes beyond the line-by-line syntax --
       it is recursively structured.
       But the LISP interpreter does not find the
       recursive structure:
-      the programmer must indicate the structure herself,
+      the programmer must explicitly
+      indicate the structure herself,
       using parentheses.
-    &lt;/p&gt;&lt;p&gt;&lt;b&gt;Compilers&lt;/b&gt;:
-      Readers of the literature about the 1950's will sometimes get the impression
-      of an Atlantean Age,
-      a period which had access to technology more sophisticated
-      that that of later times.
-      This is misleading.
-      The term &quot;compiler&quot; in the 1950's was used far more widely than it is now.
-      In particular, there was no implication that the output of a &quot;compiler&quot;
-      was something ready for execution by a computer.
-      John Backus, for example,
-      &lt;a href=&quot;http://www.softwarepreservation.org/projects/FORTRAN/paper/Backus-ProgrammingInAmerica-1976.pdf&quot;&gt;
-        describes (pp. 133-134)&lt;/a&gt;
-      a 1954 &quot;compiler&quot;
-      which produces relative addresses, that needed to be translated to
-      absolute addresses by hand.
-    &lt;/p&gt;
     &lt;p&gt;&lt;b&gt;1959&lt;/b&gt;:
       Backus invents a new notation to describe
       the IAL language.
-      Backus's notation is influenced by Post,
-    &lt;/p&gt;&lt;p&gt;&lt;b&gt;1960&lt;/b&gt;:
-      Peter Nauer, the author of the ALGOL 60 report,
-      improved the notation Backus used to IAL,
-      and uses it to describe the new language.
-      It will become known as Backus-Nauer form.
-      Backus's work seems to be independent of Chomsky,
-      but the grammars described by BNF will soon be found to
-      be the exact equivalent of Chomsky's context-free grammars.
+      Backus's notation is influenced by his study of Post --
+      he seems not to have read Chomsky until later.
+      &lt;!-- http://archive.computerhistory.org/resources/text/Oral_History/Backus_John/Backus_John_1.oral_history.2006.102657970.pdf
+      p. 25 --&gt;
+    &lt;/p&gt;
+    &lt;p&gt;&lt;b&gt;1960&lt;/b&gt;:
+      Peter Nauer,
+      improves the notation Backus used to IAL,
+      and uses it to describe the new ALGOL 60 language.
+      It will become known as Backus-Nauer Form (BNF).
     &lt;/p&gt;&lt;p&gt;&lt;b&gt;1960&lt;/b&gt;:
       The ALGOL 60 report
       specifies, for the first time, a block structured
       language.
-      The ALGOL committee is well aware
-      that
-      nobody knows how to parse such a language.
-      In fact, nobody has ever published a paper describing
-      a parser.
-      But they believe that,
-      if they specify a block-structured
-      language, a parser for it will be invented.
-      Risky as this approach is, it pays off ...
+      ALGOL 60 is recursively structured but the structure is
+      implicity -- newlines are not semantically significant,
+      and parentheses indicate syntax only in a few specific cases.
+      The ALGOL compiler will have to find the structure.
+    &lt;/p&gt;
+    &lt;p&gt;
+      It is a case of 1960's optimism at its best.
+      As the ALGOL committee is well aware, a parsing
+      algorithm capable
+      of handling ALGOL 60 does not yet exist.
+      But the risk they are taking will soon pay off.
     &lt;/p&gt;
     &lt;p&gt;&lt;b&gt;1960&lt;/b&gt;:
       A.E. Gleenie publishes his description of a compiler-compiler.

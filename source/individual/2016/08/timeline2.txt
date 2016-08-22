@@ -10,15 +10,17 @@ Parsing: an expanded timeline
     <p><b>The fourth century BCE</b>:
       In India, Pannini creates a grammar of the Sanskrit language.
       This is a sophisticated description of the Sanskrit language,
-      exact and complete, and including pronunciation, so that Sanskrit
+      exact and complete, and including pronunciation.
+      Sanskrit
       could be recreated using nothing but Pannini's grammar.
       Pannini's grammar is probably the first formal system of any kind, predating Euclid.
       Even today, nothing like it exists for any other natural language
       of comparable size or corpus.
+    </p>
+    <p>
       Pannini is the object of serious study today.
-      But in the 1940's and 1950's Pannini is almost unknown in the West and,
-      if it has an effect on the other events in this timeline,
-      it is very indirect.
+      But in the 1940's and 1950's Pannini is almost unknown in the West.
+      His work had no direct effect on the other events in this timeline.
     </p>
     <p><b>1943</b>:
       Emil Post defines and studies a formal rewriting system using
@@ -36,17 +38,27 @@ Parsing: an expanded timeline
       Hopper used the term
       "compiler" in its original sense:
       "something or someone that bring other things together".
-    </p><p><b>1954</b>:
+    </p>
+    <p><b>1954</b>:
       At IBM, a team under John Backus begins working
       on the language which will be called FORTRAN.
+      As of 1954, the term "compiler" is still being used in Hooper's looser sense,
+      instead of its modern one.
+      In particular, there was no implication that the output of a "compiler"
+      was ready for execution by a computer.
+      <!-- "http://www.softwarepreservation.org/projects/FORTRAN/paper/Backus-ProgrammingInAmerica-1976.pdf
+        pp. 133-134
+      -->
+      The output of one 1954 "compiler",
+      for example, produced relative addresses,
+      which needed to be translated by hand before a machine could execute it.
+    </p>
     </p><p><b>1955</b>:
-      Noam Chomsky, just graduated, accepts a post at MIT.
-      Chomsky's approach to languages is highly mathematical.
+      Noam Chomsky is awarded a Ph.D. in linguistics and accepts a teaching post at MIT.
       MIT does not have a linguistics department to tell him
-      what to teach,
-      so the linguistics course that Chomsky
-      teaches is based on his approach,
-      which is new and highly mathematical.
+      what to teach in his linguistics course,
+      so Chomsky teaches his own approach,
+      highly original and very mathematical.
     </p><p><b>1956</b>:
       <!-- "Three models" -->
       Chomsky publishes the paper which
@@ -62,8 +74,6 @@ Parsing: an expanded timeline
       These layers resemble, and will inspire,
       the lexical, syntactic and AST transformation phases
       of modern parsers.
-      These layers will evolve into what we now call the
-      "Chomsky hierarchy".
       For finite state processes, Chomsky acknowledges Markov.
       The other layers seem to be Chomsky's own formulations --
       Chomsky does not cite Post's work.
@@ -73,21 +83,23 @@ Parsing: an expanded timeline
       Regular expressions turn out describe exactly the mathematical
       objects being studied as
       finite state automata,
-      as will as other objects being studied by researcher into
+      as well as some of the objects being studied as
       neural nets.
     </p><p><b>1957</b>:
       Noam Chomsky publishes what he has been teaching
       at MIT as a book.
       Titled
       <b>Syntactic Structures</b>,
-      it becomes one of the most influential books of all time.
+      it is one of the most influential books of all time.
       The orthodoxy in 1957 is structural linguistics,
       which argued, with Sherlock Holmes, that
       "it is a capital mistake to theorize in advance of the facts".
-      Chomsky, on the other hand, claiming that without a theory there
-      are no facts: there is only noise.
       Structuralists start with the utterances in a language,
       and build upward.
+    </p>
+    <p>
+      Chomsky, on the other hand, claiming that without a theory there
+      are no facts: there is only noise.
       The Chomskyan approach is to start with a grammar, and use the corpus of
       the language to check its accuracy.
       It will soon come to dominate linguistics.
@@ -101,55 +113,44 @@ Parsing: an expanded timeline
       it is the oldest language that survives in practical use.
       FORTRAN is a line-by-line language
       and its parsing is primitive.
-    </p><p><b>1958</b>:
+    </p>
+    <p><b>1958</b>:
       John McCarthy's LISP appears.
       LISP goes beyond the line-by-line syntax --
       it is recursively structured.
       But the LISP interpreter does not find the
       recursive structure:
-      the programmer must indicate the structure herself,
+      the programmer must explicitly
+      indicate the structure herself,
       using parentheses.
-    </p><p><b>Compilers</b>:
-      Readers of the literature about the 1950's will sometimes get the impression
-      of an Atlantean Age,
-      a period which had access to technology more sophisticated
-      that that of later times.
-      This is misleading.
-      The term "compiler" in the 1950's was used far more widely than it is now.
-      In particular, there was no implication that the output of a "compiler"
-      was something ready for execution by a computer.
-      John Backus, for example,
-      <a href="http://www.softwarepreservation.org/projects/FORTRAN/paper/Backus-ProgrammingInAmerica-1976.pdf">
-        describes (pp. 133-134)</a>
-      a 1954 "compiler"
-      which produces relative addresses, that needed to be translated to
-      absolute addresses by hand.
-    </p>
     <p><b>1959</b>:
       Backus invents a new notation to describe
       the IAL language.
-      Backus's notation is influenced by Post,
-    </p><p><b>1960</b>:
-      Peter Nauer, the author of the ALGOL 60 report,
-      improved the notation Backus used to IAL,
-      and uses it to describe the new language.
-      It will become known as Backus-Nauer form.
-      Backus's work seems to be independent of Chomsky,
-      but the grammars described by BNF will soon be found to
-      be the exact equivalent of Chomsky's context-free grammars.
+      Backus's notation is influenced by his study of Post --
+      he seems not to have read Chomsky until later.
+      <!-- http://archive.computerhistory.org/resources/text/Oral_History/Backus_John/Backus_John_1.oral_history.2006.102657970.pdf
+      p. 25 -->
+    </p>
+    <p><b>1960</b>:
+      Peter Nauer,
+      improves the notation Backus used to IAL,
+      and uses it to describe the new ALGOL 60 language.
+      It will become known as Backus-Nauer Form (BNF).
     </p><p><b>1960</b>:
       The ALGOL 60 report
       specifies, for the first time, a block structured
       language.
-      The ALGOL committee is well aware
-      that
-      nobody knows how to parse such a language.
-      In fact, nobody has ever published a paper describing
-      a parser.
-      But they believe that,
-      if they specify a block-structured
-      language, a parser for it will be invented.
-      Risky as this approach is, it pays off ...
+      ALGOL 60 is recursively structured but the structure is
+      implicity -- newlines are not semantically significant,
+      and parentheses indicate syntax only in a few specific cases.
+      The ALGOL compiler will have to find the structure.
+    </p>
+    <p>
+      It is a case of 1960's optimism at its best.
+      As the ALGOL committee is well aware, a parsing
+      algorithm capable
+      of handling ALGOL 60 does not yet exist.
+      But the risk they are taking will soon pay off.
     </p>
     <p><b>1960</b>:
       A.E. Gleenie publishes his description of a compiler-compiler.
