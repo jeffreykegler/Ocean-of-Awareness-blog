@@ -291,7 +291,8 @@
       Schmidt, Metcalf, and Schorre present papers
       on syntax-directed compilers at a Denver conference.
       &lt;!-- Schorre 1964, p. D1.3-1 --&gt;
-    &lt;/p&gt;&lt;p&gt;&lt;b&gt;1964&lt;/b&gt;:
+    &lt;/p&gt;
+    &lt;p&gt;&lt;b&gt;1964&lt;/b&gt;:
       D.V. Schorre publishes a paper on the Meta II
       &quot;compiler writing language&quot;,
       summarizing the papers of the 1963 conference.
@@ -300,7 +301,7 @@
       Schorre notes
       that his parser is
       is &quot;entirely different&quot; from that of Irons 1961 --
-      in fact it is non-Chomskyan
+      in fact it is non-Chomskyan.
       Meta II is a template, rather
       than something that readers can use,
       but in principle it can be turned
@@ -310,10 +311,11 @@
     --&gt;
     &lt;/p&gt;&lt;p&gt;&lt;b&gt;1965&lt;/b&gt;:
       Don Knuth invents LR parsing.
+      The LR algorithm is deterministic,
+      Chomskyan and bottom-up,
+      but it is not thought to be practical.
       Knuth is primarily interested
       in the mathematics.
-      Knuth describes a parsing algorithm,
-      but it is not thought practical.
     &lt;/p&gt;
     &lt;p&gt;&lt;b&gt;1968&lt;/b&gt;: Jay Earley invents the algorithm named after him.
       Like the Irons algorithm,
@@ -362,33 +364,36 @@
     &lt;/p&gt;
     &lt;p&gt;&lt;b&gt;1972&lt;/b&gt;:
       In their two volume work,
-      Aho and Ullman the non-Chomksyan parsers in
-      the Schorre lineage under the name of TDPL and GTDPL.
+      Aho and Ullman investiage non-Chomksyan parsers in
+      the Schorre lineage under the names of TDPL and GTDPL.
       They note that
       &quot;it can be quite difficult to determine
       what language is defined by a TDPL parser&quot;.
-      TDPL parsers do what they do, which is something
-      the programmer usually cannot describe.
+      That is,
+      GTDPL parsers do whatever they do,
+      and that whatever is something
+      the programmer in general cannot describe.
       The best a programmer can usually do
-      is to create a test suite and fiddle with the parses
+      is to create a test suite and fiddle with the GTDPL description
       until it passes.
       Correctness cannot be established in any stronger sense.
-      TDPL becomes a more extreme from of
-      the old joke that the code is the documentation --
-      with TDPL even the code does not
-      document the language of the parser.
+      GTDPL becomes a more extreme from of
+      the old joke that &quot;the code is the documentation&quot; --
+      with GTDPL nothing
+      documents the language of the parser,
+      not even the code.
     &lt;/p&gt;
     &lt;p&gt;
       At or around this time,
       rumor has it
-      that the main line of development for TDPL parsers
+      that the main line of development for GTDPL parsers
       is classified secret by the US government.
       &lt;!-- http://www.wikiwand.com/en/Talk:Metacompiler/Archive_2 --&gt;
-      TDPL parsers have the property that even small changes
-      in in TDPL parsers can be very labor-intensive, however,
+      GTDPL parsers have the property that even small changes
+      in GTDPL parsers can be very labor-intensive, however,
       and for some government contractors,
-      TDPL parsing provides steady work for years.
-      Public interest in TDPL essentially disappears.
+      GTDPL parsing provides steady work for years.
+      Public interest in GTDPL essentially disappears.
     &lt;/p&gt;
     &lt;p&gt;&lt;b&gt;1975&lt;/b&gt;:
       Bell Labs converts its C compiler from hand-written recursive
@@ -487,13 +492,13 @@
       and it seems
       as if there might soon be no syntax-driven algorithms in practical
       use.
-      Ford fills this gap with the nearly-forgotten TDPL.
+      Ford fills this gap with the nearly-forgotten GTDPL.
       Ford adds packratting, so that PEG is always linear,
       and provides PEG with an attractive new syntax.
       But nothing has been done to change
       &lt;a href=&quot;http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2015/03/peg.html&quot;&gt;
         the problematic behaviors&lt;/a&gt;
-      of TDPL.
+      of GTDPL.
     &lt;/p&gt;&lt;p&gt;&lt;b&gt;2006&lt;/b&gt;:
       GNU announces that the GCC compiler's parser has been rewritten.
       For three decades,
