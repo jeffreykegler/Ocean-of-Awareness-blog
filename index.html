@@ -92,7 +92,7 @@
       for example, produced relative addresses,
       which needed to be translated by hand before a machine could execute it.
     </p>
-    </p><p><b>1955</b>:
+    <p><b>1955</b>:
       Noam Chomsky is awarded a Ph.D. in linguistics and accepts a teaching post at MIT.
       MIT does not have a linguistics department to tell him
       what to teach in his linguistics course,
@@ -162,7 +162,7 @@
       the programmer must explicitly
       indicate the structure herself,
       using parentheses.
-    <p><b>1959</b>:
+    </p><p><b>1959</b>:
       Backus invents a new notation to describe
       the IAL language.
       Backus's notation is influenced by his study of Post --
@@ -201,12 +201,16 @@
       He also mentions Post's productions.
     </p>
     <p>
-      Glennie may have been the first to use BNF as a description of a <b>procedure</b>
-      instead of as the description of a <b>Chomsky grammar</b>,
+      Glennie may have been the first to use BNF as a description of a
+      <b>procedure</b>
+      instead of as the description of a
+      <b>Chomsky grammar</b>,
       and he notes the distinction and calls it "important".
       In later years, this often be overlooked.
       BNF, when used as a Chomsky grammar, describes a set of strings,
-      and does <b>not</b> describe how to parse strings according to the grammar.
+      and does
+      <b>not</b>
+      describe how to parse strings according to the grammar.
       BNF notation, if used to describe a procedure, is a set of instructions, to be
       tried in some order, and used to process a string.
       Procedural describes a procedure first, and a language only indirectly.
@@ -214,7 +218,8 @@
       describe a parsing procedure.
       Both procedural and Chomskyan BNF describe languages,
       but (and this is often missed) usually
-      <b>not the same</b> language.
+      <b>not the same</b>
+      language.
       That is, suppose D is some BNF description.
       Let P(D) be D interpreted as a procedure,
       let G(P(D)) be the language which the procedure P(D) parses,
@@ -222,42 +227,42 @@
       Then, usually, G(D) != G(P(D)).
     </p>
     <p>
-    This distinction between Chomskyan and pre-Chomskyan parsing mirrors
-    the distinction between Chomskyan and non-Chomskyan linguistics.
-    Non-Chomskyan parsing starts with strings and created grammars only
-    when and if justified by the strings.
-    Chomskyan parsing starts with the grammar,
-    requires the programmer to figure out how to parse the grammar,
-    and uses successful parsing strings to confirm the accuracy
-    of the choice of grammar.
+      This distinction between Chomskyan and non-Chomskyan parsing mirrors
+      the distinction between Chomskyan and non-Chomskyan linguistics.
+      Non-Chomskyan parsing starts with strings and created grammars only
+      when and if justified by the strings.
+      Chomskyan parsing starts with the grammar,
+      requires the programmer to figure out how to parse the grammar,
+      and uses successful parsing strings to confirm the accuracy
+      of the choice of grammar.
     </p>
     <p>
-    Note that the pre-Chomsky approach is far more natural
-    if your background is computer programming
-    and not language theory.
-    The parsing problem appears to the programmer in the form of
-    strings to be parsed, exactly the starting point of pre-Chomsky
-    parsing.
-    Not only that, but even once the Chomskyan approach is
-    pointed out,
-    it does not seem very attractive.
-    With the pre-Chomskyan approach,
-    the examples more or less naturally lead to a parser --
-    in the Chomskyan approach
-    the programmer has to search for a
-    black box to handle his grammar,
-    and a search which has proved surprisingly
-    long and difficult.
-    Handling
-    semantics is more natural with a Chomksyan approach,
-    But, using captures, semantics
-    can be added to a pre-Chomskyan parser
-    and, with practice, this seems natural enough.
-    It is surprising then,
-    and a tribute to Chomsky's influence,
-    that the first parsers were
-    Chomskyan parsers,
-    and that they have been dominant ever since.
+      Note that the non-Chomsky approach is far more natural
+      if your background is computer programming
+      and not language theory.
+      The parsing problem appears to the programmer in the form of
+      strings to be parsed, exactly the starting point of non-Chomsky
+      parsing.
+      Not only that, but even once the Chomskyan approach is
+      pointed out,
+      it does not seem very attractive.
+      With the non-Chomskyan approach,
+      the examples more or less naturally lead to a parser --
+      in the Chomskyan approach
+      the programmer has to search for a
+      black box to handle his grammar,
+      and a search which has proved surprisingly
+      long and difficult.
+      Handling
+      semantics is more natural with a Chomksyan approach,
+      But, using captures, semantics
+      can be added to a non-Chomskyan parser
+      and, with practice, this seems natural enough.
+      It is surprising then,
+      and a tribute to Chomsky's influence,
+      that the first parsers were
+      Chomskyan parsers,
+      and that they have been dominant ever since.
     </p>
     <p><b>1961</b>:
       In January,
@@ -295,15 +300,15 @@
       </li>
       <li>
         Non-hand coded top-down parsing,
-	of the kind Lucas's syntax-driven
+        of the kind Lucas's syntax-driven
         approach allowed, is a very weak parsing technique.
         It was (and still is) often necessary
         to go beyond its limits.
       </li>
       <li>
         Top-down parsing is intuitive -- it essentially means calling
-	subroutines.
-	It therefore requires little or
+        subroutines.
+        It therefore requires little or
         no knowledge of parsing theory.
         This makes it a good fit for hand-coding.
       </li>
@@ -315,15 +320,16 @@
     </p><p><b>1964</b>:
       D.V. Schorre publishes a paper on the Meta II
       "compiler writing language",
-      summarizing the work of the 1963 conference.
+      summarizing the papers of the 1963 conference.
       Schorre cites both Backus and Chomsky as sources
-      for Meta II's notation, but notes that his approach
-      is "entirely different" from that of Irons 1961.
-      Indeed, while the parser is only sketched,
-      it is clearly pre-Chomkyan.
-      While Meta II is intended as a template, rather
+      for Meta II's notation.
+      Schorre notes
+      that his parser is
+      is "entirely different" from that of Irons 1961 --
+      in fact it is non-Chomskyan
+      Meta II is a template, rather
       than something that readers can use,
-      in principle it can be turned
+      but in principle it can be turned
       into a fully automated compiler-compiler.
       <!-- Schorre 1964, p. D1.3-1
     http://ibm-1401.info/Meta-II-schorre.pdf
@@ -335,24 +341,25 @@
       Knuth describes a parsing algorithm,
       but it is not thought practical.
     </p>
-    <p><b>1965</b>:
-      McClure publishes a description of a non-Chomskian parser.
-      It consists of a set of routines which, on success,
-      absorb input and produce output,
-      and on failure pass control on to the next option.
-    </p><p><b>1968</b>: Jay Earley invents the algorithm named after him.
+    <p><b>1968</b>: Jay Earley invents the algorithm named after him.
       Like the Irons algorithm,
       Earley's algorithm is syntax-driven and fully general.
       Unlike the Irons algorithm, it does not backtrack.
-      Earley's core idea is to
-      track everything about the parse in tables.
-      Earley's algorithm is enticing, but it has three major issues:
-    </p><ul>
+      Earley's algorithm is both top-down and bottom-up at once --
+      it uses dynamic programming and keeps track of the parse in
+      in tables.
+      Earley's approach looks very promising indeed,
+      but there are three major issues:
+    </p>
+    <ul>
       <li>First, there is a bug in the handling of zero-length rules.
-      </li><li>Second, it is quadratic for right recursions.
-      </li><li>Third, the bookkeeping required to set up the tables is,
+      </li>
+      <li>Second, it is quadratic for right recursions.
+      </li>
+      <li>Third, the bookkeeping required to set up the tables is,
         by the standards of 1968 hardware, daunting.
-      </li></ul>
+      </li>
+    </ul>
     <p><b>1969</b>:
       Frank DeRemer describes a new variant of Knuth's LR
       parsing.
@@ -365,48 +372,43 @@
       of UNIX.
       At this point, regular expressions are an esoteric mathematical formalism.
       Through the "ed" editor and its descendants,
-      regular expressions become
+      regular expressions will become
       an everyday
       part of the working programmer's toolkit.
     </p>
     <p><b>1972</b>:
       Aho and Ullmann publish a 2-volume textbook summarizing the theory
       of parsing to that date.
-      This is still important and, sadly,
-      very up-to-date -- progress in parsing theory has slowed drammatically.
-      Aho and Ullman
-      describe
+      This is still important and distressingly up-to-date --
+      progress in parsing theory slowed drammatically
+      after 1972.
+      Aho and Ullman describe
       a straightforward fix to the zero-length rule bug in Earley's original algorithm.
       Unfortunately, this fix involves adding even more bookkeeping to Earley's.
     </p><p><b>1972</b>:
-      At or around this time,
-      the main line of development for GTDPL parsers
-      is classified secret by the US government,
-      or at least so rumor has it.
-      <!-- http://www.wikiwand.com/en/Talk:Metacompiler/Archive_2 -->
-      The reason is a subject of speculation.
-      Non-Chomsky parsers are surprisingly volative,
-      and a minor change in language specification can be surprisingly
-      labor intensive, so this must have a boon for some defense
-      contractors.
-    </p>
-    <p>Outside of the US security community,
-      Aho and Ullman note that "it can be quite difficult to determine
-      what language is defined by a TDPL parser",
-      and that proving them correct is impossible,
-      since the only definition is their implementation.
-      If the notion of correct is parsing the same language
-      as the corresponding Chomsky parser,
-      this is a test they usually fail.
-      GTDPL parsers do what they do, which is something
-      the programmer cannot describe.
-      The best a programmer can do is to show that a GTDPL
-      parsers passes a test suite.
+      In their two volume work,
+      Aho and Ullman observe of the non-Chomksyan parsers in
+      the Schorre lineage that
+      "it can be quite difficult to determine
+      what language is defined by a TDPL parser".
+      TDPL parsers do what they do, which is something
+      the programmer usually cannot describe.
+      The best a programmer can usually do
+      is to create a test suite and fiddle with the parses
+      until it passes.
+      Correctness cannot be established in any stronger sense.
     </p>
     <p>
-      For this and other reasons,
-      interest in GTDPL soon diminishes.
-      This, however, will not be the end of the story.
+      At or around this time,
+      rumor has it
+      that the main line of development for TDPL parsers
+      is classified secret by the US government.
+      <!-- http://www.wikiwand.com/en/Talk:Metacompiler/Archive_2 -->
+      TDPL parsers have the property that even small changes
+      in in TDPL parsers can be very labor-intensive, however,
+      and TDPL parsing for the US government provides
+      steady work for some for many years.
+      But public interest in TDPL essentially disappears.
     </p>
     <p><b>1975</b>:
       Bell Labs converts its C compiler from hand-written recursive
@@ -426,20 +428,27 @@
       V7 includes what is, by far,
       the most comprehensive, useable and easily available
       compiler writing toolkit yet developed.
-    </p><p><b>Compiler compilers</b>:
-      Central to Bell Labs V7 is
-      yacc, an LALR based parser generator.
-      With a bit of hackery,
-      yacc parses its own input language,
-      as well as the language of V7's main compiler,
-      the portable C compiler.
-      After two decades of research,
+    </p>
+    <p><b>Compiler compilers</b>:
+      Part of V7 is Yet Another Compiler Compiler (yacc).
+      yacc is LALR-powered.
+      Despite its name, yacc is the first compiler compiler
+      in the modern sense of the term "compiler".
+      For some useful languages, the process of going from
+      Chomskyan specification to executable is fully automated.
+      Most practical languages,
+      including yacc's own input language
+      and the language of V7's main compiler,
+      the portable C compiler,
+      require a bit of additional manual hackery.
+      Nonetheless,
+      after two decades of research,
       it seems that the parsing problem is solved.
     </p>
     <p><b>1987</b>:
       Larry Wall introduces Perl 1.
       Perl embraces complexity like no previous language.
-      Larry uses LALR very aggressively --
+      Larry uses yacc and LALR very aggressively --
       to my knowledge more aggressively than anyone before
       or since.
     </p>
@@ -456,6 +465,8 @@
       This is a major discovery.
       When it comes to speed,
       the game has changed in favor of Earley algorithm.
+    </p>
+    <p>
       But Earley parsing is almost forgotten.
       Twenty years will pass
       before anyone writes a practical
@@ -481,7 +492,7 @@
       Larry does not even consider using LALR again.
     </p>
     <p><b>2002</b>:
-      Aycock&Horspool publish their attempt at a fast, practical Earley's parser.
+      Aycock and Horspool publish their attempt at a fast, practical Earley's parser.
       Missing from it is Joop Leo's improvement --
       they seem not to be aware of it.
       Their own speedup is limited in what it achieves
@@ -493,16 +504,16 @@
     <p><b>2004</b>:
       Ford publishes his paper on PEG.
       Implementers by now are avoiding YACC,
-      and the Irons, Earley and  Lucas algorithms are forgotten, so it seemed
-      as if there would soon be no syntax-driven algorithms in practical
+      and it seems
+      as if there might soon be no syntax-driven algorithms in practical
       use.
-      Ford's PEG fills this looming gap.
-      PEG has an attractive new syntax,
-      but the underlying algorithm is
-      that of the old compiler-compilers,
-      and nothing has been done to change
+      Ford fills this gap with the nearly-forgotten TDPL.
+      Ford adds packratting, so that PEG is always linear,
+      and provides PEG with an attractive new syntax.
+      But nothing has been done to change
       <a href="http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2015/03/peg.html">
-        their tricky behaviors</a>.
+        the problematic behaviors</a>
+      of TDPL.
     </p><p><b>2006</b>:
       GNU announces that the GCC compiler's parser has been rewritten.
       For three decades,
@@ -515,32 +526,19 @@
       it replaced a quarter century earlier:
       recursive descent.
     </p>
-    <p><b>2004</b>:
-      Bryan Ford introduces PEG.
-      PEG is the pre-Chomsky algorithm, GTDPL,
-      with two changes:
-      Ford adds a new and very seductive interface,
-      and he show how to use "packratting"
-      so that the algortihm so is always linear.
-      The capabilities, however, are still those of GTDPL,
-      abandoned decades earlier because of its
-      tricky behavior.
-      But, Irons, Lucas and Earley are all largely forgotten,
-      and with the downfall of LALR,
-      GTDPL looks like it will have to do.
-      <!-- Ford PEG paper -->
-    </p><p><b>Today</b>:
+    <p><b>Today</b>:
       After five decades of parsing theory,
-      the state of the are seems to be back
-      where we started.
-      If you took the first paper ever published describing a parsing,
-      Ned Iron'original 1961 algorithm,
-      changed the date,
-      and translated its code from the mix of assembler and
-      ALGOL into something more fashionable, say Haskell,
-      you would easily republish it today,
-      and bill it as
-      as revolutionary and new.
+      the state of the art seems to be back
+      where it started.
+      We can imagine someone taking
+      Ned Iron's original 1961 algorithm,
+      from the first paper ever published describing a parser,
+      and republishing it today.
+      True, he would have to
+      translating its code from the mix of assembler and
+      ALGOL into something more fashionable, say Haskell.
+      But with that change,
+      it might look like a breath of fresh air.
     </p>
     <p>
     </p><h3>Marpa: an afterword</h3><p>
@@ -549,36 +547,36 @@
       My own begin around 1970.
       Very early on, as a graduate student,
       I became unhappy with the way
-      the field was developing,
-      and became interested in
-      Earley's algorithm,
+      the field was developing.
+      Earley's algorithm looked interesting,
       and it was something I returned to on and off.
     </p>
     <p>
       The original vision of the 1960's was a parser that
       was
-    </p><ul>
+    </p>
+    <ul>
       <li>efficient,
-      </li><li>practical,
-      </li><li>general, and
-      </li><li>syntax-driven.
-      </li></ul><p>
-      By 2010 this vision
-      had gone the same way as many other dreams of the 1960's.
-      The rhetoric stayed upbeat, but in fact
-      parsing was now a field whose topic was increasingly desperate
+      </li>
+      <li>practical,
+      </li>
+      <li>general, and
+      </li>
+      <li>syntax-driven.
+      </li>
+    </ul>
+    <p>
+      By 2010 this
+      had gone the same way as many other 1960's dreams.
+      The rhetoric stayed upbeat, but
+      parsing practice had become a series of increasingly desperate
       compromises.
     </p>
     <p>
-      But early in this millenium,
-      I discovered that the parser dreamed of in the 1960's
-      was not just possible,
-      but that the problem had been solved.
-      These results were already in the literature,
-      but had seen little in the way of implementation.
-      Certainly they had never been implemented in a single parser.
-    </p>
-    <p>
+      But,
+      while nobody was looking for them,
+      the solutions to the problems encountered in the 1960's
+      had appeared in the literature.
       Aycock and Horspool had solved the zero-length rule bug.
       Joop Leo had found the speedup for right recursion.
       And the issue of bookkeeping overhead had pretty much evaporated on its
@@ -587,44 +585,27 @@
       and probably no longer relevant in any case --
       caches misses are now the bottleneck.
     </p>
-    <p>But while the original issues with Earley's disappeared,
-      a new issue emerged.
-      With a parsing algorithm as powerful as Earley's behind it,
-      a syntax-driven approach can do much more than it can with
-      a left parser.
-      But with the experience with LALR in their collective consciousness,
-      few modern programmers are prepared
-      to trust a purely declarative parser.
+    <p>
+      The programmers of the 1960's would have been prepared
+      to trust a fully declarative Chomskyan parser.
+      With the experience with LALR in their collective consciousness,
+      modern programmers might be more guarded.
       As Lincoln said, "Once a cat's been burned,
       he won't even sit on a cold stove."
-    </p>
-    <p>
-      To be more easily accepted,
-      Earley's needed to allow
-      procedural parsing,
-      not just declarative parsing.
-      This also proved to be no obstacle --
-      I was able to modify Earley's algorithm
-      to allow procedure logic.
-      Marpa (my modification of Earley's)
-      allows the user to specify events --
-      occurrences of symbols and rules --
-      at which declarative parsing pauses.
-      While paused,
-      the application can call procedural logic
-      and single-step forward token by token.
-      The procedural logic can hand control back
-      over to syntax-driven parsing at any point it likes.
-      The Earley tables can provide the procedural logic with
+      But I found it straightforward to rearrange the Earley parse engine
+      to allow efficient
+      event-driven handovers between procedural and syntax-driven
+      logic.
+      And Earley tables provide the procedural logic with
       full knowledge of the state of the
-      parse so far:
-      all rules recognized
-      in all possible parses so far,
-      and all symbols expected.
-      Earley's algorithm is now a even better companion
+      parse so far,
+      making
+      Earley's algorithm is a better companion
       for hand-written procedural logic than recursive descent.
-    </p><h2>References, comments, etc.</h2>
+    </p>
+    <h2>References, comments, etc.</h2>
     <p>
+      My implementation of Earley's algorithm is called Marpa.
       For more about Marpa, there is the
       <a href="http://savage.net.au/Marpa.html">semi-official web site, maintained by Ron Savage</a>.
       The official, but more limited, Marpa website
