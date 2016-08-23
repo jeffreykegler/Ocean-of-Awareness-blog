@@ -259,7 +259,7 @@
       In January,
       Ned Irons publishes a paper describing his ALGOL 60
       parser.
-      It is the first paper to describe any parser.
+      It is the first paper to fully describe any parser.
       The Irons algorithm is Chomskyan and top-down
       with a "left corner" element.
       The Irons algorithm
@@ -371,6 +371,17 @@
       an everyday
       part of the working programmer's toolkit.
     </p>
+    <p><b>Recognizers and parsers</b>:
+      In comparing algorithms, it can be important to keep in mind whether
+      they are recognizers or parsers.
+      A <b>recognizer</b> is a program which takes a string and produces a "yes"
+      or "no" according to whether a string is in part of a language.
+      Regular expressions are typically used as recognizers.
+      A <b>parser</b> is a program which takes a string and produces a tree reflecting
+      its structure according to a grammar.
+      The algorithm for a compiler clearly must be a parser, not a recognizer.
+      Recognizers can be, to some extent,
+      used as parsers by introducing captures.
     <p><b>1972</b>:
       Aho and Ullmann publish a two volume textbook summarizing the theory
       of parsing.
@@ -406,12 +417,12 @@
     </p>
     <p>
       GTDPL's obscurity buys nothing in the way of additional parsing
-      power --
-      while GTDPL recognizes many <b>languages</b>,
-      the actual power of a parser is the number of <b>grammars</b>
-      it parses.
-      In its ability to recognize grammars,
-      GTDPL is essentially equivalent to Lucas's 1961 syntax-driven
+      power.
+      Like all non-Chomskyan parsers,
+      GTDPL is basically a extremely powerful recognizer.
+      Pressed into service as a parser, it is comparatively weak.
+      As a parser, GTDPL
+      is essentially equivalent to Lucas's 1961 syntax-driven
       algorithm,
       which was in turn a restricted form of recursive descent.
     </p>
