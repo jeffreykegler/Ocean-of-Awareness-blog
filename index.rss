@@ -372,7 +372,8 @@
       Recognizers can be, to some extent,
       used as parsers by introducing captures.
     &lt;/p&gt;&lt;p&gt;&lt;b&gt;1972&lt;/b&gt;:
-      Aho and Ullmann publish a two volume textbook summarizing the theory
+      Alfred Aho and Jeffrey Ullman
+      publish a two volume textbook summarizing the theory
       of parsing.
       This book is still important.
       It is also distressingly up-to-date --
@@ -384,7 +385,7 @@
     &lt;/p&gt;
     &lt;p&gt;&lt;b&gt;1972&lt;/b&gt;:
       Under the names TDPL and GTDPL,
-      Alfred Aho and Jeffrey Ullman investigate
+      Aho and Ullman investigate
       the non-Chomksyan parsers in
       the Schorre lineage.
       They note that
