@@ -35,12 +35,12 @@ Parsing: an expanded timeline
       She seems to be the first person to use this term for a computer program.
       Hopper uses the term
       "compiler" in its original sense:
-      "something or someone that bring other things together".
+      "something or someone that brings other things together".
     </p>
     <p><b>1954</b>:
       At IBM, a team under John Backus begins working
       on the language which will be called FORTRAN.
-      The term "compiler" is still being used in Hooper's looser sense,
+      The term "compiler" is still being used in Hopper's looser sense,
       instead of its modern one.
       In particular, there is no implication that the output of a "compiler"
       is ready for execution by a computer.
