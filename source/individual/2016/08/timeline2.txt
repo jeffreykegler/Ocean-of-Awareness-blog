@@ -186,19 +186,24 @@ Parsing: an expanded timeline
       </ul>
     </p>
     <p>
-      The pre-Chomskyan approach is far more natural
+      The pre-Chomskyan approach,
+      using procedural BNF,
+      is far more natural
       to someone trained as a computer programmer.
       The parsing problem appears to the programmer in the form of
       strings to be parsed,
-      exactly the starting point of pre-Chomsky parsing.
+      exactly the starting point of procedural BNF
+      and pre-Chomsky parsing.
+    </p>
+    <p>
       Even when the Chomskyan approach is pointed out,
       it does not at first seem very attractive.
       With the pre-Chomskyan approach,
       the examples of the language
-      more or less naturally lead to a parser --
-      in the Chomskyan approach
-      the programmer has to search for a
-      an algorithm to parse string according to his grammar --
+      more or less naturally lead to a parser.
+      In the Chomskyan approach
+      the programmer has to search for
+      an algorithm to parse strings according to his grammar --
       and the search for good algorithms to parse
       Chomskyan grammars has proved surprisingly
       long and difficult.
@@ -332,7 +337,7 @@ Parsing: an expanded timeline
       an everyday
       part of the working programmer's toolkit.
     </p>
-    <p><b>Recognizers and parsers</b>:
+    <p><b>Recognizers</b>:
       In comparing algorithms, it can be important to keep in mind whether
       they are recognizers or parsers.
       A <b>recognizer</b> is a program which takes a string and produces a "yes"
