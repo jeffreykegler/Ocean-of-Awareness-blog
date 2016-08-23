@@ -33,12 +33,12 @@
     &lt;p&gt;
       Pannini is the object of serious study today.
       But in the 1940's and 1950's Pannini is almost unknown in the West.
-      His work had no direct effect on the other events in this timeline.
+      His work has no direct effect on the other events in this timeline.
     &lt;/p&gt;
     &lt;p&gt;&lt;b&gt;1943&lt;/b&gt;:
       Emil Post defines and studies a formal rewriting system using
       productions.
-      With this, the process of reinventing Pannini begins.
+      With this, the process of reinventing Pannini in the West begins.
     &lt;/p&gt;&lt;p&gt;&lt;b&gt;1948&lt;/b&gt;:
       Claude Shannon publishes the foundation paper of information theory.
       Andrey Markov's finite state processes are used heavily.
@@ -48,31 +48,31 @@
         describes it
         as a &quot;compiler&quot;&lt;/a&gt;.
       She seems to be the first person to use this term for a computer program.
-      Hopper used the term
+      Hopper uses the term
       &quot;compiler&quot; in its original sense:
       &quot;something or someone that bring other things together&quot;.
     &lt;/p&gt;
     &lt;p&gt;&lt;b&gt;1954&lt;/b&gt;:
       At IBM, a team under John Backus begins working
       on the language which will be called FORTRAN.
-      As of 1954, the term &quot;compiler&quot; is still being used in Hooper's looser sense,
+      The term &quot;compiler&quot; is still being used in Hooper's looser sense,
       instead of its modern one.
-      In particular, there was no implication that the output of a &quot;compiler&quot;
-      was ready for execution by a computer.
+      In particular, there is no implication that the output of a &quot;compiler&quot;
+      is ready for execution by a computer.
       &lt;!-- &quot;http://www.softwarepreservation.org/projects/FORTRAN/paper/Backus-ProgrammingInAmerica-1976.pdf
         pp. 133-134
       --&gt;
       The output of one 1954 &quot;compiler&quot;,
-      for example, produced relative addresses,
-      which needed to be translated by hand before a machine could execute it.
+      for example, produces relative addresses,
+      which need to be translated by hand before a machine can execute them.
     &lt;/p&gt;
     &lt;p&gt;&lt;b&gt;1955&lt;/b&gt;:
       Noam Chomsky is awarded a Ph.D. in linguistics and accepts a teaching post at MIT.
-      MIT does not have a linguistics department to tell him
-      what to teach in his linguistics course,
-      so Chomsky teaches his own approach,
+      MIT does not have a linguistics department and
+      Chomsky, in his linguistics course, is free to teach his own approach,
       highly original and very mathematical.
-    &lt;/p&gt;&lt;p&gt;&lt;b&gt;1956&lt;/b&gt;:
+    &lt;/p&gt;
+    &lt;p&gt;&lt;b&gt;1956&lt;/b&gt;:
       &lt;!-- &quot;Three models&quot; --&gt;
       Chomsky publishes the paper which
       is usually considered the foundation of Western formal language theory.
@@ -90,32 +90,31 @@
       For finite state processes, Chomsky acknowledges Markov.
       The other layers seem to be Chomsky's own formulations --
       Chomsky does not cite Post's work.
-    &lt;/p&gt;&lt;p&gt;&lt;b&gt;1957&lt;/b&gt;:
+    &lt;/p&gt;
+    &lt;p&gt;&lt;b&gt;1957&lt;/b&gt;:
       Steven Kleene discovers regular expressions,
       a very handy notation for Markov's processes.
-      Regular expressions turn out describe exactly the mathematical
+      Regular expressions turn out to describe exactly the mathematical
       objects being studied as
       finite state automata,
       as well as some of the objects being studied as
       neural nets.
-    &lt;/p&gt;&lt;p&gt;&lt;b&gt;1957&lt;/b&gt;:
-      Noam Chomsky publishes what he has been teaching
-      at MIT as a book.
-      Titled
-      &lt;b&gt;Syntactic Structures&lt;/b&gt;,
-      it is one of the most influential books of all time.
+    &lt;/p&gt;
+    &lt;p&gt;&lt;b&gt;1957&lt;/b&gt;:
+      Noam Chomsky publishes &lt;b&gt;Syntactic Structures&lt;/b&gt;,
+      one of the most influential books of all time.
       The orthodoxy in 1957 is structural linguistics,
-      which argued, with Sherlock Holmes, that
+      which argues, with Sherlock Holmes, that
       &quot;it is a capital mistake to theorize in advance of the facts&quot;.
       Structuralists start with the utterances in a language,
       and build upward.
     &lt;/p&gt;
     &lt;p&gt;
-      Chomsky, on the other hand, claiming that without a theory there
+      But Chomsky claims that without a theory there
       are no facts: there is only noise.
       The Chomskyan approach is to start with a grammar, and use the corpus of
       the language to check its accuracy.
-      It will soon come to dominate linguistics.
+      Chomsky's approach will soon come to dominate linguistics.
     &lt;/p&gt;
     &lt;p&gt;&lt;b&gt;1957&lt;/b&gt;:
       Backus's team makes the first FORTRAN compiler
@@ -138,17 +137,17 @@
       using parentheses.
     &lt;/p&gt;&lt;p&gt;&lt;b&gt;1959&lt;/b&gt;:
       Backus invents a new notation to describe
-      the IAL language.
+      the IAL language (aka ALGOL).
       Backus's notation is influenced by his study of Post --
       he seems not to have read Chomsky until later.
       &lt;!-- http://archive.computerhistory.org/resources/text/Oral_History/Backus_John/Backus_John_1.oral_history.2006.102657970.pdf
       p. 25 --&gt;
     &lt;/p&gt;
     &lt;p&gt;&lt;b&gt;1960&lt;/b&gt;:
-      Peter Nauer,
-      improves the notation Backus used to IAL,
-      and uses it to describe the new ALGOL 60 language.
-      It will become known as Backus-Nauer Form (BNF).
+      Peter Nauer
+      improves the Backus notation Backus
+      and uses it to describe ALGOL 60.
+      The improved notation will become known as Backus-Nauer Form (BNF).
     &lt;/p&gt;&lt;p&gt;&lt;b&gt;1960&lt;/b&gt;:
       The ALGOL 60 report
       specifies, for the first time, a block structured
@@ -173,23 +172,22 @@
       Glennie credits both Chomsky and Backus, and observes that the two
       notations are &quot;related&quot;.
       He also mentions Post's productions.
-    &lt;/p&gt;
-    &lt;p&gt;
       Glennie may have been the first to use BNF as a description of a
       &lt;b&gt;procedure&lt;/b&gt;
       instead of as the description of a
-      &lt;b&gt;Chomsky grammar&lt;/b&gt;,
-      and he notes the distinction and calls it &quot;important&quot;.
-      In later years, this often be overlooked.
+      &lt;b&gt;Chomsky grammar&lt;/b&gt;.
+      Glennie points out that the distinction is &quot;important&quot;.
+    &lt;/p&gt;
+    &lt;p&gt;&lt;b&gt;Chomskyan BNF and procedural BNF&lt;/b&gt;
       BNF, when used as a Chomsky grammar, describes a set of strings,
       and does
       &lt;b&gt;not&lt;/b&gt;
       describe how to parse strings according to the grammar.
       BNF notation, if used to describe a procedure, is a set of instructions, to be
       tried in some order, and used to process a string.
-      Procedural describes a procedure first, and a language only indirectly.
-      BNF used as a Chomsky grammar describes a language first, and does not
-      describe a parsing procedure.
+      Procedural BNF describes a procedure first, and a language only indirectly.
+    &lt;/p&gt;
+    &lt;p&gt;
       Both procedural and Chomskyan BNF describe languages,
       but (and this is often missed) usually
       &lt;b&gt;not the same&lt;/b&gt;
@@ -201,42 +199,34 @@
       Then, usually, G(D) != G(P(D)).
     &lt;/p&gt;
     &lt;p&gt;
-      This distinction between Chomskyan and non-Chomskyan parsing mirrors
-      the distinction between Chomskyan and non-Chomskyan linguistics.
-      Non-Chomskyan parsing starts with strings and created grammars only
-      when and if justified by the strings.
-      Chomskyan parsing starts with the grammar,
-      requires the programmer to figure out how to parse the grammar,
-      and uses successful parsing strings to confirm the accuracy
-      of the choice of grammar.
-    &lt;/p&gt;
-    &lt;p&gt;
-      Note that the non-Chomsky approach is far more natural
-      if your background is computer programming
-      and not language theory.
+      The pre-Chomskyan approach is far more natural
+      to someone trained as a computer programmer.
       The parsing problem appears to the programmer in the form of
-      strings to be parsed, exactly the starting point of non-Chomsky
-      parsing.
-      Not only that, but even once the Chomskyan approach is
-      pointed out,
-      it does not seem very attractive.
-      With the non-Chomskyan approach,
-      the examples more or less naturally lead to a parser --
+      strings to be parsed,
+      exactly the starting point of pre-Chomsky parsing.
+      Even when the Chomskyan approach is pointed out,
+      it does not at first seem very attractive.
+      With the pre-Chomskyan approach,
+      the examples of the language
+      more or less naturally lead to a parser --
       in the Chomskyan approach
       the programmer has to search for a
-      black box to handle his grammar,
-      and a search which has proved surprisingly
+      an algorithm to parse string according to his grammar --
+      and this search which has proved surprisingly
       long and difficult.
       Handling
       semantics is more natural with a Chomksyan approach,
       But, using captures, semantics
-      can be added to a non-Chomskyan parser
+      can be added to a pre-Chomskyan parser
       and, with practice, this seems natural enough.
-      It is surprising then,
-      and a tribute to Chomsky's influence,
-      that the first parsers were
-      Chomskyan parsers,
-      and that they have been dominant ever since.
+    &lt;/p&gt;
+    &lt;p&gt;
+      Despite the naturalness of the pre-Chomskyan approach
+      to parsing, we will find that the first fully-described
+      automated parsers are Chomskyan.
+      This is a testimony to Chomsky's influence at the time.
+      We will also see that Chomskyan parsers
+      have been dominant ever since.
     &lt;/p&gt;
     &lt;p&gt;&lt;b&gt;1961&lt;/b&gt;:
       In January,
@@ -259,7 +249,7 @@
       description of a purely top-down parser.
       This can be considered to be recursive descent,
       though in Lucas's
-      paper the algorithm is given
+      paper the algorithm has a
       syntax-driven implementation, useable only for
       a restricted class of grammars.
       Today we think of recursive descent as a methodology for
@@ -299,9 +289,9 @@
       Schorre cites both Backus and Chomsky as sources
       for Meta II's notation.
       Schorre notes
-      that his parser is
+      that his parser
       is &quot;entirely different&quot; from that of Irons 1961 --
-      in fact it is non-Chomskyan.
+      in fact it is pre-Chomskyan.
       Meta II is a template, rather
       than something that readers can use,
       but in principle it can be turned
@@ -319,13 +309,14 @@
     &lt;/p&gt;
     &lt;p&gt;&lt;b&gt;1968&lt;/b&gt;: Jay Earley invents the algorithm named after him.
       Like the Irons algorithm,
-      Earley's algorithm is syntax-driven and fully general.
+      Earley's algorithm is Chomskyan, syntax-driven and fully general.
       Unlike the Irons algorithm, it does not backtrack.
       Earley's algorithm is both top-down and bottom-up at once --
-      it uses dynamic programming and keeps track of the parse in
+      it uses dynamic programming and keeps track of the parse
       in tables.
-      Earley's approach looks very promising indeed,
-      but there are three major issues:
+      Earley's approach makes a lot of sense
+      and looks very promising indeed,
+      but there are three serious issues:
     &lt;/p&gt;
     &lt;ul&gt;
       &lt;li&gt;First, there is a bug in the handling of zero-length rules.
@@ -342,6 +333,7 @@
       DeRemer's LALR algorithm requires only
       a stack and a state table of quite
       manageable size.
+      LALR looks practical.
     &lt;/p&gt;
     &lt;p&gt;&lt;b&gt;1969&lt;/b&gt;:
       Ken Thompson writes the &quot;ed&quot; editor as one of the first components
@@ -354,34 +346,47 @@
     &lt;/p&gt;
     &lt;p&gt;&lt;b&gt;1972&lt;/b&gt;:
       Aho and Ullmann publish a 2-volume textbook summarizing the theory
-      of parsing to that date.
-      This is still important and distressingly up-to-date --
-      progress in parsing theory slowed drammatically
+      of parsing.
+      This book is still important.
+      It is also distressingly up-to-date --
+      progress in parsing theory slowed dramatically
       after 1972.
       Aho and Ullman describe
       a straightforward fix to the zero-length rule bug in Earley's original algorithm.
       Unfortunately, this fix involves adding even more bookkeeping to Earley's.
     &lt;/p&gt;
     &lt;p&gt;&lt;b&gt;1972&lt;/b&gt;:
-      In their two volume work,
-      Aho and Ullman investiage non-Chomksyan parsers in
-      the Schorre lineage under the names of TDPL and GTDPL.
+      Under the names TDPL and GTDPL,
+      Aho and Ullman investgate
+      the non-Chomksyan parsers in
+      the Schorre lineage.
       They note that
       &quot;it can be quite difficult to determine
       what language is defined by a TDPL parser&quot;.
       That is,
       GTDPL parsers do whatever they do,
       and that whatever is something
-      the programmer in general cannot describe.
+      the programmer in general will not be able to describe.
       The best a programmer can usually do
       is to create a test suite and fiddle with the GTDPL description
       until it passes.
       Correctness cannot be established in any stronger sense.
-      GTDPL becomes a more extreme from of
+      GTDPL is an extreme form of
       the old joke that &quot;the code is the documentation&quot; --
       with GTDPL nothing
       documents the language of the parser,
       not even the code.
+    &lt;/p&gt;
+    &lt;p&gt;
+      GTDPL's obscurity buys nothing in the way of additional parsing
+      power --
+      while GTDPL recognizes many &lt;b&gt;languages&lt;b/&gt;,
+      the actual power of a parser is the number of &lt;b&gt;grammars&lt;/b&gt;
+      it parses.
+      In its ability to recognize grammars,
+      GTDPL is essentially equivalent to Lucas's 1961 syntax-driven
+      algorithm,
+      which was in turn a restricted form of recursive descent.
     &lt;/p&gt;
     &lt;p&gt;
       At or around this time,
@@ -390,10 +395,10 @@
       is classified secret by the US government.
       &lt;!-- http://www.wikiwand.com/en/Talk:Metacompiler/Archive_2 --&gt;
       GTDPL parsers have the property that even small changes
-      in GTDPL parsers can be very labor-intensive, however,
-      and for some government contractors,
-      GTDPL parsing provides steady work for years.
-      Public interest in GTDPL essentially disappears.
+      in GTDPL parsers can be very labor-intensive.
+      For some government contractors,
+      GTDPL parsing provides steady work for years to come.
+      Public interest in GTDPL fades.
     &lt;/p&gt;
     &lt;p&gt;&lt;b&gt;1975&lt;/b&gt;:
       Bell Labs converts its C compiler from hand-written recursive
@@ -415,17 +420,17 @@
       compiler writing toolkit yet developed.
     &lt;/p&gt;
     &lt;p&gt;&lt;b&gt;Compiler compilers&lt;/b&gt;:
-      Part of V7 is Yet Another Compiler Compiler (yacc).
-      yacc is LALR-powered.
-      Despite its name, yacc is the first compiler compiler
-      in the modern sense of the term &quot;compiler&quot;.
+      Part of the V7 toolkit is Yet Another Compiler Compiler (YACC).
+      YACC is LALR-powered.
+      Despite its name, YACC is the first compiler-compiler
+      in the modern sense.
       For some useful languages, the process of going from
       Chomskyan specification to executable is fully automated.
       Most practical languages,
-      including yacc's own input language
-      and the language of V7's main compiler,
-      the portable C compiler,
-      require a bit of additional manual hackery.
+      including
+      the C language
+      and YACC's own input language,
+      still require manual hackery.
       Nonetheless,
       after two decades of research,
       it seems that the parsing problem is solved.
@@ -433,7 +438,7 @@
     &lt;p&gt;&lt;b&gt;1987&lt;/b&gt;:
       Larry Wall introduces Perl 1.
       Perl embraces complexity like no previous language.
-      Larry uses yacc and LALR very aggressively --
+      Larry uses YACC and LALR very aggressively --
       to my knowledge more aggressively than anyone before
       or since.
     &lt;/p&gt;
@@ -516,7 +521,7 @@
       the state of the art seems to be back
       where it started.
       We can imagine someone taking
-      Ned Iron's original 1961 algorithm,
+      Ned Iron's original 1961 algorithm
       from the first paper ever published describing a parser,
       and republishing it today.
       True, he would have to
@@ -551,8 +556,8 @@
       &lt;/li&gt;
     &lt;/ul&gt;
     &lt;p&gt;
-      By 2010 this
-      had gone the same way as many other 1960's dreams.
+      By 2010 this vision
+      seemed to have gone the same way as many other 1960's dreams.
       The rhetoric stayed upbeat, but
       parsing practice had become a series of increasingly desperate
       compromises.
@@ -567,8 +572,8 @@
       And the issue of bookkeeping overhead had pretty much evaporated on its
       own.
       Machine operations are now a billion times faster than in 1968,
-      and probably no longer relevant in any case --
-      caches misses are now the bottleneck.
+      and are probably no longer relevant in any case --
+      cache misses are now the bottleneck.
     &lt;/p&gt;
     &lt;p&gt;
       The programmers of the 1960's would have been prepared
@@ -584,8 +589,8 @@
       And Earley tables provide the procedural logic with
       full knowledge of the state of the
       parse so far,
-      making
-      Earley's algorithm is a better companion
+      so that
+      Earley's algorithm is a better platform
       for hand-written procedural logic than recursive descent.
     &lt;/p&gt;
     &lt;h2&gt;References, comments, etc.&lt;/h2&gt;
