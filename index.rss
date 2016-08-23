@@ -21,16 +21,14 @@
       --&gt;
     &lt;/p&gt;
     &lt;p&gt;&lt;b&gt;The fourth century BCE&lt;/b&gt;:
-      In India, Pannini creates a grammar of the Sanskrit language.
-      This is a sophisticated description of the Sanskrit language,
+      In India, Pannini creates
+      a sophisticated description of the Sanskrit language,
       exact and complete, and including pronunciation.
       Sanskrit
       could be recreated using nothing but Pannini's grammar.
       Pannini's grammar is probably the first formal system of any kind, predating Euclid.
       Even today, nothing like it exists for any other natural language
       of comparable size or corpus.
-    &lt;/p&gt;
-    &lt;p&gt;
       Pannini is the object of serious study today.
       But in the 1940's and 1950's Pannini is almost unknown in the West.
       His work has no direct effect on the other events in this timeline.
@@ -103,7 +101,7 @@
     &lt;p&gt;&lt;b&gt;1957&lt;/b&gt;:
       Noam Chomsky publishes &lt;b&gt;Syntactic Structures&lt;/b&gt;,
       one of the most influential books of all time.
-      The orthodoxy in 1957 is structural linguistics,
+      The orthodoxy in 1957 is structural linguistics
       which argues, with Sherlock Holmes, that
       &quot;it is a capital mistake to theorize in advance of the facts&quot;.
       Structuralists start with the utterances in a language,
@@ -144,20 +142,18 @@
       p. 25 --&gt;
     &lt;/p&gt;
     &lt;p&gt;&lt;b&gt;1960&lt;/b&gt;:
-      Peter Nauer
-      improves the Backus notation Backus
+      Peter Naur
+      improves the Backus notation
       and uses it to describe ALGOL 60.
-      The improved notation will become known as Backus-Nauer Form (BNF).
+      The improved notation will become known as Backus-Naur Form (BNF).
     &lt;/p&gt;&lt;p&gt;&lt;b&gt;1960&lt;/b&gt;:
       The ALGOL 60 report
       specifies, for the first time, a block structured
       language.
       ALGOL 60 is recursively structured but the structure is
-      implicity -- newlines are not semantically significant,
+      implicit -- newlines are not semantically significant,
       and parentheses indicate syntax only in a few specific cases.
       The ALGOL compiler will have to find the structure.
-    &lt;/p&gt;
-    &lt;p&gt;
       It is a case of 1960's optimism at its best.
       As the ALGOL committee is well aware, a parsing
       algorithm capable
@@ -178,7 +174,7 @@
       &lt;b&gt;Chomsky grammar&lt;/b&gt;.
       Glennie points out that the distinction is &quot;important&quot;.
     &lt;/p&gt;
-    &lt;p&gt;&lt;b&gt;Chomskyan BNF and procedural BNF&lt;/b&gt;
+    &lt;p&gt;&lt;b&gt;Chomskyan BNF and procedural BNF&lt;/b&gt;:
       BNF, when used as a Chomsky grammar, describes a set of strings,
       and does
       &lt;b&gt;not&lt;/b&gt;
@@ -189,14 +185,18 @@
     &lt;/p&gt;
     &lt;p&gt;
       Both procedural and Chomskyan BNF describe languages,
-      but (and this is often missed) usually
+      but usually
       &lt;b&gt;not the same&lt;/b&gt;
       language.
-      That is, suppose D is some BNF description.
-      Let P(D) be D interpreted as a procedure,
-      let G(P(D)) be the language which the procedure P(D) parses,
-      and let G(D) be D interpreted as a Chomsky grammar.
-      Then, usually, G(D) != G(P(D)).
+      That is,
+      &lt;ul&gt;
+      &lt;li&gt;Suppose D is some BNF description.
+      &lt;li&gt;Let P(D) be D interpreted as a procedure,
+      &lt;li&gt;Let L(P(D)) be the language which the procedure P(D) parses.
+      &lt;li&gt;Let G(D) be D interpreted as a Chomsky grammar.
+      &lt;li&gt;Let L(G(D)) be the language which the grammar G(D) describes.
+      &lt;li&gt;Then, usually, L(P(D)) != L(G(D)).
+      &lt;/ul&gt;
     &lt;/p&gt;
     &lt;p&gt;
       The pre-Chomskyan approach is far more natural
@@ -212,10 +212,11 @@
       in the Chomskyan approach
       the programmer has to search for a
       an algorithm to parse string according to his grammar --
-      and this search which has proved surprisingly
+      and the search for good algorithms to parse
+      Chomskyan grammars has proved surprisingly
       long and difficult.
       Handling
-      semantics is more natural with a Chomksyan approach,
+      semantics is more natural with a Chomksyan approach.
       But, using captures, semantics
       can be added to a pre-Chomskyan parser
       and, with practice, this seems natural enough.
@@ -278,12 +279,12 @@
       &lt;/li&gt;
     &lt;/ul&gt;
     &lt;p&gt;&lt;b&gt;1963&lt;/b&gt;:
-      Schmidt, Metcalf, and Schorre present papers
+      L. Schmidt, Howard Metcalf, and Val Schorre present papers
       on syntax-directed compilers at a Denver conference.
       &lt;!-- Schorre 1964, p. D1.3-1 --&gt;
     &lt;/p&gt;
     &lt;p&gt;&lt;b&gt;1964&lt;/b&gt;:
-      D.V. Schorre publishes a paper on the Meta II
+      Schorre publishes a paper on the Meta II
       &quot;compiler writing language&quot;,
       summarizing the papers of the 1963 conference.
       Schorre cites both Backus and Chomsky as sources
@@ -345,7 +346,7 @@
       part of the working programmer's toolkit.
     &lt;/p&gt;
     &lt;p&gt;&lt;b&gt;1972&lt;/b&gt;:
-      Aho and Ullmann publish a 2-volume textbook summarizing the theory
+      Aho and Ullmann publish a two volume textbook summarizing the theory
       of parsing.
       This book is still important.
       It is also distressingly up-to-date --
@@ -357,7 +358,7 @@
     &lt;/p&gt;
     &lt;p&gt;&lt;b&gt;1972&lt;/b&gt;:
       Under the names TDPL and GTDPL,
-      Aho and Ullman investgate
+      Alfred Aho and Jeffrey Ullman investigate
       the non-Chomksyan parsers in
       the Schorre lineage.
       They note that
@@ -380,7 +381,7 @@
     &lt;p&gt;
       GTDPL's obscurity buys nothing in the way of additional parsing
       power --
-      while GTDPL recognizes many &lt;b&gt;languages&lt;b/&gt;,
+      while GTDPL recognizes many &lt;b&gt;languages&lt;/b&gt;,
       the actual power of a parser is the number of &lt;b&gt;grammars&lt;/b&gt;
       it parses.
       In its ability to recognize grammars,
@@ -419,7 +420,7 @@
       the most comprehensive, useable and easily available
       compiler writing toolkit yet developed.
     &lt;/p&gt;
-    &lt;p&gt;&lt;b&gt;Compiler compilers&lt;/b&gt;:
+    &lt;p&gt;&lt;b&gt;1979&lt;/b&gt;:
       Part of the V7 toolkit is Yet Another Compiler Compiler (YACC).
       YACC is LALR-powered.
       Despite its name, YACC is the first compiler-compiler
@@ -482,7 +483,8 @@
       Larry does not even consider using LALR again.
     &lt;/p&gt;
     &lt;p&gt;&lt;b&gt;2002&lt;/b&gt;:
-      Aycock and Horspool publish their attempt at a fast, practical Earley's parser.
+      John Aycock and R. Nigel Horspool
+      publish their attempt at a fast, practical Earley's parser.
       Missing from it is Joop Leo's improvement --
       they seem not to be aware of it.
       Their own speedup is limited in what it achieves
@@ -492,12 +494,12 @@
       And this time the solution requires no additional bookkeeping.
     &lt;/p&gt;
     &lt;p&gt;&lt;b&gt;2004&lt;/b&gt;:
-      Ford publishes his paper on PEG.
+      Bryan Ford publishes his paper on PEG.
       Implementers by now are avoiding YACC,
       and it seems
       as if there might soon be no syntax-driven algorithms in practical
       use.
-      Ford fills this gap with the nearly-forgotten GTDPL.
+      Ford fills this gap by repackaging the nearly-forgotten GTDPL.
       Ford adds packratting, so that PEG is always linear,
       and provides PEG with an attractive new syntax.
       But nothing has been done to change
@@ -525,7 +527,7 @@
       from the first paper ever published describing a parser,
       and republishing it today.
       True, he would have to
-      translating its code from the mix of assembler and
+      translate its code from the mix of assembler and
       ALGOL into something more fashionable, say Haskell.
       But with that change,
       it might look like a breath of fresh air.

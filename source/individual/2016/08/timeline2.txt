@@ -8,16 +8,14 @@ Parsing: an expanded timeline
       -->
     </p>
     <p><b>The fourth century BCE</b>:
-      In India, Pannini creates a grammar of the Sanskrit language.
-      This is a sophisticated description of the Sanskrit language,
+      In India, Pannini creates
+      a sophisticated description of the Sanskrit language,
       exact and complete, and including pronunciation.
       Sanskrit
       could be recreated using nothing but Pannini's grammar.
       Pannini's grammar is probably the first formal system of any kind, predating Euclid.
       Even today, nothing like it exists for any other natural language
       of comparable size or corpus.
-    </p>
-    <p>
       Pannini is the object of serious study today.
       But in the 1940's and 1950's Pannini is almost unknown in the West.
       His work has no direct effect on the other events in this timeline.
@@ -90,7 +88,7 @@ Parsing: an expanded timeline
     <p><b>1957</b>:
       Noam Chomsky publishes <b>Syntactic Structures</b>,
       one of the most influential books of all time.
-      The orthodoxy in 1957 is structural linguistics,
+      The orthodoxy in 1957 is structural linguistics
       which argues, with Sherlock Holmes, that
       "it is a capital mistake to theorize in advance of the facts".
       Structuralists start with the utterances in a language,
@@ -131,20 +129,18 @@ Parsing: an expanded timeline
       p. 25 -->
     </p>
     <p><b>1960</b>:
-      Peter Nauer
-      improves the Backus notation Backus
+      Peter Naur
+      improves the Backus notation
       and uses it to describe ALGOL 60.
-      The improved notation will become known as Backus-Nauer Form (BNF).
+      The improved notation will become known as Backus-Naur Form (BNF).
     </p><p><b>1960</b>:
       The ALGOL 60 report
       specifies, for the first time, a block structured
       language.
       ALGOL 60 is recursively structured but the structure is
-      implicity -- newlines are not semantically significant,
+      implicit -- newlines are not semantically significant,
       and parentheses indicate syntax only in a few specific cases.
       The ALGOL compiler will have to find the structure.
-    </p>
-    <p>
       It is a case of 1960's optimism at its best.
       As the ALGOL committee is well aware, a parsing
       algorithm capable
@@ -165,7 +161,7 @@ Parsing: an expanded timeline
       <b>Chomsky grammar</b>.
       Glennie points out that the distinction is "important".
     </p>
-    <p><b>Chomskyan BNF and procedural BNF</b>
+    <p><b>Chomskyan BNF and procedural BNF</b>:
       BNF, when used as a Chomsky grammar, describes a set of strings,
       and does
       <b>not</b>
@@ -176,14 +172,18 @@ Parsing: an expanded timeline
     </p>
     <p>
       Both procedural and Chomskyan BNF describe languages,
-      but (and this is often missed) usually
+      but usually
       <b>not the same</b>
       language.
-      That is, suppose D is some BNF description.
-      Let P(D) be D interpreted as a procedure,
-      let G(P(D)) be the language which the procedure P(D) parses,
-      and let G(D) be D interpreted as a Chomsky grammar.
-      Then, usually, G(D) != G(P(D)).
+      That is,
+      <ul>
+      <li>Suppose D is some BNF description.
+      <li>Let P(D) be D interpreted as a procedure,
+      <li>Let L(P(D)) be the language which the procedure P(D) parses.
+      <li>Let G(D) be D interpreted as a Chomsky grammar.
+      <li>Let L(G(D)) be the language which the grammar G(D) describes.
+      <li>Then, usually, L(P(D)) != L(G(D)).
+      </ul>
     </p>
     <p>
       The pre-Chomskyan approach is far more natural
@@ -199,10 +199,11 @@ Parsing: an expanded timeline
       in the Chomskyan approach
       the programmer has to search for a
       an algorithm to parse string according to his grammar --
-      and this search which has proved surprisingly
+      and the search for good algorithms to parse
+      Chomskyan grammars has proved surprisingly
       long and difficult.
       Handling
-      semantics is more natural with a Chomksyan approach,
+      semantics is more natural with a Chomksyan approach.
       But, using captures, semantics
       can be added to a pre-Chomskyan parser
       and, with practice, this seems natural enough.
@@ -265,12 +266,12 @@ Parsing: an expanded timeline
       </li>
     </ul>
     <p><b>1963</b>:
-      Schmidt, Metcalf, and Schorre present papers
+      L. Schmidt, Howard Metcalf, and Val Schorre present papers
       on syntax-directed compilers at a Denver conference.
       <!-- Schorre 1964, p. D1.3-1 -->
     </p>
     <p><b>1964</b>:
-      D.V. Schorre publishes a paper on the Meta II
+      Schorre publishes a paper on the Meta II
       "compiler writing language",
       summarizing the papers of the 1963 conference.
       Schorre cites both Backus and Chomsky as sources
@@ -332,7 +333,7 @@ Parsing: an expanded timeline
       part of the working programmer's toolkit.
     </p>
     <p><b>1972</b>:
-      Aho and Ullmann publish a 2-volume textbook summarizing the theory
+      Aho and Ullmann publish a two volume textbook summarizing the theory
       of parsing.
       This book is still important.
       It is also distressingly up-to-date --
@@ -344,7 +345,7 @@ Parsing: an expanded timeline
     </p>
     <p><b>1972</b>:
       Under the names TDPL and GTDPL,
-      Aho and Ullman investgate
+      Alfred Aho and Jeffrey Ullman investigate
       the non-Chomksyan parsers in
       the Schorre lineage.
       They note that
@@ -367,7 +368,7 @@ Parsing: an expanded timeline
     <p>
       GTDPL's obscurity buys nothing in the way of additional parsing
       power --
-      while GTDPL recognizes many <b>languages<b/>,
+      while GTDPL recognizes many <b>languages</b>,
       the actual power of a parser is the number of <b>grammars</b>
       it parses.
       In its ability to recognize grammars,
@@ -406,7 +407,7 @@ Parsing: an expanded timeline
       the most comprehensive, useable and easily available
       compiler writing toolkit yet developed.
     </p>
-    <p><b>Compiler compilers</b>:
+    <p><b>1979</b>:
       Part of the V7 toolkit is Yet Another Compiler Compiler (YACC).
       YACC is LALR-powered.
       Despite its name, YACC is the first compiler-compiler
@@ -469,7 +470,8 @@ Parsing: an expanded timeline
       Larry does not even consider using LALR again.
     </p>
     <p><b>2002</b>:
-      Aycock and Horspool publish their attempt at a fast, practical Earley's parser.
+      John Aycock and R. Nigel Horspool
+      publish their attempt at a fast, practical Earley's parser.
       Missing from it is Joop Leo's improvement --
       they seem not to be aware of it.
       Their own speedup is limited in what it achieves
@@ -479,12 +481,12 @@ Parsing: an expanded timeline
       And this time the solution requires no additional bookkeeping.
     </p>
     <p><b>2004</b>:
-      Ford publishes his paper on PEG.
+      Bryan Ford publishes his paper on PEG.
       Implementers by now are avoiding YACC,
       and it seems
       as if there might soon be no syntax-driven algorithms in practical
       use.
-      Ford fills this gap with the nearly-forgotten GTDPL.
+      Ford fills this gap by repackaging the nearly-forgotten GTDPL.
       Ford adds packratting, so that PEG is always linear,
       and provides PEG with an attractive new syntax.
       But nothing has been done to change
@@ -512,7 +514,7 @@ Parsing: an expanded timeline
       from the first paper ever published describing a parser,
       and republishing it today.
       True, he would have to
-      translating its code from the mix of assembler and
+      translate its code from the mix of assembler and
       ALGOL into something more fashionable, say Haskell.
       But with that change,
       it might look like a breath of fresh air.
