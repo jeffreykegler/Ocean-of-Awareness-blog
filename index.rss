@@ -10,6 +10,44 @@
     <language>en</language>
 
   <item>
+    <title>Version 3 of &quot;Parsing: a timeline&quot;</title>
+    <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2018/04/timeline_v3.html</link>
+    <description>&lt;html&gt;
+  &lt;head&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;p&gt;
+      &lt;!--
+      marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
+      --&gt;
+      My most popular blog posts by far have been my two versions of &quot;Parsing: a timeline&quot;.
+      I have just created
+      &lt;a href=&quot;https://jeffreykegler.github.io/personal/timeline_v3&quot;&gt;a
+        3rd version&lt;/a&gt;,
+      which has so many changes
+      that it might be considered a new work.
+      The new version is less Marpa-centric and several times as long.
+      It covers new topics, including combinator and monadic
+      parsing, and operator expression parsing.
+      And sources are now provided for all material.
+    &lt;/p&gt;
+    &lt;h2&gt;References, comments, etc.&lt;/h2&gt;
+    &lt;p&gt;
+      For more about
+      Marpa, my own parsing project,
+      there is the
+      &lt;a href=&quot;http://savage.net.au/Marpa.html&quot;&gt;semi-official web site, maintained by Ron Savage&lt;/a&gt;.
+      The official, but more limited, Marpa website
+      &lt;a href=&quot;http://jeffreykegler.github.io/Marpa-web-site/&quot;&gt;is my personal one&lt;/a&gt;.
+      Comments on this post can be made in
+      &lt;a href=&quot;http://groups.google.com/group/marpa-parser&quot;&gt;
+        Marpa's Google group&lt;/a&gt;,
+      or on our IRC channel: #marpa at freenode.net.
+    &lt;/p&gt;
+  &lt;/body&gt;
+&lt;/html&gt;</description>
+  </item>
+  <item>
     <title>Parsing: an expanded timeline</title>
     <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2016/08/timeline2.html</link>
     <description>&lt;html&gt;
@@ -1187,161 +1225,6 @@
       &lt;a href=&quot;http://jeffreykegler.github.io/Marpa-web-site/&quot;&gt;Marpa&lt;/a&gt;.
     &lt;/p&gt;
     &lt;h2&gt;References, comments, etc.&lt;/h2&gt;
-    &lt;p&gt;
-      To learn more about Marpa,
-      there's
-      &lt;a href=&quot;http://savage.net.au/Marpa.html&quot;&gt;the
-        official web site maintained by Ron Savage&lt;/a&gt;.
-      I also have
-      &lt;a href=&quot;http://jeffreykegler.github.io/Marpa-web-site/&quot;&gt;a Marpa web site&lt;/a&gt;.
-      Comments on this post can be made in
-      &lt;a href=&quot;http://groups.google.com/group/marpa-parser&quot;&gt;
-        Marpa's Google group&lt;/a&gt;,
-      or on our IRC channel: #marpa at freenode.net.
-    &lt;/p&gt;
-  &lt;/body&gt;
-&lt;/html&gt;</description>
-  </item>
-  <item>
-    <title>Top-down parsing is guessing</title>
-    <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2015/12/topdown.html</link>
-    <description>&lt;html&gt;
-  &lt;head&gt;
-  &lt;/head&gt;
-  &lt;body&gt;&lt;p&gt;
-      &lt;!--
-      marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
-      --&gt;
-    &lt;/p&gt;
-    &lt;p&gt;
-      Top-down parsing is guessing.  Literally.
-      Bottom-up parsing is looking.
-    &lt;/p&gt;
-    &lt;p&gt;The way you'll often hear that phrased is that top-down parsing is
-      looking, starting at the top,
-      and bottom-up parsing is looking, starting at the bottom.
-      But that is misleading, because the input is at the bottom --
-      at the top there is nothing to look at.
-      A usable top-down parser
-      &lt;b&gt;must&lt;/b&gt;
-      have a bottom-up component,
-      even if that component is just lookahead.
-    &lt;/p&gt;
-    &lt;p&gt;A more generous, but still accurate, way to describe the top-down
-      component of parsers is &quot;prediction&quot;.
-      And prediction is, indeed, a very useful component of a parser,
-      when used in combination with other techniques.
-    &lt;/p&gt;
-    &lt;p&gt;Of course, if a parser does nothing but predict,
-      it can predict only one input.
-      Top-down parsing must always be combined with a bottom-up
-      component.
-      This bottom-up component may be as modest as lookahead, but it
-      &lt;b&gt;must&lt;/b&gt;
-      be there or else top-down parsing is really not parsing at all.
-    &lt;/p&gt;
-    &lt;h2&gt;So why is top-down parsing used so much?&lt;/h2&gt;
-    &lt;p&gt;Top-down parsing may be unusable in its pure form,
-      but from one point of view that is irrelevant.
-      Top-down parsing's biggest advantage is that it is highly flexible --
-      there's no reason to stick to its &quot;pure&quot; form.
-    &lt;/p&gt;
-    &lt;p&gt;A top-down parser can be written as a series of subroutine calls --
-      a technique called recursive descent.
-      Recursive descent
-      allows you to hook in custom-written bottom-up logic at every
-      top-down choice point,
-      and it is a technique which is
-      completely understandable to programmers with little or no training
-      in parsing theory.
-      When dealing with recursive descent parsers,
-      it is more useful to be a seasoned, far-thinking programmer
-      than it is to be a mathematician.
-      This makes recursive descent very appealing to
-      seasoned, far-thinking programmers,
-      and they are the audience that counts.
-    &lt;/p&gt;
-    &lt;h2&gt;Switching techniques&lt;/h2&gt;
-    &lt;p&gt;You can even use the flexibility of top-down to switch
-      away from top-down parsing.
-      For example, you could claim that a top-down parser could do anything my
-      own parser
-      (&lt;a href=&quot;http://jeffreykegler.github.io/Marpa-web-site/&quot;&gt;Marpa&lt;/a&gt;)
-      could do, because a recursive descent parser can call
-      a Marpa parser.
-    &lt;/p&gt;
-    &lt;p&gt;
-      A less dramatic switchoff, and one that still leaves the parser with a good claim to be
-      basically top-down, is very common.
-      Arithmetic expressions are essential for a computer language.
-      But they are also
-      among the many things
-      top-down parsing cannot handle, even with ordinary lookahead.
-      Even so, most computer languages these days are parsed top-down --
-      by recursive descent.
-      These recursive descent parsers deal with expressions
-      by temporarily handing control over to an bottom-up operator
-      precedence parser.
-      Neither of these parsers is
-      extremely smart about the hand-over and hand-back
-      -- it is up to the programmer to make sure the two play together nicely.
-      But used with caution, this approach works.
-    &lt;/p&gt;
-    &lt;h2&gt;Top-down parsing and language-oriented programming&lt;/h2&gt;
-    &lt;p&gt;But what about taking top-down methods into the future of language-oriented programming,
-      extensible languages, and grammars which write grammars?
-      Here we are forced to confront the reality -- that the effectiveness of
-      top-down parsing comes entirely from the foreign elements that are added to it.
-      Starting from a basis of top-down parsing is literally starting
-      with nothing.
-      As I have shown in more detail
-      &lt;a href=&quot;http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2015/12/composable.html&quot;&gt;elsewhere&lt;/a&gt;,
-      top-down techniques simply do not have enough horsepower to deal with grammar-driven programming.
-    &lt;/p&gt;
-    &lt;p&gt;Perl 6 grammars are top-down -- PEG with lots of extensions.
-      These extensions
-      include backtracking, backtracking control,
-      a new style of tie-breaking and lots of opportunity
-      for the programmer to intervene and customize everything.
-      But behind it all is a top-down parse engine.
-    &lt;/p&gt;
-    &lt;p&gt;One aspect of Perl 6 grammars might be seen as breaking
-      out of the top-down trap.
-      That trick of switching over to a
-      bottom-up operator precedence parser for expressions,
-      which I mentioned above,
-      is built into Perl 6 and semi-automated.
-      (I say semi-automated because making sure the two parsers &quot;play nice&quot;
-      with each other is not automated -- that's still up to the programmer.)
-    &lt;/p&gt;
-    &lt;p&gt;As far as I know, this semi-automation of expression handling
-      is new with Perl 6 grammars, and it
-      may prove handy for duplicating what is done
-      in recursive descent parsers.
-      But it adds no new technique to those already in use.
-      And features
-      like
-    &lt;/p&gt;&lt;ul&gt;
-      &lt;li&gt;mulitple types of expression, which can be told apart
-        based on their context,&lt;/li&gt;
-      &lt;li&gt;&lt;i&gt;n&lt;/i&gt;-ary expressions for arbitrary
-        &lt;i&gt;n&lt;/i&gt;, and&lt;/li&gt;
-      &lt;li&gt;the autogeneration of multiple rules, each allowing
-        a different precedence scheme,
-        for expressions of arbitrary arity and associativity,
-      &lt;/li&gt;
-    &lt;/ul&gt;
-    &lt;p&gt;
-      all of which are available and in current use in
-      &lt;a href=&quot;http://jeffreykegler.github.io/Marpa-web-site/&quot;&gt;Marpa&lt;/a&gt;,
-      are impossible for the technology behind Perl 6 grammars.
-    &lt;/p&gt;
-    &lt;p&gt;I am a fan of the Perl 6 effort.
-      Obviously, I have doubts about one specific set of hopes for Perl 6 grammars.
-      But these hopes have not been central to the Perl 6 effort,
-      and I will be an eager student of the Perl 6 team's work over the coming months.
-    &lt;/p&gt;
-    &lt;h2&gt;Comments&lt;/h2&gt;
     &lt;p&gt;
       To learn more about Marpa,
       there's

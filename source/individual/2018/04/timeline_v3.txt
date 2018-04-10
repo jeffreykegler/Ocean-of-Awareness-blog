@@ -1,0 +1,35 @@
+Version 3 of "Parsing: a timeline"
+<html>
+  <head>
+  </head>
+  <body>
+    <p>
+      <!--
+      marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
+      -->
+      My most popular blog posts by far have been my two versions of "Parsing: a timeline".
+      I have just created
+      <a href="https://jeffreykegler.github.io/personal/timeline_v3">a
+        3rd version</a>,
+      which has so many changes
+      that it might be considered a new work.
+      The new version is less Marpa-centric and several times as long.
+      It covers new topics, including combinator and monadic
+      parsing, and operator expression parsing.
+      And sources are now provided for all material.
+    </p>
+    <h2>References, comments, etc.</h2>
+    <p>
+      For more about
+      Marpa, my own parsing project,
+      there is the
+      <a href="http://savage.net.au/Marpa.html">semi-official web site, maintained by Ron Savage</a>.
+      The official, but more limited, Marpa website
+      <a href="http://jeffreykegler.github.io/Marpa-web-site/">is my personal one</a>.
+      Comments on this post can be made in
+      <a href="http://groups.google.com/group/marpa-parser">
+        Marpa's Google group</a>,
+      or on our IRC channel: #marpa at freenode.net.
+    </p>
+  </body>
+</html>

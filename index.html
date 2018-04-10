@@ -34,6 +34,53 @@
   </p>
   </div>
   <div style="margin-left:190px;border-left:2px solid #38B0C0;padding:25px;">
+<h3>Tue, 10 Apr 2018</h3>
+<br />
+<center><a name="timeline_v3"> <h2>Version 3 of "Parsing: a timeline"</h2> </a>
+</center>
+<html>
+  <head>
+  </head>
+  <body>
+    <p>
+      <!--
+      marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
+      -->
+      My most popular blog posts by far have been my two versions of "Parsing: a timeline".
+      I have just created
+      <a href="https://jeffreykegler.github.io/personal/timeline_v3">a
+        3rd version</a>,
+      which has so many changes
+      that it might be considered a new work.
+      The new version is less Marpa-centric and several times as long.
+      It covers new topics, including combinator and monadic
+      parsing, and operator expression parsing.
+      And sources are now provided for all material.
+    </p>
+    <h2>References, comments, etc.</h2>
+    <p>
+      For more about
+      Marpa, my own parsing project,
+      there is the
+      <a href="http://savage.net.au/Marpa.html">semi-official web site, maintained by Ron Savage</a>.
+      The official, but more limited, Marpa website
+      <a href="http://jeffreykegler.github.io/Marpa-web-site/">is my personal one</a>.
+      Comments on this post can be made in
+      <a href="http://groups.google.com/group/marpa-parser">
+        Marpa's Google group</a>,
+      or on our IRC channel: #marpa at freenode.net.
+    </p>
+  </body>
+</html>
+<br />
+<p>posted at: 15:08 |
+<a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2018/04/timeline_v3.html">direct link to this entry</a>
+</p>
+<div style="color:#38B0C0;padding:1px;text-align:center;">
+&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&sect;
+</div>
 <h3>Tue, 23 Aug 2016</h3>
 <br />
 <center><a name="timeline2"> <h2>Parsing: an expanded timeline</h2> </a>
@@ -663,7 +710,7 @@
   </body>
 </html>
 <br />
-<p>posted at: 08:38 |
+<p>posted at: 11:38 |
 <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2016/08/timeline2.html">direct link to this entry</a>
 </p>
 <div style="color:#38B0C0;padding:1px;text-align:center;">
@@ -998,7 +1045,7 @@
   </body>
 </html>
 <br />
-<p>posted at: 17:56 |
+<p>posted at: 20:56 |
 <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2016/03/book_intro.html">direct link to this entry</a>
 </p>
 <div style="color:#38B0C0;padding:1px;text-align:center;">
@@ -1126,7 +1173,7 @@
   </body>
 </html>
 <br />
-<p>posted at: 19:13 |
+<p>posted at: 22:13 |
 <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2016/03/parus.html">direct link to this entry</a>
 </p>
 <div style="color:#38B0C0;padding:1px;text-align:center;">
@@ -1255,172 +1302,8 @@
   </body>
 </html>
 <br />
-<p>posted at: 10:24 |
+<p>posted at: 13:24 |
 <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2016/01/lrr.html">direct link to this entry</a>
-</p>
-<div style="color:#38B0C0;padding:1px;text-align:center;">
-&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-&sect;
-</div>
-<h3>Sun, 20 Dec 2015</h3>
-<br />
-<center><a name="topdown"> <h2>Top-down parsing is guessing</h2> </a>
-</center>
-<html>
-  <head>
-  </head>
-  <body><p>
-      <!--
-      marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
-      -->
-    </p>
-    <p>
-      Top-down parsing is guessing.  Literally.
-      Bottom-up parsing is looking.
-    </p>
-    <p>The way you'll often hear that phrased is that top-down parsing is
-      looking, starting at the top,
-      and bottom-up parsing is looking, starting at the bottom.
-      But that is misleading, because the input is at the bottom --
-      at the top there is nothing to look at.
-      A usable top-down parser
-      <b>must</b>
-      have a bottom-up component,
-      even if that component is just lookahead.
-    </p>
-    <p>A more generous, but still accurate, way to describe the top-down
-      component of parsers is "prediction".
-      And prediction is, indeed, a very useful component of a parser,
-      when used in combination with other techniques.
-    </p>
-    <p>Of course, if a parser does nothing but predict,
-      it can predict only one input.
-      Top-down parsing must always be combined with a bottom-up
-      component.
-      This bottom-up component may be as modest as lookahead, but it
-      <b>must</b>
-      be there or else top-down parsing is really not parsing at all.
-    </p>
-    <h2>So why is top-down parsing used so much?</h2>
-    <p>Top-down parsing may be unusable in its pure form,
-      but from one point of view that is irrelevant.
-      Top-down parsing's biggest advantage is that it is highly flexible --
-      there's no reason to stick to its "pure" form.
-    </p>
-    <p>A top-down parser can be written as a series of subroutine calls --
-      a technique called recursive descent.
-      Recursive descent
-      allows you to hook in custom-written bottom-up logic at every
-      top-down choice point,
-      and it is a technique which is
-      completely understandable to programmers with little or no training
-      in parsing theory.
-      When dealing with recursive descent parsers,
-      it is more useful to be a seasoned, far-thinking programmer
-      than it is to be a mathematician.
-      This makes recursive descent very appealing to
-      seasoned, far-thinking programmers,
-      and they are the audience that counts.
-    </p>
-    <h2>Switching techniques</h2>
-    <p>You can even use the flexibility of top-down to switch
-      away from top-down parsing.
-      For example, you could claim that a top-down parser could do anything my
-      own parser
-      (<a href="http://jeffreykegler.github.io/Marpa-web-site/">Marpa</a>)
-      could do, because a recursive descent parser can call
-      a Marpa parser.
-    </p>
-    <p>
-      A less dramatic switchoff, and one that still leaves the parser with a good claim to be
-      basically top-down, is very common.
-      Arithmetic expressions are essential for a computer language.
-      But they are also
-      among the many things
-      top-down parsing cannot handle, even with ordinary lookahead.
-      Even so, most computer languages these days are parsed top-down --
-      by recursive descent.
-      These recursive descent parsers deal with expressions
-      by temporarily handing control over to an bottom-up operator
-      precedence parser.
-      Neither of these parsers is
-      extremely smart about the hand-over and hand-back
-      -- it is up to the programmer to make sure the two play together nicely.
-      But used with caution, this approach works.
-    </p>
-    <h2>Top-down parsing and language-oriented programming</h2>
-    <p>But what about taking top-down methods into the future of language-oriented programming,
-      extensible languages, and grammars which write grammars?
-      Here we are forced to confront the reality -- that the effectiveness of
-      top-down parsing comes entirely from the foreign elements that are added to it.
-      Starting from a basis of top-down parsing is literally starting
-      with nothing.
-      As I have shown in more detail
-      <a href="http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2015/12/composable.html">elsewhere</a>,
-      top-down techniques simply do not have enough horsepower to deal with grammar-driven programming.
-    </p>
-    <p>Perl 6 grammars are top-down -- PEG with lots of extensions.
-      These extensions
-      include backtracking, backtracking control,
-      a new style of tie-breaking and lots of opportunity
-      for the programmer to intervene and customize everything.
-      But behind it all is a top-down parse engine.
-    </p>
-    <p>One aspect of Perl 6 grammars might be seen as breaking
-      out of the top-down trap.
-      That trick of switching over to a
-      bottom-up operator precedence parser for expressions,
-      which I mentioned above,
-      is built into Perl 6 and semi-automated.
-      (I say semi-automated because making sure the two parsers "play nice"
-      with each other is not automated -- that's still up to the programmer.)
-    </p>
-    <p>As far as I know, this semi-automation of expression handling
-      is new with Perl 6 grammars, and it
-      may prove handy for duplicating what is done
-      in recursive descent parsers.
-      But it adds no new technique to those already in use.
-      And features
-      like
-    </p><ul>
-      <li>mulitple types of expression, which can be told apart
-        based on their context,</li>
-      <li><i>n</i>-ary expressions for arbitrary
-        <i>n</i>, and</li>
-      <li>the autogeneration of multiple rules, each allowing
-        a different precedence scheme,
-        for expressions of arbitrary arity and associativity,
-      </li>
-    </ul>
-    <p>
-      all of which are available and in current use in
-      <a href="http://jeffreykegler.github.io/Marpa-web-site/">Marpa</a>,
-      are impossible for the technology behind Perl 6 grammars.
-    </p>
-    <p>I am a fan of the Perl 6 effort.
-      Obviously, I have doubts about one specific set of hopes for Perl 6 grammars.
-      But these hopes have not been central to the Perl 6 effort,
-      and I will be an eager student of the Perl 6 team's work over the coming months.
-    </p>
-    <h2>Comments</h2>
-    <p>
-      To learn more about Marpa,
-      there's
-      <a href="http://savage.net.au/Marpa.html">the
-        official web site maintained by Ron Savage</a>.
-      I also have
-      <a href="http://jeffreykegler.github.io/Marpa-web-site/">a Marpa web site</a>.
-      Comments on this post can be made in
-      <a href="http://groups.google.com/group/marpa-parser">
-        Marpa's Google group</a>,
-      or on our IRC channel: #marpa at freenode.net.
-    </p>
-  </body>
-</html>
-<br />
-<p>posted at: 15:21 |
-<a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2015/12/topdown.html">direct link to this entry</a>
 </p>
 <div style="color:#38B0C0;padding:1px;text-align:center;">
 &sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;

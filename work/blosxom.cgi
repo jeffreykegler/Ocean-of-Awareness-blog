@@ -46,7 +46,7 @@ $show_future_entries = 0;
 # --- Plugins (Optional) -----
 
 # Where are my plugins kept?
-$plugin_dir = "plugins";
+$plugin_dir = "./plugins";
 
 # Where should my modules keep their state information?
 $plugin_state_dir = "$plugin_dir/state";
