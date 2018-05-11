@@ -1,0 +1,68 @@
+What you will want in a parser
+<html>
+  <head>
+  </head>
+  <body>
+    <p>
+      <!--
+      marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
+      -->
+      What, going forward, will you want in a parser?
+      The question may sound presumptious
+      (how do I know what you want, much less what you
+      <b>will</b> want) but I think it can be answered
+      with some confidence.
+      The way to do this is to look at what you
+      have wanted in the past,
+      with "you" being represented by a wide
+      variety of top practitioners and theorists.
+    </p>
+    <p>
+    In this post,
+    the parser I am speaking of is the mainframe parser --
+    the one that is used in state of the art parser generators.
+    In many situations, of course, what you want is the fastest
+    and easiest parser that gets the job done.
+    Often that job is quite narrowly defined,
+    and therefore
+    the parser can be quite limited in its power,
+    especially if it's fast and easy to deploy.
+    For example, when you have a regular expression to parse,
+    you're not looking for anything more than a regular expression
+    engine.
+    </p>
+    <p>
+    But regular expressions themselves
+    are an example of one important property that you will
+    want in a parser.
+    They are predictably and reliably fast.
+    "Fast" here means they are linear or quasi-linear.
+    "Predictably" means that they are fast for a predictable
+    set of grammars.
+    In the case of regular expressions,
+    it is not hard to determine if a grammar is a regular expression --
+    you can in fact define a notation so that
+    <b>only</b> regular expressions are allowed,
+    so that a programmer doesn't even need to desk-check.
+    </p>
+    <p>
+    "Reliably" means the parser is fast for 100% of the predicted cases.
+    This would go without saying,
+    except that solutions to the parsing problem are often advanced
+    which trade power for reliability.
+    </p>
+    <h2>References, comments, etc.</h2>
+    <p>
+      For more about
+      Marpa, my own parsing project,
+      there is the
+      <a href="http://savage.net.au/Marpa.html">semi-official web site, maintained by Ron Savage</a>.
+      The official, but more limited, Marpa website
+      <a href="http://jeffreykegler.github.io/Marpa-web-site/">is my personal one</a>.
+      Comments on this post can be made in
+      <a href="http://groups.google.com/group/marpa-parser">
+        Marpa's Google group</a>,
+      or on our IRC channel: #marpa at freenode.net.
+    </p>
+  </body>
+</html>
