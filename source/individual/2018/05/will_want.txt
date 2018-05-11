@@ -50,6 +50,40 @@ What you will want in a parser
     This would go without saying,
     except that solutions to the parsing problem are often advanced
     which trade power for reliability.
+    An algorithm which can go quadratic or worse is often used to supplement
+    an algorithm which lacks power.
+    It's a kind of cross-breeding of algorithms.
+    The hope is that the hybrid, in your use case,
+    had the power of the slow algorithm and the
+    speed of the fast one.
+    This works a lot better in botany than it does in parsing.
+    Once you have a successful cross in a plant,
+    you can breed from that and expect good things.
+    But if even once you've lucked out with a parse,
+    your next parse is a just another new toss of the dice.
+    </p>
+    <h1>Power</h1>
+    <p>
+    Which brings us to why, despite all of its very nice properties,
+    people try, and often need to, do better than regular expressions:
+    power.
+    How wide a variety of grammars can the algorithm parse?
+    In the case of regular expressions, it flunks an obvious test --
+    no notation for regular expressions can be parsed by a regular expression.
+    That is because, while regular expresions are
+    recursive, they cannot parse recursions.
+    </p>
+    <p>In 19XX it was thought the next step up in power,
+    consistent with the Three Basic Virtues,
+    might have been found:
+    A parser called yacc parsed a class of grammars called LALR.
+    LALR clearly had two of the Basic Virtues (fast and reliable)
+    and it could be said to have the third if you were willing to stretch a point.
+    Technically,
+    it took a mathematician to tell if a grammar is LALR.
+    But what was probably the most sophisticated LALR grammar was
+    created by Larry Wall, a non-mathematician --
+    so one could get sense of it after a few hard knocks.
     </p>
     <h2>References, comments, etc.</h2>
     <p>
