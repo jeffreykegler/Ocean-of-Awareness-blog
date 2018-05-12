@@ -96,27 +96,40 @@ The Five Virtues of Parsers
     </p>
     <h2>The fourth major virtue: reliable</h2>
     <p>
-    The Irons 1961 algorithm was perfectly predictable
-    it was predictably powerful.
+    The Irons 1961 algorithm was perfectly predictable.
+    It was predictably powerful.
     And it could be fast.
-    Iron 1961 was not predictably fast.
+    But Iron 1961 was not predictably fast.
     In the general case,
     Irons 1961 used backtracking
     to achieve its power,
     so it would go exponential for many useful grammars.
     Irons 1961 could not be relied on to be fast.
     </p>
+    <h2>The second minor virtue: procedural</h2>
     <p>
     Irons 1961 gave way to recursive descent.
     Recursive descent had many disadvantages compared to Irons 1961,
-    but it was very fast,
-    it was easy to customize.
+    but it was very fast.
     With customization.
     recursive descent was 
     reliably fast for arithmetic expressions,
-    which made it an improvement over Irons.
+    which Irons 1961 was not.
     </p>
-    <h2>The second minor virtue: procedural</h2>
+    <p>
+    Recursive descent parsers lacked the first minor virtue.
+    Instead of being declarative,
+    typically they had to be hand written.
+    On the flip side, this made
+    it very easy to add custom code --
+    recursive descent is "procedural".
+    </p>
+    <p>
+    "Procedural" and "declarative" are both minor virtues,
+    in that may programmers can live without them.
+    They also have been seen as opposites --
+    you could have one or the other, but not both.
+    </p>
     <h2>The fifth major virtue: error-friendly</h2>
     <p>The other major virtues have always
     been objects of theoretical interest --
@@ -148,7 +161,21 @@ The Five Virtues of Parsers
     <p>
     It was assumed, therefore that LALR only had to be as helpful
     as it could be and users would cope.
-    But LALR stretched this assumption to the limit.
+    But LALR stretched this assumption beyond the limit.
+    LALR did not necessarily detect errors immediately.
+    At the point where it did recognize an error,
+    it described the problem in terms of LR(0) states.
+    These were cryptic,
+    and the user willing to decipher them faced another
+    obstacle --
+    since LALR was a simplification of LR(1),
+    the messages were sometimes just plain wrong.<a id="footnote-5-ref" href="#footnote-5">[5]</a>
+    </p>
+    <p>Despite its toxic qualities,
+    LALR dominated practice for at least a decade,
+    ruled the textbooks for longer
+    and still plays a disproportionate role in
+    classroom instruction<a id="footnote-6-ref" href="#footnote-6">[6]</a>.
     </p>
     Recursive descent
     [ TO HERE ] <br>
@@ -228,5 +255,19 @@ The Five Virtues of Parsers
     much indicates, at least to this writer, that they aren't needed
     that much
  <a href="#footnote-4-ref">&#8617;</a></p>
+<p id="footnote-5">5.
+    See Grune and Jacobs,
+    <cite>Parsing Techniques: A Practical Guide</cite>,
+    2nd edition, 2008,
+    p. 314.
+ <a href="#footnote-5-ref">&#8617;</a></p>
+<p id="footnote-6">6.
+    I understand that compiler and parsing courses,
+    once required of all grad students,
+    are now either optional 
+    or no longer taught,
+    even in some of the top Computer Science departmennts.
+    This IMHO would be one of the reasons.
+ <a href="#footnote-6-ref">&#8617;</a></p>
   </body>
 </html>
