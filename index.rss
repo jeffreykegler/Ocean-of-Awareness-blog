@@ -30,7 +30,7 @@
       And once a parser is successful,
       what causes users to want more?
     &lt;/p&gt;
-    &lt;h2&gt;The first virtue: fast&lt;/h2&gt;
+    &lt;h2&gt;The first major virtue: fast&lt;/h2&gt;
     &lt;p&gt;
       By one accounting,
       the first systematic attempt at parsing
@@ -48,7 +48,7 @@
       but it is now clear that, except in restricted uses,
       a parser must be linear or quasi-linear.&lt;a id=&quot;footnote-3-ref&quot; href=&quot;#footnote-3&quot;&gt;[3]&lt;/a&gt;
     &lt;/p&gt;
-    &lt;h2&gt;The second virtue: predictable&lt;/h2&gt;
+    &lt;h2&gt;The second major virtue: predictable&lt;/h2&gt;
     &lt;p&gt;
     Less obvious is what I will call &quot;predictability&quot;:
     It must be possible for a programmer,
@@ -65,16 +65,21 @@
     &lt;/p&gt;
     &lt;h2&gt;The first minor virtue: declaration-driven&lt;/h2&gt;
     &lt;p&gt;Since there is a exact notation
-    for regular expression, they introduce a minor virtue:
-    declarative.
+    for regular expression, it has the first minor virtue:
+    it is declaration-driven.
     If a parser can automatically be generated from a compact
-    notation, the parsing method is declarative.
+    notation, the parsing method is declaration-driven.
     &lt;/p&gt;
-    &lt;h2&gt;The third virtue: power&lt;/h2&gt;
+    &lt;p&gt;
+    I call virtues minor
+    if they are important in the eyes of the users,
+    but of less importance than the major virtues.
+    That &quot;declaration-driven&quot; is a minor virtue is clear
+    from the history of parsing practice.
+    &lt;/p&gt;
+    &lt;h2&gt;The third major virtue: power&lt;/h2&gt;
     &lt;p&gt;Regular expressions, however,
-    were not the end of the parsing story --
-    from a strictly Chomskyan point of view,
-    in fact, they are note even the beginning.
+    were not the end of the parsing story.
     If a programmer has a grammar she considers practical,
     she wants her parser to parse it.
     Here regular expressions often fail -- a lot of practical
@@ -102,7 +107,7 @@
     but this time the class of grammars that could be parsed was
     much, much larger.
     &lt;/p&gt;
-    &lt;h2&gt;The fourth virtue: reliability&lt;/h2&gt;
+    &lt;h2&gt;The fourth major virtue: reliability&lt;/h2&gt;
     &lt;p&gt;
     The Irons 1961 algorithm was perfectly predictable
     it was predictably powerful.
@@ -207,7 +212,21 @@
       V3 of my &quot;Parsing: A Timeline&quot;&lt;/a&gt;.
  &lt;a href=&quot;#footnote-1-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
 &lt;p id=&quot;footnote-2&quot;&gt;2.
-      regular expressions not usually considered parsing
+      Strictly speaking,
+      regular expressions are recognizers,
+      not parsers
+      (see &quot;Term: parser&quot; and
+      &quot;Term: recognzier&quot; in
+      &lt;a href=&quot;https://jeffreykegler.github.io/personal/timeline_v3&quot;&gt;).
+      This is because, in their pure form, regular expressions
+      simply determine if the input is a match --
+      they do not determine its structure.
+      Nonetheless, regex engines in practical use
+      often extend regular expressions,
+      for example, by adding captures.
+      At the low end, regexes often compete with parsers
+      and why that is the case is very relevant to my
+      concerns in this post.
  &lt;a href=&quot;#footnote-2-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
 &lt;p id=&quot;footnote-3&quot;&gt;3.
       For definitions of &quot;linear&quot; and &quot;quasi-linear&quot;,

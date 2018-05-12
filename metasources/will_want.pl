@@ -31,7 +31,6 @@ $output =~ s[<comment>FOOTNOTES HERE</comment>][$footnotes];
 say $output;
 
 sub do_footnote {
-    say STDERR "hi";
     my ($line) = @_;
     $fn_number++;
     my $fn_ref = join '-', 'footnote', $fn_number, 'ref';
@@ -85,12 +84,26 @@ The Five Virtues of Parsers
       And once a parser is successful,
       what causes users to want more?
     </p>
-    <h2>The first virtue: fast</h2>
+    <h2>The first major virtue: fast</h2>
     <p>
       By one accounting,
       the first systematic attempt at parsing
       was via regular expressions.<footnote>
-      regular expressions not usually considered parsing</footnote>
+      Strictly speaking,
+      regular expressions are recognizers,
+      not parsers
+      (see "Term: parser" and
+      "Term: recognzier" in
+      <a href="https://jeffreykegler.github.io/personal/timeline_v3">).
+      This is because, in their pure form, regular expressions
+      simply determine if the input is a match --
+      they do not determine its structure.
+      Nonetheless, regex engines in practical use
+      often extend regular expressions,
+      for example, by adding captures.
+      At the low end, regexes often compete with parsers
+      and why that is the case is very relevant to my
+      concerns in this post.</footnote>
       Regular expressions are still very much with us,
       so they obviously must demonstrate at least <b>some</b>
       of the virtues that make a parser popular.
@@ -109,7 +122,7 @@ The Five Virtues of Parsers
       V3 of my "Parsing: A Timeline"</a>.
       </footnote>
     </p>
-    <h2>The second virtue: predictable</h2>
+    <h2>The second major virtue: predictable</h2>
     <p>
     Less obvious is what I will call "predictability":
     It must be possible for a programmer,
@@ -126,16 +139,21 @@ The Five Virtues of Parsers
     </p>
     <h2>The first minor virtue: declaration-driven</h2>
     <p>Since there is a exact notation
-    for regular expression, they introduce a minor virtue:
-    declarative.
+    for regular expression, it has the first minor virtue:
+    it is declaration-driven.
     If a parser can automatically be generated from a compact
-    notation, the parsing method is declarative.
+    notation, the parsing method is declaration-driven.
     </p>
-    <h2>The third virtue: power</h2>
+    <p>
+    I call virtues minor
+    if they are important in the eyes of the users,
+    but of less importance than the major virtues.
+    That "declaration-driven" is a minor virtue is clear
+    from the history of parsing practice.
+    </p>
+    <h2>The third major virtue: power</h2>
     <p>Regular expressions, however,
-    were not the end of the parsing story --
-    from a strictly Chomskyan point of view,
-    in fact, they are note even the beginning.
+    were not the end of the parsing story.
     If a programmer has a grammar she considers practical,
     she wants her parser to parse it.
     Here regular expressions often fail -- a lot of practical
@@ -163,7 +181,7 @@ The Five Virtues of Parsers
     but this time the class of grammars that could be parsed was
     much, much larger.
     </p>
-    <h2>The fourth virtue: reliability</h2>
+    <h2>The fourth major virtue: reliability</h2>
     <p>
     The Irons 1961 algorithm was perfectly predictable
     it was predictably powerful.
