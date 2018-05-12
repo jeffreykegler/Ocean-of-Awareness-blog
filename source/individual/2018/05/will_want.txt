@@ -20,6 +20,7 @@ The Five Virtues of Parsers
       By one accounting,
       the first systematic attempt at parsing
       was via regular expressions.
+      <-- regular expressions not usually considered parsing -->
       Regular expressions are still very much with us,
       so they obviously must demonstrate at least <b>some</b>
       of the virtues that make a parser popular.
@@ -47,6 +48,13 @@ The Five Virtues of Parsers
     and will be parsed in linear time by your regular
     expression engine --
     you never need to desk-check.
+    </p>
+    <h1>The first minor virtue: declaration-driven</h1>
+    <p>Since there is a exact notation
+    for regular expression, they introduce a minor virtue:
+    declarative.
+    If a parser can automatically be generated from a compact
+    notation, the parsing method is declarative.
     </p>
     <h1>The third virtue: power</h1>
     <p>Regular expressions, however,
@@ -80,19 +88,69 @@ The Five Virtues of Parsers
     but this time the class of grammars that could be parsed was
     much, much larger.
     </p>
-    <h1>The Fourth Virtue: reliability</h1>
+    <h1>The fourth virtue: reliability</h1>
     <p>
-    The Irons 1961 algorithm was perfectly predictable,
-    it was predictably powerful,
-    and it could be fast.
-    But it could not be relied on to be fast.
+    The Irons 1961 algorithm was perfectly predictable
+    it was predictably powerful.
+    And it could be fast.
+    Iron 1961 was not predictably fast.
     In the general case,
     Irons 1961 used backtracking
     to achieve its power,
     so it would go exponential for many useful grammars.
-    Iron 1961 was fast but not predictably fast.
-    <p>
+    Irons 1961 could not be relied on to be fast.
     </p>
+    <p>
+    Irons 1961 gave way to recursive descent.
+    Recursive descent had many disadvantages compared to Irons 1961,
+    but it was very fast,
+    it was easy to customize.
+    With customization.
+    recursive descent was 
+    reliably fast for arithmetic expressions,
+    which made it an improvement over Irons.
+    </p>
+    <h1>The second minor virtue: procedural</h1>
+    <h1>The fifth major virtue: error-friendly</h1>
+    <p>The other major virtues have always
+    been objects of theoretical interest --
+    they were in fact,
+    the reason that the field of theory of algorithms
+    was developed.
+    </p>
+    <p>
+    But theoreticians assumed that programmers always
+    started with the grammar they intended to use,
+    and never made a mistake.
+    And theoreticians further assumed that if an input
+    was wrong,
+    it was enough for the parser to say so.
+    It was assumed the programmer would be able to look
+    at an input several meg long,
+    instantly spot the error,
+    mutter "silly me"
+    correct it and rerun.
+    </p>
+    In practice, parsers were as helpful as they could be,
+    and programmers had been satisfied with that.
+    Regular expressions and their inputs
+    usually can be debugged by experiment,
+    when the problem is not obvious.
+    <-- It perhaps helps that regular expressions are less powerful,
+    so the problems tend to be simpler.
+    There are regex debuggers, but the fact they are not used
+    much indicates, at least to this writer, that they aren't needed
+    that much -->
+    Recursive descent is procedural, and debugging can be approached that
+    way.
+    </p>
+    <p>
+    It was assumed, therefore that LALR only had to be as helpful
+    as it could be and users would cope.
+    But LALR stretched this assumption to the limit.
+    </p>
+    Recursive descent
+    [ TO HERE ] <br>
     This would go without saying,
     except that solutions to the parsing problem are often advanced
     which trade power for reliability.
@@ -107,17 +165,6 @@ The Five Virtues of Parsers
     you can breed from that and expect good things.
     But if even once you've lucked out with a parse,
     your next parse is a just another new toss of the dice.
-    </p>
-    <p>
-    [ TO HERE ] <br>
-    Which brings us to why, despite all of its very nice properties,
-    people try, and often need to, do better than regular expressions:
-    power.
-    How wide a variety of grammars can the algorithm parse?
-    In the case of regular expressions, it flunks an obvious test --
-    no notation for regular expressions can be parsed by a regular expression.
-    That is because, while regular expressions are
-    recursive, they cannot parse recursions.
     </p>
     <p>In 19XX it was thought the next step up in power,
     consistent with the Three Basic Virtues,
