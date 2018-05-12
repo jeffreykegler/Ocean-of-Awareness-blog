@@ -137,18 +137,18 @@ The Five Virtues of Parsers
     expression engine --
     you never need to desk-check.
     </p>
-    <h2>The first minor virtue: declaration-driven</h2>
+    <h2>The first minor virtue: declarative</h2>
     <p>Since there is a exact notation
     for regular expression, it has the first minor virtue:
-    it is declaration-driven.
+    it is declarative.
     If a parser can automatically be generated from a compact
-    notation, the parsing method is declaration-driven.
+    notation, the parsing method is declarative.
     </p>
     <p>
     I call virtues minor
     if they are important in the eyes of the users,
     but of less importance than the major virtues.
-    That "declaration-driven" is a minor virtue is clear
+    That "declarative" is a minor virtue is clear
     from the history of parsing practice.
     </p>
     <h2>The third major virtue: power</h2>
@@ -181,7 +181,7 @@ The Five Virtues of Parsers
     but this time the class of grammars that could be parsed was
     much, much larger.
     </p>
-    <h2>The fourth major virtue: reliability</h2>
+    <h2>The fourth major virtue: reliable</h2>
     <p>
     The Irons 1961 algorithm was perfectly predictable
     it was predictably powerful.

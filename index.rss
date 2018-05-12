@@ -63,18 +63,18 @@
     expression engine --
     you never need to desk-check.
     &lt;/p&gt;
-    &lt;h2&gt;The first minor virtue: declaration-driven&lt;/h2&gt;
+    &lt;h2&gt;The first minor virtue: declarative&lt;/h2&gt;
     &lt;p&gt;Since there is a exact notation
     for regular expression, it has the first minor virtue:
-    it is declaration-driven.
+    it is declarative.
     If a parser can automatically be generated from a compact
-    notation, the parsing method is declaration-driven.
+    notation, the parsing method is declarative.
     &lt;/p&gt;
     &lt;p&gt;
     I call virtues minor
     if they are important in the eyes of the users,
     but of less importance than the major virtues.
-    That &quot;declaration-driven&quot; is a minor virtue is clear
+    That &quot;declarative&quot; is a minor virtue is clear
     from the history of parsing practice.
     &lt;/p&gt;
     &lt;h2&gt;The third major virtue: power&lt;/h2&gt;
@@ -107,7 +107,7 @@
     but this time the class of grammars that could be parsed was
     much, much larger.
     &lt;/p&gt;
-    &lt;h2&gt;The fourth major virtue: reliability&lt;/h2&gt;
+    &lt;h2&gt;The fourth major virtue: reliable&lt;/h2&gt;
     &lt;p&gt;
     The Irons 1961 algorithm was perfectly predictable
     it was predictably powerful.
