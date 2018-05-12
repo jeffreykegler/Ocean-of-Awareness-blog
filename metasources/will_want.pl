@@ -31,7 +31,6 @@ $output =~ s[<comment>FOOTNOTES HERE</comment>][$footnotes];
 say $output;
 
 sub do_footnote {
-    say STDERR "hi";
     my ($line) = @_;
     $fn_number++;
     my $fn_ref = join '-', 'footnote', $fn_number, 'ref';

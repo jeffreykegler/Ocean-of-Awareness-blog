@@ -2,6 +2,7 @@
 dummy:
 
 all:
+	(cd metasources; make all)
 	perl work/blosxom.cgi
 
 full: all

@@ -10,7 +10,7 @@
     <language>en</language>
 
   <item>
-    <title>What you will want in a parser</title>
+    <title>The Five Virtues of Parsers</title>
     <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2018/05/will_want.html</link>
     <description>&lt;html&gt;
   &lt;head&gt;
@@ -20,46 +20,148 @@
       &lt;!--
       marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
       --&gt;
-      What, going forward, will you want in a parser?
-      The question may sound presumptious
-      (how do I know what you want, much less what you
-      &lt;b&gt;will&lt;/b&gt; want) but I think it can be answered
-      with some confidence.
-      The way to do this is to look at what you
-      have wanted in the past,
-      with &quot;you&quot; being represented by a wide
-      variety of top practitioners and theorists.
+      In a previous post, I did a careful examination of the
+      history of attempts to produce the ideal parser.
+      In this one, I will look at the question in reverse --
+      what makes the users of a parser
+      happy or unhappy with it?
+      That is, once a parser is discovered,
+      what makes it successful?
+      And once a parser is successful,
+      what causes users to want more?
+    &lt;/p&gt;
+    &lt;h2&gt;The first virtue: fast&lt;/h2&gt;
+    &lt;p&gt;
+      By one accounting,
+      the first systematic attempt at parsing
+      was via regular expressions.
+      &lt;a id=&quot;footnote-1-ref&quot; href=&quot;#footnote-1&quot;&gt;[1]&lt;/a&gt;
+      Regular expressions are still very much with us,
+      so they obviously must demonstrate at least &lt;b&gt;some&lt;/b&gt;
+      of the virtues that make a parser popular.
     &lt;/p&gt;
     &lt;p&gt;
-    In this post,
-    the parser I am speaking of is the mainframe parser --
-    the one that is used in state of the art parser generators.
-    In many situations, of course, what you want is the fastest
-    and easiest parser that gets the job done.
-    Often that job is quite narrowly defined,
-    and therefore
-    the parser can be quite limited in its power,
-    especially if it's fast and easy to deploy.
-    For example, when you have a regular expression to parse,
-    you're not looking for anything more than a regular expression
-    engine.
+      The most superficial of these is that
+      a parser must be &quot;fast enough&quot;
+      to please its users.
+      A rigorous understanding of what &quot;fast enough&quot; means
+      was slow to emerge,
+      but it is now clear that, except in restricted uses,
+      a parser must be linear or quasi-linear,
+    &lt;/p&gt;
+    &lt;h2&gt;The second virtue: predictable&lt;/h2&gt;
+    &lt;p&gt;
+    Less obvious is what I will call &quot;predictability&quot;:
+    It must be possible for a programmer,
+    with reasonable effort,
+    to know if her grammar
+    will be parsed by the parser.
+    In this respect, regular expressions can be called
+    perfect --
+    there's a handy notation for them.
+    Anything in that notation is a regular expression,
+    and will be parsed in linear time by your regular
+    expression engine --
+    you never need to desk-check.
+    &lt;/p&gt;
+    &lt;h2&gt;The first minor virtue: declaration-driven&lt;/h2&gt;
+    &lt;p&gt;Since there is a exact notation
+    for regular expression, they introduce a minor virtue:
+    declarative.
+    If a parser can automatically be generated from a compact
+    notation, the parsing method is declarative.
+    &lt;/p&gt;
+    &lt;h2&gt;The third virtue: power&lt;/h2&gt;
+    &lt;p&gt;Regular expressions, however,
+    were not the end of the parsing story --
+    from a strictly Chomskyan point of view,
+    in fact, they are note even the beginning.
+    If a programmer has a grammar she considers practical,
+    she wants her parser to parse it.
+    Here regular expressions often fail -- a lot of practical
+    grammar are regular expressions, but many others are not.
+    For regular expressions,
+    one of the fails is ironic --
+    the notation for regular expressions is recursive,
+    but regular expressions cannot deal with recursion.
     &lt;/p&gt;
     &lt;p&gt;
-    But regular expressions themselves
-    are an example of one important property that you will
-    want in a parser.
-    They are predictably and reliably fast.
-    &quot;Fast&quot; here means they are linear or quasi-linear.
-    &quot;Predictably&quot; means that they are fast for a predictable
-    set of grammars.
-    In the case of regular expressions,
-    it is not hard to determine if a grammar is a regular expression --
-    you can in fact define a notation so that
-    &lt;b&gt;only&lt;/b&gt; regular expressions are allowed,
-    so that a programmer doesn't even need to desk-check.
+    Grabs for power predate the parsing literature,
+    which begins with Irons 1961.
+    In terms of power,
+    Irons parser is &quot;general&quot;,
+    meaning that it can parse what are called
+    the &quot;context-free grammars&quot;.
     &lt;/p&gt;
     &lt;p&gt;
-    &quot;Reliably&quot; means the parser is fast for 100% of the predicted cases.
+    The context-free grammars are exactly those which can
+    be written in BNF.
+    This means that Irons parser had the same kind of predictability
+    that regular expressions had -- it could parse every grammar
+    written in its grammar notation.
+    Again, there was no need to desk check,
+    but this time the class of grammars that could be parsed was
+    much, much larger.
+    &lt;/p&gt;
+    &lt;h2&gt;The fourth virtue: reliability&lt;/h2&gt;
+    &lt;p&gt;
+    The Irons 1961 algorithm was perfectly predictable
+    it was predictably powerful.
+    And it could be fast.
+    Iron 1961 was not predictably fast.
+    In the general case,
+    Irons 1961 used backtracking
+    to achieve its power,
+    so it would go exponential for many useful grammars.
+    Irons 1961 could not be relied on to be fast.
+    &lt;/p&gt;
+    &lt;p&gt;
+    Irons 1961 gave way to recursive descent.
+    Recursive descent had many disadvantages compared to Irons 1961,
+    but it was very fast,
+    it was easy to customize.
+    With customization.
+    recursive descent was 
+    reliably fast for arithmetic expressions,
+    which made it an improvement over Irons.
+    &lt;/p&gt;
+    &lt;h2&gt;The second minor virtue: procedural&lt;/h2&gt;
+    &lt;h2&gt;The fifth major virtue: error-friendly&lt;/h2&gt;
+    &lt;p&gt;The other major virtues have always
+    been objects of theoretical interest --
+    they were in fact,
+    the reason that the field of theory of algorithms
+    was developed.
+    &lt;/p&gt;
+    &lt;p&gt;
+    But theoreticians assumed that programmers always
+    started with the grammar they intended to use,
+    and never made a mistake.
+    And theoreticians further assumed that if an input
+    was wrong,
+    it was enough for the parser to say so.
+    It was assumed the programmer would be able to look
+    at an input several meg long,
+    instantly spot the error,
+    mutter &quot;silly me&quot;
+    correct it and rerun.
+    &lt;/p&gt;
+    In practice, parsers were as helpful as they could be,
+    and programmers had been satisfied with that.
+    Regular expressions and their inputs
+    usually can be debugged by experiment,
+    when the problem is not obvious.
+    &lt;a id=&quot;footnote-2-ref&quot; href=&quot;#footnote-2&quot;&gt;[2]&lt;/a&gt;
+    Recursive descent is procedural, and debugging can be approached that
+    way.
+    &lt;/p&gt;
+    &lt;p&gt;
+    It was assumed, therefore that LALR only had to be as helpful
+    as it could be and users would cope.
+    But LALR stretched this assumption to the limit.
+    &lt;/p&gt;
+    Recursive descent
+    [ TO HERE ] &lt;br&gt;
     This would go without saying,
     except that solutions to the parsing problem are often advanced
     which trade power for reliability.
@@ -74,17 +176,6 @@
     you can breed from that and expect good things.
     But if even once you've lucked out with a parse,
     your next parse is a just another new toss of the dice.
-    &lt;/p&gt;
-    &lt;h1&gt;Power&lt;/h1&gt;
-    &lt;p&gt;
-    Which brings us to why, despite all of its very nice properties,
-    people try, and often need to, do better than regular expressions:
-    power.
-    How wide a variety of grammars can the algorithm parse?
-    In the case of regular expressions, it flunks an obvious test --
-    no notation for regular expressions can be parsed by a regular expression.
-    That is because, while regular expresions are
-    recursive, they cannot parse recursions.
     &lt;/p&gt;
     &lt;p&gt;In 19XX it was thought the next step up in power,
     consistent with the Three Basic Virtues,
@@ -111,6 +202,17 @@
         Marpa's Google group&lt;/a&gt;,
       or on our IRC channel: #marpa at freenode.net.
     &lt;/p&gt;
+    &lt;h2&gt;Footnotes&lt;/h2&gt;
+&lt;p id=&quot;footnote-1&quot;&gt;1.
+      regular expressions not usually considered parsing
+ &lt;a href=&quot;#footnote-1-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;p id=&quot;footnote-2&quot;&gt;2.
+It perhaps helps that regular expressions are less powerful,
+    so the problems tend to be simpler.
+    There are regex debuggers, but the fact they are not used
+    much indicates, at least to this writer, that they aren't needed
+    that much
+ &lt;a href=&quot;#footnote-2-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
   &lt;/body&gt;
 &lt;/html&gt;</description>
   </item>
