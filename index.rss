@@ -10,6 +10,111 @@
     <language>en</language>
 
   <item>
+    <title>What you will want in a parser</title>
+    <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2018/05/will_want.html</link>
+    <description>&lt;html&gt;
+  &lt;head&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;p&gt;
+      &lt;!--
+      marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
+      --&gt;
+      What, going forward, will you want in a parser?
+      The question may sound presumptious
+      (how do I know what you want, much less what you
+      &lt;b&gt;will&lt;/b&gt; want) but I think it can be answered
+      with some confidence.
+      The way to do this is to look at what you
+      have wanted in the past,
+      with &quot;you&quot; being represented by a wide
+      variety of top practitioners and theorists.
+    &lt;/p&gt;
+    &lt;p&gt;
+    In this post,
+    the parser I am speaking of is the mainframe parser --
+    the one that is used in state of the art parser generators.
+    In many situations, of course, what you want is the fastest
+    and easiest parser that gets the job done.
+    Often that job is quite narrowly defined,
+    and therefore
+    the parser can be quite limited in its power,
+    especially if it's fast and easy to deploy.
+    For example, when you have a regular expression to parse,
+    you're not looking for anything more than a regular expression
+    engine.
+    &lt;/p&gt;
+    &lt;p&gt;
+    But regular expressions themselves
+    are an example of one important property that you will
+    want in a parser.
+    They are predictably and reliably fast.
+    &quot;Fast&quot; here means they are linear or quasi-linear.
+    &quot;Predictably&quot; means that they are fast for a predictable
+    set of grammars.
+    In the case of regular expressions,
+    it is not hard to determine if a grammar is a regular expression --
+    you can in fact define a notation so that
+    &lt;b&gt;only&lt;/b&gt; regular expressions are allowed,
+    so that a programmer doesn't even need to desk-check.
+    &lt;/p&gt;
+    &lt;p&gt;
+    &quot;Reliably&quot; means the parser is fast for 100% of the predicted cases.
+    This would go without saying,
+    except that solutions to the parsing problem are often advanced
+    which trade power for reliability.
+    An algorithm which can go quadratic or worse is often used to supplement
+    an algorithm which lacks power.
+    It's a kind of cross-breeding of algorithms.
+    The hope is that the hybrid, in your use case,
+    had the power of the slow algorithm and the
+    speed of the fast one.
+    This works a lot better in botany than it does in parsing.
+    Once you have a successful cross in a plant,
+    you can breed from that and expect good things.
+    But if even once you've lucked out with a parse,
+    your next parse is a just another new toss of the dice.
+    &lt;/p&gt;
+    &lt;h1&gt;Power&lt;/h1&gt;
+    &lt;p&gt;
+    Which brings us to why, despite all of its very nice properties,
+    people try, and often need to, do better than regular expressions:
+    power.
+    How wide a variety of grammars can the algorithm parse?
+    In the case of regular expressions, it flunks an obvious test --
+    no notation for regular expressions can be parsed by a regular expression.
+    That is because, while regular expresions are
+    recursive, they cannot parse recursions.
+    &lt;/p&gt;
+    &lt;p&gt;In 19XX it was thought the next step up in power,
+    consistent with the Three Basic Virtues,
+    might have been found:
+    A parser called yacc parsed a class of grammars called LALR.
+    LALR clearly had two of the Basic Virtues (fast and reliable)
+    and it could be said to have the third if you were willing to stretch a point.
+    Technically,
+    it took a mathematician to tell if a grammar is LALR.
+    But what was probably the most sophisticated LALR grammar was
+    created by Larry Wall, a non-mathematician --
+    so one could get sense of it after a few hard knocks.
+    &lt;/p&gt;
+    &lt;h2&gt;References, comments, etc.&lt;/h2&gt;
+    &lt;p&gt;
+      For more about
+      Marpa, my own parsing project,
+      there is the
+      &lt;a href=&quot;http://savage.net.au/Marpa.html&quot;&gt;semi-official web site, maintained by Ron Savage&lt;/a&gt;.
+      The official, but more limited, Marpa website
+      &lt;a href=&quot;http://jeffreykegler.github.io/Marpa-web-site/&quot;&gt;is my personal one&lt;/a&gt;.
+      Comments on this post can be made in
+      &lt;a href=&quot;http://groups.google.com/group/marpa-parser&quot;&gt;
+        Marpa's Google group&lt;/a&gt;,
+      or on our IRC channel: #marpa at freenode.net.
+    &lt;/p&gt;
+  &lt;/body&gt;
+&lt;/html&gt;</description>
+  </item>
+  <item>
     <title>Version 3 of &quot;Parsing: a timeline&quot;</title>
     <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2018/04/timeline_v3.html</link>
     <description>&lt;html&gt;
@@ -1112,126 +1217,6 @@
       &lt;a href=&quot;http://savage.net.au/Marpa.html&quot;&gt;semi-official web site, maintained by Ron Savage&lt;/a&gt;.
       The official, but more limited, Marpa website
       &lt;a href=&quot;http://jeffreykegler.github.io/Marpa-web-site/&quot;&gt;is my personal one&lt;/a&gt;.
-      Comments on this post can be made in
-      &lt;a href=&quot;http://groups.google.com/group/marpa-parser&quot;&gt;
-        Marpa's Google group&lt;/a&gt;,
-      or on our IRC channel: #marpa at freenode.net.
-    &lt;/p&gt;
-  &lt;/body&gt;
-&lt;/html&gt;</description>
-  </item>
-  <item>
-    <title>What are the reasonable computer languages?</title>
-    <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2016/01/lrr.html</link>
-    <description>&lt;html&gt;
-  &lt;head&gt;
-  &lt;/head&gt;
-  &lt;body&gt;&lt;p&gt;
-      &lt;!--
-      marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
-      --&gt;
-    &lt;/p&gt;
-    &lt;blockquote&gt;
-      &quot;You see things; and you say 'Why?' But I dream things that never were; and I say 'Why not?'&quot;
-      --
-      &lt;a href=&quot;http://www.bartleby.com/73/465.html&quot;&gt;George Bernard Shaw&lt;/a&gt;
-    &lt;/blockquote&gt;
-    &lt;p&gt;
-      In the 1960's and 1970's computer languages were evolving rapidly.
-      It was not clear which way they were headed.
-      Would most programming be done with
-      general-purpose languages?
-      Or would programmers create a language for every task domain?
-      Or even for every project?
-      And, if lots of languages were going to be created,
-      what kinds of languages would be needed?
-    &lt;/p&gt;
-    &lt;p&gt;
-      It was in that context that &amp;#268;ulik and Cohen,
-      in
-      &lt;a href=&quot;http://www.sciencedirect.com/science/article/pii/S0022000073800509&quot;&gt;a
-        1973 paper&lt;/a&gt;,
-      outlined what they thought programmers would want and should have.
-      In keeping with the spirit of the time,
-      it was quite a lot:
-    &lt;/p&gt;&lt;ul&gt;
-      &lt;li&gt;Programmers would want to extend their grammars with new syntax,
-        including new
-        kinds of expressions.&lt;/li&gt;
-      &lt;li&gt;Programmers would also want to use tools that automatically generated new syntax.&lt;/li&gt;
-      &lt;li&gt;Programmers would not want to, and especially
-        in the case of auto-generated syntax
-        would usually not be able to,
-        massage the syntax into very restricted forms.
-        Instead, programmers would create grammars and languages
-        which required unlimited lookahead to disambiguate,
-        and they would require parsers which could handle these grammars.&lt;/li&gt;
-      &lt;li&gt;Finally, programmers would need to be able to rely on
-        all of this parsing being done in linear time.&lt;/li&gt;
-    &lt;/ul&gt;&lt;p&gt;
-      Today, we think we know that
-      &amp;#268;ulik and Cohen's vision was naive,
-      because we think we know that parsing technology cannot support it.
-      We think we know that parsing is much harder than they thought.
-    &lt;/p&gt;
-    &lt;h2&gt;The eyeball grammars&lt;/h2&gt;
-    &lt;p&gt;As a thought problem, consider the &quot;eyeball&quot; class of grammars.
-      The &quot;eyeball&quot; class of grammars contains all the grammars that a human
-      can parse at a glance.
-      If a grammar is in the eyeball class,
-      but a computer cannot parse it,
-      it presents an interesting choice.  Either,
-    &lt;/p&gt;
-    &lt;ul&gt;
-      &lt;li&gt;your computer is not using the strongest practical algorithm; or
-      &lt;/li&gt;
-      &lt;li&gt;your mind is using some power which cannot be reduced to a machine computation.&lt;/li&gt;
-    &lt;/ul&gt;
-    &lt;p&gt;
-      There are some people out there (I am one of them)
-      who don't believe that everything the mind can do reduces
-      to a machine computation.
-      But even those people
-      will tend to go for the choice in this case:
-      There must be some practical computer parsing algorithm which
-      can do at least as well at parsing as a human
-      can do by &quot;eyeball&quot;.
-      In other words, the class of &quot;reasonable grammars&quot; should
-      contain the eyeball class.
-    &lt;/p&gt;
-    &lt;p&gt;
-      &amp;#268;ulik and Cohen's candidate for the class of &quot;reasonable grammars&quot;
-      were the grammars that
-      a deterministic parse engine
-      could parse if it had a lookahead that was infinite,
-      but restricted to distinguishing between regular expressions.
-      They called these the LR-regular, or LRR, grammars.
-      And the LRR grammars
-      &lt;b&gt;do&lt;/b&gt;
-      in fact seem to be a good first approximation
-      to the eyeball class.
-      They do not allow lookahead that contains things
-      that you have to count, like palindromes.
-      And, while I'd be hard put to eyeball every possible string for every possible regular expression,
-      intuitively the concept of scanning for a regular expression
-      does seem close to capturing the idea of glancing through a text looking for a telltale pattern.
-    &lt;/p&gt;
-    &lt;h2&gt;So what happened?&lt;/h2&gt;
-    &lt;p&gt;
-      Alas, the algorithm in the &amp;#268;ulik and Cohen paper turned out to be impractical.
-      But in 1991, Joop Leo discovered a way to adopt Earley's algorithm to parse the LRR grammars
-      in linear time, without doing the lookahead.
-      And Leo's algorithm does have a practical implementation:
-      &lt;a href=&quot;http://jeffreykegler.github.io/Marpa-web-site/&quot;&gt;Marpa&lt;/a&gt;.
-    &lt;/p&gt;
-    &lt;h2&gt;References, comments, etc.&lt;/h2&gt;
-    &lt;p&gt;
-      To learn more about Marpa,
-      there's
-      &lt;a href=&quot;http://savage.net.au/Marpa.html&quot;&gt;the
-        official web site maintained by Ron Savage&lt;/a&gt;.
-      I also have
-      &lt;a href=&quot;http://jeffreykegler.github.io/Marpa-web-site/&quot;&gt;a Marpa web site&lt;/a&gt;.
       Comments on this post can be made in
       &lt;a href=&quot;http://groups.google.com/group/marpa-parser&quot;&gt;
         Marpa's Google group&lt;/a&gt;,

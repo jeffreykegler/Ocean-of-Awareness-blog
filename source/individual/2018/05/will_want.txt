@@ -1,4 +1,4 @@
-What you will want in a parser
+The Five Virtues of Parsers
 <html>
   <head>
   </head>
@@ -7,46 +7,92 @@ What you will want in a parser
       <!--
       marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
       -->
-      What, going forward, will you want in a parser?
-      The question may sound presumptious
-      (how do I know what you want, much less what you
-      <b>will</b> want) but I think it can be answered
-      with some confidence.
-      The way to do this is to look at what you
-      have wanted in the past,
-      with "you" being represented by a wide
-      variety of top practitioners and theorists.
+      In a previous post, I did a careful examination of the
+      history of attempts to produce the ideal parser.
+      In this one, I will look at the question in reverse --
+      what makes the users of a parser
+      happy or unhappy with it?
+      That is, once a parser is discovered,
+      makes it successful?
+    </p>
+    <h1>The first virtue: fast</h1>
+    <p>
+      By one accounting,
+      the first systematic attempt at parsing
+      was via regular expressions.
+      Regular expressions are still very much with us,
+      so they obviously must demonstrate at least <b>some</b>
+      of the virtues that make a parser popular.
     </p>
     <p>
-    In this post,
-    the parser I am speaking of is the mainframe parser --
-    the one that is used in state of the art parser generators.
-    In many situations, of course, what you want is the fastest
-    and easiest parser that gets the job done.
-    Often that job is quite narrowly defined,
-    and therefore
-    the parser can be quite limited in its power,
-    especially if it's fast and easy to deploy.
-    For example, when you have a regular expression to parse,
-    you're not looking for anything more than a regular expression
-    engine.
+      The most superficial of these is that
+      a parser must be "fast enough"
+      to please its users.
+      A rigorous understanding of what "fast enough" means
+      was slow to emerge,
+      but it is now clear that, except in restricted uses,
+      a parser must be linear or quasi-linear,
+    </p>
+    <h1>The second virtue: predictable</h1>
+    <p>
+    Less obvious is what I will call "predictability":
+    It must be possible for a programmer,
+    with reasonable effort,
+    to know if her grammar
+    will be parsed by the parser.
+    In this respect, regular expressions can be called
+    perfect --
+    there's a handy notation for them.
+    Anything in that notation is a regular expression,
+    and will be parsed in linear time by your regular
+    expression engine --
+    you never need to desk-check.
+    </p>
+    <h1>The third virtue: power</h1>
+    <p>Regular expressions, however,
+    were not the end of the parsing story --
+    from a strictly Chomskyan point of view,
+    in fact, they are note even the beginning.
+    If a programmer has a grammar she considers practical,
+    she wants her parser to parse it.
+    Here regular expressions often fail -- a lot of practical
+    grammar are regular expressions, but many others are not.
+    For regular expressions,
+    one of the fails is ironic --
+    the notation for regular expressions is recursive,
+    but regular expressions cannot deal with recursion.
     </p>
     <p>
-    But regular expressions themselves
-    are an example of one important property that you will
-    want in a parser.
-    They are predictably and reliably fast.
-    "Fast" here means they are linear or quasi-linear.
-    "Predictably" means that they are fast for a predictable
-    set of grammars.
-    In the case of regular expressions,
-    it is not hard to determine if a grammar is a regular expression --
-    you can in fact define a notation so that
-    <b>only</b> regular expressions are allowed,
-    so that a programmer doesn't even need to desk-check.
+    Grabs for power predate the parsing literature,
+    which begins with Irons 1961.
+    In terms of power,
+    Irons parser is "general",
+    meaning that it can parse what are called
+    the "context-free grammars".
     </p>
     <p>
-    "Reliably" means the parser is fast for 100% of the predicted cases.
+    The context-free grammars are exactly those which can
+    be written in BNF.
+    This means that Irons parser had the same kind of predictability
+    that regular expressions had -- it could parse every grammar
+    written in its grammar notation.
+    Again, there was no need to desk check,
+    but this time the class of grammars that could be parsed was
+    much, much larger.
+    </p>
+    <h1>The Fourth Virtue: reliability</h1>
+    <p>
+    The Irons 1961 algorithm was perfectly predictable,
+    it was predictably powerful,
+    and it could be fast.
+    But it could not be relied on to be fast.
+    In the general case,
+    Irons 1961 used backtracking
+    to achieve its power,
+    so it would go exponential for many useful grammars.
+    Iron 1961 was fast but not predictably fast.
+    <p>
+    </p>
     This would go without saying,
     except that solutions to the parsing problem are often advanced
     which trade power for reliability.
@@ -62,15 +108,15 @@ What you will want in a parser
     But if even once you've lucked out with a parse,
     your next parse is a just another new toss of the dice.
     </p>
-    <h1>Power</h1>
     <p>
+    [ TO HERE ] <br>
     Which brings us to why, despite all of its very nice properties,
     people try, and often need to, do better than regular expressions:
     power.
     How wide a variety of grammars can the algorithm parse?
     In the case of regular expressions, it flunks an obvious test --
     no notation for regular expressions can be parsed by a regular expression.
-    That is because, while regular expresions are
+    That is because, while regular expressions are
     recursive, they cannot parse recursions.
     </p>
     <p>In 19XX it was thought the next step up in power,
