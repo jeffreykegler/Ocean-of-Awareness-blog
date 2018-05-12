@@ -25,7 +25,7 @@ LINE: while ( my $line = <DATA> ) {
 }
 
 my $output = join "\n", @lines;
-my $footnotes = join "\n", '<h1>Footnotes</h1>', @fn_lines;
+my $footnotes = join "\n", '<h2>Footnotes</h2>', @fn_lines;
 $output =~ s[<comment>FOOTNOTES HERE</comment>][$footnotes];
 
 say $output;
@@ -79,7 +79,7 @@ The Five Virtues of Parsers
       That is, once a parser is discovered,
       makes it successful?
     </p>
-    <h1>The first virtue: fast</h1>
+    <h2>The first virtue: fast</h2>
     <p>
       By one accounting,
       the first systematic attempt at parsing
@@ -99,7 +99,7 @@ The Five Virtues of Parsers
       but it is now clear that, except in restricted uses,
       a parser must be linear or quasi-linear,
     </p>
-    <h1>The second virtue: predictable</h1>
+    <h2>The second virtue: predictable</h2>
     <p>
     Less obvious is what I will call "predictability":
     It must be possible for a programmer,
@@ -114,14 +114,14 @@ The Five Virtues of Parsers
     expression engine --
     you never need to desk-check.
     </p>
-    <h1>The first minor virtue: declaration-driven</h1>
+    <h2>The first minor virtue: declaration-driven</h2>
     <p>Since there is a exact notation
     for regular expression, they introduce a minor virtue:
     declarative.
     If a parser can automatically be generated from a compact
     notation, the parsing method is declarative.
     </p>
-    <h1>The third virtue: power</h1>
+    <h2>The third virtue: power</h2>
     <p>Regular expressions, however,
     were not the end of the parsing story --
     from a strictly Chomskyan point of view,
@@ -153,7 +153,7 @@ The Five Virtues of Parsers
     but this time the class of grammars that could be parsed was
     much, much larger.
     </p>
-    <h1>The fourth virtue: reliability</h1>
+    <h2>The fourth virtue: reliability</h2>
     <p>
     The Irons 1961 algorithm was perfectly predictable
     it was predictably powerful.
@@ -175,8 +175,8 @@ The Five Virtues of Parsers
     reliably fast for arithmetic expressions,
     which made it an improvement over Irons.
     </p>
-    <h1>The second minor virtue: procedural</h1>
-    <h1>The fifth major virtue: error-friendly</h1>
+    <h2>The second minor virtue: procedural</h2>
+    <h2>The fifth major virtue: error-friendly</h2>
     <p>The other major virtues have always
     been objects of theoretical interest --
     they were in fact,
