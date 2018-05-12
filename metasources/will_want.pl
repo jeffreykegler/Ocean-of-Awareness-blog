@@ -31,6 +31,7 @@ $output =~ s[<comment>FOOTNOTES HERE</comment>][$footnotes];
 say $output;
 
 sub do_footnote {
+    say STDERR "hi";
     my ($line) = @_;
     $fn_number++;
     my $fn_ref = join '-', 'footnote', $fn_number, 'ref';
@@ -70,7 +71,11 @@ The Five Virtues of Parsers
       <!--
       marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
       -->
-      In a previous post, I did a careful examination of the
+      In a previous post<footnote>
+      Much of the material in this post is drawn from my
+      <a href="https://jeffreykegler.github.io/personal/timeline_v3">
+      V3 of my "Parsing: A Timeline"</a>.
+      </footnote>, I did a careful examination of the
       history of attempts to produce the ideal parser.
       In this one, I will look at the question in reverse --
       what makes the users of a parser
@@ -84,8 +89,7 @@ The Five Virtues of Parsers
     <p>
       By one accounting,
       the first systematic attempt at parsing
-      was via regular expressions.
-      <footnote>
+      was via regular expressions.<footnote>
       regular expressions not usually considered parsing</footnote>
       Regular expressions are still very much with us,
       so they obviously must demonstrate at least <b>some</b>
@@ -98,7 +102,12 @@ The Five Virtues of Parsers
       A rigorous understanding of what "fast enough" means
       was slow to emerge,
       but it is now clear that, except in restricted uses,
-      a parser must be linear or quasi-linear,
+      a parser must be linear or quasi-linear.<footnote>
+      For definitions of "linear" and "quasi-linear",
+      see the 'Term: "linear"' section of
+      <a href="https://jeffreykegler.github.io/personal/timeline_v3">
+      V3 of my "Parsing: A Timeline"</a>.
+      </footnote>
     </p>
     <h2>The second virtue: predictable</h2>
     <p>
@@ -201,8 +210,8 @@ The Five Virtues of Parsers
     and programmers had been satisfied with that.
     Regular expressions and their inputs
     usually can be debugged by experiment,
-    when the problem is not obvious.
-    <footnote>It perhaps helps that regular expressions are less powerful,
+    when the problem is not obvious.<footnote>
+    It perhaps helps that regular expressions are less powerful,
     so the problems tend to be simpler.
     There are regex debuggers, but the fact they are not used
     much indicates, at least to this writer, that they aren't needed

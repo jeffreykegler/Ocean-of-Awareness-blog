@@ -20,7 +20,7 @@
       &lt;!--
       marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
       --&gt;
-      In a previous post, I did a careful examination of the
+      In a previous post&lt;a id=&quot;footnote-1-ref&quot; href=&quot;#footnote-1&quot;&gt;[1]&lt;/a&gt;, I did a careful examination of the
       history of attempts to produce the ideal parser.
       In this one, I will look at the question in reverse --
       what makes the users of a parser
@@ -34,8 +34,7 @@
     &lt;p&gt;
       By one accounting,
       the first systematic attempt at parsing
-      was via regular expressions.
-      &lt;a id=&quot;footnote-1-ref&quot; href=&quot;#footnote-1&quot;&gt;[1]&lt;/a&gt;
+      was via regular expressions.&lt;a id=&quot;footnote-2-ref&quot; href=&quot;#footnote-2&quot;&gt;[2]&lt;/a&gt;
       Regular expressions are still very much with us,
       so they obviously must demonstrate at least &lt;b&gt;some&lt;/b&gt;
       of the virtues that make a parser popular.
@@ -47,7 +46,7 @@
       A rigorous understanding of what &quot;fast enough&quot; means
       was slow to emerge,
       but it is now clear that, except in restricted uses,
-      a parser must be linear or quasi-linear,
+      a parser must be linear or quasi-linear.&lt;a id=&quot;footnote-3-ref&quot; href=&quot;#footnote-3&quot;&gt;[3]&lt;/a&gt;
     &lt;/p&gt;
     &lt;h2&gt;The second virtue: predictable&lt;/h2&gt;
     &lt;p&gt;
@@ -150,8 +149,7 @@
     and programmers had been satisfied with that.
     Regular expressions and their inputs
     usually can be debugged by experiment,
-    when the problem is not obvious.
-    &lt;a id=&quot;footnote-2-ref&quot; href=&quot;#footnote-2&quot;&gt;[2]&lt;/a&gt;
+    when the problem is not obvious.&lt;a id=&quot;footnote-4-ref&quot; href=&quot;#footnote-4&quot;&gt;[4]&lt;/a&gt;
     Recursive descent is procedural, and debugging can be approached that
     way.
     &lt;/p&gt;
@@ -204,15 +202,26 @@
     &lt;/p&gt;
     &lt;h2&gt;Footnotes&lt;/h2&gt;
 &lt;p id=&quot;footnote-1&quot;&gt;1.
-      regular expressions not usually considered parsing
+      Much of the material in this post is drawn from my
+      &lt;a href=&quot;https://jeffreykegler.github.io/personal/timeline_v3&quot;&gt;
+      V3 of my &quot;Parsing: A Timeline&quot;&lt;/a&gt;.
  &lt;a href=&quot;#footnote-1-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
 &lt;p id=&quot;footnote-2&quot;&gt;2.
-It perhaps helps that regular expressions are less powerful,
+      regular expressions not usually considered parsing
+ &lt;a href=&quot;#footnote-2-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;p id=&quot;footnote-3&quot;&gt;3.
+      For definitions of &quot;linear&quot; and &quot;quasi-linear&quot;,
+      see the 'Term: &quot;linear&quot;' section of
+      &lt;a href=&quot;https://jeffreykegler.github.io/personal/timeline_v3&quot;&gt;
+      V3 of my &quot;Parsing: A Timeline&quot;&lt;/a&gt;.
+ &lt;a href=&quot;#footnote-3-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;p id=&quot;footnote-4&quot;&gt;4.
+    It perhaps helps that regular expressions are less powerful,
     so the problems tend to be simpler.
     There are regex debuggers, but the fact they are not used
     much indicates, at least to this writer, that they aren't needed
     that much
- &lt;a href=&quot;#footnote-2-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+ &lt;a href=&quot;#footnote-4-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
   &lt;/body&gt;
 &lt;/html&gt;</description>
   </item>

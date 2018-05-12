@@ -7,7 +7,7 @@ The Five Virtues of Parsers
       <!--
       marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
       -->
-      In a previous post, I did a careful examination of the
+      In a previous post<a id="footnote-1-ref" href="#footnote-1">[1]</a>, I did a careful examination of the
       history of attempts to produce the ideal parser.
       In this one, I will look at the question in reverse --
       what makes the users of a parser
@@ -21,8 +21,7 @@ The Five Virtues of Parsers
     <p>
       By one accounting,
       the first systematic attempt at parsing
-      was via regular expressions.
-      <a id="footnote-1-ref" href="#footnote-1">[1]</a>
+      was via regular expressions.<a id="footnote-2-ref" href="#footnote-2">[2]</a>
       Regular expressions are still very much with us,
       so they obviously must demonstrate at least <b>some</b>
       of the virtues that make a parser popular.
@@ -34,7 +33,7 @@ The Five Virtues of Parsers
       A rigorous understanding of what "fast enough" means
       was slow to emerge,
       but it is now clear that, except in restricted uses,
-      a parser must be linear or quasi-linear,
+      a parser must be linear or quasi-linear.<a id="footnote-3-ref" href="#footnote-3">[3]</a>
     </p>
     <h2>The second virtue: predictable</h2>
     <p>
@@ -137,8 +136,7 @@ The Five Virtues of Parsers
     and programmers had been satisfied with that.
     Regular expressions and their inputs
     usually can be debugged by experiment,
-    when the problem is not obvious.
-    <a id="footnote-2-ref" href="#footnote-2">[2]</a>
+    when the problem is not obvious.<a id="footnote-4-ref" href="#footnote-4">[4]</a>
     Recursive descent is procedural, and debugging can be approached that
     way.
     </p>
@@ -191,14 +189,25 @@ The Five Virtues of Parsers
     </p>
     <h2>Footnotes</h2>
 <p id="footnote-1">1.
-      regular expressions not usually considered parsing
+      Much of the material in this post is drawn from my
+      <a href="https://jeffreykegler.github.io/personal/timeline_v3">
+      V3 of my "Parsing: A Timeline"</a>.
  <a href="#footnote-1-ref">&#8617;</a></p>
 <p id="footnote-2">2.
-It perhaps helps that regular expressions are less powerful,
+      regular expressions not usually considered parsing
+ <a href="#footnote-2-ref">&#8617;</a></p>
+<p id="footnote-3">3.
+      For definitions of "linear" and "quasi-linear",
+      see the 'Term: "linear"' section of
+      <a href="https://jeffreykegler.github.io/personal/timeline_v3">
+      V3 of my "Parsing: A Timeline"</a>.
+ <a href="#footnote-3-ref">&#8617;</a></p>
+<p id="footnote-4">4.
+    It perhaps helps that regular expressions are less powerful,
     so the problems tend to be simpler.
     There are regex debuggers, but the fact they are not used
     much indicates, at least to this writer, that they aren't needed
     that much
- <a href="#footnote-2-ref">&#8617;</a></p>
+ <a href="#footnote-4-ref">&#8617;</a></p>
   </body>
 </html>
