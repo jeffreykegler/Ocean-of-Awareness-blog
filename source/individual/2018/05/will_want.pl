@@ -77,7 +77,9 @@ The Five Virtues of Parsers
       what makes the users of a parser
       happy or unhappy with it?
       That is, once a parser is discovered,
-      makes it successful?
+      what makes it successful?
+      And once a parser is successful,
+      what causes users to want more?
     </p>
     <h2>The first virtue: fast</h2>
     <p>
