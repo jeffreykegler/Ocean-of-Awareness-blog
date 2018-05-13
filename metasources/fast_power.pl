@@ -83,7 +83,7 @@ Parsers and Useful Power
       In this post I will look at
       one aspect of
       that question,
-      in light of a lesson from
+      in light of an episode in
       the history of parsing.
     </p>
     <h2>Irons 1961</h2>
@@ -96,15 +96,14 @@ Parsers and Useful Power
 	  The "Timeline" contains the background material for this post.
       </footnote>.
       The Irons parser was what is called "general",
-      meaning that it can parse all of the
+      meaning that it can parse all of
       the "context-free grammars".
-      The means it was
+      That makes it
       far more powerful than most parsers
       in practical use today.
     </p>
     <p>
       But the Irons algorithm was not always fast in the general case.
-      In the general case,
       Irons 1961 used backtracking
       to achieve its power,
       so it would go exponential for many useful grammars.
@@ -113,6 +112,8 @@ Parsers and Useful Power
       Among the grammars Irons 1961 could not parse quickly
       were those containing the all-important arithmetic expressions.
       Irons 1961 gave way to recursive descent.
+    </p>
+    <p>
       Recursive descent (RD) in its pure form,
       could not parse arithmetic expressions at all,
       but it could be customized with procedural code.
@@ -124,11 +125,11 @@ Parsers and Useful Power
     <h2>Raw power versus useful power</h2>
     <p>
       The contest between Irons parsing and recursive descent took place
-      before the theory for analyzing algorithms was fully formed<footnote>
+      before the theory for analyzing algorithms was fully formed.<footnote>
       Even the term "analysis of algorithms" did not exist until 1969:
       see <a href="https://web.archive.org/web/20160828152021/http://www-cs-faculty.stanford.edu/~uno/news.html">
       Knuth, "Recent News"</a>.
-      </footnote>.
+      </footnote>
       In retrospect, we can say that,
       except in specialized uses,
       an acceptable parser for most practical uses
@@ -154,31 +155,31 @@ Parsers and Useful Power
 	And while very long difficult-to-parse sentences do occur in some texts, such as
 	older ones, it is normal for a human reader
 	to have to spend extra time on them.
-	So it may be unreasonable to insist that a parser algorithm be
-	quasi-linear for this purpose.
+	So it may be unreasonable to insist that a parsing algorithm be
+	quasi-linear in this application.
 	</footnote>
     </p>
     <p>
       Useful power turns out to be more important,
       in practice,
       than raw power.
-      Recursive descent descent won out over the
+      Recursive descent won out over the
       Irons algorithm because,
       while the Irons algorithm had vastly more raw power,
       RD had slightly more "useful power".
     <p>
-      It is nice to have raw power as well -- it means an algorithm can take on some specialized tasks,
-      and raw power provides a kind of "soft failure" debugging mode for grammars with,
+      It is nice to have raw power as well -- it means an algorithm can take on some specialized tasks.
+      And raw power provides a kind of "soft failure" debugging mode for grammars with,
       for example, unintended ambiguities.
       But, in the eyes of the programming community, the more important measure of a parser
-      is its useful power -- the class of grammars that it will parse at linear speed.
+      is its useful power -- the class of grammars that it will parse at quasi-linear speed.
     </p>
     <h2>Stating the obvious?</h2>
     <p>
     That useful power is more important than raw power may seem,
     in retrospect,
     obvious.
-    But it remains a live issue.
+    But in fact, it remains a live issue.
     In practice raw power and useful power are often confused.
     The parsing literature is not always as helpful as it could be:
     it can be hard to determine what the
@@ -210,8 +211,8 @@ Parsers and Useful Power
       failure rate,
       and cross-breeding can still succeed.
       But it's different when you cross algorithms:
-      Even after you've succeeded out with one parse,
-      the next parse from your hybrid is a just another new toss of the dice.
+      Even after you've succeeded with one parse,
+      the next parse from your hybrid is a fresh new toss of the dice.
     </p>
     <h2>References, comments, etc.</h2>
     <p>
