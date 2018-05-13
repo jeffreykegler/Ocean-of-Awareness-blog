@@ -36,7 +36,7 @@
   <div style="margin-left:190px;border-left:2px solid #38B0C0;padding:25px;">
 <h3>Fri, 11 May 2018</h3>
 <br />
-<center><a name="will_want"> <h2>The Seven Virtues of Parsers</h2> </a>
+<center><a name="fast_power"> <h2>Parsers and Useful Power</h2> </a>
 </center>
 <html>
   <head>
@@ -46,257 +46,118 @@
       <!--
       marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
       -->
-      In a previous post<a id="footnote-1-ref" href="#footnote-1">[1]</a>, I did a careful examination of the
-      history of attempts to produce the ideal parser.
-      In this one, I will look at the question in reverse --
-      what makes the users of a parser
-      happy or unhappy with it?
-      That is, once a parser is discovered,
-      what makes it successful?
-      And once a parser is successful,
-      what causes users to want a better one?
+      What do parser
+      users want?
+      What makes a parser<a id="footnote-1-ref" href="#footnote-1">[1]</a>
+      successful?
+      In this post I will look at
+      one aspect of
+      that question,
+      in light of a lesson from
+      the history of parsing.
     </p>
-    <p>Comparisons of parsers are often like a variant
-      of archery
-      where the archer is allowed to move
-      the target after shooting the bow.
-      It is my purpose in this post to escape that,
-      and to ground comparison in the experience of
-      practical programmers,
-      as shown by the history of the field<a id="footnote-2-ref" href="#footnote-2">[2]</a>.
-    </p>
-    <h2>The first major virtue: fast</h2>
-    <p>
-      From one point of view,
-      the first systematic attempt at parsing
-      was via regular expressions.<a id="footnote-3-ref" href="#footnote-3">[3]</a>
-      Regular expressions show no signs of going away,
-      so they obviously demonstrate at least
-      <b>some</b>
-      of the virtues that make a parser popular.
-    </p>
-    <p>
-      The most obvious of these is that
-      a parser must be "fast enough"
-      to please its users.
-      A rigorous understanding of what "fast enough" means
-      was slow to emerge,
-      but it is now clear that, except in specialized uses,
-      it means that a parser must be linear or quasi-linear.<a id="footnote-4-ref" href="#footnote-4">[4]</a>
-    </p>
-    <h2>The second major virtue: predictable</h2>
-    <p>
-      Less obvious is what I will call "predictability":
-      It must be possible for a programmer,
-      with reasonable effort,
-      to know if her grammar
-      will be parsed by the parser.
-      Regular expressions as predictable as
-      you could possibly want --
-      there's a handy notation for them.
-      Anything in that notation is a regular expression,
-      and will be parsed in linear time by your regular
-      expression engine --
-      you never need to desk-check.
-    </p>
-    <h2>The first minor virtue: declarative</h2>
-    <p>If a parser can automatically be generated from a compact
-      notation, I say that it has the first minor
-      virtue: it is "declarative".
-      There is a exact notation
-      for regular expressions,
-      so and it is so handy that it is almost always
-      used to drive regular expression parsing.
-      Regular expression is as declarative as it gets.
-    </p>
-    <h2>The third major virtue: power</h2>
-    <p>Regular expressions, however,
-      were not the end of the parsing story.
-      If a programmer has a grammar she considers practical,
-      she wants her parser to parse it.
-      Here regular expressions often fail -- a lot of practical
-      grammars are regular expressions, but many others are not.
-      For regular expressions,
-      one of the fails is ironic --
-      the notation for regular expressions is recursive,
-      but regular expressions cannot deal with recursion.
-    </p>
+    <h2>Irons 1961</h2>
     <p>
       The first paper
-      fully describing a parser is Irons 1961,
-      and it contains the most
-      ambitious grab for parsing power up to that time.
-      The Irons parser is "general",
-      meaning that it can parse all of what what are called
+      fully describing a parser was Irons 1961<a id="footnote-2-ref" href="#footnote-2">[2]</a>.
+      The Irons parser was what is called "general",
+      meaning that it can parse all of the
       the "context-free grammars".
+      The means it was
+      far more powerful than most parsers
+      in practical use today.
     </p>
     <p>
-      The context-free grammars many of the nice properties
-      with regular expressions.
-      There is a very handy notation for them: BNF.
-      Anything you can write in BNF is a context-free grammar.
-      Any grammar you cannot write in BNF is not context-free.
-      This makes the Irons parser as predictable as regular
-      expressions.
-      But the Irons parser is far more powerful:
-      The context-free grammars are vastly larger than
-      the regular expression grammars,
-      which they contain.
-    </p>
-    <h2>The fourth major virtue: reliable</h2>
-    <p>
-      The Irons 1961 algorithm was perfectly predictable.
-      It was predictably powerful.
-      And for some grammars it was fast.
-      </p>
-      <p>
-      But Irons 1961 was not predictably fast.
+      But the Irons algorithm was not always fast in the general case.
       In the general case,
       Irons 1961 used backtracking
       to achieve its power,
       so it would go exponential for many useful grammars.
-      Irons 1961 was not reliably fast.
     </p>
-    <h2>The second minor virtue: procedural</h2>
     <p>
       Among the grammars Irons 1961 could not parse quickly
       were those containing the all-important arithmetic expressions.
-      So Irons 1961 gave way to recursive descent.
-      Recursive descent in its pure form,
+      Irons 1961 gave way to recursive descent.
+      Recursive descent (RD) in its pure form,
       could not parse arithmetic expressions at all,
-      but it made up for that by having the second minor virtue:
-      it was "procedural",
-      that is, it could be customized with procedural code.
-      Recursive descent itself was not reliable for arithmetic
-      expressions, but it could call specialized parsers which were
-      reliably fast for those sections of the input.
+      but it could be customized with procedural code.
+      That is, it could call specialized parsers which were
+      reliably fast for specific sections of the input.
+      The Irons parser was declarative,
+      and not easy to cusomtize.
+    </p>
+    <h2>Raw power versus useful power</h2>
+    <p>
+      The contest between Irons parsing and recursive descent took place
+      before the theory for analyzing algorithms was fully formed<a id="footnote-3-ref" href="#footnote-3">[3]</a>.
+      In retrospect, we can say that,
+      except in specialized uses,
+      an acceptable parser for most practical uses
+      must be linear or quasi-linear.<a id="footnote-4-ref" href="#footnote-4">[4]</a>
+      That is,
+      the "useful power" of a parser is the class
+      of grammars that it will parse in quasi-linear time.<a id="footnote-5-ref" href="#footnote-5">[5]</a>
     </p>
     <p>
-      Traditionally, the two minor virtues has been seen as
-      opposites -- you either write code to parse,
-      or you declare a grammar specification and parse from
-      that.
-      So recursive descent traded an unproductive virtue
-      for a useful one.
+      Useful power turns out to be more important,
+      in practice,
+      than raw power.
+      Recursive descent descent won out over the
+      Irons algorithm because,
+      while the Irons algorithm had vastly more raw power,
+      RD had slightly more "useful power".
+    <p>
+      It is nice to have raw power as well -- it means an algorithm can take on some specialized tasks,
+      and raw power provides a kind of "soft failure" debugging mode for grammars with,
+      for example, unintended ambiguities.
+      But, in the eyes of the programming community, the more important measure of a parser
+      is its useful power -- the class of grammars that it will parse at linear speed.
     </p>
-      I am the virtues of being declarative and being procedural
-      "minor" because, while the major virtues must all be present to some
-      extent, history shows the programmer community will
-      live without the minor virtues when it believes it has to.
-      This has certainly been the case for declarative parsing.
-      But it is also important to note that
-      the desire for declarative parsing, once awakened by Chomsky,
-      has never died.
-      The repeated failures at practical declarative parsing
-      has never discouraged new attempts.
+    <h2>Stating the obvious?</h2>
+    <p>
+    That useful power is more important than raw power may seem,
+    in retrospect,
+    obvious.
+    But it remains a live issue.
+    In practice raw power and useful power are often confused.
+    The parsing literature is not always as helpful as it could be:
+    it can be hard to determine what the
+    useful power of an algorithm is.
     </p>
     <p>
-      In fact, in 1969 it was thought this problem was solved.
-      LALR was not only a
-      step up in power from recursive descent --
-      it was declarative.
-      (Most practitioners will know LALR as the parse engine behind
-      <tt>yacc</tt> and <tt>bison</tt>.)
-      LALR clearly was fast and reliable -- if it parsed
-      a grammar, it always did so in linear time.
-      And LALR could be said to be predictable
-      if you were willing to stretch the definition a bit.
-      The description of the LALR class of grammars is very
-      technical. In the general case,
-      it takes some mathematics to know
-      if a grammar is LALR.
+      And the Irons experiment with raw power is often repeated,
+      in hopes of a different result.
+      Very often,
+      a new algorithm is a hybrid of two others:
+      an algorithm with a lot of raw power,
+      but which can go quadratic or worse;
+      and a fast algorithm which lacks power.
+      When the power of the fast algorithm fails,
+      the hybrid algorithm switches over
+      to the algorithm with raw power.
     </p>
     <p>
-      But one could deal with LALR as if it was a pinball machine --
-      there's no exact definition of how much nudging you're allowed,
-      but with practice you acquire a sense for what you
-      can get away with.
-      In fact,
-      the most aggressive
-      widely-used LALR grammar was written
-      by Larry Wall, a linguist by training.
-    </p>
-    <h2>The fifth major virtue: error-friendly</h2>
-    <p>The first four major virtues have always
-      been objects of theoretical interest --
-      they were in fact,
-      the reason that the field of theory of algorithms
-      was developed.
-      But theoreticians had usually ignored the fifth virtue --
-      that of being error-friendly, or at least error-tolerant.
-    </p>
-    <p>
-      Theoreticians had assumed that programmers always
-      started with the grammar they intended to use,
-      and never made a mistake.
-      And theoreticians further assumed that if an input
-      was wrong,
-      it was enough for the parser to say so.
-      It was assumed the programmer could glance
-      at an input several meg long,
-      instantly spot the problem,
-      mutter "silly me",
-      correct it and rerun.
-    </p>
-    <p>
-      In practice, parsers were as helpful as they conveniently could be,
-      and programmers had been satisfied with that.
-      Regular expressions and their inputs
-      usually can be debugged by experiment,
-      when the problem is not obvious.<a id="footnote-5-ref" href="#footnote-5">[5]</a>
-      Recursive descent is procedural, and debugging can be approached that
-      way.
-    </p>
-    <p>
-      The advent of LALR in 1969 stretched things to,
-      and ultimately beyond, the breaking point.
-      It was assumed that, as before, 
-      LALR only had to be as helpful
-      as it could be and users would cope.
-      But LALR carried error-unfriendliness to extremes.
-      LALR did not necessarily detect errors immediately.
-      When it did recognize an error,
-      it described the problem in terms of LR(1) states.
-      You need a fair amount of parsing theory to understand these.
-      Alas, for the programmer willing to do this,
-      another pitfall awaited.
-      Since LALR was a simplification of LR(1),
-      the LR(1) state conflicts it reported did not necessarily exist --
-      that is, the error reports, cryptic as they were,
-      were sometimes just plain wrong.<a id="footnote-6-ref" href="#footnote-6">[6]</a>
-    </p>
-    <p>Despite its toxic qualities,
-      LALR dominated practice for at least a decade,
-      ruled the textbooks for longer
-      and still plays a disproportionate role in
-      classroom instruction<a id="footnote-7-ref" href="#footnote-7">[7]</a>.
-    </p>
-    <h2>Revisiting reliability</h2>
-    <p>
-      [ FRAGMENT ] <br>
-      An algorithm which can go quadratic or worse is often used to supplement
-      an algorithm which lacks power.
-      It's a kind of cross-breeding of algorithms.
-      The hope is that the hybrid, in your use case,
-      had the power of the slow algorithm and the
-      speed of the fast one.
+      It is a sort of
+      cross-breeding of algorithms.
+      The hope is that the hybrid algorithm has the best
+      features of each of its parents.
       This works a lot better in botany than it does in parsing.
       Once you have a successful cross in a plant,
-      you can breed from that and expect good things.
-      But if even once you've lucked out with a parse,
-      your next parse is a just another new toss of the dice.
-    </p>
-    <h2>Marpa</h2>
-    <p>
-       As many readers will be aware,
-       I have my own pony in this horse-race.
-       I have described how it relates to these virtues
-       elsewhere<a id="footnote-8-ref" href="#footnote-8">[8]</a>.
+      you can breed from the successful hybrid
+      and expect good things to happen.
+      In botany,
+      the individual crosses can have an extremely high
+      failure rate,
+      and cross-breeding can still succeed.
+      But it's different when you cross algorithms:
+      Even after you've succeeded out with one parse,
+      the next parse from your hybrid is a just another new toss of the dice.
     </p>
     <h2>References, comments, etc.</h2>
     <p>
-      For more about
-      Marpa, my own parsing project,
+      To learn about
+      my own parsing project,
+      Marpa<a id="footnote-6-ref" href="#footnote-6">[6]</a>,
       there is the
       <a href="http://savage.net.au/Marpa.html">semi-official web site, maintained by Ron Savage</a>.
       The official, but more limited, Marpa website
@@ -308,80 +169,63 @@
     </p>
     <h2>Footnotes</h2>
 <p id="footnote-1">1.
-        Much of the material in this post is drawn from
-        <a href="https://jeffreykegler.github.io/personal/timeline_v3">
-          V3 of my "Parsing: A Timeline"</a>.
+      By "parser" in this post,
+      I will mean a programmer's
+      most powerful toolbox parser --
+      what might be called the "flagship" parser.
+      No parser will ever be the right one for all uses.
  <a href="#footnote-1-ref">&#8617;</a></p>
 <p id="footnote-2">2.
-      No single set of criteria applies to all parsing
-      tasks.
-      The criteria in this post are for a programmer's
-      most powerful toolbox parser.
-      Recursive descent and PEG will
-      probably survive forever in specialized uses.
-      And the most frequently used parser
-      will probably always be regexes.
+	For the reference to Irons, see
+        <a href="https://jeffreykegler.github.io/personal/timeline_v3">
+          V3 of my "Parsing: A Timeline"</a>.
+	  The "Timeline" contains the background material for this post.
  <a href="#footnote-2-ref">&#8617;</a></p>
 <p id="footnote-3">3.
-        Strictly speaking,
-        regular expressions are recognizers,
-        not parsers
-        (see "Term: parser" and
-        "Term: recognizer" in
-        <a href="https://jeffreykegler.github.io/personal/timeline_v3">
-	"Parsing: A Timeline", V3</a>).
-          This is because, in their pure form, regular expressions
-          simply determine if the input is a match --
-          they do not determine its structure.
-          Nonetheless, regex engines in practical use
-          often extend regular expressions,
-          for example, by adding captures.
-          At the low end, regexes often compete with parsers
-          and why that is the case is very relevant to my
-          concerns in this post.</a>
+      Even the term "analysis of algorithms" did not exist until 1969:
+      see <a href="https://web.archive.org/web/20160828152021/http://www-cs-faculty.stanford.edu/~uno/news.html">
+      Knuth, "Recent News"</a>.
  <a href="#footnote-3-ref">&#8617;</a></p>
 <p id="footnote-4">4.
         For more about "linear" and "quasi-linear",
 	including definitions,
-        see the 'Term: linear' section of
         <a href="https://jeffreykegler.github.io/personal/timeline_v3">
-          V3 of my "Parsing: A Timeline"</a>.
+          V3 of my "Parsing: A Timeline"</a>,
+        in particular its 'Term: linear' section.
  <a href="#footnote-4-ref">&#8617;</a></p>
 <p id="footnote-5">5.
-        It perhaps helps that regular expressions are less powerful,
-        so the problems tend to be simpler.
-        There are regex debuggers, but the fact they are not used
-        much indicates, at least to this writer, that they aren't needed
-        that much.
+	While it is clearly the consensus among practitioners and theoreticians
+	that, for parsing,
+	practical time is quasi-linear or better,
+	there are those who argue that worse-than-quasi-linear parsers
+	are often the right ones for the job,
+	and that research on them has been unwisely neglected.
+	The dissenters are not without a case:
+	For example, in natural language, while sentences are in theory
+	infinite in length, in practice their average size is fixed.
+	And while very long difficult-to-parse sentences do occur in some texts, such as
+	older ones, it is normal for a human reader
+	to have to spend extra time on them.
+	So it may be unreasonable to insist that a parser algorithm be
+	quasi-linear for this purpose.
  <a href="#footnote-5-ref">&#8617;</a></p>
 <p id="footnote-6">6.
-        See Grune and Jacobs,
-        <cite>Parsing Techniques: A Practical Guide</cite>,
-        2nd edition, 2008,
-        p. 314.
+      Marpa's useful power is LR-regular,
+      which properly contains
+      every class of grammar in practical use: regular expressions,
+      LALR,
+      LL(k) for all k,
+      LR(k) for all k,
+      and the LL-regular grammars.
+      <!-- For LLR, see Theorem 3, p. 448 in
+      https://ris.utwente.nl/ws/portalfiles/portal/6126669,
+      Nijholt, "On the parsing of LL-regular grammars" -->
  <a href="#footnote-6-ref">&#8617;</a></p>
-<p id="footnote-7">7.
-        I understand that compiler and parsing courses,
-        once required of all grad students,
-        are now either optional
-        or no longer taught,
-        even in some of the top Computer Science departmennts.
-        This IMHO would be one of the reasons.
- <a href="#footnote-7-ref">&#8617;</a></p>
-<p id="footnote-8">8.
-        <a href="https://jeffreykegler.github.io/personal/timeline_v3">
-	My V3 timeline</a>,
-	very popular on its own account,
-	and backgroun source of much of this post,
-	also describes how Marpa (my own parser)
-	relates to these "virtues".
-	See also the links at the end of this blog post.
- <a href="#footnote-8-ref">&#8617;</a></p>
   </body>
 </html>
 <br />
-<p>posted at: 16:02 |
-<a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2018/05/will_want.html">direct link to this entry</a>
+<p>posted at: 10:07 |
+<a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2018/05/fast_power.html">direct link to this entry</a>
 </p>
 <div style="color:#38B0C0;padding:1px;text-align:center;">
 &sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;

@@ -1,66 +1,3 @@
-#!perl
-
-use 5.010;
-use strict;
-use warnings;
-use English qw( -no_match_vars );
-use autodie;
-
-sub usage {
-	my ($message) = @_;
-	die $message, "\nusage: $PROGRAM_NAME";
-}
-
-my $fn_number = 0;
-my @fn_lines = ();
-my @lines = ();
-
-LINE: while ( my $line = <DATA> ) {
-    chomp $line;
-    if ( $line =~ /<footnote>/ ) {
-        do_footnote($line);
-	next LINE;
-    }
-    push @lines, $line;
-}
-
-my $output = join "\n", @lines;
-my $footnotes = join "\n", '<h2>Footnotes</h2>', @fn_lines;
-$output =~ s[<comment>FOOTNOTES HERE</comment>][$footnotes];
-
-say $output;
-
-sub do_footnote {
-    my ($line) = @_;
-    $fn_number++;
-    my $fn_ref = join '-', 'footnote', $fn_number, 'ref';
-    my $fn_href = join '-', 'footnote', $fn_number;
-    my $footnoted_line = $line;
-    $footnoted_line =~ s/<footnote>.*$//;
-    $footnoted_line .= qq{<a id="$fn_ref" href="#$fn_href">[$fn_number]</a>};
-    push @fn_lines, qq{<p id="$fn_href">$fn_number.};
-    $line =~ s/^.*<footnote>//;
-    my $inside_footnote = $line;
-    $inside_footnote =~ s/^.*<footnote>//;
-    push @fn_lines, $inside_footnote if $inside_footnote =~ m/\S/;
-    my $post_footnote = '';
-  FN_LINE: while ( my $fn_line = <DATA> ) {
-        chomp $fn_line;
-        if ( $fn_line =~ m[<\/footnote>] ) {
-	    $post_footnote = $fn_line;
-	    $post_footnote =~ s[^.*<\/footnote>][];
-	    $fn_line =~ s[</footnote>.*$][];
-	    push @fn_lines, $fn_line if $fn_line =~ m/\S/;
-	    push @fn_lines, qq{ <a href="#$fn_ref">&#8617;</a></p>};
-	    last FN_LINE;
-        }
-	push @fn_lines, $fn_line;
-    }
-    $footnoted_line .= $post_footnote;
-    push @lines, $footnoted_line if $footnoted_line =~ m/\S/;
-}
-
-__DATA__
 Parsers and Useful Power
 <html>
   <head>
@@ -72,13 +9,7 @@ Parsers and Useful Power
       -->
       What do parser
       users want?
-      What makes a parser<footnote>
-      By "parser" in this post,
-      I will mean a programmer's
-      most powerful toolbox parser --
-      what might be called the "flagship" parser.
-      No parser will ever be the right one for all uses.
-      </footnote>
+      What makes a parser<a id="footnote-1-ref" href="#footnote-1">[1]</a>
       successful?
       In this post I will look at
       one aspect of
@@ -89,12 +20,7 @@ Parsers and Useful Power
     <h2>Irons 1961</h2>
     <p>
       The first paper
-      fully describing a parser was Irons 1961<footnote>
-	For the reference to Irons, see
-        <a href="https://jeffreykegler.github.io/personal/timeline_v3">
-          V3 of my "Parsing: A Timeline"</a>.
-	  The "Timeline" contains the background material for this post.
-      </footnote>.
+      fully describing a parser was Irons 1961<a id="footnote-2-ref" href="#footnote-2">[2]</a>.
       The Irons parser was what is called "general",
       meaning that it can parse all of the
       the "context-free grammars".
@@ -124,39 +50,14 @@ Parsers and Useful Power
     <h2>Raw power versus useful power</h2>
     <p>
       The contest between Irons parsing and recursive descent took place
-      before the theory for analyzing algorithms was fully formed<footnote>
-      Even the term "analysis of algorithms" did not exist until 1969:
-      see <a href="https://web.archive.org/web/20160828152021/http://www-cs-faculty.stanford.edu/~uno/news.html">
-      Knuth, "Recent News"</a>.
-      </footnote>.
+      before the theory for analyzing algorithms was fully formed<a id="footnote-3-ref" href="#footnote-3">[3]</a>.
       In retrospect, we can say that,
       except in specialized uses,
       an acceptable parser for most practical uses
-      must be linear or quasi-linear.<footnote>
-        For more about "linear" and "quasi-linear",
-	including definitions,
-        <a href="https://jeffreykegler.github.io/personal/timeline_v3">
-          V3 of my "Parsing: A Timeline"</a>,
-        in particular its 'Term: linear' section.
-      </footnote>
+      must be linear or quasi-linear.<a id="footnote-4-ref" href="#footnote-4">[4]</a>
       That is,
       the "useful power" of a parser is the class
-      of grammars that it will parse in quasi-linear time.<footnote>
-	While it is clearly the consensus among practitioners and theoreticians
-	that, for parsing,
-	practical time is quasi-linear or better,
-	there are those who argue that worse-than-quasi-linear parsers
-	are often the right ones for the job,
-	and that research on them has been unwisely neglected.
-	The dissenters are not without a case:
-	For example, in natural language, while sentences are in theory
-	infinite in length, in practice their average size is fixed.
-	And while very long difficult-to-parse sentences do occur in some texts, such as
-	older ones, it is normal for a human reader
-	to have to spend extra time on them.
-	So it may be unreasonable to insist that a parser algorithm be
-	quasi-linear for this purpose.
-	</footnote>
+      of grammars that it will parse in quasi-linear time.<a id="footnote-5-ref" href="#footnote-5">[5]</a>
     </p>
     <p>
       Useful power turns out to be more important,
@@ -217,7 +118,59 @@ Parsers and Useful Power
     <p>
       To learn about
       my own parsing project,
-      Marpa<footnote>
+      Marpa<a id="footnote-6-ref" href="#footnote-6">[6]</a>,
+      there is the
+      <a href="http://savage.net.au/Marpa.html">semi-official web site, maintained by Ron Savage</a>.
+      The official, but more limited, Marpa website
+      <a href="http://jeffreykegler.github.io/Marpa-web-site/">is my personal one</a>.
+      Comments on this post can be made in
+      <a href="http://groups.google.com/group/marpa-parser">
+        Marpa's Google group</a>,
+      or on our IRC channel: #marpa at freenode.net.
+    </p>
+    <h2>Footnotes</h2>
+<p id="footnote-1">1.
+      By "parser" in this post,
+      I will mean a programmer's
+      most powerful toolbox parser --
+      what might be called the "flagship" parser.
+      No parser will ever be the right one for all uses.
+ <a href="#footnote-1-ref">&#8617;</a></p>
+<p id="footnote-2">2.
+	For the reference to Irons, see
+        <a href="https://jeffreykegler.github.io/personal/timeline_v3">
+          V3 of my "Parsing: A Timeline"</a>.
+	  The "Timeline" contains the background material for this post.
+ <a href="#footnote-2-ref">&#8617;</a></p>
+<p id="footnote-3">3.
+      Even the term "analysis of algorithms" did not exist until 1969:
+      see <a href="https://web.archive.org/web/20160828152021/http://www-cs-faculty.stanford.edu/~uno/news.html">
+      Knuth, "Recent News"</a>.
+ <a href="#footnote-3-ref">&#8617;</a></p>
+<p id="footnote-4">4.
+        For more about "linear" and "quasi-linear",
+	including definitions,
+        <a href="https://jeffreykegler.github.io/personal/timeline_v3">
+          V3 of my "Parsing: A Timeline"</a>,
+        in particular its 'Term: linear' section.
+ <a href="#footnote-4-ref">&#8617;</a></p>
+<p id="footnote-5">5.
+	While it is clearly the consensus among practitioners and theoreticians
+	that, for parsing,
+	practical time is quasi-linear or better,
+	there are those who argue that worse-than-quasi-linear parsers
+	are often the right ones for the job,
+	and that research on them has been unwisely neglected.
+	The dissenters are not without a case:
+	For example, in natural language, while sentences are in theory
+	infinite in length, in practice their average size is fixed.
+	And while very long difficult-to-parse sentences do occur in some texts, such as
+	older ones, it is normal for a human reader
+	to have to spend extra time on them.
+	So it may be unreasonable to insist that a parser algorithm be
+	quasi-linear for this purpose.
+ <a href="#footnote-5-ref">&#8617;</a></p>
+<p id="footnote-6">6.
       Marpa's useful power is LR-regular,
       which properly contains
       every class of grammar in practical use: regular expressions,
@@ -228,16 +181,6 @@ Parsers and Useful Power
       <!-- For LLR, see Theorem 3, p. 448 in
       https://ris.utwente.nl/ws/portalfiles/portal/6126669,
       Nijholt, "On the parsing of LL-regular grammars" -->
-      </footnote>,
-      there is the
-      <a href="http://savage.net.au/Marpa.html">semi-official web site, maintained by Ron Savage</a>.
-      The official, but more limited, Marpa website
-      <a href="http://jeffreykegler.github.io/Marpa-web-site/">is my personal one</a>.
-      Comments on this post can be made in
-      <a href="http://groups.google.com/group/marpa-parser">
-        Marpa's Google group</a>,
-      or on our IRC channel: #marpa at freenode.net.
-    </p>
-    <comment>FOOTNOTES HERE</comment>
+ <a href="#footnote-6-ref">&#8617;</a></p>
   </body>
 </html>
