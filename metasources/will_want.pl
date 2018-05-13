@@ -61,7 +61,7 @@ sub do_footnote {
 }
 
 __DATA__
-The Five Virtues of Parsers
+The Seven Virtues of Parsers
 <html>
   <head>
   </head>
@@ -82,27 +82,36 @@ The Five Virtues of Parsers
       That is, once a parser is discovered,
       what makes it successful?
       And once a parser is successful,
-      what causes users to want more?
+      what causes users to want a better one?
     </p>
     <p>Comparisons of parsers are often like a variant
-      of archery:
-      one where the archer is allowed to move
+      of archery
+      where the archer is allowed to move
       the target after shooting the bow.
       It is my purpose in this post to escape that,
-      and to ground comparisons in the experience of
+      and to ground comparison in the experience of
       practical programmers,
-      as shown by the history of the field.
+      as shown by the history of the field<footnote>
+      No single set of criteria applies to all parsing
+      tasks.
+      The criteria in this post are for a programmer's
+      most powerful toolbox parser.
+      Recursive descent and PEG will
+      probably survive forever in specialized uses.
+      And the most frequently used parser
+      will probably always be regexes.
+      </footnote>.
     </p>
     <h2>The first major virtue: fast</h2>
     <p>
-      By one accounting,
+      From one point of view,
       the first systematic attempt at parsing
       was via regular expressions.<footnote>
         Strictly speaking,
         regular expressions are recognizers,
         not parsers
         (see "Term: parser" and
-        "Term: recognzier" in
+        "Term: recognizer" in
         <a href="https://jeffreykegler.github.io/personal/timeline_v3">).
           This is because, in their pure form, regular expressions
           simply determine if the input is a match --
@@ -113,21 +122,21 @@ The Five Virtues of Parsers
           At the low end, regexes often compete with parsers
           and why that is the case is very relevant to my
           concerns in this post.</a></footnote>
-      Regular expressions are still very much with us,
-      so they obviously must demonstrate at least
+      Regular expressions show no signs of going away,
+      so they obviously demonstrate at least
       <b>some</b>
       of the virtues that make a parser popular.
     </p>
     <p>
-      The most superficial of these is that
+      The most obvious of these is that
       a parser must be "fast enough"
       to please its users.
       A rigorous understanding of what "fast enough" means
       was slow to emerge,
-      but it is now clear that, except in restricted uses,
-      a parser must be linear or quasi-linear.<footnote>
+      but it is now clear that, except in specialized uses,
+      it means that a parser must be linear or quasi-linear.<footnote>
         For definitions of "linear" and "quasi-linear",
-        see the 'Term: "linear"' section of
+        see the 'Term: linear' section of
         <a href="https://jeffreykegler.github.io/personal/timeline_v3">
           V3 of my "Parsing: A Timeline"</a>.
       </footnote>
@@ -139,8 +148,8 @@ The Five Virtues of Parsers
       with reasonable effort,
       to know if her grammar
       will be parsed by the parser.
-      In this respect, regular expressions can be called
-      perfect --
+      Regular expressions as predictable as
+      you could possibly want --
       there's a handy notation for them.
       Anything in that notation is a regular expression,
       and will be parsed in linear time by your regular
@@ -148,18 +157,14 @@ The Five Virtues of Parsers
       you never need to desk-check.
     </p>
     <h2>The first minor virtue: declarative</h2>
-    <p>Since there is a exact notation
-      for regular expression, it has the first minor virtue:
-      it is declarative.
-      If a parser can automatically be generated from a compact
-      notation, the parsing method is declarative.
-    </p>
-    <p>
-      I call virtues minor
-      if they are important in the eyes of the users,
-      but of less importance than the major virtues.
-      That "declarative" is a minor virtue is clear
-      from the history of parsing practice.
+    <p>If a parser can automatically be generated from a compact
+      notation, I say that it has the first minor
+      virtue: it is "declarative".
+      There is a exact notation
+      for regular expressions,
+      so and it is so handy that it is almost always
+      used to drive regular expression parsing.
+      Regular expression is as declarative as it gets.
     </p>
     <h2>The third major virtue: power</h2>
     <p>Regular expressions, however,
@@ -167,29 +172,33 @@ The Five Virtues of Parsers
       If a programmer has a grammar she considers practical,
       she wants her parser to parse it.
       Here regular expressions often fail -- a lot of practical
-      grammar are regular expressions, but many others are not.
+      grammars are regular expressions, but many others are not.
       For regular expressions,
       one of the fails is ironic --
       the notation for regular expressions is recursive,
       but regular expressions cannot deal with recursion.
     </p>
     <p>
-      Grabs for power predate the parsing literature,
-      which begins with Irons 1961.
-      In terms of power,
-      Irons parser is "general",
-      meaning that it can parse what are called
+      The first paper
+      fully describing a parser is Irons 1961,
+      and it contains the most
+      ambitious grab for parsing power up to that time.
+      The Irons parser is "general",
+      meaning that it can parse all of what what are called
       the "context-free grammars".
     </p>
     <p>
-      The context-free grammars are exactly those which can
-      be written in BNF.
-      This means that Irons parser had the same kind of predictability
-      that regular expressions had -- it could parse every grammar
-      written in its grammar notation.
-      Again, there was no need to desk check,
-      but this time the class of grammars that could be parsed was
-      much, much larger.
+      The context-free grammars many of the nice properties
+      with regular expressions.
+      There is a very handy notation for them: BNF.
+      Anything you can write in BNF is a context-free grammar.
+      Any grammar you cannot write in BNF is not context-free.
+      This makes the Irons parser as predictable as regular
+      expressions.
+      But the Irons parser is far more powerful:
+      The context-free grammars are vastly larger than
+      the regular expression grammars,
+      which they contain.
     </p>
     <h2>The fourth major virtue: reliable</h2>
     <p>
@@ -246,7 +255,8 @@ The Five Virtues of Parsers
       instantly spot the error,
       mutter "silly me"
       correct it and rerun.
-    </p><p>
+    </p>
+    <p>
       In practice, parsers were as helpful as they could be,
       and programmers had been satisfied with that.
       Regular expressions and their inputs
@@ -261,17 +271,45 @@ The Five Virtues of Parsers
       way.
     </p>
     <p>
-      It was assumed, therefore that LALR only had to be as helpful
+    In 1969 it was thought the next step up in power.
+      consistent with the other virtues.
+      might have been found.
+      This was LALR,
+      which most practitioners will know as the parse engine behind
+      <tt>yacc</tt> and <tt>bison</tt>.
+      LALR clearly was fast and reliable -- if it parsed
+      a grammar, it always did so in linear time.
+      LALR could be said to be predictable if you were willing to stretch a point.
+      The description of the LALR class of grammars is very
+      technical. In the general case,
+      it takes some mathematics to know
+      if a grammar is LALR.
+      But one could deal with LALR as if it was a pinball machine --
+      there's no exact definition of how much nudging you're allowed,
+      with practice you acquire a sense for what you
+      can get away with.
+      And in fact,
+      the most aggressive
+      widely-used LALR grammar was written
+      by Larry Wall, a non-mathematician.
+    </p>
+    <p>
+      The advent of LALR in 1969 stretched things to,
+      and ultimately beyond, the breaking point.
+      It was assumed that, as before, 
+      LALR only had to be as helpful
       as it could be and users would cope.
-      But LALR stretched this assumption beyond the limit.
+      But LALR carried error-unfriendliness to extremes.
       LALR did not necessarily detect errors immediately.
-      At the point where it did recognize an error,
-      it described the problem in terms of LR(0) states.
-      These were cryptic,
-      and the user willing to decipher them faced another
-      obstacle --
-      since LALR was a simplification of LR(1),
-      the messages were sometimes just plain wrong.<footnote>
+      When it did recognize an error,
+      it described the problem in terms of LR(1) states.
+      You need a fair amount of parsing theory to understand these.
+      Alas, for the programmer willing to do this,
+      another pitfall awaited.
+      Since LALR was a simplification of LR(1),
+      the LR(1) state conflicts it reported did not necessarily exist --
+      that is, the error reports, cryptic as they were,
+      were sometimes just plain wrong.<footnote>
         See Grune and Jacobs,
         <cite>Parsing Techniques: A Practical Guide</cite>,
         2nd edition, 2008,
@@ -290,7 +328,8 @@ The Five Virtues of Parsers
         even in some of the top Computer Science departmennts.
         This IMHO would be one of the reasons.
       </footnote>.
-    </p><p>
+    </p>
+    <p>
       Recursive descent
       [ TO HERE ]
       <br>
@@ -308,18 +347,6 @@ The Five Virtues of Parsers
       you can breed from that and expect good things.
       But if even once you've lucked out with a parse,
       your next parse is a just another new toss of the dice.
-    </p>
-    <p>In 19XX it was thought the next step up in power,
-      consistent with the Three Basic Virtues,
-      might have been found:
-      A parser called yacc parsed a class of grammars called LALR.
-      LALR clearly had two of the Basic Virtues (fast and reliable)
-      and it could be said to have the third if you were willing to stretch a point.
-      Technically,
-      it took a mathematician to tell if a grammar is LALR.
-      But what was probably the most sophisticated LALR grammar was
-      created by Larry Wall, a non-mathematician --
-      so one could get sense of it after a few hard knocks.
     </p>
     <h2>References, comments, etc.</h2>
     <p>
