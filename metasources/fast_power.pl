@@ -136,6 +136,7 @@ Parsers and Useful Power
       must be linear or quasi-linear.<footnote>
         For more about "linear" and "quasi-linear",
 	including definitions,
+	see
         <a href="https://jeffreykegler.github.io/personal/timeline_v3">
           V3 of my "Parsing: A Timeline"</a>,
         in particular its 'Term: linear' section.
