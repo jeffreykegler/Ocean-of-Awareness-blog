@@ -1,43 +1,67 @@
-<html>
-<head>
-<link rel="alternate" title="Ocean of Awareness RSS" type="application/rss+xml" title="RSS" href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/index.rss" />
-<title>The Seven Virtues of Parsers</title>
-<style type="text/css">
-   strong {font-weight: 700;}
-</style>
-</head>
-<body>
-<div
-  style="color:white;background-color:#38B0C0;padding:1em;clear:left;text-align:center;">
-<h1>Ocean of Awareness</h1>
-</div>
-  <div style="margin:0;padding:10px 30px 10px 10px;width:150px;float:left;border-right:2px solid #38B0C0">
-  <p>
-  <strong>Jeffrey Kegler's blog</strong>
-  about Marpa, his new parsing algorithm,
-    and other topics of interest</p>
-  <p><a href="http://www.jeffreykegler.com/">Jeffrey's personal website</a></p>
-      <p>
-	<a href="https://twitter.com/jeffreykegler" class="twitter-follow-button" data-show-count="false">Follow @jeffreykegler</a>
-      </p>
-      <p style="text-align:center">
-	<!-- Place this code where you want the badge to render. -->
-	<a href="//plus.google.com/101567692867247957860?prsrc=3" rel="publisher" style="text-decoration:none;">
-	<img src="//ssl.gstatic.com/images/icons/gplus-32.png" alt="Google+" style="border:0;width:32px;height:32px;"/></a>
-      </p>
-  <h3>Marpa resources</h3>
-  <p><a href="http://jeffreykegler.github.com/Marpa-web-site/">The Marpa website</a></p>
-  <p>The Ocean of Awareness blog: <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog">home page</a>,
-  <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/metapages/chronological.html">chronological index</a>,
-  and
-  <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/metapages/annotated.html">annotated index</a>.
-  </p>
-  </div>
-  <div style="margin-left:190px;border-left:2px solid #38B0C0;padding:25px;">
-<h3>Fri, 11 May 2018</h3>
-<br />
-<center><a name="will_want"> <h2>The Seven Virtues of Parsers</h2> </a>
-</center>
+#!perl
+
+use 5.010;
+use strict;
+use warnings;
+use English qw( -no_match_vars );
+use autodie;
+
+sub usage {
+	my ($message) = @_;
+	die $message, "\nusage: $PROGRAM_NAME";
+}
+
+my $fn_number = 0;
+my @fn_lines = ();
+my @lines = ();
+
+LINE: while ( my $line = <DATA> ) {
+    chomp $line;
+    if ( $line =~ /<footnote>/ ) {
+        do_footnote($line);
+	next LINE;
+    }
+    push @lines, $line;
+}
+
+my $output = join "\n", @lines;
+my $footnotes = join "\n", '<h2>Footnotes</h2>', @fn_lines;
+$output =~ s[<comment>FOOTNOTES HERE</comment>][$footnotes];
+
+say $output;
+
+sub do_footnote {
+    my ($line) = @_;
+    $fn_number++;
+    my $fn_ref = join '-', 'footnote', $fn_number, 'ref';
+    my $fn_href = join '-', 'footnote', $fn_number;
+    my $footnoted_line = $line;
+    $footnoted_line =~ s/<footnote>.*$//;
+    $footnoted_line .= qq{<a id="$fn_ref" href="#$fn_href">[$fn_number]</a>};
+    push @fn_lines, qq{<p id="$fn_href">$fn_number.};
+    $line =~ s/^.*<footnote>//;
+    my $inside_footnote = $line;
+    $inside_footnote =~ s/^.*<footnote>//;
+    push @fn_lines, $inside_footnote if $inside_footnote =~ m/\S/;
+    my $post_footnote = '';
+  FN_LINE: while ( my $fn_line = <DATA> ) {
+        chomp $fn_line;
+        if ( $fn_line =~ m[<\/footnote>] ) {
+	    $post_footnote = $fn_line;
+	    $post_footnote =~ s[^.*<\/footnote>][];
+	    $fn_line =~ s[</footnote>.*$][];
+	    push @fn_lines, $fn_line if $fn_line =~ m/\S/;
+	    push @fn_lines, qq{ <a href="#$fn_ref">&#8617;</a></p>};
+	    last FN_LINE;
+        }
+	push @fn_lines, $fn_line;
+    }
+    $footnoted_line .= $post_footnote;
+    push @lines, $footnoted_line if $footnoted_line =~ m/\S/;
+}
+
+__DATA__
+The Seven Virtues of Parsers
 <html>
   <head>
   </head>
@@ -46,7 +70,11 @@
       <!--
       marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
       -->
-      In a previous post<a id="footnote-1-ref" href="#footnote-1">[1]</a>, I did a careful examination of the
+      In a previous post<footnote>
+        Much of the material in this post is drawn from
+        <a href="https://jeffreykegler.github.io/personal/timeline_v3">
+          V3 of my "Parsing: A Timeline"</a>.
+      </footnote>, I did a careful examination of the
       history of attempts to produce the ideal parser.
       In this one, I will look at the question in reverse --
       what makes the users of a parser
@@ -63,13 +91,38 @@
       It is my purpose in this post to escape that,
       and to ground comparison in the experience of
       practical programmers,
-      as shown by the history of the field<a id="footnote-2-ref" href="#footnote-2">[2]</a>.
+      as shown by the history of the field<footnote>
+      No single set of criteria applies to all parsing
+      tasks.
+      The criteria in this post are for a programmer's
+      most powerful toolbox parser.
+      Recursive descent and PEG will
+      probably survive forever in specialized uses.
+      And the most frequently used parser
+      will probably always be regexes.
+      </footnote>.
     </p>
     <h2>The first major virtue: fast</h2>
     <p>
       From one point of view,
       the first systematic attempt at parsing
-      was via regular expressions.<a id="footnote-3-ref" href="#footnote-3">[3]</a>
+      was via regular expressions.<footnote>
+        Strictly speaking,
+        regular expressions are recognizers,
+        not parsers
+        (see "Term: parser" and
+        "Term: recognizer" in
+        <a href="https://jeffreykegler.github.io/personal/timeline_v3">
+	"Parsing: A Timeline", V3</a>).
+          This is because, in their pure form, regular expressions
+          simply determine if the input is a match --
+          they do not determine its structure.
+          Nonetheless, regex engines in practical use
+          often extend regular expressions,
+          for example, by adding captures.
+          At the low end, regexes often compete with parsers
+          and why that is the case is very relevant to my
+          concerns in this post.</a></footnote>
       Regular expressions show no signs of going away,
       so they obviously demonstrate at least
       <b>some</b>
@@ -82,7 +135,13 @@
       A rigorous understanding of what "fast enough" means
       was slow to emerge,
       but it is now clear that, except in specialized uses,
-      it means that a parser must be linear or quasi-linear.<a id="footnote-4-ref" href="#footnote-4">[4]</a>
+      it means that a parser must be linear or quasi-linear.<footnote>
+        For more about "linear" and "quasi-linear",
+	including definitions,
+        see the 'Term: linear' section of
+        <a href="https://jeffreykegler.github.io/personal/timeline_v3">
+          V3 of my "Parsing: A Timeline"</a>.
+      </footnote>
     </p>
     <h2>The second major virtue: predictable</h2>
     <p>
@@ -243,7 +302,12 @@
       and programmers had been satisfied with that.
       Regular expressions and their inputs
       usually can be debugged by experiment,
-      when the problem is not obvious.<a id="footnote-5-ref" href="#footnote-5">[5]</a>
+      when the problem is not obvious.<footnote>
+        It perhaps helps that regular expressions are less powerful,
+        so the problems tend to be simpler.
+        There are regex debuggers, but the fact they are not used
+        much indicates, at least to this writer, that they aren't needed
+        that much.</footnote>
       Recursive descent is procedural, and debugging can be approached that
       way.
     </p>
@@ -263,13 +327,25 @@
       Since LALR was a simplification of LR(1),
       the LR(1) state conflicts it reported did not necessarily exist --
       that is, the error reports, cryptic as they were,
-      were sometimes just plain wrong.<a id="footnote-6-ref" href="#footnote-6">[6]</a>
+      were sometimes just plain wrong.<footnote>
+        See Grune and Jacobs,
+        <cite>Parsing Techniques: A Practical Guide</cite>,
+        2nd edition, 2008,
+        p. 314.
+      </footnote>
     </p>
     <p>Despite its toxic qualities,
       LALR dominated practice for at least a decade,
       ruled the textbooks for longer
       and still plays a disproportionate role in
-      classroom instruction<a id="footnote-7-ref" href="#footnote-7">[7]</a>.
+      classroom instruction<footnote>
+        I understand that compiler and parsing courses,
+        once required of all grad students,
+        are now either optional
+        or no longer taught,
+        even in some of the top Computer Science departmennts.
+        This IMHO would be one of the reasons.
+      </footnote>.
     </p>
     <h2>Revisiting reliability</h2>
     <p>
@@ -291,7 +367,15 @@
        As many readers will be aware,
        I have my own pony in this horse-race.
        I have described how it relates to these virtues
-       elsewhere<a id="footnote-8-ref" href="#footnote-8">[8]</a>.
+       elsewhere<footnote>
+        <a href="https://jeffreykegler.github.io/personal/timeline_v3">
+	My V3 timeline</a>,
+	very popular on its own account,
+	and backgroun source of much of this post,
+	also describes how Marpa (my own parser)
+	relates to these "virtues".
+	See also the links at the end of this blog post.
+       </footnote>.
     </p>
     <h2>References, comments, etc.</h2>
     <p>
@@ -306,105 +390,6 @@
         Marpa's Google group</a>,
       or on our IRC channel: #marpa at freenode.net.
     </p>
-    <h2>Footnotes</h2>
-<p id="footnote-1">1.
-        Much of the material in this post is drawn from
-        <a href="https://jeffreykegler.github.io/personal/timeline_v3">
-          V3 of my "Parsing: A Timeline"</a>.
- <a href="#footnote-1-ref">&#8617;</a></p>
-<p id="footnote-2">2.
-      No single set of criteria applies to all parsing
-      tasks.
-      The criteria in this post are for a programmer's
-      most powerful toolbox parser.
-      Recursive descent and PEG will
-      probably survive forever in specialized uses.
-      And the most frequently used parser
-      will probably always be regexes.
- <a href="#footnote-2-ref">&#8617;</a></p>
-<p id="footnote-3">3.
-        Strictly speaking,
-        regular expressions are recognizers,
-        not parsers
-        (see "Term: parser" and
-        "Term: recognizer" in
-        <a href="https://jeffreykegler.github.io/personal/timeline_v3">
-	"Parsing: A Timeline", V3</a>).
-          This is because, in their pure form, regular expressions
-          simply determine if the input is a match --
-          they do not determine its structure.
-          Nonetheless, regex engines in practical use
-          often extend regular expressions,
-          for example, by adding captures.
-          At the low end, regexes often compete with parsers
-          and why that is the case is very relevant to my
-          concerns in this post.</a>
- <a href="#footnote-3-ref">&#8617;</a></p>
-<p id="footnote-4">4.
-        For more about "linear" and "quasi-linear",
-	including definitions,
-        see the 'Term: linear' section of
-        <a href="https://jeffreykegler.github.io/personal/timeline_v3">
-          V3 of my "Parsing: A Timeline"</a>.
- <a href="#footnote-4-ref">&#8617;</a></p>
-<p id="footnote-5">5.
-        It perhaps helps that regular expressions are less powerful,
-        so the problems tend to be simpler.
-        There are regex debuggers, but the fact they are not used
-        much indicates, at least to this writer, that they aren't needed
-        that much.
- <a href="#footnote-5-ref">&#8617;</a></p>
-<p id="footnote-6">6.
-        See Grune and Jacobs,
-        <cite>Parsing Techniques: A Practical Guide</cite>,
-        2nd edition, 2008,
-        p. 314.
- <a href="#footnote-6-ref">&#8617;</a></p>
-<p id="footnote-7">7.
-        I understand that compiler and parsing courses,
-        once required of all grad students,
-        are now either optional
-        or no longer taught,
-        even in some of the top Computer Science departmennts.
-        This IMHO would be one of the reasons.
- <a href="#footnote-7-ref">&#8617;</a></p>
-<p id="footnote-8">8.
-        <a href="https://jeffreykegler.github.io/personal/timeline_v3">
-	My V3 timeline</a>,
-	very popular on its own account,
-	and backgroun source of much of this post,
-	also describes how Marpa (my own parser)
-	relates to these "virtues".
-	See also the links at the end of this blog post.
- <a href="#footnote-8-ref">&#8617;</a></p>
+    <comment>FOOTNOTES HERE</comment>
   </body>
 </html>
-<br />
-<p>posted at: 16:02 |
-<a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2018/05/will_want.html">direct link to this entry</a>
-</p>
-<div style="color:#38B0C0;padding:1px;text-align:center;">
-&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-&sect;
-</div>
-</div>
-</div>
-<div id="footer" style="border-top:thick solid #38B0C0;clear:left;padding:1em;">
-<p>This is Ocean of Awareness's
-  new home.  This blog has been hosted at
-  <a href="http://blogs.perl.org/users/jeffrey_kegler/">blogs.perl.org</a>
-  but I have succumbed to the lure of static blogging.
-</div>
-	<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
-              <script type="text/javascript">
-            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
-document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
-          </script>
-          <script type="text/javascript">
-            try {
-              var pageTracker = _gat._getTracker("UA-33430331-1");
-            pageTracker._trackPageview();
-            } catch(err) {}
-          </script>
-</body></html>
