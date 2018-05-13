@@ -121,89 +121,105 @@
     &lt;p&gt;
       The Irons 1961 algorithm was perfectly predictable.
       It was predictably powerful.
-      And it could be fast.
-      But Iron 1961 was not predictably fast.
+      And for some grammars it was fast.
+      &lt;/p&gt;
+      &lt;p&gt;
+      But Irons 1961 was not predictably fast.
       In the general case,
       Irons 1961 used backtracking
       to achieve its power,
       so it would go exponential for many useful grammars.
-      Irons 1961 could not be relied on to be fast.
+      Irons 1961 was not reliably fast.
     &lt;/p&gt;
     &lt;h2&gt;The second minor virtue: procedural&lt;/h2&gt;
     &lt;p&gt;
-      Irons 1961 gave way to recursive descent.
-      Recursive descent had many disadvantages compared to Irons 1961,
-      but it was very fast.
-      With customization.
-      recursive descent was
-      reliably fast for arithmetic expressions,
-      which Irons 1961 was not.
+      Among the grammars Irons 1961 could not parse quickly
+      were those containing the all-important arithmetic expressions.
+      So Irons 1961 gave way to recursive descent.
+      Recursive descent in its pure form,
+      could not parse arithmetic expressions at all,
+      but it made up for that by having the second minor virtue:
+      it was &quot;procedural&quot;,
+      that is, it could be customized with procedural code.
+      Recursive descent itself was not reliable for arithmetic
+      expressions, but it could call specialized parsers which were
+      reliably fast for those sections of the input.
     &lt;/p&gt;
     &lt;p&gt;
-      Recursive descent parsers lacked the first minor virtue.
-      Instead of being declarative,
-      typically they had to be hand written.
-      On the flip side, this made
-      it very easy to add custom code --
-      recursive descent is &quot;procedural&quot;.
+      Traditionally, the two minor virtues has been seen as
+      opposites -- you either write code to parse,
+      or you declare a grammar specification and parse from
+      that.
+      So recursive descent traded an unproductive virtue
+      for a useful one.
+    &lt;/p&gt;
+      I am the virtues of being declarative and being procedural
+      &quot;minor&quot; because, while the major virtues must all be present to some
+      extent, history shows the programmer community will
+      live without the minor virtues when it believes it has to.
+      This has certainly been the case for declarative parsing.
+      But it is also important to note that
+      the desire for declarative parsing, once awakened by Chomsky,
+      has never died.
+      The repeated failures at practical declarative parsing
+      has never discouraged new attempts.
     &lt;/p&gt;
     &lt;p&gt;
-      &quot;Procedural&quot; and &quot;declarative&quot; are both minor virtues,
-      in that may programmers can live without them.
-      They also have been seen as opposites --
-      you could have one or the other, but not both.
+      In fact, in 1969 it was thought this problem was solved.
+      LALR was not only a
+      step up in power from recursive descent --
+      it was declarative.
+      (Most practitioners will know LALR as the parse engine behind
+      &lt;tt&gt;yacc&lt;/tt&gt; and &lt;tt&gt;bison&lt;/tt&gt;.)
+      LALR clearly was fast and reliable -- if it parsed
+      a grammar, it always did so in linear time.
+      And LALR could be said to be predictable
+      if you were willing to stretch the definition a bit.
+      The description of the LALR class of grammars is very
+      technical. In the general case,
+      it takes some mathematics to know
+      if a grammar is LALR.
+    &lt;/p&gt;
+    &lt;p&gt;
+      But one could deal with LALR as if it was a pinball machine --
+      there's no exact definition of how much nudging you're allowed,
+      but with practice you acquire a sense for what you
+      can get away with.
+      In fact,
+      the most aggressive
+      widely-used LALR grammar was written
+      by Larry Wall, a linguist by training.
     &lt;/p&gt;
     &lt;h2&gt;The fifth major virtue: error-friendly&lt;/h2&gt;
-    &lt;p&gt;The other major virtues have always
+    &lt;p&gt;The first four major virtues have always
       been objects of theoretical interest --
       they were in fact,
       the reason that the field of theory of algorithms
       was developed.
+      But theoreticians had usually ignored the fifth virtue --
+      that of being error-friendly, or at least error-tolerant.
     &lt;/p&gt;
     &lt;p&gt;
-      But theoreticians assumed that programmers always
+      Theoreticians had assumed that programmers always
       started with the grammar they intended to use,
       and never made a mistake.
       And theoreticians further assumed that if an input
       was wrong,
       it was enough for the parser to say so.
-      It was assumed the programmer would be able to look
+      It was assumed the programmer could glance
       at an input several meg long,
-      instantly spot the error,
-      mutter &quot;silly me&quot;
+      instantly spot the problem,
+      mutter &quot;silly me&quot;,
       correct it and rerun.
     &lt;/p&gt;
     &lt;p&gt;
-      In practice, parsers were as helpful as they could be,
+      In practice, parsers were as helpful as they conveniently could be,
       and programmers had been satisfied with that.
       Regular expressions and their inputs
       usually can be debugged by experiment,
       when the problem is not obvious.&lt;a id=&quot;footnote-5-ref&quot; href=&quot;#footnote-5&quot;&gt;[5]&lt;/a&gt;
       Recursive descent is procedural, and debugging can be approached that
       way.
-    &lt;/p&gt;
-    &lt;p&gt;
-    In 1969 it was thought the next step up in power.
-      consistent with the other virtues.
-      might have been found.
-      This was LALR,
-      which most practitioners will know as the parse engine behind
-      &lt;tt&gt;yacc&lt;/tt&gt; and &lt;tt&gt;bison&lt;/tt&gt;.
-      LALR clearly was fast and reliable -- if it parsed
-      a grammar, it always did so in linear time.
-      LALR could be said to be predictable if you were willing to stretch a point.
-      The description of the LALR class of grammars is very
-      technical. In the general case,
-      it takes some mathematics to know
-      if a grammar is LALR.
-      But one could deal with LALR as if it was a pinball machine --
-      there's no exact definition of how much nudging you're allowed,
-      with practice you acquire a sense for what you
-      can get away with.
-      And in fact,
-      the most aggressive
-      widely-used LALR grammar was written
-      by Larry Wall, a non-mathematician.
     &lt;/p&gt;
     &lt;p&gt;
       The advent of LALR in 1969 stretched things to,
@@ -229,13 +245,9 @@
       and still plays a disproportionate role in
       classroom instruction&lt;a id=&quot;footnote-7-ref&quot; href=&quot;#footnote-7&quot;&gt;[7]&lt;/a&gt;.
     &lt;/p&gt;
+    &lt;h2&gt;Revisiting reliability&lt;/h2&gt;
     &lt;p&gt;
-      Recursive descent
-      [ TO HERE ]
-      &lt;br&gt;
-      This would go without saying,
-      except that solutions to the parsing problem are often advanced
-      which trade power for reliability.
+      [ FRAGMENT ] &lt;br&gt;
       An algorithm which can go quadratic or worse is often used to supplement
       an algorithm which lacks power.
       It's a kind of cross-breeding of algorithms.
@@ -247,6 +259,13 @@
       you can breed from that and expect good things.
       But if even once you've lucked out with a parse,
       your next parse is a just another new toss of the dice.
+    &lt;/p&gt;
+    &lt;h2&gt;Marpa&lt;/h2&gt;
+    &lt;p&gt;
+       As many readers will be aware,
+       I have my own pony in this horse-race.
+       I have described how it relates to these virtues
+       elsewhere&lt;a id=&quot;footnote-8-ref&quot; href=&quot;#footnote-8&quot;&gt;[8]&lt;/a&gt;.
     &lt;/p&gt;
     &lt;h2&gt;References, comments, etc.&lt;/h2&gt;
     &lt;p&gt;
@@ -263,7 +282,7 @@
     &lt;/p&gt;
     &lt;h2&gt;Footnotes&lt;/h2&gt;
 &lt;p id=&quot;footnote-1&quot;&gt;1.
-        Much of the material in this post is drawn from my
+        Much of the material in this post is drawn from
         &lt;a href=&quot;https://jeffreykegler.github.io/personal/timeline_v3&quot;&gt;
           V3 of my &quot;Parsing: A Timeline&quot;&lt;/a&gt;.
  &lt;a href=&quot;#footnote-1-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
@@ -283,7 +302,8 @@
         not parsers
         (see &quot;Term: parser&quot; and
         &quot;Term: recognizer&quot; in
-        &lt;a href=&quot;https://jeffreykegler.github.io/personal/timeline_v3&quot;&gt;).
+        &lt;a href=&quot;https://jeffreykegler.github.io/personal/timeline_v3&quot;&gt;
+	&quot;Parsing: A Timeline&quot;, V3&lt;/a&gt;).
           This is because, in their pure form, regular expressions
           simply determine if the input is a match --
           they do not determine its structure.
@@ -295,7 +315,8 @@
           concerns in this post.&lt;/a&gt;
  &lt;a href=&quot;#footnote-3-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
 &lt;p id=&quot;footnote-4&quot;&gt;4.
-        For definitions of &quot;linear&quot; and &quot;quasi-linear&quot;,
+        For more about &quot;linear&quot; and &quot;quasi-linear&quot;,
+	including definitions,
         see the 'Term: linear' section of
         &lt;a href=&quot;https://jeffreykegler.github.io/personal/timeline_v3&quot;&gt;
           V3 of my &quot;Parsing: A Timeline&quot;&lt;/a&gt;.
@@ -305,7 +326,7 @@
         so the problems tend to be simpler.
         There are regex debuggers, but the fact they are not used
         much indicates, at least to this writer, that they aren't needed
-        that much
+        that much.
  &lt;a href=&quot;#footnote-5-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
 &lt;p id=&quot;footnote-6&quot;&gt;6.
         See Grune and Jacobs,
@@ -321,6 +342,15 @@
         even in some of the top Computer Science departmennts.
         This IMHO would be one of the reasons.
  &lt;a href=&quot;#footnote-7-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;p id=&quot;footnote-8&quot;&gt;8.
+        &lt;a href=&quot;https://jeffreykegler.github.io/personal/timeline_v3&quot;&gt;
+	My V3 timeline&lt;/a&gt;,
+	very popular on its own account,
+	and backgroun source of much of this post,
+	also describes how Marpa (my own parser)
+	relates to these &quot;virtues&quot;.
+	See also the links at the end of this blog post.
+ &lt;a href=&quot;#footnote-8-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
   &lt;/body&gt;
 &lt;/html&gt;</description>
   </item>
