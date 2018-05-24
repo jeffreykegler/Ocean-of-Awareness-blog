@@ -70,7 +70,30 @@ Parsers and Useful Power
       <!--
       marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
       -->
-    <h2>References, comments, etc.</h2>
+      Important papers produce important mistakes.
+      A paper can contain a great many errors,
+      and they will have no effect if the paper is ignored.
+      On the other hand,
+      even the good methods of
+      a great paper can go badly wrong
+      when successors copy those methods,
+      without realizing that the reasons
+      for them no longer hold.
+    </p>
+    <p>
+      Chomsky's 1956 "Three Models" paper was extremely influential
+      and continues to have great prestige.
+      For good reason --
+      it is fated to go down as
+      one of the great papers of all time.
+      His methods in this papers, shockingly original,
+      are now in use by many who don't realize it.
+      If you use a compiler that reads token, parses
+      to an AST and then processes it,
+      (and almost all of them do this is some form)
+      you are using Chomsky's "three models".
+    </p>
+    <h2>Comments, etc.</h2>
     <p>
       To learn about Marpa,
       my Earley/Leo-based parsing project,
