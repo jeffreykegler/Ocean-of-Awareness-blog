@@ -38,12 +38,12 @@
           About Marpa in general</a>
       </p>
       <p class="view">
-        <a href="#PERL6">
-          Marpa and Perl 6</a>
+        <a href="#TIMELINE">
+          Parsing timeline and history</a>
       </p>
       <p class="view">
-        <a href="#PARSING">
-          About parsing in general</a>
+        <a href="#PERL6">
+          Marpa and Perl 6</a>
       </p>
       <p class="view">
         <a href="#LOP">
@@ -280,6 +280,91 @@
             </a></p>
         </li>
       </ul>
+      <h2><a name="TIMELINE"></a>Parsing timeline and history</h2>
+      <p>In the process of writing Marpa, I read and thought a lot
+        about the various approaches to parsing,
+        and how they developed.
+        When I came to share my thoughts, it discovered quite a few people
+        were also interested -- the posts in this section are my
+	most popular.
+      </p>
+      <ul><li>
+          <p>
+            <a href="https://jeffreykegler.github.io/personal/timeline_v3">
+              Parsing: a timeline</a>
+            A timeline of parsing research, describing how other algorithms pushed the parsers
+            in the Earley lineage
+            (like Marpa)
+            aside, only for things to come down twisted.
+            This is the most technical post I've ever done.
+            Much to my surprise,
+            its
+            <a href="http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2014/09/chron.html">
+              first version</a>
+            was a runaway hit.
+            Within its first two weeks it became my most popular post, by far.
+            The development of the various parsing algorithms is an interesting story,
+            one that has never really been told as a story before.
+            Readers apparently liked this.
+	    [ Because of its length,
+            <a href="https://jeffreykegler.github.io/personal/timeline_v3">
+	    the current version of the "timeline"</a>
+	    is no longer a blog post --
+	    it's a free-standing web page. ]
+          </p>
+        </li>
+        <li>
+          <p>
+            <a href="http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2014/11/ll.html">
+              Parsing: top-down and bottom-up</a>
+            If "Parsing: a timeline" was about "when and how?",
+            then this is about "why?"
+            It describes the concepts behind the two major traditional approaches to
+            parsing and confronts some questions:
+            Why did
+            the invention of bottom-up parsing create so much
+            enthusiasm?
+            Why, despite bottom-up's abandonment by practitioners,
+            does it still play such a big role in classrooms and in textbooks?
+            What does this say about the way forward?
+            Is there one?
+          </p>
+          <p>
+	    Like the "timelines",
+	    this is a popular post,
+	    in this case mostly thanks to the Google bots --
+	    as of this writing it comes up in high position on
+	    organic searches.
+	    If this post interests you,
+	    you may also want to look at the blog post
+	    <a href="http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2015/12/topdown.html">
+	      Top-down parsing is guessing</a>.
+          </p>
+        </li>
+        <li>
+          <p>
+	    <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2018/05/fast_power.html">Parsers
+	    and Useful Power</a>
+	    This post looks at the question of "What do users want in a parser" from a historical perspective.
+	    In particular, it looks at the contest between the Irons parser and recursive descent.
+	    The Irons parser is declarative and far more powerful than recursive descent.
+	    In terms of parsing at linear speed, there were tradeoffs,
+	    and in their pure forms, neither algorithm could parse the
+	    all-important arithmetic expressions.
+	  </p>
+	  <p>
+	    But recursive descent could incorporate custom
+	    hacks,
+	    and those custom hacks could handle arithmetic expressions.
+	    Today recursive descent is everywhere,
+	    while to find a mention of the Irons parser,
+	    you need to make an exhaustive search of
+	    the more thorough textbooks.
+          </p>
+        </li>
+      </ul>
+      <p>
+      </p>
       <h2><a name="PERL6"></a>Marpa versus Perl 6 grammars and PEG</h2>
       <p>In these blog posts, I discuss Perl 6 grammars,
         and compare them with Marpa.
@@ -329,86 +414,6 @@
             that they were demanding the impossible.
           </p>
         </li>
-      </ul>
-      <p>
-        I'm a fan of the Perl 6 effort.
-        And I certainly should be their supporter,
-        after the many favors they've done for me and the Marpa community over the years.
-        The considerations of these post will disappoint the hopes for LOP
-        applications of the native Perl 6 parser.
-        But Perl 6 is much more than that.
-        It would be a mistake to read these posts as
-        part of a dismissal of the Perl 6 effort as
-        a whole.
-      </p>
-      <h2><a name="PARSING"></a>About parsing in general</h2>
-      <p>In the process of writing Marpa, I read and thought a lot
-        about the various approaches to parsing,
-        and how they developed.
-        When I came to share my thoughts, it turned quite a few people
-        were interested.
-        These posts also discuss the ideas behind
-        Marpa, and how they relate to other parsing algorithms.
-      </p>
-      <ul><li>
-          <p>
-            <a href="https://jeffreykegler.github.io/personal/timeline_v3">
-              Parsing: a timeline</a>
-            A timeline of parsing research, describing how other algorithms pushed the parsers
-            in the Earley lineage
-            (like Marpa)
-            aside, only for things to come down twisted.
-            This is the most technical post I've ever done.
-            Much to my surprise,
-            its
-            <a href="http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2014/09/chron.html">
-              first version</a>
-            was a runaway hit.
-            Within its first two weeks it became my most popular post, by far.
-            The development of the various parsing algorithms is an interesting story,
-            one that has never really been told as a story before.
-            Readers apparently liked this.
-          </p>
-          <p>
-	    Because of its length,
-            <a href="https://jeffreykegler.github.io/personal/timeline_v3">
-	    the current version of the "timeline"</a>
-	    is no longer a blog post --
-	    it's a free-standing web page.
-            The
-            <a href="http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2014/09/chron.html">
-              first</a>
-	      and
-            <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2016/08/timeline2.html">
-	      second</a>
-	    versions of the timeline
-            are shorter and focus more tightly on parsers relevant to the history of Earley's algorithm.
-          </p>
-        </li>
-        <li>
-          <p>
-            <a href="http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2014/11/ll.html">
-              Parsing: top-down and bottom-up</a>
-            If "Parsing: a timeline" was about "when and how?",
-            then this is about "why?"
-            It describes the concepts behind the two major traditional approaches to
-            parsing and confronts some questions:
-            Why did
-            the invention of bottom-up parsing create so much
-            enthusiasm?
-            Why, despite bottom-up's abandonment by practitioners,
-            does it still play such a big role in classrooms and in textbooks?
-            What does this say about the way forward?
-            Is there one?
-          </p>
-          <p>
-	    Like the "timelines",
-	    this is a popular post,
-	    in this case mostly thanks to the Google bots --
-	    as of this writing it comes up in high position on
-	    organic searches.
-          </p>
-        </li>
         <li>
           <p>
             <a href="http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2015/03/peg.html">
@@ -425,10 +430,15 @@
         </li>
       </ul>
       <p>
-        If the discussions of the posts in this section interest you,
-        you may also want to look at the blog post
-        <a href="http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2015/12/topdown.html">
-          Top-down parsing is guessing</a>.
+        I'm a fan of the Perl 6 effort.
+        And I certainly should be their supporter,
+        after the many favors they've done for me and the Marpa community over the years.
+        The considerations of these post will disappoint the hopes for LOP
+        applications of the native Perl 6 parser.
+        But Perl 6 is much more than that.
+        It would be a mistake to read these posts as
+        part of a dismissal of the Perl 6 effort as
+        a whole.
       </p>
       <h2><a name="LOP"></a>Language-oriented programming</h2>
       <ul>
