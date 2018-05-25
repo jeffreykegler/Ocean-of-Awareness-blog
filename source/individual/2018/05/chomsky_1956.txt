@@ -1,66 +1,3 @@
-#!perl
-
-use 5.010;
-use strict;
-use warnings;
-use English qw( -no_match_vars );
-use autodie;
-
-sub usage {
-	my ($message) = @_;
-	die $message, "\nusage: $PROGRAM_NAME";
-}
-
-my $fn_number = 0;
-my @fn_lines = ();
-my @lines = ();
-
-LINE: while ( my $line = <DATA> ) {
-    chomp $line;
-    if ( $line =~ /<footnote>/ ) {
-        do_footnote($line);
-	next LINE;
-    }
-    push @lines, $line;
-}
-
-my $output = join "\n", @lines;
-my $footnotes = join "\n", '<h2>Footnotes</h2>', @fn_lines;
-$output =~ s[<comment>FOOTNOTES HERE</comment>][$footnotes];
-
-say $output;
-
-sub do_footnote {
-    my ($line) = @_;
-    $fn_number++;
-    my $fn_ref = join '-', 'footnote', $fn_number, 'ref';
-    my $fn_href = join '-', 'footnote', $fn_number;
-    my $footnoted_line = $line;
-    $footnoted_line =~ s/<footnote>.*$//;
-    $footnoted_line .= qq{<a id="$fn_ref" href="#$fn_href">[$fn_number]</a>};
-    push @fn_lines, qq{<p id="$fn_href">$fn_number.};
-    $line =~ s/^.*<footnote>//;
-    my $inside_footnote = $line;
-    $inside_footnote =~ s/^.*<footnote>//;
-    push @fn_lines, $inside_footnote if $inside_footnote =~ m/\S/;
-    my $post_footnote = '';
-  FN_LINE: while ( my $fn_line = <DATA> ) {
-        chomp $fn_line;
-        if ( $fn_line =~ m[<\/footnote>] ) {
-	    $post_footnote = $fn_line;
-	    $post_footnote =~ s[^.*<\/footnote>][];
-	    $fn_line =~ s[</footnote>.*$][];
-	    push @fn_lines, $fn_line if $fn_line =~ m/\S/;
-	    push @fn_lines, qq{ <a href="#$fn_ref">&#8617;</a></p>};
-	    last FN_LINE;
-        }
-	push @fn_lines, $fn_line;
-    }
-    $footnoted_line .= $post_footnote;
-    push @lines, $footnoted_line if $footnoted_line =~ m/\S/;
-}
-
-__DATA__
 Parsing languages versus parsing grammars
 <html>
   <head>
@@ -82,12 +19,7 @@ Parsing languages versus parsing grammars
       for them no longer hold.
     </p>
     <p>
-      Chomsky's "Three Models" paper<footnote>
-      Chomsky, Noam.
-      "Three models for the description of language."
-      <cite>IRE Transactions on information theory</cite>,
-      vol. 2, issue 3, September 1956, pp. 113-124.
-      </footnote>
+      Chomsky's "Three Models" paper<a id="footnote-1-ref" href="#footnote-1">[1]</a>
       is about as influential
       as a paper can get.
       Just 12 pages,
@@ -136,9 +68,7 @@ Parsing languages versus parsing grammars
       alphabet of sysbols.  If A is an alphabet, we shall say that
       anything formed by concatenating ths symbols of A is a string in
       A. By a grammar of the langnage L we mean a device of some sort that
-      produces all of the strings that are sentences of L and only these.<footnote>
-      Chomsky 1956, p. 114.
-      </footnote>
+      produces all of the strings that are sentences of L and only these.<a id="footnote-2-ref" href="#footnote-2">[2]</a>
     </blockquote>
     <p>Yes, you read that right --
     Chomsky uses a definition of language which has nothing to
@@ -174,11 +104,7 @@ Parsing languages versus parsing grammars
     <blockquote>
     A language over an alphabet &Sigma;
     is a set of strings over an alphabet &Sigma;.
-    This definition encompasses almost everyone's notion of a language.<footnote>
-    Aho, Alfred V., and Jeffrey D. Ullman.
-    <cite>The theory of parsing, translation, and compiling</cite>.
-    Vol. 1. Prentice-Hall, 1972, p. 16.
-    </footnote>
+    This definition encompasses almost everyone's notion of a language.<a id="footnote-3-ref" href="#footnote-3">[3]</a>
     </blockquote>
     If this "encompasses" my notion of a language,
     it does so in the same sense that an avalanche encompasses
@@ -196,33 +122,14 @@ Parsing languages versus parsing grammars
       V
       A language L over V is any subset of the free monoid V*.
       The elements
-      of a language L are called sentences of L.<footnote>
-      Sippu, Seppo and Soisalon-Soininen, Eljas.
-      <cite>Parsing Theory</cite>, Volume I,
-      Springer-Verlag, 1988,
-      p. 11.
-      </footnote>
+      of a language L are called sentences of L.<a id="footnote-4-ref" href="#footnote-4">[4]</a>
     </blockquote>
     <p>The language is that of abstract algebra,
-    but the idea is the same.<footnote>
-    A welcome departure from the tradition, however, arrives with
-    Grune, D. and Jacobs, C. J. H. Parsing Techniques: A Practical Guide, 2nd edition. Springer, 2008.
-    On pp. 5-7, they attribute the traditional "set of strings" definition
-    to "formal linguistics".
-    They
-    point out that the computer scientist requires a grammar to
-    not only list a set of strings, but provide a
-    "structure" for each of them.
-    As an aside,
-    Grune and Jacobs often depart from the "just stick to the math"
-    approach to parsing theory,
-    and give the history and motivation behind the math.
-    My own work owes much to them.
-    </footnote>
+    but the idea is the same.<a id="footnote-5-ref" href="#footnote-5">[5]</a>
     <p>
     Here are two grammars.
-    Both <tt>STRUCTURE</tt>
-    and <tt>STRING</tt>
+    Both &lt;STRUCTURE&gt;
+    and &lt;STRING&gt;
     grammars recognize the same set of strings.
     </P
     <pre id="g-structure-op"><tt>
@@ -240,24 +147,24 @@ Parsing languages versus parsing grammars
       OP ::= '+'
       P ::= number
     </tt></pre>
-    <tt>STRING</tt> is a lot simpler.
+    &lt;STRING&gt; is a lot simpler.
     Many parsers can recognize 
-    <tt>STRING</tt>,
+    &lt;STRING&gt;,
     but most parsers in modern use
     require serious hackery to recognize
-    <tt>STRUCTURE</tt>.
+    &lt;STRUCTURE&gt;.
     On the other hand,
-    <tt>STRUCTURE</tt>.
+    &lt;STRUCTURE&gt;.
     recognizer the associativity and precedence of the two operators,
     and the parse tree it produces could be used directly to evaluate an arithmetic
     expression correctly.
-    The <tt>STRING</tt> produces, if evaluated directly as a parse tree,
+    The &lt;STRING&gt; produces, if evaluated directly as a parse tree,
     very often
     will <b>not</b> produce a correct answer.
-    The parse tree <tt>STRING</tt>, if it is to be evaluated correctly,
+    The parse tree &lt;STRING&gt;, if it is to be evaluated correctly,
     must be rearranged in a second phase of processing --
     one that in effect does the parsing work that 
-    <tt>STRING</tt>, left undone.
+    &lt;STRING&gt;, left undone.
     <h2>Comments, etc.</h2>
     <p>
       To learn about Marpa,
@@ -271,6 +178,41 @@ Parsing languages versus parsing grammars
         Marpa's Google group</a>,
       or on our IRC channel: #marpa at freenode.net.
     </p>
-    <comment>FOOTNOTES HERE</comment>
+    <h2>Footnotes</h2>
+<p id="footnote-1">1.
+      Chomsky, Noam.
+      "Three models for the description of language."
+      <cite>IRE Transactions on information theory</cite>,
+      vol. 2, issue 3, September 1956, pp. 113-124.
+ <a href="#footnote-1-ref">&#8617;</a></p>
+<p id="footnote-2">2.
+      Chomsky 1956, p. 114.
+ <a href="#footnote-2-ref">&#8617;</a></p>
+<p id="footnote-3">3.
+    Aho, Alfred V., and Jeffrey D. Ullman.
+    <cite>The theory of parsing, translation, and compiling</cite>.
+    Vol. 1. Prentice-Hall, 1972, p. 16.
+ <a href="#footnote-3-ref">&#8617;</a></p>
+<p id="footnote-4">4.
+      Sippu, Seppo and Soisalon-Soininen, Eljas.
+      <cite>Parsing Theory</cite>, Volume I,
+      Springer-Verlag, 1988,
+      p. 11.
+ <a href="#footnote-4-ref">&#8617;</a></p>
+<p id="footnote-5">5.
+    A welcome departure from the tradition, however, arrives with
+    Grune, D. and Jacobs, C. J. H. Parsing Techniques: A Practical Guide, 2nd edition. Springer, 2008.
+    On pp. 5-7, they attribute the traditional "set of strings" definition
+    to "formal linguistics".
+    They
+    point out that the computer scientist requires a grammar to
+    not only list a set of strings, but provide a
+    "structure" for each of them.
+    As an aside,
+    Grune and Jacobs often depart from the "just stick to the math"
+    approach to parsing theory,
+    and give the history and motivation behind the math.
+    My own work owes much to them.
+ <a href="#footnote-5-ref">&#8617;</a></p>
   </body>
 </html>

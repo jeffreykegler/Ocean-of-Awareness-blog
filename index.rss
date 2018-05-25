@@ -10,6 +10,227 @@
     <language>en</language>
 
   <item>
+    <title>Parsing languages versus parsing grammars</title>
+    <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2018/05/chomsky_1956.html</link>
+    <description>&lt;html&gt;
+  &lt;head&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;h2&gt;Chomsky's &quot;Three Models&quot; paper&lt;/h2&gt;
+    &lt;p&gt;
+      &lt;!--
+      marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
+      --&gt;
+      Important papers produce important mistakes.
+      A paper can contain a great many errors,
+      and they will have no effect if the paper is ignored.
+      On the other hand,
+      even the good methods of
+      a great paper can go badly wrong
+      when successors copy those methods,
+      without realizing that the reasons
+      for them no longer hold.
+    &lt;/p&gt;
+    &lt;p&gt;
+      Chomsky's &quot;Three Models&quot; paper&lt;a id=&quot;footnote-1-ref&quot; href=&quot;#footnote-1&quot;&gt;[1]&lt;/a&gt;
+      is about as influential
+      as a paper can get.
+      Just 12 pages,
+      it's the paper in which the most-cited scholar of our
+      time first outlined his ideas.
+      It transformed linguistics,
+      is one of the most important scientific papers ever.
+    &lt;/p&gt;
+    &lt;p&gt;
+      It is also the foundation paper of Theory of Parsing,
+      the area of my own work
+      and the subject of these blog posts.
+      Chomsky does not consider himself a computer scientist
+      and, after founding our field,
+      has paid little attention to it.
+      But in fact,
+      the Chomskyan model has been more influential,
+      in computer parsing than in Chomsky's own
+      field of linguistics.
+    &lt;/p&gt;
+    &lt;p&gt;
+      Chomsky 1956 also puts him among the great mathematicians
+      of all time.
+      True, the rigor of Chomsky's proofs better befits a slumming linguist
+      than it would a professional mathematician.
+      But at its heart,
+      mathematics is not a technical field,
+      or even about problem-solving --
+      at its most fundamental,
+      it is about framing problems so that they
+      &lt;b&gt;can&lt;/b&gt; be solved.
+    &lt;/p&gt;
+    &lt;h2&gt;A brilliant simplification&lt;/h2&gt;
+    &lt;p&gt;
+      In this framing,
+      Chomsky has a brilliant insight,
+      if one which will become a problematic tradition.
+      Chomsky needs to show his new approach to grammars will do things that previous
+      attempts at mathematizing linguistics have not.
+      And he realizes how to do this with extremely minimal definition of what
+      a language is.
+    &lt;/p&gt;
+    &lt;blockquote&gt;
+      By a language then, we shall mean a set (finite or infinite) of
+      sentences, each of finite length, all constructed from a finite
+      alphabet of sysbols.  If A is an alphabet, we shall say that
+      anything formed by concatenating ths symbols of A is a string in
+      A. By a grammar of the langnage L we mean a device of some sort that
+      produces all of the strings that are sentences of L and only these.&lt;a id=&quot;footnote-2-ref&quot; href=&quot;#footnote-2&quot;&gt;[2]&lt;/a&gt;
+    &lt;/blockquote&gt;
+    &lt;p&gt;Yes, you read that right --
+    Chomsky uses a definition of language which has nothing to
+    do with it meaning anything.
+    A language, for the purposes of the math in &quot;Three Models&quot;,
+    is nothing but a list of strings.
+    Similarly, a grammar is just something that enumerates
+    those strings.
+    The grammar does not have to provide any clue as to what
+    the strings might mean.
+    &lt;/p&gt;
+    &lt;p&gt;
+        So Chomsky would require of a French grammar that one of the
+	strings that it lists be
+    &lt;/p&gt;
+    &lt;blockquote&gt;
+      Ceci n'est pas une phrase.
+    &lt;/blockquote&gt;
+    &lt;p&gt;For the purposes of his demonstration,
+    Chomsky does not require of his &quot;grammar&quot; that it
+    give us any guidance as to what the French sentence might mean.
+    [ TODO: recognizer? ]
+    &lt;/p&gt;
+    &lt;p&gt;
+    [ TODO: Continue. ]
+    &lt;/p&gt;
+    &lt;h2&gt;The problem&lt;/h2&gt;
+    &lt;p&gt;Given the immense prestige of Chomsky's stunningly original and
+    powerful work,
+    it is little wonder that successors studied, and followed, his
+    methods closely.
+    &lt;/p&gt;
+    &lt;blockquote&gt;
+    A language over an alphabet &amp;Sigma;
+    is a set of strings over an alphabet &amp;Sigma;.
+    This definition encompasses almost everyone's notion of a language.&lt;a id=&quot;footnote-3-ref&quot; href=&quot;#footnote-3&quot;&gt;[3]&lt;/a&gt;
+    &lt;/blockquote&gt;
+    If this &quot;encompasses&quot; my notion of a language,
+    it does so in the same sense that an avalanche encompasses
+    a skier.
+    &lt;/p&gt;
+    &lt;p&gt;
+    Thirty years later,
+    authoritative textbooks are still repeating that same idea.
+    &lt;/p&gt;
+    &lt;blockquote&gt;
+      A set V is an alphabet (or a vocabulary) if it is finite and
+      nonempty.
+      The elements
+      of an alphabet V are called the symbols (or letters or characters) of
+      V
+      A language L over V is any subset of the free monoid V*.
+      The elements
+      of a language L are called sentences of L.&lt;a id=&quot;footnote-4-ref&quot; href=&quot;#footnote-4&quot;&gt;[4]&lt;/a&gt;
+    &lt;/blockquote&gt;
+    &lt;p&gt;The language is that of abstract algebra,
+    but the idea is the same.&lt;a id=&quot;footnote-5-ref&quot; href=&quot;#footnote-5&quot;&gt;[5]&lt;/a&gt;
+    &lt;p&gt;
+    Here are two grammars.
+    Both &amp;lt;STRUCTURE&amp;gt;
+    and &amp;lt;STRING&amp;gt;
+    grammars recognize the same set of strings.
+    &lt;/P
+    &lt;pre id=&quot;g-structure-op&quot;&gt;&lt;tt&gt;
+      STRUCTURE ::= E
+      E ::= E + T
+      E ::= T
+      T ::= T * P
+      T ::= P
+      P ::= number
+    &lt;/tt&gt;&lt;/pre&gt;
+    &lt;pre id=&quot;g-string-op&quot;&gt;&lt;tt&gt;
+      STRING ::= E
+      E ::= P OP E
+      OP ::= '*'
+      OP ::= '+'
+      P ::= number
+    &lt;/tt&gt;&lt;/pre&gt;
+    &amp;lt;STRING&amp;gt; is a lot simpler.
+    Many parsers can recognize 
+    &amp;lt;STRING&amp;gt;,
+    but most parsers in modern use
+    require serious hackery to recognize
+    &amp;lt;STRUCTURE&amp;gt;.
+    On the other hand,
+    &amp;lt;STRUCTURE&amp;gt;.
+    recognizer the associativity and precedence of the two operators,
+    and the parse tree it produces could be used directly to evaluate an arithmetic
+    expression correctly.
+    The &amp;lt;STRING&amp;gt; produces, if evaluated directly as a parse tree,
+    very often
+    will &lt;b&gt;not&lt;/b&gt; produce a correct answer.
+    The parse tree &amp;lt;STRING&amp;gt;, if it is to be evaluated correctly,
+    must be rearranged in a second phase of processing --
+    one that in effect does the parsing work that 
+    &amp;lt;STRING&amp;gt;, left undone.
+    &lt;h2&gt;Comments, etc.&lt;/h2&gt;
+    &lt;p&gt;
+      To learn about Marpa,
+      my Earley/Leo-based parsing project,
+      there is the
+      &lt;a href=&quot;http://savage.net.au/Marpa.html&quot;&gt;semi-official web site, maintained by Ron Savage&lt;/a&gt;.
+      The official, but more limited, Marpa website
+      &lt;a href=&quot;http://jeffreykegler.github.io/Marpa-web-site/&quot;&gt;is my personal one&lt;/a&gt;.
+      Comments on this post can be made in
+      &lt;a href=&quot;http://groups.google.com/group/marpa-parser&quot;&gt;
+        Marpa's Google group&lt;/a&gt;,
+      or on our IRC channel: #marpa at freenode.net.
+    &lt;/p&gt;
+    &lt;h2&gt;Footnotes&lt;/h2&gt;
+&lt;p id=&quot;footnote-1&quot;&gt;1.
+      Chomsky, Noam.
+      &quot;Three models for the description of language.&quot;
+      &lt;cite&gt;IRE Transactions on information theory&lt;/cite&gt;,
+      vol. 2, issue 3, September 1956, pp. 113-124.
+ &lt;a href=&quot;#footnote-1-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;p id=&quot;footnote-2&quot;&gt;2.
+      Chomsky 1956, p. 114.
+ &lt;a href=&quot;#footnote-2-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;p id=&quot;footnote-3&quot;&gt;3.
+    Aho, Alfred V., and Jeffrey D. Ullman.
+    &lt;cite&gt;The theory of parsing, translation, and compiling&lt;/cite&gt;.
+    Vol. 1. Prentice-Hall, 1972, p. 16.
+ &lt;a href=&quot;#footnote-3-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;p id=&quot;footnote-4&quot;&gt;4.
+      Sippu, Seppo and Soisalon-Soininen, Eljas.
+      &lt;cite&gt;Parsing Theory&lt;/cite&gt;, Volume I,
+      Springer-Verlag, 1988,
+      p. 11.
+ &lt;a href=&quot;#footnote-4-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;p id=&quot;footnote-5&quot;&gt;5.
+    A welcome departure from the tradition, however, arrives with
+    Grune, D. and Jacobs, C. J. H. Parsing Techniques: A Practical Guide, 2nd edition. Springer, 2008.
+    On pp. 5-7, they attribute the traditional &quot;set of strings&quot; definition
+    to &quot;formal linguistics&quot;.
+    They
+    point out that the computer scientist requires a grammar to
+    not only list a set of strings, but provide a
+    &quot;structure&quot; for each of them.
+    As an aside,
+    Grune and Jacobs often depart from the &quot;just stick to the math&quot;
+    approach to parsing theory,
+    and give the history and motivation behind the math.
+    My own work owes much to them.
+ &lt;a href=&quot;#footnote-5-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+  &lt;/body&gt;
+&lt;/html&gt;</description>
+  </item>
+  <item>
     <title>Parsers and Useful Power</title>
     <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2018/05/fast_power.html</link>
     <description>&lt;html&gt;
@@ -1180,125 +1401,6 @@
       syntax falls within the limits of LALR.&lt;/p&gt;
     &lt;h2&gt;References, comments, etc.&lt;/h2&gt;
     &lt;p&gt;
-      Marpa has a
-      &lt;a href=&quot;http://savage.net.au/Marpa.html&quot;&gt;semi-official web site, maintained by Ron Savage&lt;/a&gt;.
-      The official, but more limited, Marpa website
-      &lt;a href=&quot;http://jeffreykegler.github.io/Marpa-web-site/&quot;&gt;is my personal one&lt;/a&gt;.
-      Comments on this post can be made in
-      &lt;a href=&quot;http://groups.google.com/group/marpa-parser&quot;&gt;
-        Marpa's Google group&lt;/a&gt;,
-      or on our IRC channel: #marpa at freenode.net.
-    &lt;/p&gt;
-  &lt;/body&gt;
-&lt;/html&gt;</description>
-  </item>
-  <item>
-    <title>What parser do birds use?</title>
-    <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2016/03/parus.html</link>
-    <description>&lt;html&gt;
-  &lt;head&gt;
-  &lt;/head&gt;
-  &lt;body&gt;&lt;p&gt;
-      &lt;!--
-      marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
-      --&gt;
-    &lt;/p&gt;
-    &lt;blockquote&gt;
-      &quot;Here we provide, to our knowledge, the first unambiguous experimental evidence for compositional syntax in a non-human vocal system.&quot;
-      --
-      &lt;a href=&quot;http://www.nature.com/ncomms/2016/160308/ncomms10986/full/ncomms10986.html&quot;&gt;
-        &quot;Experimental evidence for compositional syntax in bird calls&quot;,
-        Toshitaka N. Suzuki,	David Wheatcroft	&amp;amp; Michael Griesser
-        &lt;emph&gt;Nature Communications&lt;/emph&gt;
-        7, Article number: 10986
-      &lt;/a&gt;
-    &lt;/blockquote&gt;
-    &lt;p&gt;
-      In this post I look at a subset of the language
-      of the
-      &lt;a href=&quot;https://en.wikipedia.org/wiki/Great_tit&quot;&gt;
-        Japanese great tit&lt;/a&gt;,
-      also known as Parus major.
-      The above cited article presents evidence
-      that bird brains can parse this language.
-      What about standard modern computer parsing methods?
-      Here is the subset -- probably a tiny one --
-      of the language actually used by Parus major.
-    &lt;/p&gt;&lt;blockquote&gt;&lt;pre&gt;
-      S ::= ABC
-      S ::= D
-      S ::= ABC D
-      S ::= D ABC
-    &lt;/pre&gt;&lt;/blockquote&gt;&lt;p&gt;
-    &lt;/p&gt;
-    &lt;h2&gt;Classifying the Parus major grammar&lt;/h2&gt;
-    &lt;p&gt;Grammophone is a very handy
-      &lt;a href=&quot;http://mdaines.github.io/grammophone/#&quot;&gt;
-        new tool&lt;/a&gt;
-      for classifying grammars.
-      Its own parser is somewhat limited, so that it requires a period
-      to mark the end of a rule.
-      The above grammar is in Marpa's SLIF format, which is smart enough to
-      use the &quot;&lt;tt&gt;::=&lt;/tt&gt;&quot;
-      operator to spot the beginning and end of rules,
-      just as the human eye does.
-      Here's the same grammar converted into a form acceptable to Grammophone:
-    &lt;/p&gt;&lt;blockquote&gt;&lt;pre&gt;
-      S -&gt; ABC .
-      S -&gt; D .
-      S -&gt; ABC D .
-      S -&gt; D ABC .
-    &lt;/pre&gt;&lt;/blockquote&gt;
-    &lt;p&gt;
-      Grammophone tells us that the Parus major grammar is not LL(1),
-      but that it is LALR(1).
-    &lt;/p&gt;
-    &lt;h2&gt;What does this mean?&lt;/h2&gt;
-    &lt;p&gt;LL(1) is the class of grammar parseable by top-down methods:
-      it's the best class for characterizing most parsers in current use,
-      including recursive descent, PEG,
-      and Perl 6 grammars.
-      All of these parsers fall short of dealing with the Parus major language.
-    &lt;/p&gt;
-    &lt;p&gt;
-      LALR(1) is probably most well-known from its implementations in
-      bison and yacc.
-      While able to handle this subset of Parus's language,
-      LALR(1) has its own, very strict, limits.
-      Whether LALR(1) could handle the full
-      complexity of Parus
-      language is a serious question.
-      But it's a question that in practice would probably not arise.
-      LALR(1) has horrible error handling properties.
-    &lt;/p&gt;
-    &lt;p&gt;
-      When the input is correct and within its limits,
-      an LALR-driven parser is fast and works well.
-      But if the input is not perfectly correct,
-      LALR parsers produce
-      no useful analysis of what went wrong.
-      If Parus hears &quot;d abc d&quot;,
-      a parser like Marpa, on the other hand, can produce something like
-      this:
-    &lt;/p&gt;
-    &lt;blockquote&gt;&lt;pre&gt;
-# * String before error: abc d\s
-# * The error was at line 1, column 7, and at character 0x0064 'd', ...
-# * here: d
-    &lt;/pre&gt;&lt;/blockquote&gt;
-    &lt;p&gt;
-      Parus uses its language in predatory contexts,
-      and one can assume that a Parus with a preference for parsers whose
-      error handling is on an LALR(1) level
-      will not be keeping its alleles in the gene pool for very
-      long.
-    &lt;/p&gt;&lt;h2&gt;References, comments, etc.&lt;/h2&gt;
-    &lt;p&gt;
-      Those readers content with sub-Parus parsing methods may stop reading here.
-      Those with greater parsing ambitions, however, may
-      wish to learn more about Marpa.
-      A Marpa test script for parsing the Parus subset is in
-      &lt;a href=https://gist.github.com/jeffreykegler/b5b8ba349b8c6e5c2e54&gt;a Github gist.&lt;/a&gt;
       Marpa has a
       &lt;a href=&quot;http://savage.net.au/Marpa.html&quot;&gt;semi-official web site, maintained by Ron Savage&lt;/a&gt;.
       The official, but more limited, Marpa website
