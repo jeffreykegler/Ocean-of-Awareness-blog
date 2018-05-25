@@ -61,11 +61,12 @@ sub do_footnote {
 }
 
 __DATA__
-Parsers and Useful Power
+Parsing languages versus parsing grammars
 <html>
   <head>
   </head>
   <body>
+    <h2>Chomsky's "Three Models" paper</h2>
     <p>
       <!--
       marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
@@ -81,7 +82,13 @@ Parsers and Useful Power
       for them no longer hold.
     </p>
     <p>
-      Chomsky's 1956 "Three Models" paper is about as influential
+      Chomsky's "Three Models" paper<footnote>
+      Chomsky, Noam.
+      "Three models for the description of language."
+      <cite>IRE Transactions on information theory</cite>,
+      vol. 2, issue 3, September 1956, pp. 113-124.
+      </footnote>
+      is about as influential
       as a paper can get.
       Just 12 pages,
       it's the paper in which the most-cited scholar of our
@@ -104,15 +111,78 @@ Parsers and Useful Power
     <p>
       Chomsky 1956 also puts him among the great mathematicians
       of all time.
-      True, the rigor of his proofs more befits a slumming linguist
-      than it would a professional mathematician,
-      but at its heart,
+      True, the rigor of Chomsky's proofs better befits a slumming linguist
+      than it would a professional mathematician.
+      But at its heart,
       mathematics is not a technical field,
       or even about problem-solving --
       at its most fundamental,
       it is about framing problems so that they
       <b>can</b> be solved.
     </p>
+    <h2>A brilliant simplification</h2>
+    <p>
+      In this framing,
+      Chomsky has a brilliant insight,
+      if one which will become a problematic tradition.
+      Chomsky needs to show his new approach to grammars will do things that previous
+      attempts at mathematizing linguistics have not.
+      And he realizes how to do this with extremely minimal definition of what
+      a language is.
+    </p>
+    <blockquote>
+      By a language then, we shall mean a set (finite or infinite) of
+      sentences, each of finite length, all constructed from a finite
+      alphabet of sysbols.  If A is an alphabet, we shall say that
+      anything formed by concatenating ths symbols of A is a string in
+      A. By a grammar of the langnage L we mean a device of some sort that
+      produces all of the strings that are sentences of L and only these.<footnote>
+      Chomsky 1956, p. 114.
+      </footnote>
+    </blockquote>
+    <p>Yes, you read that right --
+    Chomsky uses a definition of language which has nothing to
+    do with it meaning anything.
+    A language, for the purposes of the math in "Three Models",
+    is nothing but a list of strings.
+    Similarly, a grammar is just something that enumerates
+    those strings.
+    The grammar does not have to provide any clue as to what
+    the strings might mean.
+    </p>
+    <p>
+        So Chomsky would require of a French grammar that one of the
+	strings that it lists be
+    </p>
+    <blockquote>
+      Ceci n'est pas une phrase.
+    </blockquote>
+    <p>For the purposes of his demonstration,
+    Chomsky does not require of his "grammar" that it
+    give us any guidance as to what the French sentence might mean.
+    [ TODO: recognizer? ]
+    </p>
+    <p>
+    [ TODO: Continue. ]
+    </p>
+    <h2>The problem</h2>
+    <p>Given the immense prestige of Chomsky's stunningly original and
+    powerful work,
+    it is little wonder that successors studied, and followed, his
+    methods closely.
+    </p>
+    <blockquote>
+    A language over an alphabet &Sigma;
+    is a set of strings over an alphabet &Sigma;.
+    This definition encompasses almost everyone's notion of a language.<footnote>
+    Aho, Alfred V., and Jeffrey D. Ullman.
+    <cite>The theory of parsing, translation, and compiling</cite>.
+    Vol. 1. Prentice-Hall, 1972, p. 16.
+    </footnote>
+    </blockquote>
+    If this "encompasses" my notion of a language,
+    it does so in the same sense that an avalanche encompasses
+    a skier.
     <h2>Comments, etc.</h2>
     <p>
       To learn about Marpa,
