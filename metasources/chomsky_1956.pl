@@ -81,17 +81,37 @@ Parsers and Useful Power
       for them no longer hold.
     </p>
     <p>
-      Chomsky's 1956 "Three Models" paper was extremely influential
-      and continues to have great prestige.
-      For good reason --
-      it is fated to go down as
-      one of the great papers of all time.
-      His methods in this papers, shockingly original,
-      are now in use by many who don't realize it.
-      If you use a compiler that reads token, parses
-      to an AST and then processes it,
-      (and almost all of them do this is some form)
-      you are using Chomsky's "three models".
+      Chomsky's 1956 "Three Models" paper is about as influential
+      as a paper can get.
+      Just 12 pages,
+      it's the paper in which the most-cited scholar of our
+      time first outlined his ideas.
+      It transformed linguistics,
+      is one of the most important scientific papers ever.
+    </p>
+    <p>
+      It is also the foundation paper of Theory of Parsing,
+      the area of my own work
+      and the subject of these blog posts.
+      Chomsky does not consider himself a computer scientist
+      and, after founding our field,
+      has paid little attention to it.
+      But in fact,
+      the Chomskyan model has been more influential,
+      in computer parsing than in Chomsky's own
+      field of linguistics.
+    </p>
+    <p>
+      Chomsky 1956 also puts him among the great mathematicians
+      of all time.
+      True, the rigor of his proofs more befits a slumming linguist
+      than it would a professional mathematician,
+      but at its heart,
+      mathematics is not a technical field,
+      or even about problem-solving --
+      at its most fundamental,
+      it is about framing problems so that they
+      <b>can</b> be solved.
     </p>
     <h2>Comments, etc.</h2>
     <p>
