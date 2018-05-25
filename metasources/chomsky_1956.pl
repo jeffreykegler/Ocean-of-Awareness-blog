@@ -183,6 +183,42 @@ Parsing languages versus parsing grammars
     If this "encompasses" my notion of a language,
     it does so in the same sense that an avalanche encompasses
     a skier.
+    </p>
+    <p>
+    Thirty years later,
+    authoritative textbooks are still repeating that same idea.
+    </p>
+    <blockquote>
+      A set V is an alphabet (or a vocabulary) if it is finite and
+      nonempty.
+      The elements
+      of an alphabet V are called the symbols (or letters or characters) of
+      V
+      A language L over V is any subset of the free monoid V*.
+      The elements
+      of a language L are called sentences of L.<footnote>
+      Sippu, Seppo and Soisalon-Soininen, Eljas.
+      <cite>Parsing Theory</cite>, Volume I,
+      Springer-Verlag, 1988,
+      p. 11.
+      </footnote>
+    </blockquote>
+    <p>The language is that of abstract algebra,
+    but the idea is the same.<footnote>
+    A welcome departure from the tradition, however, arrives with
+    Grune, D. and Jacobs, C. J. H. Parsing Techniques: A Practical Guide, 2nd edition. Springer, 2008.
+    On pp. 5-7, they attribute the traditional "set of strings" definition
+    to "formal linguistics".
+    They
+    point out that the computer scientist requires a grammar to
+    not only list a set of strings, but provide a
+    "structure" for each of them.
+    As an aside,
+    Grune and Jacobs often depart from the "just stick to the math"
+    approach to parsing theory,
+    and give the history and motivation behind the math.
+    My own work owes much to them.
+    </footnote>
     <h2>Comments, etc.</h2>
     <p>
       To learn about Marpa,
