@@ -16,6 +16,11 @@
   &lt;head&gt;
   &lt;/head&gt;
   &lt;body&gt;
+    &lt;blockquote&gt;
+	But to my mind, though I am native here&lt;br&gt;
+	And to the manner born, it is a custom&lt;br&gt;
+	More honor’d in the breach than the observance.&lt;a id=&quot;footnote-1-ref&quot; href=&quot;#footnote-1&quot;&gt;[1]&lt;/a&gt;
+    &lt;/blockquote&gt;
     &lt;h2&gt;Chomsky's &quot;Three Models&quot; paper&lt;/h2&gt;
     &lt;p&gt;
       &lt;!--
@@ -32,7 +37,7 @@
       for them no longer hold.
     &lt;/p&gt;
     &lt;p&gt;
-      Chomsky's &quot;Three Models&quot; paper&lt;a id=&quot;footnote-1-ref&quot; href=&quot;#footnote-1&quot;&gt;[1]&lt;/a&gt;
+      Chomsky's &quot;Three Models&quot; paper&lt;a id=&quot;footnote-2-ref&quot; href=&quot;#footnote-2&quot;&gt;[2]&lt;/a&gt;
       is about as influential
       as a paper can get.
       Just 12 pages,
@@ -81,7 +86,7 @@
       alphabet of sysbols.  If A is an alphabet, we shall say that
       anything formed by concatenating ths symbols of A is a string in
       A. By a grammar of the langnage L we mean a device of some sort that
-      produces all of the strings that are sentences of L and only these.&lt;a id=&quot;footnote-2-ref&quot; href=&quot;#footnote-2&quot;&gt;[2]&lt;/a&gt;
+      produces all of the strings that are sentences of L and only these.&lt;a id=&quot;footnote-3-ref&quot; href=&quot;#footnote-3&quot;&gt;[3]&lt;/a&gt;
     &lt;/blockquote&gt;
     &lt;p&gt;Yes, you read that right --
     Chomsky uses a definition of language which has nothing to
@@ -117,7 +122,7 @@
     &lt;blockquote&gt;
     A language over an alphabet &amp;Sigma;
     is a set of strings over an alphabet &amp;Sigma;.
-    This definition encompasses almost everyone's notion of a language.&lt;a id=&quot;footnote-3-ref&quot; href=&quot;#footnote-3&quot;&gt;[3]&lt;/a&gt;
+    This definition encompasses almost everyone's notion of a language.&lt;a id=&quot;footnote-4-ref&quot; href=&quot;#footnote-4&quot;&gt;[4]&lt;/a&gt;
     &lt;/blockquote&gt;
     If this &quot;encompasses&quot; my notion of a language,
     it does so in the same sense that an avalanche encompasses
@@ -135,16 +140,16 @@
       V
       A language L over V is any subset of the free monoid V*.
       The elements
-      of a language L are called sentences of L.&lt;a id=&quot;footnote-4-ref&quot; href=&quot;#footnote-4&quot;&gt;[4]&lt;/a&gt;
+      of a language L are called sentences of L.&lt;a id=&quot;footnote-5-ref&quot; href=&quot;#footnote-5&quot;&gt;[5]&lt;/a&gt;
     &lt;/blockquote&gt;
     &lt;p&gt;The language is that of abstract algebra,
-    but the idea is the same.&lt;a id=&quot;footnote-5-ref&quot; href=&quot;#footnote-5&quot;&gt;[5]&lt;/a&gt;
+    but the idea is the same.&lt;a id=&quot;footnote-6-ref&quot; href=&quot;#footnote-6&quot;&gt;[6]&lt;/a&gt;
     &lt;p&gt;
     Here are two grammars.
-    Both &amp;lt;STRUCTURE&amp;gt;
-    and &amp;lt;STRING&amp;gt;
+    Both &lt;tt&gt;STRUCTURE&lt;/tt&gt;
+    and &lt;tt&gt;STRING&lt;/tt&gt;
     grammars recognize the same set of strings.
-    &lt;/P
+    &lt;/p&gt;
     &lt;pre id=&quot;g-structure-op&quot;&gt;&lt;tt&gt;
       STRUCTURE ::= E
       E ::= E + T
@@ -160,24 +165,24 @@
       OP ::= '+'
       P ::= number
     &lt;/tt&gt;&lt;/pre&gt;
-    &amp;lt;STRING&amp;gt; is a lot simpler.
+    &lt;tt&gt;STRING&lt;/tt&gt; is a lot simpler.
     Many parsers can recognize 
-    &amp;lt;STRING&amp;gt;,
+    &lt;tt&gt;STRING&lt;/tt&gt;,
     but most parsers in modern use
     require serious hackery to recognize
-    &amp;lt;STRUCTURE&amp;gt;.
+    &lt;tt&gt;STRUCTURE&lt;/tt&gt;.
     On the other hand,
-    &amp;lt;STRUCTURE&amp;gt;.
+    &lt;tt&gt;STRUCTURE&lt;/tt&gt;.
     recognizer the associativity and precedence of the two operators,
     and the parse tree it produces could be used directly to evaluate an arithmetic
     expression correctly.
-    The &amp;lt;STRING&amp;gt; produces, if evaluated directly as a parse tree,
+    The parse tree that &lt;tt&gt;STRING&lt;/tt&gt; produces, if evaluated directly,
     very often
     will &lt;b&gt;not&lt;/b&gt; produce a correct answer.
-    The parse tree &amp;lt;STRING&amp;gt;, if it is to be evaluated correctly,
-    must be rearranged in a second phase of processing --
+    &lt;tt&gt;STRING&lt;/tt&gt;, if it is to be evaluated correctly,
+    must precede a second phase of processing --
     one that in effect does the parsing work that 
-    &amp;lt;STRING&amp;gt;, left undone.
+    &lt;tt&gt;STRING&lt;/tt&gt;, left undone.
     &lt;h2&gt;Comments, etc.&lt;/h2&gt;
     &lt;p&gt;
       To learn about Marpa,
@@ -193,26 +198,29 @@
     &lt;/p&gt;
     &lt;h2&gt;Footnotes&lt;/h2&gt;
 &lt;p id=&quot;footnote-1&quot;&gt;1.
+	&lt;cite&gt;Hamlet&lt;/cite&gt;, Act I, scene iv.
+ &lt;a href=&quot;#footnote-1-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;p id=&quot;footnote-2&quot;&gt;2.
       Chomsky, Noam.
       &quot;Three models for the description of language.&quot;
       &lt;cite&gt;IRE Transactions on information theory&lt;/cite&gt;,
       vol. 2, issue 3, September 1956, pp. 113-124.
- &lt;a href=&quot;#footnote-1-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
-&lt;p id=&quot;footnote-2&quot;&gt;2.
-      Chomsky 1956, p. 114.
  &lt;a href=&quot;#footnote-2-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
 &lt;p id=&quot;footnote-3&quot;&gt;3.
+      Chomsky 1956, p. 114.
+ &lt;a href=&quot;#footnote-3-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;p id=&quot;footnote-4&quot;&gt;4.
     Aho, Alfred V., and Jeffrey D. Ullman.
     &lt;cite&gt;The theory of parsing, translation, and compiling&lt;/cite&gt;.
     Vol. 1. Prentice-Hall, 1972, p. 16.
- &lt;a href=&quot;#footnote-3-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
-&lt;p id=&quot;footnote-4&quot;&gt;4.
+ &lt;a href=&quot;#footnote-4-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;p id=&quot;footnote-5&quot;&gt;5.
       Sippu, Seppo and Soisalon-Soininen, Eljas.
       &lt;cite&gt;Parsing Theory&lt;/cite&gt;, Volume I,
       Springer-Verlag, 1988,
       p. 11.
- &lt;a href=&quot;#footnote-4-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
-&lt;p id=&quot;footnote-5&quot;&gt;5.
+ &lt;a href=&quot;#footnote-5-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;p id=&quot;footnote-6&quot;&gt;6.
     A welcome departure from the tradition, however, arrives with
     Grune, D. and Jacobs, C. J. H. Parsing Techniques: A Practical Guide, 2nd edition. Springer, 2008.
     On pp. 5-7, they attribute the traditional &quot;set of strings&quot; definition
@@ -226,7 +234,7 @@
     approach to parsing theory,
     and give the history and motivation behind the math.
     My own work owes much to them.
- &lt;a href=&quot;#footnote-5-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+ &lt;a href=&quot;#footnote-6-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
   &lt;/body&gt;
 &lt;/html&gt;</description>
   </item>

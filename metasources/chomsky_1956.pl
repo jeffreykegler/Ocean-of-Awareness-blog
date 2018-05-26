@@ -66,6 +66,13 @@ Parsing languages versus parsing grammars
   <head>
   </head>
   <body>
+    <blockquote>
+	But to my mind, though I am native here<br>
+	And to the manner born, it is a custom<br>
+	More honor’d in the breach than the observance.<footnote>
+	<cite>Hamlet</cite>, Act I, scene iv.
+	</footnote>
+    </blockquote>
     <h2>Chomsky's "Three Models" paper</h2>
     <p>
       <!--
@@ -155,17 +162,38 @@ Parsing languages versus parsing grammars
 	strings that it lists be
     </p>
     <blockquote>
-      Ceci n'est pas une phrase.
+      (Fr) Ceci n'est pas une phrase.
     </blockquote>
     <p>For the purposes of his demonstration,
     Chomsky does not require of his "grammar" that it
     give us any guidance as to what the French sentence might mean.
+    In addition to simplifying the math, Chomsky has two other good
+    reasons to avoid dealing with meaning.
+    Semantics is a very difficult field and,
+    if you can avoid it while still making your point,
+    you are wise to do so.
+    Sentence (Fr), above, which echoes
+    <a href="https://en.wikipedia.org/wiki/The_Treachery_of_Images">a famous Magritte<a>
+    and translates to "This is not a sentence" is a mild example of the pitfalls
+    that await those tackle semantic issues.
+    </p>
+    <p>
+    A third reason is that most linguists of Chomsky's time
+    went to the other extreme.
+    On the grounds that claims to know
+    what was going on in others people's minds were not
+    scientific,
+    the structuralists banned any discussion of semantics.
+    By excluding semantics from his own model of language,
+    Chomsky can make his point in the terms that his opponents
+    accept.
+    </p>
     [ TODO: recognizer? ]
     </p>
     <p>
     [ TODO: Continue. ]
     </p>
-    <h2>The problem</h2>
+    <h2>The tradition</h2>
     <p>Given the immense prestige of Chomsky's stunningly original and
     powerful work,
     it is little wonder that successors studied, and followed, his
@@ -219,12 +247,13 @@ Parsing languages versus parsing grammars
     and give the history and motivation behind the math.
     My own work owes much to them.
     </footnote>
+    <h2>The problem</h2>
     <p>
     Here are two grammars.
     Both <tt>STRUCTURE</tt>
     and <tt>STRING</tt>
     grammars recognize the same set of strings.
-    </P
+    </p>
     <pre id="g-structure-op"><tt>
       STRUCTURE ::= E
       E ::= E + T
@@ -251,11 +280,11 @@ Parsing languages versus parsing grammars
     recognizer the associativity and precedence of the two operators,
     and the parse tree it produces could be used directly to evaluate an arithmetic
     expression correctly.
-    The <tt>STRING</tt> produces, if evaluated directly as a parse tree,
+    The parse tree that <tt>STRING</tt> produces, if evaluated directly,
     very often
     will <b>not</b> produce a correct answer.
-    The parse tree <tt>STRING</tt>, if it is to be evaluated correctly,
-    must be rearranged in a second phase of processing --
+    <tt>STRING</tt>, if it is to be evaluated correctly,
+    must precede a second phase of processing --
     one that in effect does the parsing work that 
     <tt>STRING</tt>, left undone.
     <h2>Comments, etc.</h2>
