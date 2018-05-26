@@ -103,17 +103,38 @@
 	strings that it lists be
     &lt;/p&gt;
     &lt;blockquote&gt;
-      Ceci n'est pas une phrase.
+      (Fr) Ceci n'est pas une phrase.
     &lt;/blockquote&gt;
     &lt;p&gt;For the purposes of his demonstration,
     Chomsky does not require of his &quot;grammar&quot; that it
     give us any guidance as to what the French sentence might mean.
+    In addition to simplifying the math, Chomsky has two other good
+    reasons to avoid dealing with meaning.
+    Semantics is a very difficult field and,
+    if you can avoid it while still making your point,
+    you are wise to do so.
+    Sentence (Fr), above, which echoes
+    &lt;a href=&quot;https://en.wikipedia.org/wiki/The_Treachery_of_Images&quot;&gt;a famous Magritte&lt;a&gt;
+    and translates to &quot;This is not a sentence&quot; is a mild example of the pitfalls
+    that await those tackle semantic issues.
+    &lt;/p&gt;
+    &lt;p&gt;
+    A third reason is that most linguists of Chomsky's time
+    went to the other extreme.
+    On the grounds that claims to know
+    what was going on in others people's minds were not
+    scientific,
+    the structuralists banned any discussion of semantics.
+    By excluding semantics from his own model of language,
+    Chomsky can make his point in the terms that his opponents
+    accept.
+    &lt;/p&gt;
     [ TODO: recognizer? ]
     &lt;/p&gt;
     &lt;p&gt;
     [ TODO: Continue. ]
     &lt;/p&gt;
-    &lt;h2&gt;The problem&lt;/h2&gt;
+    &lt;h2&gt;The tradition&lt;/h2&gt;
     &lt;p&gt;Given the immense prestige of Chomsky's stunningly original and
     powerful work,
     it is little wonder that successors studied, and followed, his
@@ -144,6 +165,7 @@
     &lt;/blockquote&gt;
     &lt;p&gt;The language is that of abstract algebra,
     but the idea is the same.&lt;a id=&quot;footnote-6-ref&quot; href=&quot;#footnote-6&quot;&gt;[6]&lt;/a&gt;
+    &lt;h2&gt;The problem&lt;/h2&gt;
     &lt;p&gt;
     Here are two grammars.
     Both &lt;tt&gt;STRUCTURE&lt;/tt&gt;
