@@ -32,9 +32,8 @@
       On the other hand,
       even the good methods of
       a great paper can go badly wrong
-      when successors copy those methods,
-      without realizing that the reasons
-      for them no longer hold.
+      when its methods
+      outlive the reasons for using them.
     &lt;/p&gt;
     &lt;p&gt;
       Chomsky's &quot;Three Models&quot; paper&lt;a id=&quot;footnote-2-ref&quot; href=&quot;#footnote-2&quot;&gt;[2]&lt;/a&gt;
@@ -103,7 +102,7 @@
 	strings that it lists be
     &lt;/p&gt;
     &lt;blockquote&gt;
-      (Fr) Ceci n'est pas une phrase.
+      (42) Ceci n'est pas une phrase vraie.
     &lt;/blockquote&gt;
     &lt;p&gt;For the purposes of his demonstration,
     Chomsky does not require of his &quot;grammar&quot; that it
@@ -113,21 +112,23 @@
     Semantics is a very difficult field and,
     if you can avoid it while still making your point,
     you are wise to do so.
-    Sentence (Fr), above, which echoes
+    Sentence (42), above, which echoes
     &lt;a href=&quot;https://en.wikipedia.org/wiki/The_Treachery_of_Images&quot;&gt;a famous Magritte&lt;a&gt;
-    and translates to &quot;This is not a sentence&quot; is a mild example of the pitfalls
-    that await those tackle semantic issues.
+    and translates to &quot;This is not a true sentence&quot; is one example of the pitfalls
+    that await those tackle who semantic issues.
     &lt;/p&gt;
     &lt;p&gt;
     A third reason is that most linguists of Chomsky's time
+    were Bloomfieldians, who
     went to the other extreme.
     On the grounds that claims to know
     what was going on in others people's minds were not
     scientific,
-    the structuralists banned any discussion of semantics.
+    the Bloomfieldians avoided, totally if possible,
+    any discussion of semantics.&lt;a id=&quot;footnote-4-ref&quot; href=&quot;#footnote-4&quot;&gt;[4]&lt;/a&gt;
     By excluding semantics from his own model of language,
-    Chomsky can make his point in the terms that his opponents
-    accept.
+    Chomsky was making maximally accepted to
+    his readers in the departments of linguistics.
     &lt;/p&gt;
     [ TODO: recognizer? ]
     &lt;/p&gt;
@@ -141,7 +142,7 @@
     &lt;blockquote&gt;
     A language over an alphabet &amp;Sigma;
     is a set of strings over an alphabet &amp;Sigma;.
-    This definition encompasses almost everyone's notion of a language.&lt;a id=&quot;footnote-4-ref&quot; href=&quot;#footnote-4&quot;&gt;[4]&lt;/a&gt;
+    This definition encompasses almost everyone's notion of a language.&lt;a id=&quot;footnote-5-ref&quot; href=&quot;#footnote-5&quot;&gt;[5]&lt;/a&gt;
     &lt;/blockquote&gt;
     If this &quot;encompasses&quot; my notion of a language,
     it does so in the same sense that an avalanche encompasses
@@ -159,10 +160,10 @@
       V
       A language L over V is any subset of the free monoid V*.
       The elements
-      of a language L are called sentences of L.&lt;a id=&quot;footnote-5-ref&quot; href=&quot;#footnote-5&quot;&gt;[5]&lt;/a&gt;
+      of a language L are called sentences of L.&lt;a id=&quot;footnote-6-ref&quot; href=&quot;#footnote-6&quot;&gt;[6]&lt;/a&gt;
     &lt;/blockquote&gt;
-    &lt;p&gt;The language is that of abstract algebra,
-    but the idea is the same.&lt;a id=&quot;footnote-6-ref&quot; href=&quot;#footnote-6&quot;&gt;[6]&lt;/a&gt;
+    &lt;p&gt;The language has changed to that of abstract algebra,
+    but the idea is exactly the same.&lt;a id=&quot;footnote-7-ref&quot; href=&quot;#footnote-7&quot;&gt;[7]&lt;/a&gt;
     &lt;h2&gt;The problem&lt;/h2&gt;
     &lt;p&gt;
     Here are two grammars.
@@ -203,6 +204,26 @@
     must precede a second phase of processing --
     one that in effect does the parsing work that 
     &lt;tt&gt;STRING&lt;/tt&gt;, left undone.
+    &lt;h2&gt;A pedantic point?&lt;/h2&gt;
+    &lt;p&gt;
+    The languages human being use with each other 
+    are powerful,
+    varied, flexible and endlessly retargetable.
+    The languages we use to communicate with computers
+    are restrictive and repetitive in form.
+    But they are also often pointlessly inconsistent because their
+    non-modular parsers are hard to reprogram
+    or retarget.
+    Is this because humans have a preternatural language ability?
+    &lt;/p&gt;
+    &lt;p&gt;
+    Or is there something wrong with the way we
+    go about talking to computers?
+    How the Theory of Parsing literature defines the term
+    &quot;language&quot; may seem 
+    of only pedantic interest.
+    But I will argue that it is a mistake which has everything
+    to do with the limits of modern computer languages.
     &lt;h2&gt;Comments, etc.&lt;/h2&gt;
     &lt;p&gt;
       To learn about Marpa,
@@ -230,17 +251,27 @@
       Chomsky 1956, p. 114.
  &lt;a href=&quot;#footnote-3-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
 &lt;p id=&quot;footnote-4&quot;&gt;4.
+    &quot;The statement of meanings is therefore the weak point in
+    language-study, and will remain so until human knowledge 
+    advances very far beyond its present state. In practice, we define the
+    meaning of a linguistic form, wherever wo can, in terms of some
+    other science.&quot;
+    Bloomfield, Leonard.
+    &lt;cite&gt;Language&lt;/cite&gt;.
+    Holt, Rinehart and Winston, 1933, p. 140.
+ &lt;a href=&quot;#footnote-4-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;p id=&quot;footnote-5&quot;&gt;5.
     Aho, Alfred V., and Jeffrey D. Ullman.
     &lt;cite&gt;The theory of parsing, translation, and compiling&lt;/cite&gt;.
     Vol. 1. Prentice-Hall, 1972, p. 16.
- &lt;a href=&quot;#footnote-4-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
-&lt;p id=&quot;footnote-5&quot;&gt;5.
+ &lt;a href=&quot;#footnote-5-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;p id=&quot;footnote-6&quot;&gt;6.
       Sippu, Seppo and Soisalon-Soininen, Eljas.
       &lt;cite&gt;Parsing Theory&lt;/cite&gt;, Volume I,
       Springer-Verlag, 1988,
       p. 11.
- &lt;a href=&quot;#footnote-5-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
-&lt;p id=&quot;footnote-6&quot;&gt;6.
+ &lt;a href=&quot;#footnote-6-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;p id=&quot;footnote-7&quot;&gt;7.
     A welcome departure from the tradition, however, arrives with
     Grune, D. and Jacobs, C. J. H. Parsing Techniques: A Practical Guide, 2nd edition. Springer, 2008.
     On pp. 5-7, they attribute the traditional &quot;set of strings&quot; definition
@@ -254,7 +285,7 @@
     approach to parsing theory,
     and give the history and motivation behind the math.
     My own work owes much to them.
- &lt;a href=&quot;#footnote-6-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+ &lt;a href=&quot;#footnote-7-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
   &lt;/body&gt;
 &lt;/html&gt;</description>
   </item>

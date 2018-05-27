@@ -84,9 +84,8 @@ Parsing languages versus parsing grammars
       On the other hand,
       even the good methods of
       a great paper can go badly wrong
-      when successors copy those methods,
-      without realizing that the reasons
-      for them no longer hold.
+      when its methods
+      outlive the reasons for using them.
     </p>
     <p>
       Chomsky's "Three Models" paper<footnote>
@@ -162,7 +161,7 @@ Parsing languages versus parsing grammars
 	strings that it lists be
     </p>
     <blockquote>
-      (Fr) Ceci n'est pas une phrase.
+      (42) Ceci n'est pas une phrase vraie.
     </blockquote>
     <p>For the purposes of his demonstration,
     Chomsky does not require of his "grammar" that it
@@ -172,21 +171,32 @@ Parsing languages versus parsing grammars
     Semantics is a very difficult field and,
     if you can avoid it while still making your point,
     you are wise to do so.
-    Sentence (Fr), above, which echoes
+    Sentence (42), above, which echoes
     <a href="https://en.wikipedia.org/wiki/The_Treachery_of_Images">a famous Magritte<a>
-    and translates to "This is not a sentence" is a mild example of the pitfalls
-    that await those tackle semantic issues.
+    and translates to "This is not a true sentence" is one example of the pitfalls
+    that await those tackle who semantic issues.
     </p>
     <p>
     A third reason is that most linguists of Chomsky's time
+    were Bloomfieldians, who
     went to the other extreme.
     On the grounds that claims to know
     what was going on in others people's minds were not
     scientific,
-    the structuralists banned any discussion of semantics.
+    the Bloomfieldians avoided, totally if possible,
+    any discussion of semantics.<footnote>
+    "The statement of meanings is therefore the weak point in
+    language-study, and will remain so until human knowledge 
+    advances very far beyond its present state. In practice, we define the
+    meaning of a linguistic form, wherever wo can, in terms of some
+    other science."
+    Bloomfield, Leonard.
+    <cite>Language</cite>.
+    Holt, Rinehart and Winston, 1933, p. 140.
+    </footnote>
     By excluding semantics from his own model of language,
-    Chomsky can make his point in the terms that his opponents
-    accept.
+    Chomsky was making maximally accepted to
+    his readers in the departments of linguistics.
     </p>
     [ TODO: recognizer? ]
     </p>
@@ -229,8 +239,8 @@ Parsing languages versus parsing grammars
       p. 11.
       </footnote>
     </blockquote>
-    <p>The language is that of abstract algebra,
-    but the idea is the same.<footnote>
+    <p>The language has changed to that of abstract algebra,
+    but the idea is exactly the same.<footnote>
     A welcome departure from the tradition, however, arrives with
     Grune, D. and Jacobs, C. J. H. Parsing Techniques: A Practical Guide, 2nd edition. Springer, 2008.
     On pp. 5-7, they attribute the traditional "set of strings" definition
@@ -285,6 +295,26 @@ Parsing languages versus parsing grammars
     must precede a second phase of processing --
     one that in effect does the parsing work that 
     <tt>STRING</tt>, left undone.
+    <h2>A pedantic point?</h2>
+    <p>
+    The languages human being use with each other 
+    are powerful,
+    varied, flexible and endlessly retargetable.
+    The languages we use to communicate with computers
+    are restrictive and repetitive in form.
+    But they are also often pointlessly inconsistent because their
+    non-modular parsers are hard to reprogram
+    or retarget.
+    Is this because humans have a preternatural language ability?
+    </p>
+    <p>
+    Or is there something wrong with the way we
+    go about talking to computers?
+    How the Theory of Parsing literature defines the term
+    "language" may seem 
+    of only pedantic interest.
+    But I will argue that it is a mistake which has everything
+    to do with the limits of modern computer languages.
     <h2>Comments, etc.</h2>
     <p>
       To learn about Marpa,
