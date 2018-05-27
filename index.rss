@@ -122,7 +122,7 @@
     In addition to simplifying the math, Chomsky has two other good
     reasons to avoid dealing with meaning.
     A second reason is that
-    semantics is treacherously dangerous field of study.
+    semantics is a treacherously dangerous field of study.
     If you can make your point,
     and don't have to drag in semantics,
     you are crazy to do otherwise.
@@ -157,7 +157,7 @@
     claiming to know the meaning of
     a sentence was dangerously close to
     claiming to be able to read minds.
-    You cannot base a field on mind-reading and expect people to
+    You cannot base your work on mind-reading and expect people to
     believe that you are doing science,
     and Bloomfield therefore suggested avoiding,
     totally if possible,
@@ -185,20 +185,20 @@
     &lt;/p&gt;
     &lt;h2&gt;The tradition&lt;/h2&gt;
     &lt;p&gt;Given the immense prestige of &quot;Three models&quot;,
-    it is unsurprising, if unfortunate that the Bloomfield definition of language
+    it is unsurprising, if unfortunate,
+    that the Bloomfield definition of language
     reappears in Chomsky's successors
     within Parsing Theory.
+    In the classic Aho and Ullman 1972 textbook, we have
     &lt;/p&gt;
     &lt;blockquote&gt;
     A language over an alphabet &amp;Sigma;
     is a set of strings over an alphabet &amp;Sigma;.
     This definition encompasses almost everyone's notion of a language.&lt;a id=&quot;footnote-10-ref&quot; href=&quot;#footnote-10&quot;&gt;[10]&lt;/a&gt;
     &lt;/blockquote&gt;
-    If this &quot;encompasses&quot; this blogger's notion of a language,
+    (If this &quot;encompasses&quot; my notion of a language,
     it does so only in the sense that an avalanche encompasses
-    a skier.
-    &lt;/p&gt;
-    &lt;p&gt;
+    a skier.)
     From 1988, thirty years after Chomsky,
     here is another authoritative textbook of Parsing Theory
     defining &quot;language&quot;:
@@ -215,8 +215,7 @@
     &lt;/blockquote&gt;
     &lt;p&gt;The language is now that of abstract algebra,
     but it is easy to see that the idea is still pure Bloomfield.&lt;a id=&quot;footnote-12-ref&quot; href=&quot;#footnote-12&quot;&gt;[12]&lt;/a&gt;
-    &lt;h2&gt;A pedantic point?&lt;/h2&gt;
-    &lt;p&gt;Interesting, you might be saying, that
+    Interesting, you might be saying, that
     some textbook definitions are not everything they could be,
     but is there any effect in the daily practice of
     programming?
@@ -280,7 +279,7 @@
     that of traditional arithmetic expressions,
     the two grammars are very different
     in the degree to which they capture it.
-    &lt;tt&gt;STRUCTURE&lt;/tt&gt;.
+    &lt;tt&gt;STRUCTURE&lt;/tt&gt;
     recognizes the associativity and precedence of the two operators --
     the parse tree it produces could be used directly to evaluate an arithmetic
     expression and the answer would always be correct.
@@ -359,7 +358,7 @@
     In case there is any doubt as to the link between
     the Chomsky and Bloomfield defintions,
     Chomsky also calls his strings,
-    &quot;utterances&quot;: p. 49
+    &quot;utterances&quot;:
     Chomsky, Noam, &lt;cite&gt;Syntactic Structures&lt;/cite&gt;,
     2nd ed.,
     Mouton de Gruyter, 2002, p. 49

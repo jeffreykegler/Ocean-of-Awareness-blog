@@ -205,7 +205,7 @@ Parsing languages versus parsing grammars
     In addition to simplifying the math, Chomsky has two other good
     reasons to avoid dealing with meaning.
     A second reason is that
-    semantics is treacherously dangerous field of study.
+    semantics is a treacherously dangerous field of study.
     If you can make your point,
     and don't have to drag in semantics,
     you are crazy to do otherwise.
@@ -241,7 +241,7 @@ Parsing languages versus parsing grammars
     In case there is any doubt as to the link between
     the Chomsky and Bloomfield defintions,
     Chomsky also calls his strings,
-    "utterances": p. 49
+    "utterances":
     Chomsky, Noam, <cite>Syntactic Structures</cite>,
     2nd ed.,
     Mouton de Gruyter, 2002, p. 49
@@ -254,7 +254,7 @@ Parsing languages versus parsing grammars
     claiming to know the meaning of
     a sentence was dangerously close to
     claiming to be able to read minds.
-    You cannot base a field on mind-reading and expect people to
+    You cannot base your work on mind-reading and expect people to
     believe that you are doing science,
     and Bloomfield therefore suggested avoiding,
     totally if possible,
@@ -298,9 +298,11 @@ Parsing languages versus parsing grammars
     </p>
     <h2>The tradition</h2>
     <p>Given the immense prestige of "Three models",
-    it is unsurprising, if unfortunate that the Bloomfield definition of language
+    it is unsurprising, if unfortunate,
+    that the Bloomfield definition of language
     reappears in Chomsky's successors
     within Parsing Theory.
+    In the classic Aho and Ullman 1972 textbook, we have
     </p>
     <blockquote>
     A language over an alphabet &Sigma;
@@ -311,11 +313,9 @@ Parsing languages versus parsing grammars
     Vol. 1. Prentice-Hall, 1972, p. 16.
     </footnote>
     </blockquote>
-    If this "encompasses" this blogger's notion of a language,
+    (If this "encompasses" my notion of a language,
     it does so only in the sense that an avalanche encompasses
-    a skier.
-    </p>
-    <p>
+    a skier.)
     From 1988, thirty years after Chomsky,
     here is another authoritative textbook of Parsing Theory
     defining "language":
@@ -351,8 +351,7 @@ Parsing languages versus parsing grammars
     They often give the history and motivation behind the math.
     My own work owes much to them.
     </footnote>
-    <h2>A pedantic point?</h2>
-    <p>Interesting, you might be saying, that
+    Interesting, you might be saying, that
     some textbook definitions are not everything they could be,
     but is there any effect in the daily practice of
     programming?
@@ -416,7 +415,7 @@ Parsing languages versus parsing grammars
     that of traditional arithmetic expressions,
     the two grammars are very different
     in the degree to which they capture it.
-    <tt>STRUCTURE</tt>.
+    <tt>STRUCTURE</tt>
     recognizes the associativity and precedence of the two operators --
     the parse tree it produces could be used directly to evaluate an arithmetic
     expression and the answer would always be correct.
