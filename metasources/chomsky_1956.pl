@@ -190,14 +190,33 @@ Parsing languages versus parsing grammars
     <p>
     A third reason is that most linguists of Chomsky's time
     were Bloomfieldians, who
-    saw the problems in dealing with semantics,
-    and went to the opposite extreme.
+    also considered a language to be a set:
+    </p>
+    <blockquote>
+    The totality of utterances that can be made in a speech
+    community is the <em>language</em>
+    of that speech-community.<footnote>
+    The quote is the definition of "language" is
+    definition 4 on p. 154 of
+    Bloomfield, Leonard,
+    "A set of Postulates
+    for the Science of Language", p. 154.
+    <cite>Language</cite>, Vol. 2, No. 3 (Sep., 1926), pp. 153-164
+    </footnote>
+    </blockquote>
+    <p>
+    Bloomfield is more concerned with Amerindian languages,
+    so his sets are of "utterances", not "strings",
+    but the idea is the same --
+    the definition is without regard to the meaning
+    of the members of the set.
+    The omission of semantics is not accidental.
     Bloomfieldians wanted to practice linguistics as a
-    science.
-    But in claiming to know the meaning of
-    a sentence it was hard to avoid
-    claiming to know what was going on in other people's minds --
-    a claim which could not be justified on scientific grounds.
+    science, and believed that
+    claiming to know the meaning of
+    a sentence was dangerously close to
+    claiming to know what was going on in other people's minds.
+    And scientists do not claim to be able to read minds.
     The Bloomfieldians therefore avoided,
     totally when possible,
     any discussion of semantics.<footnote>
