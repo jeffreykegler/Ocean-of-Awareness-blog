@@ -100,12 +100,14 @@ Parsing languages versus parsing grammars
       it's the paper in which the most-cited scholar of our
       time first outlined his ideas.
       It transformed linguistics,
-      is one of the most important scientific papers ever.
+      and is one of the most important scientific papers ever.
+      [ TODO: Work on this graf. ]
     </p>
     <p>
-      It is also the foundation paper of Theory of Parsing,
-      the area of my own work
-      and the subject of these blog posts.
+      Given its significance,
+      it is almost incidental that
+      "Three models" is also the foundation paper of computer Parsing Theory,
+      the subject of these blog posts.
       Chomsky does not consider himself a computer scientist
       and, after founding our field,
       has paid little attention to it.
@@ -115,25 +117,27 @@ Parsing languages versus parsing grammars
       field of linguistics.
     </p>
     <p>
-      Chomsky 1956 also puts him among the great mathematicians
+      "Three Models" also places Chomksy among the great mathematicians
       of all time.
-      True, the rigor of Chomsky's proofs better befits a slumming linguist
-      than it would a professional mathematician.
+      True, the elegance and rigor of Chomsky's proofs
+      better befit a slumming linguist
+      than they would a professional mathematician.
       But at its heart,
       mathematics is not a technical field,
       or even about problem-solving --
       at its most fundamental,
       it is about framing problems so that they
       <b>can</b> be solved.
+      And Chomsky's skill at framing problems is astonishing.
     </p>
     <h2>A brilliant simplification</h2>
     <p>
-      In this framing,
-      Chomsky has a brilliant insight,
-      if one which will become a problematic tradition.
-      Chomsky needs to show his new approach to grammars will do things that previous
-      attempts at mathematizing linguistics have not.
-      And he realizes how to do this with extremely minimal definition of what
+      Chomsky has a new approach to linguistics,
+      and needed to prove that his approach to language
+      did things that
+      previous approaches could not.
+      Brilliantly,
+      he sets out to do this with extremely minimal definition of what
       a language is.
     </p>
     <blockquote>
@@ -141,14 +145,14 @@ Parsing languages versus parsing grammars
       sentences, each of finite length, all constructed from a finite
       alphabet of sysbols.  If A is an alphabet, we shall say that
       anything formed by concatenating ths symbols of A is a string in
-      A. By a grammar of the langnage L we mean a device of some sort that
+      A. By a grammar of the language L we mean a device of some sort that
       produces all of the strings that are sentences of L and only these.<footnote>
       Chomsky 1956, p. 114.
       </footnote>
     </blockquote>
     <p>Yes, you read that right --
     Chomsky uses a definition of language which has nothing to
-    do with it meaning anything.
+    do with language actually meaning anything.
     A language, for the purposes of the math in "Three Models",
     is nothing but a list of strings.
     Similarly, a grammar is just something that enumerates
@@ -157,33 +161,45 @@ Parsing languages versus parsing grammars
     the strings might mean.
     </p>
     <p>
-        So Chomsky would require of a French grammar that one of the
+        For example, Chomsky would require of a French grammar that one of the
 	strings that it lists be
     </p>
     <blockquote>
       (42) Ceci n'est pas une phrase vraie.
     </blockquote>
-    <p>For the purposes of his demonstration,
+    <p>But for the purposes of his demonstration,
     Chomsky does not require of his "grammar" that it
-    give us any guidance as to what the French sentence might mean.
+    give us any guidance as to what sentence (42) might mean.
+    <p>
+    <h2>Avoiding meaning in order to address it</h2>
+    </p>
     In addition to simplifying the math, Chomsky has two other good
     reasons to avoid dealing with meaning.
-    Semantics is a very difficult field and,
-    if you can avoid it while still making your point,
-    you are wise to do so.
-    Sentence (42), above, which echoes
-    <a href="https://en.wikipedia.org/wiki/The_Treachery_of_Images">a famous Magritte<a>
-    and translates to "This is not a true sentence" is one example of the pitfalls
+    A second reason is that
+    semantics is treacherously dangerous field of study.
+    If you can make your point,
+    and don't have to drag in semantics,
+    you are crazy to do otherwise.
+    Sentence (42), above,
+    is just one example of the pitfalls
     that await those tackle who semantic issues.
+    It echoes
+    <a href="https://en.wikipedia.org/wiki/The_Treachery_of_Images">a famous Magritte<a>
+    and translates to "This is not a true sentence".
     </p>
     <p>
     A third reason is that most linguists of Chomsky's time
     were Bloomfieldians, who
-    went to the other extreme.
-    On the grounds that claims to know
-    what was going on in others people's minds were not
-    scientific,
-    the Bloomfieldians avoided, totally if possible,
+    saw the problems in dealing with semantics,
+    and went to the opposite extreme.
+    Bloomfieldians wanted to practice linguistics as a
+    science.
+    But in claiming to know the meaning of
+    a sentence it was hard to avoid
+    claiming to know what was going on in other people's minds --
+    a claim which could not be justified on scientific grounds.
+    The Bloomfieldians therefore avoided,
+    totally when possible,
     any discussion of semantics.<footnote>
     "The statement of meanings is therefore the weak point in
     language-study, and will remain so until human knowledge 
