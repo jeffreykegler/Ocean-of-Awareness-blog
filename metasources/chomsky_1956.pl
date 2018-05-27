@@ -100,7 +100,29 @@ Parsing languages versus parsing grammars
       it's the paper in which the most-cited scholar of our
       time first outlined his ideas.
       It transformed linguistics,
-      and is one of the most important scientific papers ever.
+      and is one of the most important scientific papers ever.<footnote>
+      In this post I am called the "Three models" paper the "first"
+      work of Chomskyan linguistics.
+      Other choices could be justified.
+      The next year, 1957,
+      Chomsky published a book, <cite>Syntactic Structures</cite>.
+      This was much more accessible,
+      and attracted much more attention,
+      and the Chomskyan revolution did not really begin before
+      it came out.
+      On the other hand,
+      both of these are abridgements of Chomsky's
+      1000-page
+      <cite>Logical Structure of Linguistic Theory</cite>,
+      which was completed in June 1955,
+      but not published until 1975,
+      and then only in part.
+      (See
+      <a href="https://www.journals.uchicago.edu/doi/full/10.1086/686177">
+      Radick, Gregory,
+      "The Unmaking of a Modern Synthesis: Noam Chomsky, Charles Hockett, and the Politics of Behaviorism, 1955–1965"
+      </a>.)
+      </footnote>
       [ TODO: Work on this graf. ]
     </p>
     <p>
@@ -112,7 +134,7 @@ Parsing languages versus parsing grammars
       and, after founding our field,
       has paid little attention to it.
       But in fact,
-      the Chomskyan model has been more influential,
+      the Chomskyan model has been more influential
       in computer parsing than in Chomsky's own
       field of linguistics.
     </p>
@@ -132,7 +154,8 @@ Parsing languages versus parsing grammars
     </p>
     <h2>A brilliant simplification</h2>
     <p>
-      Chomsky has a new approach to linguistics,
+      In 1956,
+      Chomsky had a new approach to linguistics,
       and needed to prove that his approach to language
       did things that
       previous approaches could not.
@@ -189,8 +212,8 @@ Parsing languages versus parsing grammars
     </p>
     <p>
     A third reason is that most linguists of Chomsky's time
-    were Bloomfieldians, who
-    also considered a language to be a set:
+    were Bloomfieldians.
+    Bloomfield defined language as follows:
     </p>
     <blockquote>
     The totality of utterances that can be made in a speech
@@ -205,20 +228,21 @@ Parsing languages versus parsing grammars
     </footnote>
     </blockquote>
     <p>
-    Bloomfield is more concerned with Amerindian languages,
-    so his sets are of "utterances", not "strings",
-    but the idea is the same --
+    Bloomfield says "totality" instead of "set"
+    and "utterances" instead of "strings",
+    but for our purposes in this post the idea is the same --
     the definition is without regard to the meaning
     of the members of the set.
-    The omission of semantics is not accidental.
-    Bloomfieldians wanted to practice linguistics as a
-    science, and believed that
+    Bloomfield's omission of semantics is not accidental.
+    Bloomfield wanted to establish linguistics as a
+    science, and for Bloomfield
     claiming to know the meaning of
     a sentence was dangerously close to
-    claiming to know what was going on in other people's minds.
-    And scientists do not claim to be able to read minds.
-    The Bloomfieldians therefore avoided,
-    totally when possible,
+    claiming to be able to read minds.
+    You base a field on mind-reading and expect people to
+    believe you are doing science,
+    and Bloomfield therefore suggested avoiding,
+    totally if possible,
     any discussion of semantics.<footnote>
     "The statement of meanings is therefore the weak point in
     language-study, and will remain so until human knowledge 
@@ -229,14 +253,18 @@ Parsing languages versus parsing grammars
     <cite>Language</cite>.
     Holt, Rinehart and Winston, 1933, p. 140.
     </footnote>
+    Most readers of Chomsky's paper in 1956 were Bloomfieldians --
+    Chomsky himself was seen as one.<footnote>
+    TODO
+    </footnote>
     By excluding semantics from his own model of language,
     Chomsky was making his paper maximally acceptable to
-    his readers in the departments of linguistics.
+    his readership.
     </p>
     <p>
-    Chomsky himself thought linguists should
-    very much interested in interfacing semantics to
-    linguists
+    You didn't have to read Chomsky's mind to see that he
+    was a lot more interested in semantics than
+    Bloomfield was.
     Even in his 1956 paper, [...
     TODO: Continue this. ]
     </p>

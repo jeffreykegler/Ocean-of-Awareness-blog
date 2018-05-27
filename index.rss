@@ -43,7 +43,7 @@
       it's the paper in which the most-cited scholar of our
       time first outlined his ideas.
       It transformed linguistics,
-      and is one of the most important scientific papers ever.
+      and is one of the most important scientific papers ever.&lt;a id=&quot;footnote-3-ref&quot; href=&quot;#footnote-3&quot;&gt;[3]&lt;/a&gt;
       [ TODO: Work on this graf. ]
     &lt;/p&gt;
     &lt;p&gt;
@@ -55,7 +55,7 @@
       and, after founding our field,
       has paid little attention to it.
       But in fact,
-      the Chomskyan model has been more influential,
+      the Chomskyan model has been more influential
       in computer parsing than in Chomsky's own
       field of linguistics.
     &lt;/p&gt;
@@ -75,7 +75,8 @@
     &lt;/p&gt;
     &lt;h2&gt;A brilliant simplification&lt;/h2&gt;
     &lt;p&gt;
-      Chomsky has a new approach to linguistics,
+      In 1956,
+      Chomsky had a new approach to linguistics,
       and needed to prove that his approach to language
       did things that
       previous approaches could not.
@@ -89,7 +90,7 @@
       alphabet of sysbols.  If A is an alphabet, we shall say that
       anything formed by concatenating ths symbols of A is a string in
       A. By a grammar of the language L we mean a device of some sort that
-      produces all of the strings that are sentences of L and only these.&lt;a id=&quot;footnote-3-ref&quot; href=&quot;#footnote-3&quot;&gt;[3]&lt;/a&gt;
+      produces all of the strings that are sentences of L and only these.&lt;a id=&quot;footnote-4-ref&quot; href=&quot;#footnote-4&quot;&gt;[4]&lt;/a&gt;
     &lt;/blockquote&gt;
     &lt;p&gt;Yes, you read that right --
     Chomsky uses a definition of language which has nothing to
@@ -130,38 +131,41 @@
     &lt;/p&gt;
     &lt;p&gt;
     A third reason is that most linguists of Chomsky's time
-    were Bloomfieldians, who
-    also considered a language to be a set:
+    were Bloomfieldians.
+    Bloomfield defined language as follows:
     &lt;/p&gt;
     &lt;blockquote&gt;
     The totality of utterances that can be made in a speech
     community is the &lt;em&gt;language&lt;/em&gt;
-    of that speech-community.&lt;a id=&quot;footnote-4-ref&quot; href=&quot;#footnote-4&quot;&gt;[4]&lt;/a&gt;
+    of that speech-community.&lt;a id=&quot;footnote-5-ref&quot; href=&quot;#footnote-5&quot;&gt;[5]&lt;/a&gt;
     &lt;/blockquote&gt;
     &lt;p&gt;
-    Bloomfield is more concerned with Amerindian languages,
-    so his sets are of &quot;utterances&quot;, not &quot;strings&quot;,
-    but the idea is the same --
+    Bloomfield says &quot;totality&quot; instead of &quot;set&quot;
+    and &quot;utterances&quot; instead of &quot;strings&quot;,
+    but for our purposes in this post the idea is the same --
     the definition is without regard to the meaning
     of the members of the set.
-    The omission of semantics is not accidental.
-    Bloomfieldians wanted to practice linguistics as a
-    science, and believed that
+    Bloomfield's omission of semantics is not accidental.
+    Bloomfield wanted to establish linguistics as a
+    science, and for Bloomfield
     claiming to know the meaning of
     a sentence was dangerously close to
-    claiming to know what was going on in other people's minds.
-    And scientists do not claim to be able to read minds.
-    The Bloomfieldians therefore avoided,
-    totally when possible,
-    any discussion of semantics.&lt;a id=&quot;footnote-5-ref&quot; href=&quot;#footnote-5&quot;&gt;[5]&lt;/a&gt;
+    claiming to be able to read minds.
+    You base a field on mind-reading and expect people to
+    believe you are doing science,
+    and Bloomfield therefore suggested avoiding,
+    totally if possible,
+    any discussion of semantics.&lt;a id=&quot;footnote-6-ref&quot; href=&quot;#footnote-6&quot;&gt;[6]&lt;/a&gt;
+    Most readers of Chomsky's paper in 1956 were Bloomfieldians --
+    Chomsky himself was seen as one.&lt;a id=&quot;footnote-7-ref&quot; href=&quot;#footnote-7&quot;&gt;[7]&lt;/a&gt;
     By excluding semantics from his own model of language,
     Chomsky was making his paper maximally acceptable to
-    his readers in the departments of linguistics.
+    his readership.
     &lt;/p&gt;
     &lt;p&gt;
-    Chomsky himself thought linguists should
-    very much interested in interfacing semantics to
-    linguists
+    You didn't have to read Chomsky's mind to see that he
+    was a lot more interested in semantics than
+    Bloomfield was.
     Even in his 1956 paper, [...
     TODO: Continue this. ]
     &lt;/p&gt;
@@ -174,7 +178,7 @@
     &lt;blockquote&gt;
     A language over an alphabet &amp;Sigma;
     is a set of strings over an alphabet &amp;Sigma;.
-    This definition encompasses almost everyone's notion of a language.&lt;a id=&quot;footnote-6-ref&quot; href=&quot;#footnote-6&quot;&gt;[6]&lt;/a&gt;
+    This definition encompasses almost everyone's notion of a language.&lt;a id=&quot;footnote-8-ref&quot; href=&quot;#footnote-8&quot;&gt;[8]&lt;/a&gt;
     &lt;/blockquote&gt;
     If this &quot;encompasses&quot; my notion of a language,
     it does so in the same sense that an avalanche encompasses
@@ -192,10 +196,10 @@
       V
       A language L over V is any subset of the free monoid V*.
       The elements
-      of a language L are called sentences of L.&lt;a id=&quot;footnote-7-ref&quot; href=&quot;#footnote-7&quot;&gt;[7]&lt;/a&gt;
+      of a language L are called sentences of L.&lt;a id=&quot;footnote-9-ref&quot; href=&quot;#footnote-9&quot;&gt;[9]&lt;/a&gt;
     &lt;/blockquote&gt;
     &lt;p&gt;The language has changed to that of abstract algebra,
-    but the idea is exactly the same.&lt;a id=&quot;footnote-8-ref&quot; href=&quot;#footnote-8&quot;&gt;[8]&lt;/a&gt;
+    but the idea is exactly the same.&lt;a id=&quot;footnote-10-ref&quot; href=&quot;#footnote-10&quot;&gt;[10]&lt;/a&gt;
     &lt;h2&gt;The problem&lt;/h2&gt;
     &lt;p&gt;
     Here are two grammars.
@@ -279,17 +283,40 @@
       vol. 2, issue 3, September 1956, pp. 113-124.
  &lt;a href=&quot;#footnote-2-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
 &lt;p id=&quot;footnote-3&quot;&gt;3.
-      Chomsky 1956, p. 114.
+      In this post I am called the &quot;Three models&quot; paper the &quot;first&quot;
+      work of Chomskyan linguistics.
+      Other choices could be justified.
+      The next year, 1957,
+      Chomsky published a book, &lt;cite&gt;Syntactic Structures&lt;/cite&gt;.
+      This was much more accessible,
+      and attracted much more attention,
+      and the Chomskyan revolution did not really begin before
+      it came out.
+      On the other hand,
+      both of these are abridgements of Chomsky's
+      1000-page
+      &lt;cite&gt;Logical Structure of Linguistic Theory&lt;/cite&gt;,
+      which was completed in June 1955,
+      but not published until 1975,
+      and then only in part.
+      (See
+      &lt;a href=&quot;https://www.journals.uchicago.edu/doi/full/10.1086/686177&quot;&gt;
+      Radick, Gregory,
+      &quot;The Unmaking of a Modern Synthesis: Noam Chomsky, Charles Hockett, and the Politics of Behaviorism, 1955–1965&quot;
+      &lt;/a&gt;.)
  &lt;a href=&quot;#footnote-3-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
 &lt;p id=&quot;footnote-4&quot;&gt;4.
+      Chomsky 1956, p. 114.
+ &lt;a href=&quot;#footnote-4-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;p id=&quot;footnote-5&quot;&gt;5.
     The quote is the definition of &quot;language&quot; is
     definition 4 on p. 154 of
     Bloomfield, Leonard,
     &quot;A set of Postulates
     for the Science of Language&quot;, p. 154.
     &lt;cite&gt;Language&lt;/cite&gt;, Vol. 2, No. 3 (Sep., 1926), pp. 153-164
- &lt;a href=&quot;#footnote-4-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
-&lt;p id=&quot;footnote-5&quot;&gt;5.
+ &lt;a href=&quot;#footnote-5-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;p id=&quot;footnote-6&quot;&gt;6.
     &quot;The statement of meanings is therefore the weak point in
     language-study, and will remain so until human knowledge 
     advances very far beyond its present state. In practice, we define the
@@ -298,19 +325,22 @@
     Bloomfield, Leonard.
     &lt;cite&gt;Language&lt;/cite&gt;.
     Holt, Rinehart and Winston, 1933, p. 140.
- &lt;a href=&quot;#footnote-5-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
-&lt;p id=&quot;footnote-6&quot;&gt;6.
+ &lt;a href=&quot;#footnote-6-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;p id=&quot;footnote-7&quot;&gt;7.
+    TODO
+ &lt;a href=&quot;#footnote-7-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;p id=&quot;footnote-8&quot;&gt;8.
     Aho, Alfred V., and Jeffrey D. Ullman.
     &lt;cite&gt;The theory of parsing, translation, and compiling&lt;/cite&gt;.
     Vol. 1. Prentice-Hall, 1972, p. 16.
- &lt;a href=&quot;#footnote-6-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
-&lt;p id=&quot;footnote-7&quot;&gt;7.
+ &lt;a href=&quot;#footnote-8-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;p id=&quot;footnote-9&quot;&gt;9.
       Sippu, Seppo and Soisalon-Soininen, Eljas.
       &lt;cite&gt;Parsing Theory&lt;/cite&gt;, Volume I,
       Springer-Verlag, 1988,
       p. 11.
- &lt;a href=&quot;#footnote-7-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
-&lt;p id=&quot;footnote-8&quot;&gt;8.
+ &lt;a href=&quot;#footnote-9-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;p id=&quot;footnote-10&quot;&gt;10.
     A welcome departure from the tradition, however, arrives with
     Grune, D. and Jacobs, C. J. H. Parsing Techniques: A Practical Guide, 2nd edition. Springer, 2008.
     On pp. 5-7, they attribute the traditional &quot;set of strings&quot; definition
@@ -324,7 +354,7 @@
     approach to parsing theory,
     and give the history and motivation behind the math.
     My own work owes much to them.
- &lt;a href=&quot;#footnote-8-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+ &lt;a href=&quot;#footnote-10-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
   &lt;/body&gt;
 &lt;/html&gt;</description>
   </item>
