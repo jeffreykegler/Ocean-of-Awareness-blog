@@ -347,8 +347,8 @@ Parsing languages versus parsing grammars
     "structure" for each of them.
     As an aside,
     Grune and Jacobs often depart from the "just stick to the math"
-    approach to parsing theory,
-    and give the history and motivation behind the math.
+    approach taken by other textbooks parsing theory.
+    They often give the history and motivation behind the math.
     My own work owes much to them.
     </footnote>
     <h2>A pedantic point?</h2>
