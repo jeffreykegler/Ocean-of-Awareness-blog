@@ -213,7 +213,7 @@ Parsing languages versus parsing grammars
     <tt>STRING</tt>, left undone.
     <h2>A pedantic point?</h2>
     <p>
-    The languages human being use with each other 
+    The languages human beings use with each other 
     are powerful,
     varied, flexible and endlessly retargetable.
     The languages we use to communicate with computers
