@@ -55,7 +55,7 @@
       and, after founding our field,
       has paid little attention to it.
       But in fact,
-      the Chomskyan model has been more influential
+      the Chomskyan model has been more dominant
       in computer parsing than in Chomsky's own
       field of linguistics.
     &lt;/p&gt;
@@ -113,7 +113,6 @@
     Chomsky does not require of his &quot;grammar&quot; that it
     give us any guidance as to what sentence (42) might mean.
     &lt;p&gt;
-    &lt;h2&gt;Avoiding meaning in order to address it&lt;/h2&gt;
     &lt;/p&gt;
     In addition to simplifying the math, Chomsky has two other good
     reasons to avoid dealing with meaning.
@@ -232,7 +231,9 @@
     &lt;h2&gt;The problem&lt;/h2&gt;
     &lt;p&gt;
     What is the problem with defining a language as a set of strings?
-    I have already described the sorry state of Parsing Theory elsewhere.
+    I have already described the sorry state of Parsing Theory
+    &lt;a href=&quot;https://jeffreykegler.github.io/personal/timeline_v3#bib-Aho_and_Ullman_1972&quot;&gt;
+    elsewhere&lt;/a&gt;.
     The tale told there is from a slightly point of view,
     but no reader of it will be completely surprised by how I
     develop this point.
@@ -282,6 +283,60 @@
     or a wrong answer results.
     &lt;h2&gt;Comments, etc.&lt;/h2&gt;
     &lt;p&gt;
+      The background material for this post is in my
+    &lt;a href=&quot;https://jeffreykegler.github.io/personal/timeline_v3#bib-Aho_and_Ullman_1972&quot;&gt;
+    Parsing: a timeline 3.0&lt;/a&gt;,
+    and this post may be considered a supplement to &quot;Timelime&quot;.
+    The tale told there is from a slightly point of view,
+    but no reader of it will be completely surprised by how I
+    develop this point.
+    But here is a hint of how I tie the textbook definition
+    to daily practice.
+    &lt;/p&gt;
+    &lt;p&gt;
+    Here are two grammars,
+    call them &lt;tt&gt;STRUCTURE&lt;/tt&gt; and
+    and &lt;tt&gt;STRING&lt;/tt&gt;.
+    &lt;/p&gt;
+    &lt;pre id=&quot;g-structure-op&quot;&gt;&lt;tt&gt;
+      STRUCTURE ::= E
+      E ::= E + T
+      E ::= T
+      T ::= T * P
+      T ::= P
+      P ::= number
+    &lt;/tt&gt;&lt;/pre&gt;
+    &lt;pre id=&quot;g-string-op&quot;&gt;&lt;tt&gt;
+      STRING ::= E
+      E ::= P OP E
+      OP ::= '*'
+      OP ::= '+'
+      P ::= number
+    &lt;/tt&gt;&lt;/pre&gt;
+    Both
+    &lt;tt&gt;STRUCTURE&lt;/tt&gt;
+    and &lt;tt&gt;STRING&lt;/tt&gt;
+    recognize the same set of strings.
+    But if the intended meaning of the two grammars is
+    that of traditional arithmetic expressions,
+    the two grammars are very different
+    in the degree to which they capture it.
+    &lt;tt&gt;STRUCTURE&lt;/tt&gt;.
+    recognizes the associativity and precedence of the two operators --
+    the parse tree it produces could be used directly to evaluate an arithmetic
+    expression and the answer would always be correct.
+    The parse tree that &lt;tt&gt;STRING&lt;/tt&gt; produces, if evaluated directly,
+    will very often produce a wrong answer -- it does not capture
+    the structure of an arithmetic expression.
+    In order to produce correct results,
+    the output of &lt;tt&gt;STRING&lt;/tt&gt; could be put through a second phase,
+    but that is the point --
+    &lt;tt&gt;STRING&lt;/tt&gt; left crucial parts of the job of parsing undone,
+    and either some other logic does the job &lt;tt&gt;STRING&lt;/tt&gt; did not do,
+    or a wrong answer results.
+    &lt;h2&gt;Comments, etc.&lt;/h2&gt;
+    &lt;p&gt;
+      The background material for this post in
       To learn about Marpa,
       my Earley/Leo-based parsing project,
       there is the

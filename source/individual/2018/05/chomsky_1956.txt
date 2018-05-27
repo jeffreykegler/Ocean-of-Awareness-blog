@@ -42,7 +42,7 @@ Parsing languages versus parsing grammars
       and, after founding our field,
       has paid little attention to it.
       But in fact,
-      the Chomskyan model has been more influential
+      the Chomskyan model has been more dominant
       in computer parsing than in Chomsky's own
       field of linguistics.
     </p>
@@ -100,7 +100,6 @@ Parsing languages versus parsing grammars
     Chomsky does not require of his "grammar" that it
     give us any guidance as to what sentence (42) might mean.
     <p>
-    <h2>Avoiding meaning in order to address it</h2>
     </p>
     In addition to simplifying the math, Chomsky has two other good
     reasons to avoid dealing with meaning.
@@ -219,7 +218,9 @@ Parsing languages versus parsing grammars
     <h2>The problem</h2>
     <p>
     What is the problem with defining a language as a set of strings?
-    I have already described the sorry state of Parsing Theory elsewhere.
+    I have already described the sorry state of Parsing Theory
+    <a href="https://jeffreykegler.github.io/personal/timeline_v3#bib-Aho_and_Ullman_1972">
+    elsewhere</a>.
     The tale told there is from a slightly point of view,
     but no reader of it will be completely surprised by how I
     develop this point.
@@ -269,6 +270,60 @@ Parsing languages versus parsing grammars
     or a wrong answer results.
     <h2>Comments, etc.</h2>
     <p>
+      The background material for this post is in my
+    <a href="https://jeffreykegler.github.io/personal/timeline_v3#bib-Aho_and_Ullman_1972">
+    Parsing: a timeline 3.0</a>,
+    and this post may be considered a supplement to "Timelime".
+    The tale told there is from a slightly point of view,
+    but no reader of it will be completely surprised by how I
+    develop this point.
+    But here is a hint of how I tie the textbook definition
+    to daily practice.
+    </p>
+    <p>
+    Here are two grammars,
+    call them <tt>STRUCTURE</tt> and
+    and <tt>STRING</tt>.
+    </p>
+    <pre id="g-structure-op"><tt>
+      STRUCTURE ::= E
+      E ::= E + T
+      E ::= T
+      T ::= T * P
+      T ::= P
+      P ::= number
+    </tt></pre>
+    <pre id="g-string-op"><tt>
+      STRING ::= E
+      E ::= P OP E
+      OP ::= '*'
+      OP ::= '+'
+      P ::= number
+    </tt></pre>
+    Both
+    <tt>STRUCTURE</tt>
+    and <tt>STRING</tt>
+    recognize the same set of strings.
+    But if the intended meaning of the two grammars is
+    that of traditional arithmetic expressions,
+    the two grammars are very different
+    in the degree to which they capture it.
+    <tt>STRUCTURE</tt>.
+    recognizes the associativity and precedence of the two operators --
+    the parse tree it produces could be used directly to evaluate an arithmetic
+    expression and the answer would always be correct.
+    The parse tree that <tt>STRING</tt> produces, if evaluated directly,
+    will very often produce a wrong answer -- it does not capture
+    the structure of an arithmetic expression.
+    In order to produce correct results,
+    the output of <tt>STRING</tt> could be put through a second phase,
+    but that is the point --
+    <tt>STRING</tt> left crucial parts of the job of parsing undone,
+    and either some other logic does the job <tt>STRING</tt> did not do,
+    or a wrong answer results.
+    <h2>Comments, etc.</h2>
+    <p>
+      The background material for this post in
       To learn about Marpa,
       my Earley/Leo-based parsing project,
       there is the
