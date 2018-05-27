@@ -132,14 +132,16 @@ Parsing languages versus parsing grammars
     but for our purposes in this post the idea is the same --
     the definition is without regard to the meaning
     of the members of the set.
+    </p>
+    <p>
     Bloomfield's omission of semantics is not accidental.
     Bloomfield wanted to establish linguistics as a
     science, and for Bloomfield
     claiming to know the meaning of
     a sentence was dangerously close to
     claiming to be able to read minds.
-    You base a field on mind-reading and expect people to
-    believe you are doing science,
+    You cannot base a field on mind-reading and expect people to
+    believe that you are doing science,
     and Bloomfield therefore suggested avoiding,
     totally if possible,
     any discussion of semantics.<a id="footnote-6-ref" href="#footnote-6">[6]</a>
@@ -160,21 +162,23 @@ Parsing languages versus parsing grammars
     <h2>The tradition</h2>
     <p>Given the immense prestige of Chomsky's stunningly original and
     powerful work,
-    it is little wonder that successors studied, and followed, his
-    methods closely.
+    it is unsurprising that the Bloomfield/Chomsky definition reappears in his successors
+    within Parsing Theory.
     </p>
     <blockquote>
     A language over an alphabet &Sigma;
     is a set of strings over an alphabet &Sigma;.
     This definition encompasses almost everyone's notion of a language.<a id="footnote-8-ref" href="#footnote-8">[8]</a>
     </blockquote>
-    If this "encompasses" my notion of a language,
-    it does so in the same sense that an avalanche encompasses
+    This encapsulates Chomsky,
+    but if it "encompasses" this writer's notion of a language,
+    it does so only in the sense that an avalanche encompasses
     a skier.
     </p>
     <p>
-    Thirty years later,
-    authoritative textbooks are still repeating that same idea.
+    And thirty years after Chomsky,
+    here is an authoritative textbook of Parsing Theory
+    defining "language":
     </p>
     <blockquote>
       A set V is an alphabet (or a vocabulary) if it is finite and
@@ -186,14 +190,14 @@ Parsing languages versus parsing grammars
       The elements
       of a language L are called sentences of L.<a id="footnote-9-ref" href="#footnote-9">[9]</a>
     </blockquote>
-    <p>The language has changed to that of abstract algebra,
-    but the idea is exactly the same.<a id="footnote-10-ref" href="#footnote-10">[10]</a>
+    <p>The language has changed -- it is now that of abstract algebra,
+    but it is easy to see that the idea is pure Bloomfield.<a id="footnote-10-ref" href="#footnote-10">[10]</a>
     <h2>The problem</h2>
     <p>
-    Here are two grammars.
-    Both <tt>STRUCTURE</tt>
-    and <tt>STRING</tt>
-    grammars recognize the same set of strings.
+    What is the problem with defining a language as a set of strings?
+    Here are two grammars,
+    call them <tt>STRUCTURE</tt> and
+    and <tt>STRING</tt>.
     </p>
     <pre id="g-structure-op"><tt>
       STRUCTURE ::= E
@@ -210,24 +214,27 @@ Parsing languages versus parsing grammars
       OP ::= '+'
       P ::= number
     </tt></pre>
-    <tt>STRING</tt> is a lot simpler.
-    Many parsers can recognize 
-    <tt>STRING</tt>,
-    but most parsers in modern use
-    require serious hackery to recognize
+    Both
+    <tt>STRUCTURE</tt>
+    and <tt>STRING</tt>
+    recognize the same set of strings.
+    But if the intended meaning of the two grammars is
+    that of traditional arithmetic expressions,
+    the two grammars are very different
+    in the degree to which they capture it.
     <tt>STRUCTURE</tt>.
-    On the other hand,
-    <tt>STRUCTURE</tt>.
-    recognizer the associativity and precedence of the two operators,
-    and the parse tree it produces could be used directly to evaluate an arithmetic
-    expression correctly.
+    recognizes the associativity and precedence of the two operators --
+    the parse tree it produces could be used directly to evaluate an arithmetic
+    expression and the answer would always be correct.
     The parse tree that <tt>STRING</tt> produces, if evaluated directly,
-    very often
-    will <b>not</b> produce a correct answer.
-    <tt>STRING</tt>, if it is to be evaluated correctly,
-    must precede a second phase of processing --
-    one that in effect does the parsing work that 
-    <tt>STRING</tt>, left undone.
+    will very often produce a wrong answer -- it does not capture
+    the structure of an arithmetic expression.
+    In order to produce correct results,
+    the output of <tt>STRING</tt> could be put through a second phase,
+    but that is the point
+    <tt>STRING</tt> left crucial parts of the job of parsing undone,
+    and either some other logic does the job <tt>STRING</tt> did not do,
+    or a wrong answer results.
     <h2>A pedantic point?</h2>
     <p>
     The languages human beings use with each other 
@@ -333,7 +340,7 @@ Parsing languages versus parsing grammars
       p. 11.
  <a href="#footnote-9-ref">&#8617;</a></p>
 <p id="footnote-10">10.
-    A welcome departure from the tradition, however, arrives with
+    A welcome errancy from tradition, however, arrives with
     Grune, D. and Jacobs, C. J. H., <cite>Parsing Techniques: A Practical Guide</cite>, 2nd edition. Springer, 2008.
     On pp. 5-7, they attribute the traditional "set of strings" definition
     to "formal linguistics".
