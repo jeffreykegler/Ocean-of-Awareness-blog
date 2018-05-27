@@ -117,7 +117,7 @@ Parsing languages versus parsing grammars
       <cite>Logical Structure of Linguistic Theory</cite>,
       which was completed in June 1955.
       But <cite>Logical Structure of Linguistic Theory</cite>,
-      was not published until 1975,
+      was not published until 1975
       and then only in part.
       (See
       <a href="https://www.journals.uchicago.edu/doi/full/10.1086/686177">
@@ -160,9 +160,14 @@ Parsing languages versus parsing grammars
       Chomsky had a new approach to linguistics,
       and needed to prove that his approach to language
       did things that
-      previous approaches could not.
+      the previous approach,
+      based on finite-state models,
+      could not.
+      ("Finite-state" models, also known as Markov chains,
+      are the predecessors of the regular expressions
+      of today.)
       Brilliantly,
-      he sets out to do this with extremely minimal definition of what
+      Chomsky sets out to do this with extremely minimal definition of what
       a language is.
     </p>
     <blockquote>
@@ -249,7 +254,7 @@ Parsing languages versus parsing grammars
     "The statement of meanings is therefore the weak point in
     language-study, and will remain so until human knowledge 
     advances very far beyond its present state. In practice, we define the
-    meaning of a linguistic form, wherever wo can, in terms of some
+    meaning of a linguistic form, wherever we can, in terms of some
     other science."
     Bloomfield, Leonard.
     <cite>Language</cite>.
@@ -268,11 +273,20 @@ Parsing languages versus parsing grammars
     his readership.
     </p>
     <p>
-    You didn't have to read Chomsky's mind to see that he
-    was a lot more interested in semantics than
+    You did not have to read Chomsky's mind,
+    or predict the future,
+    to see that Chomsky
+    would get beyond the "set of strings" point of view
+    to become a lot more interested in semantics than
     Bloomfield was.
-    Even in his 1956 paper, [...
-    TODO: Continue this. ]
+    Already in "Three Models",
+    he is suggesting that his model is superior to
+    its predecessors,
+    because his model,
+    when an utterance is ambiguous,
+    produces multiple derivations to reflect that.<footnote>
+    Chomsky 1956, p. 118, p. 123.
+    </footnote>
     </p>
     <h2>The tradition</h2>
     <p>Given the immense prestige of "Three models",
@@ -413,56 +427,6 @@ Parsing languages versus parsing grammars
     <a href="https://jeffreykegler.github.io/personal/timeline_v3#bib-Aho_and_Ullman_1972">
     Parsing: a timeline 3.0</a>,
     and this post may be considered a supplement to "Timelime".
-    The tale told there is from a slightly point of view,
-    but no reader of it will be completely surprised by how I
-    develop this point.
-    But here is a hint of how I tie the textbook definition
-    to daily practice.
-    </p>
-    <p>
-    Here are two grammars,
-    call them <tt>STRUCTURE</tt> and
-    and <tt>STRING</tt>.
-    </p>
-    <pre id="g-structure-op"><tt>
-      STRUCTURE ::= E
-      E ::= E + T
-      E ::= T
-      T ::= T * P
-      T ::= P
-      P ::= number
-    </tt></pre>
-    <pre id="g-string-op"><tt>
-      STRING ::= E
-      E ::= P OP E
-      OP ::= '*'
-      OP ::= '+'
-      P ::= number
-    </tt></pre>
-    Both
-    <tt>STRUCTURE</tt>
-    and <tt>STRING</tt>
-    recognize the same set of strings.
-    But if the intended meaning of the two grammars is
-    that of traditional arithmetic expressions,
-    the two grammars are very different
-    in the degree to which they capture it.
-    <tt>STRUCTURE</tt>.
-    recognizes the associativity and precedence of the two operators --
-    the parse tree it produces could be used directly to evaluate an arithmetic
-    expression and the answer would always be correct.
-    The parse tree that <tt>STRING</tt> produces, if evaluated directly,
-    will very often produce a wrong answer -- it does not capture
-    the structure of an arithmetic expression.
-    In order to produce correct results,
-    the output of <tt>STRING</tt> could be put through a second phase,
-    but that is the point --
-    <tt>STRING</tt> left crucial parts of the job of parsing undone,
-    and either some other logic does the job <tt>STRING</tt> did not do,
-    or a wrong answer results.
-    <h2>Comments, etc.</h2>
-    <p>
-      The background material for this post in
       To learn about Marpa,
       my Earley/Leo-based parsing project,
       there is the
