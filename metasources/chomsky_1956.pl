@@ -276,9 +276,9 @@ Parsing languages versus parsing grammars
     TODO: Continue this. ]
     </p>
     <h2>The tradition</h2>
-    <p>Given the immense prestige of Chomsky's stunningly original and
-    powerful work,
-    it is unsurprising that the Bloomfield/Chomsky definition reappears in his successors
+    <p>Given the immense prestige of "Three models",
+    it is unsurprising, if unfortunate that the Bloomfield definition of language
+    reappears in Chomsky's successors
     within Parsing Theory.
     </p>
     <blockquote>
@@ -290,14 +290,13 @@ Parsing languages versus parsing grammars
     Vol. 1. Prentice-Hall, 1972, p. 16.
     </footnote>
     </blockquote>
-    This encapsulates Chomsky,
-    but if it "encompasses" this writer's notion of a language,
+    If this "encompasses" this blogger's notion of a language,
     it does so only in the sense that an avalanche encompasses
     a skier.
     </p>
     <p>
-    And thirty years after Chomsky,
-    here is an authoritative textbook of Parsing Theory
+    From 1988, thirty years after Chomsky,
+    here is another authoritative textbook of Parsing Theory
     defining "language":
     </p>
     <blockquote>
@@ -315,8 +314,8 @@ Parsing languages versus parsing grammars
       p. 11.
       </footnote>
     </blockquote>
-    <p>The language has changed -- it is now that of abstract algebra,
-    but it is easy to see that the idea is pure Bloomfield.<footnote>
+    <p>The language is now that of abstract algebra,
+    but it is easy to see that the idea is still pure Bloomfield.<footnote>
     A welcome errancy from tradition, however, arrives with
     Grune, D. and Jacobs, C. J. H., <cite>Parsing Techniques: A Practical Guide</cite>, 2nd edition. Springer, 2008.
     On pp. 5-7, they attribute the traditional "set of strings" definition
@@ -331,9 +330,42 @@ Parsing languages versus parsing grammars
     and give the history and motivation behind the math.
     My own work owes much to them.
     </footnote>
+    <h2>A pedantic point?</h2>
+    <p>Interesting, you might be saying, that
+    some textbook definitions are not everything they could be,
+    but is there any effect in the daily practice of
+    programming?
+    </p>
+    <p>
+    Consider.
+    The languages human beings use with each other 
+    are powerful,
+    varied, flexible and endlessly retargetable.
+    The parsers we use to communicate with computers
+    are restrictive, repetitive in form,
+    difficult to reprogram,
+    and prohibitively hard to retarget.
+    Is this because humans have a preternatural language ability?
+    </p>
+    <p>
+    Or is there something wrong with the way we
+    go about talking to computers?
+    How the Theory of Parsing literature defines the term
+    "language" may seem 
+    of only pedantic interest.
+    But I will argue that it is a mistake which has everything
+    to do with the limits of modern computer languages.
     <h2>The problem</h2>
     <p>
     What is the problem with defining a language as a set of strings?
+    I have already described the sorry state of Parsing Theory elsewhere.
+    The tale told there is from a slightly point of view,
+    but no reader of it will be completely surprised by how I
+    develop this point.
+    But here is a hint of how I tie the textbook definition
+    to daily practice.
+    </p>
+    <p>
     Here are two grammars,
     call them <tt>STRUCTURE</tt> and
     and <tt>STRING</tt>.
@@ -370,29 +402,10 @@ Parsing languages versus parsing grammars
     the structure of an arithmetic expression.
     In order to produce correct results,
     the output of <tt>STRING</tt> could be put through a second phase,
-    but that is the point
+    but that is the point --
     <tt>STRING</tt> left crucial parts of the job of parsing undone,
     and either some other logic does the job <tt>STRING</tt> did not do,
     or a wrong answer results.
-    <h2>A pedantic point?</h2>
-    <p>
-    The languages human beings use with each other 
-    are powerful,
-    varied, flexible and endlessly retargetable.
-    The parsers we use to communicate with computers
-    are restrictive, repetitive in form,
-    difficult to reprogram,
-    and prohibitively hard to retarget.
-    Is this because humans have a preternatural language ability?
-    </p>
-    <p>
-    Or is there something wrong with the way we
-    go about talking to computers?
-    How the Theory of Parsing literature defines the term
-    "language" may seem 
-    of only pedantic interest.
-    But I will argue that it is a mistake which has everything
-    to do with the limits of modern computer languages.
     <h2>Comments, etc.</h2>
     <p>
       To learn about Marpa,
