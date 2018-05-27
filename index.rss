@@ -229,11 +229,10 @@
     The languages human beings use with each other 
     are powerful,
     varied, flexible and endlessly retargetable.
-    The languages we use to communicate with computers
-    are restrictive and repetitive in form.
-    But they are also often pointlessly inconsistent because their
-    non-modular parsers are hard to reprogram
-    or retarget.
+    The parsers we use to communicate with computers
+    are restrictive, repetitive in form,
+    difficult to reprogram,
+    and prohibitively hard to retarget.
     Is this because humans have a preternatural language ability?
     &lt;/p&gt;
     &lt;p&gt;
