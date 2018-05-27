@@ -195,11 +195,15 @@ Parsing languages versus parsing grammars
     Holt, Rinehart and Winston, 1933, p. 140.
     </footnote>
     By excluding semantics from his own model of language,
-    Chomsky was making maximally accepted to
+    Chomsky was making his paper maximally acceptable to
     his readers in the departments of linguistics.
     </p>
-    [ TODO: recognizer? ]
-    </p>
+    <p>
+    Chomsky himself thought linguists should
+    very much interested in interfacing semantics to
+    linguists
+    Even in his 1956 paper, [...
+    TODO: Continue this. ]
     </p>
     <h2>The tradition</h2>
     <p>Given the immense prestige of Chomsky's stunningly original and
