@@ -237,7 +237,15 @@ Parsing languages versus parsing grammars
     and "utterances" instead of "strings",
     but for our purposes in this post the idea is the same --
     the definition is without regard to the meaning
-    of the members of the set.
+    of the members of the set.<footnote>
+    In case there is any doubt as to the link between
+    the Chomsky and Bloomfield defintions,
+    Chomsky also calls his strings,
+    "utterances": p. 49
+    Chomsky, Noam, <cite>Syntactic Structures</cite>,
+    2nd ed.,
+    Mouton de Gruyter, 2002, p. 49
+    </footnote>
     </p>
     <p>
     Bloomfield's omission of semantics is not accidental.
