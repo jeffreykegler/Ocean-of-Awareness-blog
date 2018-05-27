@@ -136,7 +136,7 @@
     &lt;/p&gt;
     &lt;blockquote&gt;
     The totality of utterances that can be made in a speech
-    community is the &lt;em&gt;language&lt;/em&gt;
+    community is the &lt;b&gt;language&lt;/b&gt;
     of that speech-community.&lt;a id=&quot;footnote-5-ref&quot; href=&quot;#footnote-5&quot;&gt;[5]&lt;/a&gt;
     &lt;/blockquote&gt;
     &lt;p&gt;
@@ -157,7 +157,8 @@
     totally if possible,
     any discussion of semantics.&lt;a id=&quot;footnote-6-ref&quot; href=&quot;#footnote-6&quot;&gt;[6]&lt;/a&gt;
     Most readers of Chomsky's paper in 1956 were Bloomfieldians --
-    Chomsky himself was seen as one.&lt;a id=&quot;footnote-7-ref&quot; href=&quot;#footnote-7&quot;&gt;[7]&lt;/a&gt;
+    Chomsky has studied under a Bloomfieldian,
+    and originally was seen as one.&lt;a id=&quot;footnote-7-ref&quot; href=&quot;#footnote-7&quot;&gt;[7]&lt;/a&gt;
     By excluding semantics from his own model of language,
     Chomsky was making his paper maximally acceptable to
     his readership.
@@ -283,21 +284,23 @@
       vol. 2, issue 3, September 1956, pp. 113-124.
  &lt;a href=&quot;#footnote-2-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
 &lt;p id=&quot;footnote-3&quot;&gt;3.
-      In this post I am called the &quot;Three models&quot; paper the &quot;first&quot;
+      In this post I am calling the &quot;Three models&quot; paper the &quot;first&quot;
       work of Chomskyan linguistics.
-      Other choices could be justified.
+      Other choices can be justified.
       The next year, 1957,
-      Chomsky published a book, &lt;cite&gt;Syntactic Structures&lt;/cite&gt;.
-      This was much more accessible,
+      Chomsky published a book covering the same material: &lt;cite&gt;Syntactic Structures&lt;/cite&gt;.
+      &lt;cite&gt;Syntactic Structures&lt;/cite&gt;
+      was much more accessible,
       and attracted much more attention,
       and the Chomskyan revolution did not really begin before
       it came out.
       On the other hand,
-      both of these are abridgements of Chomsky's
+      both of these draw their material from Chomsky's
       1000-page
       &lt;cite&gt;Logical Structure of Linguistic Theory&lt;/cite&gt;,
-      which was completed in June 1955,
-      but not published until 1975,
+      which was completed in June 1955.
+      But &lt;cite&gt;Logical Structure of Linguistic Theory&lt;/cite&gt;,
+      was not published until 1975,
       and then only in part.
       (See
       &lt;a href=&quot;https://www.journals.uchicago.edu/doi/full/10.1086/686177&quot;&gt;
@@ -309,12 +312,11 @@
       Chomsky 1956, p. 114.
  &lt;a href=&quot;#footnote-4-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
 &lt;p id=&quot;footnote-5&quot;&gt;5.
-    The quote is the definition of &quot;language&quot; is
-    definition 4 on p. 154 of
     Bloomfield, Leonard,
     &quot;A set of Postulates
-    for the Science of Language&quot;, p. 154.
-    &lt;cite&gt;Language&lt;/cite&gt;, Vol. 2, No. 3 (Sep., 1926), pp. 153-164
+    for the Science of Language&quot;,
+    &lt;cite&gt;Language&lt;/cite&gt;, Vol. 2, No. 3 (Sep., 1926), pp. 153-164.
+    The quote is definition 4 on p. 154.
  &lt;a href=&quot;#footnote-5-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
 &lt;p id=&quot;footnote-6&quot;&gt;6.
     &quot;The statement of meanings is therefore the weak point in
@@ -327,7 +329,10 @@
     Holt, Rinehart and Winston, 1933, p. 140.
  &lt;a href=&quot;#footnote-6-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
 &lt;p id=&quot;footnote-7&quot;&gt;7.
-    TODO
+    Harris, Randy Allen,
+    &lt;cite&gt;The Linguistics Wars&lt;/cite&gt;,
+    Oxford University Press, 1993,
+    pp 31-34.
  &lt;a href=&quot;#footnote-7-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
 &lt;p id=&quot;footnote-8&quot;&gt;8.
     Aho, Alfred V., and Jeffrey D. Ullman.
@@ -342,7 +347,7 @@
  &lt;a href=&quot;#footnote-9-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
 &lt;p id=&quot;footnote-10&quot;&gt;10.
     A welcome departure from the tradition, however, arrives with
-    Grune, D. and Jacobs, C. J. H. Parsing Techniques: A Practical Guide, 2nd edition. Springer, 2008.
+    Grune, D. and Jacobs, C. J. H., &lt;cite&gt;Parsing Techniques: A Practical Guide&lt;/cite&gt;, 2nd edition. Springer, 2008.
     On pp. 5-7, they attribute the traditional &quot;set of strings&quot; definition
     to &quot;formal linguistics&quot;.
     They

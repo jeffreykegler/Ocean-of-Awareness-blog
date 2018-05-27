@@ -101,21 +101,23 @@ Parsing languages versus parsing grammars
       time first outlined his ideas.
       It transformed linguistics,
       and is one of the most important scientific papers ever.<footnote>
-      In this post I am called the "Three models" paper the "first"
+      In this post I am calling the "Three models" paper the "first"
       work of Chomskyan linguistics.
-      Other choices could be justified.
+      Other choices can be justified.
       The next year, 1957,
-      Chomsky published a book, <cite>Syntactic Structures</cite>.
-      This was much more accessible,
+      Chomsky published a book covering the same material: <cite>Syntactic Structures</cite>.
+      <cite>Syntactic Structures</cite>
+      was much more accessible,
       and attracted much more attention,
       and the Chomskyan revolution did not really begin before
       it came out.
       On the other hand,
-      both of these are abridgements of Chomsky's
+      both of these draw their material from Chomsky's
       1000-page
       <cite>Logical Structure of Linguistic Theory</cite>,
-      which was completed in June 1955,
-      but not published until 1975,
+      which was completed in June 1955.
+      But <cite>Logical Structure of Linguistic Theory</cite>,
+      was not published until 1975,
       and then only in part.
       (See
       <a href="https://www.journals.uchicago.edu/doi/full/10.1086/686177">
@@ -217,14 +219,13 @@ Parsing languages versus parsing grammars
     </p>
     <blockquote>
     The totality of utterances that can be made in a speech
-    community is the <em>language</em>
+    community is the <b>language</b>
     of that speech-community.<footnote>
-    The quote is the definition of "language" is
-    definition 4 on p. 154 of
     Bloomfield, Leonard,
     "A set of Postulates
-    for the Science of Language", p. 154.
-    <cite>Language</cite>, Vol. 2, No. 3 (Sep., 1926), pp. 153-164
+    for the Science of Language",
+    <cite>Language</cite>, Vol. 2, No. 3 (Sep., 1926), pp. 153-164.
+    The quote is definition 4 on p. 154.
     </footnote>
     </blockquote>
     <p>
@@ -254,8 +255,12 @@ Parsing languages versus parsing grammars
     Holt, Rinehart and Winston, 1933, p. 140.
     </footnote>
     Most readers of Chomsky's paper in 1956 were Bloomfieldians --
-    Chomsky himself was seen as one.<footnote>
-    TODO
+    Chomsky has studied under a Bloomfieldian,
+    and originally was seen as one.<footnote>
+    Harris, Randy Allen,
+    <cite>The Linguistics Wars</cite>,
+    Oxford University Press, 1993,
+    pp 31-34.
     </footnote>
     By excluding semantics from his own model of language,
     Chomsky was making his paper maximally acceptable to
@@ -309,7 +314,7 @@ Parsing languages versus parsing grammars
     <p>The language has changed to that of abstract algebra,
     but the idea is exactly the same.<footnote>
     A welcome departure from the tradition, however, arrives with
-    Grune, D. and Jacobs, C. J. H. Parsing Techniques: A Practical Guide, 2nd edition. Springer, 2008.
+    Grune, D. and Jacobs, C. J. H., <cite>Parsing Techniques: A Practical Guide</cite>, 2nd edition. Springer, 2008.
     On pp. 5-7, they attribute the traditional "set of strings" definition
     to "formal linguistics".
     They
