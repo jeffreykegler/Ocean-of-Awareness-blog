@@ -107,17 +107,19 @@ Is a language just a set of strings?
 	Oxford University Press, 1993,
 	pp 33.
       </footnote>
-      It transformed linguistics,
-      and is one of the most important scientific papers ever.<footnote>
-      In this post I am calling the "Three models" paper the "first"
+      Bringing new rigor into what had been seen as a "soft"
+      science, it turned lots of heads outside linguistics.
+      It belongs on anyone's list of the most important scientific papers ever.<footnote>
+      In this post I am treating the "Three models" paper
+      as the "first"
       work of Chomskyan linguistics.
       Other choices can be justified.
       The next year, 1957,
       Chomsky published a book covering the same material: <cite>Syntactic Structures</cite>.
       <cite>Syntactic Structures</cite>
       was much more accessible,
-      and attracted much more attention,
-      and the Chomskyan revolution did not really begin before
+      and attracted much more attention --
+      the Chomskyan revolution did not really begin before
       it came out.
       On the other hand,
       both of these draw their material from Chomsky's
