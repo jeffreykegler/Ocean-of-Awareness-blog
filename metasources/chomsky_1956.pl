@@ -126,7 +126,7 @@ Is a language just a set of strings?
       1000-page
       <cite>Logical Structure of Linguistic Theory</cite>,
       which was completed in June 1955.
-      But <cite>Logical Structure of Linguistic Theory</cite>,
+      But <cite>Logical Structure of Linguistic Theory</cite>
       was not published until 1975
       and then only in part.
       (See
@@ -150,7 +150,7 @@ Is a language just a set of strings?
       field of linguistics.
     </p>
     <p>
-      "Three Models" also places Chomksy among the great mathematicians
+      "Three Models" places Chomksy among the great mathematicians
       of all time.
       True, the elegance and rigor of Chomsky's proofs
       better befit a slumming linguist
@@ -269,10 +269,10 @@ Is a language just a set of strings?
     the definition is without regard to the meaning
     of the members of the set.<footnote>
     In case there is any doubt as to the link between
-    the Chomsky and Bloomfield defintions,
+    the Chomsky and Bloomfield definitions,
     Chomsky also calls his strings,
-    "utterances":
-    Chomsky, Noam, <cite>Syntactic Structures</cite>,
+    "utterances".
+    See Chomsky, Noam, <cite>Syntactic Structures</cite>,
     2nd ed.,
     Mouton de Gruyter, 2002, p. 49
     </footnote>
@@ -300,11 +300,10 @@ Is a language just a set of strings?
     </p>
     <h2>Semantics sneaks back in</h2>
     <p>
-    You did not have to read Chomsky's mind,
+    But you did not have to read Chomsky's mind,
     or predict the future,
     to see that Chomsky
-    would go beyond the "set of strings" point of view,
-    and in fact was a lot more interested in semantics than
+    was a lot more interested in semantics than
     Bloomfield was.
     Already in "Three Models",
     he is suggesting that his model is superior to
@@ -332,8 +331,8 @@ Is a language just a set of strings?
     Chomsky's case was compelling.
     Young linguists wanted theoretical tools with this
     kind of power and those few
-    older linguists not converted struggled to find 
-    reasons why the young linguists should not
+    older linguists not convinced struggled to find
+    reasons why the young linguists could not
     have what they wanted.
     </p>
     <p>
@@ -359,7 +358,7 @@ Is a language just a set of strings?
     Compare this to Bloomfield:
     <blockquote>
     The statement of meanings is therefore the weak point in
-    language-study, and will remain so until human knowledge 
+    language-study, and will remain so until human knowledge
     advances very far beyond its present state. In practice, we define the
     meaning of a linguistic form, wherever we can, in terms of some
     other science.<footnote>
@@ -418,15 +417,16 @@ Is a language just a set of strings?
       </footnote>
     </blockquote>
     <p>The language is now that of abstract algebra,
-    but it is easy to see that the idea is still pure Bloomfield.<footnote>
+    but the idea is the same -- pure Bloomfield.<footnote>
     A welcome errancy from tradition, however, arrives with
-    Grune, D. and Jacobs, C. J. H., <cite>Parsing Techniques: A Practical Guide</cite>, 2nd edition. Springer, 2008.
+    Grune, D. and Jacobs, C. J. H., <cite>Parsing Techniques: A Practical Guide</cite>,
+    2nd edition, Springer, 2008.
     On pp. 5-7, they attribute the traditional "set of strings" definition
     to "formal linguistics".
     They
     point out that the computer scientist requires a grammar to
     not only list a set of strings, but provide a
-    "structure" for each of them.
+    "structure" for each of them.<br><br>
     As an aside,
     Grune and Jacobs often depart from the "just stick to the math"
     approach taken by other textbooks parsing theory.
@@ -442,7 +442,7 @@ Is a language just a set of strings?
     programming?
     </p>
     <p>
-    The languages human beings use with each other 
+    The languages human beings use with each other
     are powerful,
     varied, flexible and endlessly retargetable.
     The parsers we use to communicate with computers
@@ -455,7 +455,7 @@ Is a language just a set of strings?
     Or is there something wrong with the way we
     go about talking to computers?
     How the Theory of Parsing literature defines the term
-    "language" may seem 
+    "language" may seem
     of only pedantic interest.
     But I will argue that it is a mistake which has everything
     to do with the limits of modern computer languages.
@@ -478,13 +478,13 @@ Is a language just a set of strings?
     </p>
     <pre id="g-string-op"><tt>
       STRING ::= E
-      E ::= P OP E
+      E  ::= P OP E
       OP ::= '*'
       OP ::= '+'
-      P ::= number
+      P  ::= number
     </tt></pre>
     <p>
-    If you define a language as a set of string,
+    If you define a language as a set of strings,
     both
     <tt>SENSE</tt>
     and <tt>STRING</tt>
@@ -512,7 +512,7 @@ Is a language just a set of strings?
     <p>
     It is much easier to write a parser for <tt>STRING</tt>
     than it is for <tt>SENSE</tt>.
-    Encouraged by a theory that minimizes the 
+    Encouraged by a theory that minimizes the
     difference,
     many implementations attempt to make do with <tt>SENSE</tt>.
     </p>
@@ -520,14 +520,13 @@ Is a language just a set of strings?
     But that is not the worst of it.
     The idea that a language is a set of strings
     has guided research,
-    and steered it away from the most promising lines of research.
+    and steered it away from the most promising lines.
     How, I hope to explain in the future.<footnote>
-    Readers who want to know where I plan to take this can
-    look at my
+    Readers who want to peek ahead can look at my
     <a href="https://jeffreykegler.github.io/personal/timeline_v3#bib-Aho_and_Ullman_1972">
     Parsing: a timeline 3.0</a>.
-    The tale is told there is from a somewhat point of view,
-    but no reader of "timeline" will be completely surprised by where
+    The tale is told there is from a somewhat different point of view,
+    but no reader of "Timeline" will be much surprised by where
     I take this line of thought.
     </footnote>
     </p>

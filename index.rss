@@ -63,7 +63,7 @@
       field of linguistics.
     &lt;/p&gt;
     &lt;p&gt;
-      &quot;Three Models&quot; also places Chomksy among the great mathematicians
+      &quot;Three Models&quot; places Chomksy among the great mathematicians
       of all time.
       True, the elegance and rigor of Chomsky's proofs
       better befit a slumming linguist
@@ -195,11 +195,10 @@
     &lt;/p&gt;
     &lt;h2&gt;Semantics sneaks back in&lt;/h2&gt;
     &lt;p&gt;
-    You did not have to read Chomsky's mind,
+    But you did not have to read Chomsky's mind,
     or predict the future,
     to see that Chomsky
-    would go beyond the &quot;set of strings&quot; point of view,
-    and in fact was a lot more interested in semantics than
+    was a lot more interested in semantics than
     Bloomfield was.
     Already in &quot;Three Models&quot;,
     he is suggesting that his model is superior to
@@ -225,8 +224,8 @@
     Chomsky's case was compelling.
     Young linguists wanted theoretical tools with this
     kind of power and those few
-    older linguists not converted struggled to find 
-    reasons why the young linguists should not
+    older linguists not convinced struggled to find
+    reasons why the young linguists could not
     have what they wanted.
     &lt;/p&gt;
     &lt;p&gt;
@@ -247,7 +246,7 @@
     Compare this to Bloomfield:
     &lt;blockquote&gt;
     The statement of meanings is therefore the weak point in
-    language-study, and will remain so until human knowledge 
+    language-study, and will remain so until human knowledge
     advances very far beyond its present state. In practice, we define the
     meaning of a linguistic form, wherever we can, in terms of some
     other science.&lt;a id=&quot;footnote-11-ref&quot; href=&quot;#footnote-11&quot;&gt;[11]&lt;/a&gt;
@@ -293,7 +292,7 @@
       of a language L are called sentences of L.&lt;a id=&quot;footnote-13-ref&quot; href=&quot;#footnote-13&quot;&gt;[13]&lt;/a&gt;
     &lt;/blockquote&gt;
     &lt;p&gt;The language is now that of abstract algebra,
-    but it is easy to see that the idea is still pure Bloomfield.&lt;a id=&quot;footnote-14-ref&quot; href=&quot;#footnote-14&quot;&gt;[14]&lt;/a&gt;
+    but the idea is the same -- pure Bloomfield.&lt;a id=&quot;footnote-14-ref&quot; href=&quot;#footnote-14&quot;&gt;[14]&lt;/a&gt;
     &lt;/p&gt;
     &lt;h2&gt;The problem&lt;/h2&gt;
     &lt;p&gt;
@@ -303,7 +302,7 @@
     programming?
     &lt;/p&gt;
     &lt;p&gt;
-    The languages human beings use with each other 
+    The languages human beings use with each other
     are powerful,
     varied, flexible and endlessly retargetable.
     The parsers we use to communicate with computers
@@ -316,7 +315,7 @@
     Or is there something wrong with the way we
     go about talking to computers?
     How the Theory of Parsing literature defines the term
-    &quot;language&quot; may seem 
+    &quot;language&quot; may seem
     of only pedantic interest.
     But I will argue that it is a mistake which has everything
     to do with the limits of modern computer languages.
@@ -339,13 +338,13 @@
     &lt;/p&gt;
     &lt;pre id=&quot;g-string-op&quot;&gt;&lt;tt&gt;
       STRING ::= E
-      E ::= P OP E
+      E  ::= P OP E
       OP ::= '*'
       OP ::= '+'
-      P ::= number
+      P  ::= number
     &lt;/tt&gt;&lt;/pre&gt;
     &lt;p&gt;
-    If you define a language as a set of string,
+    If you define a language as a set of strings,
     both
     &lt;tt&gt;SENSE&lt;/tt&gt;
     and &lt;tt&gt;STRING&lt;/tt&gt;
@@ -373,7 +372,7 @@
     &lt;p&gt;
     It is much easier to write a parser for &lt;tt&gt;STRING&lt;/tt&gt;
     than it is for &lt;tt&gt;SENSE&lt;/tt&gt;.
-    Encouraged by a theory that minimizes the 
+    Encouraged by a theory that minimizes the
     difference,
     many implementations attempt to make do with &lt;tt&gt;SENSE&lt;/tt&gt;.
     &lt;/p&gt;
@@ -381,7 +380,7 @@
     But that is not the worst of it.
     The idea that a language is a set of strings
     has guided research,
-    and steered it away from the most promising lines of research.
+    and steered it away from the most promising lines.
     How, I hope to explain in the future.&lt;a id=&quot;footnote-15-ref&quot; href=&quot;#footnote-15&quot;&gt;[15]&lt;/a&gt;
     &lt;/p&gt;
     &lt;h2&gt;Comments, etc.&lt;/h2&gt;
@@ -434,7 +433,7 @@
       1000-page
       &lt;cite&gt;Logical Structure of Linguistic Theory&lt;/cite&gt;,
       which was completed in June 1955.
-      But &lt;cite&gt;Logical Structure of Linguistic Theory&lt;/cite&gt;,
+      But &lt;cite&gt;Logical Structure of Linguistic Theory&lt;/cite&gt;
       was not published until 1975
       and then only in part.
       (See
@@ -455,10 +454,10 @@
  &lt;a href=&quot;#footnote-6-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
 &lt;p id=&quot;footnote-7&quot;&gt;7.
     In case there is any doubt as to the link between
-    the Chomsky and Bloomfield defintions,
+    the Chomsky and Bloomfield definitions,
     Chomsky also calls his strings,
-    &quot;utterances&quot;:
-    Chomsky, Noam, &lt;cite&gt;Syntactic Structures&lt;/cite&gt;,
+    &quot;utterances&quot;.
+    See Chomsky, Noam, &lt;cite&gt;Syntactic Structures&lt;/cite&gt;,
     2nd ed.,
     Mouton de Gruyter, 2002, p. 49
  &lt;a href=&quot;#footnote-7-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
@@ -492,13 +491,14 @@
  &lt;a href=&quot;#footnote-13-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
 &lt;p id=&quot;footnote-14&quot;&gt;14.
     A welcome errancy from tradition, however, arrives with
-    Grune, D. and Jacobs, C. J. H., &lt;cite&gt;Parsing Techniques: A Practical Guide&lt;/cite&gt;, 2nd edition. Springer, 2008.
+    Grune, D. and Jacobs, C. J. H., &lt;cite&gt;Parsing Techniques: A Practical Guide&lt;/cite&gt;,
+    2nd edition, Springer, 2008.
     On pp. 5-7, they attribute the traditional &quot;set of strings&quot; definition
     to &quot;formal linguistics&quot;.
     They
     point out that the computer scientist requires a grammar to
     not only list a set of strings, but provide a
-    &quot;structure&quot; for each of them.
+    &quot;structure&quot; for each of them.&lt;br&gt;&lt;br&gt;
     As an aside,
     Grune and Jacobs often depart from the &quot;just stick to the math&quot;
     approach taken by other textbooks parsing theory.
@@ -506,12 +506,11 @@
     My own work owes much to them.
  &lt;a href=&quot;#footnote-14-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
 &lt;p id=&quot;footnote-15&quot;&gt;15.
-    Readers who want to know where I plan to take this can
-    look at my
+    Readers who want to peek ahead can look at my
     &lt;a href=&quot;https://jeffreykegler.github.io/personal/timeline_v3#bib-Aho_and_Ullman_1972&quot;&gt;
     Parsing: a timeline 3.0&lt;/a&gt;.
-    The tale is told there is from a somewhat point of view,
-    but no reader of &quot;timeline&quot; will be completely surprised by where
+    The tale is told there is from a somewhat different point of view,
+    but no reader of &quot;Timeline&quot; will be much surprised by where
     I take this line of thought.
  &lt;a href=&quot;#footnote-15-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
   &lt;/body&gt;
