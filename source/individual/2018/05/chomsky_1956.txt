@@ -169,8 +169,8 @@ Is a language just a set of strings?
     a sentence was dangerously close to
     claiming to be able to read minds.
     You cannot base your work on mind-reading and expect people to
-    believe that you are doing science,
-    and Bloomfield therefore suggested avoiding,
+    believe that you are doing science.
+    Bloomfield therefore suggested avoiding,
     totally if possible,
     any discussion of semantics.
     Most readers of Chomsky's paper in 1956 were Bloomfieldians --
@@ -201,8 +201,8 @@ Is a language just a set of strings?
     were well beyond what the finite-state models were providing.
     </p>
     <p>
-    Alone,
-    Chomsky's argument that his grammars were better
+    By itself,
+    Chomsky's argument, that his grammars were better
     because they could list more sentences,
     might have carried the day.
     With the demonstration that his grammars could do
@@ -250,8 +250,8 @@ Is a language just a set of strings?
     Unfortunately, what they picked up was not
     Chomsky's emphasis on the overriding importance
     of semantics,
-    but the definition of language
-    he had adopted from Bloomfield
+    but the narrow definition of language
+    that Chomsky had adopted from Bloomfield
     for tactical purposes.
     In the classic Aho and Ullman 1972 textbook, we have
     </p>
@@ -274,13 +274,16 @@ Is a language just a set of strings?
       nonempty.
       The elements
       of an alphabet V are called the symbols (or letters or characters) of
-      V
+      V.
       A language L over V is any subset of the free monoid V*.
       The elements
       of a language L are called sentences of L.<a id="footnote-13-ref" href="#footnote-13">[13]</a>
     </blockquote>
     <p>The language is now that of abstract algebra,
     but it is easy to see that the idea is still pure Bloomfield.<a id="footnote-14-ref" href="#footnote-14">[14]</a>
+    </p>
+    <h2>The problem</h2>
+    <p>
     Interesting, you might be saying, that
     some textbook definitions are not everything they could be,
     but is there any effect on the daily practice of
@@ -304,31 +307,23 @@ Is a language just a set of strings?
     of only pedantic interest.
     But I will argue that it is a mistake which has everything
     to do with the limits of modern computer languages.
-    <h2>The problem</h2>
     <p>
     What is the problem with defining a language as a set of strings?
-    I have already described the sorry state of Parsing Theory
-    <a href="https://jeffreykegler.github.io/personal/timeline_v3#bib-Aho_and_Ullman_1972">
-    elsewhere</a>.
-    The tale told there is from a slightly point of view,
-    but no reader of it will be completely surprised by how I
-    develop this point.
-    But here is a hint of how I tie the textbook definition
-    to daily practice.
-    </p>
-    <p>
-    Here are two grammars,
-    call them <tt>STRUCTURE</tt> and
-    and <tt>STRING</tt>.
+    Here is an example of how the textbook definition
+    affects daily practice.
+    Call one grammar <tt>SENSE</tt>:
     </p>
     <pre id="g-structure-op"><tt>
-      STRUCTURE ::= E
+      SENSE ::= E
       E ::= E + T
       E ::= T
       T ::= T * P
       T ::= P
       P ::= number
     </tt></pre>
+    <p>
+    And call another grammar <tt>STRING</tt>:
+    </p>
     <pre id="g-string-op"><tt>
       STRING ::= E
       E ::= P OP E
@@ -336,15 +331,20 @@ Is a language just a set of strings?
       OP ::= '+'
       P ::= number
     </tt></pre>
-    Both
-    <tt>STRUCTURE</tt>
+    <p>
+    If you define a language as a set of string,
+    both
+    <tt>SENSE</tt>
     and <tt>STRING</tt>
-    recognize the same set of strings.
-    But if the intended meaning of the two grammars is
+    recognize the same language.
+    But it's a very different story if you
+    take the intended meaning as
     that of traditional arithmetic expressions,
-    the two grammars are very different
-    in the degree to which they capture it.
-    <tt>STRUCTURE</tt>
+    and consider
+    the meaning of the two grammars.
+    </p>
+    <p>
+    <tt>SENSE</tt>
     recognizes the associativity and precedence of the two operators --
     the parse tree it produces could be used directly to evaluate an arithmetic
     expression and the answer would always be correct.
@@ -357,6 +357,20 @@ Is a language just a set of strings?
     <tt>STRING</tt> left crucial parts of the job of parsing undone,
     and either some other logic does the job <tt>STRING</tt> did not do,
     or a wrong answer results.
+    <p>
+    It is much easier to write a parser for <tt>STRING</tt>
+    than it is for <tt>SENSE</tt>.
+    Encouraged by a theory that minimizes the 
+    difference,
+    many implementations attempt to make do with <tt>SENSE</tt>.
+    </p>
+    <p>
+    But that is not the worst of it.
+    The idea that a language is a set of strings
+    has guided research,
+    and steered it away from the most promising lines of research.
+    How, I hope to explain in the future.<a id="footnote-15-ref" href="#footnote-15">[15]</a>
+    </p>
     <h2>Comments, etc.</h2>
     <p>
       The background material for this post is in my
@@ -478,5 +492,15 @@ Is a language just a set of strings?
     They often give the history and motivation behind the math.
     My own work owes much to them.
  <a href="#footnote-14-ref">&#8617;</a></p>
+<p id="footnote-15">15.
+    Readers who want to know where I plan to take this can
+    look at my
+    <a href="https://jeffreykegler.github.io/personal/timeline_v3#bib-Aho_and_Ullman_1972">
+    Parsing: a timeline 3.0</a>.
+    The tale is told there is from a somewhat point of view,
+    but no reader of "timeline" will be completely surprised by where
+    I take this line of thought.
+    </p>
+ <a href="#footnote-15-ref">&#8617;</a></p>
   </body>
 </html>

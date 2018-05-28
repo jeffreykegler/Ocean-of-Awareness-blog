@@ -182,8 +182,8 @@
     a sentence was dangerously close to
     claiming to be able to read minds.
     You cannot base your work on mind-reading and expect people to
-    believe that you are doing science,
-    and Bloomfield therefore suggested avoiding,
+    believe that you are doing science.
+    Bloomfield therefore suggested avoiding,
     totally if possible,
     any discussion of semantics.
     Most readers of Chomsky's paper in 1956 were Bloomfieldians --
@@ -214,8 +214,8 @@
     were well beyond what the finite-state models were providing.
     &lt;/p&gt;
     &lt;p&gt;
-    Alone,
-    Chomsky's argument that his grammars were better
+    By itself,
+    Chomsky's argument, that his grammars were better
     because they could list more sentences,
     might have carried the day.
     With the demonstration that his grammars could do
@@ -263,8 +263,8 @@
     Unfortunately, what they picked up was not
     Chomsky's emphasis on the overriding importance
     of semantics,
-    but the definition of language
-    he had adopted from Bloomfield
+    but the narrow definition of language
+    that Chomsky had adopted from Bloomfield
     for tactical purposes.
     In the classic Aho and Ullman 1972 textbook, we have
     &lt;/p&gt;
@@ -287,13 +287,16 @@
       nonempty.
       The elements
       of an alphabet V are called the symbols (or letters or characters) of
-      V
+      V.
       A language L over V is any subset of the free monoid V*.
       The elements
       of a language L are called sentences of L.&lt;a id=&quot;footnote-13-ref&quot; href=&quot;#footnote-13&quot;&gt;[13]&lt;/a&gt;
     &lt;/blockquote&gt;
     &lt;p&gt;The language is now that of abstract algebra,
     but it is easy to see that the idea is still pure Bloomfield.&lt;a id=&quot;footnote-14-ref&quot; href=&quot;#footnote-14&quot;&gt;[14]&lt;/a&gt;
+    &lt;/p&gt;
+    &lt;h2&gt;The problem&lt;/h2&gt;
+    &lt;p&gt;
     Interesting, you might be saying, that
     some textbook definitions are not everything they could be,
     but is there any effect on the daily practice of
@@ -317,31 +320,23 @@
     of only pedantic interest.
     But I will argue that it is a mistake which has everything
     to do with the limits of modern computer languages.
-    &lt;h2&gt;The problem&lt;/h2&gt;
     &lt;p&gt;
     What is the problem with defining a language as a set of strings?
-    I have already described the sorry state of Parsing Theory
-    &lt;a href=&quot;https://jeffreykegler.github.io/personal/timeline_v3#bib-Aho_and_Ullman_1972&quot;&gt;
-    elsewhere&lt;/a&gt;.
-    The tale told there is from a slightly point of view,
-    but no reader of it will be completely surprised by how I
-    develop this point.
-    But here is a hint of how I tie the textbook definition
-    to daily practice.
-    &lt;/p&gt;
-    &lt;p&gt;
-    Here are two grammars,
-    call them &lt;tt&gt;STRUCTURE&lt;/tt&gt; and
-    and &lt;tt&gt;STRING&lt;/tt&gt;.
+    Here is an example of how the textbook definition
+    affects daily practice.
+    Call one grammar &lt;tt&gt;SENSE&lt;/tt&gt;:
     &lt;/p&gt;
     &lt;pre id=&quot;g-structure-op&quot;&gt;&lt;tt&gt;
-      STRUCTURE ::= E
+      SENSE ::= E
       E ::= E + T
       E ::= T
       T ::= T * P
       T ::= P
       P ::= number
     &lt;/tt&gt;&lt;/pre&gt;
+    &lt;p&gt;
+    And call another grammar &lt;tt&gt;STRING&lt;/tt&gt;:
+    &lt;/p&gt;
     &lt;pre id=&quot;g-string-op&quot;&gt;&lt;tt&gt;
       STRING ::= E
       E ::= P OP E
@@ -349,15 +344,20 @@
       OP ::= '+'
       P ::= number
     &lt;/tt&gt;&lt;/pre&gt;
-    Both
-    &lt;tt&gt;STRUCTURE&lt;/tt&gt;
+    &lt;p&gt;
+    If you define a language as a set of string,
+    both
+    &lt;tt&gt;SENSE&lt;/tt&gt;
     and &lt;tt&gt;STRING&lt;/tt&gt;
-    recognize the same set of strings.
-    But if the intended meaning of the two grammars is
+    recognize the same language.
+    But it's a very different story if you
+    take the intended meaning as
     that of traditional arithmetic expressions,
-    the two grammars are very different
-    in the degree to which they capture it.
-    &lt;tt&gt;STRUCTURE&lt;/tt&gt;
+    and consider
+    the meaning of the two grammars.
+    &lt;/p&gt;
+    &lt;p&gt;
+    &lt;tt&gt;SENSE&lt;/tt&gt;
     recognizes the associativity and precedence of the two operators --
     the parse tree it produces could be used directly to evaluate an arithmetic
     expression and the answer would always be correct.
@@ -370,6 +370,20 @@
     &lt;tt&gt;STRING&lt;/tt&gt; left crucial parts of the job of parsing undone,
     and either some other logic does the job &lt;tt&gt;STRING&lt;/tt&gt; did not do,
     or a wrong answer results.
+    &lt;p&gt;
+    It is much easier to write a parser for &lt;tt&gt;STRING&lt;/tt&gt;
+    than it is for &lt;tt&gt;SENSE&lt;/tt&gt;.
+    Encouraged by a theory that minimizes the 
+    difference,
+    many implementations attempt to make do with &lt;tt&gt;SENSE&lt;/tt&gt;.
+    &lt;/p&gt;
+    &lt;p&gt;
+    But that is not the worst of it.
+    The idea that a language is a set of strings
+    has guided research,
+    and steered it away from the most promising lines of research.
+    How, I hope to explain in the future.&lt;a id=&quot;footnote-15-ref&quot; href=&quot;#footnote-15&quot;&gt;[15]&lt;/a&gt;
+    &lt;/p&gt;
     &lt;h2&gt;Comments, etc.&lt;/h2&gt;
     &lt;p&gt;
       The background material for this post is in my
@@ -491,6 +505,16 @@
     They often give the history and motivation behind the math.
     My own work owes much to them.
  &lt;a href=&quot;#footnote-14-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;p id=&quot;footnote-15&quot;&gt;15.
+    Readers who want to know where I plan to take this can
+    look at my
+    &lt;a href=&quot;https://jeffreykegler.github.io/personal/timeline_v3#bib-Aho_and_Ullman_1972&quot;&gt;
+    Parsing: a timeline 3.0&lt;/a&gt;.
+    The tale is told there is from a somewhat point of view,
+    but no reader of &quot;timeline&quot; will be completely surprised by where
+    I take this line of thought.
+    &lt;/p&gt;
+ &lt;a href=&quot;#footnote-15-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
   &lt;/body&gt;
 &lt;/html&gt;</description>
   </item>
