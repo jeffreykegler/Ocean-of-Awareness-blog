@@ -61,7 +61,7 @@ sub do_footnote {
 }
 
 __DATA__
-Parsing languages versus parsing grammars
+Is a language just a set of strings?
 <html>
   <head>
   </head>
@@ -99,6 +99,14 @@ Parsing languages versus parsing grammars
       Just 12 pages,
       it's the paper in which the most-cited scholar of our
       time first outlined his ideas.
+      Even at the time,
+      linguists described its effect on their field as
+      "Copernician".<footnote>
+	Harris, Randy Allen,
+	<cite>The Linguistics Wars</cite>,
+	Oxford University Press, 1993,
+	pp 33.
+      </footnote>
       It transformed linguistics,
       and is one of the most important scientific papers ever.<footnote>
       In this post I am calling the "Three models" paper the "first"
@@ -125,7 +133,6 @@ Parsing languages versus parsing grammars
       "The Unmaking of a Modern Synthesis: Noam Chomsky, Charles Hockett, and the Politics of Behaviorism, 1955–1965"
       </a>.)
       </footnote>
-      [ TODO: Work on this graf. ]
     </p>
     <p>
       Given its significance,
@@ -201,7 +208,28 @@ Parsing languages versus parsing grammars
     Chomsky does not require of his "grammar" that it
     give us any guidance as to what sentence (42) might mean.
     <p>
+    Chomsky shows that there are English sentences that his "grammar" would
+    list,
+    and which a finite-state "grammar" would not list.
+    Clearly if the finite-state grammar cannot even produce a sentence
+    as one of a list,
+    it is not adequate as a model of that language,
+    at least as far as that sentence goes.
+    <p>
     </p>
+    Chomsky shows that there is,
+    in fact,
+    a large, significant class of sentences that
+    his "grammars" can list,
+    but which the finite-state grammars cannot list.
+    Chomsky presents this as
+    very strong evidence that
+    his grammars will make better models
+    of language
+    than finite-state grammars can.
+    </p>
+    <h2>Other considerations</h2>
+    <p>
     In addition to simplifying the math, Chomsky has two other good
     reasons to avoid dealing with meaning.
     A second reason is that
@@ -258,28 +286,17 @@ Parsing languages versus parsing grammars
     believe that you are doing science,
     and Bloomfield therefore suggested avoiding,
     totally if possible,
-    any discussion of semantics.<footnote>
-    "The statement of meanings is therefore the weak point in
-    language-study, and will remain so until human knowledge 
-    advances very far beyond its present state. In practice, we define the
-    meaning of a linguistic form, wherever we can, in terms of some
-    other science."
-    Bloomfield, Leonard.
-    <cite>Language</cite>.
-    Holt, Rinehart and Winston, 1933, p. 140.
-    </footnote>
+    any discussion of semantics.
     Most readers of Chomsky's paper in 1956 were Bloomfieldians --
     Chomsky has studied under a Bloomfieldian,
     and originally was seen as one.<footnote>
-    Harris, Randy Allen,
-    <cite>The Linguistics Wars</cite>,
-    Oxford University Press, 1993,
-    pp 31-34.
+    Harris 1993, pp 31-34, p. 37.
     </footnote>
     By excluding semantics from his own model of language,
     Chomsky was making his paper maximally acceptable to
     his readership.
     </p>
+    <h2>Semantics sneaks back in</h2>
     <p>
     You did not have to read Chomsky's mind,
     or predict the future,
@@ -292,16 +309,77 @@ Parsing languages versus parsing grammars
     its predecessors,
     because his model,
     when an utterance is ambiguous,
-    produces multiple derivations to reflect that.<footnote>
+    produces multiple derivations to reflect that,
+    and these derivations "looked" like natural representations
+    of the difference between the two meanings.<footnote>
     Chomsky 1956, p. 118, p. 123.
     </footnote>
+    These insights,
+    which dropped effortlessly out of Chomsky's grammars,
+    were well beyond what the finite-state models were providing.
+    </p>
+    <p>
+    Alone,
+    Chomsky's argument that his grammars were better
+    because they could list more sentences,
+    might have carried the day.
+    With the demonstration that his grammars could do
+    more than list sentences,
+    but also could proivde insight into the structure and semantics
+    of sentences,
+    Chomsky's case was compelling.
+    Young linguists wanted theoretical tools with this
+    kind of power and those few
+    older linguists not converted struggled to find 
+    reasons why the young linguists should not
+    have what they wanted.
+    </p>
+    <p>
+    In later years,
+    Chomsky made it quite clear what his position was
+    <blockquote>
+    [...] it would be absurd to develop
+    a general syntactic theory
+    without assigning an absolutely
+    crucial role to semantic considerations,
+    since obviously the necessity to support
+    semantic interpretation is one of the primary
+    requirements
+    that the structures
+    generated by the syntactic component of a grammar
+    must meet.<footnote>
+    Chomsky, Noam.
+    <cite>Topics in the Theory of Generative Grammar</cite>.
+    De Gruyter, 1978, p. 20.
+    (The quote occurs in footnote 7 starting on p. 19.)
+    </footnote>
+    </blockquote>
+    Compare this to Bloomfield:
+    <blockquote>
+    The statement of meanings is therefore the weak point in
+    language-study, and will remain so until human knowledge 
+    advances very far beyond its present state. In practice, we define the
+    meaning of a linguistic form, wherever we can, in terms of some
+    other science.<footnote>
+    Bloomfield, Leonard.
+    <cite>Language</cite>.
+    Holt, Rinehart and Winston, 1933, p. 140.
+    </footnote>
+    </blockquote>
+    You can see why linguists found in Chomsky
+    an irresistable expansion of their horizons.
+    <p>
     </p>
     <h2>The tradition</h2>
     <p>Given the immense prestige of "Three models",
-    it is unsurprising, if unfortunate,
-    that the Bloomfield definition of language
-    reappears in Chomsky's successors
-    within Parsing Theory.
+    it is unsurprising that it was closely studied by
+    the pioneers of parsing theory.
+    Unfortunately, what they picked up was not
+    Chomsky's emphasis on the overriding importance
+    of semantics,
+    but the definition of language
+    he had adopted from Bloomfield
+    for tactical purposes.
     In the classic Aho and Ullman 1972 textbook, we have
     </p>
     <blockquote>
@@ -313,9 +391,11 @@ Parsing languages versus parsing grammars
     Vol. 1. Prentice-Hall, 1972, p. 16.
     </footnote>
     </blockquote>
-    (If this "encompasses" my notion of a language,
+    If this "encompasses" my notion of a language,
     it does so only in the sense that an avalanche encompasses
-    a skier.)
+    a skier.
+    </p>
+    <p>
     From 1988, thirty years after Chomsky,
     here is another authoritative textbook of Parsing Theory
     defining "language":
@@ -353,11 +433,10 @@ Parsing languages versus parsing grammars
     </footnote>
     Interesting, you might be saying, that
     some textbook definitions are not everything they could be,
-    but is there any effect in the daily practice of
+    but is there any effect on the daily practice of
     programming?
     </p>
     <p>
-    Consider.
     The languages human beings use with each other 
     are powerful,
     varied, flexible and endlessly retargetable.

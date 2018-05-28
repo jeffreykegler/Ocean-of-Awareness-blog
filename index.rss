@@ -10,7 +10,7 @@
     <language>en</language>
 
   <item>
-    <title>Parsing languages versus parsing grammars</title>
+    <title>Is a language just a set of strings?</title>
     <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2018/05/chomsky_1956.html</link>
     <description>&lt;html&gt;
   &lt;head&gt;
@@ -42,9 +42,11 @@
       Just 12 pages,
       it's the paper in which the most-cited scholar of our
       time first outlined his ideas.
+      Even at the time,
+      linguists described its effect on their field as
+      &quot;Copernician&quot;.&lt;a id=&quot;footnote-3-ref&quot; href=&quot;#footnote-3&quot;&gt;[3]&lt;/a&gt;
       It transformed linguistics,
-      and is one of the most important scientific papers ever.&lt;a id=&quot;footnote-3-ref&quot; href=&quot;#footnote-3&quot;&gt;[3]&lt;/a&gt;
-      [ TODO: Work on this graf. ]
+      and is one of the most important scientific papers ever.&lt;a id=&quot;footnote-4-ref&quot; href=&quot;#footnote-4&quot;&gt;[4]&lt;/a&gt;
     &lt;/p&gt;
     &lt;p&gt;
       Given its significance,
@@ -95,7 +97,7 @@
       alphabet of sysbols.  If A is an alphabet, we shall say that
       anything formed by concatenating ths symbols of A is a string in
       A. By a grammar of the language L we mean a device of some sort that
-      produces all of the strings that are sentences of L and only these.&lt;a id=&quot;footnote-4-ref&quot; href=&quot;#footnote-4&quot;&gt;[4]&lt;/a&gt;
+      produces all of the strings that are sentences of L and only these.&lt;a id=&quot;footnote-5-ref&quot; href=&quot;#footnote-5&quot;&gt;[5]&lt;/a&gt;
     &lt;/blockquote&gt;
     &lt;p&gt;Yes, you read that right --
     Chomsky uses a definition of language which has nothing to
@@ -118,7 +120,28 @@
     Chomsky does not require of his &quot;grammar&quot; that it
     give us any guidance as to what sentence (42) might mean.
     &lt;p&gt;
+    Chomsky shows that there are English sentences that his &quot;grammar&quot; would
+    list,
+    and which a finite-state &quot;grammar&quot; would not list.
+    Clearly if the finite-state grammar cannot even produce a sentence
+    as one of a list,
+    it is not adequate as a model of that language,
+    at least as far as that sentence goes.
+    &lt;p&gt;
     &lt;/p&gt;
+    Chomsky shows that there is,
+    in fact,
+    a large, significant class of sentences that
+    his &quot;grammars&quot; can list,
+    but which the finite-state grammars cannot list.
+    Chomsky presents this as
+    very strong evidence that
+    his grammars will make better models
+    of language
+    than finite-state grammars can.
+    &lt;/p&gt;
+    &lt;h2&gt;Other considerations&lt;/h2&gt;
+    &lt;p&gt;
     In addition to simplifying the math, Chomsky has two other good
     reasons to avoid dealing with meaning.
     A second reason is that
@@ -141,14 +164,14 @@
     &lt;blockquote&gt;
     The totality of utterances that can be made in a speech
     community is the &lt;b&gt;language&lt;/b&gt;
-    of that speech-community.&lt;a id=&quot;footnote-5-ref&quot; href=&quot;#footnote-5&quot;&gt;[5]&lt;/a&gt;
+    of that speech-community.&lt;a id=&quot;footnote-6-ref&quot; href=&quot;#footnote-6&quot;&gt;[6]&lt;/a&gt;
     &lt;/blockquote&gt;
     &lt;p&gt;
     Bloomfield says &quot;totality&quot; instead of &quot;set&quot;
     and &quot;utterances&quot; instead of &quot;strings&quot;,
     but for our purposes in this post the idea is the same --
     the definition is without regard to the meaning
-    of the members of the set.&lt;a id=&quot;footnote-6-ref&quot; href=&quot;#footnote-6&quot;&gt;[6]&lt;/a&gt;
+    of the members of the set.&lt;a id=&quot;footnote-7-ref&quot; href=&quot;#footnote-7&quot;&gt;[7]&lt;/a&gt;
     &lt;/p&gt;
     &lt;p&gt;
     Bloomfield's omission of semantics is not accidental.
@@ -161,7 +184,7 @@
     believe that you are doing science,
     and Bloomfield therefore suggested avoiding,
     totally if possible,
-    any discussion of semantics.&lt;a id=&quot;footnote-7-ref&quot; href=&quot;#footnote-7&quot;&gt;[7]&lt;/a&gt;
+    any discussion of semantics.
     Most readers of Chomsky's paper in 1956 were Bloomfieldians --
     Chomsky has studied under a Bloomfieldian,
     and originally was seen as one.&lt;a id=&quot;footnote-8-ref&quot; href=&quot;#footnote-8&quot;&gt;[8]&lt;/a&gt;
@@ -169,6 +192,7 @@
     Chomsky was making his paper maximally acceptable to
     his readership.
     &lt;/p&gt;
+    &lt;h2&gt;Semantics sneaks back in&lt;/h2&gt;
     &lt;p&gt;
     You did not have to read Chomsky's mind,
     or predict the future,
@@ -181,24 +205,78 @@
     its predecessors,
     because his model,
     when an utterance is ambiguous,
-    produces multiple derivations to reflect that.&lt;a id=&quot;footnote-9-ref&quot; href=&quot;#footnote-9&quot;&gt;[9]&lt;/a&gt;
+    produces multiple derivations to reflect that,
+    and these derivations &quot;looked&quot; like natural representations
+    of the difference between the two meanings.&lt;a id=&quot;footnote-9-ref&quot; href=&quot;#footnote-9&quot;&gt;[9]&lt;/a&gt;
+    These insights,
+    which dropped effortlessly out of Chomsky's grammars,
+    were well beyond what the finite-state models were providing.
+    &lt;/p&gt;
+    &lt;p&gt;
+    Alone,
+    Chomsky's argument that his grammars were better
+    because they could list more sentences,
+    might have carried the day.
+    With the demonstration that his grammars could do
+    more than list sentences,
+    but also could proivde insight into the structure and semantics
+    of sentences,
+    Chomsky's case was compelling.
+    Young linguists wanted theoretical tools with this
+    kind of power and those few
+    older linguists not converted struggled to find 
+    reasons why the young linguists should not
+    have what they wanted.
+    &lt;/p&gt;
+    &lt;p&gt;
+    In later years,
+    Chomsky made it quite clear what his position was
+    &lt;blockquote&gt;
+    [...] it would be absurd to develop
+    a general syntactic theory
+    without assigning an absolutely
+    crucial role to semantic considerations,
+    since obviously the necessity to support
+    semantic interpretation is one of the primary
+    requirements
+    that the structures
+    generated by the syntactic component of a grammar
+    must meet.&lt;a id=&quot;footnote-10-ref&quot; href=&quot;#footnote-10&quot;&gt;[10]&lt;/a&gt;
+    &lt;/blockquote&gt;
+    Compare this to Bloomfield:
+    &lt;blockquote&gt;
+    The statement of meanings is therefore the weak point in
+    language-study, and will remain so until human knowledge 
+    advances very far beyond its present state. In practice, we define the
+    meaning of a linguistic form, wherever we can, in terms of some
+    other science.&lt;a id=&quot;footnote-11-ref&quot; href=&quot;#footnote-11&quot;&gt;[11]&lt;/a&gt;
+    &lt;/blockquote&gt;
+    You can see why linguists found in Chomsky
+    an irresistable expansion of their horizons.
+    &lt;p&gt;
     &lt;/p&gt;
     &lt;h2&gt;The tradition&lt;/h2&gt;
     &lt;p&gt;Given the immense prestige of &quot;Three models&quot;,
-    it is unsurprising, if unfortunate,
-    that the Bloomfield definition of language
-    reappears in Chomsky's successors
-    within Parsing Theory.
+    it is unsurprising that it was closely studied by
+    the pioneers of parsing theory.
+    Unfortunately, what they picked up was not
+    Chomsky's emphasis on the overriding importance
+    of semantics,
+    but the definition of language
+    he had adopted from Bloomfield
+    for tactical purposes.
     In the classic Aho and Ullman 1972 textbook, we have
     &lt;/p&gt;
     &lt;blockquote&gt;
     A language over an alphabet &amp;Sigma;
     is a set of strings over an alphabet &amp;Sigma;.
-    This definition encompasses almost everyone's notion of a language.&lt;a id=&quot;footnote-10-ref&quot; href=&quot;#footnote-10&quot;&gt;[10]&lt;/a&gt;
+    This definition encompasses almost everyone's notion of a language.&lt;a id=&quot;footnote-12-ref&quot; href=&quot;#footnote-12&quot;&gt;[12]&lt;/a&gt;
     &lt;/blockquote&gt;
-    (If this &quot;encompasses&quot; my notion of a language,
+    If this &quot;encompasses&quot; my notion of a language,
     it does so only in the sense that an avalanche encompasses
-    a skier.)
+    a skier.
+    &lt;/p&gt;
+    &lt;p&gt;
     From 1988, thirty years after Chomsky,
     here is another authoritative textbook of Parsing Theory
     defining &quot;language&quot;:
@@ -211,17 +289,16 @@
       V
       A language L over V is any subset of the free monoid V*.
       The elements
-      of a language L are called sentences of L.&lt;a id=&quot;footnote-11-ref&quot; href=&quot;#footnote-11&quot;&gt;[11]&lt;/a&gt;
+      of a language L are called sentences of L.&lt;a id=&quot;footnote-13-ref&quot; href=&quot;#footnote-13&quot;&gt;[13]&lt;/a&gt;
     &lt;/blockquote&gt;
     &lt;p&gt;The language is now that of abstract algebra,
-    but it is easy to see that the idea is still pure Bloomfield.&lt;a id=&quot;footnote-12-ref&quot; href=&quot;#footnote-12&quot;&gt;[12]&lt;/a&gt;
+    but it is easy to see that the idea is still pure Bloomfield.&lt;a id=&quot;footnote-14-ref&quot; href=&quot;#footnote-14&quot;&gt;[14]&lt;/a&gt;
     Interesting, you might be saying, that
     some textbook definitions are not everything they could be,
-    but is there any effect in the daily practice of
+    but is there any effect on the daily practice of
     programming?
     &lt;/p&gt;
     &lt;p&gt;
-    Consider.
     The languages human beings use with each other 
     are powerful,
     varied, flexible and endlessly retargetable.
@@ -320,6 +397,12 @@
       vol. 2, issue 3, September 1956, pp. 113-124.
  &lt;a href=&quot;#footnote-2-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
 &lt;p id=&quot;footnote-3&quot;&gt;3.
+	Harris, Randy Allen,
+	&lt;cite&gt;The Linguistics Wars&lt;/cite&gt;,
+	Oxford University Press, 1993,
+	pp 33.
+ &lt;a href=&quot;#footnote-3-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;p id=&quot;footnote-4&quot;&gt;4.
       In this post I am calling the &quot;Three models&quot; paper the &quot;first&quot;
       work of Chomskyan linguistics.
       Other choices can be justified.
@@ -343,18 +426,18 @@
       Radick, Gregory,
       &quot;The Unmaking of a Modern Synthesis: Noam Chomsky, Charles Hockett, and the Politics of Behaviorism, 1955–1965&quot;
       &lt;/a&gt;.)
- &lt;a href=&quot;#footnote-3-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
-&lt;p id=&quot;footnote-4&quot;&gt;4.
-      Chomsky 1956, p. 114.
  &lt;a href=&quot;#footnote-4-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
 &lt;p id=&quot;footnote-5&quot;&gt;5.
+      Chomsky 1956, p. 114.
+ &lt;a href=&quot;#footnote-5-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;p id=&quot;footnote-6&quot;&gt;6.
     Bloomfield, Leonard,
     &quot;A set of Postulates
     for the Science of Language&quot;,
     &lt;cite&gt;Language&lt;/cite&gt;, Vol. 2, No. 3 (Sep., 1926), pp. 153-164.
     The quote is definition 4 on p. 154.
- &lt;a href=&quot;#footnote-5-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
-&lt;p id=&quot;footnote-6&quot;&gt;6.
+ &lt;a href=&quot;#footnote-6-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;p id=&quot;footnote-7&quot;&gt;7.
     In case there is any doubt as to the link between
     the Chomsky and Bloomfield defintions,
     Chomsky also calls his strings,
@@ -362,38 +445,36 @@
     Chomsky, Noam, &lt;cite&gt;Syntactic Structures&lt;/cite&gt;,
     2nd ed.,
     Mouton de Gruyter, 2002, p. 49
- &lt;a href=&quot;#footnote-6-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
-&lt;p id=&quot;footnote-7&quot;&gt;7.
-    &quot;The statement of meanings is therefore the weak point in
-    language-study, and will remain so until human knowledge 
-    advances very far beyond its present state. In practice, we define the
-    meaning of a linguistic form, wherever we can, in terms of some
-    other science.&quot;
-    Bloomfield, Leonard.
-    &lt;cite&gt;Language&lt;/cite&gt;.
-    Holt, Rinehart and Winston, 1933, p. 140.
  &lt;a href=&quot;#footnote-7-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
 &lt;p id=&quot;footnote-8&quot;&gt;8.
-    Harris, Randy Allen,
-    &lt;cite&gt;The Linguistics Wars&lt;/cite&gt;,
-    Oxford University Press, 1993,
-    pp 31-34.
+    Harris 1993, pp 31-34, p. 37.
  &lt;a href=&quot;#footnote-8-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
 &lt;p id=&quot;footnote-9&quot;&gt;9.
     Chomsky 1956, p. 118, p. 123.
  &lt;a href=&quot;#footnote-9-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
 &lt;p id=&quot;footnote-10&quot;&gt;10.
+    Chomsky, Noam.
+    &lt;cite&gt;Topics in the Theory of Generative Grammar&lt;/cite&gt;.
+    De Gruyter, 1978, p. 20.
+    (The quote occurs in footnote 7 starting on p. 19.)
+ &lt;a href=&quot;#footnote-10-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;p id=&quot;footnote-11&quot;&gt;11.
+    Bloomfield, Leonard.
+    &lt;cite&gt;Language&lt;/cite&gt;.
+    Holt, Rinehart and Winston, 1933, p. 140.
+ &lt;a href=&quot;#footnote-11-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;p id=&quot;footnote-12&quot;&gt;12.
     Aho, Alfred V., and Jeffrey D. Ullman.
     &lt;cite&gt;The theory of parsing, translation, and compiling&lt;/cite&gt;.
     Vol. 1. Prentice-Hall, 1972, p. 16.
- &lt;a href=&quot;#footnote-10-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
-&lt;p id=&quot;footnote-11&quot;&gt;11.
+ &lt;a href=&quot;#footnote-12-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;p id=&quot;footnote-13&quot;&gt;13.
       Sippu, Seppo and Soisalon-Soininen, Eljas.
       &lt;cite&gt;Parsing Theory&lt;/cite&gt;, Volume I,
       Springer-Verlag, 1988,
       p. 11.
- &lt;a href=&quot;#footnote-11-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
-&lt;p id=&quot;footnote-12&quot;&gt;12.
+ &lt;a href=&quot;#footnote-13-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;p id=&quot;footnote-14&quot;&gt;14.
     A welcome errancy from tradition, however, arrives with
     Grune, D. and Jacobs, C. J. H., &lt;cite&gt;Parsing Techniques: A Practical Guide&lt;/cite&gt;, 2nd edition. Springer, 2008.
     On pp. 5-7, they attribute the traditional &quot;set of strings&quot; definition
@@ -407,7 +488,7 @@
     approach taken by other textbooks parsing theory.
     They often give the history and motivation behind the math.
     My own work owes much to them.
- &lt;a href=&quot;#footnote-12-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+ &lt;a href=&quot;#footnote-14-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
   &lt;/body&gt;
 &lt;/html&gt;</description>
   </item>
