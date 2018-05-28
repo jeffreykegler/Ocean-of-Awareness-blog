@@ -145,7 +145,7 @@ Is a language just a set of strings?
       and, after founding our field,
       has paid little attention to it.
       But in fact,
-      the Chomskyan model has been more dominant
+      the Chomskyan model has been even more dominant
       in computer parsing than in Chomsky's own
       field of linguistics.
     </p>
@@ -167,7 +167,7 @@ Is a language just a set of strings?
     <p>
       In 1956,
       Chomsky had a new approach to linguistics,
-      and needed to prove that his approach to language
+      and wanted to prove that his approach to language
       did things that
       the previous approach,
       based on finite-state models,
@@ -183,7 +183,7 @@ Is a language just a set of strings?
       By a language then, we shall mean a set (finite or infinite) of
       sentences, each of finite length, all constructed from a finite
       alphabet of sysbols.  If A is an alphabet, we shall say that
-      anything formed by concatenating ths symbols of A is a string in
+      anything formed by concatenating the symbols of A is a string in
       A. By a grammar of the language L we mean a device of some sort that
       produces all of the strings that are sentences of L and only these.<footnote>
       Chomsky 1956, p. 114.
@@ -303,17 +303,17 @@ Is a language just a set of strings?
     You did not have to read Chomsky's mind,
     or predict the future,
     to see that Chomsky
-    would get beyond the "set of strings" point of view
-    to become a lot more interested in semantics than
+    would go beyond the "set of strings" point of view,
+    and in fact was a lot more interested in semantics than
     Bloomfield was.
     Already in "Three Models",
     he is suggesting that his model is superior to
     its predecessors,
     because his model,
     when an utterance is ambiguous,
-    produces multiple derivations to reflect that,
-    and these derivations "looked" like natural representations
-    of the difference between the two meanings.<footnote>
+    produces multiple derivations to reflect that.
+    Even better, these multiple derivations "look" like natural representations
+    of the difference between meanings.<footnote>
     Chomsky 1956, p. 118, p. 123.
     </footnote>
     These insights,
@@ -338,7 +338,7 @@ Is a language just a set of strings?
     </p>
     <p>
     In later years,
-    Chomsky made it quite clear what his position was
+    Chomsky made it quite clear what his position was:
     <blockquote>
     [...] it would be absurd to develop
     a general syntactic theory
@@ -368,8 +368,8 @@ Is a language just a set of strings?
     Holt, Rinehart and Winston, 1933, p. 140.
     </footnote>
     </blockquote>
-    You can see why linguists found in Chomsky
-    an irresistable expansion of their horizons.
+    It is easy to see why linguists found Chomsky's
+    expansion of their horizons irresistable.
     <p>
     </p>
     <h2>The tradition</h2>
@@ -529,7 +529,6 @@ Is a language just a set of strings?
     The tale is told there is from a somewhat point of view,
     but no reader of "timeline" will be completely surprised by where
     I take this line of thought.
-    </p>
     </footnote>
     </p>
     <h2>Comments, etc.</h2>
