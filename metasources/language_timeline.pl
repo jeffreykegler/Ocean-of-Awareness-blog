@@ -78,9 +78,13 @@ A timeline of the parsing term "language"
     </p>
     <p>
     This post takes the form of a timeline<footnote>
-    It is intended to be incorporating in my
+    It is intended to be incorporated in my
     <a href="https://jeffreykegler.github.io/personal/timeline_v3>
-    Parsing: a timeline</a>
+    Parsing: a timeline</a>.
+    The earlier parts of this timeline are drawn
+    from
+    <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2018/05/chomsky_1956.html">
+    my previous blog post</a>.
     </footnote>
     </p>
     <h2>Comments, etc.</h2>
