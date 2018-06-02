@@ -523,7 +523,7 @@ Is a language just a set of strings?
     and steered it away from the most promising lines.
     How, I hope to explain in the future.<footnote>
     Readers who want to peek ahead can look at my
-    <a href="https://jeffreykegler.github.io/personal/timeline_v3#bib-Aho_and_Ullman_1972">
+    <a href="https://jeffreykegler.github.io/personal/timeline_v3">
     Parsing: a timeline 3.0</a>.
     The tale is told there is from a somewhat different point of view,
     but no reader of "Timeline" will be much surprised by where
@@ -533,7 +533,7 @@ Is a language just a set of strings?
     <h2>Comments, etc.</h2>
     <p>
       The background material for this post is in my
-    <a href="https://jeffreykegler.github.io/personal/timeline_v3#bib-Aho_and_Ullman_1972">
+    <a href="https://jeffreykegler.github.io/personal/timeline_v3">
     Parsing: a timeline 3.0</a>,
     and this post may be considered a supplement to "Timelime".
       To learn about Marpa,
