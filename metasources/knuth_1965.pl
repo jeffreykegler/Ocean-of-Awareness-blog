@@ -352,15 +352,16 @@ Why is parsing considered solved?
       Knuth's new algorithm might be expected to be "the one to rule
       them all".
       Unfortunately, while deterministic and linear,
-      is not practical -- it requires huge tables well beyond
+      it is not practical -- it requires huge tables well beyond
       the memory capabilities of the time.
-      This does not suggest to Knuth that the DPDA-based model
-      is inappropriate as a model of practical parsing --
-      instead it suggest to him, and to the field,
-      that the boundary of practical parsing lies inside the
-      LR(k) grammars.
     </p>
     <p>
+      The impracticality of his LR(k) algorithm
+      does not suggest to Knuth that the DPDA-based model
+      is inappropriate as a model of practical parsing.
+      Instead it suggests to him, and to the field,
+      that the boundary of practical parsing lies inside the
+      LR(k) grammars.
       The idea that the solution to the parsing problem must be
       DPDA-based is not without foundation.
       In 1965, the limits of computer technology are severe.
@@ -379,19 +380,20 @@ Why is parsing considered solved?
       </footnote>,
       does suggests investigation of parsers for superclasses
       of LR(k).
-      He even describes his own superclass of LR(k):
+      He even describes a new superclass of his own:
       LR(k,t), which is LR(k) more aggressive lookahead.
-      But he is clearly unenthusiastic about LR(k,t)<footnote>
+      But he is clearly unenthusiastic about LR(k,t).<footnote>
         "Finally, we might mention another generalization of LR(k)"
         (Knuth 1965, p. 638); and
         "One might choose to call this left-to-right translation,
         although we had to back up a finite amount."
         (p. 639).
       </footnote>
-      It is reasonable to suppose,
-      that Knuth is even more negative about more general approaches that
+      It is reasonable to suppose
+      that Knuth is even more negative about
+      the more general approaches that
       he does not bother to mention.<footnote>
-        Knuth's skepticism for more general Chomskyan approaches
+        Knuth's skepticism of more general Chomskyan approaches
         is suggested by his own plans for his (not yet released) Chapter
         12 of the
         <cite>Art of Computer Programming</cite>,
@@ -409,22 +411,6 @@ Why is parsing considered solved?
       streamlining of the LR(k) tables;
       or research into LR(k) subclasses.
       It is LR(k) subclassing that will receive the most attention.
-    </p>
-    <p>
-      Knuth is certainly aware that DPDA determinism and
-      linear time behavior are not the same thing.<footnote>
-        Knuth 1965, p. 607: "execution time at worst
-        proportional to the length of the string being parsed."
-      </footnote>
-      An algorithm can be more powerful than a DPDA,
-      while still being linear.
-      But linearity is a stand-in for "practical",
-      and, with his discovery that even DPDA-based
-      algorithms can be impractical,
-      Knuth, and the research community,
-      decide that it is extremely unlikely than more
-      powerful computing models will also be faster in
-      practice.
     </p>
     <p>
       Why was such a powerful skepticism based on the results for one
@@ -478,56 +464,76 @@ Why is parsing considered solved?
       LR(k) is a class of grammars and the DPDA model is of
       a language -- a set of strings.
       At first glance, this is an "apples and oranges" comparison --
-      how do you prove the equivalence of a language and a grammar.
+      how do you prove the equivalence of a language and a grammar?
     </p>
-    <p>Knuth does this by reducing the language and the class grammar
-      of grammars to a lowest common denominator --
-      a grammar defines a language, so he compares the LR(k) language
+    <p>Knuth does this by reducing the class of DPDA languages and the class
+      of grammars to their lowest common denominator, which is the language.
+      And, of course, the "language" in the usage within parsing theory
+      is just a set of strings, without regard to syntax.
+    </p>
+    <p>
+      A grammar does define a language, so Knuth compares the LR(k) language
       to the DPDA language.
-      It takes some impressive mathematics,
+      This takes some impressive mathematics,
       but Knuth is able to show that the two languages are equivalent.
+    </p>
+    <p>
       But note that the question whether LR(k) is an impassable
       barrier for parsing grammars -- not languages.
-    </p><p>
-      Punning a class of grammars as a class of languages does not work --
-      in fact, as Knuth shows, it produces a considerable amount of magical
+      And punning a class of grammars as a class of languages has serious
+      problems for this purpose of showing any real "equivalence".
+    </p>
+    <p>
+      In fact, as Knuth's results shows,
+      equating languages and grammars produces a considerable amount of magical
       thinking.
-      Using the Knuth algorithm
-    </p><ul>
-      <li>Parsing LR(k) grammars for an arbitrary is hopelessly impractical.
+      Using the Knuth algorithm,
+    </p>
+    <ul>
+      <li>parsing LR(k) grammars for an arbitrary is hopelessly impractical;
       </li>
-      <li>Parsing LR(1) grammars is almost practical, but not quite.<footnote>
+      <li>parsing LR(1) grammars is almost practical, but not quite;<footnote>
           Given the capacity of computer memories in 1965,
           LR(1) was clearly impractical.
           Today, that could be reconsidered, but LR(1) is still restrictive
           and has poor error-handling,
           so few practitioners have bothered with it.
         </footnote>
+	but
       </li>
-      <li>Parsing LR(0) grammars is quite practical.
+      <li>parsing LR(0) grammars is very practical.
       </li>
     </ul>
     <p>The problem for Knuth's proof of equivalence is that,
-      if you consider languages, LR(1) and LR(k) are equivalent.
-      And in fact, both are almost equivalent to LR(0) -- if you add
-      an explicit end marker to a language
-      (which in most applications is easy to do<footnote>
+      if you just look at set of strings (aka languages) without regard to syntax,
+      LR(1) and LR(k) are equivalent.
+      That means that you are showing the hopelessly impractical and
+      borderline impractical are the same thing.
+      </p>
+      <p>
+      Worse, both LR(1) and LR(k) are almost equivalent to LR(0).
+      In fact, for most applications they <b>are</b> equivalent.
+      If you add
+      an explicit end marker to an LR(1) language,
+      which in most applications is easy to do<footnote>
         Some parsing applications, such as those which receive their input "on-line",
         can not determine the size of their input in advance.
         For these applications adding an end marker to their input is
         inconvenient or impossible.
-      </footnote>)
-      then LR(k) = LR(1) = LR(0).
+      </footnote>,
+      it becomes LR(0).
+      Therefore, for most applications,
+      <center>
+      LR(k) = LR(1) = LR(0).
+      </center>
     </p>
     <p>
-      That is, in language terms, the hopelessly impractical
-      is equivalent to the borderline impractical.
-      And these, for most applications, are equivalent to the
-      very practical LR(0).
-      When thinking in terms of languages,
-      we can transport ourselves across the
-      same practical/impractical boundary that we are claiming
-      to show is, in practice, impassable for grammars.
+      So, if we switch our thinking from syntax to sets of strings,
+      we can easily transport ourselves across the
+      same boundary that we are attempting to
+      to suggest that, in practice, grammars are unable to cross.
+      Calling our sets of strings, "languages", disguises the implausibility
+      of this.
     </p>
     <p>
       What for languages is reasonable thinking,
