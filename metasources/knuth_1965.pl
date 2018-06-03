@@ -72,13 +72,29 @@ Why is parsing considered solved?
     <p>It is often said that parsing is a "solved problem".
     Given the level of frustration with the state of the art,
     the underuse of the very powerful technique of
-    Language-oriented programming due to problematic tools,
+    Language-Oriented Programming due to problematic tools<footnote>
+    The well-known <a href="https://en.wikipedia.org/wiki/Design_Patterns">
+    <cite>Design Patterns</cite> book</a>
+    (aka "the Gang of 4 book")
+    has a section on this which call Language-oriented programmer
+    its "Interpreter pattern".
+    This amply illustrates the main obstacle to use
+    of the pattern -- lack of adequate parsing tools.
+    I talk much more about this in my two blog posts on 
+    the Interpreter pattern:
+    <a href="http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2013/03/bnf_to_ast.html">
+    BNF to AST</a>
+    and 
+    <a href="http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2013/03/interpreter.html">
+    The Interpreter Design Pattern</a>.
+    </footnote>,
     and the vast superiority of human parsing ability
     over computers,
     this requires explanation.
-    On what grounds can someone say that parsing is "solved".
     </p>
-    <p>To understand how parsing came to be consider solved,
+    <p>
+    On what grounds can someone say that parsing is "solved"?
+    To understand this,
     we need to look at the history of Parsing Theory.<footnote>
       This post takes the form of a timeline, and
       is intended to be incorporated in my
@@ -88,8 +104,8 @@ Why is parsing considered solved?
       <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2018/05/chomsky_1956.html">
 	    a previous blog post</a>.
       </footnote>
-    In fact, we'll have to start before Parsing Theory
-    itself,
+    In fact, we'll have to start decades before computer Parsing Theory
+    exists,
     with a now nearly-extinct school of linguistics,
     and its desire to put the field on strictly
     scientific basis.
@@ -128,14 +144,13 @@ Why is parsing considered solved?
       </footnote>
     </blockquote><p>
       Bloomfield is passing the buck in this way,
-      because the positivist science of his time abhors
-      unverifiable statements,
-      and therefore any claims about mental states.
-      A claim to know what someone "means" can be read
-      as a claim to know what's in their mind.
+      because the behaviorist science of his time rejects
+      any claims about mental states as
+      unverifiable statements -- essentially,
+      as a claim to be able to read minds.
       "Hard" sciences like physics, chemistry and even
-      biology avoid dealing with unverifiable mental states,
-      and Bloomfield wants to make the methods of linguistics
+      biology avoid dealing with unverifiable mental states.
+      Bloomfield and the behaviorists want to make the methods of linguistics
       as close to hard science as possible.
     </p>
     <p>
@@ -211,17 +226,37 @@ Why is parsing considered solved?
       </footnote>
     </blockquote><p>
       Already in "Three Models",
-      Chomsky brings in semantics,
-      when it is useful to show
-      that his model is superior:
-      When an utterance is ambiguous,
-      Chomsky's new model produces multiple derivations
-      each of which "look" like the natural representation
-      of one of the meanings.
-      Chomsky points out that this is a very
+      Chomsky readily brings in semantics,
+      when it serves his purposes.
+      For a semantically ambiguous utterance,
+      Chomsky's new model produces multiple syntactic derivations.
+      Each of these syntactic derivations
+      "look" like the natural representation
+      of one of the meanings,
+      and Chomsky points out that this is a very
       desirable property for a model to have.<footnote>
         Chomsky 1956, p. 118, p. 123.
       </footnote>
+    </p>
+    <h2>Chomsky 1959</h2>
+    <p>In 1959, Chomsky reviews a book by B.F. Skinner's on linguistics.<footnote>
+    Chomsky, Noam.
+    “A Review of B. F. Skinner’s Verbal Behavior”. <cite>Language</cite>,
+    Volume 35, No. 1, 1959, 26-58.
+    <a href="https://chomsky.info/1967____/">
+    https://chomsky.info/1967____/</a> accessed on 3 June 2018.
+    </footnote>
+    Skinner is the most prominent behaviorist of the time.
+    </p>
+    <p>
+    Chomsky's review removes all doubt about where he stands
+    on behaviorism
+    or on the relevance of linguistics to the study of meaning.<footnote>
+    See in particular, Section IX of Chomsky 1959.
+    </footnote>
+    His review galvanizes the opposition to behaviorism, and
+    Chomsky establishes himself as behavorism's most
+    prominent and effective critic.
     </p>
     <h2>Oettinger 1961</h2>
     <p>
@@ -338,16 +373,35 @@ Why is parsing considered solved?
       powerful computing models will also be faster in
       practice.
     </p>
-    <h2>The term "language" as of 1965</h2>
     <p>
        Why was such a powerful skepticism based on the results for one
        computing model of computing?
        Stacks, as we now call them, are a natural model of computing,
        so it is reasonable to think they form a step on the hierarchy
        of tradeoffs of power against practical speed.
-       But very important was the proof that LR(k) grammars were
+       But a very important was the proof that LR(k) grammars were
        "equivalent" to DPDA's.
+       And central to the acceptance of this proof as relevant
+       was a confusion about the use of the term "language".
     </p>
+    <h2>The term "language" as of 1965</h2>
+    <p>
+    Knuth defines language as follows:
+    </p>
+    <blockquote>
+    The language defined by G is<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;
+    { &alpha; | S => &alpha; and &alpha is a string over T }<br>
+    namely, the set of all terminal string derivable from S by using
+    the productions of G as substitution rules.<footnote>
+    Knuth 1965, p. 608.
+    </footnote>
+    </blockquote>
+    (Here G is a grammar whose start symbol is S and whose set
+    of terminals is T.)
+    This is clearly the behavorist definition of language
+    translated into set-theoretic terms.
+    <p>
     <h2>Comments, etc.</h2>
     <p>
       The background material for this post is in my
