@@ -413,7 +413,7 @@ Why is parsing considered solved?
         The story of the research followup to Knuth's LR(k) paper is told
         in my
         <a href="https://jeffreykegler.github.io/personal/timeline_v3">
-          Parsing: a timeline 3.0</a>,
+          Parsing: a timeline 3.0</a>.
       </footnote>
     </p>
     <p>
