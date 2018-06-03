@@ -61,7 +61,7 @@ sub do_footnote {
 }
 
 __DATA__
-A timeline of the parsing term "language"
+Why is parsing considered solved?
 <html>
   <head>
   </head>
@@ -69,44 +69,51 @@ A timeline of the parsing term "language"
     <!--
       marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
       -->
-    <p>The term "language" has a special and unusual meaning within
-      Parsing Theory, one it inherited from a now nearly-extinct
-      school of linguistics.
-      In a previous post,
-      I said that this would turn out to be more than
-      just a matter of textbooks definition falling short of ideal,
-      but would, because of its major effect on Parsing Theory,
-      shape the daily practice of programming.
-      This post supplies the evidence.
+    <p>It is often said that parsing is a "solved problem".
+    Given the level of frustration with the state of the art,
+    the underuse of the very powerful technique of
+    Language-oriented programming due to problematic tools,
+    and the vast superiority of human parsing ability
+    over computers,
+    this requires explanation.
+    On what grounds can someone say that parsing is "solved".
     </p>
-    <p>
-      This post takes the form of a timeline<footnote>
-        It is intended to be incorporated in my
-        <a href="https://jeffreykegler.github.io/personal/timeline_v3>
-    Parsing: a timeline</a>.
-    </footnote>
-    The earlier entires in this timeline borrow heavily from
-    <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2018/05/chomsky_1956.html">
-          a previous blog post</a>.
-      </footnote></p>
+    <p>To understand how parsing came to be consider solved,
+    we need to look at the history of Parsing Theory.<footnote>
+      This post takes the form of a timeline, and
+      is intended to be incorporated in my
+      <a href="https://jeffreykegler.github.io/personal/timeline_v3>.
+      Parsing: a timeline</a>.
+      The earlier entires in this post borrow heavily from
+      <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2018/05/chomsky_1956.html">
+	    a previous blog post</a>.
+      </footnote>
+    In fact, we'll have to start before Parsing Theory
+    itself,
+    with a now nearly-extinct school of linguistics,
+    and its desire to put the field on strictly
+    scientific basis.
+    </p>
     <h2>"Language" as of 1929</h2>
     <p>In 1929 Leonard Bloomfield,
-      as part of his effort to put American linguistics on a rigorous footing,
-      publishes his "Postulates".
-      They include his definition of language:
+      as part of his effort to create a linguistics that
+      would be taken seriously as a science,
+      published his "Postulates".<footnote>
+        Bloomfield, Leonard,
+        "A set of Postulates
+        for the Science of Language",
+        <cite>Language</cite>, Vol. 2, No. 3 (Sep., 1926), pp. 153-164.
+      </footnote>
+      The "Postulates" include his definition of language:
     </p><blockquote>
       The totality of utterances that can be made in a speech
       community is the
       <b>language</b>
       of that speech-community.<footnote>
-        Bloomfield, Leonard,
-        "A set of Postulates
-        for the Science of Language",
-        <cite>Language</cite>, Vol. 2, No. 3 (Sep., 1926), pp. 153-164.
-        The quote is definition 4 on p. 154.
+        Bloomfield 1926, definition 4 on p. 154.
       </footnote>
     </blockquote><p>
-      There is no reference in this definition to the more usual view,
+      There is no reference in this definition to the usual view,
       that the utterances of a language "mean" something.
       This omission is not accidental:
     </p><blockquote>
@@ -121,19 +128,21 @@ A timeline of the parsing term "language"
       </footnote>
     </blockquote><p>
       Bloomfield is passing the buck in this way,
-      because he wants linguistics to become regarded as a science,
-      and the positivist science of his time abhors
+      because the positivist science of his time abhors
       unverifiable statements,
       and therefore any claims about mental states.
       A claim to know what someone "means" can be read
-      as a claim to know what's in their mind,
-      and mind-reading has a poor reputation among positivists.
+      as a claim to know what's in their mind.
+      "Hard" sciences like physics, chemistry and even
+      biology avoid dealing with unverifiable mental states,
+      and Bloomfield wants to make the methods of linguistics
+      as close to hard science as possible.
     </p>
     <p>
-      Draconian as the exclusion of meaning is,
+      Draconian as Bloomfield's exclusion of meaning is,
       it is a big success.
       Known as structural linguistics,
-      Bloomfieldian linguistics dominates lingustics for
+      Bloomfield's approach dominates lingustics for
       the next couple of decades.
     </p>
     <h2>1955: Noam Chomsky graduates</h2>

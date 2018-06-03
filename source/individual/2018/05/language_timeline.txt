@@ -1,4 +1,4 @@
-A timeline of the parsing term "language"
+Why is parsing considered solved?
 <html>
   <head>
   </head>
@@ -6,34 +6,36 @@ A timeline of the parsing term "language"
     <!--
       marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
       -->
-    <p>The term "language" has a special and unusual meaning within
-      Parsing Theory, one it inherited from a now nearly-extinct
-      school of linguistics.
-      In a previous post,
-      I said that this would turn out to be more than
-      just a matter of textbooks definition falling short of ideal,
-      but would, because of its major effect on Parsing Theory,
-      shape the daily practice of programming.
-      This post supplies the evidence.
+    <p>It is often said that parsing is a "solved problem".
+    Given the level of frustration with the state of the art,
+    the underuse of the very powerful technique of
+    Language-oriented programming due to problematic tools,
+    and the vast superiority of human parsing ability
+    over computers,
+    this requires explanation.
+    On what grounds can someone say that parsing is "solved".
     </p>
-    <p>
-      This post takes the form of a timeline<a id="footnote-1-ref" href="#footnote-1">[1]</a>
-    The earlier entires in this timeline borrow heavily from
-    <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2018/05/chomsky_1956.html">
-          a previous blog post</a>.
-      </footnote></p>
+    <p>To understand how parsing came to be consider solved,
+    we need to look at the history of Parsing Theory.<a id="footnote-1-ref" href="#footnote-1">[1]</a>
+    In fact, we'll have to start before Parsing Theory
+    itself,
+    with a now nearly-extinct school of linguistics,
+    and its desire to put the field on strictly
+    scientific basis.
+    </p>
     <h2>"Language" as of 1929</h2>
     <p>In 1929 Leonard Bloomfield,
-      as part of his effort to put American linguistics on a rigorous footing,
-      publishes his "Postulates".
-      They include his definition of language:
+      as part of his effort to create a linguistics that
+      would be taken seriously as a science,
+      published his "Postulates".<a id="footnote-2-ref" href="#footnote-2">[2]</a>
+      The "Postulates" include his definition of language:
     </p><blockquote>
       The totality of utterances that can be made in a speech
       community is the
       <b>language</b>
-      of that speech-community.<a id="footnote-2-ref" href="#footnote-2">[2]</a>
+      of that speech-community.<a id="footnote-3-ref" href="#footnote-3">[3]</a>
     </blockquote><p>
-      There is no reference in this definition to the more usual view,
+      There is no reference in this definition to the usual view,
       that the utterances of a language "mean" something.
       This omission is not accidental:
     </p><blockquote>
@@ -41,29 +43,31 @@ A timeline of the parsing term "language"
       language-study, and will remain so until human knowledge
       advances very far beyond its present state. In practice, we define the
       meaning of a linguistic form, wherever we can, in terms of some
-      other science.<a id="footnote-3-ref" href="#footnote-3">[3]</a>
+      other science.<a id="footnote-4-ref" href="#footnote-4">[4]</a>
     </blockquote><p>
       Bloomfield is passing the buck in this way,
-      because he wants linguistics to become regarded as a science,
-      and the positivist science of his time abhors
+      because the positivist science of his time abhors
       unverifiable statements,
       and therefore any claims about mental states.
       A claim to know what someone "means" can be read
-      as a claim to know what's in their mind,
-      and mind-reading has a poor reputation among positivists.
+      as a claim to know what's in their mind.
+      "Hard" sciences like physics, chemistry and even
+      biology avoid dealing with unverifiable mental states,
+      and Bloomfield wants to make the methods of linguistics
+      as close to hard science as possible.
     </p>
     <p>
-      Draconian as the exclusion of meaning is,
+      Draconian as Bloomfield's exclusion of meaning is,
       it is a big success.
       Known as structural linguistics,
-      Bloomfieldian linguistics dominates lingustics for
+      Bloomfield's approach dominates lingustics for
       the next couple of decades.
     </p>
     <h2>1955: Noam Chomsky graduates</h2>
     <p>
       Noam Chomsky earns his PhD at the Universtity of Pennsylvania.
       His teacher, Zelig Harris, is a prominent Bloomfieldian,
-      and Chomsky's early work is thought to be in the Bloomfield school.<a id="footnote-4-ref" href="#footnote-4">[4]</a>
+      and Chomsky's early work is thought to be in the Bloomfield school.<a id="footnote-5-ref" href="#footnote-5">[5]</a>
       Chomsky becomes a professor at MIT.
       MIT does not have a linguistics department,
       and Chomsky is free to teach his own approach to the subject.
@@ -80,7 +84,7 @@ A timeline of the parsing term "language"
       alphabet of sysbols.  If A is an alphabet, we shall say that
       anything formed by concatenating the symbols of A is a string in
       A. By a grammar of the language L we mean a device of some sort that
-      produces all of the strings that are sentences of L and only these.<a id="footnote-5-ref" href="#footnote-5">[5]</a>
+      produces all of the strings that are sentences of L and only these.<a id="footnote-6-ref" href="#footnote-6">[6]</a>
     </blockquote><p>
       Chomsky does not intend to
       follow in the Bloomfieldian tradition of avoiding considerations
@@ -95,7 +99,7 @@ A timeline of the parsing term "language"
       requirements
       that the structures
       generated by the syntactic component of a grammar
-      must meet.<a id="footnote-6-ref" href="#footnote-6">[6]</a>
+      must meet.<a id="footnote-7-ref" href="#footnote-7">[7]</a>
     </blockquote><p>
       Already in "Three Models",
       Chomsky brings in semantics,
@@ -106,15 +110,15 @@ A timeline of the parsing term "language"
       each of which "look" like the natural representation
       of one of the meanings.
       Chomsky points out that this is a very
-      desirable property for a model to have.<a id="footnote-7-ref" href="#footnote-7">[7]</a>
+      desirable property for a model to have.<a id="footnote-8-ref" href="#footnote-8">[8]</a>
     </p>
     <h2>Oettinger 1961</h2>
     <p>
-      While the stack itself goes back to Turing<a id="footnote-8-ref" href="#footnote-8">[8]</a>,
+      While the stack itself goes back to Turing<a id="footnote-9-ref" href="#footnote-9">[9]</a>,
       its significance for parsing becomes an object
       of interest in itself with
-      Samuelson and Bauer's 1959 paper<a id="footnote-9-ref" href="#footnote-9">[9]</a>.
-      Mathematical study of stacks as models of computing begins with Anthony Oettinger's 1961 paper.<a id="footnote-10-ref" href="#footnote-10">[10]</a></p>
+      Samuelson and Bauer's 1959 paper<a id="footnote-10-ref" href="#footnote-10">[10]</a>.
+      Mathematical study of stacks as models of computing begins with Anthony Oettinger's 1961 paper.<a id="footnote-11-ref" href="#footnote-11">[11]</a></p>
     <p>Oettinger 1961 is full of evidence that stacks
       (which he calls "pushdown stores") are very new.
       Oettinger, for example, does not use the terms "push" or "pop",
@@ -129,7 +133,7 @@ A timeline of the parsing term "language"
       The development of a theory of pushdown algorithms should
       hopefully lead to systematic techniques for generating
       algorithms satisfying given requirements to replace
-      the ad hoc invention of each new algorithm.<a id="footnote-11-ref" href="#footnote-11">[11]</a>
+      the ad hoc invention of each new algorithm.<a id="footnote-12-ref" href="#footnote-12">[12]</a>
     </blockquote><p>
       Oettinger hopes his pushdown store model of computing --
       what will eventually be called
@@ -148,7 +152,7 @@ A timeline of the parsing term "language"
     <h2>Knuth 1965</h2>
     <p>In a pivotal LR(k) paper.
       that Donald Knuth sets out a theory that explains
-      all the "tricks"<a id="footnote-12-ref" href="#footnote-12">[12]</a>
+      all the "tricks"<a id="footnote-13-ref" href="#footnote-13">[13]</a>
       used for efficient parsing up to that time.
       Knuth sets out a comprehensive theory of stack-based
       parsing algorithms.
@@ -164,19 +168,19 @@ A timeline of the parsing term "language"
       the memory capabilities of the time.
     </p>
     <p>
-      Knuth, in his program for further research<a id="footnote-13-ref" href="#footnote-13">[13]</a>,
+      Knuth, in his program for further research<a id="footnote-14-ref" href="#footnote-14">[14]</a>,
       suggests using grammars rewrites or table manipulations
       to streamline parsers for LR(k) or
       LR(k) subclasses.
       Knuth also suggests investigation of parsers for superclasses
       of and even describes a class of parsers with more aggressive lookahead -- LR(k,t).
-      But he is clearly skeptical about LR(k,t)<a id="footnote-14-ref" href="#footnote-14">[14]</a>
+      But he is clearly skeptical about LR(k,t)<a id="footnote-15-ref" href="#footnote-15">[15]</a>
       and, we may assume,
-      even more skeptical about more general approaches.<a id="footnote-15-ref" href="#footnote-15">[15]</a>
+      even more skeptical about more general approaches.<a id="footnote-16-ref" href="#footnote-16">[16]</a>
     </p>
     <p>
       Knuth is certainly aware that DPDA determinism and
-      linear time behavior are not the same thing.<a id="footnote-16-ref" href="#footnote-16">[16]</a>
+      linear time behavior are not the same thing.<a id="footnote-17-ref" href="#footnote-17">[17]</a>
       An algorithm can be more powerful than a DPDA,
       while still being linear.
       But linearity is a stand-in for "practical",
@@ -216,29 +220,35 @@ A timeline of the parsing term "language"
     </p>
     <h2>Footnotes</h2>
 <p id="footnote-1">1.
-        It is intended to be incorporated in my
-        <a href="https://jeffreykegler.github.io/personal/timeline_v3>
-    Parsing: a timeline</a>.
+      This post takes the form of a timeline, and
+      is intended to be incorporated in my
+      <a href="https://jeffreykegler.github.io/personal/timeline_v3>.
+      Parsing: a timeline</a>.
+      The earlier entires in this post borrow heavily from
+      <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2018/05/chomsky_1956.html">
+	    a previous blog post</a>.
  <a href="#footnote-1-ref">&#8617;</a></p>
 <p id="footnote-2">2.
         Bloomfield, Leonard,
         "A set of Postulates
         for the Science of Language",
         <cite>Language</cite>, Vol. 2, No. 3 (Sep., 1926), pp. 153-164.
-        The quote is definition 4 on p. 154.
  <a href="#footnote-2-ref">&#8617;</a></p>
 <p id="footnote-3">3.
+        Bloomfield 1926, definition 4 on p. 154.
+ <a href="#footnote-3-ref">&#8617;</a></p>
+<p id="footnote-4">4.
         Bloomfield, Leonard.
         <cite>Language</cite>.
         Holt, Rinehart and Winston, 1933, p. 140.
- <a href="#footnote-3-ref">&#8617;</a></p>
-<p id="footnote-4">4.
+ <a href="#footnote-4-ref">&#8617;</a></p>
+<p id="footnote-5">5.
         Harris, Randy Allen,
         <cite>The Linguistics Wars</cite>,
         Oxford University Press, 1993,
         pp 31-34, p. 37.
- <a href="#footnote-4-ref">&#8617;</a></p>
-<p id="footnote-5">5.
+ <a href="#footnote-5-ref">&#8617;</a></p>
+<p id="footnote-6">6.
         The quote is on p. 114 of
         Chomsky, Noam.
         "Three models for the description of language."
@@ -255,45 +265,45 @@ A timeline of the parsing term "language"
         "Any grammar of a language will project the finite and somewhat accidental
         corpus of observed utterances to a set (presumably infinite)
         of grammatical utterances."
- <a href="#footnote-5-ref">&#8617;</a></p>
-<p id="footnote-6">6.
+ <a href="#footnote-6-ref">&#8617;</a></p>
+<p id="footnote-7">7.
         Chomsky, Noam.
         <cite>Topics in the Theory of Generative Grammar</cite>.
         De Gruyter, 1978, p. 20.
         (The quote occurs in footnote 7 starting on p. 19.)
- <a href="#footnote-6-ref">&#8617;</a></p>
-<p id="footnote-7">7.
-        Chomsky 1956, p. 118, p. 123.
  <a href="#footnote-7-ref">&#8617;</a></p>
 <p id="footnote-8">8.
+        Chomsky 1956, p. 118, p. 123.
+ <a href="#footnote-8-ref">&#8617;</a></p>
+<p id="footnote-9">9.
         Carpenter, Brian E., and Robert W. Doran.
         "The other Turing machine."
         <cite>The Computer Journal</cite>, vol. 20, issue 3, 1 January 1977, pp. 269-279.
- <a href="#footnote-8-ref">&#8617;</a></p>
-<p id="footnote-9">9.
-        Samelson, Klaus, and Friedrich L. Bauer. "Sequentielle formelübersetzung." it-Information Technology 1.1-4 (1959): 176-182.
  <a href="#footnote-9-ref">&#8617;</a></p>
 <p id="footnote-10">10.
+        Samelson, Klaus, and Friedrich L. Bauer. "Sequentielle formelübersetzung." it-Information Technology 1.1-4 (1959): 176-182.
+ <a href="#footnote-10-ref">&#8617;</a></p>
+<p id="footnote-11">11.
           Oettinger, Anthony.
           "Automatic Syntactic Analysis and the Pushdown Store"
           <cite>Proceedings of Symposia in Applied Mathematics</cite>,
           Volume 12,
           American Mathematical Society, 1961.
- <a href="#footnote-10-ref">&#8617;</a></p>
-<p id="footnote-11">11.
-        Oettinger 1961, p. 127.
  <a href="#footnote-11-ref">&#8617;</a></p>
 <p id="footnote-12">12.
-      Knuth 1965, p. 607, in the abstract.
+        Oettinger 1961, p. 127.
  <a href="#footnote-12-ref">&#8617;</a></p>
 <p id="footnote-13">13.
-      Knuth 1961, pp. 637-639.
+      Knuth 1965, p. 607, in the abstract.
  <a href="#footnote-13-ref">&#8617;</a></p>
 <p id="footnote-14">14.
-      "One might choose to this [more aggressive lookahead]
-      left-to-right translation.", Knuth 1965, p. 639.
+      Knuth 1961, pp. 637-639.
  <a href="#footnote-14-ref">&#8617;</a></p>
 <p id="footnote-15">15.
+      "One might choose to this [more aggressive lookahead]
+      left-to-right translation.", Knuth 1965, p. 639.
+ <a href="#footnote-15-ref">&#8617;</a></p>
+<p id="footnote-16">16.
       That my conclusions about Knuth's skepticism are not misreadings
       is suggested by his own plans for his (not yet released) Chapter
       12 of the <cite>Art of Computer Programming</cite>,
@@ -305,10 +315,10 @@ A timeline of the parsing term "language"
       after Knuth 1965
       the research community certainly was strongly
       skeptical of more general algorithms.
- <a href="#footnote-15-ref">&#8617;</a></p>
-<p id="footnote-16">16.
+ <a href="#footnote-16-ref">&#8617;</a></p>
+<p id="footnote-17">17.
         Knuth 1965, p. 607: "execution time at worst
         proportional to the length of the string being parsed."
- <a href="#footnote-16-ref">&#8617;</a></p>
+ <a href="#footnote-17-ref">&#8617;</a></p>
   </body>
 </html>
