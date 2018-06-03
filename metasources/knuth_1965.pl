@@ -70,45 +70,47 @@ Why is parsing considered solved?
       marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
       -->
     <p>It is often said that parsing is a "solved problem".
-    Given the level of frustration with the state of the art,
-    the underuse of the very powerful technique of
-    Language-Oriented Programming due to problematic tools<footnote>
-    The well-known <a href="https://en.wikipedia.org/wiki/Design_Patterns">
-    <cite>Design Patterns</cite> book</a>
-    (aka "the Gang of 4 book")
-    has a section on this which call Language-oriented programmer
-    its "Interpreter pattern".
-    This amply illustrates the main obstacle to use
-    of the pattern -- lack of adequate parsing tools.
-    I talk much more about this in my two blog posts on 
-    the Interpreter pattern:
-    <a href="http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2013/03/bnf_to_ast.html">
-    BNF to AST</a>
-    and 
-    <a href="http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2013/03/interpreter.html">
-    The Interpreter Design Pattern</a>.
-    </footnote>,
-    and the vast superiority of human parsing ability
-    over computers,
-    this requires explanation.
+      Given the level of frustration with the state of the art,
+      the underuse of the very powerful technique of
+      Language-Oriented Programming due to problematic tools<footnote>
+        The well-known
+        <a href="https://en.wikipedia.org/wiki/Design_Patterns">
+          <cite>Design Patterns</cite>
+          book</a>
+        (aka "the Gang of 4 book")
+        has a section on this which call Language-oriented programmer
+        its "Interpreter pattern".
+        This amply illustrates the main obstacle to use
+        of the pattern -- lack of adequate parsing tools.
+        I talk much more about this in my two blog posts on
+        the Interpreter pattern:
+        <a href="http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2013/03/bnf_to_ast.html">
+          BNF to AST</a>
+        and
+        <a href="http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2013/03/interpreter.html">
+          The Interpreter Design Pattern</a>.
+      </footnote>,
+      and the vast superiority of human parsing ability
+      over computers,
+      this requires explanation.
     </p>
     <p>
-    On what grounds can someone say that parsing is "solved"?
-    To understand this,
-    we need to look at the history of Parsing Theory.<footnote>
-      This post takes the form of a timeline, and
-      is intended to be incorporated in my
-      <a href="https://jeffreykegler.github.io/personal/timeline_v3>.
+      On what grounds would someone say that parsing is "solved"?
+      To understand this,
+      we need to look at the history of Parsing Theory.<footnote>
+        This post takes the form of a timeline, and
+        is intended to be incorporated in my
+        <a href="https://jeffreykegler.github.io/personal/timeline_v3>.
       Parsing: a timeline</a>.
       The earlier entires in this post borrow heavily from
       <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2018/05/chomsky_1956.html">
-	    a previous blog post</a>.
+          a previous blog post</a>.
       </footnote>
-    In fact, we'll have to start decades before computer Parsing Theory
-    exists,
-    with a now nearly-extinct school of linguistics,
-    and its desire to put the field on strictly
-    scientific basis.
+      In fact, we'll have to start decades before computer Parsing Theory
+      exists,
+      with a now nearly-extinct school of linguistics,
+      and its desire to put the field on strictly
+      scientific basis.
     </p>
     <h2>"Language" as of 1929</h2>
     <p>In 1929 Leonard Bloomfield,
@@ -143,11 +145,11 @@ Why is parsing considered solved?
         Holt, Rinehart and Winston, 1933, p. 140.
       </footnote>
     </blockquote><p>
-      Bloomfield is passing the buck in this way,
+      Bloomfield is passing the buck,
       because the behaviorist science of his time rejects
       any claims about mental states as
       unverifiable statements -- essentially,
-      as a claim to be able to read minds.
+      as claims to be able to read minds.
       "Hard" sciences like physics, chemistry and even
       biology avoid dealing with unverifiable mental states.
       Bloomfield and the behaviorists want to make the methods of linguistics
@@ -204,10 +206,48 @@ Why is parsing considered solved?
         corpus of observed utterances to a set (presumably infinite)
         of grammatical utterances."
       </footnote>
-    </blockquote><p>
-      Chomsky does not intend to
-      follow in the Bloomfieldian tradition of avoiding considerations
-      of meaning, aka semantics:
+    </blockquote>
+    <p>
+      But already in "Three Models",
+      Chomsky readily brings in semantics,
+      when it serves his purposes.
+      For a semantically ambiguous utterance,
+      Chomsky's new model produces multiple syntactic derivations.
+      Each of these syntactic derivations
+      "look" like the natural representation
+      of one of the meanings,
+      and Chomsky points out that this is a very
+      desirable property for a model to have.<footnote>
+        Chomsky 1956, p. 118, p. 123.
+      </footnote>
+    </p>
+    <h2>Chomsky 1959</h2>
+    <p>In 1959, Chomsky reviews a book by B.F. Skinner's on linguistics.<footnote>
+        Chomsky, Noam.
+        “A Review of B. F. Skinner’s Verbal Behavior”.
+        <cite>Language</cite>,
+        Volume 35, No. 1, 1959, 26-58.
+        <a href="https://chomsky.info/1967____/">
+          https://chomsky.info/1967____/</a>
+        accessed on 3 June 2018.
+      </footnote>
+      Skinner is the most prominent behaviorist of the time.
+    </p>
+    <p>
+      Chomsky's review removes all doubt about where he stands
+      on behaviorism
+      or on the relevance of linguistics to the study of meaning.<footnote>
+        See in particular, Section IX of Chomsky 1959.
+      </footnote>
+      His review galvanizes the opposition to behaviorism, and
+      Chomsky establishes himself as behavorism's most
+      prominent and effective critic.
+    </p>
+    <p>
+      In later years,
+      Chomsky will make it clear that he had had no intention of
+      following in the behaviorist tradition,
+      by avoiding considerations of meaning, aka semantics:
     </p><blockquote>
       [...] it would be absurd to develop
       a general syntactic theory
@@ -224,40 +264,7 @@ Why is parsing considered solved?
         De Gruyter, 1978, p. 20.
         (The quote occurs in footnote 7 starting on p. 19.)
       </footnote>
-    </blockquote><p>
-      Already in "Three Models",
-      Chomsky readily brings in semantics,
-      when it serves his purposes.
-      For a semantically ambiguous utterance,
-      Chomsky's new model produces multiple syntactic derivations.
-      Each of these syntactic derivations
-      "look" like the natural representation
-      of one of the meanings,
-      and Chomsky points out that this is a very
-      desirable property for a model to have.<footnote>
-        Chomsky 1956, p. 118, p. 123.
-      </footnote>
-    </p>
-    <h2>Chomsky 1959</h2>
-    <p>In 1959, Chomsky reviews a book by B.F. Skinner's on linguistics.<footnote>
-    Chomsky, Noam.
-    “A Review of B. F. Skinner’s Verbal Behavior”. <cite>Language</cite>,
-    Volume 35, No. 1, 1959, 26-58.
-    <a href="https://chomsky.info/1967____/">
-    https://chomsky.info/1967____/</a> accessed on 3 June 2018.
-    </footnote>
-    Skinner is the most prominent behaviorist of the time.
-    </p>
-    <p>
-    Chomsky's review removes all doubt about where he stands
-    on behaviorism
-    or on the relevance of linguistics to the study of meaning.<footnote>
-    See in particular, Section IX of Chomsky 1959.
-    </footnote>
-    His review galvanizes the opposition to behaviorism, and
-    Chomsky establishes himself as behavorism's most
-    prominent and effective critic.
-    </p>
+    </blockquote>
     <h2>Oettinger 1961</h2>
     <p>
       While the stack itself goes back to Turing<footnote>
@@ -271,21 +278,23 @@ Why is parsing considered solved?
         Samelson, Klaus, and Friedrich L. Bauer. "Sequentielle formelübersetzung." it-Information Technology 1.1-4 (1959): 176-182.
       </footnote>.
       Mathematical study of stacks as models of computing begins with Anthony Oettinger's 1961 paper.<footnote>
-          Oettinger, Anthony.
-          "Automatic Syntactic Analysis and the Pushdown Store"
-          <cite>Proceedings of Symposia in Applied Mathematics</cite>,
-          Volume 12,
-          American Mathematical Society, 1961.
-        </footnote></p>
+        Oettinger, Anthony.
+        "Automatic Syntactic Analysis and the Pushdown Store"
+        <cite>Proceedings of Symposia in Applied Mathematics</cite>,
+        Volume 12,
+        American Mathematical Society, 1961.
+      </footnote></p>
     <p>Oettinger 1961 is full of evidence that stacks
       (which he calls "pushdown stores") are very new.
       Oettinger, for example, does not use the terms "push" or "pop",
       but instead describes operations on his pushdown stores using
       a set of vector operations which will later form the basis
       of the APL language.
+    </p>
+    <p>
       As of 1961, all algorithms with acceptable speed are using
       stacks with various modifications.
-      Oettinger express a hope:
+      Oettinger expresses a hope:
     </p>
     <blockquote>
       The development of a theory of pushdown algorithms should
@@ -294,68 +303,112 @@ Why is parsing considered solved?
       the ad hoc invention of each new algorithm.<footnote>
         Oettinger 1961, p. 127.
       </footnote>
-    </blockquote><p>
-      Oettinger hopes his pushdown store model of computing --
-      what will eventually be called
-      deterministic pushdown automata (DPDA's) --
-      will become the basis of a theory of language
-      computing encompassing both natural language
-      (including the Russian which is the object of his own research)
-      and computing languages like ALGOL.
-      For natural language translation,
+    </blockquote>
+    <p>Oettinger defines 4 languages, all of sets of strings.<footnote>
+        Oettinger 1961, p. 106.
+      </footnote>
+      Oettinger's pushdown stores
+      will eventually be called
+      deterministic pushdown automata (DPDA's) and
+      become the basis of a model of language.
+      Oettinger hopes this model will
+      be an adequate basis both for natural language
+      (Russian translation is Oettinger's area of research)
+      and for computing languages like ALGOL.
+      For Russian translation,
       DPDA's will prove totally inadequate.
-      But DPDA's will continute to be the basis
-      of hopes for a theory of computer language parsing.
-      And the quote above more than hints at an expectation
-      of One Stack Parsing Algorithm to Rule Them All.
+    </p><p>
+    </p><p>
+      But as a hoped-for basis for a theory of computer language parsing,
+      Oettinger DPDA's have a much longer life.
+      The focus of Parsing Theory research over the next ten years will be
+      discovering a theory of DPDA-based parsing.
+      And once discovered,
+      this theory will dominate the academic literature
+      on parsing for a much longer time.
     </p>
     <h2>Knuth 1965</h2>
-    <p>In a pivotal LR(k) paper.
-      that Donald Knuth sets out a theory that explains
+    <p>DPDA-based parsing theory soon attracts the attention of Computer Science's
+      best technical mathematician, Donald Knuth.
+      In his pivotal LR(k) paper,<footnote>
+        Knuth, Donald E.
+        "On the translation of languages from left to right."
+        <cite>Information and Control</cite>, Volume 8, Issue 6, December 1965, pp. 607-639.
+        <a href="https://ac.els-cdn.com/S0019995865904262/1-s2.0-S0019995865904262-main.pdf?_tid=dcf0f8a0-d312-475e-a559-be7714206374&acdnat=1524066529_64987973992d3a5fffc1b0908fe20b1d">
+          https://ac.els-cdn.com/S0019995865904262/1-s2.0-S0019995865904262-main.pdf?_tid=dcf0f8a0-d312-475e-a559-be7714206374&acdnat=1524066529_64987973992d3a5fffc1b0908fe20b1d</a>, accessed 24 April 2018.
+      </footnote>
+      Knuth sets out a theory that explains
       all the "tricks"<footnote>
-      Knuth 1965, p. 607, in the abstract.
+        Knuth 1965, p. 607, in the abstract.
       </footnote>
       used for efficient parsing up to that time.
       Knuth sets out a comprehensive theory of stack-based
       parsing algorithms.
-    </p>
-    <p>
       For a start, Knuth shows that stack-based parsing is
       equivalent to a new and unexpected class of grammars
-      LR(k), and he provides with a parsing algorithm for them.
-      This algorithm might be expected to be "the one to rule
-      them all".
-      Unfortunately Knuth's LR(k), while deterministic and linear,
-      is not practical -- it requires huge tables well beyond
-      the memory capabilities of the time.
+      LR(k), and he provides a parsing algorithm for them.
     </p>
     <p>
+      Knuth's new algorithm might be expected to be "the one to rule
+      them all".
+      Unfortunately, while deterministic and linear,
+      is not practical -- it requires huge tables well beyond
+      the memory capabilities of the time.
+      This does not suggest to Knuth that the DPDA-based model
+      is inappropriate as a model of practical parsing --
+      instead it suggest to him, and to the field,
+      that the boundary of practical parsing lies inside the
+      LR(k) grammars.
+    </p>
+    <p>
+      The idea that the solution to the parsing problem must be
+      DPDA-based is not without foundation.
+      In 1965, the limits of computer technology are severe.
+      For practitioners,
+      any parsing technique that required more than a DPDA --
+      that is, more than state
+      machine and a stack,
+      was not likely to happen.
+      After all,
+      four years earlier, stacks had been bleeding edge.
+    </p>
+    <p>
+      To be sure,
       Knuth, in his program for further research<footnote>
-      Knuth 1961, pp. 637-639.
+        Knuth 1961, pp. 637-639.
       </footnote>,
-      suggests using grammars rewrites or table manipulations
-      to streamline parsers for LR(k) or
-      LR(k) subclasses.
-      Knuth also suggests investigation of parsers for superclasses
-      of and even describes a class of parsers with more aggressive lookahead -- LR(k,t).
-      But he is clearly skeptical about LR(k,t)<footnote>
-      "One might choose to this [more aggressive lookahead]
-      left-to-right translation.", Knuth 1965, p. 639.
+      does suggests investigation of parsers for superclasses
+      of LR(k).
+      He even describes his own superclass of LR(k):
+      LR(k,t), which is LR(k) more aggressive lookahead.
+      But he is clearly unenthusiastic about LR(k,t)<footnote>
+        "Finally, we might mention another generalization of LR(k)"
+        (Knuth 1965, p. 638); and
+        "One might choose to call this left-to-right translation,
+        although we had to back up a finite amount."
+        (p. 639).
       </footnote>
-      and, we may assume,
-      even more skeptical about more general approaches.<footnote>
-      That my conclusions about Knuth's skepticism are not misreadings
-      is suggested by his own plans for his (not yet released) Chapter
-      12 of the <cite>Art of Computer Programming</cite>,
-      in which he planned to use pre-Chomskyan bottom-up methods. (See
-      Knuth, Donald E., "The genesis of attribute grammars",
-      <cite>Attribute Grammars and Their Applications</cite>,
-      Springer, September 1990, p. 3.)
-      In any case, and more importantly,
-      after Knuth 1965
-      the research community certainly was strongly
-      skeptical of more general algorithms.
+      It is reasonable to suppose,
+      that Knuth is even more negative about more general approaches that
+      he does not bother to mention.<footnote>
+        Knuth's skepticism for more general Chomskyan approaches
+        is suggested by his own plans for his (not yet released) Chapter
+        12 of the
+        <cite>Art of Computer Programming</cite>,
+        in which he planned to use pre-Chomskyan bottom-up methods. (See
+        Knuth, Donald E., "The genesis of attribute grammars",
+        <cite>Attribute Grammars and Their Applications</cite>,
+        Springer, September 1990, p. 3.)
       </footnote>
+    </p>
+    <p>
+      In any case, those reading Knuth's LR(k) focused almost
+      exclusively on his suggestions for research within the DPDA-based
+      model.
+      These included grammars rewrites;
+      streamlining of the LR(k) tables;
+      or research into LR(k) subclasses.
+      It is LR(k) subclassing that will receive the most attention.
     </p>
     <p>
       Knuth is certainly aware that DPDA determinism and
@@ -374,98 +427,127 @@ Why is parsing considered solved?
       practice.
     </p>
     <p>
-       Why was such a powerful skepticism based on the results for one
-       computing model of computing?
-       Stacks, as we now call them, are a natural model of computing,
-       so it is reasonable to think they form a step on the hierarchy
-       of tradeoffs of power against practical speed.
-       But a very important was the proof that LR(k) grammars were
-       "equivalent" to DPDA's.
-       And central to the acceptance of this proof as relevant
-       was a confusion about the use of the term "language".
+      Why was such a powerful skepticism based on the results for one
+      computing model of computing?
+      Stacks, as we now call them, are a natural model of computing,
+      so it is reasonable to think they form a step on the hierarchy
+      of tradeoffs of power against practical speed.
+      But a very important was the proof that LR(k) grammars were
+      "equivalent" to DPDA's.
+      And central to the acceptance of this proof as relevant
+      was a confusion about the use of the term "language".
+    </p>
+    <p>With his 1965, Knuth, Computer Science's greatest mathematician
+      disposes of the DPDA problem.
+      Knuth's exhausting and exhilarating 39-page
+      demonstration of mathematical virtuousity
+      almost "runs the board"
+      of open problems in parsing,
+      and his section on "open problems" is read
+      as a definitive program for further research.
+    </p>
+    <p>
+      Knuth does not quite solve the problem,
+      but he sets the framework within which a solution
+      will be found --
+      or so it seems.
+      Because, while Knuth's math is correct,
+      a confusion about the term "language"
+      makes his conclusions unreliable.
     </p>
     <h2>The term "language" as of 1965</h2>
     <p>
-    Knuth defines language as follows:
+      Knuth defines language as follows:
     </p>
     <blockquote>
-    The language defined by G is<br>
-    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-    { &alpha; | S => &alpha; and &alpha; is a string over T }<br>
-    namely, the set of all terminal string derivable from S by using
-    the productions of G as substitution rules.<footnote>
-    Knuth 1965, p. 608.
-    </footnote>
-    </blockquote>
-    (Here G is a grammar whose start symbol is S and whose set
-    of terminals is T.)
-    This is clearly the behavorist definition of language
-    translated into set-theoretic terms.
+      The language defined by G is<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      { &alpha; | S => &alpha; and &alpha; is a string over T }<br>
+      namely, the set of all terminal string derivable from S by using
+      the productions of G as substitution rules.<footnote>
+        Knuth 1965, p. 608.
+      </footnote>
+    </blockquote><p>
+      (Here G is a grammar whose start symbol is S and whose set
+      of terminals is T.)
+      This is clearly the behavorist definition of language
+      translated into set-theoretic terms.
     </p>
     <p>Knuth proves, to the satisfaction of the profession,
-    the "equivalence" of LR(k) and DPDA's.
-    LR(k) is a class of grammars and the DPDA model is of
-    a language -- a set of strings.
-    At first glance, this is an "apples and oranges" comparison --
-    how do you prove the equivalence of a language and a grammar.
+      the "equivalence" of LR(k) and DPDA's.
+      LR(k) is a class of grammars and the DPDA model is of
+      a language -- a set of strings.
+      At first glance, this is an "apples and oranges" comparison --
+      how do you prove the equivalence of a language and a grammar.
     </p>
     <p>Knuth does this by reducing the language and the class grammar
-    of grammars to a lowest common denominator --
-    a grammar defines a language, so he compares the LR(k) language
-    to the DPDA language.
-    It takes some impressive mathematics,
-    but Knuth is able to show that the two languages are equivalent.
-    But note that the question whether LR(k) is an impassable
-    barrier for parsing grammars -- not languages.
-    </p>
-    Punning a class of grammars as a class of languages does not work --
-    in fact, as Knuth shows, it produces a considerable amount of magical
-    thinking. 
-    Using the Knuth algorithm
-    <ul>
-    <li>Parsing LR(k) grammars for an arbitrary is hopelessly impractical.
-    </li>
-    <li>Parsing LR(1) grammars is almost practical, but not quite.<footnote>
-    Given the capacity of computer memories in 1965,
-    LR(1) was clearly impractical.
-    Today, that could be reconsidered, but LR(1) is still restrictive
-    and has poor error-handling,
-    so few practitioners have bothered with it.
-    </footnote>
-    </li>
-    <li>Parsing LR(0) grammars is quite practical.
-    </li>
+      of grammars to a lowest common denominator --
+      a grammar defines a language, so he compares the LR(k) language
+      to the DPDA language.
+      It takes some impressive mathematics,
+      but Knuth is able to show that the two languages are equivalent.
+      But note that the question whether LR(k) is an impassable
+      barrier for parsing grammars -- not languages.
+    </p><p>
+      Punning a class of grammars as a class of languages does not work --
+      in fact, as Knuth shows, it produces a considerable amount of magical
+      thinking.
+      Using the Knuth algorithm
+    </p><ul>
+      <li>Parsing LR(k) grammars for an arbitrary is hopelessly impractical.
+      </li>
+      <li>Parsing LR(1) grammars is almost practical, but not quite.<footnote>
+          Given the capacity of computer memories in 1965,
+          LR(1) was clearly impractical.
+          Today, that could be reconsidered, but LR(1) is still restrictive
+          and has poor error-handling,
+          so few practitioners have bothered with it.
+        </footnote>
+      </li>
+      <li>Parsing LR(0) grammars is quite practical.
+      </li>
     </ul>
-    </p>The problem for Knuth's proof of equivalence is that,
-    if you consider languages, LR(1) and LR(k) are equivalent.
-    And in fact, both are almost equivalent to LR(0) -- if you add
-    an explicit end marker to a language
-    (which in most applications is easy to do<footnote>
-    Some parsing applications, such as those which receive their input "on-line",
-    can not determine the size of their input in advance.
-    For these applications adding an end marker to their input is
-    inconvenient or impossible.
-    </footnote>)
-    then LR(k) = LR(1) = LR(0).
-    That is, in language terms, the hopelessly impractical
-    is equivalent to the borderline impractical.
-    And these, for most applications, are equivalent to the
-    very practical LR(0).
-    That is, when thinking in terms of languages,
-    we can magically transport ourselves across the
-    same practical/impractical boundary that we are claiming
-    to show is, in practice, impassable.
+    <p>The problem for Knuth's proof of equivalence is that,
+      if you consider languages, LR(1) and LR(k) are equivalent.
+      And in fact, both are almost equivalent to LR(0) -- if you add
+      an explicit end marker to a language
+      (which in most applications is easy to do<footnote>
+        Some parsing applications, such as those which receive their input "on-line",
+        can not determine the size of their input in advance.
+        For these applications adding an end marker to their input is
+        inconvenient or impossible.
+      </footnote>)
+      then LR(k) = LR(1) = LR(0).
     </p>
     <p>
-    In short, impressive as Knuth's demonstrations are as
-    exercises in technical mathematics --
-    and the whole paper is a mathematical <it>tour de force</it>,
-    both exhileraing and exhausting --
-    they give no reason to suggest the DPDA boundary is
-    impassable,
-    or even a serious obstacle.
-    Which means it should be no surprise that,
-    in 1991, Joop Leo shows how to cross it.
+      That is, in language terms, the hopelessly impractical
+      is equivalent to the borderline impractical.
+      And these, for most applications, are equivalent to the
+      very practical LR(0).
+      When thinking in terms of languages,
+      we can transport ourselves across the
+      same practical/impractical boundary that we are claiming
+      to show is, in practice, impassable for grammars.
+    </p>
+    <p>
+      What for languages is reasonable thinking,
+      is magical thinking when it comes to grammars.
+      This suggests that reasoning based on the equivalence
+      of languages may not be helpful for deciding
+      what is practical for parsing grammars --
+      in fact, it suggests that this kind of reasoning
+      could be seriously misleading.
+    </p>
+    <p>In that light,
+      it should be no surprise that,
+      in 1991, Joop Leo showed how to extend practical
+      parsing well beyond the LR(k) and DPDA models.<footnote>
+        Joop M. I. M.
+        "A general context-free parsing algorithm running in linear time on every LR (k) grammar without using lookahead."
+        <cite>Theoretical computer science</cite>, Volume 82, Issue 1, 22 May 1991, pp. 165-176.
+        <a href="https://www.sciencedirect.com/science/article/pii/030439759190180A">
+          https://www.sciencedirect.com/science/article/pii/030439759190180A</a>, accessed 24 April 2018.
+      </footnote>
     </p>
     <h2>Comments, etc.</h2>
     <p>
@@ -473,6 +555,16 @@ Why is parsing considered solved?
       <a href="https://jeffreykegler.github.io/personal/timeline_v3>
     Parsing: a timeline 3.0</a>,
     and this post may be considered a supplement to "Timelime".
+    I encourage
+    those who want to know more about the story of Parsing Theory
+    to look at my
+      <a href="https://jeffreykegler.github.io/personal/timeline_v3>
+    Parsing: a timeline 3.0</a>.
+    For example, "Timeline 3.0" tells the story of the search for a good
+    LR(k) subclass,
+    and what happened afterwards.
+    </p>
+      </a></p><p>
       To learn about Marpa,
       my Earley/Leo-based parsing project,
       there is the
