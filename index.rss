@@ -154,8 +154,8 @@
       of the APL language.
     &lt;/p&gt;
     &lt;p&gt;Oettinger defines 4 languages.
-    Oettinger's definitions all follow the behavorist model --
-    they are sets of strings.&lt;a id=&quot;footnote-15-ref&quot; href=&quot;#footnote-15&quot;&gt;[15]&lt;/a&gt;
+      Oettinger's definitions all follow the behavorist model --
+      they are sets of strings.&lt;a id=&quot;footnote-15-ref&quot; href=&quot;#footnote-15&quot;&gt;[15]&lt;/a&gt;
       Oettinger's pushdown stores
       will eventually be called
       deterministic pushdown automata (DPDA's) and
@@ -198,7 +198,7 @@
       Knuth sets out a theory that
       encompasses all the &quot;tricks&quot;&lt;a id=&quot;footnote-18-ref&quot; href=&quot;#footnote-18&quot;&gt;[18]&lt;/a&gt;
       used for efficient parsing up to that time.
-      With this Oettinger's hope for a theory 
+      With this Oettinger's hope for a theory
       to replace &quot;ad hoc invention&quot; is fulfilled.
       In an exhilarating (and exhausting) 39-page
       demonstration of mathematical virtuousity,
@@ -257,133 +257,133 @@
       stacks were bleeding edge.
     &lt;/p&gt;
     &lt;p&gt;The practitioners of 1965
-    are inclined to believe that,
-    like it or not,
-    they are stuck with stack-based parsing.
-    But why do the theoreticians feel compelled to follow them?
-    The answer is that theoreticians talk themselves into
+      are inclined to believe that,
+      like it or not,
+      they are stuck with stack-based parsing.
+      But why do the theoreticians feel compelled to follow them?
+      The answer is that theoreticians talk themselves into
       it, using a misleading equivalence based
       on the behaviorist definition of language.
-      &lt;/p&gt;
-      &lt;h2&gt;&quot;Language&quot; as of 1965&lt;/h2&gt;
-	  &lt;p&gt;
-	    Knuth defines language as follows:
-	  &lt;/p&gt;
-	  &lt;blockquote&gt;
-	    The language defined by G is&lt;br&gt;
-	    &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;
-	    { &amp;alpha; | S =&gt; &amp;alpha; and &amp;alpha; is a string over T }&lt;br&gt;
-	    namely, the set of all terminal strings derivable from S by using
-	    the productions of G as substitution rules.&lt;a id=&quot;footnote-23-ref&quot; href=&quot;#footnote-23&quot;&gt;[23]&lt;/a&gt;
-	  &lt;/blockquote&gt;&lt;p&gt;
-	    Here G is a grammar whose start symbol is S and whose set
-	    of terminals is T.
-	    This is the behavorist definition of language
-	    translated into set-theoretic terms.
-	  &lt;/p&gt;
-	  &lt;p&gt;Knuth proves, to the satisfaction of the profession,
-	    the &quot;equivalence&quot; of LR(k) and DPDA's.
-	    LR(k) is a class of grammars and the DPDA model is of
-	    languages -- sets of strings.
-	    At first glance, this is an &quot;apples and oranges&quot; comparison --
-	    how do you prove the equivalence of a class of languages
-	    and a class of grammars?
-	  &lt;/p&gt;
-	  &lt;p&gt;
-	  Knuth does this by reducing the class of DPDA languages and the class
-	    of grammars to their lowest common denominator, which is the language.
-	    And, of course, the &quot;language&quot; in the usage of Parsing Theory
-	    is a set of strings, without consideration of their syntax.
-	  &lt;/p&gt;
-	  &lt;p&gt;
-	    Every grammar, when stripped of its syntax, defines a language.
-	    So Knuth compares the language which results from stripping down
-	    the LR(k) grammars,
-	    to the language of DPDA's.
-	    After some very impressive mathematics,
-	    Knuth is able to show that the two languages are equivalent.
-	  &lt;/p&gt;
-	  &lt;p&gt;
-	    In theoretical mathematics, of course,
-	    you can define &quot;equivalent&quot; however you like.
-	    But if the purpose is to suggest limits in practice,
-	    you have to be much more careful.
-	    And in fact, as Knuth's paper shows,
-	    if you equating languages and grammars,
-	    you get into a very serious degree of magical thinking.
-	    Using the Knuth algorithm,
-	  &lt;/p&gt;
-	  &lt;ul&gt;
-	    &lt;li&gt;parsing LR(k) grammars for arbitrary k is hopelessly impractical;
-	    &lt;/li&gt;
-	    &lt;li&gt;parsing LR(1) grammars is impractical, but close to the boundary&lt;a id=&quot;footnote-24-ref&quot; href=&quot;#footnote-24&quot;&gt;[24]&lt;/a&gt;;
-	      and
-	    &lt;/li&gt;
-	    &lt;li&gt;parsing LR(0) grammars is very practical.
-	    &lt;/li&gt;
-	  &lt;/ul&gt;
-	  &lt;p&gt;A problem for the relevance
-	  of Knuth's proof of equivalence is that,
-	    if you just look at sets of strings
-	    without regard to syntax,
-	    LR(1) and LR(k) are equivalent.
-	    That means that from the sets-of-strings point of view,
-	    hopelessly impractical and
-	    borderline impractical are the same thing.
-	  &lt;/p&gt;
-	  &lt;p&gt;
-	    Worse, both LR(1) and LR(k) are equivalent to LR(0)
-	    for most applications.
-	    If you add
-	    an explicit end marker to an LR(1) language,
-	    which in most applications is easy to do&lt;a id=&quot;footnote-25-ref&quot; href=&quot;#footnote-25&quot;&gt;[25]&lt;/a&gt;,
-	    your LR(1) language becomes LR(0).
-	    Therefore, for most applications,
-	  &lt;/p&gt;
-	  &lt;center&gt;
-	    LR(k) = LR(1) = LR(0)
-	  &lt;/center&gt;
-	  &lt;p&gt;
-	    This means that, in the world of sets-of-strings,
-	    extremely impractical and very practical are usually the same thing.
-	  &lt;/p&gt;
-	  &lt;p&gt;
-	    Clearly the world of sets of strings
-	    is a magical one,
-	    in which we can easily transport ourselves across the
-	    boundary between practical and impractical.
-	    We can take visions of a magical world back into the world of practice,
-	    but we cannot assume they will be helpful.
-	    In that light,
-	    it is no surprise that
-	    Joop Leo will show how to extend practical
-	    parsing well beyond LR(k).&lt;a id=&quot;footnote-26-ref&quot; href=&quot;#footnote-26&quot;&gt;[26]&lt;/a&gt;
-	  &lt;/p&gt;
-	  &lt;h2&gt;Comments, etc.&lt;/h2&gt;
-	  &lt;p&gt;
+    &lt;/p&gt;
+    &lt;h2&gt;&quot;Language&quot; as of 1965&lt;/h2&gt;
+    &lt;p&gt;
+      Knuth defines language as follows:
+    &lt;/p&gt;
+    &lt;blockquote&gt;
+      The language defined by G is&lt;br&gt;
+      &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;
+      { &amp;alpha; | S =&gt; &amp;alpha; and &amp;alpha; is a string over T }&lt;br&gt;
+      namely, the set of all terminal strings derivable from S by using
+      the productions of G as substitution rules.&lt;a id=&quot;footnote-23-ref&quot; href=&quot;#footnote-23&quot;&gt;[23]&lt;/a&gt;
+    &lt;/blockquote&gt;&lt;p&gt;
+      Here G is a grammar whose start symbol is S and whose set
+      of terminals is T.
+      This is the behavorist definition of language
+      translated into set-theoretic terms.
+    &lt;/p&gt;
+    &lt;p&gt;Knuth proves, to the satisfaction of the profession,
+      the &quot;equivalence&quot; of LR(k) and DPDA's.
+      LR(k) is a class of grammars and the DPDA model is of
+      languages -- sets of strings.
+      At first glance, this is an &quot;apples and oranges&quot; comparison --
+      how do you prove the equivalence of a class of languages
+      and a class of grammars?
+    &lt;/p&gt;
+    &lt;p&gt;
+      Knuth does this by reducing the class of DPDA languages and the class
+      of grammars to their lowest common denominator, which is the language.
+      And, of course, the &quot;language&quot; in the usage of Parsing Theory
+      is a set of strings, without consideration of their syntax.
+    &lt;/p&gt;
+    &lt;p&gt;
+      Every grammar, when stripped of its syntax, defines a language.
+      So Knuth compares the language which results from stripping down
+      the LR(k) grammars,
+      to the language of DPDA's.
+      After some very impressive mathematics,
+      Knuth is able to show that the two languages are equivalent.
+    &lt;/p&gt;
+    &lt;p&gt;
+      In theoretical mathematics, of course,
+      you can define &quot;equivalent&quot; however you like.
+      But if the purpose is to suggest limits in practice,
+      you have to be much more careful.
+      And in fact, as Knuth's paper shows,
+      if you equating languages and grammars,
+      you get into a very serious degree of magical thinking.
+      Using the Knuth algorithm,
+    &lt;/p&gt;
+    &lt;ul&gt;
+      &lt;li&gt;parsing LR(k) grammars for arbitrary k is hopelessly impractical;
+      &lt;/li&gt;
+      &lt;li&gt;parsing LR(1) grammars is impractical, but close to the boundary&lt;a id=&quot;footnote-24-ref&quot; href=&quot;#footnote-24&quot;&gt;[24]&lt;/a&gt;;
+        and
+      &lt;/li&gt;
+      &lt;li&gt;parsing LR(0) grammars is very practical.
+      &lt;/li&gt;
+    &lt;/ul&gt;
+    &lt;p&gt;A problem for the relevance
+      of Knuth's proof of equivalence is that,
+      if you just look at sets of strings
+      without regard to syntax,
+      LR(1) and LR(k) are equivalent.
+      That means that from the sets-of-strings point of view,
+      hopelessly impractical and
+      borderline impractical are the same thing.
+    &lt;/p&gt;
+    &lt;p&gt;
+      Worse, both LR(1) and LR(k) are equivalent to LR(0)
+      for most applications.
+      If you add
+      an explicit end marker to an LR(1) language,
+      which in most applications is easy to do&lt;a id=&quot;footnote-25-ref&quot; href=&quot;#footnote-25&quot;&gt;[25]&lt;/a&gt;,
+      your LR(1) language becomes LR(0).
+      Therefore, for most applications,
+    &lt;/p&gt;
+    &lt;center&gt;
+      LR(k) = LR(1) = LR(0)
+    &lt;/center&gt;
+    &lt;p&gt;
+      This means that, in the world of sets-of-strings,
+      extremely impractical and very practical are usually the same thing.
+    &lt;/p&gt;
+    &lt;p&gt;
+      Clearly the world of sets of strings
+      is a magical one,
+      in which we can easily transport ourselves across the
+      boundary between practical and impractical.
+      We can take visions of a magical world back into the world of practice,
+      but we cannot assume they will be helpful.
+      In that light,
+      it is no surprise that
+      Joop Leo will show how to extend practical
+      parsing well beyond LR(k).&lt;a id=&quot;footnote-26-ref&quot; href=&quot;#footnote-26&quot;&gt;[26]&lt;/a&gt;
+    &lt;/p&gt;
+    &lt;h2&gt;Comments, etc.&lt;/h2&gt;
+    &lt;p&gt;
       I encourage
       those who want to know more about the story of Parsing Theory
       to look at my
-	&lt;a href=&quot;https://jeffreykegler.github.io/personal/timeline_v3&quot;&gt;
-      Parsing: a timeline 3.0&lt;/a&gt;.
+      &lt;a href=&quot;https://jeffreykegler.github.io/personal/timeline_v3&quot;&gt;
+        Parsing: a timeline 3.0&lt;/a&gt;.
       In particular,
       &quot;Timeline 3.0&quot; tells the story of the search for a good
       LR(k) subclass,
       and what happened afterwards.
-      &lt;/p&gt;
-	    &lt;/a&gt;&lt;/p&gt;&lt;p&gt;
-	    To learn about Marpa,
-	    my Earley/Leo-based parsing project,
-          there is the
-          &lt;a href=&quot;http://savage.net.au/Marpa.html&quot;&gt;semi-official web site, maintained by Ron Savage&lt;/a&gt;.
-          The official, but more limited, Marpa website
-          &lt;a href=&quot;http://jeffreykegler.github.io/Marpa-web-site/&quot;&gt;is my personal one&lt;/a&gt;.
-          Comments on this post can be made in
-          &lt;a href=&quot;http://groups.google.com/group/marpa-parser&quot;&gt;
-            Marpa's Google group&lt;/a&gt;,
-          or on our IRC channel: #marpa at freenode.net.
-        &lt;/p&gt;
-        &lt;h2&gt;Footnotes&lt;/h2&gt;
+    &lt;/p&gt;
+    &lt;p&gt;
+      To learn about Marpa,
+      my Earley/Leo-based parsing project,
+      there is the
+      &lt;a href=&quot;http://savage.net.au/Marpa.html&quot;&gt;semi-official web site, maintained by Ron Savage&lt;/a&gt;.
+      The official, but more limited, Marpa website
+      &lt;a href=&quot;http://jeffreykegler.github.io/Marpa-web-site/&quot;&gt;is my personal one&lt;/a&gt;.
+      Comments on this post can be made in
+      &lt;a href=&quot;http://groups.google.com/group/marpa-parser&quot;&gt;
+        Marpa's Google group&lt;/a&gt;,
+      or on our IRC channel: #marpa at freenode.net.
+    &lt;/p&gt;
+    &lt;h2&gt;Footnotes&lt;/h2&gt;
 &lt;p id=&quot;footnote-1&quot;&gt;1.
         The well-known
         &lt;a href=&quot;https://en.wikipedia.org/wiki/Design_Patterns&quot;&gt;
@@ -391,8 +391,8 @@
           book&lt;/a&gt;
         (aka &quot;the Gang of 4 book&quot;)
         has a section on this.
-	The Gang of 4
-	call Language-Oriented Programming
+        The Gang of 4
+        call Language-Oriented Programming
         their &quot;Interpreter pattern&quot;.
         That section amply illustrates the main obstacle to use
         of the pattern -- lack of adequate parsing tools.
@@ -408,9 +408,9 @@
         This post takes the form of a timeline, and
         is intended to be incorporated in my
         &lt;a href=&quot;https://jeffreykegler.github.io/personal/timeline_v3&quot;&gt;
-      Parsing: a timeline&lt;/a&gt;.
-      The earlier entires in this post borrow heavily from
-      &lt;a href=&quot;http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2018/05/chomsky_1956.html&quot;&gt;
+          Parsing: a timeline&lt;/a&gt;.
+        The earlier entires in this post borrow heavily from
+        &lt;a href=&quot;http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2018/05/chomsky_1956.html&quot;&gt;
           a previous blog post&lt;/a&gt;.
  &lt;a href=&quot;#footnote-2-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
 &lt;p id=&quot;footnote-3&quot;&gt;3.
@@ -527,33 +527,33 @@
         The story of the research followup to Knuth's LR(k) paper is told
         in my
         &lt;a href=&quot;https://jeffreykegler.github.io/personal/timeline_v3&quot;&gt;
-    Parsing: a timeline 3.0&lt;/a&gt;,
+          Parsing: a timeline 3.0&lt;/a&gt;,
  &lt;a href=&quot;#footnote-22-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
 &lt;p id=&quot;footnote-23&quot;&gt;23.
-	      Knuth 1965, p. 608.
+        Knuth 1965, p. 608.
  &lt;a href=&quot;#footnote-23-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
 &lt;p id=&quot;footnote-24&quot;&gt;24.
-		Given the capacity of computer memories in 1965,
-		LR(1) was clearly impractical.
-		With the huge computer memories of 2018,
-		that could be reconsidered, but LR(1) is still restrictive
-		and has poor error-handling,
-		and few have looked at the possibility.
+          Given the capacity of computer memories in 1965,
+          LR(1) was clearly impractical.
+          With the huge computer memories of 2018,
+          that could be reconsidered, but LR(1) is still restrictive
+          and has poor error-handling,
+          and few have looked at the possibility.
  &lt;a href=&quot;#footnote-24-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
 &lt;p id=&quot;footnote-25&quot;&gt;25.
-	      Some parsing applications, such as those which receive their input &quot;on-line&quot;,
-	      can not determine the size of their input in advance.
-	      For these applications adding an end marker to their input is
-	      inconvenient or impossible.
+        Some parsing applications, such as those which receive their input &quot;on-line&quot;,
+        can not determine the size of their input in advance.
+        For these applications adding an end marker to their input is
+        inconvenient or impossible.
  &lt;a href=&quot;#footnote-25-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
 &lt;p id=&quot;footnote-26&quot;&gt;26.
-	      Joop M. I. M.
-	      &quot;A general context-free parsing algorithm running in linear time on every LR (k) grammar without using lookahead.&quot;
-	      &lt;cite&gt;Theoretical computer science&lt;/cite&gt;, Volume 82, Issue 1, 22 May 1991, pp. 165-176.
-	      &lt;a href=&quot;https://www.sciencedirect.com/science/article/pii/030439759190180A&quot;&gt;
-		https://www.sciencedirect.com/science/article/pii/030439759190180A&lt;/a&gt;, accessed 24 April 2018.
+        Joop M. I. M.
+        &quot;A general context-free parsing algorithm running in linear time on every LR (k) grammar without using lookahead.&quot;
+        &lt;cite&gt;Theoretical computer science&lt;/cite&gt;, Volume 82, Issue 1, 22 May 1991, pp. 165-176.
+        &lt;a href=&quot;https://www.sciencedirect.com/science/article/pii/030439759190180A&quot;&gt;
+          https://www.sciencedirect.com/science/article/pii/030439759190180A&lt;/a&gt;, accessed 24 April 2018.
  &lt;a href=&quot;#footnote-26-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
-      &lt;/footnote&gt;&lt;/p&gt;&lt;/body&gt;
+  &lt;/body&gt;
 &lt;/html&gt;</description>
   </item>
   <item>
