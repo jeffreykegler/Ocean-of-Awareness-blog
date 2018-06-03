@@ -16,143 +16,204 @@
   &lt;head&gt;
   &lt;/head&gt;
   &lt;body&gt;
+    &lt;!--
+      marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
+      --&gt;
     &lt;p&gt;The term &quot;language&quot; has a special and unusual meaning within
-    Parsing Theory, one it inherited from a now nearly-extinct
-    school of linguistics.
-    In a previous post,
-    I said that this would turn out to be more than
-    just a matter of textbooks definition falling short of ideal,
-    but would, because of its major effect on Parsing Theory,
-    shape the daily practice of programming.
-    This post supplies the evidence.
+      Parsing Theory, one it inherited from a now nearly-extinct
+      school of linguistics.
+      In a previous post,
+      I said that this would turn out to be more than
+      just a matter of textbooks definition falling short of ideal,
+      but would, because of its major effect on Parsing Theory,
+      shape the daily practice of programming.
+      This post supplies the evidence.
     &lt;/p&gt;
     &lt;p&gt;
-    This post takes the form of a timeline&lt;a id=&quot;footnote-1-ref&quot; href=&quot;#footnote-1&quot;&gt;[1]&lt;/a&gt;
+      This post takes the form of a timeline&lt;a id=&quot;footnote-1-ref&quot; href=&quot;#footnote-1&quot;&gt;[1]&lt;/a&gt;
     The earlier entires in this timeline borrow heavily from
     &lt;a href=&quot;http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2018/05/chomsky_1956.html&quot;&gt;
-    a previous blog post&lt;/a&gt;.
-    &lt;/p&gt;
+          a previous blog post&lt;/a&gt;.
+      &lt;/footnote&gt;&lt;/p&gt;
     &lt;h2&gt;&quot;Language&quot; as of 1929&lt;/h2&gt;
     &lt;p&gt;In 1929 Leonard Bloomfield,
-    as part of his effort to put American linguistics on a rigorous footing,
-    publishes his &quot;Postulates&quot;.
-    They include his definition of language:
-    &lt;blockquote&gt;
-    The totality of utterances that can be made in a speech
-    community is the &lt;b&gt;language&lt;/b&gt;
-    of that speech-community.&lt;a id=&quot;footnote-2-ref&quot; href=&quot;#footnote-2&quot;&gt;[2]&lt;/a&gt;
-    &lt;/blockquote&gt;
-    There is no reference in this definition to the more usual view,
-    that the utterances of a language &quot;mean&quot; something.
-    This omission is not accidental:
-    &lt;blockquote&gt;
-    The statement of meanings is therefore the weak point in
-    language-study, and will remain so until human knowledge
-    advances very far beyond its present state. In practice, we define the
-    meaning of a linguistic form, wherever we can, in terms of some
-    other science.&lt;a id=&quot;footnote-3-ref&quot; href=&quot;#footnote-3&quot;&gt;[3]&lt;/a&gt;
-    &lt;/blockquote&gt;
-    Bloomfield is passing the buck in this way,
-    because he wants linguistics to become regarded as a science,
-    and the positivist science of his time abhors
-    unverifiable statements,
-    and therefore any claims about mental states.
-    A claim to know what someone &quot;means&quot; can be read
-    as a claim to know what's in their mind,
-    and mind-reading has a poor reputation among positivists.
+      as part of his effort to put American linguistics on a rigorous footing,
+      publishes his &quot;Postulates&quot;.
+      They include his definition of language:
+    &lt;/p&gt;&lt;blockquote&gt;
+      The totality of utterances that can be made in a speech
+      community is the
+      &lt;b&gt;language&lt;/b&gt;
+      of that speech-community.&lt;a id=&quot;footnote-2-ref&quot; href=&quot;#footnote-2&quot;&gt;[2]&lt;/a&gt;
+    &lt;/blockquote&gt;&lt;p&gt;
+      There is no reference in this definition to the more usual view,
+      that the utterances of a language &quot;mean&quot; something.
+      This omission is not accidental:
+    &lt;/p&gt;&lt;blockquote&gt;
+      The statement of meanings is therefore the weak point in
+      language-study, and will remain so until human knowledge
+      advances very far beyond its present state. In practice, we define the
+      meaning of a linguistic form, wherever we can, in terms of some
+      other science.&lt;a id=&quot;footnote-3-ref&quot; href=&quot;#footnote-3&quot;&gt;[3]&lt;/a&gt;
+    &lt;/blockquote&gt;&lt;p&gt;
+      Bloomfield is passing the buck in this way,
+      because he wants linguistics to become regarded as a science,
+      and the positivist science of his time abhors
+      unverifiable statements,
+      and therefore any claims about mental states.
+      A claim to know what someone &quot;means&quot; can be read
+      as a claim to know what's in their mind,
+      and mind-reading has a poor reputation among positivists.
     &lt;/p&gt;
     &lt;p&gt;
-    Draconian as the exclusion of meaning is,
-    it is a big success.
-    Known as structural linguistics,
-    Bloomfieldian linguistics dominates lingustics for
-    the next couple of decades.
+      Draconian as the exclusion of meaning is,
+      it is a big success.
+      Known as structural linguistics,
+      Bloomfieldian linguistics dominates lingustics for
+      the next couple of decades.
     &lt;/p&gt;
     &lt;h2&gt;1955: Noam Chomsky graduates&lt;/h2&gt;
     &lt;p&gt;
-    Noam Chomsky earns his PhD at the Universtity of Pennsylvania.
-    His teacher, Zelig Harris, is a prominent Bloomfieldian,
-    and Chomsky's early work is thought to be in the Bloomfield school.&lt;a id=&quot;footnote-4-ref&quot; href=&quot;#footnote-4&quot;&gt;[4]&lt;/a&gt;
-    Chomsky becomes a professor at MIT.
-    MIT does not have a linguistics department,
-    and Chomsky is free to teach his own approach to the subject.
+      Noam Chomsky earns his PhD at the Universtity of Pennsylvania.
+      His teacher, Zelig Harris, is a prominent Bloomfieldian,
+      and Chomsky's early work is thought to be in the Bloomfield school.&lt;a id=&quot;footnote-4-ref&quot; href=&quot;#footnote-4&quot;&gt;[4]&lt;/a&gt;
+      Chomsky becomes a professor at MIT.
+      MIT does not have a linguistics department,
+      and Chomsky is free to teach his own approach to the subject.
     &lt;/p&gt;
     &lt;h2&gt;The term &quot;language&quot; as of 1956&lt;/h2&gt;
     &lt;p&gt;Chomsky publishes his &quot;Three models&quot; paper,
-    one of the most important papers of all time.
-    His definition of language now uses the terminology
-    of set theory,
-    but its substance comes from Bloomfield:
-    &lt;blockquote&gt;
+      one of the most important papers of all time.
+      His definition of language now uses the terminology
+      of set theory,
+      but its substance comes from Bloomfield:
+    &lt;/p&gt;&lt;blockquote&gt;
       By a language then, we shall mean a set (finite or infinite) of
       sentences, each of finite length, all constructed from a finite
       alphabet of sysbols.  If A is an alphabet, we shall say that
       anything formed by concatenating the symbols of A is a string in
       A. By a grammar of the language L we mean a device of some sort that
       produces all of the strings that are sentences of L and only these.&lt;a id=&quot;footnote-5-ref&quot; href=&quot;#footnote-5&quot;&gt;[5]&lt;/a&gt;
-    &lt;/blockquote&gt;
-    Chomsky does not intend to
-    follow in the Bloomfieldian tradition of avoiding considerations
-    of meaning, aka semantics:
-    &lt;blockquote&gt;
-    [...] it would be absurd to develop
-    a general syntactic theory
-    without assigning an absolutely
-    crucial role to semantic considerations,
-    since obviously the necessity to support
-    semantic interpretation is one of the primary
-    requirements
-    that the structures
-    generated by the syntactic component of a grammar
-    must meet.&lt;a id=&quot;footnote-6-ref&quot; href=&quot;#footnote-6&quot;&gt;[6]&lt;/a&gt;
-    &lt;/blockquote&gt;
-    Already in &quot;Three Models&quot;,
-    Chomsky brings in semantics,
-    when it is useful to show
-    that his model is superior:
-    When an utterance is ambiguous,
-    Chomsky's new model produces multiple derivations
-    each of which &quot;look&quot; like the natural representation
-    of one of the meanings.
-    Chomsky points out that this is a very
-    desirable property for a model to have.&lt;a id=&quot;footnote-7-ref&quot; href=&quot;#footnote-7&quot;&gt;[7]&lt;/a&gt;
+    &lt;/blockquote&gt;&lt;p&gt;
+      Chomsky does not intend to
+      follow in the Bloomfieldian tradition of avoiding considerations
+      of meaning, aka semantics:
+    &lt;/p&gt;&lt;blockquote&gt;
+      [...] it would be absurd to develop
+      a general syntactic theory
+      without assigning an absolutely
+      crucial role to semantic considerations,
+      since obviously the necessity to support
+      semantic interpretation is one of the primary
+      requirements
+      that the structures
+      generated by the syntactic component of a grammar
+      must meet.&lt;a id=&quot;footnote-6-ref&quot; href=&quot;#footnote-6&quot;&gt;[6]&lt;/a&gt;
+    &lt;/blockquote&gt;&lt;p&gt;
+      Already in &quot;Three Models&quot;,
+      Chomsky brings in semantics,
+      when it is useful to show
+      that his model is superior:
+      When an utterance is ambiguous,
+      Chomsky's new model produces multiple derivations
+      each of which &quot;look&quot; like the natural representation
+      of one of the meanings.
+      Chomsky points out that this is a very
+      desirable property for a model to have.&lt;a id=&quot;footnote-7-ref&quot; href=&quot;#footnote-7&quot;&gt;[7]&lt;/a&gt;
     &lt;/p&gt;
     &lt;h2&gt;Oettinger 1961&lt;/h2&gt;
     &lt;p&gt;
-    While the stack itself goes back to Turing&lt;a id=&quot;footnote-8-ref&quot; href=&quot;#footnote-8&quot;&gt;[8]&lt;/a&gt;,
-    its significance for parsing becomes an object
-    of interest in itself with
-    Samuelson and Bauer's 1959 paper&lt;a id=&quot;footnote-9-ref&quot; href=&quot;#footnote-9&quot;&gt;[9]&lt;/a&gt;.
-    Mathematical study of stacks as models of computing begins with Anthony Oettinger's 1961 paper.&lt;a id=&quot;footnote-10-ref&quot; href=&quot;#footnote-10&quot;&gt;[10]&lt;/a&gt;
-    &lt;/blockquote&gt;
-    Oettinger hopes his pushdown store model of computing --
-    what will eventually be called
-    deterministic pushdown automata (DPDA's) --
-    will become the basis of a theory of language
-    computing encompassing both natural language
-    (including the Russian which is the object of his own research)
-    and computing languages like ALGOL.
-    For natural language translation,
-    DPDA's will prove totally inadequate.
-    But DPDA's will continute to be the basis
-    of hopes for a theory of computer language parsing.
-    And the quote above more than hints at an expectation
-    of One Stack Parsing Algorithm to Rule Them All.
+      While the stack itself goes back to Turing&lt;a id=&quot;footnote-8-ref&quot; href=&quot;#footnote-8&quot;&gt;[8]&lt;/a&gt;,
+      its significance for parsing becomes an object
+      of interest in itself with
+      Samuelson and Bauer's 1959 paper&lt;a id=&quot;footnote-9-ref&quot; href=&quot;#footnote-9&quot;&gt;[9]&lt;/a&gt;.
+      Mathematical study of stacks as models of computing begins with Anthony Oettinger's 1961 paper.&lt;a id=&quot;footnote-10-ref&quot; href=&quot;#footnote-10&quot;&gt;[10]&lt;/a&gt;&lt;/p&gt;
+    &lt;p&gt;Oettinger 1961 is full of evidence that stacks
+      (which he calls &quot;pushdown stores&quot;) are very new.
+      Oettinger, for example, does not use the terms &quot;push&quot; or &quot;pop&quot;,
+      but instead describes operations on his pushdown stores using
+      a set of vector operations which will later form the basis
+      of the APL language.
+      As of 1961, all algorithms with acceptable speed are using
+      stacks with various modifications.
+      Oettinger express a hope:
+    &lt;/p&gt;
+    &lt;blockquote&gt;
+      The development of a theory of pushdown algorithms should
+      hopefully lead to systematic techniques for generating
+      algorithms satisfying given requirements to replace
+      the ad hoc invention of each new algorithm.&lt;a id=&quot;footnote-11-ref&quot; href=&quot;#footnote-11&quot;&gt;[11]&lt;/a&gt;
+    &lt;/blockquote&gt;&lt;p&gt;
+      Oettinger hopes his pushdown store model of computing --
+      what will eventually be called
+      deterministic pushdown automata (DPDA's) --
+      will become the basis of a theory of language
+      computing encompassing both natural language
+      (including the Russian which is the object of his own research)
+      and computing languages like ALGOL.
+      For natural language translation,
+      DPDA's will prove totally inadequate.
+      But DPDA's will continute to be the basis
+      of hopes for a theory of computer language parsing.
+      And the quote above more than hints at an expectation
+      of One Stack Parsing Algorithm to Rule Them All.
     &lt;/p&gt;
     &lt;h2&gt;Knuth 1965&lt;/h2&gt;
-    &lt;p&gt;It is with expectations like those of Oettinger 1961 in mind
-    that Donald Knuth publishes his pivotal LR(k) paper.
+    &lt;p&gt;In a pivotal LR(k) paper.
+      that Donald Knuth sets out a theory that explains
+      all the &quot;tricks&quot;&lt;a id=&quot;footnote-12-ref&quot; href=&quot;#footnote-12&quot;&gt;[12]&lt;/a&gt;
+      used for efficient parsing up to that time.
+      Knuth sets out a comprehensive theory of stack-based
+      parsing algorithms.
     &lt;/p&gt;
     &lt;p&gt;
-    Knuth is also aware that DPDA determinism and
-    linear time behavior are not the same thing&lt;a id=&quot;footnote-11-ref&quot; href=&quot;#footnote-11&quot;&gt;[11]&lt;/a&gt;
-    While all DPDA's are indeed linear in the length of their input,
-    many linear algorithms have more power than DPDA's.
+      For a start, Knuth shows that stack-based parsing is
+      equivalent to a new and unexpected class of grammars
+      LR(k), and he provides with a parsing algorithm for them.
+      This algorithm might be expected to be &quot;the one to rule
+      them all&quot;.
+      Unfortunately Knuth's LR(k), while deterministic and linear,
+      is not practical -- it requires huge tables well beyond
+      the memory capabilities of the time.
+    &lt;/p&gt;
+    &lt;p&gt;
+      Knuth, in his program for further research&lt;a id=&quot;footnote-13-ref&quot; href=&quot;#footnote-13&quot;&gt;[13]&lt;/a&gt;,
+      suggests using grammars rewrites or table manipulations
+      to streamline parsers for LR(k) or
+      LR(k) subclasses.
+      Knuth also suggests investigation of parsers for superclasses
+      of and even describes a class of parsers with more aggressive lookahead -- LR(k,t).
+      But he is clearly skeptical about LR(k,t)&lt;a id=&quot;footnote-14-ref&quot; href=&quot;#footnote-14&quot;&gt;[14]&lt;/a&gt;
+      and, we may assume,
+      even more skeptical about more general approaches.&lt;a id=&quot;footnote-15-ref&quot; href=&quot;#footnote-15&quot;&gt;[15]&lt;/a&gt;
+    &lt;/p&gt;
+    &lt;p&gt;
+      Knuth is certainly aware that DPDA determinism and
+      linear time behavior are not the same thing.&lt;a id=&quot;footnote-16-ref&quot; href=&quot;#footnote-16&quot;&gt;[16]&lt;/a&gt;
+      An algorithm can be more powerful than a DPDA,
+      while still being linear.
+      But linearity is a stand-in for &quot;practical&quot;,
+      and, with his discovery that even DPDA-based
+      algorithms can be impractical,
+      Knuth, and the research community,
+      decide that it is extremely unlikely than more
+      powerful computing models will also be faster in
+      practice.
+    &lt;/p&gt;
+    &lt;h2&gt;The term &quot;language&quot; as of 1965&lt;/h2&gt;
+    &lt;p&gt;
+       Why was such a powerful skepticism based on the results for one
+       computing model of computing?
+       Stacks, as we now call them, are a natural model of computing,
+       so it is reasonable to think they form a step on the hierarchy
+       of tradeoffs of power against practical speed.
+       But very important was the proof that LR(k) grammars were
+       &quot;equivalent&quot; to DPDA's.
     &lt;/p&gt;
     &lt;h2&gt;Comments, etc.&lt;/h2&gt;
     &lt;p&gt;
       The background material for this post is in my
-    &lt;a href=&quot;https://jeffreykegler.github.io/personal/timeline_v3&gt;
+      &lt;a href=&quot;https://jeffreykegler.github.io/personal/timeline_v3&gt;
     Parsing: a timeline 3.0&lt;/a&gt;,
     and this post may be considered a supplement to &quot;Timelime&quot;.
       To learn about Marpa,
@@ -168,91 +229,100 @@
     &lt;/p&gt;
     &lt;h2&gt;Footnotes&lt;/h2&gt;
 &lt;p id=&quot;footnote-1&quot;&gt;1.
-    It is intended to be incorporated in my
-    &lt;a href=&quot;https://jeffreykegler.github.io/personal/timeline_v3&gt;
+        It is intended to be incorporated in my
+        &lt;a href=&quot;https://jeffreykegler.github.io/personal/timeline_v3&gt;
     Parsing: a timeline&lt;/a&gt;.
  &lt;a href=&quot;#footnote-1-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
 &lt;p id=&quot;footnote-2&quot;&gt;2.
-    Bloomfield, Leonard,
-    &quot;A set of Postulates
-    for the Science of Language&quot;,
-    &lt;cite&gt;Language&lt;/cite&gt;, Vol. 2, No. 3 (Sep., 1926), pp. 153-164.
-    The quote is definition 4 on p. 154.
+        Bloomfield, Leonard,
+        &quot;A set of Postulates
+        for the Science of Language&quot;,
+        &lt;cite&gt;Language&lt;/cite&gt;, Vol. 2, No. 3 (Sep., 1926), pp. 153-164.
+        The quote is definition 4 on p. 154.
  &lt;a href=&quot;#footnote-2-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
 &lt;p id=&quot;footnote-3&quot;&gt;3.
-    Bloomfield, Leonard.
-    &lt;cite&gt;Language&lt;/cite&gt;.
-    Holt, Rinehart and Winston, 1933, p. 140.
+        Bloomfield, Leonard.
+        &lt;cite&gt;Language&lt;/cite&gt;.
+        Holt, Rinehart and Winston, 1933, p. 140.
  &lt;a href=&quot;#footnote-3-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
 &lt;p id=&quot;footnote-4&quot;&gt;4.
-	Harris, Randy Allen,
-	&lt;cite&gt;The Linguistics Wars&lt;/cite&gt;,
-	Oxford University Press, 1993,
-	pp 31-34, p. 37.
+        Harris, Randy Allen,
+        &lt;cite&gt;The Linguistics Wars&lt;/cite&gt;,
+        Oxford University Press, 1993,
+        pp 31-34, p. 37.
  &lt;a href=&quot;#footnote-4-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
 &lt;p id=&quot;footnote-5&quot;&gt;5.
-      The quote is on p. 114 of
-      Chomsky, Noam.
-      &quot;Three models for the description of language.&quot;
-      &lt;cite&gt;IRE Transactions on information theory&lt;/cite&gt;,
-      vol. 2, issue 3, September 1956, pp. 113-124.
-      In case there is any doubt Chomsky's &quot;strings&quot;
-      are Bloomfield's utterances,
-      Chomsky also calls his strings,
-      &quot;utterances&quot;.
-      For example in Chomsky, Noam, &lt;cite&gt;Syntactic Structures&lt;/cite&gt;,
-    2nd ed.,
-    Mouton de Gruyter, 2002, on p. 15:
-    &quot;Any grammar of a language will project the finite and somewhat accidental
-    corpus of observed utterances to a set (presumably infinite) 
-    of grammatical utterances.&quot;
+        The quote is on p. 114 of
+        Chomsky, Noam.
+        &quot;Three models for the description of language.&quot;
+        &lt;cite&gt;IRE Transactions on information theory&lt;/cite&gt;,
+        vol. 2, issue 3, September 1956, pp. 113-124.
+        In case there is any doubt Chomsky's &quot;strings&quot;
+        are Bloomfield's utterances,
+        Chomsky also calls his strings,
+        &quot;utterances&quot;.
+        For example in Chomsky, Noam,
+        &lt;cite&gt;Syntactic Structures&lt;/cite&gt;,
+        2nd ed.,
+        Mouton de Gruyter, 2002, on p. 15:
+        &quot;Any grammar of a language will project the finite and somewhat accidental
+        corpus of observed utterances to a set (presumably infinite)
+        of grammatical utterances.&quot;
  &lt;a href=&quot;#footnote-5-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
 &lt;p id=&quot;footnote-6&quot;&gt;6.
-    Chomsky, Noam.
-    &lt;cite&gt;Topics in the Theory of Generative Grammar&lt;/cite&gt;.
-    De Gruyter, 1978, p. 20.
-    (The quote occurs in footnote 7 starting on p. 19.)
+        Chomsky, Noam.
+        &lt;cite&gt;Topics in the Theory of Generative Grammar&lt;/cite&gt;.
+        De Gruyter, 1978, p. 20.
+        (The quote occurs in footnote 7 starting on p. 19.)
  &lt;a href=&quot;#footnote-6-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
 &lt;p id=&quot;footnote-7&quot;&gt;7.
-    Chomsky 1956, p. 118, p. 123.
+        Chomsky 1956, p. 118, p. 123.
  &lt;a href=&quot;#footnote-7-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
 &lt;p id=&quot;footnote-8&quot;&gt;8.
-    Carpenter, Brian E., and Robert W. Doran.
-    &quot;The other Turing machine.&quot;
-    &lt;cite&gt;The Computer Journal&lt;/cite&gt;, vol. 20, issue 3, 1 January 1977, pp. 269-279.
+        Carpenter, Brian E., and Robert W. Doran.
+        &quot;The other Turing machine.&quot;
+        &lt;cite&gt;The Computer Journal&lt;/cite&gt;, vol. 20, issue 3, 1 January 1977, pp. 269-279.
  &lt;a href=&quot;#footnote-8-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
 &lt;p id=&quot;footnote-9&quot;&gt;9.
-    Samelson, Klaus, and Friedrich L. Bauer. &quot;Sequentielle formelübersetzung.&quot; it-Information Technology 1.1-4 (1959): 176-182.
+        Samelson, Klaus, and Friedrich L. Bauer. &quot;Sequentielle formelübersetzung.&quot; it-Information Technology 1.1-4 (1959): 176-182.
  &lt;a href=&quot;#footnote-9-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
 &lt;p id=&quot;footnote-10&quot;&gt;10.
-    &lt;footnote&gt;
-    Oettinger, Anthony.
-    &quot;Automatic Syntactic Analysis and the Pushdown Store&quot;
-    &lt;cite&gt;Proceedings of Symposia in Applied Mathematics&lt;/cite&gt;,
-    Volume 12,
-    American Mathematical Society, 1961.
-    &lt;/p&gt;
-    &lt;p&gt;Oettinger 1961 is full of evidence that stacks
-    (which he calls &quot;pushdown stores&quot;) are very new.
-    Oettinger, for example, does not use the terms &quot;push&quot; or &quot;pop&quot;,
-    but instead describes operations on his pushdown stores using
-    a set of vector operations which will later form the basis
-    of the APL language.
-    As of 1961, all algorithms with acceptable speed are using
-    stacks with various modifications.
-    Oettinger express a hope:
-    &lt;/p&gt;
-    &lt;blockquote&gt;
-    The development of a theory of pushdown algorithms should
-    hopefully lead to systematic techniques for generating
-    algorithms satisfying given requirements to replace
-    the ad hoc invention of each new algorithm.&lt;footnote&gt;
-    Oettinger 1961, p. 127.
+          Oettinger, Anthony.
+          &quot;Automatic Syntactic Analysis and the Pushdown Store&quot;
+          &lt;cite&gt;Proceedings of Symposia in Applied Mathematics&lt;/cite&gt;,
+          Volume 12,
+          American Mathematical Society, 1961.
  &lt;a href=&quot;#footnote-10-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
 &lt;p id=&quot;footnote-11&quot;&gt;11.
-    Knuth 1965, p. 607: &quot;execution time at worst
-    proportional to the length of the string being parsed.&quot;
+        Oettinger 1961, p. 127.
  &lt;a href=&quot;#footnote-11-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;p id=&quot;footnote-12&quot;&gt;12.
+      Knuth 1965, p. 607, in the abstract.
+ &lt;a href=&quot;#footnote-12-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;p id=&quot;footnote-13&quot;&gt;13.
+      Knuth 1961, pp. 637-639.
+ &lt;a href=&quot;#footnote-13-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;p id=&quot;footnote-14&quot;&gt;14.
+      &quot;One might choose to this [more aggressive lookahead]
+      left-to-right translation.&quot;, Knuth 1965, p. 639.
+ &lt;a href=&quot;#footnote-14-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;p id=&quot;footnote-15&quot;&gt;15.
+      That my conclusions about Knuth's skepticism are not misreadings
+      is suggested by his own plans for his (not yet released) Chapter
+      12 of the &lt;cite&gt;Art of Computer Programming&lt;/cite&gt;,
+      in which he planned to use pre-Chomskyan bottom-up methods. (See
+      Knuth, Donald E., &quot;The genesis of attribute grammars&quot;,
+      &lt;cite&gt;Attribute Grammars and Their Applications&lt;/cite&gt;,
+      Springer, September 1990, p. 3.)
+      In any case, and more importantly,
+      after Knuth 1965
+      the research community certainly was strongly
+      skeptical of more general algorithms.
+ &lt;a href=&quot;#footnote-15-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;p id=&quot;footnote-16&quot;&gt;16.
+        Knuth 1965, p. 607: &quot;execution time at worst
+        proportional to the length of the string being parsed.&quot;
+ &lt;a href=&quot;#footnote-16-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
   &lt;/body&gt;
 &lt;/html&gt;</description>
   </item>

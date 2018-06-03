@@ -227,13 +227,12 @@ A timeline of the parsing term "language"
         Samelson, Klaus, and Friedrich L. Bauer. "Sequentielle formelübersetzung." it-Information Technology 1.1-4 (1959): 176-182.
       </footnote>.
       Mathematical study of stacks as models of computing begins with Anthony Oettinger's 1961 paper.<footnote>
-        <footnote>
           Oettinger, Anthony.
           "Automatic Syntactic Analysis and the Pushdown Store"
           <cite>Proceedings of Symposia in Applied Mathematics</cite>,
           Volume 12,
           American Mathematical Society, 1961.
-        </footnote></footnote></p>
+        </footnote></p>
     <p>Oettinger 1961 is full of evidence that stacks
       (which he calls "pushdown stores") are very new.
       Oettinger, for example, does not use the terms "push" or "pop",
@@ -267,17 +266,78 @@ A timeline of the parsing term "language"
       of One Stack Parsing Algorithm to Rule Them All.
     </p>
     <h2>Knuth 1965</h2>
-    <p>It is with expectations like those of Oettinger 1961 in mind
-      that Donald Knuth publishes his pivotal LR(k) paper.
+    <p>In a pivotal LR(k) paper.
+      that Donald Knuth sets out a theory that explains
+      all the "tricks"<footnote>
+      Knuth 1965, p. 607, in the abstract.
+      </footnote>
+      used for efficient parsing up to that time.
+      Knuth sets out a comprehensive theory of stack-based
+      parsing algorithms.
     </p>
     <p>
-      Knuth is also aware that DPDA determinism and
-      linear time behavior are not the same thing<footnote>
+      For a start, Knuth shows that stack-based parsing is
+      equivalent to a new and unexpected class of grammars
+      LR(k), and he provides with a parsing algorithm for them.
+      This algorithm might be expected to be "the one to rule
+      them all".
+      Unfortunately Knuth's LR(k), while deterministic and linear,
+      is not practical -- it requires huge tables well beyond
+      the memory capabilities of the time.
+    </p>
+    <p>
+      Knuth, in his program for further research<footnote>
+      Knuth 1961, pp. 637-639.
+      </footnote>,
+      suggests using grammars rewrites or table manipulations
+      to streamline parsers for LR(k) or
+      LR(k) subclasses.
+      Knuth also suggests investigation of parsers for superclasses
+      of and even describes a class of parsers with more aggressive lookahead -- LR(k,t).
+      But he is clearly skeptical about LR(k,t)<footnote>
+      "One might choose to this [more aggressive lookahead]
+      left-to-right translation.", Knuth 1965, p. 639.
+      </footnote>
+      and, we may assume,
+      even more skeptical about more general approaches.<footnote>
+      That my conclusions about Knuth's skepticism are not misreadings
+      is suggested by his own plans for his (not yet released) Chapter
+      12 of the <cite>Art of Computer Programming</cite>,
+      in which he planned to use pre-Chomskyan bottom-up methods. (See
+      Knuth, Donald E., "The genesis of attribute grammars",
+      <cite>Attribute Grammars and Their Applications</cite>,
+      Springer, September 1990, p. 3.)
+      In any case, and more importantly,
+      after Knuth 1965
+      the research community certainly was strongly
+      skeptical of more general algorithms.
+      </footnote>
+    </p>
+    <p>
+      Knuth is certainly aware that DPDA determinism and
+      linear time behavior are not the same thing.<footnote>
         Knuth 1965, p. 607: "execution time at worst
         proportional to the length of the string being parsed."
       </footnote>
-      While all DPDA's are indeed linear in the length of their input,
-      many linear algorithms have more power than DPDA's.
+      An algorithm can be more powerful than a DPDA,
+      while still being linear.
+      But linearity is a stand-in for "practical",
+      and, with his discovery that even DPDA-based
+      algorithms can be impractical,
+      Knuth, and the research community,
+      decide that it is extremely unlikely than more
+      powerful computing models will also be faster in
+      practice.
+    </p>
+    <h2>The term "language" as of 1965</h2>
+    <p>
+       Why was such a powerful skepticism based on the results for one
+       computing model of computing?
+       Stacks, as we now call them, are a natural model of computing,
+       so it is reasonable to think they form a step on the hierarchy
+       of tradeoffs of power against practical speed.
+       But very important was the proof that LR(k) grammars were
+       "equivalent" to DPDA's.
     </p>
     <h2>Comments, etc.</h2>
     <p>
