@@ -40,14 +40,8 @@
 </center>
 <html>
   <head>
-  <style type="text/css">
-      body {
-      max-width:900px;
-      font-size: large
-      }
-  </style>
   </head>
-  <body>
+  <body style="max-width:850px">
     <!--
       marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
       -->
@@ -265,8 +259,8 @@
     </p>
     <blockquote>
     The language defined by G is<br>
-    &nbsp;&nbsp;&nbsp;&nbsp;
-    { &alpha; | S => &alpha; and &alpha is a string over T }<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    { &alpha; | S => &alpha; and &alpha; is a string over T }<br>
     namely, the set of all terminal string derivable from S by using
     the productions of G as substitution rules.<a id="footnote-21-ref" href="#footnote-21">[21]</a>
     </blockquote>
@@ -274,7 +268,61 @@
     of terminals is T.)
     This is clearly the behavorist definition of language
     translated into set-theoretic terms.
+    </p>
+    <p>Knuth proves, to the satisfaction of the profession,
+    the "equivalence" of LR(k) and DPDA's.
+    LR(k) is a class of grammars and the DPDA model is of
+    a language -- a set of strings.
+    At first glance, this is an "apples and oranges" comparison --
+    how do you prove the equivalence of a language and a grammar.
+    </p>
+    <p>Knuth does this by reducing the language and the class grammar
+    of grammars to a lowest common denominator --
+    a grammar defines a language, so he compares the LR(k) language
+    to the DPDA language.
+    It takes some impressive mathematics,
+    but Knuth is able to show that the two languages are equivalent.
+    But note that the question whether LR(k) is an impassable
+    barrier for parsing grammars -- not languages.
+    </p>
+    Punning a class of grammars as a class of languages does not work --
+    in fact, as Knuth shows, it produces a considerable amount of magical
+    thinking. 
+    Using the Knuth algorithm
+    <ul>
+    <li>Parsing LR(k) grammars for an arbitrary is hopelessly impractical.
+    </li>
+    <li>Parsing LR(1) grammars is almost practical, but not quite.<a id="footnote-22-ref" href="#footnote-22">[22]</a>
+    </li>
+    <li>Parsing LR(0) grammars is quite practical.
+    </li>
+    </ul>
+    </p>The problem for Knuth's proof of equivalence is that,
+    if you consider languages, LR(1) and LR(k) are equivalent.
+    And in fact, both are almost equivalent to LR(0) -- if you add
+    an explicit end marker to a language
+    (which in most applications is easy to do<a id="footnote-23-ref" href="#footnote-23">[23]</a>)
+    then LR(k) = LR(1) = LR(0).
+    That is, in language terms, the hopelessly impractical
+    is equivalent to the borderline impractical.
+    And these, for most applications, are equivalent to the
+    very practical LR(0).
+    That is, when thinking in terms of languages,
+    we can magically transport ourselves across the
+    same practical/impractical boundary that we are claiming
+    to show is, in practice, impassable.
+    </p>
     <p>
+    In short, impressive as Knuth's demonstrations are as
+    exercises in technical mathematics --
+    and the whole paper is a mathematical <it>tour de force</it>,
+    both exhileraing and exhausting --
+    they give no reason to suggest the DPDA boundary is
+    impassable,
+    or even a serious obstacle.
+    Which means it should be no surprise that,
+    in 1991, Joop Leo shows how to cross it.
+    </p>
     <h2>Comments, etc.</h2>
     <p>
       The background material for this post is in my
@@ -423,6 +471,19 @@
 <p id="footnote-21">21.
     Knuth 1965, p. 608.
  <a href="#footnote-21-ref">&#8617;</a></p>
+<p id="footnote-22">22.
+    Given the capacity of computer memories in 1965,
+    LR(1) was clearly impractical.
+    Today, that could be reconsidered, but LR(1) is still restrictive
+    and has poor error-handling,
+    so few practitioners have bothered with it.
+ <a href="#footnote-22-ref">&#8617;</a></p>
+<p id="footnote-23">23.
+    Some parsing applications, such as those which receive their input "on-line",
+    can not determine the size of their input in advance.
+    For these applications adding an end marker to their input is
+    inconvenient or impossible.
+ <a href="#footnote-23-ref">&#8617;</a></p>
   </body>
 </html>
 <br />

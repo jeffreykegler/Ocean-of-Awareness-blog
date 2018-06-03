@@ -14,14 +14,8 @@
     <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2018/05/language_timeline.html</link>
     <description>&lt;html&gt;
   &lt;head&gt;
-  &lt;style type=&quot;text/css&quot;&gt;
-      body {
-      max-width:900px;
-      font-size: large
-      }
-  &lt;/style&gt;
   &lt;/head&gt;
-  &lt;body&gt;
+  &lt;body style=&quot;max-width:850px&quot;&gt;
     &lt;!--
       marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
       --&gt;
@@ -239,8 +233,8 @@
     &lt;/p&gt;
     &lt;blockquote&gt;
     The language defined by G is&lt;br&gt;
-    &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;
-    { &amp;alpha; | S =&gt; &amp;alpha; and &amp;alpha is a string over T }&lt;br&gt;
+    &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;
+    { &amp;alpha; | S =&gt; &amp;alpha; and &amp;alpha; is a string over T }&lt;br&gt;
     namely, the set of all terminal string derivable from S by using
     the productions of G as substitution rules.&lt;a id=&quot;footnote-21-ref&quot; href=&quot;#footnote-21&quot;&gt;[21]&lt;/a&gt;
     &lt;/blockquote&gt;
@@ -248,7 +242,61 @@
     of terminals is T.)
     This is clearly the behavorist definition of language
     translated into set-theoretic terms.
+    &lt;/p&gt;
+    &lt;p&gt;Knuth proves, to the satisfaction of the profession,
+    the &quot;equivalence&quot; of LR(k) and DPDA's.
+    LR(k) is a class of grammars and the DPDA model is of
+    a language -- a set of strings.
+    At first glance, this is an &quot;apples and oranges&quot; comparison --
+    how do you prove the equivalence of a language and a grammar.
+    &lt;/p&gt;
+    &lt;p&gt;Knuth does this by reducing the language and the class grammar
+    of grammars to a lowest common denominator --
+    a grammar defines a language, so he compares the LR(k) language
+    to the DPDA language.
+    It takes some impressive mathematics,
+    but Knuth is able to show that the two languages are equivalent.
+    But note that the question whether LR(k) is an impassable
+    barrier for parsing grammars -- not languages.
+    &lt;/p&gt;
+    Punning a class of grammars as a class of languages does not work --
+    in fact, as Knuth shows, it produces a considerable amount of magical
+    thinking. 
+    Using the Knuth algorithm
+    &lt;ul&gt;
+    &lt;li&gt;Parsing LR(k) grammars for an arbitrary is hopelessly impractical.
+    &lt;/li&gt;
+    &lt;li&gt;Parsing LR(1) grammars is almost practical, but not quite.&lt;a id=&quot;footnote-22-ref&quot; href=&quot;#footnote-22&quot;&gt;[22]&lt;/a&gt;
+    &lt;/li&gt;
+    &lt;li&gt;Parsing LR(0) grammars is quite practical.
+    &lt;/li&gt;
+    &lt;/ul&gt;
+    &lt;/p&gt;The problem for Knuth's proof of equivalence is that,
+    if you consider languages, LR(1) and LR(k) are equivalent.
+    And in fact, both are almost equivalent to LR(0) -- if you add
+    an explicit end marker to a language
+    (which in most applications is easy to do&lt;a id=&quot;footnote-23-ref&quot; href=&quot;#footnote-23&quot;&gt;[23]&lt;/a&gt;)
+    then LR(k) = LR(1) = LR(0).
+    That is, in language terms, the hopelessly impractical
+    is equivalent to the borderline impractical.
+    And these, for most applications, are equivalent to the
+    very practical LR(0).
+    That is, when thinking in terms of languages,
+    we can magically transport ourselves across the
+    same practical/impractical boundary that we are claiming
+    to show is, in practice, impassable.
+    &lt;/p&gt;
     &lt;p&gt;
+    In short, impressive as Knuth's demonstrations are as
+    exercises in technical mathematics --
+    and the whole paper is a mathematical &lt;it&gt;tour de force&lt;/it&gt;,
+    both exhileraing and exhausting --
+    they give no reason to suggest the DPDA boundary is
+    impassable,
+    or even a serious obstacle.
+    Which means it should be no surprise that,
+    in 1991, Joop Leo shows how to cross it.
+    &lt;/p&gt;
     &lt;h2&gt;Comments, etc.&lt;/h2&gt;
     &lt;p&gt;
       The background material for this post is in my
@@ -397,6 +445,19 @@
 &lt;p id=&quot;footnote-21&quot;&gt;21.
     Knuth 1965, p. 608.
  &lt;a href=&quot;#footnote-21-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;p id=&quot;footnote-22&quot;&gt;22.
+    Given the capacity of computer memories in 1965,
+    LR(1) was clearly impractical.
+    Today, that could be reconsidered, but LR(1) is still restrictive
+    and has poor error-handling,
+    so few practitioners have bothered with it.
+ &lt;a href=&quot;#footnote-22-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;p id=&quot;footnote-23&quot;&gt;23.
+    Some parsing applications, such as those which receive their input &quot;on-line&quot;,
+    can not determine the size of their input in advance.
+    For these applications adding an end marker to their input is
+    inconvenient or impossible.
+ &lt;a href=&quot;#footnote-23-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
   &lt;/body&gt;
 &lt;/html&gt;</description>
   </item>
