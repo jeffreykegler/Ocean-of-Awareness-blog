@@ -354,11 +354,10 @@
 	    boundary between practical and impractical.
 	    We can take visions of a magical world back into the world of practice,
 	    but we cannot assume they will be helpful.
-	    what is practical.
 	    In that light,
-	    it is no surprise that,
-	    in 1991, Joop Leo shows how to extend practical
-	    parsing well beyond the LR(k).&lt;a id=&quot;footnote-26-ref&quot; href=&quot;#footnote-26&quot;&gt;[26]&lt;/a&gt;
+	    it is no surprise that
+	    Joop Leo will show how to extend practical
+	    parsing well beyond LR(k).&lt;a id=&quot;footnote-26-ref&quot; href=&quot;#footnote-26&quot;&gt;[26]&lt;/a&gt;
 	  &lt;/p&gt;
 	  &lt;h2&gt;Comments, etc.&lt;/h2&gt;
 	  &lt;p&gt;

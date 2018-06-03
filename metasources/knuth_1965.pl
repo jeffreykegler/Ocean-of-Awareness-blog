@@ -541,11 +541,10 @@ Why is parsing considered solved?
 	    boundary between practical and impractical.
 	    We can take visions of a magical world back into the world of practice,
 	    but we cannot assume they will be helpful.
-	    what is practical.
 	    In that light,
-	    it is no surprise that,
-	    in 1991, Joop Leo shows how to extend practical
-	    parsing well beyond the LR(k).<footnote>
+	    it is no surprise that
+	    Joop Leo will show how to extend practical
+	    parsing well beyond LR(k).<footnote>
 	      Joop M. I. M.
 	      "A general context-free parsing algorithm running in linear time on every LR (k) grammar without using lookahead."
 	      <cite>Theoretical computer science</cite>, Volume 82, Issue 1, 22 May 1991, pp. 165-176.
