@@ -309,7 +309,7 @@
       But if the purpose is to suggest limits in practice,
       you have to be much more careful.
       And in fact, as Knuth's paper shows,
-      if you equating languages and grammars,
+      if you equate languages and grammars,
       you get into a very serious degree of magical thinking.
       Using the Knuth algorithm,
     &lt;/p&gt;
