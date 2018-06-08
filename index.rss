@@ -67,19 +67,27 @@
     The GFG approach certainly makes the relationship between the
     Marpa and MDS approaches much clearer.
     &lt;/p&gt;
-    &lt;h2&gt;Step 1&gt;&lt;/h2&gt;
+    &lt;h2&gt;Step 1: Extended regular expressions&lt;/h2&gt;
     &lt;p&gt;
     Step 1 in going from the MDS algorithm to Leo/Earley/Marpa via
     the Pingali and Bilardi &quot;pictures&quot; is
     to notice both MDS and GFG's start at the same place:
-    they take ordinary regular expressions and add recursion.
+    context-free grammars in the form of
+    regular expressions extended to allow recursion.
     MDS starts with a match expression in Racket,
-    and this has a natural equivalent in a GFG --
+    and its Racket match expressions have a natural equivalent in a GFG --
     so natural you could imagine the MDS paper using GFG's
     as illustrations.
     &lt;/p&gt;
-    &lt;h2&gt;Step 2&gt;&lt;/h2&gt;
+    &lt;h2&gt;Step 2&gt;: Following an NFA&lt;/h2&gt;
     &lt;p&gt;
+    The MDS and GFG approaches are also similar in their next step:
+    Both follow an NFA by consuming a single character to produce a
+    partial parse.
+    For both, a partial parse is a duple consisting of a set of parses
+    and a string.
+    The string is the remaining input,
+    and the set of parses is the parses so far.
     &lt;/p&gt;
     &lt;h2&gt;Comments, etc.&lt;/h2&gt;
     &lt;p&gt;
