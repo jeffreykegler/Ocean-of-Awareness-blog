@@ -83,16 +83,57 @@ Derivates and pictures
     get.
     My Marpa parser is an Earley parser, table-driven
     with its core logic implemented in C language.
-    The Might/Darais/Spiewak parser is an extension of regular expressions
-    which constructs states on the fly,
-    and which deals that approaches speed issues by using memoization
-    and lazy evaluation and fixed points.
+    The MDS (Might/Darais/Spiewak) parser is an extension of regular expressions
+    which constructs states on the fly
+    and is implemented using functional programming languages.
+    </p>
+    <h2>The MDS algorithm</h2>
+    <p>
+    For its functional programming language,
+    the MDS paper uses Racket.
+    The MDS parser is described directly,
+    in the usual functional language manner,
+    as a matching
+    operation.
+    This is optimized with laziness and memoization.
+    Nulls are dealt with by computing their fixed points on the fly.
+    The result is still highly inefficient, so MDS also
+    implements "deep recursive simplication" -- in effect,
+    strategically replacing laziness with eagerness.
     </p>
     <h2>Parsing with pictures</h2>
     <p>The key to seeing the common ground is a paper sent
     me by Prof. Pingali at Austin.
-    (and why I see Marpa as an 
+    The title was the first paper was "Parsing with Pictures",
+    which was a little misleading:
+    their approach is not quote <b>that</b> easy.
+    But it is a lot easier than the traditional way
+    of learning the various approaches to parsing.
+    Pingali and Bilardi suggest,
+    in my opinion correctly,
+    that their approach could change the way
+    Parsing Theory is taught.
+    <p>
+    The GFG approach certainly makes the relationship between the
+    Marpa and MDS approaches much clearer.
     </p>
+    <h2>Step 1></h2>
+    <p>
+    Step 1 in going from the MDS algorithm to Leo/Earley/Marpa via
+    the Pingali and Bilardi "pictures" is
+    to notice both MDS and GFG's start at the same place:
+    they take ordinary regular expressions and add recursion.
+    MDS starts with a match expression in Racket,
+    and this has a natural equivalent in a GFG --
+    so natural you could imagine the MDS paper using GFG's
+    as illustrations.
+    </p>
+    <p>Before we follow the GFG implementation,
+    I'll touch briefly on where MDS goes with its GFG.
+    </p>
+    is a 
+    while 
+
     <h2>Comments, etc.</h2>
     <p>
       To learn about Marpa,
