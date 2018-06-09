@@ -1,4 +1,4 @@
-Derivates and pictures
+A new way to look at parsing
 <html>
   <head>
   </head>
@@ -10,7 +10,7 @@ Derivates and pictures
     <p>In a very cordial Twitter exchange with Matt Might and
     and David Darais, Prof. Might asked why I was not looking at his
     derivatives-based approach.
-    I answered that I was --
+    I answered that I already was --
     I see
     Marpa as an optimized version of the Might/Darais approach.
     </p>
@@ -19,10 +19,28 @@ Derivates and pictures
     two algorithms that address the same problem space can
     get.
     My Marpa parser is an Earley parser, table-driven
-    with its core logic implemented in C language.
-    The MDS (Might/Darais/Spiewak) parser is an extension of regular expressions
-    which constructs states on the fly
-    and is implemented using functional programming languages.
+    and its parse engine is written in C language.
+    The MDS (Might/Darais/Spiewak) parser is
+    an extension of regular expressions
+    which constructs states on the fly.
+    MDS is uses combinators and is implemented via
+    several functional programming languages.
+    </p>
+    <h2>Grammar Flow Graphs</h2>
+    <p>How then could imagine that Marpa is another version of the MDS
+    approach?
+    The key was a paper sent
+    me by Prof. Keshav Pingali at Austin: "Parsing with Pictures".
+    The title is a little misleading:
+    their approach is not <b>that</b> easy,
+    and the paper does require some math.
+    But it is a lot easier than the traditional way
+    of learning the various approaches to parsing.
+    Pingali and Bilardi suggest that their approach,
+    taken out of the terse form it has in their
+    papers,
+    can make it a little easier to teach
+    and understand Parsing Theory.
     </p>
     <h2>The MDS algorithm</h2>
     <p>
@@ -37,22 +55,6 @@ Derivates and pictures
     The result is still highly inefficient, so MDS also
     implements "deep recursive simplication" -- in effect,
     strategically replacing laziness with eagerness.
-    </p>
-    <h2>Parsing with pictures</h2>
-    <p>The key to seeing the common ground is a paper sent
-    me by Prof. Pingali at Austin.
-    The title was the first paper was "Parsing with Pictures",
-    which was a little misleading:
-    their approach is not quote <b>that</b> easy.
-    But it is a lot easier than the traditional way
-    of learning the various approaches to parsing.
-    Pingali and Bilardi suggest,
-    in my opinion correctly,
-    that their approach could change the way
-    Parsing Theory is taught.
-    <p>
-    The GFG approach certainly makes the relationship between the
-    Marpa and MDS approaches much clearer.
     </p>
     <h2>Step 1: Extended regular expressions</h2>
     <p>
