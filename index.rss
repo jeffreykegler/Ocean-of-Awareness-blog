@@ -21,8 +21,8 @@
       --&gt;
     &lt;h2&gt;Derivatives == Earley?&lt;/h2&gt;
     &lt;p&gt;In a very cordial Twitter exchange with Matt Might and
-    and David Darais, Prof. Might asked why I was not looking at his
-    derivatives-based approach.
+    and David Darais, Prof. Might asked why if I would be interesting
+    in looking at his derivatives-based approach.
     I answered that I already was --
     I see
     Marpa as an optimized version of the Might/Darais approach.
@@ -133,9 +133,9 @@
     &lt;p&gt;
     The MDS and GFG approaches are also similar in their next step:
     Both follow an NFA by consuming a single character to produce a
-    partial parse.
-    For both, a partial parse is a duple consisting of a set of parses
-    and a string.
+    &quot;partial parse&quot;.
+    A partial parse, for our purposes,
+    is a duple consisting of a set of parses and a string.
     The string is the remaining input,
     and the set of parses is the parses so far.
     &lt;/p&gt;
