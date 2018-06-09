@@ -8,55 +8,53 @@ A new way to look at parsing
       -->
     <h2>Derivatives == Earley?</h2>
     <p>In a very cordial Twitter exchange with Matt Might and
-    and David Darais, Prof. Might asked why if I would be interesting
+    and David Darais, Prof. Might asked if I would be interesting
     in looking at his derivatives-based approach.
     I answered that I already was --
     I see
     Marpa as an optimized version of the Might/Darais approach.
     </p>
     <p>This may sound strange.
-    At first glance, the two algorithms seem about as different as
-    two algorithms that address the same problem space can
-    get.
-    My Marpa parser is an Earley parser, table-driven
+    At first glance, our two algorithms seem about as different as
+    parsing algorithms can get.
+    My Marpa parser is an Earley parser, table-driven,
     and its parse engine is written in C language.
     The MDS (Might/Darais/Spiewak) parser is
     an extension of regular expressions
     which constructs states on the fly.
-    MDS is uses combinators and is implemented via
-    several functional programming languages.
+    MDS uses combinators and has implementations
+    in several functional programming languages.
     </p>
     <h2>Grammar Flow Graphs</h2>
-    <p>How then could imagine that Marpa is another version of the MDS
+    <p>Why then do I imagine that Marpa is another version of the MDS
     approach?
-    The key was a paper sent
+    The reason is a paper sent to
     me by Prof. Keshav Pingali at Austin: "Parsing with Pictures".
     The title is a little misleading:
     their approach is not <b>that</b> easy,
     and the paper does require some math.
     But it is a lot easier than the traditional way
     of learning the various approaches to parsing.
-    Pingali and Bilardi suggest that their approach,
+    Pingali and Gianfranco Bilardi
+    (his co-author) suggest that their approach,
     taken out of the terse form it has in their
     papers,
     can make it a easier to teach
     and understand Parsing Theory.
-    I think that may be right.
+    I think they may be right.
     </p>
     <p>The basis of the Pingali-Bilardi approach
-    is Grammar Flow Graphs.
-    These (the "pictures" of their title)
-    are basically state diagrams
-    (regular expressions in diagram form)
-    with recursion added.
+    are Grammar Flow Graphs.
+    These GFGs are the "pictures" of their title.
+    GFGs are NFAs with recursion added.
     As has long been known,
-    adding recursion to a state diagram
-    allows it to represent any context-free languages.
+    adding recursion to NFAs
+    allows them to represent any context-free languages.
     </p>
     <p>What's new with Pingali and Bilardi is
     where they take their GFG's.
     A GFG can be traversed using the same algorithm
-    as an NFA, which they do.
+    used to simulate an NFA.
     At first glance the result is not impressive --
     the algorithm is a recognizer, not a parser,
     and it's a bad recognizer:
