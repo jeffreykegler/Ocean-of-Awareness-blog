@@ -129,7 +129,7 @@
     so natural you could imagine the MDS paper using GFG's
     as illustrations.
     &lt;/p&gt;
-    &lt;h2&gt;Step 2&gt;: Following an NFA&lt;/h2&gt;
+    &lt;h2&gt;Step 3: Following an NFA&lt;/h2&gt;
     &lt;p&gt;
     The MDS and GFG approaches are also similar in their next step:
     Both follow an NFA by consuming a single character to produce a

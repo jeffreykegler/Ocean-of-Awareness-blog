@@ -116,7 +116,7 @@ A new way to look at parsing
     so natural you could imagine the MDS paper using GFG's
     as illustrations.
     </p>
-    <h2>Step 2>: Following an NFA</h2>
+    <h2>Step 3: Following an NFA</h2>
     <p>
     The MDS and GFG approaches are also similar in their next step:
     Both follow an NFA by consuming a single character to produce a
