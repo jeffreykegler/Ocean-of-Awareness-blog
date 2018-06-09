@@ -45,7 +45,7 @@
     <!--
       marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
       -->
-    <h2>Parsing with derivatives</h2>
+    <h2>Derivatives == Earley?</h2>
     <p>In a very cordial Twitter exchange with Matt Might and
     and David Darais, Prof. Might asked why I was not looking at his
     derivatives-based approach.
@@ -78,24 +78,72 @@
     Pingali and Bilardi suggest that their approach,
     taken out of the terse form it has in their
     papers,
-    can make it a little easier to teach
+    can make it a easier to teach
     and understand Parsing Theory.
+    I think that may be right.
     </p>
+    <p>The basis of the Pingali-Bilardi approach
+    is Grammar Flow Graphs.
+    These (the "pictures" of their title)
+    are basically state diagrams
+    (regular expressions in diagram form)
+    with recursion added.
+    As has long been known,
+    adding recursion to a state diagram
+    allows it to represent any context-free languages.
+    </p>
+    <p>What's new with Pingali and Bilardi is
+    where they take their GFG's.
+    A GFG can be traversed using the same algorithm
+    as an NFA, which they do.
+    At first glance the result is not impressive --
+    the algorithm is a recognizer, not a parser,
+    and it's a bad recognizer:
+    It is over-liberal and recognizes string which
+    are not in the context-free language.
+    </p>
+    <p>Next comes their real insight:
+    They enhance their NFA-based algorithm
+    to have it track where each recursion begins.
+    (This can be done by adding an integer to each item<a id="footnote-1-ref" href="#footnote-1">[1]</a>.)
+    This fix not only corrects the recognizer
+    -- it turns it into a parser.
+    </p>
+    <p>
+    It turns out that Pingali and Bilardi's fixed NFA algorithm
+    is not new.
+    In fact, it is <b>exactly</b> Earley's algorithm.
+    </p>
+    <p>Pingali and Bilardi do not stop there.
+    Using their new framework,
+    they go on to show that all LL-based and LR-based algorithms
+    are simplifications of their Earley parser.
+    From this point of view,
+    Earley parsing is the foundation of all context-free parsing,
+    and LL- and LR-based algorithms are Earley optimizations.
+    <h2>Showing the equivalence: step 1</h2>
     <h2>The MDS algorithm</h2>
     <p>
+    To show that Marpa is an optimization of the MDS approach,
+    I will start with the MDS algorithm, and attempt to optimize it.
     For its functional programming language,
     the MDS paper uses Racket.
     The MDS parser is described directly,
     in the usual functional language manner,
     as a matching
     operation.
-    This is optimized with laziness and memoization.
+    In the MDS paper,
+    the MDS parser is optimized with laziness and memoization.
     Nulls are dealt with by computing their fixed points on the fly.
-    The result is still highly inefficient, so MDS also
+    Even with these 3 optimizations,
+    the result is still highly inefficient.
+    As a last step, MDS also
     implements "deep recursive simplication" -- in effect,
     strategically replacing laziness with eagerness.
+    With this the MDS paper conjectures that the algorithm's time
+    is linear for a large class of practical grammars.
     </p>
-    <h2>Step 1: Extended regular expressions</h2>
+    <h2>Step 2: Extended regular expressions</h2>
     <p>
     Step 1 in going from the MDS algorithm to Leo/Earley/Marpa via
     the Pingali and Bilardi "pictures" is
@@ -131,6 +179,9 @@
       or on our IRC channel: #marpa at freenode.net.
     </p>
     <h2>Footnotes</h2>
+<p id="footnote-1">1.
+    Term?
+ <a href="#footnote-1-ref">&#8617;</a></p>
   </body>
 </html>
 <br />
