@@ -137,6 +137,13 @@
     The string is the remaining input,
     and the set of parses is the parses so far.
     &lt;/p&gt;
+    &lt;h2&gt;The way forward&lt;/h2&gt;
+    &lt;p&gt;
+    [ Worm's eye view of null handling. ]
+    &lt;/p&gt;
+    &lt;p&gt;
+    [ Mixture of functional and hand optimization. ]
+    &lt;/p&gt;
     &lt;h2&gt;Comments, etc.&lt;/h2&gt;
     &lt;p&gt;
       To learn about Marpa,
