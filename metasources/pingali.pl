@@ -70,11 +70,17 @@ A new way to look at parsing
       marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
       -->
     <h2>Derivatives == Earley?</h2>
-    <p>In a very cordial Twitter exchange with Matt Might and
-      and David Darais, Prof. Might asked if I would be interesting
-      in looking at his derivatives-based approach.
-      I answered that I already was --
-      I see Marpa<footnote>
+    <p>In a cordial Twitter exchange with Matt Might and
+      and David Darais, Prof. Might asked if I was interested
+      in looking at their derivatives-based approach.
+      I answered that I was looking at it --
+      Marpa is an optimization of the Might/Darais approach.
+    </p>
+    <p>This may sound strange.
+      At first glance, our two algorithms seem about as different as
+      parsing algorithms can get.
+      My Marpa parser is an Earley parser, table-driven,
+      and its parse engine is written in C language.<footnote>
         Kegler, Jeffrey.
         "Marpa, A Practical General Parser: The Recognizer.", 2013.
         <a href="http://dinhe.net/~aredridel/.notmine/PDFs/Parsing/KEGLER,%20Jeffrey%20-%20Marpa,%20a%20practical%20general%20parser:%20the%20recognizer.pdf">
@@ -91,24 +97,19 @@ A new way to look at parsing
         <a href="https://metacpan.org/pod/Marpa::R2">
           MetaCPAN, accessed 30 April 2018.</a>.
       </footnote>
-      as an optimized version of the Might/Darais approach.<footnote>
+      The MDS (Might/Darais/Spiewak) parser is
+      an extension of regular expressions
+      which constructs states on the fly.
+      MDS uses combinators and has implementations
+      in several functional programming languages.<footnote>
         Matthew Might, David Darais and Daniel Spiewak. "Functional Pearl: Parsing with Derivatives." International Conference on Functional Programming 2011 (ICFP 2011). Tokyo, Japan. September, 2011. pages 189--195.
         <a href="http://matt.might.net/papers/might2011derivatives.pdf">
           PDF accessed 9 Jun 2018</a>.
         <a href="http://matt.might.net/papers/might2011derivatives-icfp-talk.pdf">
           Slides accessed 9 June 2018</a>.
+        <a href="http://matt.might.net/media/mattmight-icfp2011-derivatives.mp4">
+	  Video accessed 9 June 2018</a>.
       </footnote>
-    </p>
-    <p>This may sound strange.
-      At first glance, our two algorithms seem about as different as
-      parsing algorithms can get.
-      My Marpa parser is an Earley parser, table-driven,
-      and its parse engine is written in C language.
-      The MDS (Might/Darais/Spiewak) parser is
-      an extension of regular expressions
-      which constructs states on the fly.
-      MDS uses combinators and has implementations
-      in several functional programming languages.
     </p>
     <h2>Grammar Flow Graphs</h2>
     <p>Why then do I imagine that Marpa is an optimized version of the MDS
@@ -137,7 +138,7 @@ A new way to look at parsing
       their approach is not
       <b>that</b>
       easy,
-      and the paper does require some math.
+      and the paper requires a considerable amount of math.
       But it is a lot easier than the traditional way
       of learning the various approaches to parsing.
     </p>
@@ -152,7 +153,7 @@ A new way to look at parsing
     <p>Pingali and Bilardi's next step is new.
       A GFG can be "simulated" using the same algorithm
       used to simulate an NFA.
-      Hoswever, the result is not immediately impressive.
+      However, the result is not immediately impressive.
       The simulation does produce a recognizer, but not a good recognizer:
       Some of the strings recognized by
       the GFG simulator
@@ -165,14 +166,14 @@ A new way to look at parsing
       This tag tracks where the recursion began.<footnote>
         Pingali and Bilardi 2015, p. 11.
       </footnote>.
-      This fixes the recognizer.
-      Also, the added information is enough to allow the set
+      This not only fixes the recognizer,
+      but the added information is enough to allow the set
       of parse trees to be efficiently recovered from the
       sets of GFG states.
+      In other words, with tags, the GFG recognizer now is a parser.
     </p>
     <p>
-      In other words, with tags, the GFG recognizer now is a parser.
-      And it turns out that this parser is not new.
+      It turns out that this fixed-recognizer-turned-parser is not new.
       In fact, it is
       <b>exactly</b>
       Earley's algorithm.
@@ -227,7 +228,7 @@ A new way to look at parsing
       the MDS and GFG approaches are similar in their next step.
       Each consumes a single character to produce a
       "partial parse".
-      A partial parse, for our both of these algorithms,
+      A partial parse, for both of these algorithms,
       can be represented as a duple.
       One element of the duple is a string representing the
       unconsumed input.
@@ -249,12 +250,15 @@ A new way to look at parsing
       Recall from above,
       that this GFG simulator has a bug --
       it is over-liberal.
-      We fix this bug by tagging each GFG state with the
-      the index of the GFG state-set which begins the recursion
-      it is part of.
-      With these tags,
+      </p>
+      <p>
+      Each GFG state either starts a recursion or is part of one.
+      We fix the bug by tagging each GFG state with the
+      the index of the GFG state-set that starts its recursion.
+      Once these tags are added,
       the GFG state-sets are exactly Earley sets.
-    </p><h2>Step 3: The Leo optimization</h2>
+    </p>
+    <h2>Step 3: The Leo optimization</h2>
     <p>Next we incorporate an optimization by Joop Leo,
       which makes Earley parsing linear for all LR-regular grammars,
       without using lookahead.
