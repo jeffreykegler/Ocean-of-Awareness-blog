@@ -57,28 +57,26 @@
     adding recursion to NFAs
     allows them to represent any context-free language.
     &lt;/p&gt;
-    &lt;p&gt;What's new with Pingali and Bilardi is
-    where they take their GFG's.
+    &lt;p&gt;Pingali and Bilardi's next step is new.
     A GFG can be &quot;simulated&quot; using the same algorithm
     used to simulate an NFA.
-    The result is not immediately impressive.
-    The simulation does produce a recognizer, but not a good one:
-    It recognizes string which
+    Hoswever, the result is not immediately impressive.
+    The simulation does produce a recognizer, but not a good recognizer:
+    Some of the strings recognized by
+    the GFG simulator
     are not in the context-free language.
     &lt;/p&gt;
-    &lt;p&gt;It is the next step which is the real insight of the 
-    GFG approach.
-    To repair their &quot;simulation&quot;,
+    &lt;p&gt;To repair their &quot;simulation&quot;,
     Pingali and Bilardi add a tag to each state.
     This tag tracks where the recursion began.&lt;a id=&quot;footnote-1-ref&quot; href=&quot;#footnote-1&quot;&gt;[1]&lt;/a&gt;.)
-    This not only fixes the recognizer,
-    the added information is enough to allow the set
+    This fixes the recognizer.
+    Also, the added information is enough to allow the set
     of parse trees to be efficiently recovered from the
     sets of GFG states.
     &lt;/p&gt;
     &lt;p&gt;
-    It turns out that Pingali and Bilardi's fixed NFA algorithm
-    is not new.
+    In other words, with tags, the GFG recognizer now is a parser.
+    And it turns out that this parser is not new.
     In fact, it is &lt;b&gt;exactly&lt;/b&gt; Earley's algorithm.
     &lt;/p&gt;
     &lt;p&gt;Pingali and Bilardi do not stop there.
@@ -121,7 +119,7 @@
     GFG's translated into Racket match expressions.
     The equivalence is close enough that
     you could imagine the MDS paper using GFG's
-    as its illustrations.
+    for its illustrations.
     &lt;/p&gt;
     &lt;h2&gt;Step 3: Simulating an NFA&lt;/h2&gt;
     &lt;p&gt;
@@ -138,7 +136,7 @@
     in keeping with its functional approach,
     the set of parse trees is represented directly.
     In the case of the GFG-simulator,
-    the set of parse tree is compressed into a sequence of
+    the set of parse trees is compressed into a sequence of
     GFG-state-sets.
     There is one GFG-state-set for the start of parsing,
     and one for each consumed character.
@@ -185,15 +183,15 @@
     tokens are expected next.
     &lt;/p&gt;
     &lt;p&gt;
-    This means that you can write an liberal HTML parser
-    by starting a very illiberal HTML grammar.
+    This means that you can write an liberal HTML parser,
+    starting with a very illiberal HTML grammar.
     When the illiberal parser encounters a point where it cannot
     continue because of a missing token,
     procedural logic can ask
     what the expected token is,
     concoct it on they fly,
     supply it to the illiberal parser,
-    and continue.
+    and ask the illiberal parser to continue.
     This is called the &quot;Ruby Slippers&quot; technique,
     and an HTML parser based on it has been implemented.
     &lt;/p&gt;
@@ -201,10 +199,10 @@
     &lt;p&gt;
     As mentioned,
     the MDS algorithm has its own approach to optmization,
-    one which takes maximum advantage of the functional programming.
+    one which takes maximum advantage of functional programming.
     In contrast, Marpa relies on C level coding.
     &lt;/p&gt;
-    &lt;p&gt;An example of the contrast in optimization techniques
+    &lt;p&gt;One example of the contrast in optimization techniques
     is null handling.
     Recall from above that, to deal with null processing,
     the MDS algorithm uses a fixed-point
@@ -221,7 +219,7 @@
     but nonetheless I believe that
     the day that GHC will look at a functional specification
     of an Earley parser and rediscover the Leo optimization
-    at compile time is be very far off.
+    at compile time is far off.
     &lt;/p&gt;
     &lt;p&gt;
     On the other hand,
@@ -233,7 +231,7 @@
     And of course,
     even an omniscient programmer is not going to be there at run-time
     for &quot;just in time&quot; optimization.
-    Perhaps the optimal parser of the future will combine selected hand optimizations
+    Perhaps the optimal parser of the future will combine important hand optimizations
     with functional programming.
     &lt;/p&gt;
     &lt;h2&gt;Comments, etc.&lt;/h2&gt;
