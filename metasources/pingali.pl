@@ -108,7 +108,7 @@ A new way to look at parsing
         <a href="http://matt.might.net/papers/might2011derivatives-icfp-talk.pdf">
           Slides accessed 9 June 2018</a>.
         <a href="http://matt.might.net/media/mattmight-icfp2011-derivatives.mp4">
-	  Video accessed 9 June 2018</a>.
+          Video accessed 9 June 2018</a>.
       </footnote>
     </p>
     <h2>Grammar Flow Graphs</h2>
@@ -250,8 +250,8 @@ A new way to look at parsing
       Recall from above,
       that this GFG simulator has a bug --
       it is over-liberal.
-      </p>
-      <p>
+    </p>
+    <p>
       Each GFG state either starts a recursion or is part of one.
       We fix the bug by tagging each GFG state with the
       the index of the GFG state-set that starts its recursion.
@@ -298,10 +298,10 @@ A new way to look at parsing
       and ask the illiberal parser to continue.
       This is called the "Ruby Slippers" technique,
       and an HTML parser based on it has been implemented.<footnote>
-	I have based an
-	liberal HTML pretty-printer on that parser,
-	one which I use quite frequently.
-	I used it, for example, when writing this blog post.
+        I have based an
+        liberal HTML pretty-printer on that parser,
+        one which I use quite frequently.
+        I used it, for example, when writing this blog post.
         To find out more about Ruby Slippers parsing see the Marpa FAQ,
         <a href="http://savage.net.au/Perl-modules/html/marpa.faq/faq.html#q122">
           questions 122</a>
