@@ -26,7 +26,7 @@ A new way to look at parsing
     in several functional programming languages.
     </p>
     <h2>Grammar Flow Graphs</h2>
-    <p>Why then do I imagine that Marpa is another version of the MDS
+    <p>Why then do I imagine that Marpa is an optimized version of the MDS
     approach?
     The reason is a paper sent to
     me by Prof. Keshav Pingali at Austin: "Parsing with Pictures".
@@ -35,38 +35,33 @@ A new way to look at parsing
     and the paper does require some math.
     But it is a lot easier than the traditional way
     of learning the various approaches to parsing.
-    Pingali and Gianfranco Bilardi
-    (his co-author) suggest that their approach,
-    taken out of the terse form it has in their
-    papers,
-    can make it a easier to teach
-    and understand Parsing Theory.
-    I think they may be right.
     </p>
     <p>The basis of the Pingali-Bilardi approach
-    are Grammar Flow Graphs.
+    is the Grammar Flow Graph (GFG).
     These GFGs are the "pictures" of their title.
     GFGs are NFAs with recursion added.
     As has long been known,
     adding recursion to NFAs
-    allows them to represent any context-free languages.
+    allows them to represent any context-free language.
     </p>
     <p>What's new with Pingali and Bilardi is
     where they take their GFG's.
-    A GFG can be traversed using the same algorithm
+    A GFG can be "simulated" using the same algorithm
     used to simulate an NFA.
-    At first glance the result is not impressive --
-    the algorithm is a recognizer, not a parser,
-    and it's a bad recognizer:
-    It is over-liberal and recognizes string which
+    The result is not immediately impressive.
+    The simulation does produce a recognizer, but not a good one:
+    It recognizes string which
     are not in the context-free language.
     </p>
-    <p>Next comes their real insight:
-    They enhance their NFA-based algorithm
-    to have it track where each recursion begins.
-    (This can be done by adding an integer to each item<a id="footnote-1-ref" href="#footnote-1">[1]</a>.)
-    This fix not only corrects the recognizer
-    -- it turns it into a parser.
+    <p>It is the next step which is the real insight of the 
+    GFG approach.
+    To repair their "simulation",
+    Pingali and Bilardi add a tag to each state.
+    This tag tracks where the recursion began.<a id="footnote-1-ref" href="#footnote-1">[1]</a>.)
+    This not only fixes the recognizer,
+    the added information is enough to allow the set
+    of parse trees to be efficiently recovered from the
+    sets of GFG states.
     </p>
     <p>
     It turns out that Pingali and Bilardi's fixed NFA algorithm
@@ -80,8 +75,7 @@ A new way to look at parsing
     From this point of view,
     Earley parsing is the foundation of all context-free parsing,
     and LL- and LR-based algorithms are Earley optimizations.
-    <h2>Showing the equivalence: step 1</h2>
-    <h2>The MDS algorithm</h2>
+    <h2>Step 1: the MDS algorithm</h2>
     <p>
     To show that Marpa is an optimization of the MDS approach,
     I will start with the MDS algorithm, and attempt to optimize it.
@@ -91,12 +85,15 @@ A new way to look at parsing
     in the usual functional language manner,
     as a matching
     operation.
+    </p>
+    <p>
     In the MDS paper,
     the MDS parser is optimized with laziness and memoization.
     Nulls are dealt with by computing their fixed points on the fly.
-    Even with these 3 optimizations,
+    Even with these three optimizations,
     the result is still highly inefficient.
-    As a last step, MDS also
+    So,
+    as an additional step, MDS also
     implements "deep recursive simplication" -- in effect,
     strategically replacing laziness with eagerness.
     With this the MDS paper conjectures that the algorithm's time
@@ -104,32 +101,127 @@ A new way to look at parsing
     </p>
     <h2>Step 2: Extended regular expressions</h2>
     <p>
-    Step 1 in going from the MDS algorithm to Leo/Earley/Marpa via
-    the Pingali and Bilardi "pictures" is
-    to notice both MDS and GFG's start at the same place:
-    context-free grammars in the form of
-    regular expressions extended to allow recursion.
-    MDS starts with a match expression in Racket,
-    and its Racket match expressions have a natural equivalent in a GFG --
-    so natural you could imagine the MDS paper using GFG's
-    as illustrations.
+    Next, we notice that the context-free grammars
+    of the MDS algorithm 
+    are regular expressions extended to allow recursion.
+    Essentially, they are 
+    GFG's translated into Racket match expressions.
+    The equivalence is close enough that
+    you could imagine the MDS paper using GFG's
+    as its illustrations.
     </p>
-    <h2>Step 3: Following an NFA</h2>
+    <h2>Step 3: Simulating an NFA</h2>
     <p>
-    The MDS and GFG approaches are also similar in their next step:
-    Both follow an NFA by consuming a single character to produce a
+    Unsurprisingly, then,
+    the MDS and GFG approaches are similar in their next step.
+    Each consumes a single character to produce a
     "partial parse".
-    A partial parse, for our purposes,
-    is a duple consisting of a set of parses and a string.
-    The string is the remaining input,
-    and the set of parses is the parses so far.
+    A partial parse, for our both of these algorithms,
+    can be represented as a duple.
+    One element of the duple is a string representing the
+    unconsumed input.
+    The other is a representation of a set of parse trees.
+    In the case of MDS,
+    in keeping with its functional approach,
+    the set of parse trees is represented directly.
+    In the case of the GFG-simulator,
+    the set of parse tree is compressed into a sequence of
+    GFG-state-sets.
+    There is one GFG-state-set for the start of parsing,
+    and one for each consumed character.
+    </p>
+    <h2>Step 3: Earley's Algorithm</h2>
+    <p>At this point,
+    with the introduction of the GFG state-sets to represent parse-trees,
+    the MDS algorithm and its optimized GFG equivalent have
+    "forked".
+    Recall from above,
+    that this GFG simulator has a bug --
+    it is over-liberal.
+    We fix this bug by tagging each GFG state with the
+    the index of the GFG state-set which begins the recursion
+    it is part of.
+    With these tags,
+    the GFG state-sets are exactly Earley sets.
+    <h2>Step 3: The Leo optimization</h2>
+    <p>Next we incorporate an optimization by Joop Leo,
+    which makes Earley parsing linear for all LR-regular grammars,
+    without using lookahead.
+    Since LR-regular includes LR and LL, including LL(*),
+    we do not bother with lookahead.
+    We therefore ignore the optimizations described in the later pages
+    of Pingali and Bilardi.
+    </p>
+    <h2>Step 3: Marpa</h2>
+    <p>To get from an Earley/Leo parser to a Marpa parser,
+    we need to address one more major point.
+    In modern parsing practice,
+    programmers expect the ability to introduce procedural logic,
+    even to the point of switching parsers.
+    By ensuring that processing each Earley set is complete
+    before processing on the next Earley set begins,
+    we accomplish this.
+    </p>
+    <p>
+    This means that Marpa has available full information
+    about the parse so far -- it is left-eidetic.
+    Error reporting is unexcelled,
+    and procedural logic can use this information as well.
+    For example,
+    full parse information implies full knowledge of which
+    tokens are expected next.
+    </p>
+    <p>
+    This means that you can write an liberal HTML parser
+    by starting a very illiberal HTML grammar.
+    When the illiberal parser encounters a point where it cannot
+    continue because of a missing token,
+    procedural logic can ask
+    what the expected token is,
+    concoct it on they fly,
+    supply it to the illiberal parser,
+    and continue.
+    This is called the "Ruby Slippers" technique,
+    and an HTML parser based on it has been implemented.
     </p>
     <h2>The way forward</h2>
     <p>
-    [ Worm's eye view of null handling. ]
+    As mentioned,
+    the MDS algorithm has its own approach to optmization,
+    one which takes maximum advantage of the functional programming.
+    In contrast, Marpa relies on C level coding.
+    </p>
+    <p>An example of the contrast in optimization techniques
+    is null handling.
+    Recall from above that, to deal with null processing,
+    the MDS algorithm uses a fixed-point
+    algorithm on the fly.
+    Marpa, on the other hand,
+    before parsing begins.
+    precomputes a list of nullable
+    symbols using bit vectors.
+    In this particular case, Marpa will usually be the winner.
+    </p>
+    <p>A second case in which hand optimization wins is the
+    all-important Leo optimization.
+    Simon Peyton-Jones is a very smart man,
+    but nonetheless I believe that
+    the day that GHC will look at a functional specification
+    of an Earley parser and rediscover the Leo optimization
+    at compile time is be very far off.
     </p>
     <p>
-    [ Mixture of functional and hand optimization. ]
+    On the other hand,
+    I do not imagine that hand optimization and/or C language is the
+    winner in all cases.
+    A programmer who imagines that he can spot all the cases where
+    lazy evaluation or memoization will be effective in the general case
+    is deceiving himself.
+    And of course,
+    even an omniscient programmer is not going to be there at run-time
+    for "just in time" optimization.
+    Perhaps the optimal parser of the future will combine selected hand optimizations
+    with functional programming.
     </p>
     <h2>Comments, etc.</h2>
     <p>
@@ -146,7 +238,7 @@ A new way to look at parsing
     </p>
     <h2>Footnotes</h2>
 <p id="footnote-1">1.
-    Term?
+    Pingali and Bilardi 2015, p. 11.
  <a href="#footnote-1-ref">&#8617;</a></p>
   </body>
 </html>
