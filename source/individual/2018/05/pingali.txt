@@ -139,8 +139,8 @@ A new way to look at parsing
       Recall from above,
       that this GFG simulator has a bug --
       it is over-liberal.
-      </p>
-      <p>
+    </p>
+    <p>
       Each GFG state either starts a recursion or is part of one.
       We fix the bug by tagging each GFG state with the
       the index of the GFG state-set that starts its recursion.
@@ -151,10 +151,9 @@ A new way to look at parsing
     <p>Next we incorporate an optimization by Joop Leo,
       which makes Earley parsing linear for all LR-regular grammars,
       without using lookahead.
-      Since LR-regular includes LR and LL, including LL(*),
+      Since LR-regular is a superset of LR(k) and LL(k),
+      including LL(*),
       we do not bother with lookahead.
-      We therefore ignore the optimizations described in the later pages
-      of Pingali and Bilardi.
     </p>
     <h2>Step 3: Marpa</h2>
     <p>To get from an Earley/Leo parser to a Marpa parser,
@@ -265,7 +264,7 @@ A new way to look at parsing
         <a href="http://matt.might.net/papers/might2011derivatives-icfp-talk.pdf">
           Slides accessed 9 June 2018</a>.
         <a href="http://matt.might.net/media/mattmight-icfp2011-derivatives.mp4">
-	  Video accessed 9 June 2018</a>.
+          Video accessed 9 June 2018</a>.
  <a href="#footnote-2-ref">&#8617;</a></p>
 <p id="footnote-3"><b>3.</b>
         Keshav Pingali and Gianfranco Bilardi, UTCS tech report TR-2012.
@@ -296,10 +295,10 @@ A new way to look at parsing
         Pingali and Bilardi 2012, Sections 4-7.
  <a href="#footnote-6-ref">&#8617;</a></p>
 <p id="footnote-7"><b>7.</b>
-	I have based an
-	liberal HTML pretty-printer on that parser,
-	one which I use quite frequently.
-	I used it, for example, when writing this blog post.
+        I have based an
+        liberal HTML pretty-printer on that parser,
+        one which I use quite frequently.
+        I used it, for example, when writing this blog post.
         To find out more about Ruby Slippers parsing see the Marpa FAQ,
         <a href="http://savage.net.au/Perl-modules/html/marpa.faq/faq.html#q122">
           questions 122</a>

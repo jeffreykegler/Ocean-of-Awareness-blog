@@ -262,10 +262,9 @@ A new way to look at parsing
     <p>Next we incorporate an optimization by Joop Leo,
       which makes Earley parsing linear for all LR-regular grammars,
       without using lookahead.
-      Since LR-regular includes LR and LL, including LL(*),
+      Since LR-regular is a superset of LR(k) and LL(k),
+      including LL(*),
       we do not bother with lookahead.
-      We therefore ignore the optimizations described in the later pages
-      of Pingali and Bilardi.
     </p>
     <h2>Step 3: Marpa</h2>
     <p>To get from an Earley/Leo parser to a Marpa parser,

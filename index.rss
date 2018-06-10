@@ -152,8 +152,8 @@
       Recall from above,
       that this GFG simulator has a bug --
       it is over-liberal.
-      &lt;/p&gt;
-      &lt;p&gt;
+    &lt;/p&gt;
+    &lt;p&gt;
       Each GFG state either starts a recursion or is part of one.
       We fix the bug by tagging each GFG state with the
       the index of the GFG state-set that starts its recursion.
@@ -164,10 +164,9 @@
     &lt;p&gt;Next we incorporate an optimization by Joop Leo,
       which makes Earley parsing linear for all LR-regular grammars,
       without using lookahead.
-      Since LR-regular includes LR and LL, including LL(*),
+      Since LR-regular is a superset of LR(k) and LL(k),
+      including LL(*),
       we do not bother with lookahead.
-      We therefore ignore the optimizations described in the later pages
-      of Pingali and Bilardi.
     &lt;/p&gt;
     &lt;h2&gt;Step 3: Marpa&lt;/h2&gt;
     &lt;p&gt;To get from an Earley/Leo parser to a Marpa parser,
@@ -278,7 +277,7 @@
         &lt;a href=&quot;http://matt.might.net/papers/might2011derivatives-icfp-talk.pdf&quot;&gt;
           Slides accessed 9 June 2018&lt;/a&gt;.
         &lt;a href=&quot;http://matt.might.net/media/mattmight-icfp2011-derivatives.mp4&quot;&gt;
-	  Video accessed 9 June 2018&lt;/a&gt;.
+          Video accessed 9 June 2018&lt;/a&gt;.
  &lt;a href=&quot;#footnote-2-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
 &lt;p id=&quot;footnote-3&quot;&gt;&lt;b&gt;3.&lt;/b&gt;
         Keshav Pingali and Gianfranco Bilardi, UTCS tech report TR-2012.
@@ -309,10 +308,10 @@
         Pingali and Bilardi 2012, Sections 4-7.
  &lt;a href=&quot;#footnote-6-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
 &lt;p id=&quot;footnote-7&quot;&gt;&lt;b&gt;7.&lt;/b&gt;
-	I have based an
-	liberal HTML pretty-printer on that parser,
-	one which I use quite frequently.
-	I used it, for example, when writing this blog post.
+        I have based an
+        liberal HTML pretty-printer on that parser,
+        one which I use quite frequently.
+        I used it, for example, when writing this blog post.
         To find out more about Ruby Slippers parsing see the Marpa FAQ,
         &lt;a href=&quot;http://savage.net.au/Perl-modules/html/marpa.faq/faq.html#q122&quot;&gt;
           questions 122&lt;/a&gt;
