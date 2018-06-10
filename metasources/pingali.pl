@@ -61,7 +61,7 @@ sub do_footnote {
 }
 
 __DATA__
-Parsing with pictures: Grammar Flow Graphs
+Parsing with pictures
 <html>
   <head>
   </head>
@@ -189,7 +189,7 @@ Parsing with pictures: Grammar Flow Graphs
       and LL- and LR-based algorithms are Earley optimizations.<footnote>
         Pingali and Bilardi 2012, Sections 4-7.
       </footnote>
-    </p><h2>Step 1: the MDS algorithm</h2>
+    </p><h2>Step 1: The MDS algorithm</h2>
     <p>
       To show that Marpa is an optimization of the MDS approach,
       I will start with the MDS algorithm, and attempt to optimize it.
@@ -227,7 +227,7 @@ Parsing with pictures: Grammar Flow Graphs
     <h2>Step 3: Simulating an NFA</h2>
     <p>
       Unsurprisingly, then,
-      the MDS and GFG approaches are similar in their next step.
+      the MDS and GFG approaches are similar in their first step.
       Each consumes a single character to produce a
       "partial parse".
       A partial parse, for both of these algorithms,
@@ -244,7 +244,7 @@ Parsing with pictures: Grammar Flow Graphs
       There is one GFG-state-set for the start of parsing,
       and one for each consumed character.
     </p>
-    <h2>Step 3: Earley's Algorithm</h2>
+    <h2>Step 4: Earley's Algorithm</h2>
     <p>At this point,
       with the introduction of the GFG state-sets to represent parse-trees,
       the MDS algorithm and its optimized GFG equivalent have
@@ -262,7 +262,7 @@ Parsing with pictures: Grammar Flow Graphs
       Once these tags are added,
       the GFG state-sets are exactly Earley sets.
     </p>
-    <h2>Step 3: The Leo optimization</h2>
+    <h2>Step 5: The Leo optimization</h2>
     <p>Next we incorporate an optimization by Joop Leo,
       which makes Earley parsing linear for all LR-regular grammars,
       without using lookahead.
@@ -270,7 +270,7 @@ Parsing with pictures: Grammar Flow Graphs
       including LL(*),
       we do not bother with lookahead.
     </p>
-    <h2>Step 3: Marpa</h2>
+    <h2>Step 6: Marpa</h2>
     <p>To get from an Earley/Leo parser to a Marpa parser,
       we need to address one more major point.
       In modern parsing practice,
@@ -349,12 +349,11 @@ Parsing with pictures: Grammar Flow Graphs
       On the other hand,
       I do not imagine that hand optimization and/or C language is the
       winner in all cases.
-      A programmer who imagines that he can spot all the cases where
-      lazy evaluation or memoization will be effective in the general case
-      is deceiving himself.
+      A programmer is deceiving himself if he imagines that he can spot all the cases where
+      lazy evaluation or memoization will be effective in the general case.
       And of course,
       even an omniscient programmer is not going to be there at run-time
-      for "just in time" optimization.
+      to do "just in time" optimization.
       Perhaps the optimal parser of the future will combine important hand optimizations
       with functional programming.
     </p>
