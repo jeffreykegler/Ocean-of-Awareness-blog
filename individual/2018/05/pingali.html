@@ -1,7 +1,7 @@
 <html>
 <head>
 <link rel="alternate" title="Ocean of Awareness RSS" type="application/rss+xml" title="RSS" href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/index.rss" />
-<title>A new way to look at parsing</title>
+<title>Parsing with pictures: Grammar Flow Graphs</title>
 <style type="text/css">
    strong {font-weight: 700;}
 </style>
@@ -36,7 +36,7 @@
   <div style="margin-left:190px;border-left:2px solid #38B0C0;padding:25px;">
 <h3>Fri, 08 Jun 2018</h3>
 <br />
-<center><a name="pingali"> <h2>A new way to look at parsing</h2> </a>
+<center><a name="pingali"> <h2>Parsing with pictures: Grammar Flow Graphs</h2> </a>
 </center>
 <html>
   <head>
@@ -57,6 +57,8 @@
       parsing algorithms can get.
       My Marpa parser is an Earley parser, table-driven,
       and its parse engine is written in C language.<a id="footnote-1-ref" href="#footnote-1">[1]</a>
+    </p>
+    <p>
       The MDS (Might/Darais/Spiewak) parser is
       an extension of regular expressions
       which constructs states on the fly.
@@ -103,7 +105,7 @@
       In other words, with tags, the GFG recognizer now is a parser.
     </p>
     <p>
-      It turns out that this fixed-recognizer-turned-parser is not new.
+      It turns out that this recognizer-turned-parser is not new.
       In fact, it is
       <b>exactly</b>
       Earley's algorithm.
@@ -180,8 +182,10 @@
       it is over-liberal.
     </p>
     <p>
+      The bug is the one already described,
+      and our fix is the one already described:
       Each GFG state either starts a recursion or is part of one.
-      We fix the bug by tagging each GFG state with the
+      We fix the bug by tagging each GFG state with
       the index of the GFG state-set that starts its recursion.
       Once these tags are added,
       the GFG state-sets are exactly Earley sets.
@@ -219,10 +223,10 @@
       When the illiberal parser encounters a point where it cannot
       continue because of a missing token,
       procedural logic can ask
-      what the expected token is,
-      concoct it on they fly,
-      supply it to the illiberal parser,
-      and ask the illiberal parser to continue.
+      what the expected token is;
+      concoct that token on the fly;
+      supply that token to the illiberal parser;
+      and then ask the illiberal parser to continue.
       This is called the "Ruby Slippers" technique,
       and an HTML parser based on it has been implemented.<a id="footnote-7-ref" href="#footnote-7">[7]</a>
     </p>

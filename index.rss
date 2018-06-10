@@ -10,7 +10,7 @@
     <language>en</language>
 
   <item>
-    <title>A new way to look at parsing</title>
+    <title>Parsing with pictures: Grammar Flow Graphs</title>
     <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2018/05/pingali.html</link>
     <description>&lt;html&gt;
   &lt;head&gt;
@@ -31,6 +31,8 @@
       parsing algorithms can get.
       My Marpa parser is an Earley parser, table-driven,
       and its parse engine is written in C language.&lt;a id=&quot;footnote-1-ref&quot; href=&quot;#footnote-1&quot;&gt;[1]&lt;/a&gt;
+    &lt;/p&gt;
+    &lt;p&gt;
       The MDS (Might/Darais/Spiewak) parser is
       an extension of regular expressions
       which constructs states on the fly.
@@ -77,7 +79,7 @@
       In other words, with tags, the GFG recognizer now is a parser.
     &lt;/p&gt;
     &lt;p&gt;
-      It turns out that this fixed-recognizer-turned-parser is not new.
+      It turns out that this recognizer-turned-parser is not new.
       In fact, it is
       &lt;b&gt;exactly&lt;/b&gt;
       Earley's algorithm.
@@ -154,8 +156,10 @@
       it is over-liberal.
     &lt;/p&gt;
     &lt;p&gt;
+      The bug is the one already described,
+      and our fix is the one already described:
       Each GFG state either starts a recursion or is part of one.
-      We fix the bug by tagging each GFG state with the
+      We fix the bug by tagging each GFG state with
       the index of the GFG state-set that starts its recursion.
       Once these tags are added,
       the GFG state-sets are exactly Earley sets.
@@ -193,10 +197,10 @@
       When the illiberal parser encounters a point where it cannot
       continue because of a missing token,
       procedural logic can ask
-      what the expected token is,
-      concoct it on they fly,
-      supply it to the illiberal parser,
-      and ask the illiberal parser to continue.
+      what the expected token is;
+      concoct that token on the fly;
+      supply that token to the illiberal parser;
+      and then ask the illiberal parser to continue.
       This is called the &quot;Ruby Slippers&quot; technique,
       and an HTML parser based on it has been implemented.&lt;a id=&quot;footnote-7-ref&quot; href=&quot;#footnote-7&quot;&gt;[7]&lt;/a&gt;
     &lt;/p&gt;

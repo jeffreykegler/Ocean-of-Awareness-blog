@@ -61,7 +61,7 @@ sub do_footnote {
 }
 
 __DATA__
-A new way to look at parsing
+Parsing with pictures: Grammar Flow Graphs
 <html>
   <head>
   </head>
@@ -97,6 +97,8 @@ A new way to look at parsing
         <a href="https://metacpan.org/pod/Marpa::R2">
           MetaCPAN, accessed 30 April 2018.</a>.
       </footnote>
+    </p>
+    <p>
       The MDS (Might/Darais/Spiewak) parser is
       an extension of regular expressions
       which constructs states on the fly.
@@ -173,7 +175,7 @@ A new way to look at parsing
       In other words, with tags, the GFG recognizer now is a parser.
     </p>
     <p>
-      It turns out that this fixed-recognizer-turned-parser is not new.
+      It turns out that this recognizer-turned-parser is not new.
       In fact, it is
       <b>exactly</b>
       Earley's algorithm.
@@ -252,8 +254,10 @@ A new way to look at parsing
       it is over-liberal.
     </p>
     <p>
+      The bug is the one already described,
+      and our fix is the one already described:
       Each GFG state either starts a recursion or is part of one.
-      We fix the bug by tagging each GFG state with the
+      We fix the bug by tagging each GFG state with
       the index of the GFG state-set that starts its recursion.
       Once these tags are added,
       the GFG state-sets are exactly Earley sets.
@@ -291,10 +295,10 @@ A new way to look at parsing
       When the illiberal parser encounters a point where it cannot
       continue because of a missing token,
       procedural logic can ask
-      what the expected token is,
-      concoct it on they fly,
-      supply it to the illiberal parser,
-      and ask the illiberal parser to continue.
+      what the expected token is;
+      concoct that token on the fly;
+      supply that token to the illiberal parser;
+      and then ask the illiberal parser to continue.
       This is called the "Ruby Slippers" technique,
       and an HTML parser based on it has been implemented.<footnote>
         I have based an
