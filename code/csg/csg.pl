@@ -14,15 +14,17 @@ use Marpa::R2 2.090;
 my $dsl = <<'END_OF_DSL';
 :default ::= action => [name,values]
 lexeme default = latm => 1
-S ::= prefix AB C trailer
-AB ::= A AB B
+S ::= prefix ABC trailer
+ABC ::= ABC_prefix C_rest
+ABC_prefix ::= ABs C
+ABs ::= A ABs B | A B
 prefix ::= A*
 trailer ::= C*
-AB ::= A B
-event '^C' = predicted <C>
+C_rest ::= [^\d\D] # dummy -- is read procedurally
+event 'ABC_prefix$' = completed <ABC_prefix>
 A ~ 'a'
 B ~ 'b'
-C ~ [^\d\D]
+C ~ 'c'
 END_OF_DSL
 
 my @ex = ('abc',
@@ -74,22 +76,23 @@ sub doit {
     {
 
         my $event = $recce->event($event_ix);
-        my $name  = shift @{$event};
-        if ( $name eq '^C' ) {
-	    my ($start, $length) = $recce->last_completed_span('AB');
-	    my $c_length = ($length_read+1)/2;
+	say STDERR join " ", @{$event};
+        my $name  = $event->[0];
+        if ( $name eq 'ABC_prefix$' ) {
+	    my ($start, $length) = $recce->last_completed_span('ABC_prefix');
+	    my $c_length = ($length-1)/2;
 	    my $pos = $recce->pos();
 	    say STDERR "length_read = $length_read";
 	    say STDERR "start = $start; length = $length";
-	    say STDERR "substr = " . substr(${$input}, $pos, $c_length);
-	    if (substr(${$input}, $pos, $c_length) eq ('c' x $c_length))
+	    say STDERR "substr = " . substr(${$input}, $pos-1, $c_length);
+	    if (substr(${$input}, $pos-1, $c_length) eq ('c' x $c_length))
 	    {
 	      die "Event $name NYI Match!";
 	    }
 	    die "Event $name NYI no match";
             next EVENT;
         }
-        die "Unexpected event: ", join q{ }, @{$event};
+        die "Unexpected event: ", (join q{ }, @{$event});
     }
 
     if ( $length_read != length $input_length ) {
