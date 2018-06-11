@@ -7,24 +7,30 @@ use warnings;
 use Data::Dumper;
 use English qw( -no_match_vars );
 
-use Test::More tests => 4;
+use Test::More tests => 5;
 
 use Marpa::R2 2.090;
 
 my $dsl = <<'END_OF_DSL';
 :default ::= action => [name,values]
 lexeme default = latm => 1
-S ::= AB C
-AB ::= 'a' 'b'
-AB ::= 'a' AB 'b'
-C ::= [^\d\D]
+S ::= prefix AB C trailer
+AB ::= A AB B
+prefix ::= A*
+trailer ::= C*
+AB ::= A B
 event '^C' = predicted <C>
+A ~ 'a'
+B ~ 'b'
+C ~ [^\d\D]
 END_OF_DSL
 
 my @ex = ('abc',
  'aabbcc',
  'aabbc',
+ 'aabbcccc',
  'aabbccc',
+ 'aaaaabbccc',
 );
 
 my $grammar = Marpa::R2::Scanless::G->new( { source => \$dsl } );
@@ -57,7 +63,7 @@ sub flatten {
 
 sub doit {
     my ( $recce, $input ) = @_;
-    my $input_length = ${$input};
+    my $input_length = length ${$input};
     my $length_read  = $recce->read($input);
     EVENT:
     for (
@@ -70,9 +76,19 @@ sub doit {
         my $event = $recce->event($event_ix);
         my $name  = shift @{$event};
         if ( $name eq '^C' ) {
-            die"Event $name NYI";
+	    my ($start, $length) = $recce->last_completed_span('AB');
+	    my $c_length = ($length_read+1)/2;
+	    my $pos = $recce->pos();
+	    say STDERR "length_read = $length_read";
+	    say STDERR "start = $start; length = $length";
+	    say STDERR "substr = " . substr(${$input}, $pos, $c_length);
+	    if (substr(${$input}, $pos, $c_length) eq ('c' x $c_length))
+	    {
+	      die "Event $name NYI Match!";
+	    }
+	    die "Event $name NYI no match";
             next EVENT;
-        } ## end if ( $name eq 'expecting text' )
+        }
         die "Unexpected event: ", join q{ }, @{$event};
     }
 
