@@ -6,7 +6,8 @@ all: \
   ../source/individual/2018/05/fast_power.txt \
   ../source/individual/2018/05/chomsky_1956.txt \
   ../source/individual/2018/05/knuth_1965.txt \
-  ../source/individual/2018/05/pingali.txt
+  ../source/individual/2018/05/pingali.txt \
+  ../source/individual/2018/05/csg.txt
 
 ../source/individual/2018/05/fast_power.txt: fast_power.pl
 	perl fast_power.pl > ../source/individual/2018/05/fast_power.txt
@@ -19,3 +20,6 @@ all: \
 
 ../source/individual/2018/05/pingali.txt: pingali.pl
 	perl pingali.pl > ../source/individual/2018/05/pingali.txt
+
+../source/individual/2018/05/csg.txt: csg.pl
+	perl csg.pl > ../source/individual/2018/05/csg.txt
