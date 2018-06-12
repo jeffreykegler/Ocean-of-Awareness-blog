@@ -7,7 +7,7 @@ use warnings;
 use Data::Dumper;
 use English qw( -no_match_vars );
 
-use Test::More tests => 20;
+use Test::More tests => 22;
 
 use Marpa::R2 4.000;
 
@@ -33,10 +33,11 @@ my @test = (
  [ 'aabbcccc', 'OK', 'ABC of length 6 starts at 0' ],
  [ 'aabbccc', 'OK', 'ABC of length 6 starts at 0' ],
  [ 'aaaaabbccc', 'OK', 'ABC of length 6 starts at 3' ],
- [ 'abbc', "Too few A's", '[fail]' ],
- [ 'aabbbccc', "Too few A's", '[fail]' ],
+ [ 'abbc', "Too few A's or no B's", '[fail]' ],
+ [ 'aabbbccc', "Too few A's or no B's", '[fail]' ],
  [ 'aabbc', "Too few C's", '[fail]' ],
  [ 'aaabbbc', "Too few C's", '[fail]' ],
+ [ 'aacc', "Too few A's or no B's", '[fail]' ],
 );
 
 my $grammar = Marpa::R2::Scanless::G->new( { source => \$dsl } );
@@ -54,7 +55,7 @@ TEST: for my $ix (0 .. $#test)
 	my $eval_error = $EVAL_ERROR;
 	PARSE_EVAL_ERROR: {
 	  if ($eval_error =~ m/No lexeme found/) {
-	     $result = "Too few A's";
+	     $result = "Too few A's or no B's";
 	     last PARSE_EVAL_ERROR;
 	  }
 	  if ($eval_error =~ m/Too few C's/) {
