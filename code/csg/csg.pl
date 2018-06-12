@@ -7,7 +7,7 @@ use warnings;
 use Data::Dumper;
 use English qw( -no_match_vars );
 
-use Test::More tests => 5;
+use Test::More tests => 6;
 
 use Marpa::R2 2.090;
 
@@ -17,19 +17,18 @@ lexeme default = latm => 1
 S ::= prefix ABC trailer
 ABC ::= ABs Cs
 ABs ::= A ABs B | A B
-Cs ::= C # dummy -- sequence is read procedurally
 prefix ::= A*
 trailer ::= C_extra*
-:lexeme ~ C pause => before event => 'before C'
+:lexeme ~ Cs pause => before event => 'before C'
 A ~ 'a'
 B ~ 'b'
-C ~ 'c'
+Cs ~ 'c'
 C_extra ~ 'c'
 END_OF_DSL
 
 my @ex = ('abc',
  'aabbcc',
- 'aabbc',
+ 'aaabccc',
  'aabbcccc',
  'aabbccc',
  'aaaaabbccc',
@@ -66,40 +65,37 @@ sub flatten {
 sub doit {
     my ( $recce, $input ) = @_;
     my $input_length = length ${$input};
-    my $length_read  = $recce->read($input);
-    EVENT:
     for (
-        my $event_ix = 0;
-        my $event    = $recce->event($event_ix);
-        $event_ix++
-        )
+        my $pos = $recce->read($input);
+        $pos < $input_length;
+        $pos = $recce->resume()
+      )
     {
-
-        my $event = $recce->event($event_ix);
-	say STDERR join " ", @{$event};
-        my $name  = $event->[0];
-        if ( $name eq 'before C' ) {
-	    my ($start, $length) = $recce->last_completed_span('ABs');
-	    my $c_length = ($length)/2;
-	    my $pos = $recce->pos();
-	    say STDERR "length_read = $length_read";
-	    say STDERR "start = $start; length = $length";
-	    say STDERR "substr = " . substr(${$input}, $pos, $c_length);
-	    if (substr(${$input}, $pos, $c_length) eq ('c' x $c_length))
-	    {
-	      die "Event $name NYI Match!";
-	    }
-	    die "Event $name NYI no match";
-            next EVENT;
+      EVENT:
+        for (
+            my $event_ix = 0 ;
+            my $event    = $recce->event($event_ix) ;
+            $event_ix++
+          )
+        {
+            my $name = $event->[0];
+            if ( $name eq 'before C' ) {
+                my ( $start, $length ) = $recce->last_completed_span('ABs');
+                my $c_length = ($length) / 2;
+                # say STDERR "pos = $pos";
+                # say STDERR "start = $start; length = $length";
+                # say STDERR "substr = " . substr( ${$input}, $pos, $c_length );
+                my $c_seq = ( 'c' x $c_length );
+                if ( substr( ${$input}, $pos, $c_length ) eq $c_seq ) {
+                    # say STDERR "Event $name NYI Match!";
+                    $recce->lexeme_read( 'Cs', $pos, $c_length, $c_seq );
+                    next EVENT;
+                }
+                die "Event $name NYI no match";
+            }
         }
-        die "Unexpected event: ", (join q{ }, @{$event});
     }
 
-    if ( $length_read != length $input_length ) {
-        die "read() ended prematurely\n",
-            "  input length = $input_length\n",
-            "  length read = $length_read\n";
-    } ## end if ( $length_read != length $input_length )
     my $value_ref = $recce->value();
     if ( !$value_ref ) {
         die "input read, but there was no parse";
