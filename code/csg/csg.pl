@@ -7,7 +7,7 @@ use warnings;
 use Data::Dumper;
 use English qw( -no_match_vars );
 
-use Test::More tests => 12;
+use Test::More tests => 20;
 
 use Marpa::R2 4.000;
 
