@@ -67,10 +67,10 @@
     because it demonstrates
     an important subset of Marpa's procedural parsing capabilities.
     &lt;/p&gt;
-    &lt;h2&gt;Step 1: the context-free grammar&lt;/h2&gt;
-    &lt;p&gt;Our strategy then, will be to start with a context-free parser,
+    &lt;h2&gt;Step 1: the syntax&lt;/h2&gt;
+    &lt;p&gt;Our strategy will be to start with a context-free syntax,
     and then extend it with procedural logic.
-    Here is the grammar:
+    Here is the context-free grammar:
     &lt;/p&gt;
     &lt;pre&gt;&lt;tt&gt;
     lexeme default = latm =&gt; 1
@@ -80,9 +80,9 @@
     ABs ::= A ABs B | A B
     prefix ::= A*
     trailer ::= C_extra*
-    :lexeme ~ Cs pause =&gt; before event =&gt; 'before C'
     A ~ 'a'
     B ~ 'b'
+    :lexeme ~ Cs pause =&gt; before event =&gt; 'before C'
     Cs ~ 'c' # dummy -- procedural logic reads &lt;Cs&gt;
     C_extra ~ 'c'
     &lt;/tt&gt;&lt;/pre&gt;
@@ -91,16 +91,108 @@
     by a later enhancement to Marpa::R2.
     Marpa::R2 is stable, and backward-compatibility is
     a very high priority.
-    The next line defines the format -- a parse tree
+    &lt;pre&gt;&lt;tt&gt;
+    :default ::= action =&gt; [name,start,length,values]
+    &lt;/tt&gt;&lt;/pre&gt;
+    &lt;p&gt;
+    The second line defines the format -- a parse tree
     whose nodes are arrays whose elements are,
     in order,
     the node name, its start position,
     its length and its child nodes.
     &lt;/p&gt;
     &lt;pre&gt;&lt;tt&gt;
-    :default ::= action =&gt; [name,start,length,values]
+    S ::= prefix ABC trailer
     &lt;/tt&gt;&lt;/pre&gt;
-    &lt;h2&gt;Comments, etc.&lt;/h2&gt;
+    &lt;p&gt;The symbol &lt;tt&gt;&amp;lt;ABC&amp;gt;&lt;/tt&gt;
+    is our &quot;target&quot; -- the counted 
+    &lt;tt&gt;a&lt;/tt&gt;'s,
+    &lt;tt&gt;b&lt;/tt&gt;'s,
+    and &lt;tt&gt;c&lt;/tt&gt;'s.
+    To make things a bit more interesting,
+    and to make the problem more like a parsing problem instead of a counting problem,
+    we allow a prefix of &lt;tt&gt;a&lt;/tt&gt;'s
+    and a suffix of &lt;tt&gt;c&lt;/tt&gt;'s.
+    &lt;/p&gt;
+    &lt;pre&gt;&lt;tt&gt;
+    ABC ::= ABs Cs
+    &lt;/tt&gt;&lt;/pre&gt;
+    &lt;p&gt;We divide the 
+    &lt;tt&gt;&amp;lt;ABC&amp;gt;&lt;/tt&gt; target into two parts:
+    &lt;tt&gt;&amp;lt;ABs&amp;gt;&lt;/tt&gt;, which contains the
+    &lt;tt&gt;a&lt;/tt&gt;'s,
+    and &lt;tt&gt;b&lt;/tt&gt;'s;
+    and
+    &lt;tt&gt;&amp;lt;Cs&amp;gt;&lt;/tt&gt;, which contains the
+    and &lt;tt&gt;b&lt;/tt&gt;'s.
+    &lt;/p&gt;
+    &lt;pre&gt;&lt;tt&gt;
+    ABs ::= A ABs B | A B
+    &lt;/tt&gt;&lt;/pre&gt;
+    &lt;p&gt;
+    A string &quot;&lt;tt&gt;a^n b^n&lt;/tt&gt;&quot; is context-free,
+    so we can deal with
+    &lt;tt&gt;&amp;lt;ABs&amp;gt;&lt;/tt&gt; without procedural logic.
+    The line above produces a non-empty string of
+    &lt;tt&gt;a&lt;/tt&gt;'s then
+    &lt;tt&gt;b&lt;/tt&gt;'s;
+    with an equal number of each character.
+    &lt;/p&gt;
+    &lt;pre&gt;&lt;tt&gt;
+    prefix ::= A*
+    trailer ::= C_extra*
+    &lt;/tt&gt;&lt;/pre&gt;
+    &lt;p&gt;As stated above,
+    &lt;tt&gt;&amp;lt;prefix&amp;gt;&lt;/tt&gt;,
+    is a series of &lt;tt&gt;a&lt;/tt&gt;'s and
+    &lt;tt&gt;&amp;lt;suffix&amp;gt;&lt;/tt&gt;
+    is a series of &lt;tt&gt;c&lt;/tt&gt;'s.
+    &lt;/p&gt;
+    &lt;pre&gt;&lt;tt&gt;
+    A ~ 'a'
+    B ~ 'b'
+    &lt;/tt&gt;&lt;/pre&gt;
+    &lt;p&gt;Marpa::R2 has a separate lexical and syntactic phase.
+    We now define our lexemes.
+    The first two are simple enough:
+    &lt;tt&gt;&amp;lt;A&amp;gt;&lt;/tt&gt; is the letter &quot;&lt;tt&gt;a&lt;/tt&gt;&quot;; and
+    &lt;tt&gt;&amp;lt;B&amp;gt;&lt;/tt&gt; is the letter &quot;&lt;tt&gt;b&lt;/tt&gt;&quot;;
+    &lt;/p&gt;
+    &lt;pre&gt;&lt;tt&gt;
+    :lexeme ~ Cs pause =&gt; before event =&gt; 'before C'
+    Cs ~ 'c' # dummy -- procedural logic reads &lt;Cs&gt;
+    C_extra ~ 'c'
+    &lt;/tt&gt;&lt;/pre&gt;
+    &lt;p&gt;
+    For the letter &quot;&lt;tt&gt;c&lt;/tt&gt;&quot;,
+    we will use procedural logic.
+    As hooks for procedural logic,
+    Marpa allows a full range of events.
+    Events can occur on prediction and completion of symbols;
+    when symbols are nulled;
+    before lexemes
+    and after lexemes.
+    The first line in the above display
+    declares a &quot;before lexeme&quot; event
+    on the symbol
+    &lt;tt&gt;&amp;lt;Cs&amp;gt;&lt;/tt&gt;.
+    The name of the event is &quot;&lt;tt&gt;before C&lt;/tt&gt;&quot;.
+    &lt;/p&gt;
+    &lt;p&gt;The second line is a dummy entry,
+    which is needed to allow the &quot;&lt;tt&gt;before C&lt;/tt&gt;&quot;
+    event to trigger.
+    The entry says that
+    &lt;tt&gt;&amp;lt;Cs&amp;gt;&lt;/tt&gt; is a single letter &quot;&lt;tt&gt;c&lt;/tt&gt;&quot;.
+    This is false --
+    &lt;tt&gt;&amp;lt;Cs&amp;gt;&lt;/tt&gt; is a series of one or more
+    &lt;tt&gt;c&lt;/tt&gt;'s,
+    which needs to be counted.
+    But when
+    the &quot;&lt;tt&gt;before C&lt;/tt&gt;&quot; event triggers,
+    the procedural
+    logic will make things right.
+    &lt;/p&gt;
+    &lt;h2&gt;TODO&lt;/h2&gt;
     &lt;p&gt;TODO&lt;a id=&quot;footnote-3-ref&quot; href=&quot;#footnote-3&quot;&gt;[3]&lt;/a&gt;.
     &lt;h2&gt;Comments, etc.&lt;/h2&gt;
     &lt;p&gt;

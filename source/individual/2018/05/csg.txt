@@ -54,10 +54,10 @@ Marpa and procedural parsing
     because it demonstrates
     an important subset of Marpa's procedural parsing capabilities.
     </p>
-    <h2>Step 1: the context-free grammar</h2>
-    <p>Our strategy then, will be to start with a context-free parser,
+    <h2>Step 1: the syntax</h2>
+    <p>Our strategy will be to start with a context-free syntax,
     and then extend it with procedural logic.
-    Here is the grammar:
+    Here is the context-free grammar:
     </p>
     <pre><tt>
     lexeme default = latm => 1
@@ -67,9 +67,9 @@ Marpa and procedural parsing
     ABs ::= A ABs B | A B
     prefix ::= A*
     trailer ::= C_extra*
-    :lexeme ~ Cs pause => before event => 'before C'
     A ~ 'a'
     B ~ 'b'
+    :lexeme ~ Cs pause => before event => 'before C'
     Cs ~ 'c' # dummy -- procedural logic reads <Cs>
     C_extra ~ 'c'
     </tt></pre>
@@ -78,16 +78,108 @@ Marpa and procedural parsing
     by a later enhancement to Marpa::R2.
     Marpa::R2 is stable, and backward-compatibility is
     a very high priority.
-    The next line defines the format -- a parse tree
+    <pre><tt>
+    :default ::= action => [name,start,length,values]
+    </tt></pre>
+    <p>
+    The second line defines the format -- a parse tree
     whose nodes are arrays whose elements are,
     in order,
     the node name, its start position,
     its length and its child nodes.
     </p>
     <pre><tt>
-    :default ::= action => [name,start,length,values]
+    S ::= prefix ABC trailer
     </tt></pre>
-    <h2>Comments, etc.</h2>
+    <p>The symbol <tt>&lt;ABC&gt;</tt>
+    is our "target" -- the counted 
+    <tt>a</tt>'s,
+    <tt>b</tt>'s,
+    and <tt>c</tt>'s.
+    To make things a bit more interesting,
+    and to make the problem more like a parsing problem instead of a counting problem,
+    we allow a prefix of <tt>a</tt>'s
+    and a suffix of <tt>c</tt>'s.
+    </p>
+    <pre><tt>
+    ABC ::= ABs Cs
+    </tt></pre>
+    <p>We divide the 
+    <tt>&lt;ABC&gt;</tt> target into two parts:
+    <tt>&lt;ABs&gt;</tt>, which contains the
+    <tt>a</tt>'s,
+    and <tt>b</tt>'s;
+    and
+    <tt>&lt;Cs&gt;</tt>, which contains the
+    and <tt>b</tt>'s.
+    </p>
+    <pre><tt>
+    ABs ::= A ABs B | A B
+    </tt></pre>
+    <p>
+    A string "<tt>a^n b^n</tt>" is context-free,
+    so we can deal with
+    <tt>&lt;ABs&gt;</tt> without procedural logic.
+    The line above produces a non-empty string of
+    <tt>a</tt>'s then
+    <tt>b</tt>'s;
+    with an equal number of each character.
+    </p>
+    <pre><tt>
+    prefix ::= A*
+    trailer ::= C_extra*
+    </tt></pre>
+    <p>As stated above,
+    <tt>&lt;prefix&gt;</tt>,
+    is a series of <tt>a</tt>'s and
+    <tt>&lt;suffix&gt;</tt>
+    is a series of <tt>c</tt>'s.
+    </p>
+    <pre><tt>
+    A ~ 'a'
+    B ~ 'b'
+    </tt></pre>
+    <p>Marpa::R2 has a separate lexical and syntactic phase.
+    We now define our lexemes.
+    The first two are simple enough:
+    <tt>&lt;A&gt;</tt> is the letter "<tt>a</tt>"; and
+    <tt>&lt;B&gt;</tt> is the letter "<tt>b</tt>";
+    </p>
+    <pre><tt>
+    :lexeme ~ Cs pause => before event => 'before C'
+    Cs ~ 'c' # dummy -- procedural logic reads <Cs>
+    C_extra ~ 'c'
+    </tt></pre>
+    <p>
+    For the letter "<tt>c</tt>",
+    we will use procedural logic.
+    As hooks for procedural logic,
+    Marpa allows a full range of events.
+    Events can occur on prediction and completion of symbols;
+    when symbols are nulled;
+    before lexemes
+    and after lexemes.
+    The first line in the above display
+    declares a "before lexeme" event
+    on the symbol
+    <tt>&lt;Cs&gt;</tt>.
+    The name of the event is "<tt>before C</tt>".
+    </p>
+    <p>The second line is a dummy entry,
+    which is needed to allow the "<tt>before C</tt>"
+    event to trigger.
+    The entry says that
+    <tt>&lt;Cs&gt;</tt> is a single letter "<tt>c</tt>".
+    This is false --
+    <tt>&lt;Cs&gt;</tt> is a series of one or more
+    <tt>c</tt>'s,
+    which needs to be counted.
+    But when
+    the "<tt>before C</tt>" event triggers,
+    the procedural
+    logic will make things right.
+    </p>
+    <h2>TODO</h2>
     <p>TODO<a id="footnote-3-ref" href="#footnote-3">[3]</a>.
     <h2>Comments, etc.</h2>
     <p>
