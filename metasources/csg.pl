@@ -145,9 +145,9 @@ Marpa and procedural parsing
     ABs ::= A ABs B | A B
     prefix ::= A*
     trailer ::= C_extra*
-    :lexeme ~ Cs pause => before event => 'before C'
     A ~ 'a'
     B ~ 'b'
+    :lexeme ~ Cs pause => before event => 'before C'
     Cs ~ 'c' # dummy -- procedural logic reads <Cs>
     C_extra ~ 'c'
     </tt></pre>
