@@ -12,8 +12,8 @@ use Test::More tests => 24;
 use Marpa::R2 4.000;
 
 my $dsl = <<'END_OF_DSL';
-:default ::= action => [name,start,length,values]
 lexeme default = latm => 1
+:default ::= action => [name,start,length,values]
 S ::= prefix ABC trailer
 ABC ::= ABs Cs
 ABs ::= A ABs B | A B
@@ -22,7 +22,7 @@ trailer ::= C_extra*
 :lexeme ~ Cs pause => before event => 'before C'
 A ~ 'a'
 B ~ 'b'
-Cs ~ 'c'
+Cs ~ 'c' # dummy -- procedural logic reads <Cs>
 C_extra ~ 'c'
 END_OF_DSL
 
@@ -88,7 +88,6 @@ sub find_ABC {
     my $ref_type = ref $tree;
     return find_ABC(${$tree}) if $ref_type eq 'REF';
     return undef if ref $tree ne 'ARRAY';
-    # say STDERR "tree: ", join " ", @{$tree};
     if ($tree->[0] eq 'ABC') {
        my $length = $tree->[2];
        my $start = $tree->[1];
@@ -99,7 +98,7 @@ sub find_ABC {
 	return $child_value if $child_value;
     }
     return undef;
-} ## end sub flatten
+}
 
 sub doit {
     my ( $recce, $input ) = @_;
@@ -121,17 +120,14 @@ sub doit {
             if ( $name eq 'before C' ) {
                 my ( $start, $length ) = $recce->last_completed_span('ABs');
                 my $c_length = ($length) / 2;
-                # say STDERR "pos = $pos";
-                # say STDERR "start = $start; length = $length";
-                # say STDERR "substr = " . substr( ${$input}, $pos, $c_length );
                 my $c_seq = ( 'c' x $c_length );
                 if ( substr( ${$input}, $pos, $c_length ) eq $c_seq ) {
-                    # say STDERR "Event $name NYI Match!";
                     $recce->lexeme_read( 'Cs', $pos, $c_length, $c_seq );
 		    next EVENT;
                 }
 		die qq{Too few C's};
             }
+	    die qq{Unexpected event: name="$name"};
         }
     }
 
@@ -141,4 +137,4 @@ sub doit {
     }
 
     return $value_ref;
-} ## end sub doit
+}
