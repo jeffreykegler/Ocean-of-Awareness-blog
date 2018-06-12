@@ -7,7 +7,7 @@ use warnings;
 use Data::Dumper;
 use English qw( -no_match_vars );
 
-use Test::More tests => 22;
+use Test::More tests => 24;
 
 use Marpa::R2 4.000;
 
@@ -33,6 +33,7 @@ my @test = (
  [ 'aabbcccc', 'OK', 'ABC of length 6 starts at 0' ],
  [ 'aabbccc', 'OK', 'ABC of length 6 starts at 0' ],
  [ 'aaaaabbccc', 'OK', 'ABC of length 6 starts at 3' ],
+ [ 'aaaabbbccc', 'OK', 'ABC of length 9 starts at 1' ],
  [ 'abbc', "Too few A's or no B's", '[fail]' ],
  [ 'aabbbccc', "Too few A's or no B's", '[fail]' ],
  [ 'aabbc', "Too few C's", '[fail]' ],
