@@ -179,6 +179,193 @@ Marpa and procedural parsing
     the procedural
     logic will make things right.
     </p>
+    <h2>The procedural logic</h2>
+    <p>
+    At this point, we have solved part of the problem with context-free syntax,
+    and set up a Marpa event named "<tt>before C</tt>",
+    which we hope to solve the rest of it.
+    </p>
+    <pre><tt>
+    my $input_length = length ${$input};
+    for (
+        my $pos = $recce->read($input);
+        $pos < $input_length;
+        $pos = $recce->resume()
+      )
+    {
+      </tt><b>... Process events ...</b><tt>
+    }
+    </tt></pre>
+    <p>Processing of events takes place inside a Marpa read loop.
+    This is initialized with a <tt>read()</tt> method,
+    and is continued with a <tt>resume()</tt> method.
+    The <tt>read()</tt> method returns the current position
+    in the input.
+    If the current position is end-of-input, we are done.
+    If not, we were interrupted by an event, which we
+    must process.
+    </p>
+    <pre><tt>
+    </tt><b>Process events</b><tt>
+
+    EVENT:
+      for (
+	  my $event_ix = 0 ;
+	  my $event    = $recce->event($event_ix) ;
+	  $event_ix++
+	)
+      {
+	  my $name = $event->[0];
+	  if ( $name eq 'before C' ) {
+	      </tt><b>... Process "before C" event ...</b><tt>
+	  }
+	  die qq{Unexpected event: name="$name"};
+      }
+    </tt></pre>
+    <p>In this application, only one event can occur at any location,
+    so the above look is "overkill".
+    It loops through the events, one by one.
+    The <tt>event</tt> method returns a reference to an array
+    of event data.
+    The only element we care about is the event name.
+    In fact, if we weren't being careful about error checking,
+    we would not even care about the event name,
+    since there can be only one.
+    </p>
+    <p>If, as expected, the event name is "<tt>before C</tt>",
+    we process it.
+    In any other case, we die with an error message.
+    </p>
+    <pre><tt>
+    </tt><b>Process "before C" event</b><tt>
+
+    my ( $start, $length ) = $recce->last_completed_span('ABs');
+    my $c_length = ($length) / 2;
+    my $c_seq = ( 'c' x $c_length );
+    if ( substr( ${$input}, $pos, $c_length ) eq $c_seq ) {
+	$recce->lexeme_read( 'Cs', $pos, $c_length, $c_seq );
+	next EVENT;
+    }
+    die qq{Too few C's};
+    </tt></pre>
+    <p>This is the core part of our procedural logic,
+    where we have a "<tt>before C</tt>" event.
+    We must
+    <ul>
+    <li>determine the right number of <tt>c</tt> characters;</li>
+    <li>check that the input has
+      the right number of <tt>c</tt> characters;</li>
+    <li>put together a lexeme to feed the Marpa parser; and</li>
+    <li>return control to Marpa.</li>
+    </ul>
+    There is a lot going on,
+    and some of Marpa's most powerful capabilities for assisting
+    procedural logic are shown here.
+    So we will go through this line-by-line.
+    </p>
+    <h3>Left-eidetic</h3>
+    <pre><tt>
+    my ( $start, $length ) = $recce->last_completed_span('ABs');
+    my $c_length = ($length) / 2;
+    </tt></pre>
+    <p>Marpa claim to be "left-eidetic",
+    that is, to have full knowledge of the parse so far.
+    and to make this knowledge available to the programmer.
+    How does a programmer cash in on this promise?
+    <p>Of course, there is
+    <a href="https://metacpan.org/pod/distribution/Marpa-R2/pod/Progress.pod">a fully general interface</a>,
+    which allows you to go through the Earley tables and extract
+    the information in any form necessary.
+    But for our purpose here, this is a more convenient interface.
+    </p>
+    <p>We want to determine how many <tt>c</tt> characters we are looking for,
+    which depends on the number of 
+    <tt>a</tt> and <tt>b</tt> characters that we have already seen.
+    What we really want to know is how long the most recent
+    <tt>&lt;ABs&gt;</tt> symbol was.
+    </p>
+    <p>Marpa has a <tt>last_completed_span()</tt> method is just what
+    we need.
+    This finds the most recent instance of a symbol.
+    (If there had been more than one most recent instance,
+    it would have found the longest.)
+    The <tt>last_completed_span()</tt> method returns the start
+    of the symbol instance (which we do not care about)
+    and its length.
+    The desired number of <tt>c</tt> characters,
+    <tt>$c_length</tt>, is half the length of the 
+    <tt>&lt;ABs&gt;</tt> instance.
+    </p>
+    <h3>External parsing</h3>
+    <pre><tt>
+    my $c_seq = ( 'c' x $c_length );
+    if ( substr( ${$input}, $pos, $c_length ) eq $c_seq ) { </tt><b>...</b><tt> }
+    </tt></pre>
+    <p>Marpa allows external parsing.
+    You can pause Marpa, as we have done,
+    and hand control over to another parser -- including
+    another instance of Marpa.
+    </p>
+    <p>
+    Here external parsing is necessary to make our parser
+    context-sensitive,
+    but the external parser does not have to be fancy.
+    All it needs to do is
+    some counting -- not hard,
+    but something that a context-free grammar cannot do.
+    </p>
+    <p>
+    Here <tt>$pos</tt> is the current position in the input,
+    as returned by the <tt>read()</tt> or <tt>resume</tt>
+    method in the outer loop.
+    Our input is a string referred by <tt>$input</tt>.
+    We just calculated <tt>$c_length</tt> as the number of
+    <tt>c</tt> characters required.
+    The above code checks to see that the required number of
+    <tt>c</tt> characters is at <tt>$pos</tt> in the input.
+    </p>
+    <h3>Communicating with Marpa</h3>
+    <pre><tt>
+	$recce->lexeme_read( 'Cs', $pos, $c_length, $c_seq );
+    </tt></pre>
+    <p>
+    Our external logic is doing the parsing,
+    but we need to let Marpa know what we are finding.
+    We do this with the <tt>lexeme_read()</tt> method.
+    <tt>lexeme_read()</tt> needs to know what symbol we are reading
+    (<tt>Cs</tt> in our case);
+    and its value
+    (<tt>$c_seq</tt> in our case).
+    </p>
+    <p>
+    Marpa requires that
+    every symbol must be tied in some way to the input.
+    This is so that it can report errors.
+    The tie-in can be hack-ish or completely artificial,
+    if necessary.
+    In this application, our symbol instance is tied into
+    the input in a very natural way --
+    we tell Marpa that the symbol is at <tt>$pos</tt> in the input,
+    and of length <tt>$c_length</tt>.
+    </p>
+    <h3>Passing control back to Marpa</h3>
+    <pre><tt>
+	next EVENT;
+    </tt></pre>
+    <p>
+    External parsing can go on quite a long time.
+    In fact, an external parser <b>never</b> has to hand
+    control back to Marpa.
+    But in this case, we are done very quickly.
+    </p>
+    <p>
+    We ask for the next iteration of the <tt>EVENT</tt>
+    loop.
+    (There will only be one in case of an error.)
+    Once done, the <tt>EVENT</tt> loop will hand control
+    over to the outer loop which will call the <tt>resume</tt>
+    method.
+    </p>
     <h2>TODO</h2>
     <p>TODO<a id="footnote-3-ref" href="#footnote-3">[3]</a>.
     <h2>Comments, etc.</h2>

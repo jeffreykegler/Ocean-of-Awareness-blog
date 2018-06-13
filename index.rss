@@ -192,6 +192,193 @@
     the procedural
     logic will make things right.
     &lt;/p&gt;
+    &lt;h2&gt;The procedural logic&lt;/h2&gt;
+    &lt;p&gt;
+    At this point, we have solved part of the problem with context-free syntax,
+    and set up a Marpa event named &quot;&lt;tt&gt;before C&lt;/tt&gt;&quot;,
+    which we hope to solve the rest of it.
+    &lt;/p&gt;
+    &lt;pre&gt;&lt;tt&gt;
+    my $input_length = length ${$input};
+    for (
+        my $pos = $recce-&gt;read($input);
+        $pos &lt; $input_length;
+        $pos = $recce-&gt;resume()
+      )
+    {
+      &lt;/tt&gt;&lt;b&gt;... Process events ...&lt;/b&gt;&lt;tt&gt;
+    }
+    &lt;/tt&gt;&lt;/pre&gt;
+    &lt;p&gt;Processing of events takes place inside a Marpa read loop.
+    This is initialized with a &lt;tt&gt;read()&lt;/tt&gt; method,
+    and is continued with a &lt;tt&gt;resume()&lt;/tt&gt; method.
+    The &lt;tt&gt;read()&lt;/tt&gt; method returns the current position
+    in the input.
+    If the current position is end-of-input, we are done.
+    If not, we were interrupted by an event, which we
+    must process.
+    &lt;/p&gt;
+    &lt;pre&gt;&lt;tt&gt;
+    &lt;/tt&gt;&lt;b&gt;Process events&lt;/b&gt;&lt;tt&gt;
+
+    EVENT:
+      for (
+	  my $event_ix = 0 ;
+	  my $event    = $recce-&gt;event($event_ix) ;
+	  $event_ix++
+	)
+      {
+	  my $name = $event-&gt;[0];
+	  if ( $name eq 'before C' ) {
+	      &lt;/tt&gt;&lt;b&gt;... Process &quot;before C&quot; event ...&lt;/b&gt;&lt;tt&gt;
+	  }
+	  die qq{Unexpected event: name=&quot;$name&quot;};
+      }
+    &lt;/tt&gt;&lt;/pre&gt;
+    &lt;p&gt;In this application, only one event can occur at any location,
+    so the above look is &quot;overkill&quot;.
+    It loops through the events, one by one.
+    The &lt;tt&gt;event&lt;/tt&gt; method returns a reference to an array
+    of event data.
+    The only element we care about is the event name.
+    In fact, if we weren't being careful about error checking,
+    we would not even care about the event name,
+    since there can be only one.
+    &lt;/p&gt;
+    &lt;p&gt;If, as expected, the event name is &quot;&lt;tt&gt;before C&lt;/tt&gt;&quot;,
+    we process it.
+    In any other case, we die with an error message.
+    &lt;/p&gt;
+    &lt;pre&gt;&lt;tt&gt;
+    &lt;/tt&gt;&lt;b&gt;Process &quot;before C&quot; event&lt;/b&gt;&lt;tt&gt;
+
+    my ( $start, $length ) = $recce-&gt;last_completed_span('ABs');
+    my $c_length = ($length) / 2;
+    my $c_seq = ( 'c' x $c_length );
+    if ( substr( ${$input}, $pos, $c_length ) eq $c_seq ) {
+	$recce-&gt;lexeme_read( 'Cs', $pos, $c_length, $c_seq );
+	next EVENT;
+    }
+    die qq{Too few C's};
+    &lt;/tt&gt;&lt;/pre&gt;
+    &lt;p&gt;This is the core part of our procedural logic,
+    where we have a &quot;&lt;tt&gt;before C&lt;/tt&gt;&quot; event.
+    We must
+    &lt;ul&gt;
+    &lt;li&gt;determine the right number of &lt;tt&gt;c&lt;/tt&gt; characters;&lt;/li&gt;
+    &lt;li&gt;check that the input has
+      the right number of &lt;tt&gt;c&lt;/tt&gt; characters;&lt;/li&gt;
+    &lt;li&gt;put together a lexeme to feed the Marpa parser; and&lt;/li&gt;
+    &lt;li&gt;return control to Marpa.&lt;/li&gt;
+    &lt;/ul&gt;
+    There is a lot going on,
+    and some of Marpa's most powerful capabilities for assisting
+    procedural logic are shown here.
+    So we will go through this line-by-line.
+    &lt;/p&gt;
+    &lt;h3&gt;Left-eidetic&lt;/h3&gt;
+    &lt;pre&gt;&lt;tt&gt;
+    my ( $start, $length ) = $recce-&gt;last_completed_span('ABs');
+    my $c_length = ($length) / 2;
+    &lt;/tt&gt;&lt;/pre&gt;
+    &lt;p&gt;Marpa claim to be &quot;left-eidetic&quot;,
+    that is, to have full knowledge of the parse so far.
+    and to make this knowledge available to the programmer.
+    How does a programmer cash in on this promise?
+    &lt;p&gt;Of course, there is
+    &lt;a href=&quot;https://metacpan.org/pod/distribution/Marpa-R2/pod/Progress.pod&quot;&gt;a fully general interface&lt;/a&gt;,
+    which allows you to go through the Earley tables and extract
+    the information in any form necessary.
+    But for our purpose here, this is a more convenient interface.
+    &lt;/p&gt;
+    &lt;p&gt;We want to determine how many &lt;tt&gt;c&lt;/tt&gt; characters we are looking for,
+    which depends on the number of 
+    &lt;tt&gt;a&lt;/tt&gt; and &lt;tt&gt;b&lt;/tt&gt; characters that we have already seen.
+    What we really want to know is how long the most recent
+    &lt;tt&gt;&amp;lt;ABs&amp;gt;&lt;/tt&gt; symbol was.
+    &lt;/p&gt;
+    &lt;p&gt;Marpa has a &lt;tt&gt;last_completed_span()&lt;/tt&gt; method is just what
+    we need.
+    This finds the most recent instance of a symbol.
+    (If there had been more than one most recent instance,
+    it would have found the longest.)
+    The &lt;tt&gt;last_completed_span()&lt;/tt&gt; method returns the start
+    of the symbol instance (which we do not care about)
+    and its length.
+    The desired number of &lt;tt&gt;c&lt;/tt&gt; characters,
+    &lt;tt&gt;$c_length&lt;/tt&gt;, is half the length of the 
+    &lt;tt&gt;&amp;lt;ABs&amp;gt;&lt;/tt&gt; instance.
+    &lt;/p&gt;
+    &lt;h3&gt;External parsing&lt;/h3&gt;
+    &lt;pre&gt;&lt;tt&gt;
+    my $c_seq = ( 'c' x $c_length );
+    if ( substr( ${$input}, $pos, $c_length ) eq $c_seq ) { &lt;/tt&gt;&lt;b&gt;...&lt;/b&gt;&lt;tt&gt; }
+    &lt;/tt&gt;&lt;/pre&gt;
+    &lt;p&gt;Marpa allows external parsing.
+    You can pause Marpa, as we have done,
+    and hand control over to another parser -- including
+    another instance of Marpa.
+    &lt;/p&gt;
+    &lt;p&gt;
+    Here external parsing is necessary to make our parser
+    context-sensitive,
+    but the external parser does not have to be fancy.
+    All it needs to do is
+    some counting -- not hard,
+    but something that a context-free grammar cannot do.
+    &lt;/p&gt;
+    &lt;p&gt;
+    Here &lt;tt&gt;$pos&lt;/tt&gt; is the current position in the input,
+    as returned by the &lt;tt&gt;read()&lt;/tt&gt; or &lt;tt&gt;resume&lt;/tt&gt;
+    method in the outer loop.
+    Our input is a string referred by &lt;tt&gt;$input&lt;/tt&gt;.
+    We just calculated &lt;tt&gt;$c_length&lt;/tt&gt; as the number of
+    &lt;tt&gt;c&lt;/tt&gt; characters required.
+    The above code checks to see that the required number of
+    &lt;tt&gt;c&lt;/tt&gt; characters is at &lt;tt&gt;$pos&lt;/tt&gt; in the input.
+    &lt;/p&gt;
+    &lt;h3&gt;Communicating with Marpa&lt;/h3&gt;
+    &lt;pre&gt;&lt;tt&gt;
+	$recce-&gt;lexeme_read( 'Cs', $pos, $c_length, $c_seq );
+    &lt;/tt&gt;&lt;/pre&gt;
+    &lt;p&gt;
+    Our external logic is doing the parsing,
+    but we need to let Marpa know what we are finding.
+    We do this with the &lt;tt&gt;lexeme_read()&lt;/tt&gt; method.
+    &lt;tt&gt;lexeme_read()&lt;/tt&gt; needs to know what symbol we are reading
+    (&lt;tt&gt;Cs&lt;/tt&gt; in our case);
+    and its value
+    (&lt;tt&gt;$c_seq&lt;/tt&gt; in our case).
+    &lt;/p&gt;
+    &lt;p&gt;
+    Marpa requires that
+    every symbol must be tied in some way to the input.
+    This is so that it can report errors.
+    The tie-in can be hack-ish or completely artificial,
+    if necessary.
+    In this application, our symbol instance is tied into
+    the input in a very natural way --
+    we tell Marpa that the symbol is at &lt;tt&gt;$pos&lt;/tt&gt; in the input,
+    and of length &lt;tt&gt;$c_length&lt;/tt&gt;.
+    &lt;/p&gt;
+    &lt;h3&gt;Passing control back to Marpa&lt;/h3&gt;
+    &lt;pre&gt;&lt;tt&gt;
+	next EVENT;
+    &lt;/tt&gt;&lt;/pre&gt;
+    &lt;p&gt;
+    External parsing can go on quite a long time.
+    In fact, an external parser &lt;b&gt;never&lt;/b&gt; has to hand
+    control back to Marpa.
+    But in this case, we are done very quickly.
+    &lt;/p&gt;
+    &lt;p&gt;
+    We ask for the next iteration of the &lt;tt&gt;EVENT&lt;/tt&gt;
+    loop.
+    (There will only be one in case of an error.)
+    Once done, the &lt;tt&gt;EVENT&lt;/tt&gt; loop will hand control
+    over to the outer loop which will call the &lt;tt&gt;resume&lt;/tt&gt;
+    method.
+    &lt;/p&gt;
     &lt;h2&gt;TODO&lt;/h2&gt;
     &lt;p&gt;TODO&lt;a id=&quot;footnote-3-ref&quot; href=&quot;#footnote-3&quot;&gt;[3]&lt;/a&gt;.
     &lt;h2&gt;Comments, etc.&lt;/h2&gt;
