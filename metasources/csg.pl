@@ -75,10 +75,10 @@ Marpa and procedural parsing
       Many programmers are used to recursive descent (RD),
       which has been state-of-the-art in terms of
       its procedural programming capabilities --
-      it was these capabilities which led to RD's
-      triumph over the now-forgotten Irons algorithm.<footnote>
-      TODO.
-      </footnote>
+      it was these capabilities which led to
+      <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2018/05/fast_power.html">
+      RD's
+      triumph over the now-forgotten Irons algorithm.</a>
     </p>
     <p>
       Marpa, however, has parse engine expressly redesigned<footnote>
@@ -101,17 +101,17 @@ Marpa and procedural parsing
       I will show this with an example.
     </p>
     <h2>A context-sensitive grammar</h2>
-    <p>RD, to be sure, natively only handles LL(1) grammars,
-    while Marpa parses all LR-regular grammars in linear time.
-    So Marpa <b>needs</b> procedural logic much less than RD.
-    As an example of a grammar for which Marpa does
-    require procedural logic, we'll pick the canonical example
-    of a context-sensitive, but not context-free grammar:
+    <p>Marpa parses all LR-regular grammars in linear time,
+    so the first challenge is to find a grammar that
+    <b>needs</b> procedural logic, even when Marpa is used.
+    The following is the canonical example of a grammar that is
+    context-sensitive, but not context-free:
     </p>
     <pre>
           a^n . b^n . c^n : n >= 1
     </pre>
-    This is a sequence of
+    I will call this the "ABC grammar".
+    It is a sequence of
     <tt>a</tt>'s,
     <tt>b</tt>'s, and
     <tt>c</tt>'s,
@@ -120,17 +120,31 @@ Marpa and procedural parsing
     equal to each other and greater
     than one.
     </p>
-    <p>What I outline below is, to put it mildly,
-    not the best or the fastest way to recognize this particular grammar.
+    <p>The ABC "grammar" is really a counting problem more than a
+    a natural parsing problem,
+    and parsing is not the fastest or easiest way to solve it.
     Three tight loops, with counters, would do the same job nicely,
-    and would be mucb faster.
-    But the ABC grammar is chosen for this post precisely because,
-    on one hand it is simple,
+    and would be much faster.
+    But I chose the ABC grammar for exactly this reason.
+    It <b>is</b> simple in itself,
+    but is quite difficult to deal with,
+    even with a context-sensitive parser.<footnote>
+    Writing a context-sensitive phrase structure description
+    of the ABC grammar is not
+    straight-forward.
+    One is given on Wikipedia:
+    <a href="https://en.wikipedia.org/wiki/Context-sensitive_grammar#Examples">
+    https://en.wikipedia.org/wiki/Context-sensitive_grammar#Examples</a>.
+    </footnote>
     and on the other hand is literally impossible for
     a pure context-free parsing strategy.
-    The specific strategy used was picked
-    because it demonstrates
-    an important subset of Marpa's procedural parsing capabilities.
+    <p>
+    </p>
+    In picking the strategy below,
+    I preferred one that illustrates
+    the right subset of Marpa's procedural parsing capabilities.
+    Full code is on-line,
+    and readers are encouraged to "peek ahead".
     </p>
     <h2>Step 1: the syntax</h2>
     <p>Our strategy will be to start with a context-free syntax,

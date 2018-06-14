@@ -12,11 +12,13 @@ Marpa and procedural parsing
       Many programmers are used to recursive descent (RD),
       which has been state-of-the-art in terms of
       its procedural programming capabilities --
-      it was these capabilities which led to RD's
-      triumph over the now-forgotten Irons algorithm.<a id="footnote-1-ref" href="#footnote-1">[1]</a>
+      it was these capabilities which led to
+      <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2018/05/fast_power.html">
+      RD's
+      triumph over the now-forgotten Irons algorithm.</a>
     </p>
     <p>
-      Marpa, however, has parse engine expressly redesigned<a id="footnote-2-ref" href="#footnote-2">[2]</a>
+      Marpa, however, has parse engine expressly redesigned<a id="footnote-1-ref" href="#footnote-1">[1]</a>
       to handle procedural logic well.
       In fact, Marpa is <b>better</b> at procedural logic
       than RD.
@@ -367,7 +369,7 @@ Marpa and procedural parsing
     method.
     </p>
     <h2>TODO</h2>
-    <p>TODO<a id="footnote-3-ref" href="#footnote-3">[3]</a>.
+    <p>TODO<a id="footnote-2-ref" href="#footnote-2">[2]</a>.
     <h2>Comments, etc.</h2>
     <p>
       To learn about Marpa,
@@ -383,9 +385,6 @@ Marpa and procedural parsing
     </p>
     <h2>Footnotes</h2>
 <p id="footnote-1"><b>1.</b>
-      TODO.
- <a href="#footnote-1-ref">&#8617;</a></p>
-<p id="footnote-2"><b>2.</b>
       To handle procedural logic well,
       an Earley engine needs to complete its Earley sets
       in strict order --
@@ -398,8 +397,8 @@ Marpa and procedural parsing
       of operations.
       But Marpa is the first Earley parser to recognize
       and exploit strict-sequencing as a feature.
- <a href="#footnote-2-ref">&#8617;</a></p>
-<p id="footnote-3"><b>3.</b>
+ <a href="#footnote-1-ref">&#8617;</a></p>
+<p id="footnote-2"><b>2.</b>
     One objection to the use of procedural logic to describe the ABC
     grammar is that the mix of procedural and syntactic description is unnatural.
     This is true, but hack-ish as the Marpa description is,
@@ -407,6 +406,6 @@ Marpa and procedural parsing
     "native" description as a CSG:
     <a href="https://en.wikipedia.org/wiki/Context-sensitive_grammar#Examples">
     https://en.wikipedia.org/wiki/Context-sensitive_grammar#Examples</a>.
- <a href="#footnote-3-ref">&#8617;</a></p>
+ <a href="#footnote-2-ref">&#8617;</a></p>
   </body>
 </html>

@@ -25,11 +25,13 @@
       Many programmers are used to recursive descent (RD),
       which has been state-of-the-art in terms of
       its procedural programming capabilities --
-      it was these capabilities which led to RD's
-      triumph over the now-forgotten Irons algorithm.&lt;a id=&quot;footnote-1-ref&quot; href=&quot;#footnote-1&quot;&gt;[1]&lt;/a&gt;
+      it was these capabilities which led to
+      &lt;a href=&quot;http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2018/05/fast_power.html&quot;&gt;
+      RD's
+      triumph over the now-forgotten Irons algorithm.&lt;/a&gt;
     &lt;/p&gt;
     &lt;p&gt;
-      Marpa, however, has parse engine expressly redesigned&lt;a id=&quot;footnote-2-ref&quot; href=&quot;#footnote-2&quot;&gt;[2]&lt;/a&gt;
+      Marpa, however, has parse engine expressly redesigned&lt;a id=&quot;footnote-1-ref&quot; href=&quot;#footnote-1&quot;&gt;[1]&lt;/a&gt;
       to handle procedural logic well.
       In fact, Marpa is &lt;b&gt;better&lt;/b&gt; at procedural logic
       than RD.
@@ -380,7 +382,7 @@
     method.
     &lt;/p&gt;
     &lt;h2&gt;TODO&lt;/h2&gt;
-    &lt;p&gt;TODO&lt;a id=&quot;footnote-3-ref&quot; href=&quot;#footnote-3&quot;&gt;[3]&lt;/a&gt;.
+    &lt;p&gt;TODO&lt;a id=&quot;footnote-2-ref&quot; href=&quot;#footnote-2&quot;&gt;[2]&lt;/a&gt;.
     &lt;h2&gt;Comments, etc.&lt;/h2&gt;
     &lt;p&gt;
       To learn about Marpa,
@@ -396,9 +398,6 @@
     &lt;/p&gt;
     &lt;h2&gt;Footnotes&lt;/h2&gt;
 &lt;p id=&quot;footnote-1&quot;&gt;&lt;b&gt;1.&lt;/b&gt;
-      TODO.
- &lt;a href=&quot;#footnote-1-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
-&lt;p id=&quot;footnote-2&quot;&gt;&lt;b&gt;2.&lt;/b&gt;
       To handle procedural logic well,
       an Earley engine needs to complete its Earley sets
       in strict order --
@@ -411,8 +410,8 @@
       of operations.
       But Marpa is the first Earley parser to recognize
       and exploit strict-sequencing as a feature.
- &lt;a href=&quot;#footnote-2-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
-&lt;p id=&quot;footnote-3&quot;&gt;&lt;b&gt;3.&lt;/b&gt;
+ &lt;a href=&quot;#footnote-1-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;p id=&quot;footnote-2&quot;&gt;&lt;b&gt;2.&lt;/b&gt;
     One objection to the use of procedural logic to describe the ABC
     grammar is that the mix of procedural and syntactic description is unnatural.
     This is true, but hack-ish as the Marpa description is,
@@ -420,7 +419,7 @@
     &quot;native&quot; description as a CSG:
     &lt;a href=&quot;https://en.wikipedia.org/wiki/Context-sensitive_grammar#Examples&quot;&gt;
     https://en.wikipedia.org/wiki/Context-sensitive_grammar#Examples&lt;/a&gt;.
- &lt;a href=&quot;#footnote-3-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+ &lt;a href=&quot;#footnote-2-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
   &lt;/body&gt;
 &lt;/html&gt;</description>
   </item>
