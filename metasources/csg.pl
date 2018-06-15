@@ -81,7 +81,7 @@ Marpa and procedural parsing
       triumph over the now-forgotten Irons algorithm.</a>
     </p>
     <p>
-      Marpa, however, has parse engine expressly redesigned<footnote>
+      Marpa, however, has a parse engine expressly redesigned<footnote>
       To handle procedural logic well,
       an Earley engine needs to complete its Earley sets
       in strict order --
@@ -120,7 +120,7 @@ Marpa and procedural parsing
     equal to each other and greater
     than one.
     </p>
-    <p>The ABC "grammar" is really a counting problem more than a
+    <p>The ABC "grammar" is really a counting problem more than
     a natural parsing problem,
     and parsing is not the fastest or easiest way to solve it.
     Three tight loops, with counters, would do the same job nicely,
@@ -242,7 +242,7 @@ Marpa and procedural parsing
     Here we define our lexemes.
     The first two are simple enough:
     <tt>&lt;A&gt;</tt> is the character "<tt>a</tt>"; and
-    <tt>&lt;B&gt;</tt> is the character "<tt>b</tt>";
+    <tt>&lt;B&gt;</tt> is the character "<tt>b</tt>".
     </p>
     <pre><tt>
     :lexeme ~ Cs pause => before event => 'before C'
@@ -256,7 +256,7 @@ Marpa and procedural parsing
     Marpa allows a full range of events.
     Events can occur on prediction and completion of symbols;
     when symbols are nulled;
-    before lexemes
+    before lexemes;
     and after lexemes.
     The first line in the above display
     declares a "before lexeme" event
@@ -373,7 +373,7 @@ Marpa and procedural parsing
     There is a lot going on,
     and some of Marpa's most powerful capabilities for assisting
     procedural logic are shown here.
-    So we will go through this line-by-line.
+    So we will go through the above display in detail.
     </p>
     <h3>Left-eidetic</h3>
     <pre><tt>
@@ -392,7 +392,7 @@ Marpa and procedural parsing
     fits our purposes here.
     Specifically,
     </p>
-    <ul><li>We want to determine how many <tt>c</tt> characters we are looking for.</li>
+    <ul><li>we want to determine how many <tt>c</tt> characters we are looking for.</li>
     <li>How many <tt>c</tt> characters we are looking for depends
     on the number of
     <tt>a</tt> and <tt>b</tt> characters that we have already seen

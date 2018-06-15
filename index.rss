@@ -31,7 +31,7 @@
       triumph over the now-forgotten Irons algorithm.&lt;/a&gt;
     &lt;/p&gt;
     &lt;p&gt;
-      Marpa, however, has parse engine expressly redesigned&lt;a id=&quot;footnote-1-ref&quot; href=&quot;#footnote-1&quot;&gt;[1]&lt;/a&gt;
+      Marpa, however, has a parse engine expressly redesigned&lt;a id=&quot;footnote-1-ref&quot; href=&quot;#footnote-1&quot;&gt;[1]&lt;/a&gt;
       to handle procedural logic well.
       In fact, Marpa is &lt;b&gt;better&lt;/b&gt; at procedural logic
       than RD.
@@ -57,7 +57,7 @@
     equal to each other and greater
     than one.
     &lt;/p&gt;
-    &lt;p&gt;The ABC &quot;grammar&quot; is really a counting problem more than a
+    &lt;p&gt;The ABC &quot;grammar&quot; is really a counting problem more than
     a natural parsing problem,
     and parsing is not the fastest or easiest way to solve it.
     Three tight loops, with counters, would do the same job nicely,
@@ -172,7 +172,7 @@
     Here we define our lexemes.
     The first two are simple enough:
     &lt;tt&gt;&amp;lt;A&amp;gt;&lt;/tt&gt; is the character &quot;&lt;tt&gt;a&lt;/tt&gt;&quot;; and
-    &lt;tt&gt;&amp;lt;B&amp;gt;&lt;/tt&gt; is the character &quot;&lt;tt&gt;b&lt;/tt&gt;&quot;;
+    &lt;tt&gt;&amp;lt;B&amp;gt;&lt;/tt&gt; is the character &quot;&lt;tt&gt;b&lt;/tt&gt;&quot;.
     &lt;/p&gt;
     &lt;pre&gt;&lt;tt&gt;
     :lexeme ~ Cs pause =&gt; before event =&gt; 'before C'
@@ -186,7 +186,7 @@
     Marpa allows a full range of events.
     Events can occur on prediction and completion of symbols;
     when symbols are nulled;
-    before lexemes
+    before lexemes;
     and after lexemes.
     The first line in the above display
     declares a &quot;before lexeme&quot; event
@@ -303,7 +303,7 @@
     There is a lot going on,
     and some of Marpa's most powerful capabilities for assisting
     procedural logic are shown here.
-    So we will go through this line-by-line.
+    So we will go through the above display in detail.
     &lt;/p&gt;
     &lt;h3&gt;Left-eidetic&lt;/h3&gt;
     &lt;pre&gt;&lt;tt&gt;
@@ -322,7 +322,7 @@
     fits our purposes here.
     Specifically,
     &lt;/p&gt;
-    &lt;ul&gt;&lt;li&gt;We want to determine how many &lt;tt&gt;c&lt;/tt&gt; characters we are looking for.&lt;/li&gt;
+    &lt;ul&gt;&lt;li&gt;we want to determine how many &lt;tt&gt;c&lt;/tt&gt; characters we are looking for.&lt;/li&gt;
     &lt;li&gt;How many &lt;tt&gt;c&lt;/tt&gt; characters we are looking for depends
     on the number of
     &lt;tt&gt;a&lt;/tt&gt; and &lt;tt&gt;b&lt;/tt&gt; characters that we have already seen
