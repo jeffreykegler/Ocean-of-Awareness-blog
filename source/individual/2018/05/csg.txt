@@ -25,17 +25,17 @@ Marpa and procedural parsing
       I will show this with an example.
     </p>
     <h2>A context-sensitive grammar</h2>
-    <p>RD, to be sure, natively only handles LL(1) grammars,
-    while Marpa parses all LR-regular grammars in linear time.
-    So Marpa <b>needs</b> procedural logic much less than RD.
-    As an example of a grammar for which Marpa does
-    require procedural logic, we'll pick the canonical example
-    of a context-sensitive, but not context-free grammar:
+    <p>Marpa parses all LR-regular grammars in linear time,
+    so the first challenge is to find a grammar that
+    <b>needs</b> procedural logic, even when Marpa is used.
+    The following is the canonical example of a grammar that is
+    context-sensitive, but not context-free:
     </p>
     <pre>
           a^n . b^n . c^n : n >= 1
     </pre>
-    This is a sequence of
+    I will call this the "ABC grammar".
+    It is a sequence of
     <tt>a</tt>'s,
     <tt>b</tt>'s, and
     <tt>c</tt>'s,
@@ -44,17 +44,23 @@ Marpa and procedural parsing
     equal to each other and greater
     than one.
     </p>
-    <p>What I outline below is, to put it mildly,
-    not the best or the fastest way to recognize this particular grammar.
+    <p>The ABC "grammar" is really a counting problem more than a
+    a natural parsing problem,
+    and parsing is not the fastest or easiest way to solve it.
     Three tight loops, with counters, would do the same job nicely,
-    and would be mucb faster.
-    But the ABC grammar is chosen for this post precisely because,
-    on one hand it is simple,
-    and on the other hand is literally impossible for
-    a pure context-free parsing strategy.
-    The specific strategy used was picked
-    because it demonstrates
-    an important subset of Marpa's procedural parsing capabilities.
+    and would be much faster.
+    But I chose the ABC grammar for exactly this reason.
+    It <b>is</b> simple in itself,
+    but it is tricky when treated as a parsing problem.<a id="footnote-2-ref" href="#footnote-2">[2]</a>
+    </p>
+    <p>
+    In picking the strategy below,
+    I preferred one that illustrates
+    the right subset of Marpa's procedural parsing capabilities.
+    Full code is
+    <a href="https://github.com/jeffreykegler/Ocean-of-Awareness-blog/tree/gh-pages/code/csg">
+    on-line<a>,
+    and readers are encouraged to "peek ahead".
     </p>
     <h2>Step 1: the syntax</h2>
     <p>Our strategy will be to start with a context-free syntax,
@@ -76,7 +82,7 @@ Marpa and procedural parsing
     C_extra ~ 'c'
     </tt></pre>
     <p>The first line is boiler-plate:
-    It turns off a default which was made pointless 
+    It turns off a default which was made pointless
     by a later enhancement to Marpa::R2.
     Marpa::R2 is stable, and backward-compatibility is
     a very high priority.
@@ -84,8 +90,9 @@ Marpa and procedural parsing
     :default ::= action => [name,start,length,values]
     </tt></pre>
     <p>
-    The second line defines the format -- a parse tree
-    whose nodes are arrays whose elements are,
+    We will produce a parse tree.
+    The second line defines its format --
+    each node is an array whose elements are,
     in order,
     the node name, its start position,
     its length and its child nodes.
@@ -94,7 +101,7 @@ Marpa and procedural parsing
     S ::= prefix ABC trailer
     </tt></pre>
     <p>The symbol <tt>&lt;ABC&gt;</tt>
-    is our "target" -- the counted 
+    is our "target" -- the counted
     <tt>a</tt>'s,
     <tt>b</tt>'s,
     and <tt>c</tt>'s.
@@ -106,33 +113,40 @@ Marpa and procedural parsing
     <pre><tt>
     ABC ::= ABs Cs
     </tt></pre>
-    <p>We divide the 
+    <p>We divide the
     <tt>&lt;ABC&gt;</tt> target into two parts:
     <tt>&lt;ABs&gt;</tt>, which contains the
     <tt>a</tt>'s,
     and <tt>b</tt>'s;
     and
-    <tt>&lt;Cs&gt;</tt>, which contains the
-    and <tt>b</tt>'s.
+    <tt>&lt;Cs&gt;</tt>, which contains
+    the <tt>c</tt>'s.
+    </p>
+    <p>
+    The string
+    </p>
+    <pre><tt>
+    a^n . b^n
+    </tt></pre>
+    <p>
+    is context free, so that we can handle it
+    without procedural logic, as follows:
     </p>
     <pre><tt>
     ABs ::= A ABs B | A B
     </tt></pre>
     <p>
-    A string "<tt>a^n b^n</tt>" is context-free,
-    so we can deal with
-    <tt>&lt;ABs&gt;</tt> without procedural logic.
-    The line above produces a non-empty string of
-    <tt>a</tt>'s then
-    <tt>b</tt>'s;
-    with an equal number of each character.
+    The line above recognizes a non-empty string of
+    <tt>a</tt>'s,
+    followed by an equal number
+    of <tt>b</tt>'s.
     </p>
     <pre><tt>
     prefix ::= A*
     trailer ::= C_extra*
     </tt></pre>
     <p>As stated above,
-    <tt>&lt;prefix&gt;</tt>,
+    <tt>&lt;prefix&gt;</tt>
     is a series of <tt>a</tt>'s and
     <tt>&lt;suffix&gt;</tt>
     is a series of <tt>c</tt>'s.
@@ -142,10 +156,10 @@ Marpa and procedural parsing
     B ~ 'b'
     </tt></pre>
     <p>Marpa::R2 has a separate lexical and syntactic phase.
-    We now define our lexemes.
+    Here we define our lexemes.
     The first two are simple enough:
-    <tt>&lt;A&gt;</tt> is the letter "<tt>a</tt>"; and
-    <tt>&lt;B&gt;</tt> is the letter "<tt>b</tt>";
+    <tt>&lt;A&gt;</tt> is the character "<tt>a</tt>"; and
+    <tt>&lt;B&gt;</tt> is the character "<tt>b</tt>";
     </p>
     <pre><tt>
     :lexeme ~ Cs pause => before event => 'before C'
@@ -153,8 +167,8 @@ Marpa and procedural parsing
     C_extra ~ 'c'
     </tt></pre>
     <p>
-    For the letter "<tt>c</tt>",
-    we will use procedural logic.
+    For the character "<tt>c</tt>",
+    we need procedural logic.
     As hooks for procedural logic,
     Marpa allows a full range of events.
     Events can occur on prediction and completion of symbols;
@@ -171,7 +185,7 @@ Marpa and procedural parsing
     which is needed to allow the "<tt>before C</tt>"
     event to trigger.
     The entry says that
-    <tt>&lt;Cs&gt;</tt> is a single letter "<tt>c</tt>".
+    <tt>&lt;Cs&gt;</tt> is a single character "<tt>c</tt>".
     This is false --
     <tt>&lt;Cs&gt;</tt> is a series of one or more
     <tt>c</tt>'s,
@@ -181,11 +195,23 @@ Marpa and procedural parsing
     the procedural
     logic will make things right.
     </p>
+    <p>The third line defines
+    <tt>&lt;C_extra&gt;</tt>, which
+    is another lexeme for the character "<tt>c</tt>".
+    We have two different lexemes for
+    the character <tt>c</tt>, because we want some
+    <tt>c</tt>'s (those in the target)
+    to trigger events;
+    and we want other
+    <tt>c</tt>'s (those in the trailer)
+    not to trigger events,
+    but to be consumed by Marpa directly.
+    </p>
     <h2>The procedural logic</h2>
     <p>
     At this point, we have solved part of the problem with context-free syntax,
     and set up a Marpa event named "<tt>before C</tt>",
-    which we hope to solve the rest of it.
+    which will solve the rest of it.
     </p>
     <pre><tt>
     my $input_length = length ${$input};
@@ -201,7 +227,8 @@ Marpa and procedural parsing
     <p>Processing of events takes place inside a Marpa read loop.
     This is initialized with a <tt>read()</tt> method,
     and is continued with a <tt>resume()</tt> method.
-    The <tt>read()</tt> method returns the current position
+    The <tt>read()</tt> and <tt>resume()</tt> methods
+    both return the current position
     in the input.
     If the current position is end-of-input, we are done.
     If not, we were interrupted by an event, which we
@@ -225,7 +252,7 @@ Marpa and procedural parsing
       }
     </tt></pre>
     <p>In this application, only one event can occur at any location,
-    so the above look is "overkill".
+    so the above loop is "overkill".
     It loops through the events, one by one.
     The <tt>event</tt> method returns a reference to an array
     of event data.
@@ -270,24 +297,32 @@ Marpa and procedural parsing
     my ( $start, $length ) = $recce->last_completed_span('ABs');
     my $c_length = ($length) / 2;
     </tt></pre>
-    <p>Marpa claim to be "left-eidetic",
-    that is, to have full knowledge of the parse so far.
+    <p>Marpa claims to be "left-eidetic",
+    that is, to have full knowledge of the parse so far,
     and to make this knowledge available to the programmer.
     How does a programmer cash in on this promise?
     <p>Of course, there is
     <a href="https://metacpan.org/pod/distribution/Marpa-R2/pod/Progress.pod">a fully general interface</a>,
     which allows you to go through the Earley tables and extract
     the information in any form necessary.
-    But for our purpose here, this is a more convenient interface.
+    But another, more convenient interface,
+    fits our purposes here.
+    Specifically,
     </p>
-    <p>We want to determine how many <tt>c</tt> characters we are looking for,
-    which depends on the number of 
-    <tt>a</tt> and <tt>b</tt> characters that we have already seen.
-    What we really want to know is how long the most recent
-    <tt>&lt;ABs&gt;</tt> symbol was.
+    <ul><li>We want to determine how many <tt>c</tt> characters we are looking for.</li>
+    <li>How many <tt>c</tt> characters we are looking for depends
+    on the number of
+    <tt>a</tt> and <tt>b</tt> characters that we have already seen
+    in the target.</li>
+    <li>The <tt>a</tt> and <tt>b</tt> characters that we have already seen in the
+    target are in the
+    <tt>&lt;ABs&gt;</tt> symbol instance.</li>
+    <li>So, what we want to know is the length of the
+    most recent <tt>&lt;ABs&gt;</tt> symbol instance.</li>
+    </ul>
     </p>
-    <p>Marpa has a <tt>last_completed_span()</tt> method is just what
-    we need.
+    <p>Marpa has a <tt>last_completed_span()</tt> method,
+    and that is just what we need.
     This finds the most recent instance of a symbol.
     (If there had been more than one most recent instance,
     it would have found the longest.)
@@ -295,7 +330,7 @@ Marpa and procedural parsing
     of the symbol instance (which we do not care about)
     and its length.
     The desired number of <tt>c</tt> characters,
-    <tt>$c_length</tt>, is half the length of the 
+    <tt>$c_length</tt>, is half the length of the
     <tt>&lt;ABs&gt;</tt> instance.
     </p>
     <h3>External parsing</h3>
@@ -318,9 +353,9 @@ Marpa and procedural parsing
     </p>
     <p>
     Here <tt>$pos</tt> is the current position in the input,
-    as returned by the <tt>read()</tt> or <tt>resume</tt>
+    as returned by the <tt>read()</tt> or <tt>resume()</tt>
     method in the outer loop.
-    Our input is a string referred by <tt>$input</tt>.
+    Our input is the string referred to by <tt>$input</tt>.
     We just calculated <tt>$c_length</tt> as the number of
     <tt>c</tt> characters required.
     The above code checks to see that the required number of
@@ -341,13 +376,16 @@ Marpa and procedural parsing
     </p>
     <p>
     Marpa requires that
-    every symbol must be tied in some way to the input.
-    This is so that it can report errors.
-    The tie-in can be hack-ish or completely artificial,
+    every symbol be tied in some way to the input.
+    The tie-in is only for error reporting,
+    and it can be hack-ish or completely artificial,
     if necessary.
     In this application, our symbol instance is tied into
     the input in a very natural way --
-    we tell Marpa that the symbol is at <tt>$pos</tt> in the input,
+    it is the stretch of the input that we compared
+    to <tt>$c_seq</tt> in the display before last.
+    We therefore tell Marpa
+    that the symbol is at <tt>$pos</tt> in the input,
     and of length <tt>$c_length</tt>.
     </p>
     <h3>Passing control back to Marpa</h3>
@@ -363,18 +401,21 @@ Marpa and procedural parsing
     <p>
     We ask for the next iteration of the <tt>EVENT</tt>
     loop.
-    (There will only be one in case of an error.)
+    (In this code,
+    there will not be a next iteration, unless there is an error.)
     Once done, the <tt>EVENT</tt> loop will hand control
-    over to the outer loop which will call the <tt>resume</tt>
-    method.
+    over to the outer loop.
+    The outer loop will call the <tt>resume()</tt>
+    method to return control back to Marpa.
     </p>
-    <h2>TODO</h2>
-    <p>TODO<a id="footnote-2-ref" href="#footnote-2">[2]</a>.
-    <h2>Comments, etc.</h2>
-    <p>
-      To learn about Marpa,
-      my Earley/Leo-based parsing project,
-      there is the
+    <h2>The code, comments, etc.</h2>
+    <p>The full code for this example is 
+    <a href="https://github.com/jeffreykegler/Ocean-of-Awareness-blog/tree/gh-pages/code/csg">
+    on-line<a>.
+      There is a lot more to Marpa, including
+      more facilities for adding procedural logic to your Marpa parsers.
+      To learn more about Marpa,
+      a good first stop is the
       <a href="http://savage.net.au/Marpa.html">semi-official web site, maintained by Ron Savage</a>.
       The official, but more limited, Marpa website
       <a href="http://jeffreykegler.github.io/Marpa-web-site/">is my personal one</a>.
@@ -399,11 +440,10 @@ Marpa and procedural parsing
       and exploit strict-sequencing as a feature.
  <a href="#footnote-1-ref">&#8617;</a></p>
 <p id="footnote-2"><b>2.</b>
-    One objection to the use of procedural logic to describe the ABC
-    grammar is that the mix of procedural and syntactic description is unnatural.
-    This is true, but hack-ish as the Marpa description is,
-    I think the reader will find it clearer than its purely syntactic
-    "native" description as a CSG:
+    The ABC grammar, in fact,
+    is not all that easy or natural to describe
+    even with a context-sensitive phrase structure description.
+    A solution is given on Wikipedia:
     <a href="https://en.wikipedia.org/wiki/Context-sensitive_grammar#Examples">
     https://en.wikipedia.org/wiki/Context-sensitive_grammar#Examples</a>.
  <a href="#footnote-2-ref">&#8617;</a></p>
