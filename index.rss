@@ -35,12 +35,12 @@
       to handle procedural logic well.
       In fact, Marpa is &lt;b&gt;better&lt;/b&gt; at procedural logic
       than RD.
-      I will show this with an example.
     &lt;/p&gt;
     &lt;h2&gt;A context-sensitive grammar&lt;/h2&gt;
     &lt;p&gt;Marpa parses all LR-regular grammars in linear time,
-    so the first challenge is to find a grammar that
-    &lt;b&gt;needs&lt;/b&gt; procedural logic, even when Marpa is used.
+    so the first challenge is to find a grammar
+    that illustrates a
+    &lt;b&gt;need&lt;/b&gt; for procedural logic, even when Marpa is used.
     The following is the canonical example of a grammar that is
     context-sensitive, but not context-free:
     &lt;/p&gt;
@@ -68,8 +68,8 @@
     &lt;/p&gt;
     &lt;p&gt;
     In picking the strategy below,
-    I preferred one that illustrates
-    the right subset of Marpa's procedural parsing capabilities.
+    I opted for one that illustrates
+    a nice subset of Marpa's procedural parsing capabilities.
     Full code is
     &lt;a href=&quot;https://github.com/jeffreykegler/Ocean-of-Awareness-blog/tree/gh-pages/code/csg&quot;&gt;
     on-line&lt;a&gt;,
@@ -121,7 +121,7 @@
     To make things a bit more interesting,
     and to make the problem more like a parsing problem instead of a counting problem,
     we allow a prefix of &lt;tt&gt;a&lt;/tt&gt;'s
-    and a suffix of &lt;tt&gt;c&lt;/tt&gt;'s.
+    and a trailer of &lt;tt&gt;c&lt;/tt&gt;'s.
     &lt;/p&gt;
     &lt;pre&gt;&lt;tt&gt;
     ABC ::= ABs Cs
@@ -161,7 +161,7 @@
     &lt;p&gt;As stated above,
     &lt;tt&gt;&amp;lt;prefix&amp;gt;&lt;/tt&gt;
     is a series of &lt;tt&gt;a&lt;/tt&gt;'s and
-    &lt;tt&gt;&amp;lt;suffix&amp;gt;&lt;/tt&gt;
+    &lt;tt&gt;&amp;lt;trailer&amp;gt;&lt;/tt&gt;
     is a series of &lt;tt&gt;c&lt;/tt&gt;'s.
     &lt;/p&gt;
     &lt;pre&gt;&lt;tt&gt;

@@ -98,12 +98,12 @@ Marpa and procedural parsing
       to handle procedural logic well.
       In fact, Marpa is <b>better</b> at procedural logic
       than RD.
-      I will show this with an example.
     </p>
     <h2>A context-sensitive grammar</h2>
     <p>Marpa parses all LR-regular grammars in linear time,
-    so the first challenge is to find a grammar that
-    <b>needs</b> procedural logic, even when Marpa is used.
+    so the first challenge is to find a grammar
+    that illustrates a
+    <b>need</b> for procedural logic, even when Marpa is used.
     The following is the canonical example of a grammar that is
     context-sensitive, but not context-free:
     </p>
@@ -138,8 +138,8 @@ Marpa and procedural parsing
     </p>
     <p>
     In picking the strategy below,
-    I preferred one that illustrates
-    the right subset of Marpa's procedural parsing capabilities.
+    I opted for one that illustrates
+    a nice subset of Marpa's procedural parsing capabilities.
     Full code is
     <a href="https://github.com/jeffreykegler/Ocean-of-Awareness-blog/tree/gh-pages/code/csg">
     on-line<a>,
@@ -191,7 +191,7 @@ Marpa and procedural parsing
     To make things a bit more interesting,
     and to make the problem more like a parsing problem instead of a counting problem,
     we allow a prefix of <tt>a</tt>'s
-    and a suffix of <tt>c</tt>'s.
+    and a trailer of <tt>c</tt>'s.
     </p>
     <pre><tt>
     ABC ::= ABs Cs
@@ -231,7 +231,7 @@ Marpa and procedural parsing
     <p>As stated above,
     <tt>&lt;prefix&gt;</tt>
     is a series of <tt>a</tt>'s and
-    <tt>&lt;suffix&gt;</tt>
+    <tt>&lt;trailer&gt;</tt>
     is a series of <tt>c</tt>'s.
     </p>
     <pre><tt>
