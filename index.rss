@@ -365,7 +365,7 @@
     but something that a context-free grammar cannot do.
     &lt;/p&gt;
     &lt;p&gt;
-    Here &lt;tt&gt;$pos&lt;/tt&gt; is the current position in the input,
+    &lt;tt&gt;$pos&lt;/tt&gt; is the current position in the input,
     as returned by the &lt;tt&gt;read()&lt;/tt&gt; or &lt;tt&gt;resume()&lt;/tt&gt;
     method in the outer loop.
     Our input is the string referred to by &lt;tt&gt;$input&lt;/tt&gt;.

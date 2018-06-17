@@ -435,7 +435,7 @@ Marpa and procedural parsing
     but something that a context-free grammar cannot do.
     </p>
     <p>
-    Here <tt>$pos</tt> is the current position in the input,
+    <tt>$pos</tt> is the current position in the input,
     as returned by the <tt>read()</tt> or <tt>resume()</tt>
     method in the outer loop.
     Our input is the string referred to by <tt>$input</tt>.
