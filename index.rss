@@ -20,7 +20,10 @@
       marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
       --&gt;
     &lt;h2&gt;The missing part&lt;/h2&gt;
-    &lt;p&gt;A previous post described how to use the current stable Marpa
+    &lt;p&gt;
+    &lt;a href=&quot;http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2018/05/csg.html&quot;&gt;
+    A previous post&lt;/a&gt;
+    described how to use the current stable Marpa
     implementation as a better procedural parser.
     This post describes how the Marpa algorithm can be used as the basis
     of better combinator parsers.
@@ -194,7 +197,9 @@
     which allows full access to the alternative input models.
  &lt;a href=&quot;#footnote-4-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
 &lt;p id=&quot;footnote-5&quot;&gt;&lt;b&gt;5.&lt;/b&gt;
-    The post on procedural parsing contains a good,
+    For example, the
+    &lt;a href=&quot;http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2018/05/csg.html&quot;&gt;
+    post on procedural parsing&lt;/a&gt; contains a good,
     simple, example of the use of Marpa's left-eideticism.
  &lt;a href=&quot;#footnote-5-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
 &lt;p id=&quot;footnote-6&quot;&gt;&lt;b&gt;6.&lt;/b&gt;

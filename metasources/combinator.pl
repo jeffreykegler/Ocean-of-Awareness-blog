@@ -70,7 +70,10 @@ Marpa and combinator parsing
       marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
       -->
     <h2>The missing part</h2>
-    <p>A previous post described how to use the current stable Marpa
+    <p>
+    <a href="http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2018/05/csg.html">
+    A previous post</a>
+    described how to use the current stable Marpa
     implementation as a better procedural parser.
     This post describes how the Marpa algorithm can be used as the basis
     of better combinator parsers.
@@ -209,7 +212,9 @@ Marpa and combinator parsing
     <h2>Value added</h2>
     <h3>Left-eidetic information</h3>
     <p>As readers of my previous posts<footnote>
-    The post on procedural parsing contains a good,
+    For example, the
+    <a href="http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2018/05/csg.html">
+    post on procedural parsing</a> contains a good,
     simple, example of the use of Marpa's left-eideticism.
     </footnote>
     will know,
