@@ -34,6 +34,220 @@
   </p>
   </div>
   <div style="margin-left:190px;border-left:2px solid #38B0C0;padding:25px;">
+<h3>Mon, 18 Jun 2018</h3>
+<br />
+<center><a name="combinator"> <h2>Marpa and combinator parsing</h2> </a>
+</center>
+<html>
+  <head>
+  </head>
+  <body style="max-width:850px">
+    <!--
+      marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
+      -->
+    <h2>The missing part</h2>
+    <p>A previous post described how to use the current stable Marpa
+    implementation as a better procedural parser.
+    This post describes how the Marpa algorithm can be used as the basis
+    of better combinator parsers.
+    </p>
+    <p>In the post on procedural parsing,
+    the subparsers<a id="footnote-1-ref" href="#footnote-1">[1]</a>
+    were like combinators,
+    in that they could be called recursively,
+    so that a parse could be built up from components.
+    Like combinators,
+    each child could return,
+    not just a parse,
+    but a set of parses.
+    And, as in combinators, once a child combinator
+    returned its value,
+    the parent parser could resume parsing
+    at a location specified by the child combinator.
+    So what was missing?
+    <p>A combinator,
+    in order to handle ambiguity,
+    returns not a subparse, but a set of subparses.
+    In the full combinator model,
+    each subparse can have its own "resume location".<a id="footnote-2-ref" href="#footnote-2">[2]</a>
+    The procedural parsing post did not provide for multiple
+    resume locations.
+    We will now proceed to make up for that.
+    </p>
+    <h2>How it works</h2>
+    <p>The Marpa parser has the ability to accept
+    multiple subparses,
+    each with its own length.
+    This allows child subparses to overlap in any fashion,
+    forming a mosaic as complex as the application needs.
+    </p>
+    </p>An Earley parser is table-driven --
+    its parse tables consists of Earley sets,
+    with an initial Earley set
+    and one Earley set per token.
+    This makes for a very simple idea of location.
+    Location 0 is the location of the initial Earley set.
+    Location <tt>N</tt> is the location of the Earley set after the <tt>N</tt>'th
+    token has been consumed.
+    </p>
+    <p>Simplicity is great, but unfortunately
+    this won't work for variable-length
+    tokens.
+    To handle those, Marpa introduces another idea of location:
+    the <b>earleme</b>.
+    Like Earley set locations,
+    the earlemes begin at 0,
+    and advance in integer sequence.
+    Earley set 0 is always at earleme 0.
+    Every Earley set has an earleme location.
+    On the other hand,
+    not every earleme has a corresponding Earley set --
+    there can be "empty" earlemes.
+    </p>
+    <p>The lower-level interface for Marpa is Libmarpa.
+    Every time Libmarpa adds a token,
+    a length in earlemes must be specified.
+    In the most-used higher level Marpa interfaces,
+    this "earleme length" is always 1,
+    which makes the Libmarpa location model collapse into the traditional one.
+    </p>
+    <p>
+    The Libmarpa recognizer advances earleme-by-earleme.
+    In the most-used higher level Marpa interfaces,
+    a token ends at every earleme
+    (unless of course that earleme is after end-of-input).
+    This means that the most-used Marpa interfaces
+    create a new Earley set every time they advance one earleme.
+    Again, in this case, the Libmarpa model collapses into
+    the traditional one.
+    </p>
+    <p>In Libmarpa and other lower-level interfaces,
+    there may be cases where
+    <ul>
+    <li>one or more tokens
+    end after the current earleme, but</li>
+    <li>no tokens end <b>at</b> the current earleme.</li>
+    </ul>
+    In such cases the current earleme will be empty.
+    </p>
+    <p>This is only an outline of the basic concepts behind the
+    Marpa input model.
+    The formalisms are in the Marpa theory paper.<a id="footnote-3-ref" href="#footnote-3">[3]</a>
+    The documentation for Libmarpa and Marpa's other low-level interfaces contains
+    more accessible,
+    but detailed, descriptions.<a id="footnote-4-ref" href="#footnote-4">[4]</a>
+    </p>
+    <h2>Value added</h2>
+    <h3>Left-eidetic information</h3>
+    <p>As readers of my previous posts<a id="footnote-5-ref" href="#footnote-5">[5]</a>
+    will know,
+    Marpa is "left-eidetic" -- the application has access to everything to its left.
+    This is an advantage over the traditional implementation of combinator parsing,
+    where parse information about the left context may be difficult
+    or impossible to access.<a id="footnote-6-ref" href="#footnote-6">[6]</a>
+    </p>
+    <h3>More powerful linear-time combinators</h3>
+    <p>Marpa parses a superset of LR-regular grammars in linear time,
+    which makes it a more powerful "building block"
+    than traditionally available for combinator parsing.
+    This gives the programmer of a combinator parser more options.
+    </p>
+    <h3>State of the art worse-than-linear combinators</h3>
+    <p>In special circumstances, programmers may want to use subparsers 
+    which are worse than linear -- for example, they may know that
+    the string is very short.
+    Marpa parses context-free grammars in state of the art time.<a id="footnote-7-ref" href="#footnote-7">[7]</a>
+    </p>
+    <h2>The code, comments, etc.</h2>
+      To learn more about Marpa,
+      a good first stop is the
+      <a href="http://savage.net.au/Marpa.html">semi-official web site, maintained by Ron Savage</a>.
+      The official, but more limited, Marpa website
+      <a href="http://jeffreykegler.github.io/Marpa-web-site/">is my personal one</a>.
+      Comments on this post can be made in
+      <a href="http://groups.google.com/group/marpa-parser">
+        Marpa's Google group</a>,
+      or on our IRC channel: #marpa at freenode.net.
+    </p>
+    <h2>Footnotes</h2>
+<p id="footnote-1"><b>1.</b>
+    In some of the descriptions of Marpa's procedural
+    parsing, these subparsers are called "lexers".
+    This emphasizes the usual case in current practice,
+    where the subparsers are the bottom layer of the
+    parsing application,
+    and do not invoke their own child subparsers.
+ <a href="#footnote-1-ref">&#8617;</a></p>
+<p id="footnote-2"><b>2.</b>
+    In notational terms, a full combinator is a function of the form
+    <br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <tt>A* &#8594; &#8473;( P &#215; A* )</tt>,
+    <br>
+    where <tt>A</tt> is the alphabet of the grammar;
+    <tt>P</tt> is a representation of a single parser
+    (for example, a parse tree);
+    <tt>&#8473;(X)</tt> is the power set of a set <tt>X</tt>:
+    and
+    <tt>X &#215; Y</tt> is the Cartesian product
+    of sets <tt>X</tt> and <tt>Y</tt>.
+    The subparsers
+    of the procedural parsing post
+    were of the form
+    <br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <tt>A* &#8594; &#8473;( P ) &#215; A*</tt>.
+    <br>
+ <a href="#footnote-2-ref">&#8617;</a></p>
+<p id="footnote-3"><b>3.</b>
+    Kegler, Jeffrey.<a
+    href="http://dinhe.net/~aredridel/.notmine/PDFs/Parsing/KEGLER,%20Jeffrey%20-%20Marpa,%20a%20practical%20general%20parser:%20the%20recognizer.pdf">
+    "Marpa, a Practical General Parser: The Recognizer".</a>
+    2013.
+    Section 12, "The Marpa input model", pp. 39-40.
+ <a href="#footnote-3-ref">&#8617;</a></p>
+<p id="footnote-4"><b>4.</b>
+    Libmarpa API document,
+    <a href="http://jeffreykegler.github.io/Marpa-web-site/libmarpa_api/stable/api_one_page.html#Input">
+    the "Input" section</a>.
+    Marpa::R2's NAIF interface allows
+    access to the full Libmarpa input model
+    and its documentation contains
+    <a href="https://metacpan.org/pod/distribution/Marpa-R2/pod/Advanced/Models.pod">
+    a higher-level description of Marpa's alternative input models.</a>
+    There is also a thin Perl interface to Libmarpa,
+    <a href="http://jeffreykegler.github.io/Marpa-web-site/libmarpa_api/stable/api_one_page.html#Input">the THIF interface</a>,
+    which allows full access to the alternative input models.
+ <a href="#footnote-4-ref">&#8617;</a></p>
+<p id="footnote-5"><b>5.</b>
+    The post on procedural parsing contains a good,
+    simple, example of the use of Marpa's left-eideticism.
+ <a href="#footnote-5-ref">&#8617;</a></p>
+<p id="footnote-6"><b>6.</b>
+    For best effect,
+    left-eidetism and functional purity
+    probably should be used in combination.
+    For the moment at least,
+    I am focusing on explaining the capabilities,
+    and leaving it to others to find the monadic
+    or other solutions that will allow programmers to leverage
+    this power in functionally pure ways.
+ <a href="#footnote-6-ref">&#8617;</a></p>
+<p id="footnote-7"><b>7.</b>
+    Specifically O(n^2) for unambiguous grammars,
+    and O(n^3) for ambiguous grammars.
+ <a href="#footnote-7-ref">&#8617;</a></p>
+  </body>
+</html>
+<br />
+<p>posted at: 08:29 |
+<a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2018/05/combinator.html">direct link to this entry</a>
+</p>
+<div style="color:#38B0C0;padding:1px;text-align:center;">
+&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&sect;
+</div>
 <h3>Sun, 17 Jun 2018</h3>
 <br />
 <center><a name="csg"> <h2>Marpa and procedural parsing</h2> </a>
@@ -1894,206 +2108,6 @@
 <br />
 <p>posted at: 19:59 |
 <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2018/05/chomsky_1956.html">direct link to this entry</a>
-</p>
-<div style="color:#38B0C0;padding:1px;text-align:center;">
-&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-&sect;
-</div>
-<h3>Mon, 14 May 2018</h3>
-<br />
-<center><a name="fast_power"> <h2>Parsers and Useful Power</h2> </a>
-</center>
-<html>
-  <head>
-  </head>
-  <body>
-    <p>
-      <!--
-      marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
-      -->
-      What do parser
-      users want?
-      What makes a parser<a id="footnote-1-ref" href="#footnote-1">[1]</a>
-      successful?
-      In this post I will look at
-      one aspect of
-      that question,
-      in light of an episode in
-      the history of parsing.
-    </p>
-    <h2>Irons 1961</h2>
-    <p>
-      The first paper
-      fully describing a parser was Irons 1961<a id="footnote-2-ref" href="#footnote-2">[2]</a>.
-      The Irons parser was what is called "general",
-      meaning that it can parse all of
-      the "context-free grammars".
-      That makes it
-      far more powerful than most parsers
-      in practical use today.
-    </p>
-    <p>
-      But the Irons algorithm was not always fast in the general case.
-      Irons 1961 used backtracking
-      to achieve its power,
-      so it would go exponential for many useful grammars.
-    </p>
-    <p>
-      Among the grammars Irons 1961 could not parse quickly
-      were those containing the all-important arithmetic expressions.
-      Irons 1961 gave way to recursive descent.
-    </p>
-    <p>
-      Recursive descent (RD) in its pure form,
-      could not parse arithmetic expressions at all,
-      but it could be customized with procedural code.
-      That is, it could call specialized parsers which were
-      reliably fast for specific sections of the input.
-      The Irons parser was declarative,
-      and not easy to cusomtize.
-    </p>
-    <h2>Raw power versus useful power</h2>
-    <p>
-      The contest between Irons parsing and recursive descent took place
-      before the theory for analyzing algorithms was fully formed.<a id="footnote-3-ref" href="#footnote-3">[3]</a>
-      In retrospect, we can say that,
-      except in specialized uses,
-      an acceptable parser for most practical uses
-      must be linear or quasi-linear.<a id="footnote-4-ref" href="#footnote-4">[4]</a>
-      That is,
-      the "useful power" of a parser is the class
-      of grammars that it will parse in quasi-linear time.<a id="footnote-5-ref" href="#footnote-5">[5]</a>
-    </p>
-    <p>
-      Useful power turns out to be more important,
-      in practice,
-      than raw power.
-      Recursive descent won out over the
-      Irons algorithm because,
-      while the Irons algorithm had vastly more raw power,
-      RD had slightly more "useful power".
-    <p>
-      It is nice to have raw power as well -- it means an algorithm can take on some specialized tasks.
-      And raw power provides a kind of "soft failure" debugging mode for grammars with,
-      for example, unintended ambiguities.
-      But, in the eyes of the programming community, the more important measure of a parser
-      is its useful power -- the class of grammars that it will parse at quasi-linear speed.
-    </p>
-    <h2>Stating the obvious?</h2>
-    <p>
-    That useful power is more important than raw power may seem,
-    in retrospect,
-    obvious.
-    But in fact, it remains a live issue.
-    In practice raw power and useful power are often confused.
-    The parsing literature is not always as helpful as it could be:
-    it can be hard to determine what the
-    useful power of an algorithm is.
-    </p>
-    <p>
-      And the Irons experiment with raw power is often repeated,
-      in hopes of a different result.
-      Very often,
-      a new algorithm is a hybrid of two others:
-      an algorithm with a lot of raw power,
-      but which can go quadratic or worse;
-      and a fast algorithm which lacks power.
-      When the power of the fast algorithm fails,
-      the hybrid algorithm switches over
-      to the algorithm with raw power.
-    </p>
-    <p>
-      It is a sort of
-      cross-breeding of algorithms.
-      The hope is that the hybrid algorithm has the best
-      features of each of its parents.
-      This works a lot better in botany than it does in parsing.
-      Once you have a successful cross in a plant,
-      you can breed from the successful hybrid
-      and expect good things to happen.
-      In botany,
-      the individual crosses can have an extremely high
-      failure rate,
-      and cross-breeding can still succeed.
-      But it's different when you cross algorithms:
-      Even after you've succeeded with one parse,
-      the next parse from your hybrid is a fresh new toss of the dice.
-    </p>
-    <h2>References, comments, etc.</h2>
-    <p>
-      To learn about
-      my own parsing project,
-      Marpa<a id="footnote-6-ref" href="#footnote-6">[6]</a>,
-      there is the
-      <a href="http://savage.net.au/Marpa.html">semi-official web site, maintained by Ron Savage</a>.
-      The official, but more limited, Marpa website
-      <a href="http://jeffreykegler.github.io/Marpa-web-site/">is my personal one</a>.
-      Comments on this post can be made in
-      <a href="http://groups.google.com/group/marpa-parser">
-        Marpa's Google group</a>,
-      or on our IRC channel: #marpa at freenode.net.
-    </p>
-    <h2>Footnotes</h2>
-<p id="footnote-1">1.
-      By "parser" in this post,
-      I will mean a programmer's
-      most powerful toolbox parser --
-      what might be called the "flagship" parser.
-      No parser will ever be the right one for all uses.
- <a href="#footnote-1-ref">&#8617;</a></p>
-<p id="footnote-2">2.
-	For the reference to Irons, see
-        <a href="https://jeffreykegler.github.io/personal/timeline_v3">
-          V3 of my "Parsing: A Timeline"</a>.
-	  The "Timeline" contains the background material for this post.
- <a href="#footnote-2-ref">&#8617;</a></p>
-<p id="footnote-3">3.
-      Even the term "analysis of algorithms" did not exist until 1969:
-      see <a href="https://web.archive.org/web/20160828152021/http://www-cs-faculty.stanford.edu/~uno/news.html">
-      Knuth, "Recent News"</a>.
- <a href="#footnote-3-ref">&#8617;</a></p>
-<p id="footnote-4">4.
-        For more about "linear" and "quasi-linear",
-	including definitions,
-	see
-        <a href="https://jeffreykegler.github.io/personal/timeline_v3">
-          V3 of my "Parsing: A Timeline"</a>,
-        in particular its 'Term: linear' section.
- <a href="#footnote-4-ref">&#8617;</a></p>
-<p id="footnote-5">5.
-	While it is clearly the consensus among practitioners and theoreticians
-	that, for parsing,
-	practical time is quasi-linear or better,
-	there are those who argue that worse-than-quasi-linear parsers
-	are often the right ones for the job,
-	and that research on them has been unwisely neglected.
-	The dissenters are not without a case:
-	For example, in natural language, while sentences are in theory
-	infinite in length, in practice their average size is fixed.
-	And while very long difficult-to-parse sentences do occur in some texts, such as
-	older ones, it is normal for a human reader
-	to have to spend extra time on them.
-	So it may be unreasonable to insist that a parsing algorithm be
-	quasi-linear in this application.
- <a href="#footnote-5-ref">&#8617;</a></p>
-<p id="footnote-6">6.
-      Marpa's useful power is LR-regular,
-      which properly contains
-      every class of grammar in practical use: regular expressions,
-      LALR,
-      LL(k) for all k,
-      LR(k) for all k,
-      and the LL-regular grammars.
-      <!-- For LLR, see Theorem 3, p. 448 in
-      https://ris.utwente.nl/ws/portalfiles/portal/6126669,
-      Nijholt, "On the parsing of LL-regular grammars" -->
- <a href="#footnote-6-ref">&#8617;</a></p>
-  </body>
-</html>
-<br />
-<p>posted at: 06:01 |
-<a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2018/05/fast_power.html">direct link to this entry</a>
 </p>
 <div style="color:#38B0C0;padding:1px;text-align:center;">
 &sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
