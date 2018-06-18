@@ -118,7 +118,7 @@ Marpa and procedural parsing
     in alphabetical order,
     where the character counts are all
     equal to each other and greater
-    than one.
+    than zero.
     </p>
     <p>The ABC "grammar" is really a counting problem more than
     a natural parsing problem,

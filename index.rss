@@ -55,7 +55,7 @@
     in alphabetical order,
     where the character counts are all
     equal to each other and greater
-    than one.
+    than zero.
     &lt;/p&gt;
     &lt;p&gt;The ABC &quot;grammar&quot; is really a counting problem more than
     a natural parsing problem,
