@@ -200,7 +200,7 @@ Why the big deal about left recursion?
     The best known of these is recursive descent --
     a parsing methodology which, essentially, does parsing
     by calling a subroutine to handle each symbol.
-    In a naive implementation of recursive descent,
+    In the traditional implementation of recursive descent,
     left recursion is very problematic.
     To illustrate, if you are writing the function <tt>parse_A()</tt>
     and have a rule
@@ -208,8 +208,10 @@ Why the big deal about left recursion?
     (9) A ::= A B
     </tt></pre>
     the first thing you need do in
-    <tt>parse_A()</tt>.
+    <tt>parse_A()</tt>
     is to call <tt>parse_A()</tt>.
+    Which must call <tt>parse_A()</tt>.
+    And so, in the naive implementation, on and on forever.
     <h2>The fixed-point solution to left recursion</h2>
     <p>Over the years,
     many ways to solve the top-down left recursion issue have been
