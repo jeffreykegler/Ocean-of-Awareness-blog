@@ -70,11 +70,12 @@ Why the big deal about left recursion?
       marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
       -->
     <h2>Left recursion</h2>
-    <p>This is a lot written about left recursion,
-    and frankly much of what has been written adds to the mystery.
+    <p>A lot has been written about left recursion.
+    Unfortunately, much of it simply adds to the mystery.
     In this post, I hope to frame the subject clearly and briefly.
     <p>
-    </p>I assume the reader has some idea of what left recursion is.
+    </p>I expect the reader has some idea of what left recursion is,
+    and perhaps some experience of it as an issue.
     Informally, left recursion occurs when a symbol expands to something
     with itself on the left.
     This can happen directly, for example, if
@@ -165,27 +166,38 @@ Why the big deal about left recursion?
     and an Earley set for each token.
     Each Earley sets
     describes that state of the parse after consuming that token.
-    The basic idea is not dissimilar to that of MDS,
+    The basic idea is not dissimilar
+    to that of the Might/Darais/Spiewak ides of parsing by derivatives,
     and the logic for building the Earley sets resembles
     that of MDS.<footnote>
-    TODO.
-    </footnote>
+        Matthew Might, David Darais and Daniel Spiewak.
+	"Functional Pearl: Parsing with Derivatives."
+	International Conference on Functional Programming 2011 (ICFP 2011).
+	Tokyo, Japan. September, 2011. pages 189--195.
+        <a href="http://matt.might.net/papers/might2011derivatives.pdf">
+          PDF accessed 9 Jun 2018</a>.
+        <a href="http://matt.might.net/papers/might2011derivatives-icfp-talk.pdf">
+          Slides accessed 9 June 2018</a>.
+        <a href="http://matt.might.net/media/mattmight-icfp2011-derivatives.mp4">
+          Video accessed 9 June 2018</a>.
+      </footnote>
     <p>
-    For our purposes, what matter is that
+    For the purpose of studying left recursion,
+    what matters is that
     each Earley set contains items.
     Some of the items are called predictions
     because they predict the occurrence of a symbol
     at that location in the input.
     Left recursions are recorded as predictions of the left
     recursive symbol.
-    And that, simple as it is,
-    is the Earley's solution to left recursion.
     </p>
     Multiple occurrences of a prediction item would be identical,
     and therefore useless.
     Subsequent attempts
     to add the same prediction item are ignored,
     and recursion does not occur.
+    And that, simple as it is,
+    is the Earley's solution to left recursion.
     </p>
     <h2>If some do not, why do the others?</h2>
     <p>Besides Earley's,
@@ -217,7 +229,15 @@ Why the big deal about left recursion?
     many ways to solve the top-down left recursion issue have been
     announced.
     Recently, I came across one of the more interesting --
-    interesting because it describes all the others,
+    interesting because it actually works<footnote>
+    There have been many more attempts than implementations
+    over the years,
+    and even some of the most-widely used implementations
+    <a href="https://www.youtube.com/watch?v=lFBEf0o-4sY&feature=youtu.be&t=6m29s">
+    have
+    their issues.</a>
+    </footnote>,
+    and it describes all the others,
     including the Earley algorithm solution.
     </p>
     <p>
