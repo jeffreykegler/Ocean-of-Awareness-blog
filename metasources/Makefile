@@ -27,3 +27,6 @@ all: \
 
 ../source/individual/2018/05/combinator.txt: combinator.pl
 	perl combinator.pl > ../source/individual/2018/05/combinator.txt
+
+lrecursion.html: lrecursion.pl
+	perl $? > $@
