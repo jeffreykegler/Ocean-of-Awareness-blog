@@ -208,7 +208,32 @@ Parsing left recursions
     To record a left recursion in an Earley set,
     the program adds
     a prediction item for the left recursive symbol.
-    It is that simple.
+    It is that simple.<footnote>
+    Those familiar with Earley's algorithm may note that
+    Earley items are traditionally in terms of productions,
+    not symbols.
+    Symbol predictions are therefore recorded indirectly.
+    <br><br>
+    Specifically, Earley items are traditionally duples
+    of <tt>(dr, origin)</tt>,
+    where <tt>dr</tt> is a dotted production -- a production
+    with a "dot location" marked;
+    and <tt>origin</tt> is a location in the input.
+    In all predictions <tt>origin</tt> is the current location,
+    and the dot location is at the start of the production,
+    so there can be at most one prediction per rule.
+    A prediction of a symbol 
+    <tt>&lt;A&gt;</tt>
+    is recorded as a prediction of every
+    production which has 
+    <tt>&lt;A&gt;</tt> on its LHS.
+    <br><br>
+    The argument in main text is made the way it is
+    because it is simpler when to speak
+    of "predicted symbols" than
+    to repeatedly refer to "sets of predictions
+    of productions sharing a common LHS".
+    </footnote>
     </p>
     Multiple occurrences of a prediction item would be identical,
     and therefore useless.

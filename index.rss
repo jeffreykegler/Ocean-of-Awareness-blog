@@ -123,7 +123,7 @@
     To record a left recursion in an Earley set,
     the program adds
     a prediction item for the left recursive symbol.
-    It is that simple.
+    It is that simple.&lt;a id=&quot;footnote-4-ref&quot; href=&quot;#footnote-4&quot;&gt;[4]&lt;/a&gt;
     &lt;/p&gt;
     Multiple occurrences of a prediction item would be identical,
     and therefore useless.
@@ -167,7 +167,7 @@
     many ways to solve the top-down left recursion issue have been
     announced.
     The MDS solution is one of the more interesting --
-    interesting because it actually works&lt;a id=&quot;footnote-4-ref&quot; href=&quot;#footnote-4&quot;&gt;[4]&lt;/a&gt;,
+    interesting because it actually works&lt;a id=&quot;footnote-5-ref&quot; href=&quot;#footnote-5&quot;&gt;[5]&lt;/a&gt;,
     and because it describes all the others,
     including the Earley algorithm solution.
     MDS reduces the problem to
@@ -190,7 +190,7 @@
     This continues until no more Earley items can be added.
     In other words, the rules for building an Earley set
     are applied until they find
-    their &quot;fixed point&quot;.&lt;a id=&quot;footnote-5-ref&quot; href=&quot;#footnote-5&quot;&gt;[5]&lt;/a&gt;
+    their &quot;fixed point&quot;.&lt;a id=&quot;footnote-6-ref&quot; href=&quot;#footnote-6&quot;&gt;[6]&lt;/a&gt;
     &lt;/p&gt;
     &lt;h2&gt;Other top-down solutions&lt;/h2&gt;
     &lt;p&gt;The MDS fixed point solution &lt;b&gt;does&lt;/b&gt;
@@ -235,7 +235,7 @@
     why not simply use Earley's?
     &lt;/p&gt;
     &lt;h2&gt;Comments, etc.&lt;/h2&gt;
-      Marpa is my own implementation of an Earley parser.&lt;a id=&quot;footnote-6-ref&quot; href=&quot;#footnote-6&quot;&gt;[6]&lt;/a&gt;
+      Marpa is my own implementation of an Earley parser.&lt;a id=&quot;footnote-7-ref&quot; href=&quot;#footnote-7&quot;&gt;[7]&lt;/a&gt;
       Comments on this post can be made in
       &lt;a href=&quot;http://groups.google.com/group/marpa-parser&quot;&gt;
         Marpa's Google group&lt;/a&gt;,
@@ -281,14 +281,40 @@
           Video accessed 9 June 2018&lt;/a&gt;.
  &lt;a href=&quot;#footnote-3-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
 &lt;p id=&quot;footnote-4&quot;&gt;&lt;b&gt;4.&lt;/b&gt;
+    Those familiar with Earley's algorithm may note that
+    Earley items are traditionally in terms of productions,
+    not symbols.
+    Symbol predictions are therefore recorded indirectly.
+    &lt;br&gt;&lt;br&gt;
+    Specifically, Earley items are traditionally duples
+    of &lt;tt&gt;(dr, origin)&lt;/tt&gt;,
+    where &lt;tt&gt;dr&lt;/tt&gt; is a dotted production -- a production
+    with a &quot;dot location&quot; marked;
+    and &lt;tt&gt;origin&lt;/tt&gt; is a location in the input.
+    In all predictions &lt;tt&gt;origin&lt;/tt&gt; is the current location,
+    and the dot location is at the start of the production,
+    so there can be at most one prediction per rule.
+    A prediction of a symbol 
+    &lt;tt&gt;&amp;lt;A&amp;gt;&lt;/tt&gt;
+    is recorded as a prediction of every
+    production which has 
+    &lt;tt&gt;&amp;lt;A&amp;gt;&lt;/tt&gt; on its LHS.
+    &lt;br&gt;&lt;br&gt;
+    The argument in main text is made the way it is
+    because it is simpler when to speak
+    of &quot;predicted symbols&quot; than
+    to repeatedly refer to &quot;sets of predictions
+    of productions sharing a common LHS&quot;.
+ &lt;a href=&quot;#footnote-4-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;p id=&quot;footnote-5&quot;&gt;&lt;b&gt;5.&lt;/b&gt;
     There have been many more attempts than implementations
     over the years,
     and even some of the most-widely used
     implementations &lt;a href=&quot;https://www.youtube.com/watch?v=lFBEf0o-4sY&amp;feature=youtu.be&amp;t=6m29s&quot;&gt;
     have
     their issues.&lt;/a&gt;
- &lt;a href=&quot;#footnote-4-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
-&lt;p id=&quot;footnote-5&quot;&gt;&lt;b&gt;5.&lt;/b&gt;
+ &lt;a href=&quot;#footnote-5-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;p id=&quot;footnote-6&quot;&gt;&lt;b&gt;6.&lt;/b&gt;
     Recall that potential left recursions are 
     recorded as &quot;predictions&quot; in Earley's algorithm.
     Predictions recurse,
@@ -297,8 +323,8 @@
     This means that Earley implementations can
     bring each Earley set to its fixed point
     very quickly.
- &lt;a href=&quot;#footnote-5-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
-&lt;p id=&quot;footnote-6&quot;&gt;&lt;b&gt;6.&lt;/b&gt;
+ &lt;a href=&quot;#footnote-6-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;p id=&quot;footnote-7&quot;&gt;&lt;b&gt;7.&lt;/b&gt;
         Marpa has a stable implementation.
         For it, and for more information on Marpa, there are these resources:&lt;br&gt;
         &lt;a href=&quot;http://savage.net.au/Marpa.html&quot;&gt;
@@ -314,7 +340,7 @@
         &quot;Marpa, A Practical General Parser: The Recognizer.&quot;, 2013.
         &lt;a href=&quot;http://dinhe.net/~aredridel/.notmine/PDFs/Parsing/KEGLER,%20Jeffrey%20-%20Marpa,%20a%20practical%20general%20parser:%20the%20recognizer.pdf&quot;&gt;
           PDF accessed 24 April 2018&lt;/a&gt;.
- &lt;a href=&quot;#footnote-6-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+ &lt;a href=&quot;#footnote-7-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
   &lt;/body&gt;
 &lt;/html&gt;</description>
   </item>
