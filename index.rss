@@ -29,31 +29,31 @@
     Informally, left recursion occurs when a symbol expands to something
     with itself on the left.
     This can happen directly, for example, if
+    production &lt;tt&gt;(1)&lt;/tt&gt; is in a grammar.
     &lt;/p&gt;
     &lt;pre&gt;&lt;tt&gt;
     (1) A ::= A B
     &lt;/tt&gt;&lt;/pre&gt;
-    production &lt;tt&gt;(1)&lt;/tt&gt; is in a grammar.
     Indirect left recursion happens when,
     for example,
-    &lt;pre&gt;&lt;tt&gt;
-    (2) A ::= B C
-    (3) B ::= A D
-    &lt;/tt&gt;&lt;/pre&gt;
     &lt;tt&gt;(2)&lt;/tt&gt; and
     &lt;tt&gt;(3)&lt;/tt&gt;
     are productions in a grammar.
     &lt;pre&gt;&lt;tt&gt;
-    (4) A ::= B A C
-    (5) B ::= # empty
+    (2) A ::= B C
+    (3) B ::= A D
     &lt;/tt&gt;&lt;/pre&gt;
     A grammar with productions
     &lt;tt&gt;(4)&lt;/tt&gt; and
     &lt;tt&gt;(5)&lt;/tt&gt;
     has a &quot;hidden&quot; left recursion.
+    &lt;pre&gt;&lt;tt&gt;
+    (4) A ::= B A C
+    (5) B ::= # empty
+    &lt;/tt&gt;&lt;/pre&gt;
     This is because
     &lt;tt&gt;&amp;lt;A&amp;gt;&lt;/tt&gt;
-    will ends up leftmost in derivations like:
+    ends up leftmost in derivations like:
     &lt;pre&gt;&lt;tt&gt;
     (6) A  &amp;#10230; B A C &amp;#10230 A C
     &lt;/tt&gt;&lt;/pre&gt;
@@ -146,15 +146,21 @@
     by calling a subroutine to handle each symbol.
     In the traditional implementation of recursive descent,
     left recursion is very problematic.
-    To illustrate, if you are writing the function &lt;tt&gt;parse_A()&lt;/tt&gt;
-    and have a rule
+    Suppose that, as part of a recursive descent implementation,
+    you are writing the function to parse the
+    symbol &lt;tt&gt;&amp;lt;A&amp;gt;&lt;/tt&gt;,
+    which you are calling
+    &lt;tt&gt;parse_A()&lt;/tt&gt;.
+    If your grammar has a rule
     &lt;pre&gt;&lt;tt&gt;
     (9) A ::= A B
     &lt;/tt&gt;&lt;/pre&gt;
-    the first thing you need do in
+    the first thing you need to do in a naive
+    implementation of
     &lt;tt&gt;parse_A()&lt;/tt&gt;
     is to call &lt;tt&gt;parse_A()&lt;/tt&gt;.
-    Which must call &lt;tt&gt;parse_A()&lt;/tt&gt;.
+    And &lt;tt&gt;parse_A()&lt;/tt&gt; will
+    then call &lt;tt&gt;parse_A()&lt;/tt&gt;.
     And so, in the naive implementation, on and on forever.
     &lt;h2&gt;The fixed-point solution to left recursion&lt;/h2&gt;
     &lt;p&gt;Over the years,
@@ -266,7 +272,7 @@
         Matthew Might, David Darais and Daniel Spiewak.
 	&quot;Functional Pearl: Parsing with Derivatives.&quot;
 	International Conference on Functional Programming 2011 (ICFP 2011).
-	Tokyo, Japan. September, 2011. pages 189--195.
+	Tokyo, Japan. September, 2011. pages 189-195.
         &lt;a href=&quot;http://matt.might.net/papers/might2011derivatives.pdf&quot;&gt;
           PDF accessed 9 Jun 2018&lt;/a&gt;.
         &lt;a href=&quot;http://matt.might.net/papers/might2011derivatives-icfp-talk.pdf&quot;&gt;

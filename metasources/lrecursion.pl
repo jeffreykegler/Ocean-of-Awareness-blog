@@ -79,31 +79,31 @@ Parsing left recursions
     Informally, left recursion occurs when a symbol expands to something
     with itself on the left.
     This can happen directly, for example, if
+    production <tt>(1)</tt> is in a grammar.
     </p>
     <pre><tt>
     (1) A ::= A B
     </tt></pre>
-    production <tt>(1)</tt> is in a grammar.
     Indirect left recursion happens when,
     for example,
-    <pre><tt>
-    (2) A ::= B C
-    (3) B ::= A D
-    </tt></pre>
     <tt>(2)</tt> and
     <tt>(3)</tt>
     are productions in a grammar.
     <pre><tt>
-    (4) A ::= B A C
-    (5) B ::= # empty
+    (2) A ::= B C
+    (3) B ::= A D
     </tt></pre>
     A grammar with productions
     <tt>(4)</tt> and
     <tt>(5)</tt>
     has a "hidden" left recursion.
+    <pre><tt>
+    (4) A ::= B A C
+    (5) B ::= # empty
+    </tt></pre>
     This is because
     <tt>&lt;A&gt;</tt>
-    will ends up leftmost in derivations like:
+    ends up leftmost in derivations like:
     <pre><tt>
     (6) A  &#10230; B A C &#10230 A C
     </tt></pre>
@@ -189,7 +189,7 @@ Parsing left recursions
         Matthew Might, David Darais and Daniel Spiewak.
 	"Functional Pearl: Parsing with Derivatives."
 	International Conference on Functional Programming 2011 (ICFP 2011).
-	Tokyo, Japan. September, 2011. pages 189--195.
+	Tokyo, Japan. September, 2011. pages 189-195.
         <a href="http://matt.might.net/papers/might2011derivatives.pdf">
           PDF accessed 9 Jun 2018</a>.
         <a href="http://matt.might.net/papers/might2011derivatives-icfp-talk.pdf">
@@ -231,15 +231,21 @@ Parsing left recursions
     by calling a subroutine to handle each symbol.
     In the traditional implementation of recursive descent,
     left recursion is very problematic.
-    To illustrate, if you are writing the function <tt>parse_A()</tt>
-    and have a rule
+    Suppose that, as part of a recursive descent implementation,
+    you are writing the function to parse the
+    symbol <tt>&lt;A&gt;</tt>,
+    which you are calling
+    <tt>parse_A()</tt>.
+    If your grammar has a rule
     <pre><tt>
     (9) A ::= A B
     </tt></pre>
-    the first thing you need do in
+    the first thing you need to do in a naive
+    implementation of
     <tt>parse_A()</tt>
     is to call <tt>parse_A()</tt>.
-    Which must call <tt>parse_A()</tt>.
+    And <tt>parse_A()</tt> will
+    then call <tt>parse_A()</tt>.
     And so, in the naive implementation, on and on forever.
     <h2>The fixed-point solution to left recursion</h2>
     <p>Over the years,
