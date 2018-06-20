@@ -256,21 +256,22 @@ Parsing left recursions
     </footnote>,
     and because it describes all the others,
     including the Earley algorithm solution.
-    MDS reduce the problem to
+    MDS reduces the problem to
     the more general one of finding a "fixed point" of the recursion.
     </p>
     <p>In math, the "fixed point" of a function is an argument of
     the function which is equal to its value for that argument --
     that is, an <tt>x</tt> such that <tt>f(x)&nbsp;=&nbsp;x</tt>.
-    MDS describe an algorithm which "solves" the left recursion
+    MDS describes an algorithm which "solves" the left recursion
     for its fixed point.
     That "fixed point" can then be memoized.
     For example the value of <tt>parse_A</tt>
     can be the memoized "fixed point" value of
     <tt>&lt;A&gt;</tt>.
     </p>
-    <p>Abstractly,
-    the computation of an Earley is the application of a set
+    <p>The Earley solution of left recursion was, in fact, an optimized
+    "fixed point".
+    The computation of an Earley is the application of a set
     of rules for adding Earley items.
     This continues until no more Earley items can be added.
     In other words, the rules for building an Earley set
@@ -291,19 +292,45 @@ Parsing left recursions
     the job,
     but as described in their paper it requires a functional
     programming language to implement,
-    and is not inexpensive.
-    There have been many other attempted top-down solutions
-    to the left-recursion problem,
-    some with a degree of success.
-    In retrospect,
-    perhaps these can
-    be seen as approaches to,
-    and usually oversimplifications of,
-    the MDS fixed point approach.
+    and it is expensive.
+    In the worst case, the MDS approach is exponential,
+    although they conjecture that it is linear for a large
+    class of practical grammars.
+    </p>
+    <p>Top-down algorithms can take an "in-between strategy" --
+    they can tackle those left recursions that are cheap to
+    find, without computing the full "fixed point".
+    Here a well-defined boundary is crucial:
+    A programmer wants to know if their particular grammar will
+    work,
+    and whether small tweaks to their grammar will break it.
+    </p>
+    <p>
+    Top-down can be seen as
+    <a href="http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2015/12/topdown.html">
+    a "guessing" strategy with hacks</a>.
+    Hacks are always needed in top-down, because the input is at the bottom,
+    not the top, and a useful top-down algorithm needs to look at the input.
+    But the hacks can be as simple as lookahead,
+    and lookahead can be implemented without seriously compromising
+    the simplicity and flexibility of the original top-down approach.
+    </p>
+    <p>With detection and fixing of left-recursion,
+    the "hack" part of the top-down strategy becomes very complicated.
+    The attraction of top-down is its simplicity,
+    and its resulting adapability to procedural logic.
+    The point can be reached where the original strategy
+    comes into question.
+    </p>
+    <p>
+    After all,
+    a recursive descent parser can straightforwardly take care of left recursion
+    issues by calling an Earley parser.
+    But in that case,
+    why not simply use Earley's?
     </p>
     <h2>Comments, etc.</h2>
-      Marpa is my own implementation of an Earley parser.
-      <footnote>
+      Marpa is my own implementation of an Earley parser.<footnote>
         Marpa has a stable implementation.
         For it, and for more information on Marpa, there are these resources:<br>
         <a href="http://savage.net.au/Marpa.html">
