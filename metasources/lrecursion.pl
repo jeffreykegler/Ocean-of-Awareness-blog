@@ -61,7 +61,7 @@ sub do_footnote {
 }
 
 __DATA__
-Why the big deal about left recursion?
+Parsing left recursions
 <html>
   <head>
   </head>
@@ -70,7 +70,7 @@ Why the big deal about left recursion?
       marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
       -->
     <h2>Left recursion</h2>
-    <p>A lot has been written about left recursion.
+    <p>A lot has been written about parsing left recursion.
     Unfortunately, much of it simply adds to the mystery.
     In this post, I hope to frame the subject clearly and briefly.
     <p>
@@ -130,19 +130,18 @@ Why the big deal about left recursion?
     then you have defined
     <tt>&lt;A&gt;</tt>
     in terms of 
-    <tt>&lt;A&gt;</tt> --
-    you have an infinite regress.
+    <tt>&lt;A&gt;</tt>.
     All recursions can be a problem,
     but left recursions are a particular problem because almost all practical
     parsing methods<footnote>
     I probably could have said "all practical parsing methods"
     instead of "almost all".
     Right-to-left parsing methods exist,
-    but they see little use,
-    in any case, they only reverse the problem.
+    but they see little use.
+    In any case, they only reverse the problem.
     Parsing in both directions is certainly possible but,
     as I will show,
-    we do not have to go to that much trouble.
+    we do not have to go to quite that much trouble.
     </footnote>
     proceed left to right,
     and derivations like <tt>(8)</tt> will lead many of
@@ -157,17 +156,34 @@ Why the big deal about left recursion?
     </p>
     <p>
     The solution is at most simple in Earley's algorithm.
-    That is no coincidence -- as Pingali and Bernadi show,
+    That is no coincidence -- as Pingali and Bernadi<footnote>
+        Keshav Pingali and Gianfranco Bilardi, UTCS tech report TR-2012.
+        2012.
+        <a href="https://apps.cs.utexas.edu/tech_reports/reports/tr/TR-2102.pdf">
+          PDF accessed 9 Junk 2018</a>.
+        <a href="https://www.youtube.com/watch?v=eeZ3URxd8Wc">
+          Video accessed 9 June 2018</a>.
+        Less accessible is
+        Keshav Pingali and Gianfranco Bilardi,
+        "A graphical model for context-free grammar parsing."
+        Compiler Construction - 24th International Conference, CC 2015.
+        Lecture Notes in Computer Science,
+        Vol. 9031, pp. 3-27, Springer Verlag, 2015.
+        <a href="https://www.researchgate.net/publication/286479583_A_Graphical_Model_for_Context-Free_Grammar_Parsing">
+          PDF accessed 9 June 2018</a>.
+      </footnote>
+    show,
     Earley's, despite its daunting reputation,
-    is actually the most basic context-free parsing algorithm.
+    is actually the most basic Chomskyan context-free parsing algorithm,
+    the one from which all others derive.
     </p>
     <p>Earley's builds a table.
     The Earley table contains an initial Earley set
     and an Earley set for each token.
-    Each Earley sets
-    describes that state of the parse after consuming that token.
+    The Earley set for each token
+    describes the state of the parse after consuming that token.
     The basic idea is not dissimilar
-    to that of the Might/Darais/Spiewak ides of parsing by derivatives,
+    to that of the Might/Darais/Spiewak (MDS) idea of parsing by derivatives,
     and the logic for building the Earley sets resembles
     that of MDS.<footnote>
         Matthew Might, David Darais and Daniel Spiewak.
@@ -184,22 +200,23 @@ Why the big deal about left recursion?
     <p>
     For the purpose of studying left recursion,
     what matters is that
-    each Earley set contains items.
+    each Earley set contains Earley "items".
     Some of the items are called predictions
     because they predict the occurrence of a symbol
     at that location in the input.
-    Left recursions are recorded as predictions of the left
-    recursive symbol.
+    </p>
+    To record a left recursion in an Earley set,
+    the program adds
+    a prediction item for the left recursive symbol.
+    It is that simple.
     </p>
     Multiple occurrences of a prediction item would be identical,
     and therefore useless.
-    Subsequent attempts
+    Therefore subsequent attempts
     to add the same prediction item are ignored,
     and recursion does not occur.
-    And that, simple as it is,
-    is the Earley's solution to left recursion.
     </p>
-    <h2>If some do not, why do the others?</h2>
+    <h2>If some have no problem, why do others?</h2>
     <p>Besides Earley's,
     a number of other algorithms handle left recursion without
     any issue -- notably LALR 
@@ -228,25 +245,23 @@ Why the big deal about left recursion?
     <p>Over the years,
     many ways to solve the top-down left recursion issue have been
     announced.
-    Recently, I came across one of the more interesting --
+    The MDS solution is one of the more interesting --
     interesting because it actually works<footnote>
     There have been many more attempts than implementations
     over the years,
-    and even some of the most-widely used implementations
-    <a href="https://www.youtube.com/watch?v=lFBEf0o-4sY&feature=youtu.be&t=6m29s">
+    and even some of the most-widely used
+    implementations <a href="https://www.youtube.com/watch?v=lFBEf0o-4sY&feature=youtu.be&t=6m29s">
     have
     their issues.</a>
     </footnote>,
-    and it describes all the others,
+    and because it describes all the others,
     including the Earley algorithm solution.
-    </p>
-    <p>
-    Might, Darais and Spiewak (MDS) reduce the problem to that
+    MDS reduce the problem to
     the more general one of finding a "fixed point" of the recursion.
     </p>
     <p>In math, the "fixed point" of a function is an argument of
     the function which is equal to its value for that argument --
-    that is, an <tt>x</tt> such that <tt>f(x) = x</tt>.
+    that is, an <tt>x</tt> such that <tt>f(x)&nbsp;=&nbsp;x</tt>.
     MDS describe an algorithm which "solves" the left recursion
     for its fixed point.
     That "fixed point" can then be memoized.
@@ -286,16 +301,29 @@ Why the big deal about left recursion?
     and usually oversimplifications of,
     the MDS fixed point approach.
     </p>
-    <h2>The code, comments, etc.</h2>
-      To learn more about Marpa,
-      a good first stop is the
-      <a href="http://savage.net.au/Marpa.html">semi-official web site, maintained by Ron Savage</a>.
-      The official, but more limited, Marpa website
-      <a href="http://jeffreykegler.github.io/Marpa-web-site/">is my personal one</a>.
+    <h2>Comments, etc.</h2>
+      Marpa is my own implementation of an Earley parser.
+      <footnote>
+        Marpa has a stable implementation.
+        For it, and for more information on Marpa, there are these resources:<br>
+        <a href="http://savage.net.au/Marpa.html">
+          Marpa website, accessed 25 April 2018</a>.</br>
+        <a href="https://jeffreykegler.github.io/Marpa-web-site/">
+          Kegler's website, accessed 25 April 2018</a>.</br>
+        <a href="https://github.com/jeffreykegler/Marpa--R2">
+          Github repo, accessed 25 April 2018.</a></br>
+        <a href="https://metacpan.org/pod/Marpa::R2">
+          MetaCPAN, accessed 30 April 2018.</a>.</br>
+	  There is also a theory paper for Marpa:
+        Kegler, Jeffrey.
+        "Marpa, A Practical General Parser: The Recognizer.", 2013.
+        <a href="http://dinhe.net/~aredridel/.notmine/PDFs/Parsing/KEGLER,%20Jeffrey%20-%20Marpa,%20a%20practical%20general%20parser:%20the%20recognizer.pdf">
+          PDF accessed 24 April 2018</a>.
+      </footnote>
       Comments on this post can be made in
       <a href="http://groups.google.com/group/marpa-parser">
         Marpa's Google group</a>,
-      or on our IRC channel: #marpa at freenode.net.
+      or on its IRC channel: #marpa at freenode.net.
     </p>
     <comment>FOOTNOTES HERE</comment>
   </body>
