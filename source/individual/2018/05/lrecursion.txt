@@ -110,7 +110,7 @@ Parsing left recursions
     To record a left recursion in an Earley set,
     the program adds
     a prediction item for the left recursive symbol.
-    It is that simple.
+    It is that simple.<a id="footnote-4-ref" href="#footnote-4">[4]</a>
     </p>
     Multiple occurrences of a prediction item would be identical,
     and therefore useless.
@@ -154,7 +154,7 @@ Parsing left recursions
     many ways to solve the top-down left recursion issue have been
     announced.
     The MDS solution is one of the more interesting --
-    interesting because it actually works<a id="footnote-4-ref" href="#footnote-4">[4]</a>,
+    interesting because it actually works<a id="footnote-5-ref" href="#footnote-5">[5]</a>,
     and because it describes all the others,
     including the Earley algorithm solution.
     MDS reduces the problem to
@@ -177,7 +177,7 @@ Parsing left recursions
     This continues until no more Earley items can be added.
     In other words, the rules for building an Earley set
     are applied until they find
-    their "fixed point".<a id="footnote-5-ref" href="#footnote-5">[5]</a>
+    their "fixed point".<a id="footnote-6-ref" href="#footnote-6">[6]</a>
     </p>
     <h2>Other top-down solutions</h2>
     <p>The MDS fixed point solution <b>does</b>
@@ -222,7 +222,7 @@ Parsing left recursions
     why not simply use Earley's?
     </p>
     <h2>Comments, etc.</h2>
-      Marpa is my own implementation of an Earley parser.<a id="footnote-6-ref" href="#footnote-6">[6]</a>
+      Marpa is my own implementation of an Earley parser.<a id="footnote-7-ref" href="#footnote-7">[7]</a>
       Comments on this post can be made in
       <a href="http://groups.google.com/group/marpa-parser">
         Marpa's Google group</a>,
@@ -268,14 +268,40 @@ Parsing left recursions
           Video accessed 9 June 2018</a>.
  <a href="#footnote-3-ref">&#8617;</a></p>
 <p id="footnote-4"><b>4.</b>
+    Those familiar with Earley's algorithm may note that
+    Earley items are traditionally in terms of productions,
+    not symbols.
+    Symbol predictions are therefore recorded indirectly.
+    <br><br>
+    Specifically, Earley items are traditionally duples
+    of <tt>(dr, origin)</tt>,
+    where <tt>dr</tt> is a dotted production -- a production
+    with a "dot location" marked;
+    and <tt>origin</tt> is a location in the input.
+    In all predictions <tt>origin</tt> is the current location,
+    and the dot location is at the start of the production,
+    so there can be at most one prediction per rule.
+    A prediction of a symbol 
+    <tt>&lt;A&gt;</tt>
+    is recorded as a prediction of every
+    production which has 
+    <tt>&lt;A&gt;</tt> on its LHS.
+    <br><br>
+    The argument in main text is made the way it is
+    because it is simpler when to speak
+    of "predicted symbols" than
+    to repeatedly refer to "sets of predictions
+    of productions sharing a common LHS".
+ <a href="#footnote-4-ref">&#8617;</a></p>
+<p id="footnote-5"><b>5.</b>
     There have been many more attempts than implementations
     over the years,
     and even some of the most-widely used
     implementations <a href="https://www.youtube.com/watch?v=lFBEf0o-4sY&feature=youtu.be&t=6m29s">
     have
     their issues.</a>
- <a href="#footnote-4-ref">&#8617;</a></p>
-<p id="footnote-5"><b>5.</b>
+ <a href="#footnote-5-ref">&#8617;</a></p>
+<p id="footnote-6"><b>6.</b>
     Recall that potential left recursions are 
     recorded as "predictions" in Earley's algorithm.
     Predictions recurse,
@@ -284,8 +310,8 @@ Parsing left recursions
     This means that Earley implementations can
     bring each Earley set to its fixed point
     very quickly.
- <a href="#footnote-5-ref">&#8617;</a></p>
-<p id="footnote-6"><b>6.</b>
+ <a href="#footnote-6-ref">&#8617;</a></p>
+<p id="footnote-7"><b>7.</b>
         Marpa has a stable implementation.
         For it, and for more information on Marpa, there are these resources:<br>
         <a href="http://savage.net.au/Marpa.html">
@@ -301,6 +327,6 @@ Parsing left recursions
         "Marpa, A Practical General Parser: The Recognizer.", 2013.
         <a href="http://dinhe.net/~aredridel/.notmine/PDFs/Parsing/KEGLER,%20Jeffrey%20-%20Marpa,%20a%20practical%20general%20parser:%20the%20recognizer.pdf">
           PDF accessed 24 April 2018</a>.
- <a href="#footnote-6-ref">&#8617;</a></p>
+ <a href="#footnote-7-ref">&#8617;</a></p>
   </body>
 </html>
