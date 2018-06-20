@@ -156,7 +156,7 @@ Parsing left recursions
     </p>
     <p>
     The solution is at most simple in Earley's algorithm.
-    That is no coincidence -- as Pingali and Bernadi<footnote>
+    That is no coincidence -- as Pingali and Bilardi<footnote>
         Keshav Pingali and Gianfranco Bilardi, UTCS tech report TR-2012.
         2012.
         <a href="https://apps.cs.utexas.edu/tech_reports/reports/tr/TR-2102.pdf">
