@@ -97,7 +97,7 @@
     &lt;/p&gt;
     &lt;p&gt;
     The solution is at most simple in Earley's algorithm.
-    That is no coincidence -- as Pingali and Bernadi&lt;a id=&quot;footnote-2-ref&quot; href=&quot;#footnote-2&quot;&gt;[2]&lt;/a&gt;
+    That is no coincidence -- as Pingali and Bilardi&lt;a id=&quot;footnote-2-ref&quot; href=&quot;#footnote-2&quot;&gt;[2]&lt;/a&gt;
     show,
     Earley's, despite its daunting reputation,
     is actually the most basic Chomskyan context-free parsing algorithm,

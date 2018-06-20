@@ -84,7 +84,7 @@ Parsing left recursions
     </p>
     <p>
     The solution is at most simple in Earley's algorithm.
-    That is no coincidence -- as Pingali and Bernadi<a id="footnote-2-ref" href="#footnote-2">[2]</a>
+    That is no coincidence -- as Pingali and Bilardi<a id="footnote-2-ref" href="#footnote-2">[2]</a>
     show,
     Earley's, despite its daunting reputation,
     is actually the most basic Chomskyan context-free parsing algorithm,
