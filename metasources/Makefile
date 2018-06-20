@@ -9,6 +9,7 @@ all: \
   ../source/individual/2018/05/pingali.txt \
   ../source/individual/2018/05/csg.txt \
   ../source/individual/2018/05/combinator.txt \
+  ../source/individual/2018/05/lrecursion.txt \
 
 ../source/individual/2018/05/fast_power.txt: fast_power.pl
 	perl fast_power.pl > ../source/individual/2018/05/fast_power.txt
@@ -28,5 +29,5 @@ all: \
 ../source/individual/2018/05/combinator.txt: combinator.pl
 	perl combinator.pl > ../source/individual/2018/05/combinator.txt
 
-lrecursion.html: lrecursion.pl
-	perl $? > $@
+../source/individual/2018/05/lrecursion.txt: lrecursion.pl
+	perl lrecursion.pl > ../source/individual/2018/05/lrecursion.txt
