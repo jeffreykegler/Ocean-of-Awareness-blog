@@ -73,18 +73,10 @@ my $grammar = Marpa::R2::Scanless::G->new( { source => \$dsl } );
     my $recce = Marpa::R2::Scanless::R->new( { grammar => $grammar } );
     my $value_ref;
     my $result = 'OK';
-    my $eval_ok = eval { $value_ref = doit( $recce, \$dsl ); 1; };
+    my $eval_ok = eval { $value_ref = doit( $recce, \$test ); 1; };
     if ( !$eval_ok ) {
 	my $eval_error = $EVAL_ERROR;
 	PARSE_EVAL_ERROR: {
-	  if ($eval_error =~ m/No lexeme found/) {
-	     $result = "Too few A's or no B's";
-	     last PARSE_EVAL_ERROR;
-	  }
-	  if ($eval_error =~ m/Too few C's/) {
-	     $result = "Too few C's";
-	     last PARSE_EVAL_ERROR;
-	  }
 	  $result = "Error: $EVAL_ERROR";
 	  Test::More::diag($result);
 	}
