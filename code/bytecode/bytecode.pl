@@ -132,10 +132,10 @@ sub parse_bytecodes {
     my ( $recce, $input ) = @_;
     my $input_length = length ${$input};
     my $pos          = $recce->pos;
-    my $last_eol     = rindex( "\n", ${$input}, $pos - 1 );
+    my $last_eol     = rindex( ${$input}, "\n", $pos - 1 );
     my $line_start   = $last_eol + 1;
     my $line_prefix  = substr( ${$input}, $line_start, $pos - $line_start );
-    my $line_end     = index( "\n", ${$input}, $pos );
+    my $line_end     = index( ${$input}, "\n", $pos );
     $line_end = $input_length if $line_end < 0;
     my $line_body = substr( ${$input}, $pos, $line_end - $pos );
 
