@@ -149,25 +149,51 @@ sub parse_bytecodes {
           "Problem line was:\n",
           $line;
     }
-    while ($line_end < $input_length) {
 
-        # Is the line a outer-layer label?
-        if ( my ($label) = ( $line =~ m/ ^ ( [_A-Z] \w* [:] ) /xi ) ) {
-            say STDERR "outer label: ", $label;
-        }
-        if ( $line =~ /^ \s* [_A-Z] \w* [:] \s* $/xi ) {
-            say STDERR "blockcode LABEL line: ", $line;
-        }
-        if ( $line =~ /^ \s* LOAD \s \d+ \s* $/xi ) {
-            say STDERR "blockcode LOAD line: ", $line;
-        }
-        if ( $line =~ /^ \s* BUILD_LIST \s \d+ \s* $/xi ) {
-            say STDERR "blockcode BUILD_LIST line: ", $line;
+    # Is the line a outer-layer label?
+    if ( my ($label) = ( $line =~ m/ ^ ( [_A-Z] \w* [:] ) /xi ) ) {
+	$recce->alternative('label', $label, length $label);
+	say STDERR "outer label: ", $label;
+    }
+
+    my $bytecodes = '';
+
+    LINE: while ($line_end < $input_length) {
+
+      PROCESS_LINE: {
+            last PROCESS_LINE if $line =~ /^ \s* $/x;
+
+            # Is the line a outer-layer label?
+            if ( my ($label) = ( $line =~ m/ ^ ( [_A-Z] \w* [:] ) /xi ) ) {
+		$recce->alternative('bytecodes', $bytecodes, length $bytecodes);
+                say STDERR "outer label: ", $label;
+                last PROCESS_LINE;
+            }
+            if ( $line =~ /^ \s* [_A-Z] \w* [:] \s* $/xi ) {
+                say STDERR "blockcode LABEL line: ", $line;
+                last PROCESS_LINE;
+            }
+            if ( $line =~ /^ \s* LOAD \s \d+ \s* $/xi ) {
+                say STDERR "blockcode LOAD line: ", $line;
+                last PROCESS_LINE;
+            }
+            if ( $line =~ /^ \s* BUILD_LIST \s \d+ \s* $/xi ) {
+                say STDERR "blockcode BUILD_LIST line: ", $line;
+                last PROCESS_LINE;
+            }
+	    # if it is not a bytecode line, finish up
+	    last LINE;
         }
 
+	$bytecodes = $bytecodes . $line;
 	my $line_start     = $line_end+1;
-	my $line_end     = index( "\n", ${$input}, $line_start );
+	my $line_end     = index( ${$input}, "\n", $line_start );
 	$line_end = $input_length if $line_end < 0;
 
+	my $line = substr( ${$input}, $line_start, $line_end - $line_start );
+
     }
+
+    $recce->earleme_complete();
+
 }
