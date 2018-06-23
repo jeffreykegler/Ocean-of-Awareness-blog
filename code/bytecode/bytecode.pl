@@ -17,25 +17,22 @@ lexeme default = latm => 1
 S ::= statements
 statements ::= statement*
 statement ::= var '=' boolean
-statement ::= label ':'
-statement ::= goto
 statement ::= if_statement
+statement ::= label
 statement ::= bytecodes
-if_statement ::= 'if':i var 'then':i statements 'end':i
-if_statement ::= 'if':i var 'then':i statements 'else':i statements 'end':i
+if_statement ::= 'if' var 'then' statements 'end'
+if_statement ::= 'if' var 'then' statements 'else' statements 'end'
 :discard ~ whitespace
-whitespace ~ [\s]
+whitespace ~ [\s]+
 boolean ~ 'true'
 boolean ~ 'false'
-label ~ name
 var ~ name
 name ~ first_char later_chars
 first_char ~ [_a-zA-Z]
 later_chars  ~ [_a-zA-Z0-9]+
-:lexeme ~ bytecodes pause => before event => 'before bytecodes'
-:lexeme ~ goto pause => before event => 'before goto'
-bytecodes ~ [\d\D] # dummy -- procedural logic reads <goto>
-goto ~ 'goto':i # dummy -- procedural logic reads <goto>
+:lexeme ~ bytecodes priority => -1 pause => before event => 'before bytecodes'
+bytecodes ~ [\S] # dummy -- procedural logic reads bytecodes
+label ~ [^\d\D] # dummy -- procedural logic reads labels
 END_OF_DSL
 
 my $test = <<'EOS';
@@ -49,7 +46,7 @@ if cond2 then
     LOAD 1
     LOAD 2
     BUILD_LIST 2
-    GOTO BYTECODE_88
+    BYTECODE_88:
     LOAD 2
     BUILD_LIST 1
 else
@@ -60,9 +57,8 @@ else
     LOAD 711
     BUILD_LIST 3
 else
-    GOTO FINISH
+    FINISH:
 end
-FINISH:
 EOS
 
 my $grammar = Marpa::R2::Scanless::G->new( { source => \$dsl } );
@@ -70,7 +66,9 @@ my $grammar = Marpa::R2::Scanless::G->new( { source => \$dsl } );
 {
     my $expected_result = '';
     my $expected_value = '';
-    my $recce = Marpa::R2::Scanless::R->new( { grammar => $grammar } );
+    my $recce = Marpa::R2::Scanless::R->new( { grammar => $grammar,
+       trace_terminals => 99,
+    } );
     my $value_ref;
     my $result = 'OK';
     my $eval_ok = eval { $value_ref = doit( $recce, \$test ); 1; };
@@ -114,6 +112,10 @@ sub doit {
           )
         {
             my $name = $event->[0];
+	    if ($name eq "before bytecodes") {
+	       parse_bytecodes($recce, $input);
+	       next EVENT;
+	    }
 	    die qq{Unexpected event: name="$name"};
         }
     }
@@ -124,4 +126,48 @@ sub doit {
     }
 
     return $value_ref;
+}
+
+sub parse_bytecodes {
+    my ( $recce, $input ) = @_;
+    my $input_length = length ${$input};
+    my $pos          = $recce->pos;
+    my $last_eol     = rindex( "\n", ${$input}, $pos - 1 );
+    my $line_start   = $last_eol + 1;
+    my $line_prefix  = substr( ${$input}, $line_start, $pos - $line_start );
+    my $line_end     = index( "\n", ${$input}, $pos );
+    $line_end = $input_length if $line_end < 0;
+    my $line_body = substr( ${$input}, $pos, $line_end - $pos );
+
+    say STDERR "=== LINE BODY: ", $line_body;
+
+    my $line = $line_prefix . $line_body;
+
+    if ( $line_prefix =~ /[\S]/ ) {
+        die
+"bytecode must not have anything but whitespace before it on the same line\n",
+          "Problem line was:\n",
+          $line;
+    }
+    while ($line_end < $input_length) {
+
+        # Is the line a outer-layer label?
+        if ( my ($label) = ( $line =~ m/ ^ ( [_A-Z] \w* [:] ) /xi ) ) {
+            say STDERR "outer label: ", $label;
+        }
+        if ( $line =~ /^ \s* [_A-Z] \w* [:] \s* $/xi ) {
+            say STDERR "blockcode LABEL line: ", $line;
+        }
+        if ( $line =~ /^ \s* LOAD \s \d+ \s* $/xi ) {
+            say STDERR "blockcode LOAD line: ", $line;
+        }
+        if ( $line =~ /^ \s* BUILD_LIST \s \d+ \s* $/xi ) {
+            say STDERR "blockcode BUILD_LIST line: ", $line;
+        }
+
+	my $line_start     = $line_end+1;
+	my $line_end     = index( "\n", ${$input}, $line_start );
+	$line_end = $input_length if $line_end < 0;
+
+    }
 }
