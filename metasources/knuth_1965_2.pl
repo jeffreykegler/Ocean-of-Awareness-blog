@@ -69,14 +69,50 @@ Why is parsing considered solved? II
     <!--
       marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
       -->
+    <blockquote>The difference between theory and practice is
+    that in theory there is no difference between
+    theory and practice,
+    but in practice, there is.<footnote>
+    Attributed to Jan L. A. van de Snepscheut and Yogi Berra.
+    See <a href="https://en.wikiquote.org/wiki/Jan_L._A._van_de_Snepscheut">
+    https://en.wikiquote.org/wiki/Jan_L._A._van_de_Snepscheut</a>,
+    accessed 1 July 2018.
+    I quote my preferred form  of this --
+    the one it takes in
+    Doug Rosenberg and Matt Stephens,
+    <cite>Use Case Driven Object Modeling with UML: Theory and Practice</cite>,
+    2007,
+    p. xxvii.
+    Rosenberg and Stephens is also the accepted authority for its attribution.
+    </footnote>
+    </blockquote>
     <p>
-    In a previous post I asked "Why is parsing considered solved?"
-    If the state of the art is to be believed, then the human brain has a
-    mysterious power that makes it much better at parsing than computers.
     Once it was taken seriously that humans might have the power to, for
     example, "read" a chessboard in a way that computers could not beat.
     This kind of "computational mysticism" has taken a beating, but
     survives in one last stronghold -- parsing theory.
+    <p>
+    In a previous post I asked "Why is parsing considered solved?"
+    If the state of the art of computer parsing is taken as anything close to its ultimate solution,
+    then the human brain has some
+    strange power that makes it much better at parsing than computers can be.
+    It is very unlikely this would certainly be accepted as an explanation
+    of any other problem,
+    which raises the question:
+    Why is it accepted for parsing theory.<footnote>
+    As an aside, I am open to the idea that
+    the human mind has abilities that Turing machines cannot improve on
+    or even duplicate.
+    When it comes to
+    survival heuristics tied to the needs of human bodies, for example,
+    it seems very reasonable to at least entertain the conjecture
+    that the human mind might be near-optimal,
+    particularly in big-O terms.
+    But when it comes to ability to solve problems which can be formalized
+    as "puzzles" -- and syntactic analysis is one of these --
+    I think it is best to be extremely reluctant to accept
+    human exceptionalism.
+    </footnote>
     </p>
     <p>
     Previously I answered this question.  I explained why practitioners
