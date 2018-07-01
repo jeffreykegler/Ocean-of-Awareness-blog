@@ -16,7 +16,7 @@ lexeme default = latm => 1
 :default ::= action => [name,start,length,values]
 S ::= statements
 statements ::= statement*
-statement ::= var '=' boolean
+# statement ::= var '=' boolean
 statement ::= if_statement
 statement ::= label
 statement ::= bytecodes
@@ -24,8 +24,8 @@ if_statement ::= 'if' var 'then' statements 'end'
 if_statement ::= 'if' var 'then' statements 'else' statements 'end'
 :discard ~ whitespace
 whitespace ~ [\s]+
-boolean ~ 'true'
-boolean ~ 'false'
+# boolean ~ 'true'
+# boolean ~ 'false'
 var ~ name
 name ~ first_char later_chars
 first_char ~ [_a-zA-Z]
@@ -35,9 +35,11 @@ bytecodes ~ [\S] # dummy -- procedural logic reads bytecodes
 label ~ [^\d\D] # dummy -- procedural logic reads labels
 END_OF_DSL
 
+# TODO: add to grammar
+# cond1 = true
+# cond2 = false
+
 my $test = <<'EOS';
-cond1 = true
-cond2 = false
 if cond1 then
     LOAD 42
     LOAD 1792
@@ -186,11 +188,11 @@ sub parse_bytecodes {
         }
 
 	$bytecodes = $bytecodes . $line;
-	my $line_start     = $line_end+1;
-	my $line_end     = index( ${$input}, "\n", $line_start );
+	$line_start     = $line_end+1;
+	$line_end     = index( ${$input}, "\n", $line_start );
 	$line_end = $input_length if $line_end < 0;
 
-	my $line = substr( ${$input}, $line_start, $line_end - $line_start );
+	$line = substr( ${$input}, $line_start, $line_end - $line_start );
 
     }
 
