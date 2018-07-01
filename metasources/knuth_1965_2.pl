@@ -70,55 +70,98 @@ Why is parsing considered solved? II
       marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
       -->
     <blockquote>The difference between theory and practice is
-    that in theory there is no difference between
-    theory and practice,
-    but in practice, there is.<footnote>
-    Attributed to Jan L. A. van de Snepscheut and Yogi Berra.
-    See <a href="https://en.wikiquote.org/wiki/Jan_L._A._van_de_Snepscheut">
-    https://en.wikiquote.org/wiki/Jan_L._A._van_de_Snepscheut</a>,
-    accessed 1 July 2018.
-    I quote my preferred form  of this --
-    the one it takes in
-    Doug Rosenberg and Matt Stephens,
-    <cite>Use Case Driven Object Modeling with UML: Theory and Practice</cite>,
-    2007,
-    p. xxvii.
-    Rosenberg and Stephens is also the accepted authority for its attribution.
-    </footnote>
+      that in theory there is no difference between
+      theory and practice,
+      but in practice, there is.<footnote>
+        Attributed to Jan L. A. van de Snepscheut and Yogi Berra.
+        See
+        <a href="https://en.wikiquote.org/wiki/Jan_L._A._van_de_Snepscheut">
+          https://en.wikiquote.org/wiki/Jan_L._A._van_de_Snepscheut</a>,
+        accessed 1 July 2018.
+        I quote my preferred form  of this --
+        the one it takes in
+        Doug Rosenberg and Matt Stephens,
+        <cite>Use Case Driven Object Modeling with UML: Theory and Practice</cite>,
+        2007,
+        p. xxvii.
+        Rosenberg and Stephens is also the accepted authority for its attribution.
+      </footnote>
     </blockquote>
     <p>
-    Once it was taken seriously that humans might have the power to, for
-    example, "read" a chessboard in a way that computers could not beat.
-    This kind of "computational mysticism" has taken a beating, but
-    survives in one last stronghold -- parsing theory.
-    <p>
-    In a previous post I asked "Why is parsing considered solved?"
-    If the state of the art of computer parsing is taken as anything close to its ultimate solution,
-    then the human brain has some
-    strange power that makes it much better at parsing than computers can be.
-    It is very unlikely this would certainly be accepted as an explanation
-    of any other problem,
-    which raises the question:
-    Why is it accepted for parsing theory.<footnote>
-    As an aside, I am open to the idea that
-    the human mind has abilities that Turing machines cannot improve on
-    or even duplicate.
-    When it comes to
-    survival heuristics tied to the needs of human bodies, for example,
-    it seems very reasonable to at least entertain the conjecture
-    that the human mind might be near-optimal,
-    particularly in big-O terms.
-    But when it comes to ability to solve problems which can be formalized
-    as "puzzles" -- and syntactic analysis is one of these --
-    I think it is best to be extremely reluctant to accept
-    human exceptionalism.
-    </footnote>
+      Once it was taken seriously that humans might have the power to, for
+      example, "read" a chessboard in a way that computers could not beat.
+      This kind of "computational mysticism" has taken a beating, but
+      survives in one last stronghold -- parsing theory.
+    </p><p>
+      In a previous post I asked "Why is parsing considered solved?"
+      If the state of the art of computer parsing is taken as anything close to its ultimate solution,
+      then the human brain has some
+      strange power that makes it much better at parsing than computers can be.
+      It is very unlikely this would certainly be accepted as an explanation
+      of any other problem,
+      which raises the question:
+      Why is it accepted for parsing theory.<footnote>
+        As an aside, I am open to the idea that
+        the human mind has abilities that Turing machines cannot improve on
+        or even duplicate.
+        When it comes to
+        survival heuristics tied to the needs of human bodies, for example,
+        it seems very reasonable to at least entertain the conjecture
+        that the human mind might be near-optimal,
+        particularly in big-O terms.
+        But when it comes to ability to solve problems which can be formalized
+        as "puzzles" -- and syntactic analysis is one of these --
+        I think it is best to be extremely reluctant to accept
+        human exceptionalism.
+      </footnote>
     </p>
     <p>
-    Previously I answered this question.  I explained why practitioners
-    came to believe they'd reached the limit in 1965: Every practical
-    parser was stack-driven
-    </p>
+      I addressed this question in
+      <a href="http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2018/05/knuth_1965.html">a previous post</a>.
+      The question of why
+      <b>practitioners</b>
+      accepted the problem as solved
+      in 1965
+      has a straightforward answer:
+    </p><ul>
+      <li>In 1965, every practical parser was stack-driven.<footnote>
+          CYK?
+        </footnote></li>
+      <li>As of 1965, stacks themselves were quite leading edge.
+        As recently as 1961,
+        a leading edge article<footnote>
+          Oettinger, Anthony. "Automatic Syntactic Analysis and the Pushdown
+          Store" Proceedings of Symposia in Applied Mathematics, Volume 12,
+          American Mathematical Society, 1961.
+          Oettinger describes "push" and "pop"
+	  stack operations in "Iversion notation" -- what
+          later became APL.
+          See the discussion of Oettinger in
+          my
+          <a href="
+    <a href="http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2018/05/knuth_1965.html">
+            "Why is parsing considered solved?" post</a>.
+        </footnote>
+	could not assume that its readers knew what "pop" and "push" operations
+	were.
+      </li>
+      <li>An algorithm that combined state transitions and stack operations was
+      already a challenge to existing machines.
+      In 1965, any more complicated algorithm was very likely to be unuseable
+      in practice.
+      </li>
+      <li>And last, but not least, the theoreticians assured the
+      practitioners that LR-parsing was either state-of-the-art
+      or beyond,
+      so that stretching the capabilities of the hardware would
+      have been pointless.
+      </li>
+    </ul>
+    <h2>What about the theorists?</h2>
+    <h2>The practitioners of 1965, then,
+    were quite reasonable in feeling that
+    LR-parsing was as good as anything they were likely to imn
+    Which brings us </h2>
     <h2>Comments, etc.</h2>
     <p>
       I encourage
