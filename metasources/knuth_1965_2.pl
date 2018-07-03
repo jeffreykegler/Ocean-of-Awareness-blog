@@ -207,6 +207,13 @@ Why is parsing considered solved? II
     never the world of big-O,
     in most cases it looks an awful lot like it.
     </p>
+    <p>Since coming up with a theoretical model that is equivalent
+    to "practical" is impossible,
+    theoreticians often work like artillerists.
+    They try to "bracket" practice between an impractical model,
+    on one side,
+    and a model too simple to capture practice on the other side.
+    </p>
     <h2>Comments, etc.</h2>
     <p>
       I encourage
