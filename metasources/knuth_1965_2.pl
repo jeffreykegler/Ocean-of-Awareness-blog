@@ -158,10 +158,55 @@ Why is parsing considered solved? II
       </li>
     </ul>
     <h2>What about the theorists?</h2>
-    <h2>The practitioners of 1965, then,
+    <p>The practitioners of 1965, then,
     were quite reasonable in feeling that
-    LR-parsing was as good as anything they were likely to imn
-    Which brings us </h2>
+    LR-parsing was as good as anything they were likely to be able
+    to implement any time soon.
+    And they were being told by the theorists that,
+    in fact,
+    it never would get any better --
+    there were theoretical limits on parsers that faster
+    hardware could not overcome.
+    </p>
+    <p>We now know that the theorists were wrong --
+    there are non-LR parsers which are better than the
+    LR parsers are at their own grammars.
+    What made the theorists go astray?
+    </p>
+    <h2>How theorists work</h2>
+    <p>In
+    <a href="http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2018/05/knuth_1965.html">
+    a previous post</a>,
+    I briefly mentioned the factors behind theory's wrong turn.
+    Here I will put them more in context.
+    </p>
+    <p>As the epigraph for this post reminds us,
+    theorists who hope to guide practitioners have to confront a big problem --
+    theory is not practice except in theory.
+    Theoreticians (at least some) know this,
+    but they try to make theory as good a guide as possible.
+    Big-O notation assumes
+    that the most dangerous of these is that the behavior of most interest
+    is that for arbitrarily large inputs.
+    Practical inputs, of course,
+    can be very large, but they are never arbitrarily large.
+    This suggests that 
+    big-O complexity measures might be "galactic" --
+    relevant only to situations which cannot occur in practice.
+    </p>
+    <p>
+    Despite the potential problem,
+    big-O analysis rarely goes "galactic".
+    It is almost always relevant to practice --
+    usually it is extremely relevant.
+    As a result,
+    The big-O complexities are one of the first 
+    things many practitioners want to know about a new
+    algorithm,
+    because while the practical programming world is
+    never the world of big-O,
+    in most cases it looks an awful lot like it.
+    </p>
     <h2>Comments, etc.</h2>
     <p>
       I encourage
