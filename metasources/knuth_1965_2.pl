@@ -225,15 +225,83 @@ Undershoot: Parsing theory in 1965
     </p>
     <p>
     I say "unfortunately" because recognizing that a string belongs
-    to a set is not the same as parsing it -- not even close.
+    to a set is not the same as parsing it.
+    It is not even all that close.
     As one example, it is easy to recognize that a string like
     "<tt>2*3+4^5-7/8</tt>" represents
     an arithmetic expression.
-    It is a lot harder to figure out the structure of the
-    arithmetic expression, using the traditional associativity
+    It is a lot harder to figure out the structure
+    of that arithmetic expression,
+    using the traditional associativity
     and precedence of the operators.
     And it is that <b>structure</b> that you have to recognize,
     if you are going to evaluate the expression.
+    </p>
+    <p>The distinction between parsing and recognition was
+    not lost on most of Knuth's readers --
+    it certainly was not lost on Knuth.
+    Nonetheless a good deal of the most complicated mathematics
+    in Knuth 1965 is devoted showing the equivalence of LR
+    and deterministic stack machines
+    <b>in terms of sets of strings</b>.
+    </p>
+    <p>This is because of a detour by American linguistics --
+    in order to satisfy the behaviourists, who looked down
+    on descriptions in terms of hypothesized mental states,
+    Unbelieveably,
+    American linguistics for many years banned any reference
+    to meaning.
+    "Sets of strings" were what they had left.
+    So they defined a "language" as a "set of strings".
+    </p>
+    <p>Noam Chomsky restored sanity to linguistics,
+    but it was too late.
+    Automata theory adopted the semantics-free definition,
+    and the prior work that Knuth inherited ignored
+    not just questions of meaning or semantics,
+    but even of syntax or structure.
+    Knuth, of course, wanted to make contact with
+    the prior art.
+    </p>
+    <p>Knuth could not prove that LR-parsers
+    to deterministic stack machines as parsers,
+    because deterministic stack machine did not parse.
+    Deterministic stack machines only recognized languages.
+    </p>
+    <p>LR-parsers, as a by-product of parsing a string, could
+    be seen as "recognizing" that string as belonging to a set.
+    If an LR-parser successfully parsed a string,
+    it belonged to the set.
+    If an LR-parser failed to produce a parse for a string,
+    that string did not belong to the set.
+    </p>
+    <p>So Knuth proved, as he was forced to,
+    the equivalence of LR-parsers and deterministic stack machines
+    in terms of sets of strings.
+    Previously successful models of computation had tended
+    to correspond (more or less) neatly
+    to classes of languages,
+    and the LR languages and deterministic stack machine
+    model of computing feel nicely into a new slot,
+    one which seemed like a very nice overshoot of
+    the "practical" model of computation for parsing.
+    </p>
+    <p>But, even in Knuth's paper, there are clear indications
+    that things were not so neat.
+    The issue was not classifying string-sets -- it was parsing.
+    The other models of computation obscured this issue.
+    Regular expressions are so simple that parsing can be ignored
+    or hacked in at a rudimentary level<footnote>
+    In practice,
+    regular expressions can be extended with "captures".
+    Captures cannot handle recursion, but neither can regular expressions,
+    so captures can be usually be hacked out to provide all structure
+    an application wants.
+    </footnote>.
+    Turing machines (the computational model for the recursively enumerable languages)
+    are so general they far overshoot the target for practical parsing,
+    but they are so powerful that parsers fall out of them easily as a side effect.
+    And context-free grammars [...]
     </p>
     <h2>Reason 3: The evidence from the practitioners</h2>
     <p>As stated above,
