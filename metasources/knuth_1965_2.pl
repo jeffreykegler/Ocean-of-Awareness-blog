@@ -214,6 +214,30 @@ Why is parsing considered solved? II
     on one side,
     and a model too simple to capture practice on the other side.
     </p>
+    <h2>Reason 1: Misdefiniton of language</h2>
+    <h2>Reason 2: Conflation of linear with deterministic</h2>
+    <h2>Reason 3: The evidence from the practitioners</h2>
+    <p>As stated above,
+    1965 hardware limits led practitions to suspect that stack machines
+    model were an upper limit to the practical.
+    The theoreticians took this into account.
+    Of course, the logic can get dangerously circular
+    if theoreticians take practice as too much of a guide to
+    what is possible.
+    The job of theory,
+    after all, to guide practice,
+    not merely to record it.
+    </p>
+    <p>In 1965, the theoreticians gave a lot of weight
+    to the evidence from the world of practice,
+    but probably not undue weight.
+    Going forward, it was a different story.
+    Practitioners saw no reason to question the theoretician's
+    conclusions,
+    and theoreticians, seeing that beyond-LR methods did not
+    come into use in the world of practice,
+    felt no need to question their conclusions either.
+    </p>
     <h2>Comments, etc.</h2>
     <p>
       I encourage
