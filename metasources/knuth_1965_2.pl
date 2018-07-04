@@ -214,8 +214,27 @@ Undershoot: Parsing theory in 1965
     on one side,
     and a model too simple to capture practice on the other side.
     </p>
-    <h2>Reason 1: Misdefiniton of language</h2>
-    <h2>Reason 2: Conflation of linear with deterministic</h2>
+    <h2>Reason 1: Conflation of linear with deterministic</h2>
+    <h2>Reason 2: Misdefinition of language</h2>
+    <p>A very persuasive reason to believe LR was the "right"
+    theoretical equivalent of practical was its naturalness --
+    or what was mistakenly seem as its naturalness.
+    It turns out that, unfortunately,
+    deterministic stack machines
+    and LR-parsers recognize exactly the same sets of strings.
+    </p>
+    <p>
+    I say "unfortunately" because recognizing that a string belongs
+    to a set is not the same as parsing it -- not even close.
+    As one example, it is easy to recognize that a string like
+    "<tt>2*3+4^5-7/8</tt>" represents
+    an arithmetic expression.
+    It is a lot harder to figure out the structure of the
+    arithmetic expression, using the traditional associativity
+    and precedence of the operators.
+    And it is that <b>structure</b> that you have to recognize,
+    if you are going to evaluate the expression.
+    </p>
     <h2>Reason 3: The evidence from the practitioners</h2>
     <p>As stated above,
     1965 hardware limits led practitions to suspect that stack machines
