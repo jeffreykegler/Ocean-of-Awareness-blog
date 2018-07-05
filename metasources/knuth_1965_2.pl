@@ -100,7 +100,7 @@ Undershoot: Parsing theory in 1965
       It is very unlikely this would certainly be accepted as an explanation
       of any other problem,
       which raises the question:
-      Why is it accepted for parsing theory.<footnote>
+      Why is it accepted for parsing theory?<footnote>
         As an aside, I am open to the idea that
         the human mind has abilities that Turing machines cannot improve on
         or even duplicate.
@@ -118,15 +118,23 @@ Undershoot: Parsing theory in 1965
     <p>
       I addressed this question in
       <a href="http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2018/05/knuth_1965.html">a previous post</a>.
+      It really requires two separate answers:
+      "Why do practitioners accept the current state of the art as the solution?"
+      And
+      "Why do the theoreticians accept the current state of the art as the solution?"
+    </p>
+    <h2>The Practitioners</h2>
+    <p>
       The question of why
       <b>practitioners</b>
       accepted the problem as solved
       in 1965
-      has a straightforward answer:
-    </p><ul>
-      <li>In 1965, every practical parser was stack-driven.<footnote>
-          CYK?
-        </footnote></li>
+      has a straightforward answer.
+      It was laid out in the previous post,
+      but let me summarize it here:
+    </p>
+    <ul>
+      <li>In 1965, every practical parser was stack-driven.</li>
       <li>As of 1965, stacks themselves were quite leading edge.
         As recently as 1961,
         a leading edge article<footnote>
@@ -334,7 +342,6 @@ Undershoot: Parsing theory in 1965
     Knuth has reason to believe he was using
     a theory that was reliable
     approximation to practice.
-    </p>
     <h2>Reason 3: The evidence from the practitioners</h2>
     <p>As stated above,
     1965 hardware limits led practitions to suspect that stack machines
