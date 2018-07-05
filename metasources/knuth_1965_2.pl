@@ -124,16 +124,15 @@ Undershoot: Parsing theory in 1965
       "Why do practitioners accept the current state of the art as the solution?"
       And
       "Why do the theoreticians accept the current state of the art as the solution?"
+      This post expands on the answer to the second question.
     </p>
     <h2>The Practitioners</h2>
     <p>
       The question of why
       <b>practitioners</b>
-      accepted the problem as solved
+      accepted the parsing problem as solved
       in 1965
       has a straightforward answer.
-      It was laid out in the previous post,
-      but let me summarize it here:
     </p>
     <ul>
       <li>In 1965, every practical parser was stack-driven.</li>
@@ -157,14 +156,14 @@ Undershoot: Parsing theory in 1965
       </li>
       <li>An algorithm that combined state transitions and stack operations was
       already a challenge to existing machines.
-      In 1965, any more complicated algorithm was very likely to be unuseable
+      In 1965, any more complicated algorithm was likely to be unuseable
       in practice.
       </li>
-      <li>And last, but not least, the theoreticians assured the
+      <li>Last, but not least, the theoreticians assured the
       practitioners that LR-parsing was either state-of-the-art
       or beyond,
-      so that stretching the capabilities of the hardware would
-      have been pointless.
+      so making more agressive use of hardware
+      would be futile.
       </li>
     </ul>
     <h2>What about the theorists?</h2>
@@ -193,11 +192,11 @@ Undershoot: Parsing theory in 1965
     but they try to make theory as reliable a guide to
     practice as possible.
     </p>
-    <p>One of the most important examples of theoretician's successes
+    <p>One of the most important examples of the theoretician's successes
     is asymptotic notation --
     more commonly referred to as a big-O notation.
     The term "asymptotic notation"
-    does emphasize its most dangerous aspect
+    emphasizes its most dangerous aspect
     from a practical point of view:
     Asymptotic notation assumes
     that the behavior of most interest
@@ -222,12 +221,57 @@ Undershoot: Parsing theory in 1965
     and these displays are one of the first 
     things that some practitioners look at.
     </p>
+    <h2>Bracketing</h2>
     <p>Since coming up with a theoretical model that is equivalent
     to "practical" is impossible,
     theoreticians often work like artillerists.
-    They try to "bracket" practice between an impractical model,
-    on one side,
-    and a model too simple to capture practice on the other side.
+    Artillerists often deliberately overshoot and undershoot,
+    before they "fire for effect".
+    "Bracketing" their target in this way has disadvantage --
+    it eliminates the element of surprise,
+    and gives the enemy an opportunity for counter-fire.
+    But, nasty as these consequences could be,
+    the advantage in accuracy was found to outweigh them.
+    </p>
+    <p>The practice of theoretical computer science is 
+    less risky,
+    which makes "bracketing" a very attractive approach to
+    tricky problems.
+    Theoreticians often
+    try to "bracket" practice between an "undershoot"
+    and an "overshoot".
+    The undershoots are models simple and efficient enough to be practical,
+    but too weak to capture all the needs of practice.
+    The overshoots are models which capture everything
+    a practitioner needs,
+    but are too complicated and/or too resource-intensive
+    for practice.
+    <p>The P vs. NP problem is an active example of a bracketing technique.
+    You will sometimes read the P/NP boundary is expected to be 
+    that between practical and impractical,
+    but this is usually a simplification for a popular audience.
+    P includes complexities like <tt>O(n^1000000)</tt>,
+    where the complexity for even <tt>n == 2</tt> is
+    a nunber which, in decimal form,
+    fills several pages.
+    And you can make the complexities much much harder without
+    ever reaching P-hard.
+    </p>
+    <p>
+    P-hard is well beyond any reasonable definition of "practical".
+    It is an "overshoot".
+    As such,
+    it certainly is relevant to what is "practical"
+    and resolving the P vs. NP question is likely
+    to be an important or even necessary step in understanding
+    asymptotic complexity --
+    it certainly is perplexing that such a seemingly obvious
+    question has resisted the best efforts of the theoreticians
+    for so long,
+    But the 
+    </p>
+    <p>When Knuth published his 1965,
+    "practical parsing
     </p>
     <h2>Reason 1: Conflation of linear with deterministic</h2>
     <h2>Reason 2: Misdefinition of language</h2>
