@@ -291,17 +291,49 @@ Undershoot: Parsing theory in 1965
     The issue was not classifying string-sets -- it was parsing.
     The other models of computation obscured this issue.
     Regular expressions are so simple that parsing can be ignored
-    or hacked in at a rudimentary level<footnote>
-    In practice,
-    regular expressions can be extended with "captures".
-    Captures cannot handle recursion, but neither can regular expressions,
-    so captures can be usually be hacked out to provide all structure
-    an application wants.
-    </footnote>.
+    or hacked in at a rudimentary level
     Turing machines (the computational model for the recursively enumerable languages)
     are so general they far overshoot the target for practical parsing,
     but they are so powerful that parsers fall out of them easily as a side effect.
     And context-free grammars [...]
+    </p>
+    <h2>Bracketing</h2>
+    <p>Of course, most readers of Knuth's paper were quite aware that
+    the extension of a grammar
+    <footnote>Define extension and intension.
+    </footnote>
+    are not the same as the grammar itself (its "intension").
+    Certainly Knuth knew this.
+    So why does "pun" the two and expect to get away with it?
+    </p>
+    <p>The answer is simple -- it had always worked before.
+    In particular, when Knuth is writing the "practical grammars"
+    had already been bracketed --
+    Knuth was trying to narrow
+    the bracketing.
+    Regular expressions were the undershoot, and they were
+    so simple that, in practice
+    a parser could conveniently be hacked onto a recognizer.
+    <footnote>
+    For example,
+    regular expressions can be extended with "captures".
+    Captures cannot handle recursion, but neither can regular expressions,
+    so captures are usually sufficient to provide all structure
+    an application wants.
+    </footnote>.
+    The overshoot, which Knuth was attempting to replace,
+    was the context-free grammars,
+    and the most practical recognizer for these produced
+    a parse as a by-product.<footnote>
+    Refer to Pingali&Bilardi here.
+    </footnote>
+    So,
+    since for stack machines Knuth had only extensions to work with,
+    and since results for grammar extensions had always proved applicable
+    to grammar intensions,
+    Knuth has reason to believe he was using
+    a theory that was reliable
+    approximation to practice.
     </p>
     <h2>Reason 3: The evidence from the practitioners</h2>
     <p>As stated above,
