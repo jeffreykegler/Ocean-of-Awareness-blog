@@ -196,9 +196,9 @@ Undershoot: Parsing theory in 1965
     <p>One of the most important examples of theoretician's successes
     is asymptotic notation --
     more commonly referred to as a big-O notation.
-    Asymptotic notation makes at least one
-    very
-    dangerous assumption from the practical point of view.
+    The term "asymptotic notation"
+    does emphasize its most dangerous aspect
+    from a practical point of view:
     Asymptotic notation assumes
     that the behavior of most interest
     is the behavior for arbitrarily large inputs.
@@ -211,7 +211,7 @@ Undershoot: Parsing theory in 1965
     relevance only in situations which cannot possibly occur in practice.
     </p>
     <p>
-    But, fortunately for computer science,
+    Fortunately for computer science,
     asymptotic results usually are
     not "galactic".
     Most often asymptotic results are not only
