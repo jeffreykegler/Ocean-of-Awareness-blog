@@ -217,10 +217,10 @@ Undershoot: Parsing theory in 1965
     Most often asymptotic results are not only
     relevant to practice --
     they are extremely relevant.
-    Asymptotic complexities are in special displays for
-    Wikipedia pages for algorithms,
-    because they are one of the first 
-    things that some practitioners want to look at.
+    Wikipedia pages for algorithms put
+    the asymptotic complexities in special displays,
+    and these displays are one of the first 
+    things that some practitioners look at.
     </p>
     <p>Since coming up with a theoretical model that is equivalent
     to "practical" is impossible,
