@@ -93,13 +93,15 @@ Undershoot: Parsing theory in 1965
       This kind of "computational mysticism" has taken a beating, but
       survives in one last stronghold -- parsing theory.
     </p><p>
-      In a previous post I asked "Why is parsing considered solved?"
+      In
+      <a href="http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2018/05/knuth_1965.html">
+      a previous post</a>,
+      I asked "Why is parsing considered solved?"
       If the state of the art of computer parsing is taken as anything close to its ultimate solution,
       then the human brain has some
       strange power that makes it much better at parsing than computers can be.
-      It is very unlikely this would certainly be accepted as an explanation
-      of any other problem,
-      which raises the question:
+      It is very unlikely this would be accepted as an explanation
+      of any other problem in computer science.
       Why is it accepted for parsing theory?<footnote>
         As an aside, I am open to the idea that
         the human mind has abilities that Turing machines cannot improve on
@@ -111,8 +113,8 @@ Undershoot: Parsing theory in 1965
         particularly in big-O terms.
         But when it comes to ability to solve problems which can be formalized
         as "puzzles" -- and syntactic analysis is one of these --
-        I think it is best to be extremely reluctant to accept
-        human exceptionalism.
+        I think that resort to human exceptionalism
+	is a sign of desperation.
       </footnote>
     </p>
     <p>
