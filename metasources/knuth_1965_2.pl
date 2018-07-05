@@ -249,29 +249,35 @@ Undershoot: Parsing theory in 1965
     <p>The P vs. NP problem is an active example of a bracketing technique.
     You will sometimes read the P/NP boundary is expected to be 
     that between practical and impractical,
-    but this is usually a simplification for a popular audience.
+    but this is an extreme simplification.
     P includes complexities like <tt>O(n^1000000)</tt>,
     where the complexity for even <tt>n == 2</tt> is
     a nunber which, in decimal form,
     fills several pages.
+    Modulo bold advances in quantum computing,
+    I cannot imagine that <tt>O(n^1000000)</tt> will ever be
+    practical.
     And you can make the complexities much much harder without
     ever reaching P-hard.
     </p>
     <p>
-    P-hard is well beyond any reasonable definition of "practical".
+    So P-hard is well beyond any reasonable definition of "practical".
     It is an "overshoot".
-    As such,
-    it certainly is relevant to what is "practical"
-    and resolving the P vs. NP question is likely
-    to be an important or even necessary step in understanding
-    asymptotic complexity --
-    it certainly is perplexing that such a seemingly obvious
+    But the P vs. NP question is almost certainly very relevant to what is "practical".
+    Resolving the P vs. NP question is likely
+    to be an important or even necessary step.
+    It is a mystery that such a seemingly obvious
     question has resisted the best efforts of the theoreticians
     for so long,
-    But the 
+    and the solution of P vs. NP is likely
+    to bring
+    new insights
+    into asymptotic complexity.
     </p>
+    <h2>Bracketing practical parsing</h2>
     <p>When Knuth published his 1965,
-    "practical parsing
+    "practical parsing" was already bracketed.
+    [ TODO ... ]
     </p>
     <h2>Reason 1: Conflation of linear with deterministic</h2>
     <h2>Reason 2: Misdefinition of language</h2>
