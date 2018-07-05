@@ -194,30 +194,30 @@ Undershoot: Parsing theory in 1965
     practice as possible.
     </p>
     <p>One of the most important examples of theoretician's successes
-    is Landau notation --
+    is asymptotic notation --
     more commonly referred to as a big-O notation.
-    Landau notation makes at least one
+    Asymptotic notation makes at least one
     very
     dangerous assumption from the practical point of view.
-    Landau notation assumes
+    Asymptotic notation assumes
     that the behavior of most interest
     is the behavior for arbitrarily large inputs.
     Practical inputs can be very large but,
     by definition,
     they are never arbitrarily large.
-    Results in Landau terms
+    Results in asymptotic terms
     might be what is called "galactic" --
     they might have
     relevance only in situations which cannot possibly occur in practice.
     </p>
     <p>
     But, fortunately for computer science,
-    Landau results usually are
+    asymptotic results usually are
     not "galactic".
-    Most often Landau results are not only
+    Most often asymptotic results are not only
     relevant to practice --
     they are extremely relevant.
-    Landau complexities are in special displays for
+    Asymptotic complexities are in special displays for
     Wikipedia pages for algorithms,
     because they are one of the first 
     things that some practitioners want to look at.
