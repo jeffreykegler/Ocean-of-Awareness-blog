@@ -184,38 +184,43 @@ Undershoot: Parsing theory in 1965
     What made the theorists go astray?
     </p>
     <h2>How theorists work</h2>
-    <p>In
-    <a href="http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2018/05/knuth_1965.html">
-    a previous post</a>,
-    I briefly mentioned the factors behind theory's wrong turn.
-    Here I will put them more in context.
-    </p>
     <p>As the epigraph for this post reminds us,
     theorists who hope to guide practitioners have to confront a big problem --
-    theory is not practice except in theory.
-    Theoreticians (at least some) know this,
-    but they try to make theory as good a guide as possible.
-    Big-O notation assumes
-    that the most dangerous of these is that the behavior of most interest
-    is that for arbitrarily large inputs.
-    Practical inputs, of course,
-    can be very large, but they are never arbitrarily large.
-    This suggests that 
-    big-O complexity measures might be "galactic" --
-    relevant only to situations which cannot occur in practice.
+    theory is practice only in theory.
+    Theoreticians
+    (or at least some of the most influential ones)
+    know this,
+    but they try to make theory as reliable a guide to
+    practice as possible.
+    </p>
+    <p>One of the most important examples of theoretician's successes
+    is Landau notation --
+    more commonly referred to as a big-O notation.
+    Landau notation makes at least one
+    very
+    dangerous assumption from the practical point of view.
+    Landau notation assumes
+    that the behavior of most interest
+    is the behavior for arbitrarily large inputs.
+    Practical inputs can be very large but,
+    by definition,
+    they are never arbitrarily large.
+    Results in Landau terms
+    might be what is called "galactic" --
+    they might have
+    relevance only in situations which cannot possibly occur in practice.
     </p>
     <p>
-    Despite the potential problem,
-    big-O analysis rarely goes "galactic".
-    It is almost always relevant to practice --
-    usually it is extremely relevant.
-    As a result,
-    The big-O complexities are one of the first 
-    things many practitioners want to know about a new
-    algorithm,
-    because while the practical programming world is
-    never the world of big-O,
-    in most cases it looks an awful lot like it.
+    But, fortunately for computer science,
+    Landau results usually are
+    not "galactic".
+    Most often Landau results are not only
+    relevant to practice --
+    they are extremely relevant.
+    Landau complexities are in special displays for
+    Wikipedia pages for algorithms,
+    because they are one of the first 
+    things that some practitioners want to look at.
     </p>
     <p>Since coming up with a theoretical model that is equivalent
     to "practical" is impossible,
