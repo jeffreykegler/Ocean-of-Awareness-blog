@@ -277,9 +277,46 @@ Undershoot: Parsing theory in 1965
     <h2>Bracketing practical parsing</h2>
     <p>When Knuth published his 1965,
     "practical parsing" was already bracketed.
-    [ TODO ... ]
+    On the overshoot side, Irons had already published a parser for
+    context-free grammars.
+    Worst case, this ran in exponential time,
+    and it was, and remains, expected that general context-free parsing
+    was not going to be practical.<footnote>
+    The best lower bound for context-free parsing is still
+    <tt>O(n)</tt>.
+    So it is even possible that there is a practical
+    linear-time general context-free
+    parser.
+    But its discovery would be a big surprise.
+    </footnote>
+    </p>
+    <p>On the undershoot side,
+    there were regular expressions and recursive descent.
+    Regular expressions are fast and very practical,
+    but parse a very limited set of grammars.
+    Recursive descent is also fast and,
+    since it parses a larger set of grammars,
+    was the closest undershoot.
     </p>
     <h2>Reason 1: Conflation of linear with deterministic</h2>
+    <p>The computational model context-free grammars 
+    is non-deterministic stack machines -- stack machines which
+    can "fork" themselves into multiple stack machines running
+    at the same time.
+    Of course, real-life computer cannot "fork" themselves,
+    which reinforced the belief that context-free parsing is
+    an "overshoot".
+    </p>
+    <p>LR-parsing corresponds exactly to the deterministic stack
+    machines,
+    which suggested that it was as close to a
+    "direct hit" as theory was likely to get.
+    It also strongly suggested that stack parsing was a "natural"
+    way to characterize practical parsing,
+    and therefore that stack-based algorithms would be
+    optimal.
+    [ This is reinforced when LR turns out to be an "overshoot". ]
+    </p>
     <h2>Reason 2: Misdefinition of language</h2>
     <p>A very persuasive reason to believe LR was the "right"
     theoretical equivalent of practical was its naturalness --
@@ -347,20 +384,24 @@ Undershoot: Parsing theory in 1965
     to correspond (more or less) neatly
     to classes of languages,
     and the LR languages and deterministic stack machine
-    model of computing feel nicely into a new slot,
+    model of computing fell nicely into a new slot,
     one which seemed like a very nice overshoot of
     the "practical" model of computation for parsing.
     </p>
     <p>But, even in Knuth's paper, there are clear indications
     that things were not so neat.
     The issue was not classifying string-sets -- it was parsing.
-    The other models of computation obscured this issue.
-    Regular expressions are so simple that parsing can be ignored
-    or hacked in at a rudimentary level
-    Turing machines (the computational model for the recursively enumerable languages)
-    are so general they far overshoot the target for practical parsing,
-    but they are so powerful that parsers fall out of them easily as a side effect.
-    And context-free grammars [...]
+    The other models of computation had obscured this difference between
+    language extensions (recognizing strings) and language intensions (parsing).
+    In all other cases the standard recognizer for a language was also,
+    or could easily be turned into,
+    a parser for the language.<footnote>
+    For example,
+    regular expressions can be extended with "captures".
+    Captures cannot handle recursion, but neither can regular expressions,
+    so captures are usually sufficient to provide all structure
+    an application wants.
+    </footnote>.
     </p>
     <h2>Bracketing</h2>
     <p>Of course, most readers of Knuth's paper were quite aware that
@@ -379,13 +420,6 @@ Undershoot: Parsing theory in 1965
     Regular expressions were the undershoot, and they were
     so simple that, in practice
     a parser could conveniently be hacked onto a recognizer.
-    <footnote>
-    For example,
-    regular expressions can be extended with "captures".
-    Captures cannot handle recursion, but neither can regular expressions,
-    so captures are usually sufficient to provide all structure
-    an application wants.
-    </footnote>.
     The overshoot, which Knuth was attempting to replace,
     was the context-free grammars,
     and the most practical recognizer for these produced
@@ -399,7 +433,7 @@ Undershoot: Parsing theory in 1965
     Knuth has reason to believe he was using
     a theory that was reliable
     approximation to practice.
-    <h2>Reason 3: The evidence from the practitioners</h2>
+    <h2>Aftermath</h2>
     <p>As stated above,
     1965 hardware limits led practitions to suspect that stack machines
     model were an upper limit to the practical.
