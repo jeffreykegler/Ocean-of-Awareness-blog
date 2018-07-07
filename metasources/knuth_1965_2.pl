@@ -298,7 +298,7 @@ Undershoot: Parsing theory in 1965
     since it parses a larger set of grammars,
     was the closest undershoot.
     </p>
-    <h2>Reason 1: Conflation of linear with deterministic</h2>
+    <h2>Reason 1: Stack machines look natural</h2>
     <p>The computational model context-free grammars 
     is non-deterministic stack machines -- stack machines which
     can "fork" themselves into multiple stack machines running
@@ -317,7 +317,7 @@ Undershoot: Parsing theory in 1965
     optimal.
     [ This is reinforced when LR turns out to be an "overshoot". ]
     </p>
-    <h2>Reason 2: Misdefinition of language</h2>
+    <h2>Reason 2: Language is misdefined</h2>
     <p>A very persuasive reason to believe LR was the "right"
     theoretical equivalent of practical was its naturalness --
     or what was mistakenly seem as its naturalness.
