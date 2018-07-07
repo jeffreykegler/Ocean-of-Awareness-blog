@@ -305,7 +305,7 @@ Undershoot: Parsing theory in 1965
     since it parses a larger set of grammars,
     was the closest undershoot.
     </p>
-    <h2>Step 1: Misdefine language</h2>
+    <h2>Mistake 1: The misdefinition of "language"</h2>
     <p>In curry respect from the behaviourists,
     American linguistics for many years banned any reference
     to meaning.
@@ -368,10 +368,10 @@ Undershoot: Parsing theory in 1965
     exactly one extension.
     But multiple language intensions can have the same extension.
     </p>
-    <h2>Step 2: Discover that the stack machine model is natural boundary</h2>
+    <h2>Red Herring 1: The stack machine model is natural boundary</h2>
     <p>Again, Knuth, followed prior art,
     and used the term language in its extensional sense,
-    as what his audience expected.
+    as his audience expected.
     </p>
     <p>The computational model of context-free grammars 
     is non-deterministic stack machines -- stack machines which
@@ -391,7 +391,34 @@ Undershoot: Parsing theory in 1965
     optimal.
     [ This is reinforced when LR turns out to be an "overshoot". ]
     </p>
-    <h2>Discover that LR parsers are not good at LR languages</h2>
+    <h2>Red Herring 2: LR parsers are not good at LR grammars</h2>
+    <p>A second red herring led to the mis-bracketing of practical
+    parsing.
+    Having seemingly established that LR-parsing is a natural boundary
+    in the hierarchy of languages,
+    Knuth discovered that general LR-parsers were very far from practical.
+    LR parsing goes out to LR(k) for arbitrary <tt>k</tt>,
+    but even <tt>LR(1)</tt> parsing was impractical in 1965 --
+    in fact, it is rare in practical use today.
+    As the <tt>k</tt> in
+    <tt>LR(k)></tt> grows, the size of the tables grows exponentially,
+    while the value of the additional lookahead rapidly diminishes.
+    It is not likely that
+    <tt>LR(2)</tt> parsing will ever see much practical use,
+    never mind <tt>LR(k) : k &gt; 2</tt>.
+    From this it was concluded that LR-parsing is an overshoot.
+    </p>
+    <h2>Summary</h2>
+    <ul>
+    <li>LR-parsing, based on the definition of language in
+    terms of extension, seems to be a very natural boundary in
+    the hierarchy of languages, very likely close
+    to a "direct hit" on practical parsing.</li>
+    <li>LR(k)-parsers very rapidly impractical,
+    almost certainly for <tt>k</tt> greater than 1,
+    and probably for <tt>k</tt> equal to 1.</li>
+    <li>TODO</li>
+    </ul>
     <h2>Why didn't Knuth see the problem?</h2>
     <p>Why didn't Knuth see the problem?
     Knuth certainly noted the strange behavior of the LR hierarchy
