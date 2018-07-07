@@ -268,8 +268,8 @@ Undershoot: Parsing theory in 1965
     without ever reaching P-hard.
     </p>
     <p>
-    So P-hard is well beyond any reasonable definition of "practical".
-    It is an "overshoot".
+    So P-hard is beyond any reasonable definition of "practical" --
+    it is an "overshoot".
     But the P vs. NP question is almost certainly very relevant to what is "practical".
     Resolving the P vs. NP question is likely
     to be an important or even necessary step.
@@ -305,7 +305,26 @@ Undershoot: Parsing theory in 1965
     since it parses a larger set of grammars,
     was the closest undershoot.
     </p>
-    <h2>Reason 1: Stack machines look natural</h2>
+    <h2>Step 1: Misdefine language</h2>
+    <p>This is because of a detour by American linguistics --
+    in order to satisfy the behaviourists, who looked down
+    on descriptions in terms of hypothesized mental states,
+    Unbelieveably,
+    American linguistics for many years banned any reference
+    to meaning.
+    "Sets of strings" were what they had left.
+    So they defined a "language" as a "set of strings".
+    </p>
+    <p>Noam Chomsky restored sanity to linguistics,
+    but it was too late.
+    Automata theory adopted the semantics-free definition,
+    and the prior work that Knuth inherited ignored
+    not just questions of meaning or semantics,
+    but even of syntax or structure.
+    Knuth, of course, wanted to make contact with
+    the prior art.
+    </p>
+    <h2>Step 2: Discover that the stack machine model is natural boundary</h2>
     <p>The computational model context-free grammars 
     is non-deterministic stack machines -- stack machines which
     can "fork" themselves into multiple stack machines running
@@ -324,7 +343,8 @@ Undershoot: Parsing theory in 1965
     optimal.
     [ This is reinforced when LR turns out to be an "overshoot". ]
     </p>
-    <h2>Reason 2: Language is misdefined</h2>
+    <h2>Discover that LR parsers are not good at LR languages</h2>
+    <h2>TO HERE</h2>
     <p>A very persuasive reason to believe LR was the "right"
     theoretical equivalent of practical was its naturalness --
     or what was mistakenly seem as its naturalness.
@@ -353,24 +373,6 @@ Undershoot: Parsing theory in 1965
     in Knuth 1965 is devoted showing the equivalence of LR
     and deterministic stack machines
     <b>in terms of sets of strings</b>.
-    </p>
-    <p>This is because of a detour by American linguistics --
-    in order to satisfy the behaviourists, who looked down
-    on descriptions in terms of hypothesized mental states,
-    Unbelieveably,
-    American linguistics for many years banned any reference
-    to meaning.
-    "Sets of strings" were what they had left.
-    So they defined a "language" as a "set of strings".
-    </p>
-    <p>Noam Chomsky restored sanity to linguistics,
-    but it was too late.
-    Automata theory adopted the semantics-free definition,
-    and the prior work that Knuth inherited ignored
-    not just questions of meaning or semantics,
-    but even of syntax or structure.
-    Knuth, of course, wanted to make contact with
-    the prior art.
     </p>
     <p>Knuth could not prove that LR-parsers
     to deterministic stack machines as parsers,
