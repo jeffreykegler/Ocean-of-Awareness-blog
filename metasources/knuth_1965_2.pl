@@ -252,7 +252,8 @@ Undershoot: Parsing theory in 1965
     but are too complicated and/or too resource-intensive
     for practice.
     <p>The P vs. NP problem is an active example of a bracketing technique.
-    You will sometimes read the P/NP boundary is expected to be 
+    You will sometimes read that
+    the P/NP boundary is expected to be 
     that between practical and impractical,
     but this is an extreme simplification.
     P includes complexities like <tt>O(n^1000000)</tt>,
@@ -262,8 +263,9 @@ Undershoot: Parsing theory in 1965
     Modulo bold advances in quantum computing,
     I cannot imagine that <tt>O(n^1000000)</tt> will ever be
     practical.
-    And you can make the complexities much much harder without
-    ever reaching P-hard.
+    And you can make the complexities even harder
+    than <tt>O(n^1000000)</tt>
+    without ever reaching P-hard.
     </p>
     <p>
     So P-hard is well beyond any reasonable definition of "practical".
