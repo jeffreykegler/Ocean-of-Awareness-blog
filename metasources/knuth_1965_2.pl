@@ -232,11 +232,11 @@ Undershoot: Parsing theory in 1965
     theoreticians often work like artillerists.
     Artillerists often deliberately overshoot and undershoot,
     before they "fire for effect".
-    "Bracketing" their target in this way has disadvantage --
-    it eliminates the element of surprise,
-    and gives the enemy an opportunity for counter-fire.
+    "Bracketing" their target in this way has disadvantages --
+    it reduces the element of surprise,
+    and can even allow the enemy to get their counter-fire in first.
     But, nasty as these consequences could be,
-    the advantage in accuracy was found to outweigh them.
+    the advantage in accuracy is usually held to outweigh them.
     </p>
     <p>The practice of theoretical computer science is 
     less risky,
