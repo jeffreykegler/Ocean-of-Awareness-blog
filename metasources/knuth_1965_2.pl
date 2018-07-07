@@ -90,18 +90,20 @@ Undershoot: Parsing theory in 1965
     <p>
       Once it was taken seriously that humans might have the power to, for
       example, "read" a chessboard in a way that computers could not beat.
-      This kind of "computational mysticism" has taken a beating, but
-      survives in one last stronghold -- parsing theory.
+      This kind of "computational mysticism" has taken a beating.
+      But it survives in one last stronghold -- parsing theory.
     </p><p>
       In
       <a href="http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2018/05/knuth_1965.html">
       a previous post</a>,
       I asked "Why is parsing considered solved?"
       If the state of the art of computer parsing is taken as anything close to its ultimate solution,
-      then the human brain has some
-      strange power that makes it much better at parsing than computers can be.
-      It is very unlikely this would be accepted as an explanation
-      of any other problem in computer science.
+      then it is a case of "human exceptionalism" --
+      the human brain has some
+      power that makes it much better at parsing than computers can be.
+      It is very unlikely resorting to human exceptionalism as an explanation
+      would be accepted
+      for any other problem in computer science.
       Why is it accepted for parsing theory?<footnote>
         As an aside, I am open to the idea that
         the human mind has abilities that Turing machines cannot improve on
