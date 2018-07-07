@@ -184,7 +184,7 @@ Undershoot: Parsing theory in 1965
     </p>
     <p>We now know that the theorists were wrong --
     there are non-LR parsers which are better than the
-    LR parsers are at their own grammars.
+    LR parsers are at LR grammars.
     What made the theorists go astray?
     </p>
     <h2>How theorists work</h2>
