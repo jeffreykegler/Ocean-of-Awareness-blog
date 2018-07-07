@@ -306,26 +306,74 @@ Undershoot: Parsing theory in 1965
     was the closest undershoot.
     </p>
     <h2>Step 1: Misdefine language</h2>
-    <p>This is because of a detour by American linguistics --
-    in order to satisfy the behaviourists, who looked down
-    on descriptions in terms of hypothesized mental states,
-    Unbelieveably,
+    <p>In curry respect from the behaviourists,
     American linguistics for many years banned any reference
     to meaning.
-    "Sets of strings" were what they had left.
-    So they defined a "language" as a "set of strings".
+    Behaviorists looked down on
+    hypothesized mental states as not worthy of "science",
+    and it's hard to have a theory of meaning
+    without conjectures about mental states.
+    Without mental states,
+    language was just a set of strings, or utterances.
+    So American linguistics dutifully
+    defined a "language" as a "set of strings".
     </p>
-    <p>Noam Chomsky restored sanity to linguistics,
-    but it was too late.
-    Automata theory adopted the semantics-free definition,
-    and the prior work that Knuth inherited ignored
-    not just questions of meaning or semantics,
-    but even of syntax or structure.
-    Knuth, of course, wanted to make contact with
-    the prior art.
+    <p>After a brief half-nod to this tradition,
+    Noam Chomsky restored sanity to linguistics.
+    But it was too late for computer science.
+    Automata theory adopted the semantics-free definition.
+    In 1965, Knuth inherited a lot of prior work,
+    but almost all of it ignored,
+    not just meaning or semantics,
+    but even syntax and structure.
+    </p>
+    <h2>Language extension versus language intension</h2>
+    <p>Knuth, of course, wanted to make contact with prior art.
+    The definition he had inherited seemed to work well enough
+    and Knuth's 1965 defines a language as a set of strings.
+    Most subsequent work has refused to breach this tradition.
+    </p>
+    <p>In most people's idea of what a language is,
+    the utterances/strings mean something --
+    you cannot take just
+    any set of meaningless strings and call it a language.
+    So the parsing theorists and everybody else had
+    two different definitions of language.
+    </p>
+    <p>But parsing theory also hoped to produce results relevant
+    to practice,
+    and few people are interested in recognizing meaningless strings --
+    almost everybody who parses is interested in (at a minimum)
+    finding some kind of structure in what they parse,
+    in order to do something with the result of the parse.
+    So parsing theorists ended up using the word in one
+    sense, but suggesting results in another sense.
+    As I will show,
+    the result was a decades-long detour.
+    </p>
+    <p>
+    At this point both senses of the word "language"
+    have gotten entrenched in parsing theory so,
+    instead of making up a new terminology,
+    I will borrow a distinction from linguistics
+    and speak of
+    <b>the extension of a language</b>
+    and 
+    <b>the intension of a language</b>.
+    The extension of a language is the Bloomfieldian defintion --
+    the set of utterances/strings in the language.
+    The intension of a language, for our purposes here,
+    can be regarded as its BNF grammar.
+    Each language intension will have (if it is well-defined)
+    exactly one extension.
+    But multiple language intensions can have the same extension.
     </p>
     <h2>Step 2: Discover that the stack machine model is natural boundary</h2>
-    <p>The computational model context-free grammars 
+    <p>Again, Knuth, followed prior art,
+    and used the term language in its extensional sense,
+    as what his audience expected.
+    </p>
+    <p>The computational model of context-free grammars 
     is non-deterministic stack machines -- stack machines which
     can "fork" themselves into multiple stack machines running
     at the same time.
@@ -344,14 +392,47 @@ Undershoot: Parsing theory in 1965
     [ This is reinforced when LR turns out to be an "overshoot". ]
     </p>
     <h2>Discover that LR parsers are not good at LR languages</h2>
-    <h2>TO HERE</h2>
-    <p>A very persuasive reason to believe LR was the "right"
-    theoretical equivalent of practical was its naturalness --
-    or what was mistakenly seem as its naturalness.
-    It turns out that, unfortunately,
-    deterministic stack machines
-    and LR-parsers recognize exactly the same sets of strings.
+    <h2>Why didn't Knuth see the problem?</h2>
+    <p>Why didn't Knuth see the problem?
+    Knuth certainly noted the strange behavior of the LR hierarchy
+    in extensional terms -- he discovered it,
+    and the amount of complicated mathematics suggests he spent
+    a great deal of time on working it out.
     </p>
+    <p>But Knuth did not see the behavior, strange as it was,
+    as a potential problem.<footnote>
+    Or at least Knuth does not mention any potential problems.
+    And
+    Knuth would have been well aware of the inferences
+    about language intensions
+    which would
+    be drawn from his language extension results,
+    </footnote>
+    Why?
+    </p>
+    <p>So why does Knuth
+    "pun" intension and extension?
+    Well, first off, he had no real choice if he
+    wanted to compare
+    stack machines and LR-parsers.
+    They
+    had incomparable intensions,
+    so the only way to establish that stack machines
+    were equivalent to LR-parsers was via extensions.
+    </p>
+    <p>
+    But why did
+    Knuth expect to get away with punning
+    intension and extension,
+    even in the face of some very unsettling results?
+    Here, the answer is very simple --
+    "punning" had always worked before.
+    [ TODO ]
+    Knuth has reason to believe he was using
+    a theory that was reliable
+    approximation to practice.
+    </p>
+    <h2>TO HERE</h2>
     <p>
     I say "unfortunately" because recognizing that a string belongs
     to a set is not the same as parsing it.
@@ -365,19 +446,6 @@ Undershoot: Parsing theory in 1965
     and precedence of the operators.
     And it is that <b>structure</b> that you have to recognize,
     if you are going to evaluate the expression.
-    </p>
-    <p>The distinction between parsing and recognition was
-    not lost on most of Knuth's readers --
-    it certainly was not lost on Knuth.
-    Nonetheless a good deal of the most complicated mathematics
-    in Knuth 1965 is devoted showing the equivalence of LR
-    and deterministic stack machines
-    <b>in terms of sets of strings</b>.
-    </p>
-    <p>Knuth could not prove that LR-parsers
-    to deterministic stack machines as parsers,
-    because deterministic stack machine did not parse.
-    Deterministic stack machines only recognized languages.
     </p>
     <p>LR-parsers, as a by-product of parsing a string, could
     be seen as "recognizing" that string as belonging to a set.
@@ -412,36 +480,6 @@ Undershoot: Parsing theory in 1965
     an application wants.
     </footnote>.
     </p>
-    <h2>Bracketing</h2>
-    <p>Of course, most readers of Knuth's paper were quite aware that
-    the extension of a grammar
-    <footnote>Define extension and intension.
-    </footnote>
-    are not the same as the grammar itself (its "intension").
-    Certainly Knuth knew this.
-    So why does "pun" the two and expect to get away with it?
-    </p>
-    <p>The answer is simple -- it had always worked before.
-    In particular, when Knuth is writing the "practical grammars"
-    had already been bracketed --
-    Knuth was trying to narrow
-    the bracketing.
-    Regular expressions were the undershoot, and they were
-    so simple that, in practice
-    a parser could conveniently be hacked onto a recognizer.
-    The overshoot, which Knuth was attempting to replace,
-    was the context-free grammars,
-    and the most practical recognizer for these produced
-    a parse as a by-product.<footnote>
-    Refer to Pingali&Bilardi here.
-    </footnote>
-    So,
-    since for stack machines Knuth had only extensions to work with,
-    and since results for grammar extensions had always proved applicable
-    to grammar intensions,
-    Knuth has reason to believe he was using
-    a theory that was reliable
-    approximation to practice.
     <h2>Aftermath</h2>
     <p>As stated above,
     1965 hardware limits led practitions to suspect that stack machines
