@@ -126,18 +126,21 @@ Undershoot: Parsing theory in 1965
       "Why do practitioners accept the current state of the art as the solution?"
       And
       "Why do the theoreticians accept the current state of the art as the solution?"
-      This post expands on the answer to the second question.
+    <p>
+    </p>In that previous post,
+    I answered the practitioner question in detail,
+    but the question about the theoreticians only in outline.
+    This post expands on that outline.
     </p>
     <h2>The Practitioners</h2>
     <p>
-      The question of why
+      To summarize, in 1965,
       <b>practitioners</b>
       accepted the parsing problem as solved
-      in 1965
-      has a straightforward answer.
+      for the following reasons:
     </p>
     <ul>
-      <li>In 1965, every practical parser was stack-driven.</li>
+      <li>in 1965, every practical parser was stack-driven.</li>
       <li>As of 1965, stacks themselves were quite leading edge.
         As recently as 1961,
         a leading edge article<footnote>
