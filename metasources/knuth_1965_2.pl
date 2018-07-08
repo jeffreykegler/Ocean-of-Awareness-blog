@@ -199,7 +199,7 @@ Undershoot: Parsing theory in 1965
     </p>
     <p>One of the most important examples of the theoretician's successes
     is asymptotic notation --
-    more commonly referred to as a big-O notation.
+    more commonly referred to as big-O notation.
     The term "asymptotic notation"
     emphasizes its most dangerous aspect
     from a practical point of view:
@@ -249,7 +249,7 @@ Undershoot: Parsing theory in 1965
     but too weak to capture all the needs of practice.
     The overshoots are models which capture everything
     a practitioner needs,
-    but are too complicated and/or too resource-intensive
+    but which are too complicated and/or too resource-intensive
     for practice.
     <p>The P vs. NP problem is an active example of a bracketing technique.
     You will sometimes read that
@@ -259,7 +259,7 @@ Undershoot: Parsing theory in 1965
     P includes complexities like <tt>O(n^1000000)</tt>,
     where the complexity for even <tt>n == 2</tt> is
     a nunber which, in decimal form,
-    fills several pages.
+    fills many pages.
     Modulo bold advances in quantum computing,
     I cannot imagine that <tt>O(n^1000000)</tt> will ever be
     practical.
