@@ -410,28 +410,44 @@ Undershoot: Parsing theory in 1965
     </p>
     <h2>Summary</h2>
     <ul>
-    <li>Full non-determinism is probably impractical</li>
-    <li>All practical parsers as of 1965 are stack-based
+    <li>Red Herring: All practical parsers as of 1965 are stack-based
     and deterministic.</li>
-    <li>The language extensions that LR-parsers recognize
+    <li>Red Herring: The language extensions that LR-parsers recognize
     are same as the language extensions that
     deterministic stack machines recognize.</li>
-    <li>The non-deterministic stack machines recognize
+    <li>Red Herring: The non-deterministic stack machines recognize
     the context-free language extensions.</li>
-    <li>Context-free is a very useful and natural class
-    of grammars and language extensions,
-    so LR is likely is likely to be a useful and natural
-    class
-    of grammars and language extensions.
-    <li>The LR-parsers are likely to be the practical equivalent
-    of context-free, or close to it.</li>
-    terms of extension, seems to be a very natural boundary in
-    the hierarchy of languages, very likely close
-    to a "direct hit" on practical parsing.</li>
-    <li>LR(k)-parsers very rapidly become impractical,
+    <li>Mistake: LR language extensions are a good proxy for
+    language intensions.
+    </ul>
+    <p>
+    From the above, the theoreticians concluded that
+    the LR-parsers were very likely to be either the practical equivalent
+    of context-free, or very close to it.
+    </p>
+    <p>So far the reasoning has gone astray,
+    but not disastrously so.
+    The whole point of bracketing, after all,
+    is that it allows you to correct.
+    The next red herring, however, resulted in
+    parsing theory going on a decades-long
+    wrong turn.
+    </p>
+    </ul>
+    <li>Red herring: LR(k)-parsers very rapidly become impractical,
     almost certainly for <tt>k</tt> greater than 1,
     and probably for <tt>k</tt> equal to 1.</li>
     </ul>
+    <p>
+    Based on this, parsing theorists concluded that LR-parsing
+    is an overshoot,
+    when in fact it is an undershoot,
+    and in practice a very large one.
+    And, if you mistake an undershoot for an overshoot,
+    your bracketing no longer works.
+    </p>
+    <h2>The Wrong Turn</h2>
+    <p>
     From all this,
     parsing theorists concluded that
     <ul>
@@ -441,7 +457,31 @@ Undershoot: Parsing theory in 1965
     <li>A subset of LR-parsing will be the solution to the parsing problem.</li>
     </ul>
     <h2>Signs of trouble ignored</h2>
-    <p>[ TODO ]
+    <p>There were, at least with hindsight, clear signs
+    that LR extensions were not a good proxy for LR grammars.
+    LR grammars form a hierarchy --
+    for every <tt>k</tt>, there is an LR grammar which
+    is <tt>LR(k)</tt>, but which is not
+    is <tt>LR(k+1)</tt>.
+    But, when you look at extensions the hierarchy immediately
+    collapses almost totally --
+    every <tt>LR(k)</tt> language is also an 
+    an <tt>LR(1)</tt>,
+    as long as <tt>k &#2265; 1</tt>.
+    Only <tt>LR(0)</tt>
+    remains distinct.
+    </p>
+    <p>But it gets worse.
+    In most practical applications,
+    you can add an end-of-input marker to a grammar.
+    If you do this the LR extension hierarchy collapses all the way
+    down to zero --
+    every <tt>LR(k)</tt> language extension is also an 
+    <tt>LR(0)</tt> language extension.
+    </p>
+    <p>In short, it seems that,
+    as an a proxy for LR grammars,
+    LR language extension are likely to be completely worthless.
     </p>
     <h2>Why didn't Knuth see the problem?</h2>
     <p>Why didn't Knuth see the problem?
