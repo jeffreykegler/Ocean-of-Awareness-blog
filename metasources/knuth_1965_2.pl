@@ -439,7 +439,7 @@ Undershoot: Parsing theory in 1965
     it closely.</li>
     <li>LR-parsing is an overshoot.</li>
     <li>A subset of LR-parsing will be the solution to the parsing problem.</li>
-    <ul>
+    </ul>
     <h2>Signs of trouble ignored</h2>
     <p>[ TODO ]
     </p>
