@@ -467,7 +467,7 @@ Undershoot: Parsing theory in 1965
     collapses almost totally --
     every <tt>LR(k)</tt> language is also an 
     an <tt>LR(1)</tt>,
-    as long as <tt>k &#2265; 1</tt>.
+    as long as <tt>k&#8805;1</tt>.
     Only <tt>LR(0)</tt>
     remains distinct.
     </p>
@@ -481,38 +481,17 @@ Undershoot: Parsing theory in 1965
     </p>
     <p>In short, it seems that,
     as an a proxy for LR grammars,
-    LR language extension are likely to be completely worthless.
+    LR language extensions are likely to be completely worthless.
     </p>
     <h2>Why didn't Knuth see the problem?</h2>
     <p>Why didn't Knuth see the problem?
     Knuth certainly noted the strange behavior of the LR hierarchy
     in extensional terms -- he discovered it,
-    and the amount of complicated mathematics suggests he spent
-    a great deal of time on working it out.
-    </p>
-    <p>But Knuth did not see the behavior, strange as it was,
-    as a potential problem.<footnote>
-    Or at least Knuth does not mention any potential problems.
-    And
-    Knuth would have been well aware of the inferences
-    about language intensions
-    which would
-    be drawn from his language extension results,
-    </footnote>
-    Why?
-    </p>
-    <p>So why does Knuth
-    "pun" intension and extension?
-    Well, first off, he had no real choice if he
-    wanted to compare
-    stack machines and LR-parsers.
-    They
-    had incomparable intensions,
-    so the only way to establish that stack machines
-    were equivalent to LR-parsers was via extensions.
+    and devoted several dense pages of his 1965 to laying
+    out the complicated mathematics involved.
     </p>
     <p>
-    But why did
+    Why did
     Knuth expect to get away with punning
     intension and extension,
     even in the face of some very unsettling results?
