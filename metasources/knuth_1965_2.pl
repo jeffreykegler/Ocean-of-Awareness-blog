@@ -387,34 +387,17 @@ Undershoot: Parsing theory in 1965
     <p>LR-parsing corresponds exactly to the deterministic stack
     machines,
     which suggested that it was as close to a
-    "direct hit" as theory was likely to get.
+    "direct hit" on "practical parsing"
+    as theory was likely to get.
     It also strongly suggested that stack parsing was a "natural"
     way to characterize practical parsing,
     and therefore that stack-based algorithms would be
     optimal.
-    [ This is reinforced when LR turns out to be an "overshoot". ]
-    </p>
-    <h2>Summary</h2>
-    <ul>
-    <li>Red Herring: All practical parsers as of 1965 are stack-based
-    and deterministic.</li>
-    <li>Red Herring: The language extensions that LR-parsers recognize
-    are same as the language extensions that
-    deterministic stack machines recognize.</li>
-    <li>Red Herring: The non-deterministic stack machines recognize
-    the context-free language extensions.</li>
-    <li>Mistake: LR language extensions are a good proxy for
-    language intensions.
-    </ul>
-    <p>
-    From the above, the theoreticians concluded that
-    the LR-parsers were very likely to be either the practical equivalent
-    of context-free, or very close to it.
     </p>
     <p>So far the reasoning has gone astray,
     but not disastrously so.
     The whole point of bracketing, after all,
-    is that it allows you to correct.
+    is that it allows you to correct errors.
     The next red herring, however, resulted in
     parsing theory going on a decades-long
     wrong turn.
