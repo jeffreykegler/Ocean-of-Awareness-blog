@@ -137,10 +137,10 @@ Undershoot: Parsing theory in 1965
       To summarize, in 1965,
       <b>practitioners</b>
       accepted the parsing problem as solved
-      for the following reasons:
+      for the following reasons.
     </p>
     <ul>
-      <li>in 1965, every practical parser was stack-driven.</li>
+      <li>In 1965, every practical parser was stack-driven.</li>
       <li>As of 1965, stacks themselves were quite leading edge.
         As recently as 1961,
         a leading edge article<footnote>
@@ -165,7 +165,7 @@ Undershoot: Parsing theory in 1965
       in practice.
       </li>
       <li>Last, but not least, the theoreticians assured the
-      practitioners that LR-parsing was either state-of-the-art
+      practitioners that <tt>LR</tt>-parsing was either state-of-the-art
       or beyond,
       so making more agressive use of hardware
       would be futile.
@@ -174,7 +174,7 @@ Undershoot: Parsing theory in 1965
     <h2>What about the theorists?</h2>
     <p>The practitioners of 1965, then,
     were quite reasonable in feeling that
-    LR-parsing was as good as anything they were likely to be able
+    <tt>LR</tt>-parsing was as good as anything they were likely to be able
     to implement any time soon.
     And they were being told by the theorists that,
     in fact,
@@ -183,8 +183,8 @@ Undershoot: Parsing theory in 1965
     hardware could not overcome.
     </p>
     <p>We now know that the theorists were wrong --
-    there are non-LR parsers which are better than the
-    LR parsers are at LR grammars.
+    there are non-<tt>LR</tt> parsers which are better than the
+    <tt>LR</tt> parsers are at <tt>LR</tt> grammars.
     What made the theorists go astray?
     </p>
     <h2>How theorists work</h2>
@@ -306,7 +306,7 @@ Undershoot: Parsing theory in 1965
     was the closest undershoot.
     </p>
     <h2>Mistake 1: The misdefinition of "language"</h2>
-    <p>In curry respect from the behaviourists,
+    <p>To curry respect from the behaviourists,
     American linguistics for many years banned any reference
     to meaning.
     Behaviorists looked down on
@@ -314,7 +314,7 @@ Undershoot: Parsing theory in 1965
     and it's hard to have a theory of meaning
     without conjectures about mental states.
     Without mental states,
-    language was just a set of strings, or utterances.
+    language was just a set utterances.
     So in 1926 the linguist Leonard Bloomfield,
     dutifully
     defined a "language" as a set of "utterances"
@@ -322,12 +322,12 @@ Undershoot: Parsing theory in 1965
     and through the 30s and 40s most American
     linguists followed him.
     </p>
-    <p>After a brief half-nod to this tradition,
+    <p>After a brief nod to this tradition,
     Noam Chomsky restored sanity to linguistics.
     But it was too late for computer science.
     Automata theory adopted the semantics-free definition.
     In 1965, Knuth inherited a lot of prior work,
-    but almost all of it ignored,
+    almost all of which ignored,
     not just meaning or semantics,
     but even syntax and structure.
     </p>
@@ -371,59 +371,64 @@ Undershoot: Parsing theory in 1965
     exactly one extension.
     But multiple language intensions can have the same extension.
     </p>
-    <h2>Red Herring 1: The stack machine model is natural boundary</h2>
-    <p>[ TODO: need to be rewritten. ]
+    <h2>Red Herring 1: The stack machine model as a natural boundary</h2>
+    <p>The temptation to use language extensions as
+    a proxy for <tt>LR</tt>-grammars must have been overwhelming.
+    It turns out that the language extension of
+    deterministic stack machines
+    is <b>exactly</b> that of the <tt>LR</tt> grammars.
+    Further,
+    the language extension of the context-free grammar is
+    exactly that of the non-deterministic stack machines.
+    (Non-deterministic stack machines are
+    stack machines which can "fork" new instances of themselves on the fly.)
     </p>
-    <p>Again, Knuth, followed prior art,
-    and used the term language in its extensional sense,
-    as his audience expected.
-    </p>
-    <p>The computational model of context-free grammars 
-    is non-deterministic stack machines -- stack machines which
-    can "fork" themselves into multiple stack machines running
-    at the same time.
-    Of course, real-life computer cannot "fork" themselves,
-    which reinforced the belief that context-free parsing is
-    an "overshoot".
-    </p>
-    <p>LR-parsing corresponds exactly to the deterministic stack
-    machines,
-    which suggested that it was as close to a
-    "direct hit" on "practical parsing"
-    as theory was likely to get.
-    It also strongly suggested that stack parsing was a "natural"
-    way to characterize practical parsing,
-    and therefore that stack-based algorithms would be
-    optimal.
+    <p>
+    If you take language extensions as the proxy for grammars,
+    things fall into place very neatly:
+    the <tt>LR</tt>-parsers are the deterministic subset of the
+    context-free parsers.
+    And "deterministic" seemed like a very good approximation
+    of practical.
+    Certainly non-deterministic parsing is probably not practical.
+    And the best practical parsers in 1965 were
+    deterministic stack parsers.
+    <p>
+    Viewed this way,
+    <tt>LR</tt>-parsing looked like the equivalent
+    of practical parsing.
+    It was a "direct hit",
+    or as close to a exact equivalent of practical parsing
+    as theory was going to get.
     </p>
     <p>So far the reasoning has gone astray,
     but not disastrously so.
     The whole point of bracketing, after all,
     is that it allows you to correct errors.
-    The next red herring, however, resulted in
+    Another red herring, however, resulted in
     parsing theory going on a decades-long
     wrong turn.
     </p>
-    <h2>Red Herring 2: LR parsers are not good at LR grammars</h2>
-    <p>A second red herring led to the mis-bracketing of practical
+    <h2>Red Herring 2: <tt>LR</tt> parsers are not good at <tt>LR</tt> grammars</h2>
+    <p>The second red herring led to the mis-bracketing of practical
     parsing.
-    Having seemingly established that LR-parsing is a natural boundary
+    Having seemingly established that <tt>LR</tt>-parsing is a natural boundary
     in the hierarchy of languages,
-    Knuth discovered that general LR-parsers were very far from practical.
-    LR parsing goes out to LR(k) for arbitrary <tt>k</tt>,
+    Knuth discovered that general <tt>LR</tt>-parsers were very far from practical.
+    <tt>LR</tt> parsing goes out to <tt>LR(k)</tt> for arbitrary <tt>k</tt>,
     but even <tt>LR(1)</tt> parsing was impractical in 1965 --
     in fact, it is rare in practical use today.
     As the <tt>k</tt> in
-    <tt>LR(k)></tt> grows, the size of the tables grows exponentially,
+    <tt>LR(k)</tt> grows, the size of the tables grows exponentially,
     while the value of the additional lookahead rapidly diminishes.
     It is not likely that
     <tt>LR(2)</tt> parsing will ever see much practical use,
     never mind <tt>LR(k) : k &gt; 2</tt>.
     </p>
     <p>
-    From this it was concluded that LR-parsing is an overshoot.
-    In fact it is an undershoot,
-    and in practice a very large one.
+    From this it was concluded that <tt>LR</tt>-parsing is an overshoot.
+    In fact it is an <b>undershoot</b>,
+    and in practical terms a very large one.
     If you mistake an undershoot for an overshoot,
     bracketing no longer works,
     and you are not likely to hit your target.
@@ -436,18 +441,20 @@ Undershoot: Parsing theory in 1965
     <li>LR-parsing is a good approximation to practical parsing -- it brackets
     it closely.</li>
     <li>LR-parsing is an overshoot.</li>
-    <li>A subset of LR-parsing will be the solution to the parsing problem.</li>
+    <li>A subset of <tt>LR</tt>-parsing will be the solution to the parsing problem.</li>
     </ul>
     <h2>Signs of trouble ignored</h2>
-    <p>There were, at least with hindsight, clear signs
-    that LR extensions were not a good proxy for LR grammars.
-    LR grammars form a hierarchy --
-    for every <tt>k</tt>, there is an LR grammar which
+    <p>There were, in hindsight, clear signs
+    that <tt>LR</tt> language extensions were not a good proxy for <tt>LR</tt> grammars.
+    <tt>LR</tt> grammars form a hierarchy --
+    for every <tt>k</tt>, there is an <tt>LR</tt> grammar which
     is <tt>LR(k)</tt>, but which is not
     is <tt>LR(k+1)</tt>.
-    But, when you look at extensions the hierarchy immediately
+    But, if you look at extensions
+    instead of grammars,
+    the hierarchy immediately
     collapses almost totally --
-    every <tt>LR(k)</tt> language is also an 
+    every <tt>LR(k)</tt> language is also
     an <tt>LR(1)</tt>,
     as long as <tt>k&#8805;1</tt>.
     Only <tt>LR(0)</tt>
@@ -456,18 +463,18 @@ Undershoot: Parsing theory in 1965
     <p>But it gets worse.
     In most practical applications,
     you can add an end-of-input marker to a grammar.
-    If you do this the LR extension hierarchy collapses all the way
+    If you do this the <tt>LR</tt> extension hierarchy collapses all the way
     down to zero --
     every <tt>LR(k)</tt> language extension is also an 
     <tt>LR(0)</tt> language extension.
     </p>
     <p>In short, it seems that,
-    as an a proxy for LR grammars,
-    LR language extensions are likely to be completely worthless.
+    as a proxy for <tt>LR</tt> grammars,
+    <tt>LR</tt> language extensions are likely to be completely worthless.
     </p>
     <h2>Why didn't Knuth see the problem?</h2>
     <p>Why didn't Knuth see the problem?
-    Knuth certainly noted the strange behavior of the LR hierarchy
+    Knuth certainly noted the strange behavior of the <tt>LR</tt> hierarchy
     in extensional terms -- he discovered it,
     and devoted several dense pages of his 1965 to laying
     out the complicated mathematics involved.
@@ -498,65 +505,78 @@ Undershoot: Parsing theory in 1965
     of language intension.
     </p>
     <p>
-    And the LL languages follow a strict hierarchy --
+    And the <tt>LL</tt> languages follow a strict hierarchy --
     for every <tt>k</tt>,
     <tt>LL(k)</tt> is a proper subset of <tt>LL(k+1)</tt>.
-    This fact forces LL grammars to follow the same
+    This fact forces <tt>LL</tt> grammars to follow the same
     hierarchy<footnote>
     This is because
-    every LL(k) intension (grammar) must have an LL(k) extension.
+    every <tt>LL(k)</tt> intension (grammar) must have an <tt>LL(k)</tt> extension.
+    The discussion of the <tt>LL(k)</tt> hierarchy is in a sense anachronistic --
+    the <tt>LL(k)</tt> hierachy was not studied until after 1965.
+    But Knuth certainly was aware of recursive descent,
+    and it seems reasonable to suppose that,
+    even in 1965,
+    he had a sense of what
+    the <tt>LL</tt> hierarchy would look like.
     </footnote>.
     So, when studying complexity, 
-    LL language extensions are an excellent proxy for
-    LL grammars.
+    <tt>LL</tt> language extensions are an excellent proxy for
+    <tt>LL</tt> grammars.
     </p>
     <p>
     Based on past experience,
-    Knuth had every reason to believe
+    Knuth had reason to believe
     he could use language extensions as a proxy
     for grammars,
     and recognizers as a proxy
     for parsers,
-    and the result would be
-    a theory that was reliable
-    approximation to practice.
-    </p>
-    <h2>Outtakes</h2>
-    <p>
-    I say "unfortunately" because recognizing that a string belongs
-    to a set is not the same as parsing it.
-    It is not even all that close.
-    As one example, it is easy to recognize that a string like
-    "<tt>2*3+4^5-7/8</tt>" represents
-    an arithmetic expression.
-    It is a lot harder to figure out the structure
-    of that arithmetic expression,
-    using the traditional associativity
-    and precedence of the operators.
-    And it is that <b>structure</b> that you have to recognize,
-    if you are going to evaluate the expression.
+    and that the result would be
+    a theory that was a reliable
+    guide to practice.
     </p>
     <h2>Aftermath</h2>
-    <p>As stated above,
-    1965 hardware limits led practitions to suspect that stack machines
-    model were an upper limit to the practical.
-    The theoreticians took this into account.
-    Of course, the logic can get dangerously circular
-    if theoreticians take practice as too much of a guide to
-    what is possible.
-    The job of theory,
-    after all, to guide practice,
-    not merely to record it.
+    <p>In
+    <a href="https://jeffreykegler.github.io/personal/timeline_v3">
+    my timeline of parsing</a>,
+    I describe what happened next.
+    Briefly,
+    theory focused on finding a useful subset of <tt>LR(1)</tt>.
+    One, <tt>LALR</tt>, became the favorite and
+    the basis of the <tt>yacc</tt>
+    and <tt>bison</tt> tools.
+    </p>
+    <p>
+    Research into parsing of supersets of <tt>LR(1)</tt>,
+    never mind supersets of <tt>LR</tt>,
+    became rare.
+    The theorists were convinced the <tt>LR</tt> parsing
+    was the solution.
+    These were so convinced that when,
+    in 1991, Joop Leo discovered a practical way to
+    parse not just a superset of <tt>LR(1)</tt>,
+    but a superset of <tt>LR(k)</tt> for all <tt>k</tt>,
+    the result was not noticed,
+    and went unimplemented for two decades.
     </p>
     <p>In 1965, the theoreticians gave a lot of weight
     to the evidence from the world of practice,
     but probably not undue weight.
     Going forward, it was a different story.
-    Practitioners saw no reason to question the theoretician's
-    conclusions,
-    and theoreticians, seeing that beyond-LR methods did not
+    </p>
+    <p>
+    Leo had,
+    in essence, 
+    disproved the implied conjecture of Knuth 1965.
+    But the question is
+    not an explicit mathematical question,
+    like that of P vs. NP.
+    It is the slipprier one of capturing practice.
+    Practitioners left it to the theoreticians to keep up with
+    the literature.
+    And theoreticians, as long as <tt>LR</tt>-superset methods did not
     come into use in the world of practice,
-    felt no need to question their conclusions either.
+    felt no need to question their conclusions.
     </p>
     <h2>Comments, etc.</h2>
     <p>
@@ -567,7 +587,7 @@ Undershoot: Parsing theory in 1965
         Parsing: a timeline 3.0</a>.
       In particular,
       "Timeline 3.0" tells the story of the search for a good
-      LR(k) subclass,
+      <tt>LR(k)</tt> subclass,
       and what happened afterwards.
     </p>
     <p>
