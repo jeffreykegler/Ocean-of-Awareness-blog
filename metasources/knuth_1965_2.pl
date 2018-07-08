@@ -120,16 +120,21 @@ Undershoot: Parsing theory in 1965
       </footnote>
     </p>
     <p>
-      I addressed this question in
-      <a href="http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2018/05/knuth_1965.html">a previous post</a>.
-      It really requires two separate answers:
-      "Why do practitioners accept the current state of the art as the solution?"
-      And
-      "Why do the theoreticians accept the current state of the art as the solution?"
+      The question really requires two separate answers:
+      <ul>
+      <li>"Why do practitioners accept the current state of the art as the solution?" and
+      <li>"Why do the theoreticians accept the current state of the art as the solution?"
+      </ul>
     <p>
-    </p>In that previous post,
-    I answered the practitioner question in detail,
-    but the question about the theoreticians only in outline.
+    </p>In one sense, the answer to both questions is the same --
+    because of the consensus created by Knuth's 1965 paper
+    "On the translation of languages from left to right".
+    In
+    <a href="http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2018/05/knuth_1965.html">a previous post</a>,
+    I looked at Knuth 1965
+    and I answered the practitioner question in detail.
+    But, for the sake of brevity,
+    I answered the question about the theoreticians in outline.
     This post expands on that outline.
     </p>
     <h2>The Practitioners</h2>
@@ -192,13 +197,19 @@ Undershoot: Parsing theory in 1965
     theorists who hope to guide practitioners have to confront a big problem --
     theory is practice only in theory.
     Theoreticians
-    (or at least some of the most influential ones)
+    (or at least the better ones, like Knuth)
     know this,
     but they try to make theory as reliable a guide to
     practice as possible.
     </p>
     <p>One of the most important examples of the theoretician's successes
-    is asymptotic notation --
+    is asymptotic notation, which we owe to Knuth<footnote>
+    Knuth did not invent asymptotic notation --
+    it comes from calculus --
+    but he introduced it to computer science
+    and motivated its use.
+    </footnote>.
+    Asymptotic notation is
     more commonly referred to as big-O notation.
     The term "asymptotic notation"
     emphasizes its most dangerous aspect
@@ -206,6 +217,8 @@ Undershoot: Parsing theory in 1965
     Asymptotic notation assumes
     that the behavior of most interest
     is the behavior for arbitrarily large inputs.
+    </p>
+    <p>
     Practical inputs can be very large but,
     by definition,
     they are never arbitrarily large.
