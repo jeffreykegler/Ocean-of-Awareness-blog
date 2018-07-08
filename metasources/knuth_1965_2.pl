@@ -372,6 +372,8 @@ Undershoot: Parsing theory in 1965
     But multiple language intensions can have the same extension.
     </p>
     <h2>Red Herring 1: The stack machine model is natural boundary</h2>
+    <p>[ TODO: need to be rewritten. ]
+    </p>
     <p>Again, Knuth, followed prior art,
     and used the term language in its extensional sense,
     as his audience expected.
