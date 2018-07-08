@@ -431,9 +431,18 @@ Undershoot: Parsing theory in 1965
     <li>LR(k)-parsers very rapidly become impractical,
     almost certainly for <tt>k</tt> greater than 1,
     and probably for <tt>k</tt> equal to 1.</li>
-    <li>LR-parsing brackets practical parsing
-    and is an overshoot.</li>
     </ul>
+    From all this,
+    parsing theorists concluded that
+    <ul>
+    <li>LR-parsing is a good approximation to practical parsing -- it brackets
+    it closely.</li>
+    <li>LR-parsing is an overshoot.</li>
+    <li>A subset of LR-parsing will be the solution to the parsing problem.</li>
+    <ul>
+    <h2>Signs of trouble ignored</h2>
+    <p>[ TODO ]
+    </p>
     <h2>Why didn't Knuth see the problem?</h2>
     <p>Why didn't Knuth see the problem?
     Knuth certainly noted the strange behavior of the LR hierarchy
