@@ -638,8 +638,6 @@ Undershoot: Parsing theory in 1965
       Knuth had reason to believe
       he could use language extensions as a proxy
       for grammars,
-      and recognizers as a proxy
-      for parsers,
       and that the result would be
       a theory that was a reliable
       guide to practice.
@@ -663,7 +661,6 @@ Undershoot: Parsing theory in 1965
     <p>
       Research into parsing of supersets of
       <tt>LR(1)</tt>,
-      never mind supersets of
       <tt>LR</tt>,
       became rare.
       The theorists were convinced the
@@ -724,7 +721,8 @@ Undershoot: Parsing theory in 1965
       Comments on this post can be made in
       <a href="http://groups.google.com/group/marpa-parser">
         Marpa's Google group</a>,
-      or on our IRC channel: #marpa at freenode.net.
+      or on our IRC channel:
+      <tt>#marpa</tt> at <tt>freenode.net</tt>.
     </p>
     <comment>FOOTNOTES HERE</comment>
   </body>
