@@ -263,7 +263,7 @@ Undershoot: Parsing theory in 1965
     Modulo bold advances in quantum computing,
     I cannot imagine that <tt>O(n^1000000)</tt> will ever be
     practical.
-    And you can make the complexities even harder
+    And you can make the complexities much harder
     than <tt>O(n^1000000)</tt>
     without ever reaching P-hard.
     </p>
@@ -315,8 +315,12 @@ Undershoot: Parsing theory in 1965
     without conjectures about mental states.
     Without mental states,
     language was just a set of strings, or utterances.
-    So American linguistics dutifully
-    defined a "language" as a "set of strings".
+    So in 1926 the linguist Leonard Bloomfield,
+    dutifully
+    defined a "language" as a set of "utterances"
+    (for our purposes, "strings"),
+    and through the 30s and 40s most American
+    linguists followed him.
     </p>
     <p>After a brief half-nod to this tradition,
     Noam Chomsky restored sanity to linguistics.
