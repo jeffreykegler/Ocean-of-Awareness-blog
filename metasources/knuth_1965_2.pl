@@ -150,7 +150,8 @@ Undershoot: Parsing theory in 1965
         As recently as 1961,
         a leading edge article<footnote>
           Oettinger, Anthony. "Automatic Syntactic Analysis and the Pushdown
-          Store" Proceedings of Symposia in Applied Mathematics, Volume 12,
+          Store", <cite>Proceedings of Symposia in Applied Mathematics</cite>,
+	  Volume 12,
           American Mathematical Society, 1961.
           Oettinger describes "push" and "pop"
 	  stack operations in "Iversion notation" -- what
@@ -342,7 +343,14 @@ Undershoot: Parsing theory in 1965
     In 1965, Knuth inherited a lot of prior work,
     almost all of which ignored,
     not just meaning or semantics,
-    but even syntax and structure.
+    but even syntax and structure.<footnote>
+    In
+    <a href="http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2018/05/chomsky_1956.html">
+    another blog post</a>,
+    I talk about the use of the word
+    "language" in parsing theory
+    in much more detail.
+    </footnote>
     </p>
     <h2>Language extension versus language intension</h2>
     <p>Knuth, of course, wanted to make contact with prior art.
@@ -391,7 +399,7 @@ Undershoot: Parsing theory in 1965
     deterministic stack machines
     is <b>exactly</b> that of the <tt>LR</tt> grammars.
     Further,
-    the language extension of the context-free grammar is
+    the language extension of the context-free grammars is
     exactly that of the non-deterministic stack machines.
     (Non-deterministic stack machines are
     stack machines which can "fork" new instances of themselves on the fly.)
@@ -414,7 +422,9 @@ Undershoot: Parsing theory in 1965
     or as close to a exact equivalent of practical parsing
     as theory was going to get.
     </p>
-    <p>So far the reasoning has gone astray,
+    <p>As we shall see,
+    with this red herring,
+    the reasoning went astray,
     but not disastrously so.
     The whole point of bracketing, after all,
     is that it allows you to correct errors.
@@ -440,7 +450,9 @@ Undershoot: Parsing theory in 1965
     </p>
     <p>
     From this it was concluded that <tt>LR</tt>-parsing is an overshoot.
-    In fact it is an <b>undershoot</b>,
+    In reality,
+    as Joop Leo was to show,
+    it is an <b>undershoot</b>,
     and in practical terms a very large one.
     If you mistake an undershoot for an overshoot,
     bracketing no longer works,
@@ -462,18 +474,20 @@ Undershoot: Parsing theory in 1965
     <tt>LR</tt> grammars form a hierarchy --
     for every <tt>k</tt>, there is an <tt>LR</tt> grammar which
     is <tt>LR(k)</tt>, but which is not
-    is <tt>LR(k+1)</tt>.
-    But, if you look at extensions
+    <tt>LR(k+1)</tt>.
+    </p>
+    <p>
+    But if you look at extensions
     instead of grammars,
     the hierarchy immediately
     collapses almost totally --
-    every <tt>LR(k)</tt> language is also
-    an <tt>LR(1)</tt>,
+    every <tt>LR(k)</tt> language extension is also
+    an <tt>LR(1)</tt> language extension,
     as long as <tt>k&#8805;1</tt>.
     Only <tt>LR(0)</tt>
     remains distinct.
     </p>
-    <p>But it gets worse.
+    <p>It gets worse.
     In most practical applications,
     you can add an end-of-input marker to a grammar.
     If you do this the <tt>LR</tt> extension hierarchy collapses all the way
@@ -570,7 +584,7 @@ Undershoot: Parsing theory in 1965
     parse not just a superset of <tt>LR(1)</tt>,
     but a superset of <tt>LR(k)</tt> for all <tt>k</tt>,
     the result was not noticed,
-    and went unimplemented for two decades.
+    and went unimplemented for decades.
     </p>
     <p>In 1965, the theoreticians gave a lot of weight
     to the evidence from the world of practice,
