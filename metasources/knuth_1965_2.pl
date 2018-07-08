@@ -410,14 +410,29 @@ Undershoot: Parsing theory in 1965
     </p>
     <h2>Summary</h2>
     <ul>
-    <li>LR-parsing, based on the definition of language in
+    <li>Full non-determinism is probably impractical</li>
+    <li>All practical parsers as of 1965 are stack-based
+    and deterministic.</li>
+    <li>The language extensions that LR-parsers recognize
+    are same as the language extensions that
+    deterministic stack machines recognize.</li>
+    <li>The non-deterministic stack machines recognize
+    the context-free language extensions.</li>
+    <li>Context-free is a very useful and natural class
+    of grammars and language extensions,
+    so LR is likely is likely to be a useful and natural
+    class
+    of grammars and language extensions.
+    <li>The LR-parsers are likely to be the practical equivalent
+    of context-free, or close to it.</li>
     terms of extension, seems to be a very natural boundary in
     the hierarchy of languages, very likely close
     to a "direct hit" on practical parsing.</li>
-    <li>LR(k)-parsers very rapidly impractical,
+    <li>LR(k)-parsers very rapidly become impractical,
     almost certainly for <tt>k</tt> greater than 1,
     and probably for <tt>k</tt> equal to 1.</li>
-    <li>TODO</li>
+    <li>LR-parsing brackets practical parsing
+    and is an overshoot.</li>
     </ul>
     <h2>Why didn't Knuth see the problem?</h2>
     <p>Why didn't Knuth see the problem?
@@ -454,12 +469,49 @@ Undershoot: Parsing theory in 1965
     even in the face of some very unsettling results?
     Here, the answer is very simple --
     "punning" had always worked before.
-    [ TODO ]
-    Knuth has reason to believe he was using
+    </p>
+    <p>
+    Regular expressions are easily turned into parsers<footnote>
+    For example,
+    regular expressions can be extended with "captures".
+    Captures cannot handle recursion, but neither can regular expressions,
+    so captures are usually sufficient to provide all structure
+    an application wants.
+    </footnote>,
+    so the language extension of a regular grammar is an adequate approximation
+    to its intension.
+    Context-free recognition has the same complexity,
+    and in practice uses the same algorithms,
+    as context-free parsing,
+    so here again,
+    language extension is a good approximation
+    of language intension.
+    </p>
+    <p>
+    And the LL languages follow a strict hierarchy --
+    for every <tt>k</tt>,
+    <tt>LL(k)</tt> is a proper subset of <tt>LL(k+1)</tt>.
+    This fact forces LL grammars to follow the same
+    hierarchy<footnote>
+    This is because
+    every LL(k) intension (grammar) must have an LL(k) extension.
+    </footnote>.
+    So, when studying complexity, 
+    LL language extensions are an excellent proxy for
+    LL grammars.
+    </p>
+    <p>
+    Based on past experience,
+    Knuth had every reason to believe
+    he could use language extensions as a proxy
+    for grammars,
+    and recognizers as a proxy
+    for parsers,
+    and the result would be
     a theory that was reliable
     approximation to practice.
     </p>
-    <h2>TO HERE</h2>
+    <h2>Outtakes</h2>
     <p>
     I say "unfortunately" because recognizing that a string belongs
     to a set is not the same as parsing it.
@@ -473,39 +525,6 @@ Undershoot: Parsing theory in 1965
     and precedence of the operators.
     And it is that <b>structure</b> that you have to recognize,
     if you are going to evaluate the expression.
-    </p>
-    <p>LR-parsers, as a by-product of parsing a string, could
-    be seen as "recognizing" that string as belonging to a set.
-    If an LR-parser successfully parsed a string,
-    it belonged to the set.
-    If an LR-parser failed to produce a parse for a string,
-    that string did not belong to the set.
-    </p>
-    <p>So Knuth proved, as he was forced to,
-    the equivalence of LR-parsers and deterministic stack machines
-    in terms of sets of strings.
-    Previously successful models of computation had tended
-    to correspond (more or less) neatly
-    to classes of languages,
-    and the LR languages and deterministic stack machine
-    model of computing fell nicely into a new slot,
-    one which seemed like a very nice overshoot of
-    the "practical" model of computation for parsing.
-    </p>
-    <p>But, even in Knuth's paper, there are clear indications
-    that things were not so neat.
-    The issue was not classifying string-sets -- it was parsing.
-    The other models of computation had obscured this difference between
-    language extensions (recognizing strings) and language intensions (parsing).
-    In all other cases the standard recognizer for a language was also,
-    or could easily be turned into,
-    a parser for the language.<footnote>
-    For example,
-    regular expressions can be extended with "captures".
-    Captures cannot handle recursion, but neither can regular expressions,
-    so captures are usually sufficient to provide all structure
-    an application wants.
-    </footnote>.
     </p>
     <h2>Aftermath</h2>
     <p>As stated above,
