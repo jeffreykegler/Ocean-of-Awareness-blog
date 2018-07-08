@@ -394,23 +394,6 @@ Undershoot: Parsing theory in 1965
     optimal.
     [ This is reinforced when LR turns out to be an "overshoot". ]
     </p>
-    <h2>Red Herring 2: LR parsers are not good at LR grammars</h2>
-    <p>A second red herring led to the mis-bracketing of practical
-    parsing.
-    Having seemingly established that LR-parsing is a natural boundary
-    in the hierarchy of languages,
-    Knuth discovered that general LR-parsers were very far from practical.
-    LR parsing goes out to LR(k) for arbitrary <tt>k</tt>,
-    but even <tt>LR(1)</tt> parsing was impractical in 1965 --
-    in fact, it is rare in practical use today.
-    As the <tt>k</tt> in
-    <tt>LR(k)></tt> grows, the size of the tables grows exponentially,
-    while the value of the additional lookahead rapidly diminishes.
-    It is not likely that
-    <tt>LR(2)</tt> parsing will ever see much practical use,
-    never mind <tt>LR(k) : k &gt; 2</tt>.
-    From this it was concluded that LR-parsing is an overshoot.
-    </p>
     <h2>Summary</h2>
     <ul>
     <li>Red Herring: All practical parsers as of 1965 are stack-based
@@ -436,18 +419,29 @@ Undershoot: Parsing theory in 1965
     parsing theory going on a decades-long
     wrong turn.
     </p>
-    </ul>
-    <li>Red herring: LR(k)-parsers very rapidly become impractical,
-    almost certainly for <tt>k</tt> greater than 1,
-    and probably for <tt>k</tt> equal to 1.</li>
-    </ul>
+    <h2>Red Herring 2: LR parsers are not good at LR grammars</h2>
+    <p>A second red herring led to the mis-bracketing of practical
+    parsing.
+    Having seemingly established that LR-parsing is a natural boundary
+    in the hierarchy of languages,
+    Knuth discovered that general LR-parsers were very far from practical.
+    LR parsing goes out to LR(k) for arbitrary <tt>k</tt>,
+    but even <tt>LR(1)</tt> parsing was impractical in 1965 --
+    in fact, it is rare in practical use today.
+    As the <tt>k</tt> in
+    <tt>LR(k)></tt> grows, the size of the tables grows exponentially,
+    while the value of the additional lookahead rapidly diminishes.
+    It is not likely that
+    <tt>LR(2)</tt> parsing will ever see much practical use,
+    never mind <tt>LR(k) : k &gt; 2</tt>.
+    </p>
     <p>
-    Based on this, parsing theorists concluded that LR-parsing
-    is an overshoot,
-    when in fact it is an undershoot,
+    From this it was concluded that LR-parsing is an overshoot.
+    In fact it is an undershoot,
     and in practice a very large one.
-    And, if you mistake an undershoot for an overshoot,
-    your bracketing no longer works.
+    If you mistake an undershoot for an overshoot,
+    bracketing no longer works,
+    and you are not likely to hit your target.
     </p>
     <h2>The Wrong Turn</h2>
     <p>
