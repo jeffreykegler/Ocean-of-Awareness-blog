@@ -350,15 +350,14 @@ Undershoot: Parsing theory in 1965
     almost everybody who parses is interested in (at a minimum)
     finding some kind of structure in what they parse,
     in order to do something with the result of the parse.
-    So parsing theorists ended up using the word in one
-    sense, but suggesting results in another sense.
-    As I will show,
-    the result was a decades-long detour.
+    Parsing theorists ended up using the word "language" in one
+    sense, but implying that results they found worked
+    for the word "language" in the usual sense.
     </p>
     <p>
     At this point both senses of the word "language"
-    have gotten entrenched in parsing theory so,
-    instead of making up a new terminology,
+    have gotten entrenched in parsing theory.
+    Instead of making up a new terminology for this blog post,
     I will borrow a distinction from linguistics
     and speak of
     <b>the extension of a language</b>
