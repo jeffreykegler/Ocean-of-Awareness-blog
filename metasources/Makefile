@@ -10,7 +10,7 @@ all: \
   ../source/individual/2018/05/csg.txt \
   ../source/individual/2018/05/combinator.txt \
   ../source/individual/2018/05/lrecursion.txt \
-  ../source/individual/2018/05/knuth_1965_2.txt \
+  ../source/individual/2018/07/knuth_1965_2.txt \
 
 ../source/individual/2018/05/fast_power.txt: fast_power.pl
 	perl fast_power.pl > ../source/individual/2018/05/fast_power.txt
@@ -33,6 +33,6 @@ all: \
 ../source/individual/2018/05/lrecursion.txt: lrecursion.pl
 	perl lrecursion.pl > ../source/individual/2018/05/lrecursion.txt
 
-../source/individual/2018/05/knuth_1965_2.txt: knuth_1965_2.pl
-	perl knuth_1965_2.pl > ../source/individual/2018/05/knuth_1965_2.txt
+../source/individual/2018/07/knuth_1965_2.txt: knuth_1965_2.pl
+	perl knuth_1965_2.pl > ../source/individual/2018/07/knuth_1965_2.txt
 
