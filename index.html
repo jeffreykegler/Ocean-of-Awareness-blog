@@ -34,6 +34,692 @@
   </p>
   </div>
   <div style="margin-left:190px;border-left:2px solid #38B0C0;padding:25px;">
+<h3>Sun, 08 Jul 2018</h3>
+<br />
+<center><a name="knuth_1965_2"> <h2>Undershoot: Parsing theory in 1965</h2> </a>
+</center>
+<html>
+  <head>
+  </head>
+  <body style="max-width:850px">
+    <!--
+      marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
+      -->
+    <blockquote>The difference between theory and practice is
+      that in theory there is no difference between
+      theory and practice,
+      but in practice, there is.<a id="footnote-1-ref" href="#footnote-1">[1]</a>
+    </blockquote>
+    <p>
+      Once it was taken seriously that humans might have the power to, for
+      example, "read" a chessboard in a way that computers could not beat.
+      This kind of "computational mysticism" has taken a beating.
+      But it survives in one last stronghold -- parsing theory.
+    </p><p>
+      In
+      <a href="http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2018/05/knuth_1965.html">
+        a previous post</a>,
+      I asked "Why is parsing considered solved?"
+      If the state of the art of computer parsing is taken as anything close to its ultimate solution,
+      then it is a case of "human exceptionalism" --
+      the human brain has some
+      power that makes it much better at parsing than computers can be.
+      It is very unlikely resorting to human exceptionalism as an explanation
+      would be accepted
+      for any other problem in computer science.
+      Why is it accepted for parsing theory?<a id="footnote-2-ref" href="#footnote-2">[2]</a>
+    </p>
+    <p>
+      The question really requires two separate answers:
+    </p><ul>
+      <li>"Why do practitioners accept the current state of the art as the solution?" and
+      </li><li>"Why do the theoreticians accept the current state of the art as the solution?"
+      </li></ul>
+    <p>
+    </p><p>In one sense, the answer to both questions is the same --
+      because of the consensus created by Knuth's 1965 paper
+      "On the translation of languages from left to right".
+      In
+      <a href="http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2018/05/knuth_1965.html">a previous post</a>,
+      I looked at Knuth 1965
+      and I answered the practitioner question in detail.
+      But, for the sake of brevity,
+      I answered the question about the theoreticians in outline.
+      This post expands on that outline.
+    </p>
+    <h2>The Practitioners</h2>
+    <p>
+      To summarize, in 1965,
+      <b>practitioners</b>
+      accepted the parsing problem as solved
+      for the following reasons.
+    </p>
+    <ul>
+      <li>In 1965, every practical parser was stack-driven.</li>
+      <li>As of 1965, stacks themselves were quite leading edge.
+        As recently as 1961,
+        a leading edge article<a id="footnote-3-ref" href="#footnote-3">[3]</a>
+        could not assume that its readers knew what "pop" and "push" operations
+        were.
+      </li>
+      <li>An algorithm that combined state transitions and stack operations was
+        already a challenge to existing machines.
+        In 1965, any more complicated algorithm was likely to be unuseable
+        in practice.
+      </li>
+      <li>Last, but not least, the theoreticians assured the
+        practitioners that
+        <tt>LR</tt>-parsing was either state-of-the-art
+        or beyond,
+        so making more agressive use of hardware
+        would be futile.
+      </li>
+    </ul>
+    <h2>What about the theorists?</h2>
+    <p>The practitioners of 1965, then,
+      were quite reasonable in feeling that
+      <tt>LR</tt>-parsing was as good as anything they were likely to be able
+      to implement any time soon.
+      And they were being told by the theorists that,
+      in fact,
+      it never would get any better --
+      there were theoretical limits on parsers that faster
+      hardware could not overcome.
+    </p>
+    <p>We now know that the theorists were wrong --
+      there are non-<tt>LR</tt>
+      parsers which are better than the
+      <tt>LR</tt>
+      parsers are at
+      <tt>LR</tt>
+      grammars.
+      What made the theorists go astray?
+    </p>
+    <h2>How theorists work</h2>
+    <p>As the epigraph for this post reminds us,
+      theorists who hope to guide practitioners have to confront a big problem --
+      theory is practice only in theory.
+      Theoreticians
+      (or at least the better ones, like Knuth)
+      know this,
+      but they try to make theory as reliable a guide to
+      practice as possible.
+    </p>
+    <p>One of the most important examples of the theoretician's successes
+      is asymptotic notation, which we owe to Knuth<a id="footnote-4-ref" href="#footnote-4">[4]</a>.
+      Asymptotic notation is
+      more commonly referred to as big-O notation.
+      The term "asymptotic notation"
+      emphasizes its most dangerous aspect
+      from a practical point of view:
+      Asymptotic notation assumes
+      that the behavior of most interest
+      is the behavior for arbitrarily large inputs.
+    </p>
+    <p>
+      Practical inputs can be very large but,
+      by definition,
+      they are never arbitrarily large.
+      Results in asymptotic terms
+      might be what is called "galactic" --
+      they might have
+      relevance only in situations which cannot possibly occur in practice.
+    </p>
+    <p>
+      Fortunately for computer science,
+      asymptotic results usually are
+      not "galactic".
+      Most often asymptotic results are not only
+      relevant to practice --
+      they are extremely relevant.
+      Wikipedia pages for algorithms put
+      the asymptotic complexities in special displays,
+      and these displays are one of the first
+      things that some practitioners look at.
+    </p>
+    <h2>Bracketing</h2>
+    <p>Since coming up with a theoretical model that is equivalent
+      to "practical" is impossible,
+      theoreticians often work like artillerists.
+      Artillerists often deliberately overshoot and undershoot,
+      before they "fire for effect".
+      "Bracketing" their target in this way has disadvantages --
+      it reduces the element of surprise,
+      and can even allow the enemy to get their counter-fire in first.
+      But, nasty as these consequences could be,
+      the advantage in accuracy is usually held to outweigh them.
+    </p>
+    <p>The practice of theoretical computer science is
+      less risky,
+      which makes "bracketing" a very attractive approach to
+      tricky problems.
+      Theoreticians often
+      try to "bracket" practice between an "undershoot"
+      and an "overshoot".
+      The undershoots are models simple and efficient enough to be practical,
+      but too weak to capture all the needs of practice.
+      The overshoots are models which capture everything
+      a practitioner needs,
+      but which are too complicated and/or too resource-intensive
+      for practice.
+    </p><p>The P vs. NP problem is an active example of a bracketing technique.
+      You will sometimes read that
+      the P/NP boundary is expected to be
+      that between practical and impractical,
+      but this is an extreme simplification.
+      P includes complexities like
+      <tt>O(n^1000000)</tt>,
+      where the complexity for even
+      <tt>n == 2</tt>
+      is
+      a nunber which, in decimal form,
+      fills many pages.
+      Modulo bold advances in quantum computing,
+      I cannot imagine that
+      <tt>O(n^1000000)</tt>
+      will ever be
+      practical.
+      And you can make the complexities much harder
+      than
+      <tt>O(n^1000000)</tt>
+      without ever reaching P-hard.
+    </p>
+    <p>
+      So P-hard is beyond any reasonable definition of "practical" --
+      it is an "overshoot".
+      But the P vs. NP question is almost certainly very relevant to what is "practical".
+      Resolving the P vs. NP question is likely
+      to be an important or even necessary step.
+      It is a mystery that such a seemingly obvious
+      question has resisted the best efforts of the theoreticians
+      for so long,
+      and the solution of P vs. NP is likely
+      to bring
+      new insights
+      into asymptotic complexity.
+    </p>
+    <h2>Bracketing practical parsing</h2>
+    <p>When Knuth published his 1965,
+      "practical parsing" was already bracketed.
+      On the overshoot side, Irons had already published a parser for
+      context-free grammars.
+      Worst case, this ran in exponential time,
+      and it was, and remains, expected that general context-free parsing
+      was not going to be practical.<a id="footnote-5-ref" href="#footnote-5">[5]</a>
+    </p>
+    <p>On the undershoot side,
+      there were regular expressions and recursive descent.
+      Regular expressions are fast and very practical,
+      but parse a very limited set of grammars.
+      Recursive descent is also fast and,
+      since it parses a larger set of grammars,
+      was the closest undershoot.
+    </p>
+    <h2>Mistake 1: The misdefinition of "language"</h2>
+    <p>To curry respect from the behaviourists,
+      American linguistics for many years banned any reference
+      to meaning.
+      Behaviorists looked down on
+      hypothesized mental states as not worthy of "science",
+      and it's hard to have a theory of meaning
+      without conjectures about mental states.
+      Without mental states,
+      language was just a set utterances.
+      So in 1926 the linguist Leonard Bloomfield,
+      dutifully
+      defined a "language" as a set of "utterances"
+      (for our purposes, "strings"),
+      and through the 30s and 40s most American
+      linguists followed him.
+    </p>
+    <p>After a brief nod to this tradition,
+      Noam Chomsky restored sanity to linguistics.
+      But it was too late for computer science.
+      Automata theory adopted the semantics-free definition.
+      In 1965, Knuth inherited a lot of prior work,
+      almost all of which ignored,
+      not just meaning or semantics,
+      but even syntax and structure.<a id="footnote-6-ref" href="#footnote-6">[6]</a>
+    </p>
+    <h2>Language extension versus language intension</h2>
+    <p>Knuth, of course, wanted to make contact with prior art.
+      The definition he had inherited seemed to work well enough
+      and Knuth's 1965 defines a language as a set of strings.
+      Most subsequent work has refused to breach this tradition.
+    </p>
+    <p>In most people's idea of what a language is,
+      the utterances/strings mean something --
+      you cannot take just
+      any set of meaningless strings and call it a language.
+      So the parsing theorists and everybody else had
+      two different definitions of language.
+    </p>
+    <p>But parsing theory also hoped to produce results relevant
+      to practice,
+      and few people are interested in recognizing meaningless strings --
+      almost everybody who parses is interested in (at a minimum)
+      finding some kind of structure in what they parse,
+      in order to do something with the result of the parse.
+      Parsing theorists ended up using the word "language" in one
+      sense, but implying that results they found worked
+      for the word "language" in the usual sense.
+    </p>
+    <p>
+      At this point both senses of the word "language"
+      have gotten entrenched in parsing theory.
+      Instead of making up a new terminology for this blog post,
+      I will borrow a distinction from linguistics
+      and speak of
+      <b>the extension of a language</b>
+      and
+      <b>the intension of a language</b>.
+      The extension of a language is the Bloomfieldian defintion --
+      the set of utterances/strings in the language.
+      The intension of a language, for our purposes here,
+      can be regarded as its BNF grammar.
+      Each language intension will have (if it is well-defined)
+      exactly one extension.
+      But multiple language intensions can have the same extension.
+    </p>
+    <h2>Red Herring 1: The stack machine model as a natural boundary</h2>
+    <p>The temptation to use language extensions as
+      a proxy for
+      <tt>LR</tt>-grammars must have been overwhelming.
+      It turns out that the language extension of
+      deterministic stack machines
+      is
+      <b>exactly</b>
+      that of the
+      <tt>LR</tt>
+      grammars.
+      Further,
+      the language extension of the context-free grammars is
+      exactly that of the non-deterministic stack machines.
+      (Non-deterministic stack machines are
+      stack machines which can "fork" new instances of themselves on the fly.)
+    </p>
+    <p>
+      If you take language extensions as the proxy for grammars,
+      things fall into place very neatly:
+      the
+      <tt>LR</tt>-parsers are the deterministic subset of the
+      context-free parsers.
+      And "deterministic" seemed like a very good approximation
+      of practical.
+      Certainly non-deterministic parsing is probably not practical.
+      And the best practical parsers in 1965 were
+      deterministic stack parsers.
+    </p><p>
+      Viewed this way,
+      <tt>LR</tt>-parsing looked like the equivalent
+      of practical parsing.
+      It was a "direct hit",
+      or as close to a exact equivalent of practical parsing
+      as theory was going to get.
+    </p>
+    <p>As we shall see,
+      with this red herring,
+      the reasoning went astray,
+      but not disastrously so.
+      The whole point of bracketing, after all,
+      is that it allows you to correct errors.
+      Another red herring, however, resulted in
+      parsing theory going on a decades-long
+      wrong turn.
+    </p>
+    <h2>Red Herring 2:
+      <tt>LR</tt>
+      parsers are not good at
+      <tt>LR</tt>
+      grammars</h2>
+    <p>The second red herring led to the mis-bracketing of practical
+      parsing.
+      Having seemingly established that
+      <tt>LR</tt>-parsing is a natural boundary
+      in the hierarchy of languages,
+      Knuth discovered that general
+      <tt>LR</tt>-parsers were very far from practical.
+      <tt>LR</tt>
+      parsing goes out to
+      <tt>LR(k)</tt>
+      for arbitrary
+      <tt>k</tt>,
+      but even
+      <tt>LR(1)</tt>
+      parsing was impractical in 1965 --
+      in fact, it is rare in practical use today.
+      As the
+      <tt>k</tt>
+      in
+      <tt>LR(k)</tt>
+      grows, the size of the tables grows exponentially,
+      while the value of the additional lookahead rapidly diminishes.
+      It is not likely that
+      <tt>LR(2)</tt>
+      parsing will ever see much practical use,
+      never mind
+      <tt>LR(k) : k &gt; 2</tt>.
+    </p>
+    <p>
+      From this it was concluded that
+      <tt>LR</tt>-parsing is an overshoot.
+      In reality,
+      as Joop Leo was to show,
+      it is an
+      <b>undershoot</b>,
+      and in practical terms a very large one.
+      If you mistake an undershoot for an overshoot,
+      bracketing no longer works,
+      and you are not likely to hit your target.
+    </p>
+    <h2>The Wrong Turn</h2>
+    <p>
+      From all this,
+      parsing theorists concluded that
+    </p><ul>
+      <li>LR-parsing is a good approximation to practical parsing -- it brackets
+        it closely.</li>
+      <li>LR-parsing is an overshoot.</li>
+      <li>A subset of
+        <tt>LR</tt>-parsing will be the solution to the parsing problem.</li>
+    </ul>
+    <h2>Signs of trouble ignored</h2>
+    <p>There were, in hindsight, clear signs
+      that
+      <tt>LR</tt>
+      language extensions were not a good proxy for
+      <tt>LR</tt>
+      grammars.
+      <tt>LR</tt>
+      grammars form a hierarchy --
+      for every
+      <tt>k</tt>, there is an
+      <tt>LR</tt>
+      grammar which
+      is
+      <tt>LR(k)</tt>, but which is not
+      <tt>LR(k+1)</tt>.
+    </p>
+    <p>
+      But if you look at extensions
+      instead of grammars,
+      the hierarchy immediately
+      collapses almost totally --
+      every
+      <tt>LR(k)</tt>
+      language extension is also
+      an
+      <tt>LR(1)</tt>
+      language extension,
+      as long as
+      <tt>k&#8805;1</tt>.
+      Only
+      <tt>LR(0)</tt>
+      remains distinct.
+    </p>
+    <p>It gets worse.
+      In most practical applications,
+      you can add an end-of-input marker to a grammar.
+      If you do this the
+      <tt>LR</tt>
+      extension hierarchy collapses all the way
+      down to zero --
+      every
+      <tt>LR(k)</tt>
+      language extension is also an
+      <tt>LR(0)</tt>
+      language extension.
+    </p>
+    <p>In short, it seems that,
+      as a proxy for
+      <tt>LR</tt>
+      grammars,
+      <tt>LR</tt>
+      language extensions are likely to be completely worthless.
+    </p>
+    <h2>Why didn't Knuth see the problem?</h2>
+    <p>Why didn't Knuth see the problem?
+      Knuth certainly noted the strange behavior of the
+      <tt>LR</tt>
+      hierarchy
+      in extensional terms -- he discovered it,
+      and devoted several dense pages of his 1965 to laying
+      out the complicated mathematics involved.
+    </p>
+    <p>
+      Why did
+      Knuth expect to get away with punning
+      intension and extension,
+      even in the face of some very unsettling results?
+      Here, the answer is very simple --
+      "punning" had always worked before.
+    </p>
+    <p>
+      Regular expressions are easily turned into parsers<a id="footnote-7-ref" href="#footnote-7">[7]</a>,
+      so the language extension of a regular grammar is an adequate approximation
+      to its intension.
+      Context-free recognition has the same complexity,
+      and in practice uses the same algorithms,
+      as context-free parsing,
+      so here again,
+      language extension is a good approximation
+      of language intension.
+    </p>
+    <p>
+      And the
+      <tt>LL</tt>
+      languages follow a strict hierarchy --
+      for every
+      <tt>k</tt>,
+      <tt>LL(k)</tt>
+      is a proper subset of
+      <tt>LL(k+1)</tt>.
+      This fact forces
+      <tt>LL</tt>
+      grammars to follow the same
+      hierarchy<a id="footnote-8-ref" href="#footnote-8">[8]</a>.
+      So, when studying complexity,
+      <tt>LL</tt>
+      language extensions are an excellent proxy for
+      <tt>LL</tt>
+      grammars.
+    </p>
+    <p>
+      Based on past experience,
+      Knuth had reason to believe
+      he could use language extensions as a proxy
+      for grammars,
+      and that the result would be
+      a theory that was a reliable
+      guide to practice.
+    </p>
+    <h2>Aftermath</h2>
+    <p>In
+      <a href="https://jeffreykegler.github.io/personal/timeline_v3">
+        my timeline of parsing</a>,
+      I describe what happened next.
+      Briefly,
+      theory focused on finding a useful subset of
+      <tt>LR(1)</tt>.
+      One,
+      <tt>LALR</tt>, became the favorite and
+      the basis of the
+      <tt>yacc</tt>
+      and
+      <tt>bison</tt>
+      tools.
+    </p>
+    <p>
+      Research into parsing of supersets of
+      <tt>LR(1)</tt>,
+      <tt>LR</tt>,
+      became rare.
+      The theorists were convinced the
+      <tt>LR</tt>
+      parsing
+      was the solution.
+      These were so convinced that when,
+      in 1991, Joop Leo discovered a practical way to
+      parse not just a superset of
+      <tt>LR(1)</tt>,
+      but a superset of
+      <tt>LR(k)</tt>
+      for all
+      <tt>k</tt>,
+      the result was not noticed,
+      and went unimplemented for decades.
+    </p>
+    <p>In 1965, the theoreticians gave a lot of weight
+      to the evidence from the world of practice,
+      but probably not undue weight.
+      Going forward, it was a different story.
+    </p>
+    <p>
+      Leo had,
+      in essence,
+      disproved the implied conjecture of Knuth 1965.
+      But the question is
+      not an explicit mathematical question,
+      like that of P vs. NP.
+      It is the slipprier one of capturing practice.
+      Practitioners left it to the theoreticians to keep up with
+      the literature.
+      And theoreticians, as long as
+      <tt>LR</tt>-superset methods did not
+      come into use in the world of practice,
+      felt no need to question their conclusions.
+    </p>
+    <h2>Comments, etc.</h2>
+    <p>
+      I encourage
+      those who want to know more about the story of Parsing Theory
+      to look at my
+      <a href="https://jeffreykegler.github.io/personal/timeline_v3">
+        Parsing: a timeline 3.0</a>.
+      In particular,
+      "Timeline 3.0" tells the story of the search for a good
+      <tt>LR(k)</tt>
+      subclass,
+      and what happened afterwards.
+    </p>
+    <p>
+      To learn about Marpa,
+      my Earley/Leo-based parsing project,
+      there is the
+      <a href="http://savage.net.au/Marpa.html">semi-official web site, maintained by Ron Savage</a>.
+      The official, but more limited, Marpa website
+      <a href="http://jeffreykegler.github.io/Marpa-web-site/">is my personal one</a>.
+      Comments on this post can be made in
+      <a href="http://groups.google.com/group/marpa-parser">
+        Marpa's Google group</a>,
+      or on our IRC channel:
+      <tt>#marpa</tt> at <tt>freenode.net</tt>.
+    </p>
+    <h2>Footnotes</h2>
+<p id="footnote-1">1.
+        Attributed to Jan L. A. van de Snepscheut and Yogi Berra.
+        See
+        <a href="https://en.wikiquote.org/wiki/Jan_L._A._van_de_Snepscheut">
+          https://en.wikiquote.org/wiki/Jan_L._A._van_de_Snepscheut</a>,
+        accessed 1 July 2018.
+        I quote my preferred form  of this --
+        the one it takes in
+        Doug Rosenberg and Matt Stephens,
+        <cite>Use Case Driven Object Modeling with UML: Theory and Practice</cite>,
+        2007,
+        p. xxvii.
+        Rosenberg and Stephens is also the accepted authority for its attribution.
+ <a href="#footnote-1-ref">&#8617;</a></p>
+<p id="footnote-2">2.
+        As an aside, I am open to the idea that
+        the human mind has abilities that Turing machines cannot improve on
+        or even duplicate.
+        When it comes to
+        survival heuristics tied to the needs of human bodies, for example,
+        it seems very reasonable to at least entertain the conjecture
+        that the human mind might be near-optimal,
+        particularly in big-O terms.
+        But when it comes to ability to solve problems which can be formalized
+        as "puzzles" -- and syntactic analysis is one of these --
+        I think that resort to human exceptionalism
+        is a sign of desperation.
+ <a href="#footnote-2-ref">&#8617;</a></p>
+<p id="footnote-3">3.
+          Oettinger, Anthony. "Automatic Syntactic Analysis and the Pushdown
+          Store",
+          <cite>Proceedings of Symposia in Applied Mathematics</cite>,
+          Volume 12,
+          American Mathematical Society, 1961.
+          Oettinger describes "push" and "pop"
+          stack operations in "Iversion notation" -- what
+          later became APL.
+          See the discussion of Oettinger in
+          my
+          <a href="
+    <a href="http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2018/05/knuth_1965.html">
+            "Why is parsing considered solved?" post</a>.
+ <a href="#footnote-3-ref">&#8617;</a></p>
+<p id="footnote-4">4.
+        Knuth did not invent asymptotic notation --
+        it comes from calculus --
+        but he introduced it to computer science
+        and motivated its use.
+ <a href="#footnote-4-ref">&#8617;</a></p>
+<p id="footnote-5">5.
+        The best lower bound for context-free parsing is still
+        <tt>O(n)</tt>.
+        So it is even possible that there is a practical
+        linear-time general context-free
+        parser.
+        But its discovery would be a big surprise.
+ <a href="#footnote-5-ref">&#8617;</a></p>
+<p id="footnote-6">6.
+        In
+        <a href="http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2018/05/chomsky_1956.html">
+          another blog post</a>,
+        I talk about the use of the word
+        "language" in parsing theory
+        in much more detail.
+ <a href="#footnote-6-ref">&#8617;</a></p>
+<p id="footnote-7">7.
+        For example,
+        regular expressions can be extended with "captures".
+        Captures cannot handle recursion, but neither can regular expressions,
+        so captures are usually sufficient to provide all structure
+        an application wants.
+ <a href="#footnote-7-ref">&#8617;</a></p>
+<p id="footnote-8">8.
+        This is because
+        every
+        <tt>LL(k)</tt>
+        intension (grammar) must have an
+        <tt>LL(k)</tt>
+        extension.
+        The discussion of the
+        <tt>LL(k)</tt>
+        hierarchy is in a sense anachronistic --
+        the
+        <tt>LL(k)</tt>
+        hierachy was not studied until after 1965.
+        But Knuth certainly was aware of recursive descent,
+        and it seems reasonable to suppose that,
+        even in 1965,
+        he had a sense of what
+        the
+        <tt>LL</tt>
+        hierarchy would look like.
+ <a href="#footnote-8-ref">&#8617;</a></p>
+  </body>
+</html>
+<br />
+<p>posted at: 20:22 |
+<a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2018/05/knuth_1965_2.html">direct link to this entry</a>
+</p>
+<div style="color:#38B0C0;padding:1px;text-align:center;">
+&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&sect;
+</div>
 <h3>Wed, 20 Jun 2018</h3>
 <br />
 <center><a name="lrecursion"> <h2>Parsing left recursions</h2> </a>
@@ -1385,562 +2071,6 @@
 <br />
 <p>posted at: 03:06 |
 <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2018/05/pingali.html">direct link to this entry</a>
-</p>
-<div style="color:#38B0C0;padding:1px;text-align:center;">
-&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-&sect;
-</div>
-<h3>Mon, 04 Jun 2018</h3>
-<br />
-<center><a name="knuth_1965"> <h2>Why is parsing considered solved?</h2> </a>
-</center>
-<html>
-  <head>
-  </head>
-  <body style="max-width:850px">
-    <!--
-      marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
-      -->
-    <p>It is often said that parsing is a "solved problem".
-      Given the level of frustration with the state of the art,
-      the underuse of the very powerful technique of
-      Language-Oriented Programming due to problematic tools<a id="footnote-1-ref" href="#footnote-1">[1]</a>,
-      and the vast superiority of human parsing ability
-      over computers,
-      this requires explanation.
-    </p>
-    <p>
-      On what grounds would someone say that parsing is "solved"?
-      To understand this,
-      we need to look at the history of Parsing Theory.<a id="footnote-2-ref" href="#footnote-2">[2]</a>
-      In fact, we'll have to start decades before computer Parsing Theory
-      exists,
-      with a now nearly-extinct school of linguistics,
-      and its desire to put the field on strictly
-      scientific basis.
-    </p>
-    <h2>1929: Bloomfield redefines "language"</h2>
-    <p>In 1929 Leonard Bloomfield,
-      as part of his effort to create a linguistics that
-      would be taken seriously as a science,
-      published his "Postulates".<a id="footnote-3-ref" href="#footnote-3">[3]</a>
-      The "Postulates" include his definition of language:
-    </p><blockquote>
-      The totality of utterances that can be made in a speech
-      community is the
-      <b>language</b>
-      of that speech-community.<a id="footnote-4-ref" href="#footnote-4">[4]</a>
-    </blockquote><p>
-      There is no reference in this definition to the usual view,
-      that the utterances of a language "mean" something.
-      This omission is not accidental:
-    </p><blockquote>
-      The statement of meanings is therefore the weak point in
-      language-study, and will remain so until human knowledge
-      advances very far beyond its present state. In practice, we define the
-      meaning of a linguistic form, wherever we can, in terms of some
-      other science.<a id="footnote-5-ref" href="#footnote-5">[5]</a>
-    </blockquote><p>
-      Bloomfield is passing the buck,
-      because the behaviorist science of his time rejects
-      any claims about mental states as
-      unverifiable statements -- essentially,
-      as claims to be able to read minds.
-      "Hard" sciences like physics, chemistry and even
-      biology avoid dealing with unverifiable mental states.
-      Bloomfield and the behaviorists want to make the methods of linguistics
-      as close to hard science as possible.
-    </p>
-    <p>
-      Draconian as Bloomfield's exclusion of meaning is,
-      it is a big success.
-      Known as structural linguistics,
-      Bloomfield's approach dominates lingustics for
-      the next couple of decades.
-    </p>
-    <h2>1955: Noam Chomsky graduates</h2>
-    <p>
-      Noam Chomsky earns his PhD at the University of Pennsylvania.
-      His teacher, Zelig Harris, is a prominent Bloomfieldian,
-      and Chomsky's early work is thought to be in the Bloomfield school.<a id="footnote-6-ref" href="#footnote-6">[6]</a>
-      Chomsky becomes a professor at MIT.
-      MIT does not have a linguistics department,
-      and Chomsky is free to teach his own approach to the subject.
-    </p>
-    <h2>The term "language" as of 1956</h2>
-    <p>Chomsky publishes his "Three models" paper,
-      one of the most important papers of all time.
-      His definition of language uses the terminology
-      of set theory:
-    </p><blockquote>
-      By a language then, we shall mean a set (finite or infinite) of
-      sentences, each of finite length, all constructed from a finite
-      alphabet of symbols.<a id="footnote-7-ref" href="#footnote-7">[7]</a>
-    </blockquote>
-    <p>
-      This definition is pure Bloomfield in substance,
-      but signs of departure from the behaviorist orthodoxy are
-      apparent in "Three Models" --
-      Chomsky is quite willing to talk about what sentences mean,
-      when it serves his purposes.
-      For a utterance with multiple meanings,
-      Chomsky's new model produces multiple syntactic derivations.
-      Each of these syntactic derivations
-      "looks" like the natural representation
-      of one of the meanings.
-      Chomsky points out that the insight into semantics
-      that his new model provides is a very
-      desirable property to have.<a id="footnote-8-ref" href="#footnote-8">[8]</a>
-    </p>
-    <h2>1959: Chomsky reviews Skinner</h2>
-    <p>In 1959, Chomsky reviews a book by B.F. Skinner's on linguistics.<a id="footnote-9-ref" href="#footnote-9">[9]</a>
-      Skinner is the most prominent behaviorist of the time.
-    </p>
-    <p>
-      Chomsky's review removes all doubt about where he stands
-      on behaviorism
-      or on the relevance of linguistics to the study of meaning.<a id="footnote-10-ref" href="#footnote-10">[10]</a>
-      His review galvanizes the opposition to behaviorism, and
-      Chomsky establishes himself as behavorism's most
-      prominent and effective critic.
-    </p>
-    <p>
-      In later years,
-      Chomsky will make it clear that he had had no intention
-      of avoiding semantics:
-    </p><blockquote>
-      [...] it would be absurd to develop
-      a general syntactic theory
-      without assigning an absolutely
-      crucial role to semantic considerations,
-      since obviously the necessity to support
-      semantic interpretation is one of the primary
-      requirements
-      that the structures
-      generated by the syntactic component of a grammar
-      must meet.<a id="footnote-11-ref" href="#footnote-11">[11]</a>
-    </blockquote>
-    <h2>1961: Oettinger discovers pushdown automata</h2>
-    <p>
-      While the stack itself goes back to Turing<a id="footnote-12-ref" href="#footnote-12">[12]</a>,
-      its significance for parsing becomes an object
-      of interest in itself with
-      Samuelson and Bauer's 1959 paper<a id="footnote-13-ref" href="#footnote-13">[13]</a>.
-      Mathematical study of stacks as models of computing begins with Anthony Oettinger's 1961 paper.<a id="footnote-14-ref" href="#footnote-14">[14]</a></p>
-    <p>Oettinger 1961 is full of evidence that stacks
-      (which he calls "pushdown stores") are still very new.
-      For example,
-      Oettinger does not use the terms "push" or "pop",
-      but instead describes operations on his pushdown stores using
-      a set of vector operations which will later form the basis
-      of the APL language.
-    </p>
-    <p>Oettinger defines 4 languages.
-      Oettinger's definitions all follow the behavorist model --
-      they are sets of strings.<a id="footnote-15-ref" href="#footnote-15">[15]</a>
-      Oettinger's pushdown stores
-      will eventually be called
-      deterministic pushdown automata (DPDA's) and
-      become the basis of a model of language
-      and the subject of a substantial literature,
-      all of which will use the behaviorist definition
-      of "language".
-    </p>
-    <p>
-      Oettinger hopes that DPDA's
-      will be an adequate basis for
-      the study of both computer and
-      natural language translation.
-      (Oettinger's own field is Russian translation.)
-      DPDA's soon prove totally inadequate
-      for natural languages.
-    </p>
-    <p>
-      But for dealing with computing languages,
-      DPDA's will have a much longer life.
-      As of 1961, all algorithms with acceptable speed are using
-      stacks with various modifications.
-    </p>
-    <blockquote>
-      The development of a theory of pushdown algorithms should
-      hopefully lead to systematic techniques for generating
-      algorithms satisfying given requirements to replace
-      the ad hoc invention of each new algorithm.<a id="footnote-16-ref" href="#footnote-16">[16]</a>
-    </blockquote>
-    <p>
-      The search for a comprehensive theory of
-      stack-based parsing
-      quickly becomes identified
-      with the search for a theoretical basis for practical parsing.
-    </p>
-    <h2>1965: Knuth discovers LR(k)</h2>
-    <p>Donald Knuth
-      reports his new results on stack-based parsing.
-      In a pivotal paper<a id="footnote-17-ref" href="#footnote-17">[17]</a>,
-      Knuth sets out a theory that
-      encompasses all the "tricks"<a id="footnote-18-ref" href="#footnote-18">[18]</a>
-      used for efficient parsing up to that time.
-      With this Oettinger's hope for a theory
-      to replace "ad hoc invention" is fulfilled.
-      In an exhilarating (and exhausting) 39-page
-      demonstration of mathematical virtuousity,
-      Knuth shows that stack-based parsing is
-      equivalent to a new and unexpected class of grammars.
-      Knuth calls these LR(k), and provides a parsing algorithm for them.
-    </p>
-    <p>
-      Knuth's new algorithm might be expected to be "the one to rule
-      them all".
-      Unfortunately, while deterministic and linear,
-      it is not practical -- it requires huge tables well beyond
-      the memory capabilities of the time.
-    </p>
-    <p>
-      The impracticality of his LR(k) algorithm
-      does not suggest to Knuth that the stack-based model
-      is inappropriate as a model of practical parsing.
-      Instead it suggests to him, and to the field,
-      that the boundary of practical parsing lies in a subclass of the
-      LR(k) grammars.
-    </p>
-    <p>
-      To be sure,
-      Knuth, in his program for further research<a id="footnote-19-ref" href="#footnote-19">[19]</a>,
-      does suggests investigation of parsers for superclasses
-      of LR(k).
-      He even describes a new superclass of his own:
-      LR(k,t), which is LR(k) with more aggressive lookahead.
-      But he is clearly unenthusiastic about LR(k,t).<a id="footnote-20-ref" href="#footnote-20">[20]</a>
-      It is reasonable to suppose
-      that Knuth is even more negative about
-      the more general approaches that
-      he does not bother to mention.<a id="footnote-21-ref" href="#footnote-21">[21]</a>
-    </p>
-    <p>
-      In any case, those reading Knuth's LR(k) paper focused almost
-      exclusively on his suggestions for research within the stack-based
-      model.
-      These included grammar rewrites;
-      streamlining of the LR(k) tables;
-      and research into LR(k) subclasses.
-      It is LR(k) subclassing that will receive the most attention.<a id="footnote-22-ref" href="#footnote-22">[22]</a>
-    </p>
-    <p>
-      The idea that the solution to the parsing problem must be
-      stack-based is not without foundation.
-      In 1965, the limits of computer technology are severe.
-      For practitioners,
-      any parsing technique that required much more
-      than a reasonably-sized state
-      machine and a stack,
-      is not likely to happen.
-      After all,
-      only four years earlier,
-      stacks were bleeding edge.
-    </p>
-    <p>The practitioners of 1965
-      are inclined to believe that,
-      like it or not,
-      they are stuck with stack-based parsing.
-      But why do the theoreticians feel compelled to follow them?
-      The answer is that theoreticians talk themselves into
-      it, using a misleading equivalence based
-      on the behaviorist definition of language.
-    </p>
-    <h2>"Language" as of 1965</h2>
-    <p>
-      Knuth defines language as follows:
-    </p>
-    <blockquote>
-      The language defined by G is<br>
-      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-      { &alpha; | S => &alpha; and &alpha; is a string over T }<br>
-      namely, the set of all terminal strings derivable from S by using
-      the productions of G as substitution rules.<a id="footnote-23-ref" href="#footnote-23">[23]</a>
-    </blockquote><p>
-      Here G is a grammar whose start symbol is S and whose set
-      of terminals is T.
-      This is the behavorist definition of language
-      translated into set-theoretic terms.
-    </p>
-    <p>Knuth proves, to the satisfaction of the profession,
-      the "equivalence" of LR(k) and DPDA's.
-      LR(k) is a class of grammars and the DPDA model is of
-      languages -- sets of strings.
-      At first glance, this is an "apples and oranges" comparison --
-      how do you prove the equivalence of a class of languages
-      and a class of grammars?
-    </p>
-    <p>
-      Knuth does this by reducing the class of DPDA languages and the class
-      of grammars to their lowest common denominator, which is the language.
-      And, of course, the "language" in the usage of Parsing Theory
-      is a set of strings, without consideration of their syntax.
-    </p>
-    <p>
-      Every grammar, when stripped of its syntax, defines a language.
-      So Knuth compares the language which results from stripping down
-      the LR(k) grammars,
-      to the language of DPDA's.
-      After some very impressive mathematics,
-      Knuth is able to show that the two languages are equivalent.
-    </p>
-    <p>
-      In theoretical mathematics, of course,
-      you can define "equivalent" however you like.
-      But if the purpose is to suggest limits in practice,
-      you have to be much more careful.
-      And in fact, as Knuth's paper shows,
-      if you equate languages and grammars,
-      you get into a very serious degree of magical thinking.
-      Using the Knuth algorithm,
-    </p>
-    <ul>
-      <li>parsing LR(k) grammars for arbitrary k is hopelessly impractical;
-      </li>
-      <li>parsing LR(1) grammars is impractical, but close to the boundary<a id="footnote-24-ref" href="#footnote-24">[24]</a>;
-        and
-      </li>
-      <li>parsing LR(0) grammars is very practical.
-      </li>
-    </ul>
-    <p>A problem for the relevance
-      of Knuth's proof of equivalence is that,
-      if you just look at sets of strings
-      without regard to syntax,
-      LR(1) and LR(k) are equivalent.
-      That means that from the sets-of-strings point of view,
-      hopelessly impractical and
-      borderline impractical are the same thing.
-    </p>
-    <p>
-      Worse, both LR(1) and LR(k) are equivalent to LR(0)
-      for most applications.
-      If you add
-      an explicit end marker to an LR(1) language,
-      which in most applications is easy to do<a id="footnote-25-ref" href="#footnote-25">[25]</a>,
-      your LR(1) language becomes LR(0).
-      Therefore, for most applications,
-    </p>
-    <center>
-      LR(k) = LR(1) = LR(0)
-    </center>
-    <p>
-      This means that, in the world of sets-of-strings,
-      extremely impractical and very practical are usually the same thing.
-    </p>
-    <p>
-      Clearly the world of sets of strings
-      is a magical one,
-      in which we can easily transport ourselves across the
-      boundary between practical and impractical.
-      We can take visions of a magical world back into the world of practice,
-      but we cannot assume they will be helpful.
-      In that light,
-      it is no surprise that
-      Joop Leo will show how to extend practical
-      parsing well beyond LR(k).<a id="footnote-26-ref" href="#footnote-26">[26]</a>
-    </p>
-    <h2>Comments, etc.</h2>
-    <p>
-      I encourage
-      those who want to know more about the story of Parsing Theory
-      to look at my
-      <a href="https://jeffreykegler.github.io/personal/timeline_v3">
-        Parsing: a timeline 3.0</a>.
-      In particular,
-      "Timeline 3.0" tells the story of the search for a good
-      LR(k) subclass,
-      and what happened afterwards.
-    </p>
-    <p>
-      To learn about Marpa,
-      my Earley/Leo-based parsing project,
-      there is the
-      <a href="http://savage.net.au/Marpa.html">semi-official web site, maintained by Ron Savage</a>.
-      The official, but more limited, Marpa website
-      <a href="http://jeffreykegler.github.io/Marpa-web-site/">is my personal one</a>.
-      Comments on this post can be made in
-      <a href="http://groups.google.com/group/marpa-parser">
-        Marpa's Google group</a>,
-      or on our IRC channel: #marpa at freenode.net.
-    </p>
-    <h2>Footnotes</h2>
-<p id="footnote-1">1.
-        The well-known
-        <a href="https://en.wikipedia.org/wiki/Design_Patterns">
-          <cite>Design Patterns</cite>
-          book</a>
-        (aka "the Gang of 4 book")
-        has a section on this.
-        The Gang of 4
-        call Language-Oriented Programming
-        their "Interpreter pattern".
-        That section amply illustrates the main obstacle to use
-        of the pattern -- lack of adequate parsing tools.
-        I talk more about this in my two blog posts on
-        the Interpreter pattern:
-        <a href="http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2013/03/bnf_to_ast.html">
-          BNF to AST</a>
-        and
-        <a href="http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2013/03/interpreter.html">
-          The Interpreter Design Pattern</a>.
- <a href="#footnote-1-ref">&#8617;</a></p>
-<p id="footnote-2">2.
-        This post takes the form of a timeline, and
-        is intended to be incorporated in my
-        <a href="https://jeffreykegler.github.io/personal/timeline_v3">
-          Parsing: a timeline</a>.
-        The earlier entires in this post borrow heavily from
-        <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2018/05/chomsky_1956.html">
-          a previous blog post</a>.
- <a href="#footnote-2-ref">&#8617;</a></p>
-<p id="footnote-3">3.
-        Bloomfield, Leonard,
-        "A set of Postulates
-        for the Science of Language",
-        <cite>Language</cite>, Vol. 2, No. 3 (Sep., 1926), pp. 153-164.
- <a href="#footnote-3-ref">&#8617;</a></p>
-<p id="footnote-4">4.
-        Bloomfield 1926, definition 4 on p. 154.
- <a href="#footnote-4-ref">&#8617;</a></p>
-<p id="footnote-5">5.
-        Bloomfield, Leonard.
-        <cite>Language</cite>.
-        Holt, Rinehart and Winston, 1933, p. 140.
- <a href="#footnote-5-ref">&#8617;</a></p>
-<p id="footnote-6">6.
-        Harris, Randy Allen,
-        <cite>The Linguistics Wars</cite>,
-        Oxford University Press, 1993,
-        pp 31-34, p. 37.
- <a href="#footnote-6-ref">&#8617;</a></p>
-<p id="footnote-7">7.
-        The quote is on p. 114 of
-        Chomsky, Noam.
-        "Three models for the description of language."
-        <cite>IRE Transactions on information theory</cite>,
-        vol. 2, issue 3, September 1956, pp. 113-124.
-        In case there is any doubt Chomsky's "strings"
-        are Bloomfield's utterances,
-        Chomsky also calls his strings,
-        "utterances".
-        For example in Chomsky, Noam,
-        <cite>Syntactic Structures</cite>,
-        2nd ed.,
-        Mouton de Gruyter, 2002, on p. 15:
-        "Any grammar of a language will project the finite and somewhat accidental
-        corpus of observed utterances to a set (presumably infinite)
-        of grammatical utterances."
- <a href="#footnote-7-ref">&#8617;</a></p>
-<p id="footnote-8">8.
-        Chomsky 1956, p. 118, p. 123.
- <a href="#footnote-8-ref">&#8617;</a></p>
-<p id="footnote-9">9.
-        Chomsky, Noam.
-        “A Review of B. F. Skinner’s Verbal Behavior”.
-        <cite>Language</cite>,
-        Volume 35, No. 1, 1959, 26-58.
-        <a href="https://chomsky.info/1967____/">
-          https://chomsky.info/1967____/</a>
-        accessed on 3 June 2018.
- <a href="#footnote-9-ref">&#8617;</a></p>
-<p id="footnote-10">10.
-        See in particular, Section IX of Chomsky 1959.
- <a href="#footnote-10-ref">&#8617;</a></p>
-<p id="footnote-11">11.
-        Chomsky, Noam.
-        <cite>Topics in the Theory of Generative Grammar</cite>.
-        De Gruyter, 1978, p. 20.
-        (The quote occurs in footnote 7 starting on p. 19.)
- <a href="#footnote-11-ref">&#8617;</a></p>
-<p id="footnote-12">12.
-        Carpenter, Brian E., and Robert W. Doran.
-        "The other Turing machine."
-        <cite>The Computer Journal</cite>, vol. 20, issue 3, 1 January 1977, pp. 269-279.
- <a href="#footnote-12-ref">&#8617;</a></p>
-<p id="footnote-13">13.
-        Samelson, Klaus, and Friedrich L. Bauer. "Sequentielle formelübersetzung." it-Information Technology 1.1-4 (1959): 176-182.
- <a href="#footnote-13-ref">&#8617;</a></p>
-<p id="footnote-14">14.
-        Oettinger, Anthony.
-        "Automatic Syntactic Analysis and the Pushdown Store"
-        <cite>Proceedings of Symposia in Applied Mathematics</cite>,
-        Volume 12,
-        American Mathematical Society, 1961.
- <a href="#footnote-14-ref">&#8617;</a></p>
-<p id="footnote-15">15.
-        Oettinger 1961, p. 106.
- <a href="#footnote-15-ref">&#8617;</a></p>
-<p id="footnote-16">16.
-        Oettinger 1961, p. 127.
- <a href="#footnote-16-ref">&#8617;</a></p>
-<p id="footnote-17">17.
-        Knuth, Donald E.
-        "On the translation of languages from left to right."
-        <cite>Information and Control</cite>, Volume 8, Issue 6, December 1965, pp. 607-639.
-        <a href="https://ac.els-cdn.com/S0019995865904262/1-s2.0-S0019995865904262-main.pdf?_tid=dcf0f8a0-d312-475e-a559-be7714206374&acdnat=1524066529_64987973992d3a5fffc1b0908fe20b1d">
-          https://ac.els-cdn.com/S0019995865904262/1-s2.0-S0019995865904262-main.pdf?_tid=dcf0f8a0-d312-475e-a559-be7714206374&acdnat=1524066529_64987973992d3a5fffc1b0908fe20b1d</a>, accessed 24 April 2018.
- <a href="#footnote-17-ref">&#8617;</a></p>
-<p id="footnote-18">18.
-        Knuth 1965, p. 607, in the abstract.
- <a href="#footnote-18-ref">&#8617;</a></p>
-<p id="footnote-19">19.
-        Knuth 1961, pp. 637-639.
- <a href="#footnote-19-ref">&#8617;</a></p>
-<p id="footnote-20">20.
-        "Finally, we might mention another generalization of LR(k)"
-        (Knuth 1965, p. 638); and
-        "One might choose to call this left-to-right translation,
-        although we had to back up a finite amount."
-        (p. 639).
- <a href="#footnote-20-ref">&#8617;</a></p>
-<p id="footnote-21">21.
-        Knuth's skepticism of more general Chomskyan approaches
-        is suggested by his own plans for his (not yet released) Chapter
-        12 of the
-        <cite>Art of Computer Programming</cite>,
-        in which he planned to use pre-Chomskyan bottom-up methods. (See
-        Knuth, Donald E., "The genesis of attribute grammars",
-        <cite>Attribute Grammars and Their Applications</cite>,
-        Springer, September 1990, p. 3.)
- <a href="#footnote-21-ref">&#8617;</a></p>
-<p id="footnote-22">22.
-        The story of the research followup to Knuth's LR(k) paper is told
-        in my
-        <a href="https://jeffreykegler.github.io/personal/timeline_v3">
-          Parsing: a timeline 3.0</a>.
- <a href="#footnote-22-ref">&#8617;</a></p>
-<p id="footnote-23">23.
-        Knuth 1965, p. 608.
- <a href="#footnote-23-ref">&#8617;</a></p>
-<p id="footnote-24">24.
-          Given the capacity of computer memories in 1965,
-          LR(1) was clearly impractical.
-          With the huge computer memories of 2018,
-          that could be reconsidered, but LR(1) is still restrictive
-          and has poor error-handling,
-          and few have looked at the possibility.
- <a href="#footnote-24-ref">&#8617;</a></p>
-<p id="footnote-25">25.
-        Some parsing applications, such as those which receive their input "on-line",
-        can not determine the size of their input in advance.
-        For these applications adding an end marker to their input is
-        inconvenient or impossible.
- <a href="#footnote-25-ref">&#8617;</a></p>
-<p id="footnote-26">26.
-        Joop M. I. M.
-        "A general context-free parsing algorithm running in linear time on every LR (k) grammar without using lookahead."
-        <cite>Theoretical computer science</cite>, Volume 82, Issue 1, 22 May 1991, pp. 165-176.
-        <a href="https://www.sciencedirect.com/science/article/pii/030439759190180A">
-          https://www.sciencedirect.com/science/article/pii/030439759190180A</a>, accessed 24 April 2018.
- <a href="#footnote-26-ref">&#8617;</a></p>
-  </body>
-</html>
-<br />
-<p>posted at: 06:58 |
-<a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2018/05/knuth_1965.html">direct link to this entry</a>
 </p>
 <div style="color:#38B0C0;padding:1px;text-align:center;">
 &sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
