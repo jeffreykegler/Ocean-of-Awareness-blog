@@ -707,678 +707,6 @@
 &sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 &sect;
 </div>
-<br />
-<center><a name="knuth_1965_2"> <h2>Undershoot: Parsing theory in 1965</h2> </a>
-</center>
-<html>
-  <head>
-  </head>
-  <body style="max-width:850px">
-    <!--
-      marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
-      -->
-    <blockquote>The difference between theory and practice is
-      that in theory there is no difference between
-      theory and practice,
-      but in practice, there is.<a id="footnote-1-ref" href="#footnote-1">[1]</a>
-    </blockquote>
-    <p>
-      Once it was taken seriously that humans might have the power to, for
-      example, "read" a chessboard in a way that computers could not beat.
-      This kind of "computational mysticism" has taken a beating.
-      But it survives in one last stronghold -- parsing theory.
-    </p><p>
-      In
-      <a href="http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2018/05/knuth_1965.html">
-        a previous post</a>,
-      I asked "Why is parsing considered solved?"
-      If the state of the art of computer parsing is taken as anything close to its ultimate solution,
-      then it is a case of "human exceptionalism" --
-      the human brain has some
-      power that makes it much better at parsing than computers can be.
-      It is very unlikely resorting to human exceptionalism as an explanation
-      would be accepted
-      for any other problem in computer science.
-      Why is it accepted for parsing theory?<a id="footnote-2-ref" href="#footnote-2">[2]</a>
-    </p>
-    <p>
-      The question really requires two separate answers:
-    </p><ul>
-      <li>"Why do practitioners accept the current state of the art as the solution?" and
-      </li><li>"Why do the theoreticians accept the current state of the art as the solution?"
-      </li></ul>
-    <p>
-    </p><p>In one sense, the answer to both questions is the same --
-      because of the consensus created by Knuth's 1965 paper
-      "On the translation of languages from left to right".
-      In
-      <a href="http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2018/05/knuth_1965.html">a previous post</a>,
-      I looked at Knuth 1965
-      and I answered the practitioner question in detail.
-      But, for the sake of brevity,
-      I answered the question about the theoreticians in outline.
-      This post expands on that outline.
-    </p>
-    <h2>The Practitioners</h2>
-    <p>
-      To summarize, in 1965,
-      <b>practitioners</b>
-      accepted the parsing problem as solved
-      for the following reasons.
-    </p>
-    <ul>
-      <li>In 1965, every practical parser was stack-driven.</li>
-      <li>As of 1965, stacks themselves were quite leading edge.
-        As recently as 1961,
-        a leading edge article<a id="footnote-3-ref" href="#footnote-3">[3]</a>
-        could not assume that its readers knew what "pop" and "push" operations
-        were.
-      </li>
-      <li>An algorithm that combined state transitions and stack operations was
-        already a challenge to existing machines.
-        In 1965, any more complicated algorithm was likely to be unuseable
-        in practice.
-      </li>
-      <li>Last, but not least, the theoreticians assured the
-        practitioners that
-        <tt>LR</tt>-parsing was either state-of-the-art
-        or beyond,
-        so making more agressive use of hardware
-        would be futile.
-      </li>
-    </ul>
-    <h2>What about the theorists?</h2>
-    <p>The practitioners of 1965, then,
-      were quite reasonable in feeling that
-      <tt>LR</tt>-parsing was as good as anything they were likely to be able
-      to implement any time soon.
-      And they were being told by the theorists that,
-      in fact,
-      it never would get any better --
-      there were theoretical limits on parsers that faster
-      hardware could not overcome.
-    </p>
-    <p>We now know that the theorists were wrong --
-      there are non-<tt>LR</tt>
-      parsers which are better than the
-      <tt>LR</tt>
-      parsers are at
-      <tt>LR</tt>
-      grammars.
-      What made the theorists go astray?
-    </p>
-    <h2>How theorists work</h2>
-    <p>As the epigraph for this post reminds us,
-      theorists who hope to guide practitioners have to confront a big problem --
-      theory is practice only in theory.
-      Theoreticians
-      (or at least the better ones, like Knuth)
-      know this,
-      but they try to make theory as reliable a guide to
-      practice as possible.
-    </p>
-    <p>One of the most important examples of the theoretician's successes
-      is asymptotic notation, which we owe to Knuth<a id="footnote-4-ref" href="#footnote-4">[4]</a>.
-      Asymptotic notation is
-      more commonly referred to as big-O notation.
-      The term "asymptotic notation"
-      emphasizes its most dangerous aspect
-      from a practical point of view:
-      Asymptotic notation assumes
-      that the behavior of most interest
-      is the behavior for arbitrarily large inputs.
-    </p>
-    <p>
-      Practical inputs can be very large but,
-      by definition,
-      they are never arbitrarily large.
-      Results in asymptotic terms
-      might be what is called "galactic" --
-      they might have
-      relevance only in situations which cannot possibly occur in practice.
-    </p>
-    <p>
-      Fortunately for computer science,
-      asymptotic results usually are
-      not "galactic".
-      Most often asymptotic results are not only
-      relevant to practice --
-      they are extremely relevant.
-      Wikipedia pages for algorithms put
-      the asymptotic complexities in special displays,
-      and these displays are one of the first
-      things that some practitioners look at.
-    </p>
-    <h2>Bracketing</h2>
-    <p>Since coming up with a theoretical model that is equivalent
-      to "practical" is impossible,
-      theoreticians often work like artillerists.
-      Artillerists often deliberately overshoot and undershoot,
-      before they "fire for effect".
-      "Bracketing" their target in this way has disadvantages --
-      it reduces the element of surprise,
-      and can even allow the enemy to get their counter-fire in first.
-      But, nasty as these consequences could be,
-      the advantage in accuracy is usually held to outweigh them.
-    </p>
-    <p>The practice of theoretical computer science is
-      less risky,
-      which makes "bracketing" a very attractive approach to
-      tricky problems.
-      Theoreticians often
-      try to "bracket" practice between an "undershoot"
-      and an "overshoot".
-      The undershoots are models simple and efficient enough to be practical,
-      but too weak to capture all the needs of practice.
-      The overshoots are models which capture everything
-      a practitioner needs,
-      but which are too complicated and/or too resource-intensive
-      for practice.
-    </p><p>The P vs. NP problem is an active example of a bracketing technique.
-      You will sometimes read that
-      the P/NP boundary is expected to be
-      that between practical and impractical,
-      but this is an extreme simplification.
-      P includes complexities like
-      <tt>O(n^1000000)</tt>,
-      where the complexity for even
-      <tt>n == 2</tt>
-      is
-      a nunber which, in decimal form,
-      fills many pages.
-      Modulo bold advances in quantum computing,
-      I cannot imagine that
-      <tt>O(n^1000000)</tt>
-      will ever be
-      practical.
-      And you can make the complexities much harder
-      than
-      <tt>O(n^1000000)</tt>
-      without ever reaching P-hard.
-    </p>
-    <p>
-      So P-hard is beyond any reasonable definition of "practical" --
-      it is an "overshoot".
-      But the P vs. NP question is almost certainly very relevant to what is "practical".
-      Resolving the P vs. NP question is likely
-      to be an important or even necessary step.
-      It is a mystery that such a seemingly obvious
-      question has resisted the best efforts of the theoreticians
-      for so long,
-      and the solution of P vs. NP is likely
-      to bring
-      new insights
-      into asymptotic complexity.
-    </p>
-    <h2>Bracketing practical parsing</h2>
-    <p>When Knuth published his 1965,
-      "practical parsing" was already bracketed.
-      On the overshoot side, Irons had already published a parser for
-      context-free grammars.
-      Worst case, this ran in exponential time,
-      and it was, and remains, expected that general context-free parsing
-      was not going to be practical.<a id="footnote-5-ref" href="#footnote-5">[5]</a>
-    </p>
-    <p>On the undershoot side,
-      there were regular expressions and recursive descent.
-      Regular expressions are fast and very practical,
-      but parse a very limited set of grammars.
-      Recursive descent is also fast and,
-      since it parses a larger set of grammars,
-      was the closest undershoot.
-    </p>
-    <h2>Mistake 1: The misdefinition of "language"</h2>
-    <p>To curry respect from the behaviourists,
-      American linguistics for many years banned any reference
-      to meaning.
-      Behaviorists looked down on
-      hypothesized mental states as not worthy of "science",
-      and it's hard to have a theory of meaning
-      without conjectures about mental states.
-      Without mental states,
-      language was just a set utterances.
-      So in 1926 the linguist Leonard Bloomfield
-      dutifully
-      defined a "language" as a set of "utterances"
-      (for our purposes, "strings"),
-      and through the 30s and 40s most American
-      linguists followed him.
-    </p>
-    <p>After a brief nod to this tradition,
-      Noam Chomsky restored sanity to linguistics.
-      But it was too late for computer science.
-      Automata theory adopted the semantics-free definition.
-      In 1965, Knuth inherited a lot of prior work,
-      almost all of which ignored,
-      not just meaning or semantics,
-      but even syntax and structure.<a id="footnote-6-ref" href="#footnote-6">[6]</a>
-    </p>
-    <h2>Language extension versus language intension</h2>
-    <p>Knuth, of course, wanted to make contact with prior art.
-      The definition he had inherited seemed to work well enough
-      and Knuth's 1965 defines a language as a set of strings.
-      Most subsequent work has refused to breach this tradition.
-    </p>
-    <p>In most people's idea of what a language is,
-      the utterances/strings mean something --
-      you cannot take just
-      any set of meaningless strings and call it a language.
-      So the parsing theorists and everybody else had
-      two different definitions of language.
-    </p>
-    <p>But parsing theory also hoped to produce results relevant
-      to practice,
-      and few people are interested in recognizing meaningless strings --
-      almost everybody who parses is interested in (at a minimum)
-      finding some kind of structure in what they parse,
-      in order to do something with the result of the parse.
-      Parsing theorists ended up using the word "language" in one
-      sense, but implying that results they found worked
-      for the word "language" in the usual sense.
-    </p>
-    <p>
-      At this point both senses of the word "language"
-      have gotten entrenched in parsing theory.
-      Instead of making up a new terminology for this blog post,
-      I will borrow a distinction from linguistics
-      and speak of
-      <b>the extension of a language</b>
-      and
-      <b>the intension of a language</b>.
-      The extension of a language is the Bloomfieldian defintion --
-      the set of utterances/strings in the language.
-      The intension of a language, for our purposes here,
-      can be regarded as its BNF grammar.
-      Each language intension will have (if it is well-defined)
-      exactly one extension.
-      But multiple language intensions can have the same extension.
-    </p>
-    <h2>Red Herring 1: The stack machine model as a natural boundary</h2>
-    <p>The temptation to use language extensions as
-      a proxy for
-      <tt>LR</tt>-grammars must have been overwhelming.
-      It turns out that the language extension of
-      deterministic stack machines
-      is
-      <b>exactly</b>
-      that of the
-      <tt>LR</tt>
-      grammars.
-      Further,
-      the language extension of the context-free grammars is
-      exactly that of the non-deterministic stack machines.
-      (Non-deterministic stack machines are
-      stack machines which can "fork" new instances of themselves on the fly.)
-    </p>
-    <p>
-      If you take language extensions as the proxy for grammars,
-      things fall into place very neatly:
-      the
-      <tt>LR</tt>-parsers are the deterministic subset of the
-      context-free parsers.
-      And "deterministic" seemed like a very good approximation
-      of practical.
-      Certainly non-deterministic parsing is probably not practical.
-      And the best practical parsers in 1965 were
-      deterministic stack parsers.
-    </p><p>
-      Viewed this way,
-      <tt>LR</tt>-parsing looked like the equivalent
-      of practical parsing.
-      It was a "direct hit",
-      or as close to a exact equivalent of practical parsing
-      as theory was going to get.
-    </p>
-    <p>As we shall see,
-      with this red herring,
-      the reasoning went astray,
-      but not disastrously so.
-      The whole point of bracketing, after all,
-      is that it allows you to correct errors.
-      Another red herring, however, resulted in
-      parsing theory going on a decades-long
-      wrong turn.
-    </p>
-    <h2>Red Herring 2:
-      <tt>LR</tt>
-      parsers are not good at
-      <tt>LR</tt>
-      grammars</h2>
-    <p>The second red herring led to the mis-bracketing of practical
-      parsing.
-      Having seemingly established that
-      <tt>LR</tt>-parsing is a natural boundary
-      in the hierarchy of languages,
-      Knuth discovered that general
-      <tt>LR</tt>-parsers were very far from practical.
-      <tt>LR</tt>
-      parsing goes out to
-      <tt>LR(k)</tt>
-      for arbitrary
-      <tt>k</tt>,
-      but even
-      <tt>LR(1)</tt>
-      parsing was impractical in 1965 --
-      in fact, it is rare in practical use today.
-      As the
-      <tt>k</tt>
-      in
-      <tt>LR(k)</tt>
-      grows, the size of the tables grows exponentially,
-      while the value of the additional lookahead rapidly diminishes.
-      It is not likely that
-      <tt>LR(2)</tt>
-      parsing will ever see much practical use,
-      never mind
-      <tt>LR(k) : k &gt; 2</tt>.
-    </p>
-    <p>
-      From this it was concluded that
-      <tt>LR</tt>-parsing is an overshoot.
-      In reality,
-      as Joop Leo was to show,
-      it is an
-      <b>undershoot</b>,
-      and in practical terms a very large one.
-      If you mistake an undershoot for an overshoot,
-      bracketing no longer works,
-      and you are not likely to hit your target.
-    </p>
-    <h2>The Wrong Turn</h2>
-    <p>
-      From all this,
-      parsing theorists concluded that
-    </p><ul>
-      <li>LR-parsing is a good approximation to practical parsing -- it brackets
-        it closely.</li>
-      <li>LR-parsing is an overshoot.</li>
-      <li>A subset of
-        <tt>LR</tt>-parsing will be the solution to the parsing problem.</li>
-    </ul>
-    <h2>Signs of trouble ignored</h2>
-    <p>There were, in hindsight, clear signs
-      that
-      <tt>LR</tt>
-      language extensions were not a good proxy for
-      <tt>LR</tt>
-      grammars.
-      <tt>LR</tt>
-      grammars form a hierarchy --
-      for every
-      <tt>k</tt>, there is an
-      <tt>LR</tt>
-      grammar which
-      is
-      <tt>LR(k)</tt>, but which is not
-      <tt>LR(k+1)</tt>.
-    </p>
-    <p>
-      But if you look at extensions
-      instead of grammars,
-      the hierarchy immediately
-      collapses --
-      every
-      <tt>LR(k)</tt>
-      language extension is also
-      an
-      <tt>LR(1)</tt>
-      language extension,
-      as long as
-      <tt>k&#8805;1</tt>.
-      Only
-      <tt>LR(0)</tt>
-      remains distinct.
-    </p>
-    <p>It gets worse.
-      In most practical applications,
-      you can add an end-of-input marker to a grammar.
-      If you do this the
-      <tt>LR</tt>
-      extension hierarchy collapses totally --
-      every
-      <tt>LR(k)</tt>
-      language extension is also an
-      <tt>LR(0)</tt>
-      language extension.
-    </p>
-    <p>In short, it seems that,
-      as a proxy for
-      <tt>LR</tt>
-      grammars,
-      <tt>LR</tt>
-      language extensions are likely to be completely worthless.
-    </p>
-    <h2>Why didn't Knuth see the problem?</h2>
-    <p>Why didn't Knuth see the problem?
-      Knuth certainly noted the strange behavior of the
-      <tt>LR</tt>
-      hierarchy
-      in extensional terms -- he discovered it,
-      and devoted several dense pages of his 1965 to laying
-      out the complicated mathematics involved.
-    </p>
-    <p>
-      Why did
-      Knuth expect to get away with punning
-      intension and extension,
-      even in the face of some very unsettling results?
-      Here, the answer is very simple --
-      "punning" had always worked before.
-    </p>
-    <p>
-      Regular expressions are easily turned into parsers<a id="footnote-7-ref" href="#footnote-7">[7]</a>,
-      so the language extension of a regular grammar is an adequate approximation
-      to its intension.
-      Context-free recognition has the same complexity,
-      and in practice uses the same algorithms,
-      as context-free parsing,
-      so here again,
-      language extension is a good approximation
-      of language intension.
-    </p>
-    <p>
-      And the
-      <tt>LL</tt>
-      languages follow a strict hierarchy --
-      for every
-      <tt>k</tt>,
-      <tt>LL(k)</tt>
-      is a proper subset of
-      <tt>LL(k+1)</tt>.
-      This fact forces
-      <tt>LL</tt>
-      grammars to follow the same
-      hierarchy<a id="footnote-8-ref" href="#footnote-8">[8]</a>.
-      So, when studying complexity,
-      <tt>LL</tt>
-      language extensions are an excellent proxy for
-      <tt>LL</tt>
-      grammars.
-    </p>
-    <p>
-      Based on past experience,
-      Knuth had reason to believe
-      he could use language extensions as a proxy
-      for grammars,
-      and that the result would be
-      a theory that was a reliable
-      guide to practice.
-    </p>
-    <h2>Aftermath</h2>
-    <p>In
-      <a href="https://jeffreykegler.github.io/personal/timeline_v3">
-        my timeline of parsing</a>,
-      I describe what happened next.
-      Briefly,
-      theory focused on finding a useful subset of
-      <tt>LR(1)</tt>.
-      One,
-      <tt>LALR</tt>, became the favorite and
-      the basis of the
-      <tt>yacc</tt>
-      and
-      <tt>bison</tt>
-      tools.
-    </p>
-    <p>
-      Research into parsing of supersets of
-      <tt>LR</tt>
-      became rare.
-      The theorists were convinced the
-      <tt>LR</tt>
-      parsing
-      was the solution.
-      These were so convinced that when,
-      in 1991, Joop Leo discovered a practical way to
-      parse an
-      <tt>LR</tt> superset,
-      the result went unimplemented for decades.
-    </p>
-    <p>In 1965, the theoreticians gave a lot of weight
-      to the evidence from the world of practice,
-      but probably not undue weight.
-      Going forward, it was a different story.
-    </p>
-    <p>
-      Leo had,
-      in essence,
-      disproved the implied conjecture of Knuth 1965.
-      But the question is
-      not an explicit mathematical question,
-      like that of P vs. NP.
-      It is a slipprier one -- capturing practice.
-      Practitioners left it to the theoreticians to keep up with
-      the literature.
-      But theoreticians, as long as
-      <tt>LR</tt>-superset methods did not
-      come into use in the world of practice,
-      felt no need to revisit their conclusions.
-    </p>
-    <h2>Comments, etc.</h2>
-    <p>
-      I encourage
-      those who want to know more about the story of Parsing Theory
-      to look at my
-      <a href="https://jeffreykegler.github.io/personal/timeline_v3">
-        Parsing: a timeline 3.0</a>.
-      In particular,
-      "Timeline 3.0" tells the story of the search for a good
-      <tt>LR(k)</tt>
-      subclass,
-      and what happened afterwards.
-    </p>
-    <p>
-      To learn about Marpa,
-      my Earley/Leo-based parsing project,
-      there is the
-      <a href="http://savage.net.au/Marpa.html">semi-official web site, maintained by Ron Savage</a>.
-      The official, but more limited, Marpa website
-      <a href="http://jeffreykegler.github.io/Marpa-web-site/">is my personal one</a>.
-      Comments on this post can be made in
-      <a href="http://groups.google.com/group/marpa-parser">
-        Marpa's Google group</a>,
-      or on our IRC channel:
-      <tt>#marpa</tt> at <tt>freenode.net</tt>.
-    </p>
-    <h2>Footnotes</h2>
-<p id="footnote-1">1.
-        Attributed to Jan L. A. van de Snepscheut and Yogi Berra.
-        See
-        <a href="https://en.wikiquote.org/wiki/Jan_L._A._van_de_Snepscheut">
-          https://en.wikiquote.org/wiki/Jan_L._A._van_de_Snepscheut</a>,
-        accessed 1 July 2018.
-        I quote my preferred form  of this --
-        the one it takes in
-        Doug Rosenberg and Matt Stephens,
-        <cite>Use Case Driven Object Modeling with UML: Theory and Practice</cite>,
-        2007,
-        p. xxvii.
-        Rosenberg and Stephens is also the accepted authority for its attribution.
- <a href="#footnote-1-ref">&#8617;</a></p>
-<p id="footnote-2">2.
-        As an aside, I am open to the idea that
-        the human mind has abilities that Turing machines cannot improve on
-        or even duplicate.
-        When it comes to
-        survival heuristics tied to the needs of human bodies, for example,
-        it seems very reasonable to at least entertain the conjecture
-        that the human mind might be near-optimal,
-        particularly in big-O terms.
-        But when it comes to ability to solve problems which can be formalized
-        as "puzzles" -- and syntactic analysis is one of these --
-        I think that resort to human exceptionalism
-        is a sign of desperation.
- <a href="#footnote-2-ref">&#8617;</a></p>
-<p id="footnote-3">3.
-          Oettinger, Anthony. "Automatic Syntactic Analysis and the Pushdown
-          Store",
-          <cite>Proceedings of Symposia in Applied Mathematics</cite>,
-          Volume 12,
-          American Mathematical Society, 1961.
-          Oettinger describes "push" and "pop"
-          stack operations in "Iversion notation" -- what
-          later became APL.
-          See the discussion of Oettinger in
-          my
-          <a href="
-    <a href="http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2018/05/knuth_1965.html">
-            "Why is parsing considered solved?" post</a>.
- <a href="#footnote-3-ref">&#8617;</a></p>
-<p id="footnote-4">4.
-        Knuth did not invent asymptotic notation --
-        it comes from calculus --
-        but he introduced it to computer science
-        and motivated its use.
- <a href="#footnote-4-ref">&#8617;</a></p>
-<p id="footnote-5">5.
-        The best lower bound for context-free parsing is still
-        <tt>O(n)</tt>.
-        So it is even possible that there is a practical
-        linear-time general context-free
-        parser.
-        But its discovery would be a big surprise.
- <a href="#footnote-5-ref">&#8617;</a></p>
-<p id="footnote-6">6.
-        In
-        <a href="http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2018/05/chomsky_1956.html">
-          another blog post</a>,
-        I talk about the use of the word
-        "language" in parsing theory
-        in much more detail.
- <a href="#footnote-6-ref">&#8617;</a></p>
-<p id="footnote-7">7.
-        For example,
-        regular expressions can be extended with "captures".
-        Captures cannot handle recursion, but neither can regular expressions,
-        so captures are usually sufficient to provide all the structure
-        an application wants.
- <a href="#footnote-7-ref">&#8617;</a></p>
-<p id="footnote-8">8.
-        The discussion of the
-        <tt>LL(k)</tt>
-        hierarchy is in a sense anachronistic --
-        the
-        <tt>LL(k)</tt>
-        hierachy was not studied until after 1965.
-        But Knuth certainly was aware of recursive descent,
-        and it seems reasonable to suppose that,
-        even in 1965,
-        he had a sense of what
-        the
-        <tt>LL</tt>
-        hierarchy would look like.
- <a href="#footnote-8-ref">&#8617;</a></p>
-  </body>
-</html>
-<br />
-<p>posted at: 20:22 |
-<a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2018/05/knuth_1965_2.html">direct link to this entry</a>
-</p>
-<div style="color:#38B0C0;padding:1px;text-align:center;">
-&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-&sect;
-</div>
 <h3>Wed, 20 Jun 2018</h3>
 <br />
 <center><a name="lrecursion"> <h2>Parsing left recursions</h2> </a>
@@ -2399,6 +1727,337 @@
 <br />
 <p>posted at: 20:02 |
 <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2018/05/csg.html">direct link to this entry</a>
+</p>
+<div style="color:#38B0C0;padding:1px;text-align:center;">
+&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&sect;
+</div>
+<h3>Mon, 11 Jun 2018</h3>
+<br />
+<center><a name="pingali"> <h2>Parsing with pictures</h2> </a>
+</center>
+<html>
+  <head>
+  </head>
+  <body style="max-width:850px">
+    <!--
+      marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
+      -->
+    <h2>Derivatives == Earley?</h2>
+    <p>In a cordial Twitter exchange with Matt Might and
+      and David Darais, Prof. Might asked if I was interested
+      in looking at their derivatives-based approach.
+      I answered that I was looking at it --
+      Marpa is an optimization of the Might/Darais approach.
+    </p>
+    <p>This may sound strange.
+      At first glance, our two algorithms seem about as different as
+      parsing algorithms can get.
+      My Marpa parser is an Earley parser, table-driven,
+      and its parse engine is written in C language.<a id="footnote-1-ref" href="#footnote-1">[1]</a>
+    </p>
+    <p>
+      The MDS (Might/Darais/Spiewak) parser is
+      an extension of regular expressions
+      which constructs states on the fly.
+      MDS uses combinators and has implementations
+      in several functional programming languages.<a id="footnote-2-ref" href="#footnote-2">[2]</a>
+    </p>
+    <h2>Grammar Flow Graphs</h2>
+    <p>Why then do I imagine that Marpa is an optimized version of the MDS
+      approach?
+      The reason is a paper sent to
+      me by Prof. Keshav Pingali at Austin: "Parsing with Pictures".<a id="footnote-3-ref" href="#footnote-3">[3]</a>
+      The title is a little misleading:
+      their approach is not
+      <b>that</b>
+      easy,
+      and the paper requires a considerable amount of math.
+      But it is a lot easier than the traditional way
+      of learning the various approaches to parsing.
+    </p>
+    <p>The basis of the Pingali-Bilardi approach
+      is the Grammar Flow Graph (GFG).
+      These GFGs are the "pictures" of their title.
+      GFGs are NFAs with recursion added.
+      As has long been known,
+      adding recursion to NFAs
+      allows them to represent any context-free language.
+    </p>
+    <p>Pingali and Bilardi's next step is new.
+      A GFG can be "simulated" using the same algorithm
+      used to simulate an NFA.
+      However, the result is not immediately impressive.
+      The simulation does produce a recognizer, but not a good recognizer:
+      Some of the strings recognized by
+      the GFG simulator
+      are not in the context-free language.<a id="footnote-4-ref" href="#footnote-4">[4]</a>
+    </p>
+    <p>To repair their "simulation",
+      Pingali and Bilardi add a tag to each state.
+      This tag tracks where the recursion began.<a id="footnote-5-ref" href="#footnote-5">[5]</a>.
+      This not only fixes the recognizer,
+      but the added information is enough to allow the set
+      of parse trees to be efficiently recovered from the
+      sets of GFG states.
+      In other words, with tags, the GFG recognizer now is a parser.
+    </p>
+    <p>
+      It turns out that this recognizer-turned-parser is not new.
+      In fact, it is
+      <b>exactly</b>
+      Earley's algorithm.
+    </p>
+    <p>Pingali and Bilardi do not stop there.
+      Using their new framework,
+      they go on to show that all LL-based and LR-based algorithms
+      are simplifications of their Earley parser.
+      From this point of view,
+      Earley parsing is the foundation of all context-free parsing,
+      and LL- and LR-based algorithms are Earley optimizations.<a id="footnote-6-ref" href="#footnote-6">[6]</a>
+    </p><h2>Step 1: The MDS algorithm</h2>
+    <p>
+      To show that Marpa is an optimization of the MDS approach,
+      I will start with the MDS algorithm, and attempt to optimize it.
+      For its functional programming language,
+      the MDS paper uses Racket.
+      The MDS parser is described directly,
+      in the usual functional language manner,
+      as a matching
+      operation.
+    </p>
+    <p>
+      In the MDS paper,
+      the MDS parser is optimized with laziness and memoization.
+      Nulls are dealt with by computing their fixed points on the fly.
+      Even with these three optimizations,
+      the result is still highly inefficient.
+      So,
+      as an additional step, MDS also
+      implements "deep recursive simplication" -- in effect,
+      strategically replacing laziness with eagerness.
+      With this the MDS paper conjectures that the algorithm's time
+      is linear for a large class of practical grammars.
+    </p>
+    <h2>Step 2: Extended regular expressions</h2>
+    <p>
+      Next, we notice that the context-free grammars
+      of the MDS algorithm
+      are regular expressions extended to allow recursion.
+      Essentially, they are
+      GFG's translated into Racket match expressions.
+      The equivalence is close enough that
+      you could imagine the MDS paper using GFG's
+      for its illustrations.
+    </p>
+    <h2>Step 3: Simulating an NFA</h2>
+    <p>
+      Unsurprisingly, then,
+      the MDS and GFG approaches are similar in their first step.
+      Each consumes a single character to produce a
+      "partial parse".
+      A partial parse, for both of these algorithms,
+      can be represented as a duple.
+      One element of the duple is a string representing the
+      unconsumed input.
+      The other is a representation of a set of parse trees.
+      In the case of MDS,
+      in keeping with its functional approach,
+      the set of parse trees is represented directly.
+      In the case of the GFG-simulator,
+      the set of parse trees is compressed into a sequence of
+      GFG-state-sets.
+      There is one GFG-state-set for the start of parsing,
+      and one for each consumed character.
+    </p>
+    <h2>Step 4: Earley's Algorithm</h2>
+    <p>At this point,
+      with the introduction of the GFG state-sets to represent parse-trees,
+      the MDS algorithm and its optimized GFG equivalent have
+      "forked".
+      Recall from above,
+      that this GFG simulator has a bug --
+      it is over-liberal.
+    </p>
+    <p>
+      The bug is the one already described,
+      and our fix is the one already described:
+      Each GFG state either starts a recursion or is part of one.
+      We fix the bug by tagging each GFG state with
+      the index of the GFG state-set that starts its recursion.
+      Once these tags are added,
+      the GFG state-sets are exactly Earley sets.
+    </p>
+    <h2>Step 5: The Leo optimization</h2>
+    <p>Next we incorporate an optimization by Joop Leo,
+      which makes Earley parsing linear for all LR-regular grammars,
+      without using lookahead.
+      Since LR-regular is a superset of LR(k) and LL(k),
+      including LL(*),
+      we do not bother with lookahead.
+    </p>
+    <h2>Step 6: Marpa</h2>
+    <p>To get from an Earley/Leo parser to a Marpa parser,
+      we need to address one more major point.
+      In modern parsing practice,
+      programmers expect the ability to introduce procedural logic,
+      even to the point of switching parsers.
+      By ensuring that processing each Earley set is complete
+      before processing on the next Earley set begins,
+      we accomplish this.
+    </p>
+    <p>
+      This means that Marpa has available full information
+      about the parse so far -- it is left-eidetic.
+      Error reporting is unexcelled,
+      and procedural logic can use this information as well.
+      For example,
+      full parse information implies full knowledge of which
+      tokens are expected next.
+    </p>
+    <p>
+      This means that you can write an liberal HTML parser,
+      starting with a very illiberal HTML grammar.
+      When the illiberal parser encounters a point where it cannot
+      continue because of a missing token,
+      procedural logic can ask
+      what the expected token is;
+      concoct that token on the fly;
+      supply that token to the illiberal parser;
+      and then ask the illiberal parser to continue.
+      This is called the "Ruby Slippers" technique,
+      and an HTML parser based on it has been implemented.<a id="footnote-7-ref" href="#footnote-7">[7]</a>
+    </p>
+    <h2>The way forward</h2>
+    <p>
+      As mentioned,
+      the MDS algorithm has its own approach to optmization,
+      one which takes maximum advantage of functional programming.
+      In contrast, Marpa relies on C level coding.
+    </p>
+    <p>One example of the contrast in optimization techniques
+      is null handling.
+      Recall from above that, to deal with null processing,
+      the MDS algorithm uses a fixed-point
+      algorithm on the fly.
+      Marpa, on the other hand,
+      before parsing begins.
+      precomputes a list of nullable
+      symbols using bit vectors.
+      In this particular case, Marpa will usually be the winner.
+    </p>
+    <p>A second case in which hand optimization wins is the
+      all-important Leo optimization.
+      Simon Peyton-Jones is a very smart man,
+      but nonetheless I believe that
+      the day that GHC will look at a functional specification
+      of an Earley parser and rediscover the Leo optimization
+      at compile time is far off.
+    </p>
+    <p>
+      On the other hand,
+      I do not imagine that hand optimization and/or C language is the
+      winner in all cases.
+      A programmer is deceiving himself if he imagines that he can spot all the cases where
+      lazy evaluation or memoization will be effective in the general case.
+      And of course,
+      even an omniscient programmer is not going to be there at run-time
+      to do "just in time" optimization.
+      Perhaps the optimal parser of the future will combine important hand optimizations
+      with functional programming.
+    </p>
+    <h2>Comments, etc.</h2>
+    <p>
+      To learn about Marpa,
+      my Earley/Leo-based parsing project,
+      there is the
+      <a href="http://savage.net.au/Marpa.html">semi-official web site, maintained by Ron Savage</a>.
+      The official, but more limited, Marpa website
+      <a href="http://jeffreykegler.github.io/Marpa-web-site/">is my personal one</a>.
+      Comments on this post can be made in
+      <a href="http://groups.google.com/group/marpa-parser">
+        Marpa's Google group</a>,
+      or on our IRC channel: #marpa at freenode.net.
+    </p>
+    <h2>Footnotes</h2>
+<p id="footnote-1"><b>1.</b>
+        Kegler, Jeffrey.
+        "Marpa, A Practical General Parser: The Recognizer.", 2013.
+        <a href="http://dinhe.net/~aredridel/.notmine/PDFs/Parsing/KEGLER,%20Jeffrey%20-%20Marpa,%20a%20practical%20general%20parser:%20the%20recognizer.pdf">
+          PDF accessed 24 April 2018</a>.
+        <br><br>
+        Marpa has a stable implementation.
+        For it, and for more information on Marpa, there are these resources:
+        <a href="http://savage.net.au/Marpa.html">
+          Marpa website, accessed 25 April 2018</a>.
+        <a href="https://jeffreykegler.github.io/Marpa-web-site/">
+          Kegler's website, accessed 25 April 2018</a>.
+        <a href="https://github.com/jeffreykegler/Marpa--R2">
+          Github repo, accessed 25 April 2018.</a>
+        <a href="https://metacpan.org/pod/Marpa::R2">
+          MetaCPAN, accessed 30 April 2018.</a>.
+ <a href="#footnote-1-ref">&#8617;</a></p>
+<p id="footnote-2"><b>2.</b>
+        Matthew Might, David Darais and Daniel Spiewak. "Functional Pearl: Parsing with Derivatives." International Conference on Functional Programming 2011 (ICFP 2011). Tokyo, Japan. September, 2011. pages 189--195.
+        <a href="http://matt.might.net/papers/might2011derivatives.pdf">
+          PDF accessed 9 Jun 2018</a>.
+        <a href="http://matt.might.net/papers/might2011derivatives-icfp-talk.pdf">
+          Slides accessed 9 June 2018</a>.
+        <a href="http://matt.might.net/media/mattmight-icfp2011-derivatives.mp4">
+          Video accessed 9 June 2018</a>.
+ <a href="#footnote-2-ref">&#8617;</a></p>
+<p id="footnote-3"><b>3.</b>
+        Keshav Pingali and Gianfranco Bilardi, UTCS tech report TR-2012.
+        2012.
+        <a href="https://apps.cs.utexas.edu/tech_reports/reports/tr/TR-2102.pdf">
+          PDF accessed 9 Junk 2018</a>.
+        <a href="https://www.youtube.com/watch?v=eeZ3URxd8Wc">
+          Video accessed 9 June 2018</a>.
+        <br><br>
+        Less accessible,
+        but with more details about GFGs and GFG-based
+        Earley parsing is
+        Keshav Pingali and Gianfranco Bilardi,
+        "A graphical model for context-free grammar parsing."
+        Compiler Construction - 24th International Conference, CC 2015.
+        Lecture Notes in Computer Science,
+        Vol. 9031, pp. 3-27, Springer Verlag, 2015.
+        <a href="https://www.researchgate.net/publication/286479583_A_Graphical_Model_for_Context-Free_Grammar_Parsing">
+          PDF accessed 9 June 2018</a>.
+ <a href="#footnote-3-ref">&#8617;</a></p>
+<p id="footnote-4"><b>4.</b>
+        Pingali and Bilardi 2012, section 3.1.
+ <a href="#footnote-4-ref">&#8617;</a></p>
+<p id="footnote-5"><b>5.</b>
+        Pingali and Bilardi 2015, p. 11.
+ <a href="#footnote-5-ref">&#8617;</a></p>
+<p id="footnote-6"><b>6.</b>
+        Pingali and Bilardi 2012, Sections 4-7.
+ <a href="#footnote-6-ref">&#8617;</a></p>
+<p id="footnote-7"><b>7.</b>
+        I have based an
+        liberal HTML pretty-printer on that parser,
+        one which I use quite frequently.
+        I used it, for example, when writing this blog post.
+        To find out more about Ruby Slippers parsing see the Marpa FAQ,
+        <a href="http://savage.net.au/Perl-modules/html/marpa.faq/faq.html#q122">
+          questions 122</a>
+        and
+        <a href="http://savage.net.au/Perl-modules/html/marpa.faq/faq.html#q123">
+          123</a>;
+        my
+        <a href="file:///mnt2/new/projects/Ocean-of-Awareness-blog/metapages/annotated.html#PARSE_HTML">
+          blog series on parsing html</a>; and
+        my blog post
+        <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2011/11/marpa-and-the-ruby-slippers.html">
+          "Marpa and the Ruby Slippers"</a>.
+ <a href="#footnote-7-ref">&#8617;</a></p>
+  </body>
+</html>
+<br />
+<p>posted at: 03:06 |
+<a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2018/05/pingali.html">direct link to this entry</a>
 </p>
 <div style="color:#38B0C0;padding:1px;text-align:center;">
 &sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
