@@ -442,8 +442,8 @@ Undershoot: Parsing theory in 1965
     </p>
     <p>As we shall see,
       with this red herring,
-      the reasoning went astray,
-      but not disastrously so.
+      the reasoning went astray.
+      But disaster was not inevitable.
       The whole point of bracketing, after all,
       is that it allows you to correct errors.
       Another red herring, however, resulted in
