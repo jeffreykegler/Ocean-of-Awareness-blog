@@ -239,7 +239,7 @@
       without conjectures about mental states.
       Without mental states,
       language was just a set utterances.
-      So in 1926 the linguist Leonard Bloomfield,
+      So in 1926 the linguist Leonard Bloomfield
       dutifully
       defined a &quot;language&quot; as a set of &quot;utterances&quot;
       (for our purposes, &quot;strings&quot;),
@@ -418,7 +418,7 @@
       But if you look at extensions
       instead of grammars,
       the hierarchy immediately
-      collapses almost totally --
+      collapses --
       every
       &lt;tt&gt;LR(k)&lt;/tt&gt;
       language extension is also
@@ -436,8 +436,7 @@
       you can add an end-of-input marker to a grammar.
       If you do this the
       &lt;tt&gt;LR&lt;/tt&gt;
-      extension hierarchy collapses all the way
-      down to zero --
+      extension hierarchy collapses totally --
       every
       &lt;tt&gt;LR(k)&lt;/tt&gt;
       language extension is also an
@@ -525,8 +524,7 @@
     &lt;/p&gt;
     &lt;p&gt;
       Research into parsing of supersets of
-      &lt;tt&gt;LR(1)&lt;/tt&gt;,
-      &lt;tt&gt;LR&lt;/tt&gt;,
+      &lt;tt&gt;LR&lt;/tt&gt;
       became rare.
       The theorists were convinced the
       &lt;tt&gt;LR&lt;/tt&gt;
@@ -534,14 +532,9 @@
       was the solution.
       These were so convinced that when,
       in 1991, Joop Leo discovered a practical way to
-      parse not just a superset of
-      &lt;tt&gt;LR(1)&lt;/tt&gt;,
-      but a superset of
-      &lt;tt&gt;LR(k)&lt;/tt&gt;
-      for all
-      &lt;tt&gt;k&lt;/tt&gt;,
-      the result was not noticed,
-      and went unimplemented for decades.
+      parse an
+      &lt;tt&gt;LR&lt;/tt&gt; superset,
+      the result went unimplemented for decades.
     &lt;/p&gt;
     &lt;p&gt;In 1965, the theoreticians gave a lot of weight
       to the evidence from the world of practice,
@@ -555,13 +548,13 @@
       But the question is
       not an explicit mathematical question,
       like that of P vs. NP.
-      It is the slipprier one of capturing practice.
+      It is a slipprier one -- capturing practice.
       Practitioners left it to the theoreticians to keep up with
       the literature.
-      And theoreticians, as long as
+      But theoreticians, as long as
       &lt;tt&gt;LR&lt;/tt&gt;-superset methods did not
       come into use in the world of practice,
-      felt no need to question their conclusions.
+      felt no need to revisit their conclusions.
     &lt;/p&gt;
     &lt;h2&gt;Comments, etc.&lt;/h2&gt;
     &lt;p&gt;
@@ -659,16 +652,10 @@
         For example,
         regular expressions can be extended with &quot;captures&quot;.
         Captures cannot handle recursion, but neither can regular expressions,
-        so captures are usually sufficient to provide all structure
+        so captures are usually sufficient to provide all the structure
         an application wants.
  &lt;a href=&quot;#footnote-7-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
 &lt;p id=&quot;footnote-8&quot;&gt;8.
-        This is because
-        every
-        &lt;tt&gt;LL(k)&lt;/tt&gt;
-        intension (grammar) must have an
-        &lt;tt&gt;LL(k)&lt;/tt&gt;
-        extension.
         The discussion of the
         &lt;tt&gt;LL(k)&lt;/tt&gt;
         hierarchy is in a sense anachronistic --

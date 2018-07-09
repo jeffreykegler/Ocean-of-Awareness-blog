@@ -226,7 +226,7 @@ Undershoot: Parsing theory in 1965
       without conjectures about mental states.
       Without mental states,
       language was just a set utterances.
-      So in 1926 the linguist Leonard Bloomfield,
+      So in 1926 the linguist Leonard Bloomfield
       dutifully
       defined a "language" as a set of "utterances"
       (for our purposes, "strings"),
@@ -405,7 +405,7 @@ Undershoot: Parsing theory in 1965
       But if you look at extensions
       instead of grammars,
       the hierarchy immediately
-      collapses almost totally --
+      collapses --
       every
       <tt>LR(k)</tt>
       language extension is also
@@ -423,8 +423,7 @@ Undershoot: Parsing theory in 1965
       you can add an end-of-input marker to a grammar.
       If you do this the
       <tt>LR</tt>
-      extension hierarchy collapses all the way
-      down to zero --
+      extension hierarchy collapses totally --
       every
       <tt>LR(k)</tt>
       language extension is also an
@@ -512,8 +511,7 @@ Undershoot: Parsing theory in 1965
     </p>
     <p>
       Research into parsing of supersets of
-      <tt>LR(1)</tt>,
-      <tt>LR</tt>,
+      <tt>LR</tt>
       became rare.
       The theorists were convinced the
       <tt>LR</tt>
@@ -521,14 +519,9 @@ Undershoot: Parsing theory in 1965
       was the solution.
       These were so convinced that when,
       in 1991, Joop Leo discovered a practical way to
-      parse not just a superset of
-      <tt>LR(1)</tt>,
-      but a superset of
-      <tt>LR(k)</tt>
-      for all
-      <tt>k</tt>,
-      the result was not noticed,
-      and went unimplemented for decades.
+      parse an
+      <tt>LR</tt> superset,
+      the result went unimplemented for decades.
     </p>
     <p>In 1965, the theoreticians gave a lot of weight
       to the evidence from the world of practice,
@@ -542,13 +535,13 @@ Undershoot: Parsing theory in 1965
       But the question is
       not an explicit mathematical question,
       like that of P vs. NP.
-      It is the slipprier one of capturing practice.
+      It is a slipprier one -- capturing practice.
       Practitioners left it to the theoreticians to keep up with
       the literature.
-      And theoreticians, as long as
+      But theoreticians, as long as
       <tt>LR</tt>-superset methods did not
       come into use in the world of practice,
-      felt no need to question their conclusions.
+      felt no need to revisit their conclusions.
     </p>
     <h2>Comments, etc.</h2>
     <p>
@@ -646,16 +639,10 @@ Undershoot: Parsing theory in 1965
         For example,
         regular expressions can be extended with "captures".
         Captures cannot handle recursion, but neither can regular expressions,
-        so captures are usually sufficient to provide all structure
+        so captures are usually sufficient to provide all the structure
         an application wants.
  <a href="#footnote-7-ref">&#8617;</a></p>
 <p id="footnote-8">8.
-        This is because
-        every
-        <tt>LL(k)</tt>
-        intension (grammar) must have an
-        <tt>LL(k)</tt>
-        extension.
         The discussion of the
         <tt>LL(k)</tt>
         hierarchy is in a sense anachronistic --
