@@ -359,7 +359,8 @@ Undershoot: Parsing theory in 1965
       <tt>LR(2)</tt>
       parsing will ever see much practical use,
       never mind
-      <tt>LR(k) : k &gt; 2</tt>.
+      <tt>LR(k)</tt> for any <tt>k</tt>
+      greater than 2.
     </p>
     <p>
       From this it was concluded that
@@ -375,8 +376,10 @@ Undershoot: Parsing theory in 1965
     </p>
     <h2>The Wrong Turn</h2>
     <p>
-      From all this,
-      parsing theorists concluded that
+      Summing up,
+      parsing theorists concluded,
+      based on the results of Knuth 1965,
+      that
     </p><ul>
       <li>LR-parsing is a good approximation to practical parsing -- it brackets
         it closely.</li>

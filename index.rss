@@ -372,7 +372,8 @@
       &lt;tt&gt;LR(2)&lt;/tt&gt;
       parsing will ever see much practical use,
       never mind
-      &lt;tt&gt;LR(k) : k &amp;gt; 2&lt;/tt&gt;.
+      &lt;tt&gt;LR(k)&lt;/tt&gt; for any &lt;tt&gt;k&lt;/tt&gt;
+      greater than 2.
     &lt;/p&gt;
     &lt;p&gt;
       From this it was concluded that
@@ -388,8 +389,10 @@
     &lt;/p&gt;
     &lt;h2&gt;The Wrong Turn&lt;/h2&gt;
     &lt;p&gt;
-      From all this,
-      parsing theorists concluded that
+      Summing up,
+      parsing theorists concluded,
+      based on the results of Knuth 1965,
+      that
     &lt;/p&gt;&lt;ul&gt;
       &lt;li&gt;LR-parsing is a good approximation to practical parsing -- it brackets
         it closely.&lt;/li&gt;
