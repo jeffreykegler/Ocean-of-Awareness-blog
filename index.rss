@@ -463,7 +463,7 @@
       out the complicated mathematics involved.
     &lt;/p&gt;
     &lt;p&gt;
-      Why did
+      So why did
       Knuth expect to get away with punning
       intension and extension,
       even in the face of some very unsettling results?
@@ -566,13 +566,6 @@
       to look at my
       &lt;a href=&quot;https://jeffreykegler.github.io/personal/timeline_v3&quot;&gt;
         Parsing: a timeline 3.0&lt;/a&gt;.
-      In particular,
-      &quot;Timeline 3.0&quot; tells the story of the search for a good
-      &lt;tt&gt;LR(k)&lt;/tt&gt;
-      subclass,
-      and what happened afterwards.
-    &lt;/p&gt;
-    &lt;p&gt;
       To learn about Marpa,
       my Earley/Leo-based parsing project,
       there is the
@@ -625,7 +618,6 @@
           later became APL.
           See the discussion of Oettinger in
           my
-          &lt;a href=&quot;
     &lt;a href=&quot;http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2018/05/knuth_1965.html&quot;&gt;
             &quot;Why is parsing considered solved?&quot; post&lt;/a&gt;.
  &lt;a href=&quot;#footnote-3-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;

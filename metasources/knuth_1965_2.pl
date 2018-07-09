@@ -159,7 +159,6 @@ Undershoot: Parsing theory in 1965
           later became APL.
           See the discussion of Oettinger in
           my
-          <a href="
     <a href="http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2018/05/knuth_1965.html">
             "Why is parsing considered solved?" post</a>.
         </footnote>
@@ -572,7 +571,7 @@ Undershoot: Parsing theory in 1965
       out the complicated mathematics involved.
     </p>
     <p>
-      Why did
+      So why did
       Knuth expect to get away with punning
       intension and extension,
       even in the face of some very unsettling results?
@@ -695,13 +694,6 @@ Undershoot: Parsing theory in 1965
       to look at my
       <a href="https://jeffreykegler.github.io/personal/timeline_v3">
         Parsing: a timeline 3.0</a>.
-      In particular,
-      "Timeline 3.0" tells the story of the search for a good
-      <tt>LR(k)</tt>
-      subclass,
-      and what happened afterwards.
-    </p>
-    <p>
       To learn about Marpa,
       my Earley/Leo-based parsing project,
       there is the
