@@ -339,7 +339,7 @@ Undershoot: Parsing theory in 1965
       and it's hard to have a theory of meaning
       without conjectures about mental states.
       Without mental states,
-      language was just a set utterances.
+      language was just a set of utterances.
       So in 1926 the linguist Leonard Bloomfield
       dutifully
       defined a "language" as a set of "utterances"
@@ -522,8 +522,8 @@ Undershoot: Parsing theory in 1965
       <tt>LR</tt>
       grammar which
       is
-      <tt>LR(k)</tt>, but which is not
-      <tt>LR(k+1)</tt>.
+      <tt>LR(k+1)</tt>, but which is not
+      <tt>LR(k)</tt>.
     </p>
     <p>
       But if you look at extensions
@@ -598,12 +598,12 @@ Undershoot: Parsing theory in 1965
     <p>
       And the
       <tt>LL</tt>
-      languages follow a strict hierarchy --
+      language extensions follow a strict hierarchy --
       for every
       <tt>k</tt>,
-      <tt>LL(k)</tt>
+      <tt>LL(k+1)</tt>
       is a proper subset of
-      <tt>LL(k+1)</tt>.
+      <tt>LL(k)</tt>.
       This fact forces
       <tt>LL</tt>
       grammars to follow the same
