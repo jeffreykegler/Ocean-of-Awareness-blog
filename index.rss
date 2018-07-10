@@ -238,7 +238,7 @@
       and it's hard to have a theory of meaning
       without conjectures about mental states.
       Without mental states,
-      language was just a set utterances.
+      language was just a set of utterances.
       So in 1926 the linguist Leonard Bloomfield
       dutifully
       defined a &quot;language&quot; as a set of &quot;utterances&quot;
@@ -414,8 +414,8 @@
       &lt;tt&gt;LR&lt;/tt&gt;
       grammar which
       is
-      &lt;tt&gt;LR(k)&lt;/tt&gt;, but which is not
-      &lt;tt&gt;LR(k+1)&lt;/tt&gt;.
+      &lt;tt&gt;LR(k+1)&lt;/tt&gt;, but which is not
+      &lt;tt&gt;LR(k)&lt;/tt&gt;.
     &lt;/p&gt;
     &lt;p&gt;
       But if you look at extensions
@@ -484,12 +484,12 @@
     &lt;p&gt;
       And the
       &lt;tt&gt;LL&lt;/tt&gt;
-      languages follow a strict hierarchy --
+      language extensions follow a strict hierarchy --
       for every
       &lt;tt&gt;k&lt;/tt&gt;,
-      &lt;tt&gt;LL(k)&lt;/tt&gt;
+      &lt;tt&gt;LL(k+1)&lt;/tt&gt;
       is a proper subset of
-      &lt;tt&gt;LL(k+1)&lt;/tt&gt;.
+      &lt;tt&gt;LL(k)&lt;/tt&gt;.
       This fact forces
       &lt;tt&gt;LL&lt;/tt&gt;
       grammars to follow the same
