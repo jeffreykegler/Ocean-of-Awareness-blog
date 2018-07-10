@@ -518,7 +518,8 @@ Undershoot: Parsing theory in 1965
       <tt>LR</tt>
       grammars form a hierarchy --
       for every
-      <tt>k</tt>, there is an
+      <tt>k&#8805;1</tt>,
+      there is an
       <tt>LR</tt>
       grammar which
       is
@@ -600,7 +601,7 @@ Undershoot: Parsing theory in 1965
       <tt>LL</tt>
       language extensions follow a strict hierarchy --
       for every
-      <tt>k</tt>,
+      <tt>k&#8805;1</tt>,
       <tt>LL(k+1)</tt>
       is a proper subset of
       <tt>LL(k)</tt>.

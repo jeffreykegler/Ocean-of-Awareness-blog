@@ -410,7 +410,8 @@
       &lt;tt&gt;LR&lt;/tt&gt;
       grammars form a hierarchy --
       for every
-      &lt;tt&gt;k&lt;/tt&gt;, there is an
+      &lt;tt&gt;k&amp;#8805;1&lt;/tt&gt;,
+      there is an
       &lt;tt&gt;LR&lt;/tt&gt;
       grammar which
       is
@@ -486,7 +487,7 @@
       &lt;tt&gt;LL&lt;/tt&gt;
       language extensions follow a strict hierarchy --
       for every
-      &lt;tt&gt;k&lt;/tt&gt;,
+      &lt;tt&gt;k&amp;#8805;1&lt;/tt&gt;,
       &lt;tt&gt;LL(k+1)&lt;/tt&gt;
       is a proper subset of
       &lt;tt&gt;LL(k)&lt;/tt&gt;.
