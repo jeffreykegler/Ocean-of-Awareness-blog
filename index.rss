@@ -489,7 +489,7 @@
       for every
       &lt;tt&gt;k&amp;#8805;0&lt;/tt&gt;,
       &lt;tt&gt;LL(k+1)&lt;/tt&gt;
-      is a proper subset of
+      is a proper superset of
       &lt;tt&gt;LL(k)&lt;/tt&gt;.
       This fact forces
       &lt;tt&gt;LL&lt;/tt&gt;

@@ -603,7 +603,7 @@ Undershoot: Parsing theory in 1965
       for every
       <tt>k&#8805;0</tt>,
       <tt>LL(k+1)</tt>
-      is a proper subset of
+      is a proper superset of
       <tt>LL(k)</tt>.
       This fact forces
       <tt>LL</tt>
