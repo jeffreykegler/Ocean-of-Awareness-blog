@@ -14,11 +14,15 @@ use Marpa::R2 4.000;
 my $dsl = <<'END_OF_DSL';
 lexeme default = latm => 1
 :default ::= action => [name,start,length,values]
+
 # module	→	module modid [exports] where body 
 # |	body
 
-module ::= module modid exports where body
+module ::= resword_module L0_modid optExports resword_where body
          | body
+
+optExports ::= '(' exports ')'
+optExports ::= # empty
 
 # body	→	{ impdecls ; topdecls }
 # |	{ impdecls }
@@ -31,7 +35,7 @@ body ::= topdecls
 # exports	→	( export1 , … , exportn [ , ] )	    (n ≥ 0)
 
 exports ::= export*
-#  
+
 # export	→	qvar
 # |	qtycon [(..) | ( cname1 , … , cnamen )]	    (n ≥ 0)
 # |	qtycls [(..) | ( qvar1 , … , qvarn )]	    (n ≥ 0)
@@ -52,8 +56,14 @@ export ::= qvar
 # cname	→	var | con
 #  
 # topdecls	→	topdecl1 ; … ; topdecln	    (n ≥ 0)
+
+topdecls ::= topdecl*
+
 # topdecl	→	type simpletype = type
 # |	data [context =>] simpletype [= constrs] [deriving]
+
+topdecl ::= resword_data simpletype '=' constrs
+
 # |	newtype [context =>] simpletype = newconstr [deriving]
 # |	class [scontext =>] tycls tyvar [where cdecls]
 # |	instance [scontext =>] qtycls inst [where idecls]
@@ -90,7 +100,9 @@ export ::= qvar
 # |	( type1 , … , typek )	    (tuple type, k ≥ 2)
 # |	[ type ]	    (list type)
 # |	( type )	    (parenthesized constructor)
-#  
+
+atype ::= tyvar
+
 # gtycon	→	qtycon
 # |	()	    (unit type)
 # |	[]	    (list constructor)
@@ -106,10 +118,24 @@ export ::= qvar
 # simpleclass	→	qtycls tyvar
 #  
 # simpletype	→	tycon tyvar1 … tyvark	    (k ≥ 0)
+
+simpletype ::= tycon tyvars
+tyvars ::= tyvar*
+
 # constrs	→	constr1 | … | constrn	    (n ≥ 1)
+
+constrs ::= constr+
+
 # constr	→	con [!] atype1 … [!] atypek	    (arity con  =  k, k ≥ 0)
 # |	(btype | ! atype) conop (btype | ! atype)	    (infix conop)
 # |	con { fielddecl1 , … , fielddecln }	    (n ≥ 0)
+
+constr ::= con flagged_atypes
+flagged_atypes ::= flagged_atype*
+flagged_atype  ::= optBang atype
+optBang ::= '!'
+optBang ::= # empty
+
 # newconstr	→	con atype
 # |	con { var :: type }
 # fielddecl	→	vars :: (type | ! atype)
@@ -229,6 +255,10 @@ qvar ::= qvarid
        | '(' qvarsym ')'
 
 # con	→	conid | ( consym )	    (constructor)
+
+con ::= L0_conid
+       | '(' L0_consym ')'
+
 # qcon	→	qconid | ( gconsym )	    (qualified constructor)
 # varop	→	varsym | `  varid `	    (variable operator)
 # qvarop	→	qvarsym | `  qvarid `	    (qualified variable operator)
@@ -254,11 +284,23 @@ qvar ::= qvarid
 # linefeed	→	a line feed
 # vertab	→	a vertical tab
 # formfeed	→	a form feed
+
+:discard ~ whitestuff
+whitestuff ~ whitechars
+whitechars ~ whitechar+
+whitestuff ~ comment
+whitechar ~ [\s]
+
 # space	→	a space
 # tab	→	a horizontal tab
 # uniWhite	→	any Unicode character defined as whitespace
 #  
 # comment	→	dashes [ any⟨symbol⟩ {any} ] newline
+
+comment ~ '--' nonNewlines '\n'
+nonNewlines ~ nonNewline*
+nonNewline ~ [^\n]
+
 # dashes	→	-- {-}
 # opencom	→	{-
 # closecom	→	-}
@@ -288,11 +330,23 @@ ascLarge ~ [A-Z]
 
 # uniLarge	→	any uppercase or titlecase Unicode letter
 # symbol	→	ascSymbol | uniSymbol⟨special | _ | " | '⟩
+
+symbol ~ ascSymbol
+nonColonSymbol ~ nonColonAscSymbol
+
 #  
 # ascSymbol	→	! | # | $ | % | & | ⋆ | + | . | / | < | = | > | ? | @
+
+nonColonAscSymbol ~ '!' | '#' | '$' | '%' | '&' | '+' | '.' | '/' | '<' | '=' | '>' | '?' | '@'
+colon ~ ':'
+ascSymbol ~ colon | nonColonAscSymbol
+
 # |	\ | ^ | | | - | ~ | :
 # uniSymbol	→	any Unicode symbol or punctuation
 # digit	→	ascDigit | uniDigit
+
+digit ~ [0-9]
+
 # ascDigit	→	0 | 1 | … | 9
 # uniDigit	→	any Unicode decimal digit
 # octit	→	0 | 1 | … | 7
@@ -300,26 +354,95 @@ ascLarge ~ [A-Z]
 #  
 # varid	→	(small {small | large | digit | ' })⟨reservedid⟩
 
-varid ~ small noninitial_id_chars
-noninitial_id_chars ~ small | large | digit | [']
+varid ~ small nonInitial
+nonInitial ~ small | large | digit | [']
 
 # conid	→	large {small | large | digit | ' }
+
+:lexeme ~ L0_conid
+L0_conid ~ large nonInitial
+conid ~ large nonInitial
+
 # reservedid	→	case | class | data | default | deriving | do | else
 # |	foreign | if | import | in | infix | infixl
 # |	infixr | instance | let | module | newtype | of
 # |	then | type | where | _
+
+# :lexeme ~ resword_case priority => 1
+# resword_case ~ 'case'
+# :lexeme ~ resword_class priority => 1
+# resword_class ~ 'class'
+:lexeme ~ resword_data priority => 1
+resword_data ~ 'data'
+# :lexeme ~ resword_default priority => 1
+# resword_default ~ 'default'
+# :lexeme ~ resword_deriving priority => 1
+# resword_deriving ~ 'deriving'
+# :lexeme ~ resword_do priority => 1
+# resword_do ~ 'do'
+# :lexeme ~ resword_else priority => 1
+# resword_else ~ 'else'
+# :lexeme ~ resword_foreign priority => 1
+# resword_foreign ~ 'foreign'
+# :lexeme ~ resword_if priority => 1
+# resword_if ~ 'if'
+# :lexeme ~ resword_import priority => 1
+# resword_import ~ 'import'
+# :lexeme ~ resword_in priority => 1
+# resword_in ~ 'in'
+# :lexeme ~ resword_infix priority => 1
+# resword_infix ~ 'infix'
+# :lexeme ~ resword_infixl priority => 1
+# resword_infixl ~ 'infixl'
+# :lexeme ~ resword_infixr priority => 1
+# resword_infixr ~ 'infixr'
+# :lexeme ~ resword_instance priority => 1
+# resword_instance ~ 'instance'
+# :lexeme ~ resword_let priority => 1
+# resword_let ~ 'let'
+:lexeme ~ resword_module priority => 1
+resword_module ~ 'module'
+# :lexeme ~ resword_newtype priority => 1
+# resword_newtype ~ 'newtype'
+# :lexeme ~ resword_of priority => 1
+# resword_of ~ 'of'
+# :lexeme ~ resword_then priority => 1
+# resword_then ~ 'then'
+# :lexeme ~ resword_type priority => 1
+# resword_type ~ 'type'
+:lexeme ~ resword_where priority => 1
+resword_where ~ 'where'
+# :lexeme ~ resword_underscore priority => 1
+# resword_underscore ~ '_'
+
 #  
 # varsym	→	( symbol⟨:⟩ {symbol} )⟨reservedop | dashes⟩
+
+varsym ~ nonColonSymbol symbols
+symbols ~ symbol+
+
 # consym	→	( : {symbol})⟨reservedop⟩
+
+:lexeme ~ L0_consym
+L0_consym ~ ':' symbols
+
 # reservedop	→	.. | : | :: | = | \ | | | <- | -> |  @ | ~ | =>
 #  
 # varid	    	    (variables)
 # conid	    	    (constructors)
 # tyvar	→	varid	    (type variables)
+
+tyvar ~ varid
+
 # tycon	→	conid	    (type constructors)
+
+tycon ~ conid
+
 # tycls	→	conid	    (type classes)
 # modid	→	{conid .} conid	    (modules)
 
+:lexeme ~ L0_modid
+L0_modid ~ modid
 modid ~ conid | modid '.' conid
 
 #  
@@ -331,6 +454,9 @@ qvarid ~ modid '.' varid | varid
 # qtycon	→	[ modid . ] tycon
 # qtycls	→	[ modid . ] tycls
 # qvarsym	→	[ modid . ] varsym
+
+qvarsym ~ modid '.' varsym | varsym
+
 # qconsym	→	[ modid . ] consym
 #  
 # decimal	→	digit{digit}
