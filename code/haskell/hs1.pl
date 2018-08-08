@@ -34,7 +34,7 @@ body ::= topdecls
 #  
 # exports	→	( export1 , … , exportn [ , ] )	    (n ≥ 0)
 
-exports ::= export*
+exports ::= export* separator => [,]
 
 # export	→	qvar
 # |	qtycon [(..) | ( cname1 , … , cnamen )]	    (n ≥ 0)
@@ -42,6 +42,8 @@ exports ::= export*
 # |	module modid
 
 export ::= qvar
+export ::= qtycon
+export ::= qtycls
 
 #  
 # impdecl	→	import [qualified] modid [as modid] [impspec]
@@ -119,12 +121,12 @@ atype ::= tyvar
 #  
 # simpletype	→	tycon tyvar1 … tyvark	    (k ≥ 0)
 
-simpletype ::= tycon tyvars
+simpletype ::= L0_tycon tyvars
 tyvars ::= tyvar*
 
 # constrs	→	constr1 | … | constrn	    (n ≥ 1)
 
-constrs ::= constr+
+constrs ::= constr+ separator => [|]
 
 # constr	→	con [!] atype1 … [!] atypek	    (arity con  =  k, k ≥ 0)
 # |	(btype | ! atype) conop (btype | ! atype)	    (infix conop)
@@ -354,14 +356,15 @@ digit ~ [0-9]
 #  
 # varid	→	(small {small | large | digit | ' })⟨reservedid⟩
 
-varid ~ small nonInitial
+varid ~ small nonInitials
+nonInitials ~ nonInitial*
 nonInitial ~ small | large | digit | [']
 
 # conid	→	large {small | large | digit | ' }
 
 :lexeme ~ L0_conid
-L0_conid ~ large nonInitial
-conid ~ large nonInitial
+L0_conid ~ large nonInitials
+conid ~ large nonInitials
 
 # reservedid	→	case | class | data | default | deriving | do | else
 # |	foreign | if | import | in | infix | infixl
@@ -436,9 +439,14 @@ tyvar ~ varid
 
 # tycon	→	conid	    (type constructors)
 
+:lexeme ~ L0_tycon
+L0_tycon ~ tycon
 tycon ~ conid
 
 # tycls	→	conid	    (type classes)
+
+tycls ~ conid
+
 # modid	→	{conid .} conid	    (modules)
 
 :lexeme ~ L0_modid
@@ -452,7 +460,13 @@ qvarid ~ modid '.' varid | varid
 
 # qconid	→	[ modid . ] conid
 # qtycon	→	[ modid . ] tycon
+
+qtycon ~ modid '.' tycon | tycon
+
 # qtycls	→	[ modid . ] tycls
+
+qtycls ~ modid '.' tycls | tycls
+
 # qvarsym	→	[ modid . ] varsym
 
 qvarsym ~ modid '.' varsym | varsym
@@ -511,6 +525,7 @@ my $grammar = Marpa::R2::Scanless::G->new( { source => \$dsl } );
     my $expected_value = '';
     my $recce = Marpa::R2::Scanless::R->new( { grammar => $grammar,
        trace_terminals => 99,
+       # trace_lexers => 1,
     } );
     my $value_ref;
     my $result = 'OK';
