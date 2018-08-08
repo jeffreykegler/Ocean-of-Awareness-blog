@@ -92,25 +92,33 @@ topdecl ::= resword_data simpletype '=' constrs
 # ops	→	op1 , … , opn	    (n ≥ 1)
 # vars	→	var1 , …, varn	    (n ≥ 1)
 # fixity	→	infixl | infixr | infix
-#  
+
 # type	→	btype [-> type]	    (function type)
-#  
+
+type ::= btype '->' type | btype
+
 # btype	→	[btype] atype	    (type application)
-#  
+
+btype ::= btype atype | atype
+
 # atype	→	gtycon
 # |	tyvar
 # |	( type1 , … , typek )	    (tuple type, k ≥ 2)
 # |	[ type ]	    (list type)
 # |	( type )	    (parenthesized constructor)
 
+atype ::= gtycon
 atype ::= tyvar
+atype ::= '(' type ')'
 
 # gtycon	→	qtycon
 # |	()	    (unit type)
 # |	[]	    (list constructor)
 # |	(->)	    (function constructor)
 # |	(,{,})	    (tupling constructors)
-#  
+
+gtycon ::= qtycon
+
 # context	→	class
 # |	( class1 , … , classn )	    (n ≥ 0)
 # class	→	qtycls tyvar
