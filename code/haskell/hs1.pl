@@ -63,20 +63,22 @@ topdecls ::= topdecl*
 
 # topdecl	→	type simpletype = type
 # |	data [context =>] simpletype [= constrs] [deriving]
-
-topdecl ::= resword_data simpletype '=' constrs
-
 # |	newtype [context =>] simpletype = newconstr [deriving]
 # |	class [scontext =>] tycls tyvar [where cdecls]
 # |	instance [scontext =>] qtycls inst [where idecls]
 #	|	default (type1 , … , typen)	    (n ≥ 0)
 #|	foreign fdecl
 #|	decl
-# 
+
+topdecl ::= resword_data simpletype '=' constrs
+topdecl ::= decl
+
 #decls	→	{ decl1 ; … ; decln }	    (n ≥ 0)
 #decl	→	gendecl
 #|	(funlhs | pat) rhs
-#
+
+decl ::= gendecl
+
 # decls	→	{ cdecl1 ; … ; cdecln }	    (n ≥ 0)
 # cdecl	→	gendecl
 # |	(funlhs | var) rhs
@@ -88,9 +90,14 @@ topdecl ::= resword_data simpletype '=' constrs
 # gendecl	→	vars :: [context =>] type	    (type signature)
 # |	fixity [integer] ops	    (fixity declaration)
 # |		    (empty declaration)
-#  
+
+gendecl ::= vars '::' type
+
 # ops	→	op1 , … , opn	    (n ≥ 1)
 # vars	→	var1 , …, varn	    (n ≥ 1)
+
+vars ::= var+
+
 # fixity	→	infixl | infixr | infix
 
 # type	→	btype [-> type]	    (function type)
@@ -259,10 +266,12 @@ optBang ::= # empty
 # |	qcon
 #  
 # var	→	varid | ( varsym )	    (variable)
+
+var ::= L0_varid | '(' L0_varsym ')'
+
 # qvar	→	qvarid | ( qvarsym )	    (qualified variable)
 
-qvar ::= qvarid
-       | '(' qvarsym ')'
+qvar ::= qvarid | '(' qvarsym ')'
 
 # con	→	conid | ( consym )	    (constructor)
 
@@ -364,6 +373,8 @@ digit ~ [0-9]
 #  
 # varid	→	(small {small | large | digit | ' })⟨reservedid⟩
 
+:lexeme ~ L0_varid
+L0_varid ~ varid
 varid ~ small nonInitials
 nonInitials ~ nonInitial*
 nonInitial ~ small | large | digit | [']
@@ -429,6 +440,8 @@ resword_where ~ 'where'
 #  
 # varsym	→	( symbol⟨:⟩ {symbol} )⟨reservedop | dashes⟩
 
+:lexeme ~ L0_varsym
+L0_varsym ~ varsym
 varsym ~ nonColonSymbol symbols
 symbols ~ symbol+
 
@@ -462,7 +475,7 @@ L0_modid ~ modid
 modid ~ conid | modid '.' conid
 
 #  
-# qvarid	→	[ modid . ] varid
+# qvarid	→	[ modid . ] L0_varid
 
 qvarid ~ modid '.' varid | varid
 
