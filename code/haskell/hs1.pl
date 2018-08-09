@@ -187,6 +187,7 @@ optBang ::= # empty
 # |	( funlhs ) apat { apat }
 
 funlhs ::= var apats
+funlhs ::= pat varop pat
 funlhs ::= '(' funlhs ')' apats
 apats ::= apat*
 
@@ -214,6 +215,8 @@ exp ::= infixexp
 # |	- infixexp	    (prefix negation)
 # |	lexp
 
+infixexp ::= lexp qop infixexp
+infixexp ::= '-' infixexp
 infixexp ::= lexp
 
 # lexp	→	\ apat1 … apatn -> exp	    (lambda abstraction, n ≥ 1)
@@ -268,11 +271,17 @@ aexp ::= gcon
 #  
 # pat	→	lpat qconop pat	    (infix constructor)
 # |	lpat
+
+pat ::= lpat qconop pat
+pat ::= lpat
+
 #  
 # lpat	→	apat
 # |	- (integer | float)	    (negative literal)
 # |	gcon apat1 … apatk	    (arity gcon  =  k, k ≥ 1)
-#  
+
+lpat ::= apat
+
 # apat	→	var [ @ apat]	    (as pattern)
 # |	gcon	    (arity gcon  =  0)
 # |	qcon { fpat1 , … , fpatk }	    (labeled pattern, k ≥ 0)
@@ -318,11 +327,23 @@ qcon ::= L0_qconid
        | '(' gconsym ')'
 
 # varop	→	varsym | `  varid `	    (variable operator)
+
+varop ::= L0_varsym | [`] L0_varid [`]
+
 # qvarop	→	qvarsym | `  qvarid `	    (qualified variable operator)
+
+qvarop ::= qvarsym | [`] qvarid [`]
+
 # conop	→	consym | `  conid `	    (constructor operator)
 # qconop	→	gconsym | `  qconid `	    (qualified constructor operator)
+
+qconop ::= gconsym | [`] L0_qconid [`]
+
 # op	→	varop | conop	    (operator)
 # qop	→	qvarop | qconop	    (qualified operator)
+
+qop ::= qvarop | qconop
+
 # gconsym	→	: | qconsym
 
 gconsym ::= L0_colon | L0_qconsym
