@@ -77,7 +77,9 @@ topdecl ::= decl
 #decl	→	gendecl
 #|	(funlhs | pat) rhs
 
+decls ::= decl*
 decl ::= gendecl
+decl ::= funlhs rhs
 
 # decls	→	{ cdecl1 ; … ; cdecln }	    (n ≥ 0)
 # cdecl	→	gendecl
@@ -183,9 +185,18 @@ optBang ::= # empty
 # funlhs	→	var apat { apat }
 # |	pat varop pat
 # |	( funlhs ) apat { apat }
+
+funlhs ::= var apats
+funlhs ::= funlhs apats
+apats ::= apat+
+
 #  
 # rhs	→	= exp [where decls]
 # |	gdrhs [where decls]
+
+rhs ::= '=' exp
+rhs ::= '=' exp resword_where decls
+
 #  
 # gdrhs	→	guards = exp [gdrhs]
 #  
@@ -196,19 +207,29 @@ optBang ::= # empty
 #  
 # exp	→	infixexp :: [context =>] type	    (expression type signature)
 # |	infixexp
-#  
+
+exp ::= infixexp
+
 # infixexp	→	lexp qop infixexp	    (infix operator application)
 # |	- infixexp	    (prefix negation)
 # |	lexp
-#  
+
+infixexp ::= lexp
+
 # lexp	→	\ apat1 … apatn -> exp	    (lambda abstraction, n ≥ 1)
 # |	let decls in exp	    (let expression)
 # |	if exp [;] then exp [;] else exp	    (conditional)
 # |	case exp of { alts }	    (case expression)
 # |	do { stmts }	    (do expression)
 # |	fexp
+
+lexp ::= fexp
+
 # fexp	→	[fexp] aexp	    (function application)
-#  
+
+fexp ::= fexp aexp
+fexp ::= aexp
+
 # aexp	→	qvar	    (variable)
 # |	gcon	    (general constructor)
 # |	literal
@@ -221,6 +242,10 @@ optBang ::= # empty
 # |	( qop⟨-⟩ infixexp )	    (right section)
 # |	qcon { fbind1 , … , fbindn }	    (labeled construction, n ≥ 0)
 # |	aexp⟨qcon⟩ { fbind1 , … , fbindn }	    (labeled update, n  ≥  1)
+
+aexp ::= qvar
+aexp ::= gcon
+
 #  
 # qual	→	pat <- exp	    (generator)
 # |	let decls	    (local declaration)
@@ -257,14 +282,18 @@ optBang ::= # empty
 # |	( pat1 , … , patk )	    (tuple pattern, k ≥ 2)
 # |	[ pat1 , … , patk ]	    (list pattern, k ≥ 1)
 # |	~ apat	    (irrefutable pattern)
-#  
+
+apat ::= gcon
+
 # fpat	→	qvar = pat
 #  
 # gcon	→	()
 # |	[]
 # |	(,{,})
 # |	qcon
-#  
+
+gcon ::= qcon
+
 # var	→	varid | ( varsym )	    (variable)
 
 var ::= L0_varid | '(' L0_varsym ')'
@@ -279,6 +308,10 @@ con ::= L0_conid
        | '(' L0_consym ')'
 
 # qcon	→	qconid | ( gconsym )	    (qualified constructor)
+
+qcon ::= L0_qconid
+       | '(' gconsym ')'
+
 # varop	→	varsym | `  varid `	    (variable operator)
 # qvarop	→	qvarsym | `  qvarid `	    (qualified variable operator)
 # conop	→	consym | `  conid `	    (constructor operator)
@@ -286,6 +319,8 @@ con ::= L0_conid
 # op	→	varop | conop	    (operator)
 # qop	→	qvarop | qconop	    (qualified operator)
 # gconsym	→	: | qconsym
+
+gconsym ::= L0_colon | L0_qconsym
 
 # Lexical syntax from Section 10.2
 
@@ -357,6 +392,8 @@ nonColonSymbol ~ nonColonAscSymbol
 # ascSymbol	→	! | # | $ | % | & | ⋆ | + | . | / | < | = | > | ? | @
 
 nonColonAscSymbol ~ '!' | '#' | '$' | '%' | '&' | '+' | '.' | '/' | '<' | '=' | '>' | '?' | '@'
+:lexeme ~ L0_colon
+L0_colon ~ colon
 colon ~ ':'
 ascSymbol ~ colon | nonColonAscSymbol
 
@@ -448,7 +485,8 @@ symbols ~ symbol+
 # consym	→	( : {symbol})⟨reservedop⟩
 
 :lexeme ~ L0_consym
-L0_consym ~ ':' symbols
+L0_consym ~ consym
+consym ~ colon symbols
 
 # reservedop	→	.. | : | :: | = | \ | | | <- | -> |  @ | ~ | =>
 #  
@@ -480,6 +518,11 @@ modid ~ conid | modid '.' conid
 qvarid ~ modid '.' varid | varid
 
 # qconid	→	[ modid . ] conid
+
+:lexeme ~ L0_qconid
+L0_qconid ~ qconid
+qconid ~ conid | modid '.' qconid
+
 # qtycon	→	[ modid . ] tycon
 
 qtycon ~ modid '.' tycon | tycon
@@ -493,7 +536,11 @@ qtycls ~ modid '.' tycls | tycls
 qvarsym ~ modid '.' varsym | varsym
 
 # qconsym	→	[ modid . ] consym
-#  
+
+:lexeme ~ L0_qconsym
+L0_qconsym ~ qconsym
+qconsym ~ consym | modid '.' consym
+
 # decimal	→	digit{digit}
 # octal	→	octit{octit}
 # hexadecimal	→	hexit{hexit}
