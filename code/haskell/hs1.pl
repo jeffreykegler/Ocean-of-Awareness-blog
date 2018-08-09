@@ -187,8 +187,8 @@ optBang ::= # empty
 # |	( funlhs ) apat { apat }
 
 funlhs ::= var apats
-funlhs ::= funlhs apats
-apats ::= apat+
+funlhs ::= '(' funlhs ')' apats
+apats ::= apat*
 
 #  
 # rhs	→	= exp [where decls]
@@ -283,6 +283,8 @@ aexp ::= gcon
 # |	[ pat1 , … , patk ]	    (list pattern, k ≥ 1)
 # |	~ apat	    (irrefutable pattern)
 
+apat ::= var
+apat ::= var '@' apat
 apat ::= gcon
 
 # fpat	→	qvar = pat
@@ -292,6 +294,9 @@ apat ::= gcon
 # |	(,{,})
 # |	qcon
 
+gcon ::= '()'
+gcon ::= '[]'
+gcon ::= '(' L0_commas ')'
 gcon ::= qcon
 
 # var	→	varid | ( varsym )	    (variable)
@@ -338,6 +343,11 @@ gconsym ::= L0_colon | L0_qconsym
 # linefeed	→	a line feed
 # vertab	→	a vertical tab
 # formfeed	→	a form feed
+
+:lexeme ~ L0_commas
+L0_commas ~ commas
+commas ~ comma*
+comma ~ [,]
 
 :discard ~ whitestuff
 whitestuff ~ whitechars
@@ -513,7 +523,7 @@ L0_modid ~ modid
 modid ~ conid | modid '.' conid
 
 #  
-# qvarid	→	[ modid . ] L0_varid
+# qvarid	→	[ modid . ] varid
 
 qvarid ~ modid '.' varid | varid
 
@@ -593,11 +603,11 @@ my $grammar = Marpa::R2::Scanless::G->new( { source => \$dsl } );
     my $expected_value = '';
     my $recce = Marpa::R2::Scanless::R->new( { grammar => $grammar,
        trace_terminals => 99,
-       # trace_lexers => 1,
     } );
     my $value_ref;
     my $result = 'OK';
     my $eval_ok = eval { $value_ref = doit( $recce, \$input ); 1; };
+    say $recce->show_progress();
     if ( !$eval_ok ) {
 	my $eval_error = $EVAL_ERROR;
 	PARSE_EVAL_ERROR: {
