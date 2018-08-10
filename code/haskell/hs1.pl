@@ -9,7 +9,7 @@ $Data::Dumper::Terse = 1;
 $Data::Dumper::Deepcopy = 1;
 use English qw( -no_match_vars );
 
-use Test::More tests => 24;
+use Test::More tests => 2;
 
 use Marpa::R2 4.000;
 
@@ -1646,11 +1646,11 @@ my $expected_ast = [
   ]
 ];
 
+my $expected_value = Data::Dumper::Dumper(pruneNodes($expected_ast));
+
 my $grammar = Marpa::R2::Scanless::G->new( { source => \$dsl } );
 
 {
-    my $expected_result = '';
-    my $expected_value = '';
     my $recce = Marpa::R2::Scanless::R->new( { grammar => $grammar,
        # trace_terminals => 99,
     } );
@@ -1665,22 +1665,18 @@ my $grammar = Marpa::R2::Scanless::G->new( { source => \$dsl } );
 	  Test::More::diag($result);
 	}
     }
-    # if ($result ne $expected_result) {
-        # Test::More::fail(qq{Result was "$result"; expected "$expected_result"});
-    # } else {
-      # Test::More::pass(qq{Result matches});
-    # }
+    if ($result ne 'OK') {
+        Test::More::fail(qq{Result was "$result", not OK});
+    } else {
+        Test::More::pass(qq{Result is OK});
+    }
     my $value = '[fail]';
     if ($value_ref) {
        $value = Data::Dumper::Dumper(pruneNodes($value_ref));
-       say $value;
+       # say $value;
     }
-    # if ($value ne $expected_value) {
-        # Test::More::fail(qq{Test of value was "$value"; expected "$expected_value"});
-    # } else {
-      # Test::More::pass(qq{Value matches});
-    # }
-} ## end TEST:
+    Test::More::is($value, $expected_value, qq{Test of value});
+}
 
 sub doit {
     my ( $recce, $input ) = @_;
@@ -1732,6 +1728,7 @@ sub pruneNodes {
     return $v              if $reftype ne 'ARRAY';
     my @result     = ();
     my $first_elem = $v->[0];
+    return [] if not defined $first_elem;
 
     if ( not defined $nonStandard->{$first_elem} ) {
         push @result, $first_elem;
