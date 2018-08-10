@@ -118,7 +118,12 @@ btype ::= btype atype | atype
 
 atype ::= gtycon
 atype ::= tyvar
+atype ::= '(' tuple_type_list ')'
 atype ::= '(' type ')'
+
+tuple_type_list ::= duple_type_list
+tuple_type_list ::= duple_type_list L0_comma type
+duple_type_list ::= type L0_comma type
 
 # gtycon	→	qtycon
 # |	()	    (unit type)
@@ -189,7 +194,8 @@ optBang ::= # empty
 funlhs ::= var apats
 funlhs ::= pat varop pat
 funlhs ::= '(' funlhs ')' apats
-apats ::= apat*
+apats  ::= apat*
+apats1 ::= apat+
 
 #  
 # rhs	→	= exp [where decls]
@@ -227,6 +233,7 @@ infixexp ::= lexp
 # |	fexp
 
 lexp ::= fexp
+lexp ::= resword_case exp resword_of alts
 
 # fexp	→	[fexp] aexp	    (function application)
 
@@ -247,7 +254,12 @@ fexp ::= aexp
 # |	aexp⟨qcon⟩ { fbind1 , … , fbindn }	    (labeled update, n  ≥  1)
 
 aexp ::= qvar
+aexp ::= '(' exp ')'
+aexp ::= '(' exp_tuple_list ')'
 aexp ::= gcon
+
+exp_tuple_list ::= exp L0_comma exp
+exp_tuple_list ::= exp_tuple_list L0_comma exp
 
 #  
 # qual	→	pat <- exp	    (generator)
@@ -255,10 +267,22 @@ aexp ::= gcon
 # |	exp	    (guard)
 #  
 # alts	→	alt1 ; … ; altn	    (n ≥ 1)
+
+# Explicit BNF recursion needed, 
+# because Marpa's counted rules do not
+# allow a RHS nullable, and <alt> is
+# nullable
+alts ::= alt
+alts ::= alts ';' alt
+
 # alt	→	pat -> exp [where decls]
 # |	pat gdpat [where decls]
 # |		    (empty alternative)
-#  
+
+alt ::= pat '->' exp
+alt ::= pat '->' exp resword_where decls
+alt ::= # empty
+
 # gdpat	→	guards -> exp [ gdpat ]
 #  
 # stmts	→	stmt1 … stmtn exp [;]	    (n ≥ 0)
@@ -281,6 +305,7 @@ pat ::= lpat
 # |	gcon apat1 … apatk	    (arity gcon  =  k, k ≥ 1)
 
 lpat ::= apat
+lpat ::= gcon apats1
 
 # apat	→	var [ @ apat]	    (as pattern)
 # |	gcon	    (arity gcon  =  0)
@@ -295,6 +320,7 @@ lpat ::= apat
 apat ::= var
 apat ::= var '@' apat
 apat ::= gcon
+apat ::= '(' pat ')'
 
 # fpat	→	qvar = pat
 #  
@@ -366,7 +392,9 @@ gconsym ::= L0_colon | L0_qconsym
 # formfeed	→	a form feed
 
 :lexeme ~ L0_commas
+:lexeme ~ L0_comma
 L0_commas ~ commas
+L0_comma ~ comma
 commas ~ comma*
 comma ~ [,]
 
@@ -458,8 +486,8 @@ conid ~ large nonInitials
 # |	infixr | instance | let | module | newtype | of
 # |	then | type | where | _
 
-# :lexeme ~ resword_case priority => 1
-# resword_case ~ 'case'
+:lexeme ~ resword_case priority => 1
+resword_case ~ 'case'
 # :lexeme ~ resword_class priority => 1
 # resword_class ~ 'class'
 :lexeme ~ resword_data priority => 1
@@ -494,8 +522,8 @@ resword_data ~ 'data'
 resword_module ~ 'module'
 # :lexeme ~ resword_newtype priority => 1
 # resword_newtype ~ 'newtype'
-# :lexeme ~ resword_of priority => 1
-# resword_of ~ 'of'
+:lexeme ~ resword_of priority => 1
+resword_of ~ 'of'
 # :lexeme ~ resword_then priority => 1
 # resword_then ~ 'then'
 # :lexeme ~ resword_type priority => 1
