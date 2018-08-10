@@ -842,8 +842,7 @@ my $expected_ast = [
                 [ 'funlhs',
                   [ 'var', 'stkToLst' ],
                   [
-                    [
-                      'apat',
+                    [ 'apat',
                       '(',
                       [ 'pat',
                         [ 'lpat',
@@ -858,10 +857,8 @@ my $expected_ast = [
                   ]
                 ],
                 [ 'rhs', '=',
-                  [
-                    'exp',
-                    [
-                      'infixexp',
+                  [ 'exp',
+                    [ 'infixexp',
                       [ 'lexp', [ 'fexp', [ 'aexp', [ 'qvar', 'x' ] ] ] ],
                       [ 'qop', [ 'qconop', [ 'gconsym', ':' ] ] ],
                       [ 'infixexp', [ 'lexp', [ 'fexp', [ 'aexp', [ 'qvar', 'xs' ] ] ] ]
@@ -887,24 +884,18 @@ my $expected_ast = [
                 ]
               ],
               [ 'decl',
-                [
-                  'gendecl',
+                [ 'gendecl',
                   [ 'vars', [ 'var', 'pop' ] ],
                   '::',
-                  [
-                    'type',
-                    [
-                      'btype',
+                  [ 'type',
+                    [ 'btype',
                       [ 'btype', [ 'atype', [ 'gtycon', 'Stack' ] ] ],
                       [ 'atype', 'a' ]
                     ],
                     '->',
-                    [
-                      'type',
-                      [
-                        'btype',
-                        [
-                          'atype',
+                    [ 'type',
+                      [ 'btype',
+                        [ 'atype',
                           '(',
                           [
                             [
@@ -925,44 +916,18 @@ my $expected_ast = [
                   ]
                 ]
               ],
-              [
-                'decl',
-                [
-                  'funlhs',
+              [ 'decl',
+                [ 'funlhs',
+                  [ 'var', 'pop' ],
                   [
-                    'var',
-                    'pop'
-                  ],
-                  [
-                    [
-                      'apat',
+                    [ 'apat',
                       '(',
-                      [
-                        'pat',
-                        [
-                          'lpat',
+                      [ 'pat',
+                        [ 'lpat',
+                          [ 'gcon', [ 'qcon', 'MkStack' ] ],
                           [
-                            'gcon',
-                            [
-                              'qcon',
-                              'MkStack'
-                            ]
-                          ],
-                          [
-                            [
-                              'apat',
-                              [
-                                'var',
-                                'x'
-                              ]
-                            ],
-                            [
-                              'apat',
-                              [
-                                'var',
-                                's'
-                              ]
-                            ]
+                            [ 'apat', [ 'var', 'x' ] ],
+                            [ 'apat', [ 'var', 's' ] ]
                           ]
                         ]
                       ],
@@ -970,158 +935,53 @@ my $expected_ast = [
                     ]
                   ]
                 ],
-                [
-                  'rhs',
-                  '=',
-                  [
-                    'exp',
-                    [
-                      'infixexp',
+                [ 'rhs', '=',
+                  [ 'exp',
+                    [ 'infixexp',
                       [
                         'lexp',
-                        [
-                          'fexp',
-                          [
-                            'aexp',
+                        [ 'fexp',
+                          [ 'aexp',
                             '(',
                             [
-                              [
-                                'exp',
-                                [
-                                  'infixexp',
-                                  [
-                                    'lexp',
-                                    [
-                                      'fexp',
-                                      [
-                                        'aexp',
-                                        [
-                                          'qvar',
-                                          'x'
-                                        ]
-                                      ]
-                                    ]
+                              [ 'exp',
+                                [ 'infixexp',
+                                  [ 'lexp',
+                                    [ 'fexp', [ 'aexp', [ 'qvar', 'x' ] ] ]
                                   ]
                                 ]
                               ],
                               ',',
-                              [
-                                'exp',
-                                [
-                                  'infixexp',
-                                  [
-                                    'lexp',
+                              [ 'exp',
+                                [ 'infixexp',
+                                  [ 'lexp',
                                     'case',
-                                    [
-                                      'exp',
-                                      [
-                                        'infixexp',
-                                        [
-                                          'lexp',
-                                          [
-                                            'fexp',
-                                            [
-                                              'aexp',
-                                              [
-                                                'qvar',
-                                                's'
-                                              ]
-                                            ]
-                                          ]
-                                        ]
-                                      ]
-                                    ],
+                                    [ 'exp', [ 'infixexp', [ 'lexp', [ 'fexp', [ 'aexp', [ 'qvar', 's' ] ] ] ] ] ],
                                     'of',
-                                    [
-                                      'alts',
-                                      [
-                                        'alt',
-                                        [
-                                          'pat',
-                                          [
-                                            'lpat',
-                                            [
-                                              'apat',
-                                              [
-                                                'var',
-                                                'r'
-                                              ]
-                                            ]
-                                          ]
-                                        ],
+                                    [ 'alts',
+                                      [ 'alt',
+                                        [ 'pat', [ 'lpat', [ 'apat', [ 'var', 'r' ] ] ] ],
                                         '->',
-                                        [
-                                          'exp',
-                                          [
-                                            'infixexp',
-                                            [
-                                              'lexp',
-                                              [
-                                                'fexp',
-                                                [
-                                                  'fexp',
-                                                  [
-                                                    'aexp',
-                                                    [
-                                                      'qvar',
-                                                      'i'
-                                                    ]
-                                                  ]
-                                                ],
-                                                [
-                                                  'aexp',
-                                                  [
-                                                    'qvar',
-                                                    'r'
-                                                  ]
-                                                ]
+                                        [ 'exp',
+                                          [ 'infixexp',
+                                            [ 'lexp',
+                                              [ 'fexp',
+                                                [ 'fexp', [ 'aexp', [ 'qvar', 'i' ] ] ],
+                                                [ 'aexp', [ 'qvar', 'r' ] ]
                                               ]
                                             ]
                                           ]
                                         ],
                                         'where',
-                                        [
-                                          'decls',
-                                          [
-                                            'decl',
-                                            [
-                                              'funlhs',
-                                              [
-                                                'var',
-                                                'i'
-                                              ],
-                                              [
-                                                [
-                                                  'apat',
-                                                  [
-                                                    'var',
-                                                    'x'
-                                                  ]
-                                                ]
-                                              ]
+                                        [ 'decls',
+                                          [ 'decl',
+                                            [ 'funlhs',
+                                              [ 'var', 'i' ],
+                                              [ [ 'apat', [ 'var', 'x' ] ] ]
                                             ],
-                                            [
-                                              'rhs',
+                                            [ 'rhs',
                                               '=',
-                                              [
-                                                'exp',
-                                                [
-                                                  'infixexp',
-                                                  [
-                                                    'lexp',
-                                                    [
-                                                      'fexp',
-                                                      [
-                                                        'aexp',
-                                                        [
-                                                          'qvar',
-                                                          'x'
-                                                        ]
-                                                      ]
-                                                    ]
-                                                  ]
-                                                ]
-                                              ]
+                                              [ 'exp', [ 'infixexp', [ 'lexp', [ 'fexp', [ 'aexp', [ 'qvar', 'x' ] ] ] ] ] ]
                                             ]
                                           ]
                                         ]
@@ -1141,87 +1001,32 @@ my $expected_ast = [
               ],
               [
                 'decl',
-                [
-                  'gendecl',
-                  [
-                    'vars',
-                    [
-                      'var',
-                      'top'
-                    ]
-                  ],
+                [ 'gendecl',
+                  [ 'vars', [ 'var', 'top' ] ],
                   '::',
                   [
                     'type',
-                    [
-                      'btype',
-                      [
-                        'btype',
-                        [
-                          'atype',
-                          [
-                            'gtycon',
-                            'Stack'
-                          ]
-                        ]
-                      ],
-                      [
-                        'atype',
-                        'a'
-                      ]
+                    [ 'btype',
+                      [ 'btype', [ 'atype', [ 'gtycon', 'Stack' ] ] ],
+                      [ 'atype', 'a' ]
                     ],
                     '->',
-                    [
-                      'type',
-                      [
-                        'btype',
-                        [
-                          'atype',
-                          'a'
-                        ]
-                      ]
-                    ]
+                    [ 'type', [ 'btype', [ 'atype', 'a' ] ] ]
                   ]
                 ]
               ],
-              [
-                'decl',
-                [
-                  'funlhs',
+              [ 'decl',
+                [ 'funlhs',
+                  [ 'var', 'top' ],
                   [
-                    'var',
-                    'top'
-                  ],
-                  [
-                    [
-                      'apat',
+                    [ 'apat',
                       '(',
-                      [
-                        'pat',
-                        [
-                          'lpat',
+                      [ 'pat',
+                        [ 'lpat',
+                          [ 'gcon', [ 'qcon', 'MkStack' ] ],
                           [
-                            'gcon',
-                            [
-                              'qcon',
-                              'MkStack'
-                            ]
-                          ],
-                          [
-                            [
-                              'apat',
-                              [
-                                'var',
-                                'x'
-                              ]
-                            ],
-                            [
-                              'apat',
-                              [
-                                'var',
-                                's'
-                              ]
-                            ]
+                            [ 'apat', [ 'var', 'x' ] ],
+                            [ 'apat', [ 'var', 's' ] ]
                           ]
                         ]
                       ],
@@ -1229,28 +1034,8 @@ my $expected_ast = [
                     ]
                   ]
                 ],
-                [
-                  'rhs',
-                  '=',
-                  [
-                    'exp',
-                    [
-                      'infixexp',
-                      [
-                        'lexp',
-                        [
-                          'fexp',
-                          [
-                            'aexp',
-                            [
-                              'qvar',
-                              'x'
-                            ]
-                          ]
-                        ]
-                      ]
-                    ]
-                  ]
+                [ 'rhs', '=',
+                  [ 'exp', [ 'infixexp', [ 'lexp', [ 'fexp', [ 'aexp', [ 'qvar', 'x' ] ] ] ] ] ]
                 ]
               ]
             ]
