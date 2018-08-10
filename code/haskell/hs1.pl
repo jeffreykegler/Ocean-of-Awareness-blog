@@ -13,7 +13,7 @@ use Marpa::R2 4.000;
 
 my $dsl = <<'END_OF_DSL';
 lexeme default = latm => 1
-:default ::= action => [name,start,length,values]
+:default ::= action => [name,values]
 
 # module	→	module modid [exports] where body 
 # |	body
@@ -410,7 +410,7 @@ whitechar ~ [\s]
 #  
 # comment	→	dashes [ any⟨symbol⟩ {any} ] newline
 
-comment ~ '--' nonNewlines '\n'
+comment ~ '--' nonNewlines [\n]
 nonNewlines ~ nonNewline*
 nonNewline ~ [^\n]
 
