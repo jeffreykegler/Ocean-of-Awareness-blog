@@ -649,43 +649,15 @@ EOS
 
 my $expected_ast = [
   'module',
-  'module',
-  'AStack',
+  'module', 'AStack',
   [
     '(',
     [
-      [
-        'export',
-        'Stack'
-      ],
-      [
-        'export',
-        [
-          'qvar',
-          'push'
-        ]
-      ],
-      [
-        'export',
-        [
-          'qvar',
-          'pop'
-        ]
-      ],
-      [
-        'export',
-        [
-          'qvar',
-          'top'
-        ]
-      ],
-      [
-        'export',
-        [
-          'qvar',
-          'size'
-        ]
-      ]
+      [ 'export', 'Stack' ],
+      [ 'export', [ 'qvar', 'push' ]
+      ], [ 'export', [ 'qvar', 'pop' ] ],
+      [ 'export', [ 'qvar', 'top' ] ],
+      [ 'export', [ 'qvar', 'size' ] ]
     ],
     ')'
   ],
@@ -700,22 +672,12 @@ my $expected_ast = [
         [
           'simpletype',
           'Stack',
-          [
-            'tyvars',
-            'a'
-          ]
+          [ 'tyvars', 'a' ]
         ],
         '=',
         [
           'constrs',
-          [
-            'constr',
-            [
-              'con',
-              'Empty'
-            ],
-            []
-          ],
+          [ 'constr', [ 'con', 'Empty' ], [] ],
           [
             'constr',
             [
@@ -723,40 +685,13 @@ my $expected_ast = [
               'MkStack'
             ],
             [
-              [
-                [
-                  'optBang'
-                ],
-                [
-                  'atype',
-                  'a'
-                ]
-              ],
-              [
-                [
-                  'optBang'
-                ],
-                [
-                  'atype',
-                  '(',
-                  [
-                    'type',
-                    [
-                      'btype',
-                      [
-                        'btype',
-                        [
-                          'atype',
-                          [
-                            'gtycon',
-                            'Stack'
-                          ]
-                        ]
-                      ],
-                      [
-                        'atype',
-                        'a'
-                      ]
+              [ [ 'optBang' ], [ 'atype', 'a' ] ],
+              [ [ 'optBang' ], [ 'atype',
+		  '(',
+                  [ 'type',
+		    [
+		      'btype', [ 'btype', [ 'atype', [ 'gtycon', 'Stack' ] ] ],
+                      [ 'atype', 'a' ]
                     ]
                   ],
                   ')'
@@ -772,42 +707,18 @@ my $expected_ast = [
           'decl',
           [
             'gendecl',
-            [
-              'vars',
-              [
-                'var',
-                'push'
-              ]
-            ],
+            [ 'vars', [ 'var', 'push' ] ],
             '::',
             [
               'type',
-              [
-                'btype',
-                [
-                  'atype',
-                  'a'
-                ]
-              ],
+              [ 'btype', [ 'atype', 'a' ] ],
               '->',
               [
                 'type',
                 [
                   'btype',
-                  [
-                    'btype',
-                    [
-                      'atype',
-                      [
-                        'gtycon',
-                        'Stack'
-                      ]
-                    ]
-                  ],
-                  [
-                    'atype',
-                    'a'
-                  ]
+                  [ 'btype', [ 'atype', [ 'gtycon', 'Stack' ] ] ],
+                  [ 'atype', 'a' ]
                 ],
                 '->',
                 [
@@ -818,30 +729,12 @@ my $expected_ast = [
                       'btype',
                       [
                         'btype',
-                        [
-                          'btype',
-                          [
-                            'atype',
-                            [
-                              'gtycon',
-                              'Stack'
-                            ]
-                          ]
-                        ],
-                        [
-                          'atype',
-                          'a'
-                        ]
+                        [ 'btype', [ 'atype', [ 'gtycon', 'Stack' ] ] ],
+                        [ 'atype', 'a' ]
                       ],
-                      [
-                        'atype',
-                        'push'
-                      ]
+                      [ 'atype', 'push' ]
                     ],
-                    [
-                      'atype',
-                      'x'
-                    ]
+                    [ 'atype', 'x' ]
                   ]
                 ]
               ]
@@ -853,14 +746,7 @@ my $expected_ast = [
         'topdecl',
         [
           'decl',
-          [
-            'funlhs',
-            [
-              'var',
-              's'
-            ],
-            []
-          ],
+          [ 'funlhs', [ 'var', 's' ], [] ],
           [
             'rhs',
             '=',
@@ -874,34 +760,10 @@ my $expected_ast = [
                     'fexp',
                     [
                       'fexp',
-                      [
-                        'fexp',
-                        [
-                          'aexp',
-                          [
-                            'gcon',
-                            [
-                              'qcon',
-                              'MkStack'
-                            ]
-                          ]
-                        ]
-                      ],
-                      [
-                        'aexp',
-                        [
-                          'qvar',
-                          'x'
-                        ]
-                      ]
+                      [ 'fexp', [ 'aexp', [ 'gcon', [ 'qcon', 'MkStack' ] ] ] ],
+                      [ 'aexp', [ 'qvar', 'x' ] ]
                     ],
-                    [
-                      'aexp',
-                      [
-                        'qvar',
-                        's'
-                      ]
-                    ]
+                    [ 'aexp', [ 'qvar', 's' ] ]
                   ]
                 ]
               ]
@@ -911,56 +773,22 @@ my $expected_ast = [
       ],
       [
         'topdecl',
-        [
-          'decl',
-          [
-            'gendecl',
-            [
-              'vars',
-              [
-                'var',
-                'size'
-              ]
-            ],
+        [ 'decl',
+          [ 'gendecl',
+            [ 'vars', [ 'var', 'size' ] ],
             '::',
             [
               'type',
-              [
-                'btype',
-                [
-                  'btype',
-                  [
-                    'atype',
-                    [
-                      'gtycon',
-                      'Stack'
-                    ]
-                  ]
-                ],
-                [
-                  'atype',
-                  'a'
-                ]
+              [ 'btype',
+                [ 'btype', [ 'atype', [ 'gtycon', 'Stack' ] ] ],
+                [ 'atype', 'a' ]
               ],
               '->',
-              [
-                'type',
+              [ 'type',
                 [
                   'btype',
-                  [
-                    'btype',
-                    [
-                      'atype',
-                      [
-                        'gtycon',
-                        'Int'
-                      ]
-                    ]
-                  ],
-                  [
-                    'atype',
-                    'size'
-                  ]
+                  [ 'btype', [ 'atype', [ 'gtycon', 'Int' ] ] ],
+                  [ 'atype', 'size' ]
                 ]
               ]
             ]
@@ -971,17 +799,8 @@ my $expected_ast = [
         'topdecl',
         [
           'decl',
-          [
-            'funlhs',
-            [
-              'var',
-              's'
-            ],
-            []
-          ],
-          [
-            'rhs',
-            '=',
+          [ 'funlhs', [ 'var', 's' ], [] ],
+          [ 'rhs', '=',
             [
               'exp',
               [
@@ -990,44 +809,15 @@ my $expected_ast = [
                   'lexp',
                   [
                     'fexp',
-                    [
-                      'fexp',
-                      [
-                        'aexp',
-                        [
-                          'qvar',
-                          'length'
-                        ]
-                      ]
-                    ],
+                    [ 'fexp', [ 'aexp', [ 'qvar', 'length' ] ] ],
                     [
                       'aexp',
                       '(',
-                      [
-                        'exp',
-                        [
-                          'infixexp',
-                          [
+                      [ 'exp', [ 'infixexp', [
                             'lexp',
-                            [
-                              'fexp',
-                              [
-                                'fexp',
-                                [
-                                  'aexp',
-                                  [
-                                    'qvar',
-                                    'stkToLst'
-                                  ]
-                                ]
-                              ],
-                              [
-                                'aexp',
-                                [
-                                  'qvar',
-                                  's'
-                                ]
-                              ]
+                            [ 'fexp',
+                              [ 'fexp', [ 'aexp', [ 'qvar', 'stkToLst' ] ] ],
+                              [ 'aexp', [ 'qvar', 's' ] ]
                             ]
                           ]
                         ]
@@ -1043,87 +833,23 @@ my $expected_ast = [
               'decls',
               [
                 'decl',
-                [
-                  'funlhs',
-                  [
-                    'var',
-                    'stkToLst'
-                  ],
-                  [
-                    [
-                      'apat',
-                      [
-                        'gcon',
-                        [
-                          'qcon',
-                          'Empty'
-                        ]
-                      ]
-                    ]
-                  ]
-                ],
-                [
-                  'rhs',
-                  '=',
-                  [
-                    'exp',
-                    [
-                      'infixexp',
-                      [
-                        'lexp',
-                        [
-                          'fexp',
-                          [
-                            'aexp',
-                            [
-                              'gcon',
-                              '[]'
-                            ]
-                          ]
-                        ]
-                      ]
-                    ]
-                  ]
+                [ 'funlhs', [ 'var', 'stkToLst' ], [ [ 'apat', [ 'gcon', [ 'qcon', 'Empty' ] ] ] ] ],
+                [ 'rhs', '=',
+                  [ 'exp', [ 'infixexp', [ 'lexp', [ 'fexp', [ 'aexp', [ 'gcon', '[]' ] ] ] ] ] ]
                 ]
               ],
-              [
-                'decl',
-                [
-                  'funlhs',
-                  [
-                    'var',
-                    'stkToLst'
-                  ],
+              [ 'decl',
+                [ 'funlhs',
+                  [ 'var', 'stkToLst' ],
                   [
                     [
                       'apat',
                       '(',
-                      [
-                        'pat',
-                        [
-                          'lpat',
-                          [
-                            'gcon',
-                            [
-                              'qcon',
-                              'MkStack'
-                            ]
-                          ],
-                          [
-                            [
-                              'apat',
-                              [
-                                'var',
-                                'x'
-                              ]
-                            ],
-                            [
-                              'apat',
-                              [
-                                'var',
-                                's'
-                              ]
-                            ]
+                      [ 'pat',
+                        [ 'lpat',
+                          [ 'gcon', [ 'qcon', 'MkStack' ] ],
+                          [ [ 'apat', [ 'var', 'x' ] ],
+                            [ 'apat', [ 'var', 's' ] ]
                           ]
                         ]
                       ],
@@ -1131,134 +857,46 @@ my $expected_ast = [
                     ]
                   ]
                 ],
-                [
-                  'rhs',
-                  '=',
+                [ 'rhs', '=',
                   [
                     'exp',
                     [
                       'infixexp',
-                      [
-                        'lexp',
-                        [
-                          'fexp',
-                          [
-                            'aexp',
-                            [
-                              'qvar',
-                              'x'
-                            ]
-                          ]
-                        ]
-                      ],
-                      [
-                        'qop',
-                        [
-                          'qconop',
-                          [
-                            'gconsym',
-                            ':'
-                          ]
-                        ]
-                      ],
-                      [
-                        'infixexp',
-                        [
-                          'lexp',
-                          [
-                            'fexp',
-                            [
-                              'aexp',
-                              [
-                                'qvar',
-                                'xs'
-                              ]
-                            ]
-                          ]
-                        ]
+                      [ 'lexp', [ 'fexp', [ 'aexp', [ 'qvar', 'x' ] ] ] ],
+                      [ 'qop', [ 'qconop', [ 'gconsym', ':' ] ] ],
+                      [ 'infixexp', [ 'lexp', [ 'fexp', [ 'aexp', [ 'qvar', 'xs' ] ] ] ]
                       ]
                     ]
                   ],
                   'where',
-                  [
-                    'decls'
-                  ]
+                  [ 'decls' ]
                 ]
               ],
-              [
-                'decl',
-                [
-                  'funlhs',
-                  [
-                    'var',
-                    'xs'
-                  ],
-                  []
-                ],
-                [
-                  'rhs',
-                  '=',
-                  [
-                    'exp',
-                    [
+              [ 'decl',
+                [ 'funlhs', [ 'var', 'xs' ], [] ],
+                [ 'rhs', '=',
+                  [ 'exp', [
                       'infixexp',
-                      [
-                        'lexp',
-                        [
-                          'fexp',
-                          [
-                            'fexp',
-                            [
-                              'aexp',
-                              [
-                                'qvar',
-                                'stkToLst'
-                              ]
-                            ]
-                          ],
-                          [
-                            'aexp',
-                            [
-                              'qvar',
-                              's'
-                            ]
-                          ]
+                      [ 'lexp', [
+                          'fexp', [ 'fexp', [ 'aexp', [ 'qvar', 'stkToLst' ] ] ],
+                          [ 'aexp', [ 'qvar', 's' ] ]
                         ]
                       ]
                     ]
                   ]
                 ]
               ],
-              [
-                'decl',
+              [ 'decl',
                 [
                   'gendecl',
-                  [
-                    'vars',
-                    [
-                      'var',
-                      'pop'
-                    ]
-                  ],
+                  [ 'vars', [ 'var', 'pop' ] ],
                   '::',
                   [
                     'type',
                     [
                       'btype',
-                      [
-                        'btype',
-                        [
-                          'atype',
-                          [
-                            'gtycon',
-                            'Stack'
-                          ]
-                        ]
-                      ],
-                      [
-                        'atype',
-                        'a'
-                      ]
+                      [ 'btype', [ 'atype', [ 'gtycon', 'Stack' ] ] ],
+                      [ 'atype', 'a' ]
                     ],
                     '->',
                     [
@@ -1270,35 +908,12 @@ my $expected_ast = [
                           '(',
                           [
                             [
-                              [
-                                'type',
-                                [
-                                  'btype',
-                                  [
-                                    'atype',
-                                    'a'
-                                  ]
-                                ]
-                              ],
+                              [ 'type', [ 'btype', [ 'atype', 'a' ] ] ],
                               ',',
-                              [
-                                'type',
-                                [
+                              [ 'type', [
                                   'btype',
-                                  [
-                                    'btype',
-                                    [
-                                      'atype',
-                                      [
-                                        'gtycon',
-                                        'Stack'
-                                      ]
-                                    ]
-                                  ],
-                                  [
-                                    'atype',
-                                    'a'
-                                  ]
+                                  [ 'btype', [ 'atype', [ 'gtycon', 'Stack' ] ] ],
+                                  [ 'atype', 'a' ]
                                 ]
                               ]
                             ]
