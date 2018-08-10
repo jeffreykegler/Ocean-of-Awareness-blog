@@ -5,6 +5,8 @@ use strict;
 use warnings;
 
 use Data::Dumper;
+$Data::Dumper::Terse = 1;
+$Data::Dumper::Deepcopy = 1;
 use English qw( -no_match_vars );
 
 use Test::More tests => 24;
