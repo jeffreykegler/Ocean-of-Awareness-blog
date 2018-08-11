@@ -21,10 +21,10 @@ lexeme default = latm => 1
 # module	→	module modid [exports] where body 
 # |	body
 
-module ::= resword_module L0_modid optExports resword_where indented_body
+module ::= resword_module L0_modid optExports resword_where laidout_body
          | body
 
-indented_body ::= body
+laidout_body ::= body
 	 | ruby_body
 
 optExports ::= '(' exports ')'
@@ -213,9 +213,9 @@ apats1 ::= apat+
 # |	gdrhs [where decls]
 
 rhs ::= '=' exp
-rhs ::= '=' exp resword_where indented_decls
+rhs ::= '=' exp resword_where laidout_decls
 
-indented_decls ::= '{' decls '}'
+laidout_decls ::= '{' decls '}'
 	 | ruby_decls
 #  
 # gdrhs	→	guards = exp [gdrhs]
@@ -246,9 +246,9 @@ infixexp ::= lexp
 # |	fexp
 
 lexp ::= fexp
-lexp ::= resword_case exp resword_of indented_alts
+lexp ::= resword_case exp resword_of laidout_alts
 
-indented_alts ::= '{' alts '}'
+laidout_alts ::= '{' alts '}'
 	 | ruby_alts
 
 # fexp	→	[fexp] aexp	    (function application)
@@ -296,7 +296,7 @@ alts ::= alts virtual_semicolon alt
 # |		    (empty alternative)
 
 alt ::= pat '->' exp
-alt ::= pat '->' exp resword_where indented_decls
+alt ::= pat '->' exp resword_where laidout_decls
 alt ::= # empty
 
 # gdpat	→	guards -> exp [ gdpat ]
@@ -426,11 +426,11 @@ L0_semicolon ~ semicolon
 ruby_semicolon ~ unicorn
 semicolon ~ [;]
 
-:discard ~ whitestuff
-whitestuff ~ whitechars
+:discard ~ whitechars
 whitechars ~ whitechar+
-whitestuff ~ comment
 whitechar ~ [\s]
+
+:discard ~ comment
 
 # space	→	a space
 # tab	→	a horizontal tab
@@ -915,9 +915,9 @@ sub pruneNodes {
         exp_tuple_list  => 1,
         flagged_atype   => 1,
         flagged_atypes  => 1,
-	indented_alts   => 1,
-	indented_decls  => 1,
-	indented_body   => 1,
+	laidout_alts   => 1,
+	laidout_decls  => 1,
+	laidout_body   => 1,
         tuple_type_list => 1,
     };
 
