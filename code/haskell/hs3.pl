@@ -415,6 +415,8 @@ ruby_alts ~ unicorn
 # vertab	→	a vertical tab
 # formfeed	→	a form feed
 
+newline ~ [\n]
+
 :lexeme ~ L0_commas
 :lexeme ~ L0_comma
 L0_commas ~ commas
@@ -428,9 +430,12 @@ semicolon ~ [;]
 
 :discard ~ whitechars
 whitechars ~ whitechar+
-whitechar ~ [\s]
+whitechar ~ [\t ]
 
 :discard ~ comment
+
+:discard ~ indent
+indent ~ newline
 
 # space	→	a space
 # tab	→	a horizontal tab
