@@ -429,7 +429,7 @@ ruby_semicolon ~ unicorn
 semicolon ~ [;]
 
 :discard ~ whitechars
-whitechars ~ whitechar+
+whitechars ~ whitechar*
 whitechar ~ [\t ]
 
 :discard ~ comment
@@ -437,9 +437,7 @@ whitechar ~ [\t ]
 commentLine ~ newline whitechars '--' nonNewlines
 
 :discard ~ indent
-indent ~ newline
-# problem?
-# indent ~ newline whitechars
+indent ~ newline whitechars
 
 # space	→	a space
 # tab	→	a horizontal tab
