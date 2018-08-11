@@ -433,6 +433,8 @@ whitechars ~ whitechar+
 whitechar ~ [\t ]
 
 :discard ~ comment
+:discard ~ commentLine
+commentLine ~ newline whitechars '--' nonNewlines
 
 :discard ~ indent
 indent ~ newline
