@@ -438,6 +438,8 @@ commentLine ~ newline whitechars '--' nonNewlines
 
 :discard ~ indent
 indent ~ newline
+# problem?
+# indent ~ newline whitechars
 
 # space	→	a space
 # tab	→	a horizontal tab
