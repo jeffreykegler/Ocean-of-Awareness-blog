@@ -436,7 +436,7 @@ whitechar ~ [\t ]
 :discard ~ commentLine
 commentLine ~ newline whitechars '--' nonNewlines
 
-:discard ~ indent
+:discard ~ indent event => indent=off
 indent ~ newline whitechars
 
 # space	→	a space
