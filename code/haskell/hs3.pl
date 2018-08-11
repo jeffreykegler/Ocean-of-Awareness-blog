@@ -841,9 +841,9 @@ my $expected_value = Data::Dumper::Dumper(pruneNodes($expected_ast));
 
 my $grammar = Marpa::R2::Scanless::G->new( { source => \$dsl } );
 
-# INPUT: for my $inputRef (\$input, \$explicit_input) {
-INPUT: for my $inputRef (\$explicit_input) {
+INPUT: for my $inputRef (\$input, \$explicit_input) {
     my $recce = Marpa::R2::Scanless::R->new( { grammar => $grammar,
+       rejection => 'event',
        # trace_terminals => 99,
     } );
     my $value_ref;
@@ -882,6 +882,7 @@ sub doit {
         $pos = $recce->resume()
       )
     {
+      say STDERR 'terminals expected: ', @{$recce->terminals_expected()};
       EVENT:
         for (
             my $event_ix = 0 ;
