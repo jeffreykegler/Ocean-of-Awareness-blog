@@ -438,7 +438,7 @@ whitechar ~ [\s]
 #  
 # comment	→	dashes [ any⟨symbol⟩ {any} ] newline
 
-comment ~ '--' nonNewlines [\n]
+comment ~ '--' nonNewlines
 nonNewlines ~ nonNewline*
 nonNewline ~ [^\n]
 
