@@ -10,6 +10,7 @@ $Data::Dumper::Deepcopy = 1;
 use English qw( -no_match_vars );
 
 use Test::More tests => 4;
+use Test::Differences;
 
 use Marpa::R2 4.000;
 
@@ -33,7 +34,7 @@ optExports ::= # empty
 # |	{ impdecls }
 # |	{ topdecls }
 
-body ::= '{' topdecls '}'
+body ::= ('{') topdecls ('}')
 
 # impdecls	→	impdecl1 ; … ; impdecln	    (n ≥ 1)
 #  
@@ -295,7 +296,7 @@ alts ::= alts virtual_semicolon alt
 # |		    (empty alternative)
 
 alt ::= pat '->' exp
-alt ::= pat '->' exp resword_where decls
+alt ::= pat '->' exp resword_where indented_decls
 alt ::= # empty
 
 # gdpat	→	guards -> exp [ gdpat ]
@@ -697,76 +698,146 @@ EOS
 
 my $expected_ast = [
   'module',
-  'module', 'AStack',
+  'module',
+  'AStack',
   [
     '(',
     [
-      [ 'export', 'Stack' ],
-      [ 'export', [ 'qvar', 'push' ]
-      ], [ 'export', [ 'qvar', 'pop' ] ],
-      [ 'export', [ 'qvar', 'top' ] ],
-      [ 'export', [ 'qvar', 'size' ] ]
+      [
+        'export',
+        'Stack'
+      ],
+      [
+        'export',
+        [
+          'qvar',
+          'push'
+        ]
+      ],
+      [
+        'export',
+        [
+          'qvar',
+          'pop'
+        ]
+      ],
+      [
+        'export',
+        [
+          'qvar',
+          'top'
+        ]
+      ],
+      [
+        'export',
+        [
+          'qvar',
+          'size'
+        ]
+      ]
     ],
     ')'
   ],
   'where',
   [
-    'body',
     [
-      'topdecls',
+      'body',
       [
-        'topdecl',
-        'data',
+        'topdecls',
         [
-          'simpletype',
-          'Stack',
-          [ 'tyvars', 'a' ]
-        ],
-        '=',
-        [
-          'constrs',
-          [ 'constr', [ 'con', 'Empty' ], [] ],
+          'topdecl',
+          'data',
           [
-            'constr',
+            'simpletype',
+            'Stack',
             [
-              'con',
-              'MkStack'
+              'tyvars',
+              'a'
+            ]
+          ],
+          '=',
+          [
+            'constrs',
+            [
+              'constr',
+              [
+                'con',
+                'Empty'
+              ],
+              []
             ],
             [
-              [ [ 'optBang' ], [ 'atype', 'a' ] ],
-              [ [ 'optBang' ], [ 'atype',
-		  '(',
-                  [ 'type',
-		    [
-		      'btype', [ 'btype', [ 'atype', [ 'gtycon', 'Stack' ] ] ],
-                      [ 'atype', 'a' ]
-                    ]
+              'constr',
+              [
+                'con',
+                'MkStack'
+              ],
+              [
+                [
+                  [
+                    'optBang'
                   ],
-                  ')'
+                  [
+                    'atype',
+                    'a'
+                  ]
+                ],
+                [
+                  [
+                    'optBang'
+                  ],
+                  [
+                    'atype',
+                    '(',
+                    [
+                      'type',
+                      [
+                        'btype',
+                        [
+                          'btype',
+                          [
+                            'atype',
+                            [
+                              'gtycon',
+                              'Stack'
+                            ]
+                          ]
+                        ],
+                        [
+                          'atype',
+                          'a'
+                        ]
+                      ]
+                    ],
+                    ')'
+                  ]
                 ]
               ]
             ]
           ]
-        ]
-      ],
-      [
-        'topdecl',
+        ],
         [
-          'decl',
+          'topdecl',
           [
-            'gendecl',
-            [ 'vars', [ 'var', 'push' ] ],
-            '::',
+            'decl',
             [
-              'type',
-              [ 'btype', [ 'atype', 'a' ] ],
-              '->',
+              'gendecl',
+              [
+                'vars',
+                [
+                  'var',
+                  'push'
+                ]
+              ],
+              '::',
               [
                 'type',
                 [
                   'btype',
-                  [ 'btype', [ 'atype', [ 'gtycon', 'Stack' ] ] ],
-                  [ 'atype', 'a' ]
+                  [
+                    'atype',
+                    'a'
+                  ]
                 ],
                 '->',
                 [
@@ -776,183 +847,336 @@ my $expected_ast = [
                     [
                       'btype',
                       [
+                        'atype',
+                        [
+                          'gtycon',
+                          'Stack'
+                        ]
+                      ]
+                    ],
+                    [
+                      'atype',
+                      'a'
+                    ]
+                  ],
+                  '->',
+                  [
+                    'type',
+                    [
+                      'btype',
+                      [
                         'btype',
-                        [ 'btype', [ 'atype', [ 'gtycon', 'Stack' ] ] ],
-                        [ 'atype', 'a' ]
-                      ],
-                      [ 'atype', 'push' ]
-                    ],
-                    [ 'atype', 'x' ]
-                  ]
-                ]
-              ]
-            ]
-          ]
-        ]
-      ],
-      [
-        'topdecl',
-        [
-          'decl',
-          [ 'funlhs', [ 'var', 's' ], [] ],
-          [
-            'rhs',
-            '=',
-            [
-              'exp',
-              [
-                'infixexp',
-                [
-                  'lexp',
-                  [
-                    'fexp',
-                    [
-                      'fexp',
-                      [ 'fexp', [ 'aexp', [ 'gcon', [ 'qcon', 'MkStack' ] ] ] ],
-                      [ 'aexp', [ 'qvar', 'x' ] ]
-                    ],
-                    [ 'aexp', [ 'qvar', 's' ] ]
-                  ]
-                ]
-              ]
-            ]
-          ]
-        ]
-      ],
-      [
-        'topdecl',
-        [ 'decl',
-          [ 'gendecl',
-            [ 'vars', [ 'var', 'size' ] ],
-            '::',
-            [
-              'type',
-              [ 'btype',
-                [ 'btype', [ 'atype', [ 'gtycon', 'Stack' ] ] ],
-                [ 'atype', 'a' ]
-              ],
-              '->',
-              [ 'type',
-                [
-                  'btype',
-                  [ 'btype', [ 'atype', [ 'gtycon', 'Int' ] ] ],
-                  [ 'atype', 'size' ]
-                ]
-              ]
-            ]
-          ]
-        ]
-      ],
-      [
-        'topdecl',
-        [
-          'decl',
-          [ 'funlhs', [ 'var', 's' ], [] ],
-          [ 'rhs', '=',
-            [
-              'exp',
-              [
-                'infixexp',
-                [
-                  'lexp',
-                  [
-                    'fexp',
-                    [ 'fexp', [ 'aexp', [ 'qvar', 'length' ] ] ],
-                    [
-                      'aexp',
-                      '(',
-                      [ 'exp', [ 'infixexp', [
-                            'lexp',
-                            [ 'fexp',
-                              [ 'fexp', [ 'aexp', [ 'qvar', 'stkToLst' ] ] ],
-                              [ 'aexp', [ 'qvar', 's' ] ]
-                            ]
+                        [
+                          'atype',
+                          [
+                            'gtycon',
+                            'Stack'
                           ]
                         ]
                       ],
-                      ')'
+                      [
+                        'atype',
+                        'a'
+                      ]
                     ]
+                  ]
+                ]
+              ]
+            ]
+          ]
+        ],
+        [
+          'topdecl',
+          [
+            'decl',
+            [
+              'funlhs',
+              [
+                'var',
+                'push'
+              ],
+              [
+                [
+                  'apat',
+                  [
+                    'var',
+                    'x'
+                  ]
+                ],
+                [
+                  'apat',
+                  [
+                    'var',
+                    's'
                   ]
                 ]
               ]
             ],
-            'where',
             [
-              'decls',
+              'rhs',
+              '=',
               [
-                'decl',
-                [ 'funlhs', [ 'var', 'stkToLst' ], [ [ 'apat', [ 'gcon', [ 'qcon', 'Empty' ] ] ] ] ],
-                [ 'rhs', '=',
-                  [ 'exp', [ 'infixexp', [ 'lexp', [ 'fexp', [ 'aexp', [ 'gcon', '[]' ] ] ] ] ] ]
-                ]
-              ],
-              [ 'decl',
-                [ 'funlhs',
-                  [ 'var', 'stkToLst' ],
+                'exp',
+                [
+                  'infixexp',
                   [
-                    [ 'apat',
-                      '(',
-                      [ 'pat',
-                        [ 'lpat',
-                          [ 'gcon', [ 'qcon', 'MkStack' ] ],
-                          [ [ 'apat', [ 'var', 'x' ] ],
-                            [ 'apat', [ 'var', 's' ] ]
+                    'lexp',
+                    [
+                      'fexp',
+                      [
+                        'fexp',
+                        [
+                          'fexp',
+                          [
+                            'aexp',
+                            [
+                              'gcon',
+                              [
+                                'qcon',
+                                'MkStack'
+                              ]
+                            ]
+                          ]
+                        ],
+                        [
+                          'aexp',
+                          [
+                            'qvar',
+                            'x'
                           ]
                         ]
                       ],
-                      ')'
-                    ]
-                  ]
-                ],
-                [ 'rhs', '=',
-                  [ 'exp',
-                    [ 'infixexp',
-                      [ 'lexp', [ 'fexp', [ 'aexp', [ 'qvar', 'x' ] ] ] ],
-                      [ 'qop', [ 'qconop', [ 'gconsym', ':' ] ] ],
-                      [ 'infixexp', [ 'lexp', [ 'fexp', [ 'aexp', [ 'qvar', 'xs' ] ] ] ]
-                      ]
-                    ]
-                  ],
-                  'where',
-                  [ 'decls' ]
-                ]
-              ],
-              [ 'decl',
-                [ 'funlhs', [ 'var', 'xs' ], [] ],
-                [ 'rhs', '=',
-                  [ 'exp', [
-                      'infixexp',
-                      [ 'lexp', [
-                          'fexp', [ 'fexp', [ 'aexp', [ 'qvar', 'stkToLst' ] ] ],
-                          [ 'aexp', [ 'qvar', 's' ] ]
+                      [
+                        'aexp',
+                        [
+                          'qvar',
+                          's'
                         ]
                       ]
                     ]
                   ]
                 ]
+              ]
+            ]
+          ]
+        ],
+        [
+          'topdecl',
+          [
+            'decl',
+            [
+              'gendecl',
+              [
+                'vars',
+                [
+                  'var',
+                  'size'
+                ]
               ],
-              [ 'decl',
-                [ 'gendecl',
-                  [ 'vars', [ 'var', 'pop' ] ],
-                  '::',
-                  [ 'type',
-                    [ 'btype',
-                      [ 'btype', [ 'atype', [ 'gtycon', 'Stack' ] ] ],
-                      [ 'atype', 'a' ]
+              '::',
+              [
+                'type',
+                [
+                  'btype',
+                  [
+                    'btype',
+                    [
+                      'atype',
+                      [
+                        'gtycon',
+                        'Stack'
+                      ]
+                    ]
+                  ],
+                  [
+                    'atype',
+                    'a'
+                  ]
+                ],
+                '->',
+                [
+                  'type',
+                  [
+                    'btype',
+                    [
+                      'atype',
+                      [
+                        'gtycon',
+                        'Int'
+                      ]
+                    ]
+                  ]
+                ]
+              ]
+            ]
+          ]
+        ],
+        [
+          'topdecl',
+          [
+            'decl',
+            [
+              'funlhs',
+              [
+                'var',
+                'size'
+              ],
+              [
+                [
+                  'apat',
+                  [
+                    'var',
+                    's'
+                  ]
+                ]
+              ]
+            ],
+            [
+              'rhs',
+              '=',
+              [
+                'exp',
+                [
+                  'infixexp',
+                  [
+                    'lexp',
+                    [
+                      'fexp',
+                      [
+                        'fexp',
+                        [
+                          'aexp',
+                          [
+                            'qvar',
+                            'length'
+                          ]
+                        ]
+                      ],
+                      [
+                        'aexp',
+                        '(',
+                        [
+                          'exp',
+                          [
+                            'infixexp',
+                            [
+                              'lexp',
+                              [
+                                'fexp',
+                                [
+                                  'fexp',
+                                  [
+                                    'aexp',
+                                    [
+                                      'qvar',
+                                      'stkToLst'
+                                    ]
+                                  ]
+                                ],
+                                [
+                                  'aexp',
+                                  [
+                                    'qvar',
+                                    's'
+                                  ]
+                                ]
+                              ]
+                            ]
+                          ]
+                        ],
+                        ')'
+                      ]
+                    ]
+                  ]
+                ]
+              ],
+              'where',
+              [
+                '{',
+                [
+                  'decls',
+                  [
+                    'decl',
+                    [
+                      'funlhs',
+                      [
+                        'var',
+                        'stkToLst'
+                      ],
+                      [
+                        [
+                          'apat',
+                          [
+                            'gcon',
+                            [
+                              'qcon',
+                              'Empty'
+                            ]
+                          ]
+                        ]
+                      ]
                     ],
-                    '->',
-                    [ 'type',
-                      [ 'btype',
-                        [ 'atype',
+                    [
+                      'rhs',
+                      '=',
+                      [
+                        'exp',
+                        [
+                          'infixexp',
+                          [
+                            'lexp',
+                            [
+                              'fexp',
+                              [
+                                'aexp',
+                                [
+                                  'gcon',
+                                  '[]'
+                                ]
+                              ]
+                            ]
+                          ]
+                        ]
+                      ]
+                    ]
+                  ],
+                  [
+                    'decl',
+                    [
+                      'funlhs',
+                      [
+                        'var',
+                        'stkToLst'
+                      ],
+                      [
+                        [
+                          'apat',
                           '(',
                           [
+                            'pat',
                             [
-                              [ 'type', [ 'btype', [ 'atype', 'a' ] ] ],
-                              ',',
-                              [ 'type', [
-                                  'btype',
-                                  [ 'btype', [ 'atype', [ 'gtycon', 'Stack' ] ] ],
-                                  [ 'atype', 'a' ]
+                              'lpat',
+                              [
+                                'gcon',
+                                [
+                                  'qcon',
+                                  'MkStack'
+                                ]
+                              ],
+                              [
+                                [
+                                  'apat',
+                                  [
+                                    'var',
+                                    'x'
+                                  ]
+                                ],
+                                [
+                                  'apat',
+                                  [
+                                    'var',
+                                    's'
+                                  ]
                                 ]
                               ]
                             ]
@@ -960,130 +1184,539 @@ my $expected_ast = [
                           ')'
                         ]
                       ]
-                    ]
-                  ]
-                ]
-              ],
-              [ 'decl',
-                [ 'funlhs',
-                  [ 'var', 'pop' ],
-                  [
-                    [ 'apat',
-                      '(',
-                      [ 'pat',
-                        [ 'lpat',
-                          [ 'gcon', [ 'qcon', 'MkStack' ] ],
+                    ],
+                    [
+                      'rhs',
+                      '=',
+                      [
+                        'exp',
+                        [
+                          'infixexp',
                           [
-                            [ 'apat', [ 'var', 'x' ] ],
-                            [ 'apat', [ 'var', 's' ] ]
+                            'lexp',
+                            [
+                              'fexp',
+                              [
+                                'aexp',
+                                [
+                                  'qvar',
+                                  'x'
+                                ]
+                              ]
+                            ]
+                          ],
+                          [
+                            'qop',
+                            [
+                              'qconop',
+                              [
+                                'gconsym',
+                                ':'
+                              ]
+                            ]
+                          ],
+                          [
+                            'infixexp',
+                            [
+                              'lexp',
+                              [
+                                'fexp',
+                                [
+                                  'aexp',
+                                  [
+                                    'qvar',
+                                    'xs'
+                                  ]
+                                ]
+                              ]
+                            ]
                           ]
                         ]
                       ],
-                      ')'
-                    ]
-                  ]
-                ],
-                [ 'rhs', '=',
-                  [ 'exp',
-                    [ 'infixexp',
+                      'where',
                       [
-                        'lexp',
-                        [ 'fexp',
-                          [ 'aexp',
-                            '(',
+                        '{',
+                        [
+                          'decls',
+                          [
+                            'decl',
                             [
-                              [ 'exp',
-                                [ 'infixexp',
-                                  [ 'lexp',
-                                    [ 'fexp', [ 'aexp', [ 'qvar', 'x' ] ] ]
-                                  ]
-                                ]
+                              'funlhs',
+                              [
+                                'var',
+                                'xs'
                               ],
-                              ',',
-                              [ 'exp',
-                                [ 'infixexp',
-                                  [ 'lexp',
-                                    'case',
-                                    [ 'exp', [ 'infixexp', [ 'lexp', [ 'fexp', [ 'aexp', [ 'qvar', 's' ] ] ] ] ] ],
-                                    'of',
-                                    [ 'alts',
-                                      [ 'alt',
-                                        [ 'pat', [ 'lpat', [ 'apat', [ 'var', 'r' ] ] ] ],
-                                        '->',
-                                        [ 'exp',
-                                          [ 'infixexp',
-                                            [ 'lexp',
-                                              [ 'fexp',
-                                                [ 'fexp', [ 'aexp', [ 'qvar', 'i' ] ] ],
-                                                [ 'aexp', [ 'qvar', 'r' ] ]
-                                              ]
-                                            ]
+                              []
+                            ],
+                            [
+                              'rhs',
+                              '=',
+                              [
+                                'exp',
+                                [
+                                  'infixexp',
+                                  [
+                                    'lexp',
+                                    [
+                                      'fexp',
+                                      [
+                                        'fexp',
+                                        [
+                                          'aexp',
+                                          [
+                                            'qvar',
+                                            'stkToLst'
                                           ]
-                                        ],
-                                        'where',
-                                        [ 'decls',
-                                          [ 'decl',
-                                            [ 'funlhs',
-                                              [ 'var', 'i' ],
-                                              [ [ 'apat', [ 'var', 'x' ] ] ]
-                                            ],
-                                            [ 'rhs',
-                                              '=',
-                                              [ 'exp', [ 'infixexp', [ 'lexp', [ 'fexp', [ 'aexp', [ 'qvar', 'x' ] ] ] ] ] ]
-                                            ]
-                                          ]
+                                        ]
+                                      ],
+                                      [
+                                        'aexp',
+                                        [
+                                          'qvar',
+                                          's'
                                         ]
                                       ]
                                     ]
                                   ]
                                 ]
                               ]
-                            ],
-                            ')'
+                            ]
                           ]
-                        ]
+                        ],
+                        '}'
                       ]
                     ]
                   ]
-                ]
-              ],
+                ],
+                '}'
+              ]
+            ]
+          ]
+        ],
+        [
+          'topdecl',
+          [
+            'decl',
+            [
+              'gendecl',
               [
-                'decl',
-                [ 'gendecl',
-                  [ 'vars', [ 'var', 'top' ] ],
-                  '::',
-                  [
-                    'type',
-                    [ 'btype',
-                      [ 'btype', [ 'atype', [ 'gtycon', 'Stack' ] ] ],
-                      [ 'atype', 'a' ]
-                    ],
-                    '->',
-                    [ 'type', [ 'btype', [ 'atype', 'a' ] ] ]
-                  ]
+                'vars',
+                [
+                  'var',
+                  'pop'
                 ]
               ],
-              [ 'decl',
-                [ 'funlhs',
-                  [ 'var', 'top' ],
+              '::',
+              [
+                'type',
+                [
+                  'btype',
                   [
-                    [ 'apat',
+                    'btype',
+                    [
+                      'atype',
+                      [
+                        'gtycon',
+                        'Stack'
+                      ]
+                    ]
+                  ],
+                  [
+                    'atype',
+                    'a'
+                  ]
+                ],
+                '->',
+                [
+                  'type',
+                  [
+                    'btype',
+                    [
+                      'atype',
                       '(',
-                      [ 'pat',
-                        [ 'lpat',
-                          [ 'gcon', [ 'qcon', 'MkStack' ] ],
+                      [
+                        [
                           [
-                            [ 'apat', [ 'var', 'x' ] ],
-                            [ 'apat', [ 'var', 's' ] ]
+                            'type',
+                            [
+                              'btype',
+                              [
+                                'atype',
+                                'a'
+                              ]
+                            ]
+                          ],
+                          ',',
+                          [
+                            'type',
+                            [
+                              'btype',
+                              [
+                                'btype',
+                                [
+                                  'atype',
+                                  [
+                                    'gtycon',
+                                    'Stack'
+                                  ]
+                                ]
+                              ],
+                              [
+                                'atype',
+                                'a'
+                              ]
+                            ]
                           ]
                         ]
                       ],
                       ')'
                     ]
                   ]
+                ]
+              ]
+            ]
+          ]
+        ],
+        [
+          'topdecl',
+          [
+            'decl',
+            [
+              'funlhs',
+              [
+                'var',
+                'pop'
+              ],
+              [
+                [
+                  'apat',
+                  '(',
+                  [
+                    'pat',
+                    [
+                      'lpat',
+                      [
+                        'gcon',
+                        [
+                          'qcon',
+                          'MkStack'
+                        ]
+                      ],
+                      [
+                        [
+                          'apat',
+                          [
+                            'var',
+                            'x'
+                          ]
+                        ],
+                        [
+                          'apat',
+                          [
+                            'var',
+                            's'
+                          ]
+                        ]
+                      ]
+                    ]
+                  ],
+                  ')'
+                ]
+              ]
+            ],
+            [
+              'rhs',
+              '=',
+              [
+                'exp',
+                [
+                  'infixexp',
+                  [
+                    'lexp',
+                    [
+                      'fexp',
+                      [
+                        'aexp',
+                        '(',
+                        [
+                          [
+                            'exp',
+                            [
+                              'infixexp',
+                              [
+                                'lexp',
+                                [
+                                  'fexp',
+                                  [
+                                    'aexp',
+                                    [
+                                      'qvar',
+                                      'x'
+                                    ]
+                                  ]
+                                ]
+                              ]
+                            ]
+                          ],
+                          ',',
+                          [
+                            'exp',
+                            [
+                              'infixexp',
+                              [
+                                'lexp',
+                                'case',
+                                [
+                                  'exp',
+                                  [
+                                    'infixexp',
+                                    [
+                                      'lexp',
+                                      [
+                                        'fexp',
+                                        [
+                                          'aexp',
+                                          [
+                                            'qvar',
+                                            's'
+                                          ]
+                                        ]
+                                      ]
+                                    ]
+                                  ]
+                                ],
+                                'of',
+                                [
+                                  '{',
+                                  [
+                                    'alts',
+                                    [
+                                      'alt',
+                                      [
+                                        'pat',
+                                        [
+                                          'lpat',
+                                          [
+                                            'apat',
+                                            [
+                                              'var',
+                                              'r'
+                                            ]
+                                          ]
+                                        ]
+                                      ],
+                                      '->',
+                                      [
+                                        'exp',
+                                        [
+                                          'infixexp',
+                                          [
+                                            'lexp',
+                                            [
+                                              'fexp',
+                                              [
+                                                'fexp',
+                                                [
+                                                  'aexp',
+                                                  [
+                                                    'qvar',
+                                                    'i'
+                                                  ]
+                                                ]
+                                              ],
+                                              [
+                                                'aexp',
+                                                [
+                                                  'qvar',
+                                                  'r'
+                                                ]
+                                              ]
+                                            ]
+                                          ]
+                                        ]
+                                      ],
+                                      'where',
+                                      [
+                                        '{',
+                                        [
+                                          'decls',
+                                          [
+                                            'decl',
+                                            [
+                                              'funlhs',
+                                              [
+                                                'var',
+                                                'i'
+                                              ],
+                                              [
+                                                [
+                                                  'apat',
+                                                  [
+                                                    'var',
+                                                    'x'
+                                                  ]
+                                                ]
+                                              ]
+                                            ],
+                                            [
+                                              'rhs',
+                                              '=',
+                                              [
+                                                'exp',
+                                                [
+                                                  'infixexp',
+                                                  [
+                                                    'lexp',
+                                                    [
+                                                      'fexp',
+                                                      [
+                                                        'aexp',
+                                                        [
+                                                          'qvar',
+                                                          'x'
+                                                        ]
+                                                      ]
+                                                    ]
+                                                  ]
+                                                ]
+                                              ]
+                                            ]
+                                          ]
+                                        ],
+                                        '}'
+                                      ]
+                                    ]
+                                  ],
+                                  '}'
+                                ]
+                              ]
+                            ]
+                          ]
+                        ],
+                        ')'
+                      ]
+                    ]
+                  ]
+                ]
+              ]
+            ]
+          ]
+        ],
+        [
+          'topdecl',
+          [
+            'decl',
+            [
+              'gendecl',
+              [
+                'vars',
+                [
+                  'var',
+                  'top'
+                ]
+              ],
+              '::',
+              [
+                'type',
+                [
+                  'btype',
+                  [
+                    'btype',
+                    [
+                      'atype',
+                      [
+                        'gtycon',
+                        'Stack'
+                      ]
+                    ]
+                  ],
+                  [
+                    'atype',
+                    'a'
+                  ]
                 ],
-                [ 'rhs', '=',
-                  [ 'exp', [ 'infixexp', [ 'lexp', [ 'fexp', [ 'aexp', [ 'qvar', 'x' ] ] ] ] ] ]
+                '->',
+                [
+                  'type',
+                  [
+                    'btype',
+                    [
+                      'atype',
+                      'a'
+                    ]
+                  ]
+                ]
+              ]
+            ]
+          ]
+        ],
+        [
+          'topdecl',
+          [
+            'decl',
+            [
+              'funlhs',
+              [
+                'var',
+                'top'
+              ],
+              [
+                [
+                  'apat',
+                  '(',
+                  [
+                    'pat',
+                    [
+                      'lpat',
+                      [
+                        'gcon',
+                        [
+                          'qcon',
+                          'MkStack'
+                        ]
+                      ],
+                      [
+                        [
+                          'apat',
+                          [
+                            'var',
+                            'x'
+                          ]
+                        ],
+                        [
+                          'apat',
+                          [
+                            'var',
+                            's'
+                          ]
+                        ]
+                      ]
+                    ]
+                  ],
+                  ')'
+                ]
+              ]
+            ],
+            [
+              'rhs',
+              '=',
+              [
+                'exp',
+                [
+                  'infixexp',
+                  [
+                    'lexp',
+                    [
+                      'fexp',
+                      [
+                        'aexp',
+                        [
+                          'qvar',
+                          'x'
+                        ]
+                      ]
+                    ]
+                  ]
                 ]
               ]
             ]
@@ -1095,6 +1728,7 @@ my $expected_ast = [
 ];
 
 my $expected_value = Data::Dumper::Dumper(pruneNodes($expected_ast));
+
 
 my $grammar = Marpa::R2::Scanless::G->new( { source => \$dsl } );
 
@@ -1123,9 +1757,11 @@ INPUT: for my $inputRef (\$explicit_input) {
     my $value = '[fail]';
     if ($value_ref) {
        $value = Data::Dumper::Dumper(pruneNodes($value_ref));
+       # say '===';
        # say $value;
+       # say '===';
     }
-    Test::More::is($value, $expected_value, qq{Test of value});
+    Test::Differences::eq_or_diff($value, $expected_value, qq{Test of value});
 }
 
 sub doit {
@@ -1169,6 +1805,9 @@ sub pruneNodes {
         exp_tuple_list  => 1,
         flagged_atype   => 1,
         flagged_atypes  => 1,
+	indented_alts   => 1,
+	indented_decls  => 1,
+	indented_body   => 1,
         tuple_type_list => 1,
     };
 
