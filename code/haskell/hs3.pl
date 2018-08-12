@@ -847,6 +847,21 @@ my $expected_value = Data::Dumper::Dumper(pruneNodes($expected_ast));
 
 
 my $grammar = Marpa::R2::Scanless::G->new( { source => \$dsl } );
+$main::GRAMMARS = {
+   'ruby_body' => ['body'],
+   'ruby_decls' => ['decls'],
+   'ruby_alts' => ['alts'],
+};
+
+for my $key (keys %{$main::GRAMMARS}) {
+  my $grammar_data = $main::GRAMMARS->{$key};
+  my ($start) = @{$grammar_data};
+  my $this_dsl = ":start ::= $start\n";
+  $this_dsl .= "inaccessible is ok by default\n";
+  $this_dsl .= $dsl;
+  my $this_grammar = Marpa::R2::Scanless::G->new( { source => \$this_dsl } );
+  $grammar_data->[1] = $this_grammar;
+}
 
 INPUT: for my $inputRef (\$input, \$explicit_input) {
     my $recce = Marpa::R2::Scanless::R->new( { grammar => $grammar,
