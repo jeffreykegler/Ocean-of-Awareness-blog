@@ -1466,7 +1466,7 @@ my $expected_value = Data::Dumper::Dumper( pruneNodes($expected_ast) );
 
 my $grammar = Marpa::R2::Scanless::G->new( { source => \$dsl } );
 %main::GRAMMARS = (
-    'ruby_body'  => ['body'],
+    'ruby_body'  => ['topdecls'],
     'ruby_decls' => ['decls'],
     'ruby_alts'  => ['alts'],
 );
@@ -1546,6 +1546,7 @@ sub doit {
                 my @expected =
                   grep { /^ruby_/xms; } @{ $recce->terminals_expected() };
                 if ( not scalar @expected ) {
+		    say $recce->show_progress();
                     divergence( "All tokens rejected, expecting ",
                         ( join " ", @expected ) );
                 }
