@@ -1568,7 +1568,6 @@ sub doit {
         $this_pos = $recce->resume($new_pos)
       )
     {
-      # say STDERR 'terminals expected: ', @{$recce->terminals_expected()};
       EVENT:
         for (
             my $event_ix = 0 ;
@@ -1578,6 +1577,7 @@ sub doit {
         {
             my $name = $event->[0];
 	    if ($name eq "'rejected") {
+		say STDERR 'terminals expected: ', @{$recce->terminals_expected()};
 		my @expected = grep { /^ruby_/xms; } @{$recce->terminals_expected()};
 		if (not scalar @expected) {
 		  divergence("All tokens rejected, expecting ",
