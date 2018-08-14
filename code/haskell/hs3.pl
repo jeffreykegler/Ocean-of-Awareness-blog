@@ -913,6 +913,16 @@ sub doit {
           )
         {
             my $name = $event->[0];
+	    if ($name eq "'rejected") {
+		my %expected = map { +($_, 1);} @{$recce->terminals_expected()};
+		say Data::Dumper::Dumper(\%expected);
+		if ($expected{ruby_body}) {
+		  die "Expecting ruby_body!";
+		  next EVENT;
+		}
+	        say "All tokens rejected, expecting ",
+		    join " ", $recce->terminals_expected();
+	    }
 	    die qq{Unexpected event: name="$name"};
         }
     }
