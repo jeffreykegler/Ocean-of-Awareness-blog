@@ -870,7 +870,7 @@ INPUT: for my $inputRef (\$input, \$explicit_input) {
     } );
     my $value_ref;
     my $result = 'OK';
-    my $eval_ok = eval { $value_ref = doit( $recce, $inputRef ); 1; };
+    my $eval_ok = eval { $value_ref = doit( $recce, $inputRef, 0 ); 1; };
     # say $recce->show_progress();
     if ( !$eval_ok ) {
 	my $eval_error = $EVAL_ERROR;
@@ -896,10 +896,10 @@ INPUT: for my $inputRef (\$input, \$explicit_input) {
 }
 
 sub doit {
-    my ( $recce, $input ) = @_;
+    my ( $recce, $input, $offset ) = @_;
     my $input_length = length ${$input};
     for (
-        my $pos = $recce->read($input);
+        my $pos = $recce->read($input, $offset);
         $pos < $input_length;
         $pos = $recce->resume()
       )
@@ -933,6 +933,17 @@ sub doit {
     }
 
     return $value_ref;
+}
+
+sub subParse {
+    my ($target, $input, $offset, $indent) = @_;
+    my (undef, $subgrammar) = @{$main::GRAMMARS{$target}};
+    my $recce = Marpa::R2::Scanless::R->new( { grammar => $grammar,
+       rejection => 'event',
+       event_is_active => { indent => 1 },
+       # trace_terminals => 99,
+    });
+    my $value_ref = doit($recce, $input, $offset)
 }
 
 sub pruneNodes {
