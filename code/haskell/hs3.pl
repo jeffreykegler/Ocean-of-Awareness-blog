@@ -1557,14 +1557,14 @@ sub doit {
 		next EVENT if $next_char eq "\n";
 		say STDERR "Statement continuation" if $indent_length > $current_indent;
 		if ($indent_length > $current_indent) {
-		   $this_pos = $indent_end + 1;
+		   $new_pos = $indent_end + 1;
 		   next READ;
 		}
 		say STDERR "lexeme_read('ruby_semicolon', ...)";
                 $recce->lexeme_read( 'ruby_semicolon', $indent_start,
                     $indent_length, ';' )
                   // divergence("lexeme_read('ruby_semicolon', ...) failed");
-		$this_pos = $indent_end + 1;
+		$new_pos = $indent_end + 1;
 		next READ;
 	    }
             if ( $name eq "'rejected" ) {
