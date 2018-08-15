@@ -1542,7 +1542,8 @@ sub doit {
             my $name = $event->[0];
             if ( $name eq "indent" ) {
 	        my (undef, $indent_start, $indent_end) = @{$event};
-		my $indent_length = $indent_end - $indent_start;
+		# indent length is end-start less one for the newline
+		my $indent_length = $indent_end - $indent_start - 1;
 
 		say STDERR join '', 'Indent event @', $indent_start, q{-@}, $indent_end, ': "',
 		   substr(${$input}, $indent_start, ($indent_end-$indent_start)),
@@ -1564,7 +1565,7 @@ sub doit {
                     $indent_length, ';' )
                   // divergence("lexeme_read('ruby_semicolon', ...) failed");
 		$this_pos = $indent_end + 1;
-		next EVENT;
+		next READ;
 	    }
             if ( $name eq "'rejected" ) {
                 say STDERR 'Rejected event; terminals expected: ',
