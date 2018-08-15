@@ -1493,7 +1493,7 @@ INPUT: for my $inputRef ( \$input, \$explicit_input ) {
     my $value_ref;
     my $result = 'OK';
     my $eval_ok =
-      eval { ( $value_ref, undef ) = doit( $recce, $inputRef, 0 ); 1; };
+      eval { ( $value_ref, undef ) = doit( $recce, $inputRef, 0, 0 ); 1; };
 
     # say $recce->show_progress();
     if ( !$eval_ok ) {
@@ -1521,7 +1521,7 @@ INPUT: for my $inputRef ( \$input, \$explicit_input ) {
 }
 
 sub doit {
-    my ( $recce, $input, $offset ) = @_;
+    my ( $recce, $input, $offset, $current_indent ) = @_;
     my $input_length = length ${$input};
     my $new_pos;
     my $this_pos;
@@ -1540,6 +1540,27 @@ sub doit {
           )
         {
             my $name = $event->[0];
+            if ( $name eq "indent" ) {
+	        my (undef, $indent_start, $indent_end) = @{$event};
+		my $indent_length = $indent_end - $indent_start;
+
+		say STDERR join '', 'Indent @', $indent_start, q{-@}, $indent_end, ': "',
+		   substr(${$input}, $indent_start, ($indent_end-$indent_start)),
+		   q{"};
+
+		my $next_char = substr(${$input}, $indent_end+1, 1);
+		if (not defined $next_char or $indent_length < $current_indent) {
+		   $this_pos = $indent_start;
+		   last EVENT;
+		}
+		next EVENT if $next_char eq "\n";
+		next EVENT if $indent_length > $current_indent;
+                $recce->lexeme_read( 'ruby_semicolon', $indent_start,
+                    $indent_length, ';' )
+                  // divergence("lexeme_read('ruby_semicolon', ...) failed");
+		$this_pos = $indent_end + 1;
+		next EVENT;
+	    }
             if ( $name eq "'rejected" ) {
                 say STDERR 'terminals expected: ',
                   @{ $recce->terminals_expected() };
@@ -1578,7 +1599,7 @@ sub doit {
 }
 
 sub subParse {
-    my ( $target, $input, $offset, $indent ) = @_;
+    my ( $target, $input, $offset, $current_indent ) = @_;
     my $grammar_data = $main::GRAMMARS{$target};
 
     # divergence(Data::Dumper::Dumper(\%main::GRAMMARS));
@@ -1593,7 +1614,7 @@ sub subParse {
             # trace_terminals => 99,
         }
     );
-    my ( $value_ref, $pos ) = doit( $recce, $input, $offset );
+    my ( $value_ref, $pos ) = doit( $recce, $input, $offset, $current_indent );
     return $value_ref, $pos;
 }
 
