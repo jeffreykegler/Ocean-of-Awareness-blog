@@ -1544,17 +1544,22 @@ sub doit {
 	        my (undef, $indent_start, $indent_end) = @{$event};
 		my $indent_length = $indent_end - $indent_start;
 
-		say STDERR join '', 'Indent @', $indent_start, q{-@}, $indent_end, ': "',
+		say STDERR join '', 'Indent event @', $indent_start, q{-@}, $indent_end, ': "',
 		   substr(${$input}, $indent_start, ($indent_end-$indent_start)),
 		   q{"};
 
 		my $next_char = substr(${$input}, $indent_end+1, 1);
 		if (not defined $next_char or $indent_length < $current_indent) {
 		   $this_pos = $indent_start;
-		   last EVENT;
+		   last READ;
 		}
 		next EVENT if $next_char eq "\n";
-		next EVENT if $indent_length > $current_indent;
+		say STDERR "Statement continuation" if $indent_length > $current_indent;
+		if ($indent_length > $current_indent) {
+		   $this_pos = $indent_end + 1;
+		   next READ;
+		}
+		say STDERR "lexeme_read('ruby_semicolon', ...)";
                 $recce->lexeme_read( 'ruby_semicolon', $indent_start,
                     $indent_length, ';' )
                   // divergence("lexeme_read('ruby_semicolon', ...) failed");
@@ -1562,7 +1567,7 @@ sub doit {
 		next EVENT;
 	    }
             if ( $name eq "'rejected" ) {
-                say STDERR 'terminals expected: ',
+                say STDERR 'Rejected event; terminals expected: ',
                   @{ $recce->terminals_expected() };
                 my @expected =
                   grep { /^ruby_/xms; } @{ $recce->terminals_expected() };
@@ -1580,14 +1585,13 @@ sub doit {
                 my ( $value_ref, $next_pos ) =
                   subParse( $expected, $input, $this_pos, $indent );
                 $recce->lexeme_read( $expected, $this_pos,
-                    $new_pos - $this_pos, $value_ref )
+                    $next_pos - $this_pos, $value_ref )
                   // divergence("lexeme_read($expected, ...) failed");
                 $new_pos = $next_pos;
                 next READ;
             }
             divergence(qq{Unexpected event: name="$name"});
         }
-        divergence("Parse ended prematurely, at $this_pos");
     }
 
     my $value_ref = $recce->value();
@@ -1602,6 +1606,7 @@ sub subParse {
     my ( $target, $input, $offset, $current_indent ) = @_;
     my $grammar_data = $main::GRAMMARS{$target};
 
+    say STDERR "Calling subparser for $target";
     # divergence(Data::Dumper::Dumper(\%main::GRAMMARS));
     divergence(qq{No grammar for target = "$target"}) if not $grammar_data;
     my ( undef, $subgrammar ) = @{$grammar_data};
@@ -1611,7 +1616,7 @@ sub subParse {
             rejection       => 'event',
             event_is_active => { indent => 1 },
 
-            # trace_terminals => 99,
+            trace_terminals => 99,
         }
     );
     my ( $value_ref, $pos ) = doit( $recce, $input, $offset, $current_indent );
