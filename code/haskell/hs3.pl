@@ -250,6 +250,7 @@ infixexp ::= lexp
 # |	fexp
 
 lexp ::= fexp
+lexp ::= resword_let laidout_decls resword_in exp
 lexp ::= resword_case exp resword_of laidout_alts
 
 laidout_alts ::= '{' alts '}'
@@ -545,8 +546,8 @@ resword_data ~ 'data'
 # resword_if ~ 'if'
 # :lexeme ~ resword_import priority => 1
 # resword_import ~ 'import'
-# :lexeme ~ resword_in priority => 1
-# resword_in ~ 'in'
+:lexeme ~ resword_in priority => 1
+resword_in ~ 'in'
 # :lexeme ~ resword_infix priority => 1
 # resword_infix ~ 'infix'
 # :lexeme ~ resword_infixl priority => 1
@@ -555,8 +556,8 @@ resword_data ~ 'data'
 # resword_infixr ~ 'infixr'
 # :lexeme ~ resword_instance priority => 1
 # resword_instance ~ 'instance'
-# :lexeme ~ resword_let priority => 1
-# resword_let ~ 'let'
+:lexeme ~ resword_let priority => 1
+resword_let ~ 'let'
 :lexeme ~ resword_module priority => 1
 resword_module ~ 'module'
 # :lexeme ~ resword_newtype priority => 1
@@ -663,7 +664,7 @@ qconsym ~ consym | modid '.' consym
 
 END_OF_DSL
 
-my $input = <<'EOS';
+my $long_input = <<'EOS';
 module AStack( Stack, push, pop, top, size ) where  
 data Stack a = Empty  
              | MkStack a (Stack a)  
@@ -684,7 +685,7 @@ top :: Stack a -> a
 top (MkStack x s) = x                     -- (top Empty) is an error
 EOS
 
-my $explicit_input = <<'EOS';
+my $long_explicit = <<'EOS';
 module AStack( Stack, push, pop, top, size ) where
 {data Stack a = Empty
              | MkStack a (Stack a)
@@ -704,6 +705,32 @@ module AStack( Stack, push, pop, top, size ) where
 ;top :: Stack a -> a
 ;top (MkStack x s) = x -- (top Empty) is an error
 }
+EOS
+
+my $short_input = <<'EOS';
+let { y   = a*b
+    ; f x = (x+y)/y
+    }
+in f c + f d
+EOS
+
+my $short_explicit = <<'EOS';
+let { y   = a*b
+    ; f x = (x+y)/y
+    }
+in f c + f d
+EOS
+
+my $short_alt = <<'EOS';
+let y   = a*b f
+    x   = (x+y)/y
+in f c + f d
+EOS
+
+my $short_mixed = <<'EOS';
+let y   = a*b;  z = a/b
+    f x = (x+y)/z
+in f c + f d
 EOS
 
 my $expected_ast = [
@@ -1481,7 +1508,7 @@ for my $key ( keys %main::GRAMMARS ) {
     $grammar_data->[1] = $this_grammar;
 }
 
-INPUT: for my $inputRef ( \$input, \$explicit_input ) {
+INPUT: for my $inputRef ( \$long_input, \$long_explicit ) {
     my $recce = Marpa::R2::Scanless::R->new(
         {
             grammar   => $grammar,
