@@ -1577,6 +1577,8 @@ sub getValue {
     my $input_length = length ${$input};
     my $new_pos;
     my $this_pos;
+
+
   READ:
     for (
         $this_pos = $recce->read( $input, $offset ) ;
@@ -1584,6 +1586,15 @@ sub getValue {
         $this_pos = $recce->resume($new_pos)
       )
     {
+      my @events = $recce->events();
+      my $event_count = scalar @events;
+      if ($event_count < 0) {
+          last READ;
+      }
+      if ($event_count != 1) {
+          divergence("One event expected, instead got $event_count");
+      }
+
       EVENT:
         for (
             my $event_ix = 0 ;
