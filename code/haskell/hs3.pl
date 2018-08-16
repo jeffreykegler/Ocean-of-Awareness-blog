@@ -1586,78 +1586,79 @@ sub getValue {
         $this_pos = $recce->resume($new_pos)
       )
     {
-      my @events = $recce->events();
-      my $event_count = scalar @events;
-      if ($event_count < 0) {
-          last READ;
-      }
-      if ($event_count != 1) {
-          divergence("One event expected, instead got $event_count");
-      }
-      my $event = $events[0];
+        my $events      = $recce->events();
+        my $event_count = scalar @{$events};
+        if ( $event_count < 0 ) {
+            last READ;
+        }
+        if ( $event_count != 1 ) {
+            divergence("One event expected, instead got $event_count");
+        }
 
-        {
-            my $name = $event->[0];
-            if ( $name eq "indent" ) {
+        my $event = $events->[0];
+        my $name = $event->[0];
+	# say STDERR "=== Event $name";
+        if ( $name eq "indent" ) {
 
-	        my (undef, $indent_start, $indent_end) = @{$event};
+            my ( undef, $indent_start, $indent_end ) = @{$event};
 
-		# If negative currentIndent, we are ignoring indentation
-	        if ($currentIndent < 0) {
-		  $new_pos = $indent_end + 1;
-		  next READ;
-		}
-
-		# indent length is end-start less one for the newline
-		my $indent_length = $indent_end - $indent_start - 1;
-
-		say STDERR join '', 'Indent event @', $indent_start, q{-@}, $indent_end, ': "',
-		   substr(${$input}, $indent_start, ($indent_end-$indent_start)),
-		   q{"};
-
-		my $next_char = substr(${$input}, $indent_end+1, 1);
-		if (not defined $next_char or $indent_length < $currentIndent) {
-		   $this_pos = $indent_start;
-		   last READ;
-		}
-		next EVENT if $next_char eq "\n";
-		say STDERR "Statement continuation" if $indent_length > $currentIndent;
-		if ($indent_length > $currentIndent) {
-		   $new_pos = $indent_end + 1;
-		   next READ;
-		}
-		say STDERR "lexeme_read('ruby_semicolon', ...)";
-                $recce->lexeme_read( 'ruby_semicolon', $indent_start,
-                    $indent_length, ';' )
-                  // divergence("lexeme_read('ruby_semicolon', ...) failed");
-		$new_pos = $indent_end + 1;
-		next READ;
-	    }
-            if ( $name eq "'rejected" ) {
-                say STDERR 'Rejected event; terminals expected: ',
-                  @{ $recce->terminals_expected() };
-                my @expected =
-                  grep { /^ruby_/xms; } @{ $recce->terminals_expected() };
-                if ( not scalar @expected ) {
-		    say $recce->show_progress();
-                    divergence( "All tokens rejected, expecting ",
-                        ( join " ", @expected ) );
-                }
-                if ( scalar @expected > 2 ) {
-                    divergence( "More than one ruby token expected; ",
-                        ( join " ", @expected ) );
-                }
-                my $expected = pop @expected;
-                my $indent   = 0;
-                my ( $value_ref, $next_pos ) =
-                  subParse( $expected, $input, $this_pos, $indent );
-                $recce->lexeme_read( $expected, $this_pos,
-                    $next_pos - $this_pos, $value_ref )
-                  // divergence("lexeme_read($expected, ...) failed");
-                $new_pos = $next_pos;
+            # If negative currentIndent, we are ignoring indentation
+            if ( $currentIndent < 0 ) {
+                $new_pos = $indent_end + 1;
                 next READ;
             }
-            divergence(qq{Unexpected event: name="$name"});
+
+            # indent length is end-start less one for the newline
+            my $indent_length = $indent_end - $indent_start - 1;
+
+            say STDERR join '', 'Indent event @', $indent_start, q{-@},
+              $indent_end, ': "',
+              substr( ${$input}, $indent_start,
+                ( $indent_end - $indent_start ) ),
+              q{"};
+
+            my $next_char = substr( ${$input}, $indent_end + 1, 1 );
+            if ( not defined $next_char or $indent_length < $currentIndent ) {
+                $this_pos = $indent_start;
+                last READ;
+            }
+            next EVENT if $next_char eq "\n";
+            say STDERR "Statement continuation"
+              if $indent_length > $currentIndent;
+            if ( $indent_length > $currentIndent ) {
+                $new_pos = $indent_end + 1;
+                next READ;
+            }
+            say STDERR "lexeme_read('ruby_semicolon', ...)";
+            $recce->lexeme_read( 'ruby_semicolon', $indent_start,
+                $indent_length, ';' )
+              // divergence("lexeme_read('ruby_semicolon', ...) failed");
+            $new_pos = $indent_end + 1;
+            next READ;
+        }
+        if ( $name eq "'rejected" ) {
+            say STDERR 'Rejected event; terminals expected: ',
+              @{ $recce->terminals_expected() };
+            my @expected =
+              grep { /^ruby_/xms; } @{ $recce->terminals_expected() };
+            if ( not scalar @expected ) {
+                say $recce->show_progress();
+                divergence( "All tokens rejected, expecting ",
+                    ( join " ", @expected ) );
+            }
+            if ( scalar @expected > 2 ) {
+                divergence( "More than one ruby token expected; ",
+                    ( join " ", @expected ) );
+            }
+            my $expected = pop @expected;
+            my $indent   = 0;
+            my ( $value_ref, $next_pos ) =
+              subParse( $expected, $input, $this_pos, $indent );
+            $recce->lexeme_read( $expected, $this_pos,
+                $next_pos - $this_pos, $value_ref )
+              // divergence("lexeme_read($expected, ...) failed");
+            $new_pos = $next_pos;
+            next READ;
         }
     }
 
