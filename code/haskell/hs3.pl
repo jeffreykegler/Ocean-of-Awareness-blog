@@ -1521,10 +1521,31 @@ INPUT: for my $inputRef ( \$long_explicit, \$short_explicit ) {
             # trace_terminals => 99,
         }
     );
+
+    my ($initialWS) = ${$inputRef} =~ m/ ^ ([\s]*) /xms;
+    my $firstLexemeOffset = length $initialWS;
+
+    my $currentIndent = -1;
+    DETERMINE_INDENT: {
+      my $initialChars = substr(${$inputRef}, $firstLexemeOffset, 7);
+      if (substr($initialChars, 0, 1) eq '{') {
+         last DETERMINE_INDENT;
+      }
+      if (substr($initialChars, 0, 6) =~ m/module\b/) {
+         last DETERMINE_INDENT;
+      }
+      my $lastNL = rindex($initialWS, "\n");
+      if (not defined $lastNL) {
+          $currentIndent = $firstLexemeOffset;
+         last DETERMINE_INDENT;
+      }
+      $currentIndent = $lastNL + 1;
+    }
+
     my $value_ref;
     my $result = 'OK';
     my $eval_ok =
-      eval { ( $value_ref, undef ) = doit( $recce, $inputRef, 0, 0 ); 1; };
+      eval { ( $value_ref, undef ) = getValue( $recce, $inputRef, $firstLexemeOffset, 0 ); 1; };
 
     # say $recce->show_progress();
     if ( !$eval_ok ) {
@@ -1551,8 +1572,8 @@ INPUT: for my $inputRef ( \$long_explicit, \$short_explicit ) {
     Test::Differences::eq_or_diff( $value, $expected_value, qq{Test of value} );
 }
 
-sub doit {
-    my ( $recce, $input, $offset, $current_indent ) = @_;
+sub getValue {
+    my ( $recce, $input, $offset, $currentIndent ) = @_;
     my $input_length = length ${$input};
     my $new_pos;
     my $this_pos;
@@ -1572,7 +1593,15 @@ sub doit {
         {
             my $name = $event->[0];
             if ( $name eq "indent" ) {
+
 	        my (undef, $indent_start, $indent_end) = @{$event};
+
+		# If negative currentIndent, we are ignoring indentation
+	        if ($currentIndent < 0) {
+		  $new_pos = $indent_end + 1;
+		  next READ;
+		}
+
 		# indent length is end-start less one for the newline
 		my $indent_length = $indent_end - $indent_start - 1;
 
@@ -1581,13 +1610,13 @@ sub doit {
 		   q{"};
 
 		my $next_char = substr(${$input}, $indent_end+1, 1);
-		if (not defined $next_char or $indent_length < $current_indent) {
+		if (not defined $next_char or $indent_length < $currentIndent) {
 		   $this_pos = $indent_start;
 		   last READ;
 		}
 		next EVENT if $next_char eq "\n";
-		say STDERR "Statement continuation" if $indent_length > $current_indent;
-		if ($indent_length > $current_indent) {
+		say STDERR "Statement continuation" if $indent_length > $currentIndent;
+		if ($indent_length > $currentIndent) {
 		   $new_pos = $indent_end + 1;
 		   next READ;
 		}
@@ -1635,7 +1664,7 @@ sub doit {
 }
 
 sub subParse {
-    my ( $target, $input, $offset, $current_indent ) = @_;
+    my ( $target, $input, $offset, $currentIndent ) = @_;
     my $grammar_data = $main::GRAMMARS{$target};
 
     say STDERR "Calling subparser for $target";
@@ -1651,7 +1680,7 @@ sub subParse {
             trace_terminals => 99,
         }
     );
-    my ( $value_ref, $pos ) = doit( $recce, $input, $offset, $current_indent );
+    my ( $value_ref, $pos ) = getValue( $recce, $input, $offset, $currentIndent );
     return $value_ref, $pos;
 }
 
