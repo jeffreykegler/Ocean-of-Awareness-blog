@@ -1545,7 +1545,7 @@ INPUT: for my $inputRef ( \$long_explicit, \$short_explicit ) {
     my $value_ref;
     my $result = 'OK';
     my $eval_ok =
-      eval { ( $value_ref, undef ) = getValue( $recce, $inputRef, $firstLexemeOffset, 0 ); 1; };
+      eval { ( $value_ref, undef ) = getValue( $recce, $inputRef, $firstLexemeOffset, $currentIndent ); 1; };
 
     # say $recce->show_progress();
     if ( !$eval_ok ) {
@@ -1604,7 +1604,7 @@ sub getValue {
 
             # If negative currentIndent, we are ignoring indentation
             if ( $currentIndent < 0 ) {
-                $new_pos = $indent_end + 1;
+                $new_pos = $indent_end;
                 next READ;
             }
 
