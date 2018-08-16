@@ -490,7 +490,9 @@ nonColonSymbol ~ nonColonAscSymbol
 #  
 # ascSymbol	→	! | # | $ | % | & | ⋆ | + | . | / | < | = | > | ? | @
 
-nonColonAscSymbol ~ '!' | '#' | '$' | '%' | '&' | '+' | '.' | '/' | '<' | '=' | '>' | '?' | '@'
+nonColonAscSymbol ~ '!' | '#' | '$' | '%' | '&'
+  | '*' | '+' | '.' | '/' | '<' | '=' | '>' | '?' | '@'
+  | '\' | '^' | '|' | '-' | '~'
 :lexeme ~ L0_colon
 L0_colon ~ colon
 colon ~ ':'
@@ -579,7 +581,7 @@ resword_where ~ 'where'
 :lexeme ~ L0_varsym
 L0_varsym ~ varsym
 varsym ~ nonColonSymbol symbols
-symbols ~ symbol+
+symbols ~ symbol*
 
 # consym	→	( : {symbol})⟨reservedop⟩
 
@@ -1517,8 +1519,7 @@ INPUT: for my $inputRef ( \$long_explicit, \$short_explicit ) {
         {
             grammar   => $grammar,
             rejection => 'event',
-
-            # trace_terminals => 99,
+            trace_terminals => 99,
         }
     );
 
@@ -1615,18 +1616,21 @@ sub getValue {
               $indent_end, ': "',
               substr( ${$input}, $indent_start,
                 ( $indent_end - $indent_start ) ),
-              q{"};
+              qq{"; current indent = $currentIndent};
 
             my $next_char = substr( ${$input}, $indent_end + 1, 1 );
             if ( not defined $next_char or $indent_length < $currentIndent ) {
                 $this_pos = $indent_start;
                 last READ;
             }
-            next EVENT if $next_char eq "\n";
+            if ($next_char eq "\n") {
+                $new_pos = $indent_end + 1;
+                next READ;
+	    }
             say STDERR "Statement continuation"
               if $indent_length > $currentIndent;
             if ( $indent_length > $currentIndent ) {
-                $new_pos = $indent_end + 1;
+                $new_pos = $indent_end;
                 next READ;
             }
             say STDERR "lexeme_read('ruby_semicolon', ...)";
@@ -1653,13 +1657,14 @@ sub getValue {
             my $expected = pop @expected;
             my $indent   = 0;
             my ( $value_ref, $next_pos ) =
-              subParse( $expected, $input, $this_pos, $indent );
+              subParse( $expected, $input, $this_pos, $currentIndent );
             $recce->lexeme_read( $expected, $this_pos,
                 $next_pos - $this_pos, $value_ref )
               // divergence("lexeme_read($expected, ...) failed");
             $new_pos = $next_pos;
             next READ;
         }
+	divergence(qq{Unexpected event: "$name"});
     }
 
     my $value_ref = $recce->value();
