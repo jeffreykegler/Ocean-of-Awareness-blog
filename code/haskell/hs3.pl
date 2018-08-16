@@ -1594,13 +1594,8 @@ sub getValue {
       if ($event_count != 1) {
           divergence("One event expected, instead got $event_count");
       }
+      my $event = $events[0];
 
-      EVENT:
-        for (
-            my $event_ix = 0 ;
-            my $event    = $recce->event($event_ix) ;
-            $event_ix++
-          )
         {
             my $name = $event->[0];
             if ( $name eq "indent" ) {
