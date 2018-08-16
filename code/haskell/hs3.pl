@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/perl)
 
 use 5.010;
 use strict;
@@ -28,7 +28,7 @@ lexeme default = latm => 1
 module ::= resword_module L0_modid optExports resword_where laidout_body
          | body
 
-laidout_body ::= body
+laidout_body ::= ('{') body ('}')
 	 | ruby_body
 
 optExports ::= '(' exports ')'
@@ -38,7 +38,7 @@ optExports ::= # empty
 # |	{ impdecls }
 # |	{ topdecls }
 
-body ::= ('{') topdecls ('}')
+body ::= topdecls
 
 # impdecls	→	impdecl1 ; … ; impdecln	    (n ≥ 1)
 #  
@@ -708,29 +708,32 @@ module AStack( Stack, push, pop, top, size ) where
 EOS
 
 my $short_input = <<'EOS';
-let { y   = a*b
-    ; f x = (x+y)/y
-    }
-in f c + f d
+main =
+ let y   = a*b
+     f x = (x+y)/y
+ in f c + f d
 EOS
 
 my $short_explicit = <<'EOS';
-let { y   = a*b
-    ; f x = (x+y)/y
-    }
-in f c + f d
+main =
+ let { y   = a*b
+     ; f x = (x+y)/y
+     }
+ in f c + f d
 EOS
 
 my $short_alt = <<'EOS';
-let y   = a*b f
-    x   = (x+y)/y
-in f c + f d
+main =
+ let y   = a*b f
+     x   = (x+y)/y
+ in f c + f d
 EOS
 
 my $short_mixed = <<'EOS';
-let y   = a*b;  z = a/b
-    f x = (x+y)/z
-in f c + f d
+main =
+ let y   = a*b;  z = a/b
+     f x = (x+y)/z
+ in f c + f d
 EOS
 
 my $expected_ast = [
@@ -1508,7 +1511,8 @@ for my $key ( keys %main::GRAMMARS ) {
     $grammar_data->[1] = $this_grammar;
 }
 
-INPUT: for my $inputRef ( \$long_input, \$long_explicit ) {
+# INPUT: for my $inputRef ( \$long_input, \$long_explicit, \$short_explicit ) {
+INPUT: for my $inputRef ( \$long_explicit, \$short_explicit ) {
     my $recce = Marpa::R2::Scanless::R->new(
         {
             grammar   => $grammar,
