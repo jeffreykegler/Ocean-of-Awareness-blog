@@ -441,7 +441,7 @@ whitechar ~ [\t ]
 :discard ~ commentLine
 commentLine ~ newline whitechars '--' nonNewlines
 
-:discard ~ indent event => indent=off
+:discard ~ indent event => indent
 indent ~ newline whitechars
 
 # space	→	a space
@@ -1682,8 +1682,6 @@ sub subParse {
         {
             grammar         => $subgrammar,
             rejection       => 'event',
-            event_is_active => { indent => 1 },
-
             trace_terminals => 99,
         }
     );
