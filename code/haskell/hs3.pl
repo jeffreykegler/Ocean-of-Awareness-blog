@@ -458,7 +458,7 @@ whitechar ~ [\t ]
 :discard ~ commentLine
 commentLine ~ newline whitechars '--' nonNewlines
 
-:discard ~ indent event => indent
+:discard ~ indent event => indent=off
 indent ~ newline whitechars
 
 # space	→	a space
@@ -1527,14 +1527,6 @@ for my $key ( keys %main::GRAMMARS ) {
 }
 
 INPUT: for my $inputRef ( \$long_explicit, \$short_explicit ) {
-    my $recce = Marpa::R2::Scanless::R->new(
-        {
-            grammar   => $grammar,
-            rejection => 'event',
-            trace_terminals => 99,
-        }
-    );
-
     my ($initialWS) = ${$inputRef} =~ m/ ^ ([\s]*) /xms;
     my $firstLexemeOffset = length $initialWS;
 
@@ -1554,6 +1546,16 @@ INPUT: for my $inputRef ( \$long_explicit, \$short_explicit ) {
       }
       $currentIndent = $lastNL + 1;
     }
+
+    my $indent_is_active = ($currentIndent >= 0 ? 1 : 0);
+    my $recce = Marpa::R2::Scanless::R->new(
+        {
+            grammar   => $grammar,
+            rejection => 'event',
+	    event_is_active => { 'indent' => $indent_is_active },
+            trace_terminals => 99,
+        }
+    );
 
     my $value_ref;
     my $result = 'OK';
@@ -1708,10 +1710,12 @@ sub subParse {
     # divergence(Data::Dumper::Dumper(\%main::GRAMMARS));
     divergence(qq{No grammar for target = "$target"}) if not $grammar_data;
     my ( undef, $subgrammar ) = @{$grammar_data};
+    my $indent_is_active = ($currentIndent >= 0 ? 1 : 0);
     my $recce = Marpa::R2::Scanless::R->new(
         {
             grammar         => $subgrammar,
             rejection       => 'event',
+	    event_is_active => { 'indent' => $indent_is_active },
             trace_terminals => 99,
         }
     );
