@@ -1514,8 +1514,11 @@ my $short_implicit_ast =
 				      ] ] ] ], [ 'qop', [ 'qvarop', '*'
 				  ] ], [ 'infixexp', [ 'lexp', [ 'fexp', [ 'aexp', [ 'qvar', 'b'
 					] ] ] ] ] ] ] ] ],
-			[ 'decl', [ 'funlhs', [ 'var', 'x'
-			    ], [] ], [ 'rhs', '=',
+			[ 'decl', [ 'funlhs',
+			    [ 'var', 'f'
+			    ], [ [ 'apat', [ 'var', 'x'
+				] ] ],
+			    ], [ 'rhs', '=',
 			    [ 'exp', [ 'infixexp', [ 'lexp', [ 'fexp', [ 'aexp', '(',
 				      [ 'exp', [ 'infixexp', [ 'lexp', [ 'fexp', [ 'aexp', [ 'qvar', 'x'
 						] ] ] ],
@@ -1694,7 +1697,7 @@ sub getValue {
             $recce->lexeme_read( 'ruby_semicolon', $indent_start,
                 $indent_length, ';' )
               // divergence("lexeme_read('ruby_semicolon', ...) failed");
-            $new_pos = $indent_end + 1;
+            $new_pos = $indent_end;
             next READ;
         }
         if ( $name eq "'rejected" ) {
