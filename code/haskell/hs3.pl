@@ -253,7 +253,7 @@ lexp ::= fexp
 lexp ::= resword_let laidout_decls resword_in exp
 lexp ::= resword_case exp resword_of laidout_alts
 
-laidout_alts ::= '{' alts '}'
+laidout_alts ::= ('{') alts ('}')
 	 | ruby_alts
 
 # fexp	→	[fexp] aexp	    (function application)
@@ -1302,7 +1302,6 @@ my $expected_ast = [
                                                                 ],
                                                                 'of',
                                                                 [
-                                                                    '{',
                                                                     [
                                                                         'alts',
                                                                         [
@@ -1403,7 +1402,6 @@ my $expected_ast = [
                                                                             ]
                                                                         ]
                                                                     ],
-                                                                    '}'
                                                                 ]
                                                             ]
                                                         ]
