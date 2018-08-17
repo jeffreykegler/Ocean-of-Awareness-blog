@@ -1505,265 +1505,32 @@ my $long_explicit_ast = [
 my $long_explicit_expected = Data::Dumper::Dumper( pruneNodes($long_explicit_ast) );
 
 my $short_implicit_ast =
-  [
-    'module',
-    [
-      'body',
-      [
-	'topdecls',
-	[
-	  'topdecl',
-	  [
-	    'decl',
-	    [
-	      'funlhs',
-	      [
-		'var',
-		'main'
-	      ],
-	      []
-	    ],
-	    [
-	      'rhs',
-	      '=',
-	      [
-		'exp',
-		[
-		  'infixexp',
-		  [
-		    'lexp',
-		    'let',
-		    [
-		      [
-			'decls',
-			[
-			  'decl',
-			  [
-			    'funlhs',
-			    [
-			      'var',
-			      'y'
-			    ],
-			    []
-			  ],
-			  [
-			    'rhs',
-			    '=',
-			    [
-			      'exp',
-			      [
-				'infixexp',
-				[
-				  'lexp',
-				  [
-				    'fexp',
-				    [
-				      'aexp',
-				      [
-					'qvar',
-					'a'
-				      ]
-				    ]
-				  ]
-				],
-				[
-				  'qop',
-				  [
-				    'qvarop',
-				    '*'
-				  ]
-				],
-				[
-				  'infixexp',
-				  [
-				    'lexp',
-				    [
-				      'fexp',
-				      [
-					'aexp',
-					[
-					  'qvar',
-					  'b'
-					]
-				      ]
-				    ]
-				  ]
-				]
-			      ]
-			    ]
-			  ]
-			],
-			[
-			  'decl',
-			  [
-			    'funlhs',
-			    [
-			      'var',
-			      'x'
-			    ],
-			    []
-			  ],
-			  [
-			    'rhs',
-			    '=',
-			    [
-			      'exp',
-			      [
-				'infixexp',
-				[
-				  'lexp',
-				  [
-				    'fexp',
-				    [
-				      'aexp',
-				      '(',
-				      [
-					'exp',
-					[
-					  'infixexp',
-					  [
-					    'lexp',
-					    [
-					      'fexp',
-					      [
-						'aexp',
-						[
-						  'qvar',
-						  'x'
-						]
-					      ]
-					    ]
-					  ],
-					  [
-					    'qop',
-					    [
-					      'qvarop',
-					      '+'
-					    ]
-					  ],
-					  [
-					    'infixexp',
-					    [
-					      'lexp',
-					      [
-						'fexp',
-						[
-						  'aexp',
-						  [
-						    'qvar',
-						    'y'
-						  ]
-						]
-					      ]
-					    ]
-					  ]
-					]
-				      ],
-				      ')'
-				    ]
-				  ]
-				],
-				[
-				  'qop',
-				  [
-				    'qvarop',
-				    '/'
-				  ]
-				],
-				[
-				  'infixexp',
-				  [
-				    'lexp',
-				    [
-				      'fexp',
-				      [
-					'aexp',
-					[
-					  'qvar',
-					  'y'
-					]
-				      ]
-				    ]
-				  ]
-				]
-			      ]
-			    ]
-			  ]
-			]
-		      ]
-		    ],
-		    'in',
-		    [
-		      'exp',
-		      [
-			'infixexp',
-			[
-			  'lexp',
-			  [
-			    'fexp',
-			    [
-			      'fexp',
-			      [
-				'aexp',
-				[
-				  'qvar',
-				  'f'
-				]
-			      ]
-			    ],
-			    [
-			      'aexp',
-			      [
-				'qvar',
-				'c'
-			      ]
-			    ]
-			  ]
-			]
-		      ]
-		    ]
-		  ],
-		  [
-		    'qop',
-		    [
-		      'qvarop',
-		      '+'
-		    ]
-		  ],
-		  [
-		    'infixexp',
-		    [
-		      'lexp',
-		      [
-			'fexp',
-			[
-			  'fexp',
-			  [
-			    'aexp',
-			    [
-			      'qvar',
-			      'f'
-			    ]
-			  ]
-			],
-			[
-			  'aexp',
-			  [
-			    'qvar',
-			    'd'
-			  ]
-			]
-		      ]
-		    ]
-		  ]
-		]
-	      ]
-	    ]
-	  ]
-	]
-      ]
-    ]
-  ];
+  [ 'module', [ 'body', [ 'topdecls', [ 'topdecl', [ 'decl', [ 'funlhs', [ 'var', 'main'
+	      ], [] ], [ 'rhs', '=',
+	      [ 'exp', [ 'infixexp', [ 'lexp', 'let',
+		    [ [ 'decls', [ 'decl', [ 'funlhs', [ 'var', 'y'
+			    ], [] ], [ 'rhs', '=',
+			    [ 'exp', [ 'infixexp', [ 'lexp', [ 'fexp', [ 'aexp', [ 'qvar', 'a'
+				      ] ] ] ], [ 'qop', [ 'qvarop', '*'
+				  ] ], [ 'infixexp', [ 'lexp', [ 'fexp', [ 'aexp', [ 'qvar', 'b'
+					] ] ] ] ] ] ] ] ],
+			[ 'decl', [ 'funlhs', [ 'var', 'x'
+			    ], [] ], [ 'rhs', '=',
+			    [ 'exp', [ 'infixexp', [ 'lexp', [ 'fexp', [ 'aexp', '(',
+				      [ 'exp', [ 'infixexp', [ 'lexp', [ 'fexp', [ 'aexp', [ 'qvar', 'x'
+						] ] ] ],
+					  [ 'qop', [ 'qvarop', '+'
+					    ] ], [ 'infixexp', [ 'lexp', [ 'fexp', [ 'aexp', [ 'qvar', 'y'
+						  ] ] ] ] ] ] ], ')'
+				    ] ] ], [ 'qop', [ 'qvarop', '/'
+				  ] ], [ 'infixexp', [ 'lexp', [ 'fexp', [ 'aexp', [ 'qvar', 'y'
+					] ] ] ] ] ] ] ] ] ] ], 'in',
+		    [ 'exp', [ 'infixexp', [ 'lexp', [ 'fexp', [ 'fexp', [ 'aexp', [ 'qvar', 'f'
+				] ] ], [ 'aexp', [ 'qvar', 'c'
+			      ] ] ] ] ] ] ], [ 'qop', [ 'qvarop', '+'
+		    ] ], [ 'infixexp', [ 'lexp', [ 'fexp', [ 'fexp', [ 'aexp', [ 'qvar', 'f'
+			    ] ] ], [ 'aexp', [ 'qvar', 'd'
+			  ] ] ] ] ] ] ] ] ] ] ] ] ];
 
 my $short_implicit_expected = Data::Dumper::Dumper( pruneNodes($short_implicit_ast) );
 
