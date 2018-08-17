@@ -219,7 +219,7 @@ apats1 ::= apat+
 rhs ::= '=' exp
 rhs ::= '=' exp resword_where laidout_decls
 
-laidout_decls ::= '{' decls '}'
+laidout_decls ::= ('{') decls ('}')
 	 | ruby_decls
 #  
 # gdrhs	→	guards = exp [gdrhs]
@@ -978,7 +978,6 @@ my $expected_ast = [
                             ],
                             'where',
                             [
-                                '{',
                                 [
                                     'decls',
                                     [
@@ -1103,7 +1102,6 @@ my $expected_ast = [
                                             ],
                                             'where',
                                             [
-                                                '{',
                                                 [
                                                     'decls',
                                                     [
@@ -1148,12 +1146,10 @@ my $expected_ast = [
                                                         ]
                                                     ]
                                                 ],
-                                                '}'
                                             ]
                                         ]
                                     ]
                                 ],
-                                '}'
                             ]
                         ]
                     ]
@@ -1357,7 +1353,6 @@ my $expected_ast = [
                                                                             ],
 'where',
                                                                             [
-'{',
                                                                                 [
 'decls',
                                                                                     [
@@ -1404,9 +1399,7 @@ my $expected_ast = [
                                                                                             ]
                                                                                         ]
                                                                                     ]
-                                                                                ]
-                                                                                ,
-'}'
+                                                                                ],
                                                                             ]
                                                                         ]
                                                                     ],
@@ -1508,6 +1501,7 @@ for my $key ( keys %main::GRAMMARS ) {
     my ($start)      = @{$grammar_data};
     my $this_dsl     = ":start ::= $start\n";
     $this_dsl .= "inaccessible is ok by default\n";
+    # say STDERR "Adding lines:\n$this_dsl";
     $this_dsl .= $dsl;
     my $this_grammar = Marpa::R2::Scanless::G->new( { source => \$this_dsl } );
     $grammar_data->[1] = $this_grammar;
@@ -1669,7 +1663,9 @@ sub getValue {
 
     my $value_ref = $recce->value();
     if ( !$value_ref ) {
-        die "input read, but there was no parse";
+	say STDERR $recce->show_progress(0, -1);
+	say STDERR Data::Dumper::Dumper($value_ref);
+        divergence( qq{input read, but there was no parse} );
     }
 
     return $value_ref, $this_pos;
