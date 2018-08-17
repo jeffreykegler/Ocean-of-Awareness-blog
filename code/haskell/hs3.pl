@@ -755,7 +755,7 @@ main =
  in f c + f d
 EOS
 
-my $expected_ast = [
+my $long_explicit_ast = [
     'module', 'module', 'AStack',
     [
         '(',
@@ -1502,7 +1502,270 @@ my $expected_ast = [
     ]
 ];
 
-my $expected_value = Data::Dumper::Dumper( pruneNodes($expected_ast) );
+my $long_explicit_expected = Data::Dumper::Dumper( pruneNodes($long_explicit_ast) );
+
+my $short_implicit_ast =
+  [
+    'module',
+    [
+      'body',
+      [
+	'topdecls',
+	[
+	  'topdecl',
+	  [
+	    'decl',
+	    [
+	      'funlhs',
+	      [
+		'var',
+		'main'
+	      ],
+	      []
+	    ],
+	    [
+	      'rhs',
+	      '=',
+	      [
+		'exp',
+		[
+		  'infixexp',
+		  [
+		    'lexp',
+		    'let',
+		    [
+		      [
+			'decls',
+			[
+			  'decl',
+			  [
+			    'funlhs',
+			    [
+			      'var',
+			      'y'
+			    ],
+			    []
+			  ],
+			  [
+			    'rhs',
+			    '=',
+			    [
+			      'exp',
+			      [
+				'infixexp',
+				[
+				  'lexp',
+				  [
+				    'fexp',
+				    [
+				      'aexp',
+				      [
+					'qvar',
+					'a'
+				      ]
+				    ]
+				  ]
+				],
+				[
+				  'qop',
+				  [
+				    'qvarop',
+				    '*'
+				  ]
+				],
+				[
+				  'infixexp',
+				  [
+				    'lexp',
+				    [
+				      'fexp',
+				      [
+					'aexp',
+					[
+					  'qvar',
+					  'b'
+					]
+				      ]
+				    ]
+				  ]
+				]
+			      ]
+			    ]
+			  ]
+			],
+			[
+			  'decl',
+			  [
+			    'funlhs',
+			    [
+			      'var',
+			      'x'
+			    ],
+			    []
+			  ],
+			  [
+			    'rhs',
+			    '=',
+			    [
+			      'exp',
+			      [
+				'infixexp',
+				[
+				  'lexp',
+				  [
+				    'fexp',
+				    [
+				      'aexp',
+				      '(',
+				      [
+					'exp',
+					[
+					  'infixexp',
+					  [
+					    'lexp',
+					    [
+					      'fexp',
+					      [
+						'aexp',
+						[
+						  'qvar',
+						  'x'
+						]
+					      ]
+					    ]
+					  ],
+					  [
+					    'qop',
+					    [
+					      'qvarop',
+					      '+'
+					    ]
+					  ],
+					  [
+					    'infixexp',
+					    [
+					      'lexp',
+					      [
+						'fexp',
+						[
+						  'aexp',
+						  [
+						    'qvar',
+						    'y'
+						  ]
+						]
+					      ]
+					    ]
+					  ]
+					]
+				      ],
+				      ')'
+				    ]
+				  ]
+				],
+				[
+				  'qop',
+				  [
+				    'qvarop',
+				    '/'
+				  ]
+				],
+				[
+				  'infixexp',
+				  [
+				    'lexp',
+				    [
+				      'fexp',
+				      [
+					'aexp',
+					[
+					  'qvar',
+					  'y'
+					]
+				      ]
+				    ]
+				  ]
+				]
+			      ]
+			    ]
+			  ]
+			]
+		      ]
+		    ],
+		    'in',
+		    [
+		      'exp',
+		      [
+			'infixexp',
+			[
+			  'lexp',
+			  [
+			    'fexp',
+			    [
+			      'fexp',
+			      [
+				'aexp',
+				[
+				  'qvar',
+				  'f'
+				]
+			      ]
+			    ],
+			    [
+			      'aexp',
+			      [
+				'qvar',
+				'c'
+			      ]
+			    ]
+			  ]
+			]
+		      ]
+		    ]
+		  ],
+		  [
+		    'qop',
+		    [
+		      'qvarop',
+		      '+'
+		    ]
+		  ],
+		  [
+		    'infixexp',
+		    [
+		      'lexp',
+		      [
+			'fexp',
+			[
+			  'fexp',
+			  [
+			    'aexp',
+			    [
+			      'qvar',
+			      'f'
+			    ]
+			  ]
+			],
+			[
+			  'aexp',
+			  [
+			    'qvar',
+			    'd'
+			  ]
+			]
+		      ]
+		    ]
+		  ]
+		]
+	      ]
+	    ]
+	  ]
+	]
+      ]
+    ]
+  ];
+
+my $short_implicit_expected = Data::Dumper::Dumper( pruneNodes($short_implicit_ast) );
 
 my $grammar = Marpa::R2::Scanless::G->new( { source => \$dsl } );
 %main::GRAMMARS = (
@@ -1521,12 +1784,16 @@ for my $key ( keys %main::GRAMMARS ) {
     my $this_grammar = Marpa::R2::Scanless::G->new( { source => \$this_dsl } );
     $grammar_data->[1] = $this_grammar;
     my $iKey = $key;
-    $iKey =~ s/ _x_ / _i_ /xms;
+    $iKey =~ s/_x_/_i_/xms;
     $main::GRAMMARS{$iKey} = $grammar_data;
 
 }
 
-INPUT: for my $inputRef ( \$long_explicit, \$short_explicit ) {
+doTest( \$long_explicit, $long_explicit_expected );
+doTest( \$short_input, $short_implicit_expected );
+
+sub doTest {
+    my ($inputRef, $expected_value ) = @_;
     my ($initialWS) = ${$inputRef} =~ m/ ^ ([\s]*) /xms;
     my $firstLexemeOffset = length $initialWS;
 
@@ -1573,7 +1840,7 @@ INPUT: for my $inputRef ( \$long_explicit, \$short_explicit ) {
     if ( $result ne 'OK' ) {
         Test::More::fail(qq{Result was "$result", not OK});
         Test::More::fail(qq{No value test, because result was not OK});
-        next INPUT;
+        return
     }
     Test::More::pass(qq{Result is OK});
     my $value = '[fail]';
@@ -1584,6 +1851,11 @@ INPUT: for my $inputRef ( \$long_explicit, \$short_explicit ) {
         # say $value;
         # say '===';
     }
+
+        say '===';
+        say $value;
+        say '===';
+
     Test::Differences::eq_or_diff( $value, $expected_value, qq{Test of value} );
 }
 
@@ -1634,15 +1906,19 @@ sub getValue {
 
             my $next_char = substr( ${$input}, $indent_end + 1, 1 );
             if ( not defined $next_char or $indent_length < $currentIndent ) {
-                $this_pos = $indent_start;
+		say STDERR "Outdent!!!";
+		say STDERR join '', 'After outdent: "', substr(${$input}, $indent_end, 10), '"';
+                $this_pos = $indent_end;
                 last READ;
             }
             if ($next_char eq "\n") {
+		say STDERR "Empty line!!!";
                 $new_pos = $indent_end + 1;
                 next READ;
 	    }
-            say STDERR "Statement continuation"
+            say STDERR "Statement continuation!!!"
               if $indent_length > $currentIndent;
+            say STDERR "New Statement!!!";
             if ( $indent_length > $currentIndent ) {
                 $new_pos = $indent_end;
                 next READ;
@@ -1678,7 +1954,7 @@ sub getValue {
 		  divergence(qq{All tokens rejected, expecting "$expected"});
 		}
 		my $pos = $recce->pos();
-		my $lastNL = rindex(${$input}, $pos);
+		my $lastNL = rindex(${$input}, "\n", $pos);
 		$subParseIndent = $pos - ($lastNL + 1);
 	    }
             my ( $value_ref, $next_pos ) =
@@ -1707,7 +1983,7 @@ sub subParse {
     my $grammar_data = $main::GRAMMARS{$target};
 
     say STDERR "Calling subparser for $target";
-    # divergence(Data::Dumper::Dumper(\%main::GRAMMARS));
+    # say STDERR Data::Dumper::Dumper(\%main::GRAMMARS);
     divergence(qq{No grammar for target = "$target"}) if not $grammar_data;
     my ( undef, $subgrammar ) = @{$grammar_data};
     my $indent_is_active = ($currentIndent >= 0 ? 1 : 0);
@@ -1716,7 +1992,7 @@ sub subParse {
             grammar         => $subgrammar,
             rejection       => 'event',
 	    event_is_active => { 'indent' => $indent_is_active },
-            trace_terminals => 99,
+            trace_terminals => 2,
         }
     );
     my ( $value_ref, $pos ) = getValue( $recce, $input, $offset, $currentIndent );
