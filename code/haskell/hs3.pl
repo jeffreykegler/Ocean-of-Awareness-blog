@@ -1613,7 +1613,7 @@ my $short_alt_expected = Data::Dumper::Dumper( pruneNodes($short_alt_ast) );
 
 my $grammar = Marpa::R2::Scanless::G->new( { source => \$dsl } );
 %main::GRAMMARS = (
-    'ruby_x_body'  => ['topdecls'],
+    'ruby_x_body'  => ['body'],
     'ruby_x_decls' => ['decls'],
     'ruby_x_alts'  => ['alts'],
 );
