@@ -1820,7 +1820,7 @@ sub doTest {
             grammar   => $grammar,
             rejection => 'event',
 	    event_is_active => { 'indent' => $indent_is_active },
-            trace_terminals => 99,
+            # trace_terminals => 99,
         }
     );
 
@@ -1898,32 +1898,32 @@ sub getValue {
             # indent length is end-start less one for the newline
             my $indent_length = $indent_end - $indent_start - 1;
 
-            say STDERR join '', 'Indent event @', $indent_start, q{-@},
-              $indent_end, ': "',
-              substr( ${$input}, $indent_start,
-                ( $indent_end - $indent_start ) ),
-              qq{"; current indent = $currentIndent};
+            # say STDERR join '', 'Indent event @', $indent_start, q{-@},
+              # $indent_end, ': "',
+              # substr( ${$input}, $indent_start,
+                # ( $indent_end - $indent_start ) ),
+              # qq{"; current indent = $currentIndent};
 
             my $next_char = substr( ${$input}, $indent_end + 1, 1 );
             if ( not defined $next_char or $indent_length < $currentIndent ) {
-		say STDERR "Outdent!!!";
-		say STDERR join '', 'After outdent: "', substr(${$input}, $indent_end, 10), '"';
+		# say STDERR "Outdent!!!";
+		# say STDERR join '', 'After outdent: "', substr(${$input}, $indent_end, 10), '"';
                 $this_pos = $indent_end;
                 last READ;
             }
             if ($next_char eq "\n") {
-		say STDERR "Empty line!!!";
+		# say STDERR "Empty line!!!";
                 $new_pos = $indent_end + 1;
                 next READ;
 	    }
-            say STDERR "Statement continuation!!!"
-              if $indent_length > $currentIndent;
-            say STDERR "New Statement!!!";
+            # say STDERR "Statement continuation!!!"
+              # if $indent_length > $currentIndent;
+            # say STDERR "New Statement!!!";
             if ( $indent_length > $currentIndent ) {
                 $new_pos = $indent_end;
                 next READ;
             }
-            say STDERR "lexeme_read('ruby_semicolon', ...)";
+            # say STDERR "lexeme_read('ruby_semicolon', ...)";
             $recce->lexeme_read( 'ruby_semicolon', $indent_start,
                 $indent_length, ';' )
               // divergence("lexeme_read('ruby_semicolon', ...) failed");
@@ -1931,8 +1931,8 @@ sub getValue {
             next READ;
         }
         if ( $name eq "'rejected" ) {
-            say STDERR 'Rejected event; terminals expected: ',
-              @{ $recce->terminals_expected() };
+            # say STDERR 'Rejected event; terminals expected: ',
+              # @{ $recce->terminals_expected() };
             my @expected =
               grep { /^ruby_/xms; } @{ $recce->terminals_expected() };
             if ( not scalar @expected ) {
@@ -1970,8 +1970,8 @@ sub getValue {
 
     my $value_ref = $recce->value();
     if ( !$value_ref ) {
-	say STDERR $recce->show_progress(0, -1);
-	say STDERR Data::Dumper::Dumper($value_ref);
+	# say STDERR $recce->show_progress(0, -1);
+	# say STDERR Data::Dumper::Dumper($value_ref);
         divergence( qq{input read, but there was no parse} );
     }
 
@@ -1982,7 +1982,7 @@ sub subParse {
     my ( $target, $input, $offset, $currentIndent ) = @_;
     my $grammar_data = $main::GRAMMARS{$target};
 
-    say STDERR "Calling subparser for $target";
+    # say STDERR "Calling subparser for $target";
     # say STDERR Data::Dumper::Dumper(\%main::GRAMMARS);
     divergence(qq{No grammar for target = "$target"}) if not $grammar_data;
     my ( undef, $subgrammar ) = @{$grammar_data};
@@ -1992,7 +1992,7 @@ sub subParse {
             grammar         => $subgrammar,
             rejection       => 'event',
 	    event_is_active => { 'indent' => $indent_is_active },
-            trace_terminals => 2,
+            # trace_terminals => 2,
         }
     );
     my ( $value_ref, $pos ) = getValue( $recce, $input, $offset, $currentIndent );
