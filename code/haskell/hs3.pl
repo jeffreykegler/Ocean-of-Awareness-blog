@@ -9,7 +9,7 @@ $Data::Dumper::Terse    = 1;
 $Data::Dumper::Deepcopy = 1;
 use English qw( -no_match_vars );
 
-use Test::More tests => 4;
+use Test::More tests => 6;
 use Test::Differences;
 
 use Marpa::R2 4.000;
@@ -726,7 +726,7 @@ module AStack( Stack, push, pop, top, size ) where
 }
 EOS
 
-my $short_input = <<'EOS';
+my $short_implicit = <<'EOS';
 main =
  let y   = a*b
      f x = (x+y)/y
@@ -1537,6 +1537,48 @@ my $short_implicit_ast =
 
 my $short_implicit_expected = Data::Dumper::Dumper( pruneNodes($short_implicit_ast) );
 
+my $short_mixed_ast =
+  [ 'module', [ 'body', [ 'topdecls', [ 'topdecl', [ 'decl', [ 'funlhs', [ 'var', 'main'
+	      ], [] ], [ 'rhs', '=',
+	      [ 'exp', [ 'infixexp', [ 'lexp', 'let',
+		    [ [ 'decls', [ 'decl', [ 'funlhs', [ 'var', 'y'
+			    ], [] ], [ 'rhs', '=',
+			    [ 'exp', [ 'infixexp', [ 'lexp', [ 'fexp', [ 'aexp', [ 'qvar', 'a'
+				      ] ] ] ], [ 'qop', [ 'qvarop', '*'
+				  ] ], [ 'infixexp', [ 'lexp', [ 'fexp', [ 'aexp', [ 'qvar', 'b'
+					] ] ] ] ] ] ] ] ],
+
+			[ 'decl', [ 'funlhs',
+                   [ 'var', 'z'
+                   ], [] ], [ 'rhs', '=',
+                   [ 'exp', [ 'infixexp', [ 'lexp', [ 'fexp', [ 'aexp', [ 'qvar', 'a'
+                             ] ] ] ], [ 'qop', [ 'qvarop', '/'
+                         ] ], [ 'infixexp', [ 'lexp', [ 'fexp', [ 'aexp', [ 'qvar', 'b'
+                               ] ] ] ] ] ] ] ] ],
+
+			[ 'decl', [ 'funlhs',
+			    [ 'var', 'f'
+			    ], [ [ 'apat', [ 'var', 'x'
+				] ] ],
+			    ], [ 'rhs', '=',
+			    [ 'exp', [ 'infixexp', [ 'lexp', [ 'fexp', [ 'aexp', '(',
+				      [ 'exp', [ 'infixexp', [ 'lexp', [ 'fexp', [ 'aexp', [ 'qvar', 'x'
+						] ] ] ],
+					  [ 'qop', [ 'qvarop', '+'
+					    ] ], [ 'infixexp', [ 'lexp', [ 'fexp', [ 'aexp', [ 'qvar', 'y'
+						  ] ] ] ] ] ] ], ')'
+				    ] ] ], [ 'qop', [ 'qvarop', '/'
+				  ] ], [ 'infixexp', [ 'lexp', [ 'fexp', [ 'aexp', [ 'qvar', 'z'
+					] ] ] ] ] ] ] ] ] ] ], 'in',
+		    [ 'exp', [ 'infixexp', [ 'lexp', [ 'fexp', [ 'fexp', [ 'aexp', [ 'qvar', 'f'
+				] ] ], [ 'aexp', [ 'qvar', 'c'
+			      ] ] ] ] ] ] ], [ 'qop', [ 'qvarop', '+'
+		    ] ], [ 'infixexp', [ 'lexp', [ 'fexp', [ 'fexp', [ 'aexp', [ 'qvar', 'f'
+			    ] ] ], [ 'aexp', [ 'qvar', 'd'
+			  ] ] ] ] ] ] ] ] ] ] ] ] ];
+
+my $short_mixed_expected = Data::Dumper::Dumper( pruneNodes($short_mixed_ast) );
+
 my $grammar = Marpa::R2::Scanless::G->new( { source => \$dsl } );
 %main::GRAMMARS = (
     'ruby_x_body'  => ['topdecls'],
@@ -1560,7 +1602,8 @@ for my $key ( keys %main::GRAMMARS ) {
 }
 
 doTest( \$long_explicit, $long_explicit_expected );
-doTest( \$short_input, $short_implicit_expected );
+doTest( \$short_implicit, $short_implicit_expected );
+doTest( \$short_mixed, $short_mixed_expected );
 
 sub doTest {
     my ($inputRef, $expected_value ) = @_;
