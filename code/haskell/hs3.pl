@@ -1638,11 +1638,11 @@ local $main::DEBUG = 0;
 doTest( \$short_implicit, $short_implicit_expected );
 doTest( \$short_mixed, $short_mixed_expected );
 doTest( \$short_alt, $short_alt_expected );
-# $main::DEBUG = 1;
 doTest( \$short_explicit, $short_implicit_expected );
-$main::DEBUG = 0;
 doTest( \$long_explicit, $long_explicit_expected );
+$main::DEBUG = 1;
 doTest( \$long_implicit, $long_explicit_expected );
+$main::DEBUG = 0;
 
 sub doTest {
     my ($inputRef, $expected_value ) = @_;
@@ -1849,7 +1849,7 @@ sub subParse {
         }
     );
     my ( $value_ref, $pos ) = getValue( $recce, $input, $offset, $currentIndent );
-    say STDERR "Returning from subparser for $target" if $main::DEBUG;
+    say STDERR "Returning from subparser for $target, indent = $currentIndent" if $main::DEBUG;
     return $value_ref, $pos;
 }
 
