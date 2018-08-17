@@ -1639,7 +1639,7 @@ doTest( \$long_explicit, $long_explicit_expected );
 doTest( \$short_implicit, $short_implicit_expected );
 doTest( \$short_mixed, $short_mixed_expected );
 doTest( \$short_alt, $short_alt_expected );
-$main::DEBUG = 1;
+# $main::DEBUG = 1;
 doTest( \$short_explicit, $short_implicit_expected );
 $main::DEBUG = 0;
 
@@ -1798,6 +1798,9 @@ sub getValue {
 		my $prefix = substr($expected, 0, 7);
 		last DETERMINE_SUBINDENT
 		  if $prefix eq 'ruby_x_';
+		if ($expected eq 'ruby_semicolon') {
+		   last READ;
+		}
 		if ($prefix ne 'ruby_i_') {
 		  say STDERR $recce->show_progress(0, -1) if $main::DEBUG;
 		  divergence(qq{All tokens rejected, expecting "$expected"});
@@ -1845,6 +1848,7 @@ sub subParse {
         }
     );
     my ( $value_ref, $pos ) = getValue( $recce, $input, $offset, $currentIndent );
+    say STDERR "Returning from subparser for $target" if $main::DEBUG;
     return $value_ref, $pos;
 }
 
