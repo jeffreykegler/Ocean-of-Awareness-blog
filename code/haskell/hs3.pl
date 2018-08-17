@@ -28,12 +28,12 @@ lexeme default = latm => 1
 module ::= resword_module L0_modid optExports resword_where laidout_body
          | body
 
-laidout_body ::= ('{') body ('}')
+laidout_body ::= ('{') ruby_x_body ('}')
 	 | ruby_i_body
 	 # The next line is a fake, to fool the parser into thinking
-	 # that <ruby_x_body> is accessible.  <unicorn> will
+	 # that <body> is accessible.  <unicorn> will
 	 # never be found in any input.
-	 | L0_unicorn ruby_x_body L0_unicorn
+	 | L0_unicorn body L0_unicorn
 
 optExports ::= '(' exports ')'
 optExports ::= # empty
@@ -223,12 +223,12 @@ apats1 ::= apat+
 rhs ::= '=' exp
 rhs ::= '=' exp resword_where laidout_decls
 
-laidout_decls ::= ('{') decls ('}')
+laidout_decls ::= ('{') ruby_x_decls ('}')
 	 | ruby_i_decls
 	 # The next line is a fake, to fool the parser into thinking
-	 # that <ruby_x_decls> is accessible.  <unicorn> will
+	 # that <decls> is accessible.  <unicorn> will
 	 # never be found in any input.
-	 | L0_unicorn ruby_x_decls L0_unicorn
+	 | L0_unicorn decls L0_unicorn
 #  
 # gdrhs	→	guards = exp [gdrhs]
 #  
@@ -261,12 +261,12 @@ lexp ::= fexp
 lexp ::= resword_let laidout_decls resword_in exp
 lexp ::= resword_case exp resword_of laidout_alts
 
-laidout_alts ::= ('{') alts ('}')
+laidout_alts ::= ('{') ruby_x_alts ('}')
 	 | ruby_i_alts
 	 # The next line is a fake, to fool the parser into thinking
-	 # that <ruby_x_alts> is accessible.  <unicorn> will
+	 # that <alts> is accessible.  <unicorn> will
 	 # never be found in any input.
-	 | L0_unicorn ruby_x_alts L0_unicorn
+	 | L0_unicorn alts L0_unicorn
 
 # fexp	→	[fexp] aexp	    (function application)
 
@@ -1633,10 +1633,11 @@ for my $key ( keys %main::GRAMMARS ) {
 
 }
 
-doTest( \$long_explicit, $long_explicit_expected );
+# doTest( \$long_explicit, $long_explicit_expected );
 doTest( \$short_implicit, $short_implicit_expected );
 doTest( \$short_mixed, $short_mixed_expected );
 doTest( \$short_alt, $short_alt_expected );
+doTest( \$short_explicit, $short_implicit_expected );
 
 sub doTest {
     my ($inputRef, $expected_value ) = @_;
