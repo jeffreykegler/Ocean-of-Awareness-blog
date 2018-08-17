@@ -29,7 +29,11 @@ module ::= resword_module L0_modid optExports resword_where laidout_body
          | body
 
 laidout_body ::= ('{') body ('}')
-	 | ruby_body
+	 | ruby_i_body
+	 # The next line is a fake, to fool the parser into thinking
+	 # that <ruby_x_body> is accessible.  <ruby_open_curly> will
+	 # never be found in any input.
+	 | ruby_open_curly ruby_x_body ruby_close_curly
 
 optExports ::= '(' exports ')'
 optExports ::= # empty
@@ -401,9 +405,12 @@ gconsym ::= L0_colon | L0_qconsym
 # Unicorns are used as dummy RHSs for Ruby Slippers
 # tokens
 unicorn ~ [^\d\D]
-ruby_body ~ unicorn
+ruby_i_body ~ unicorn
+ruby_x_body ~ unicorn
 ruby_decls ~ unicorn
 ruby_alts ~ unicorn
+ruby_open_curly ~ unicorn
+ruby_close_curly ~ unicorn
 
 # prgram	→	{ lexeme | whitespace }
 # lexeme	→	qvarid | qconid | qvarsym | qconsym
@@ -1489,7 +1496,8 @@ my $expected_value = Data::Dumper::Dumper( pruneNodes($expected_ast) );
 
 my $grammar = Marpa::R2::Scanless::G->new( { source => \$dsl } );
 %main::GRAMMARS = (
-    'ruby_body'  => ['topdecls'],
+    'ruby_i_body'  => ['topdecls'],
+    'ruby_x_body'  => ['topdecls'],
     'ruby_decls' => ['decls'],
     'ruby_alts'  => ['alts'],
 );
@@ -1647,9 +1655,20 @@ sub getValue {
                     ( join " ", @expected ) );
             }
             my $expected = pop @expected;
-            my $indent   = 0;
+            my $subParseIndent   = -1;
+	    DETERMINE_SUBINDENT: {
+		my $prefix = substr($expected, 0, 7);
+		last DETERMINE_SUBINDENT
+		  if $prefix eq 'ruby_x_';
+		if ($prefix ne 'ruby_i_') {
+		  divergence(qq{All tokens rejected, expecting "$expected"});
+		}
+		my $pos = $recce->pos();
+		my $lastNL = rindex(${$input}, $pos);
+		$subParseIndent = $pos - ($lastNL + 1);
+	    }
             my ( $value_ref, $next_pos ) =
-              subParse( $expected, $input, $this_pos, $currentIndent );
+              subParse( $expected, $input, $this_pos, $subParseIndent );
             $recce->lexeme_read( $expected, $this_pos,
                 $next_pos - $this_pos, $value_ref )
               // divergence("lexeme_read($expected, ...) failed");
