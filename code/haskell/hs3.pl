@@ -9,7 +9,7 @@ $Data::Dumper::Terse    = 1;
 $Data::Dumper::Deepcopy = 1;
 use English qw( -no_match_vars );
 
-use Test::More tests => 10;
+use Test::More tests => 12;
 use Test::Differences;
 
 use Marpa::R2 4.000;
@@ -683,7 +683,7 @@ qconsym ~ consym | modid '.' consym
 
 END_OF_DSL
 
-my $long_input = <<'EOS';
+my $long_implicit = <<'EOS';
 module AStack( Stack, push, pop, top, size ) where  
 data Stack a = Empty  
              | MkStack a (Stack a)  
@@ -1635,13 +1635,14 @@ for my $key ( keys %main::GRAMMARS ) {
 
 local $main::DEBUG = 0;
 
-doTest( \$long_explicit, $long_explicit_expected );
 doTest( \$short_implicit, $short_implicit_expected );
 doTest( \$short_mixed, $short_mixed_expected );
 doTest( \$short_alt, $short_alt_expected );
 # $main::DEBUG = 1;
 doTest( \$short_explicit, $short_implicit_expected );
 $main::DEBUG = 0;
+doTest( \$long_explicit, $long_explicit_expected );
+doTest( \$long_implicit, $long_explicit_expected );
 
 sub doTest {
     my ($inputRef, $expected_value ) = @_;
