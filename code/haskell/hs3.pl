@@ -9,7 +9,7 @@ $Data::Dumper::Terse    = 1;
 $Data::Dumper::Deepcopy = 1;
 use English qw( -no_match_vars );
 
-use Test::More tests => 8;
+use Test::More tests => 10;
 use Test::Differences;
 
 use Marpa::R2 4.000;
@@ -1633,11 +1633,15 @@ for my $key ( keys %main::GRAMMARS ) {
 
 }
 
-# doTest( \$long_explicit, $long_explicit_expected );
+local $main::DEBUG = 0;
+
+doTest( \$long_explicit, $long_explicit_expected );
 doTest( \$short_implicit, $short_implicit_expected );
 doTest( \$short_mixed, $short_mixed_expected );
 doTest( \$short_alt, $short_alt_expected );
+$main::DEBUG = 1;
 doTest( \$short_explicit, $short_implicit_expected );
+$main::DEBUG = 0;
 
 sub doTest {
     my ($inputRef, $expected_value ) = @_;
@@ -1662,12 +1666,13 @@ sub doTest {
     }
 
     my $indent_is_active = ($currentIndent >= 0 ? 1 : 0);
+    say STDERR "Calling top level parser, indentation = $indent_is_active" if $main::DEBUG;
     my $recce = Marpa::R2::Scanless::R->new(
         {
             grammar   => $grammar,
             rejection => 'event',
 	    event_is_active => { 'indent' => $indent_is_active },
-            # trace_terminals => 99,
+            trace_terminals => ($main::DEBUG ? 99 : 0),
         }
     );
 
@@ -1698,10 +1703,6 @@ sub doTest {
         # say $value;
         # say '===';
     }
-
-        say '===';
-        say $value;
-        say '===';
 
     Test::Differences::eq_or_diff( $value, $expected_value, qq{Test of value} );
 }
@@ -1783,7 +1784,7 @@ sub getValue {
             my @expected =
               grep { /^ruby_/xms; } @{ $recce->terminals_expected() };
             if ( not scalar @expected ) {
-                say $recce->show_progress();
+		say STDERR $recce->show_progress() if $main::DEBUG;
                 divergence( "All tokens rejected, expecting ",
                     ( join " ", @expected ) );
             }
@@ -1798,6 +1799,7 @@ sub getValue {
 		last DETERMINE_SUBINDENT
 		  if $prefix eq 'ruby_x_';
 		if ($prefix ne 'ruby_i_') {
+		  say STDERR $recce->show_progress(0, -1) if $main::DEBUG;
 		  divergence(qq{All tokens rejected, expecting "$expected"});
 		}
 		my $pos = $recce->pos();
@@ -1829,7 +1831,7 @@ sub subParse {
     my ( $target, $input, $offset, $currentIndent ) = @_;
     my $grammar_data = $main::GRAMMARS{$target};
 
-    # say STDERR "Calling subparser for $target";
+    say STDERR "Calling subparser for $target" if $main::DEBUG;
     # say STDERR Data::Dumper::Dumper(\%main::GRAMMARS);
     divergence(qq{No grammar for target = "$target"}) if not $grammar_data;
     my ( undef, $subgrammar ) = @{$grammar_data};
@@ -1839,7 +1841,7 @@ sub subParse {
             grammar         => $subgrammar,
             rejection       => 'event',
 	    event_is_active => { 'indent' => $indent_is_active },
-            # trace_terminals => 2,
+            trace_terminals => ($main::DEBUG ? 99 : 0),
         }
     );
     my ( $value_ref, $pos ) = getValue( $recce, $input, $offset, $currentIndent );
