@@ -262,7 +262,11 @@ lexp ::= resword_let laidout_decls resword_in exp
 lexp ::= resword_case exp resword_of laidout_alts
 
 laidout_alts ::= ('{') alts ('}')
-	 | ruby_alts
+	 | ruby_i_alts
+	 # The next line is a fake, to fool the parser into thinking
+	 # that <ruby_x_alts> is accessible.  <unicorn> will
+	 # never be found in any input.
+	 | L0_unicorn ruby_x_alts L0_unicorn
 
 # fexp	→	[fexp] aexp	    (function application)
 
@@ -415,7 +419,8 @@ ruby_i_body ~ unicorn
 ruby_x_body ~ unicorn
 ruby_i_decls ~ unicorn
 ruby_x_decls ~ unicorn
-ruby_alts ~ unicorn
+ruby_i_alts ~ unicorn
+ruby_x_alts ~ unicorn
 
 # prgram	→	{ lexeme | whitespace }
 # lexeme	→	qvarid | qconid | qvarsym | qconsym
@@ -1501,11 +1506,9 @@ my $expected_value = Data::Dumper::Dumper( pruneNodes($expected_ast) );
 
 my $grammar = Marpa::R2::Scanless::G->new( { source => \$dsl } );
 %main::GRAMMARS = (
-    'ruby_i_body'  => ['topdecls'],
     'ruby_x_body'  => ['topdecls'],
-    'ruby_i_decls' => ['decls'],
     'ruby_x_decls' => ['decls'],
-    'ruby_alts'  => ['alts'],
+    'ruby_x_alts'  => ['alts'],
 );
 
 for my $key ( keys %main::GRAMMARS ) {
@@ -1517,6 +1520,10 @@ for my $key ( keys %main::GRAMMARS ) {
     $this_dsl .= $dsl;
     my $this_grammar = Marpa::R2::Scanless::G->new( { source => \$this_dsl } );
     $grammar_data->[1] = $this_grammar;
+    my $iKey = $key;
+    $iKey =~ s/ _x_ / _i_ /xms;
+    $main::GRAMMARS{$iKey} = $grammar_data;
+
 }
 
 INPUT: for my $inputRef ( \$long_explicit, \$short_explicit ) {
