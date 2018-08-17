@@ -1640,7 +1640,6 @@ doTest( \$short_mixed, $short_mixed_expected );
 doTest( \$short_alt, $short_alt_expected );
 doTest( \$short_explicit, $short_implicit_expected );
 doTest( \$long_explicit, $long_explicit_expected );
-$main::DEBUG = 1;
 doTest( \$long_implicit, $long_explicit_expected );
 $main::DEBUG = 0;
 
@@ -1747,27 +1746,29 @@ sub getValue {
             # indent length is end-start less one for the newline
             my $indent_length = $indent_end - $indent_start - 1;
 
-            # say STDERR join '', 'Indent event @', $indent_start, q{-@},
-              # $indent_end, ': "',
-              # substr( ${$input}, $indent_start,
-                # ( $indent_end - $indent_start ) ),
-              # qq{"; current indent = $currentIndent};
+            say STDERR join '', 'Indent event @', $indent_start, q{-@},
+              $indent_end, ': "',
+              substr( ${$input}, $indent_start,
+                ( $indent_end - $indent_start ) ),
+              qq{"; current indent = $currentIndent} if $main::DEBUG;
 
             my $next_char = substr( ${$input}, $indent_end + 1, 1 );
             if ( not defined $next_char or $indent_length < $currentIndent ) {
-		# say STDERR "Outdent!!!";
-		# say STDERR join '', 'After outdent: "', substr(${$input}, $indent_end, 10), '"';
-                $this_pos = $indent_end;
+		say STDERR "Outdent!!!" if $main::DEBUG;
+		say STDERR join '', 'After outdent: "', substr(${$input}, $indent_end, 10), '"' if $main::DEBUG;
+		my $lastNL = rindex(${$input}, "\n", $indent_end);
+		$lastNL = 0 if $lastNL < 0; # this probably never occurs
+                $this_pos = $lastNL;
                 last READ;
             }
             if ($next_char eq "\n") {
-		# say STDERR "Empty line!!!";
+		say STDERR "Empty line!!!" if $main::DEBUG;
                 $new_pos = $indent_end + 1;
                 next READ;
 	    }
-            # say STDERR "Statement continuation!!!"
-              # if $indent_length > $currentIndent;
-            # say STDERR "New Statement!!!";
+            say STDERR "Statement continuation!!!"
+              if $indent_length > $currentIndent and $main::DEBUG;
+            say STDERR "New Statement!!!" if $main::DEBUG;
             if ( $indent_length > $currentIndent ) {
                 $new_pos = $indent_end;
                 next READ;
