@@ -31,9 +31,9 @@ module ::= resword_module L0_modid optExports resword_where laidout_body
 laidout_body ::= ('{') body ('}')
 	 | ruby_i_body
 	 # The next line is a fake, to fool the parser into thinking
-	 # that <ruby_x_body> is accessible.  <ruby_open_curly> will
+	 # that <ruby_x_body> is accessible.  <unicorn> will
 	 # never be found in any input.
-	 | ruby_open_curly ruby_x_body ruby_close_curly
+	 | L0_unicorn ruby_x_body L0_unicorn
 
 optExports ::= '(' exports ')'
 optExports ::= # empty
@@ -224,7 +224,11 @@ rhs ::= '=' exp
 rhs ::= '=' exp resword_where laidout_decls
 
 laidout_decls ::= ('{') decls ('}')
-	 | ruby_decls
+	 | ruby_i_decls
+	 # The next line is a fake, to fool the parser into thinking
+	 # that <ruby_x_decls> is accessible.  <unicorn> will
+	 # never be found in any input.
+	 | L0_unicorn ruby_x_decls L0_unicorn
 #  
 # gdrhs	→	guards = exp [gdrhs]
 #  
@@ -404,13 +408,14 @@ gconsym ::= L0_colon | L0_qconsym
 # A unicorn is a lexeme which cannot occur.
 # Unicorns are used as dummy RHSs for Ruby Slippers
 # tokens
+:lexeme ~ L0_unicorn
+L0_unicorn ~ unicorn
 unicorn ~ [^\d\D]
 ruby_i_body ~ unicorn
 ruby_x_body ~ unicorn
-ruby_decls ~ unicorn
+ruby_i_decls ~ unicorn
+ruby_x_decls ~ unicorn
 ruby_alts ~ unicorn
-ruby_open_curly ~ unicorn
-ruby_close_curly ~ unicorn
 
 # prgram	→	{ lexeme | whitespace }
 # lexeme	→	qvarid | qconid | qvarsym | qconsym
@@ -1498,7 +1503,8 @@ my $grammar = Marpa::R2::Scanless::G->new( { source => \$dsl } );
 %main::GRAMMARS = (
     'ruby_i_body'  => ['topdecls'],
     'ruby_x_body'  => ['topdecls'],
-    'ruby_decls' => ['decls'],
+    'ruby_i_decls' => ['decls'],
+    'ruby_x_decls' => ['decls'],
     'ruby_alts'  => ['alts'],
 );
 
@@ -1513,7 +1519,6 @@ for my $key ( keys %main::GRAMMARS ) {
     $grammar_data->[1] = $this_grammar;
 }
 
-# INPUT: for my $inputRef ( \$long_input, \$long_explicit, \$short_explicit ) {
 INPUT: for my $inputRef ( \$long_explicit, \$short_explicit ) {
     my $recce = Marpa::R2::Scanless::R->new(
         {
