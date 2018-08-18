@@ -2,12 +2,32 @@
 
 # TO READERS OF THIS CODE:
 
-# This is intended as an example of a method, not
-# tied to Perl, and as such might attract readers
+# This is intended as an example of a method for doing
+# combinator parsing with the Earley/Leo/Marpa algorithm,
+# which is not tied to Perl.  As such, it might attract readers
 # not happy with having to read Perl.  To them,
 # my apologies, and these notes, which I cannot
 # eliminate the pain, but which I hope will make
 # it more brief and easier to bear.
+
+# The code is in 4 parts
+#
+# 1.) A Perl-oriented preamble, which the Perl-adverse
+# can skip.
+#
+# 2.) The Haskell context-free syntax, translated from the 2010
+# standard
+#
+# 3.) The Haskell lexical syntax, also translated from the 2010
+# standard
+#
+# 4.) Wrappers and event handlers, in Perl.
+#
+# The comments interspersed in the code are not self-sufficient.
+# They assume that the reader has read a description of the overall
+# logic of this parser, for example the one in my blog post.
+
+# ===== Part 1: Perl preamble =====
 
 use 5.010;
 use strict;
@@ -27,21 +47,93 @@ sub divergence {
     die join '', 'Unrecoverable internal error: ', @_;
 }
 
+# ===== Part 2: Haskell context-free syntax =====
+
+# This is translated into Marpa's DSL from the Haskell 2010 standard.
+# The original standard is included as commments.  As well as tying
+# the translation to the original, inclusion of the original shows
+# the elements of syntax omitted (so far?) from the translated subset.
+#
+# The copy-and-paste from the standard removed the typography
+# needed to distinguish syntax from meta-syntax -- readers who 
+# need clarification should refer to the original:
+# https://www.haskell.org/onlinereport/haskell2010/haskellch10.html#x17-18000010.5
+#
+# The translation into Marpa preserves the symbol names of the standard.
+# The translation often required new rules, and the introduction of new symbols.
+# One of the handlers, pruneNodes(), removes the symbol names introduced for
+# the translation, leaving only symbol names from the Haskell 2010 standard in
+# the AST.
+# 
+# Marpa divides symbols into
+#
+# * those for the context-free grammar (G1 in Marpa terms), whose rules
+#   are indicated by the '::=' operator; and
+# * those for the lexical grammar (L0 in Marpa terms), whose rules are
+#   indicated by the '~' operator.
+#
+# In Marpa, the lexical grammar(L0)  is also allowed to be fully contest-free.
+# For implemenation, Marpa requires those symbols which are the "boundary"
+# between G1 and L0 to be specified clearly.  Usually this is done implicitly --
+# a symbol which is on a RHS but not a LHS in G1, and which is on a LHS but not
+# a RHS in L0, is considered a G1/L0 boundary symbol, or "lexeme".
+#
+# The Haskell 2010 grammar is, of course, not a native Marpa grammar, so it was
+# often necessary to specify explicitly what the lexeme are.  This is done
+# with the ":lexeme" declarations.  Where a symbol needed to be introduced
+# to allow a clean boundary, the new symbol has the prefix "L0_".
+
 my $dsl = <<'END_OF_DSL';
+
+# This preamble establishes the lexing discipline -- LATM
+# or Longest Acceptable Token Match, where "acceptable"
+# means that tokens which the grammar would reject do not
+# count when calculating which is "longest".  (Unlike traditional
+# parsers, Marpa is smart enough to tell the lexer which tokens
+# are acceptable.
 lexeme default = latm => 1
+
+# This tells Marpa to construct an AST whose nodes consist of the
+# symbol name, followed a by a list of the child values.
 :default ::= action => [name,values]
+
+# The next comment is an extract from the standard -- the first of
+# many.
 
 # module	→	module modid [exports] where body 
 # |	body
 
+# Marpa (of course) cannot recognize the typographical distinctions
+# that the standard's grammar uses, so reserved words are indicated
+# explicitly.  For example, <resword_module> is the symbol for the
+# reserved word "module".
+
 module ::= resword_module L0_modid optExports resword_where laidout_body
          | body
 
+# Here is one of the rules which are part of the Ruby Slippers logic.
+# (As a reminder, Ruby Slippers symbols are *not* found in the 
+# the actual input, but are present in the Marpa grammar as signal
+# to supply the Ruby Slippers symbol using external logic.
+#
+# The original symbol in the 2010 Standard is <body>.  Here three
+# new symbols are introduced.  <ruby_x_body> is the Ruby Slippers symbol
+# for an explicitly laid-out body.  <ruby_i_body> is the Ruby Slippers
+# symbol for an implicitly laid-out body.  <laidout_body> is a LHS for a
+# laid-out body which may be either implicit or explicit.
+# 
+# One alternative uses the original 2010 standard symbol, <body>.
+# This alternative is "fake" -- the <L0_unicorn> symbol will never
+# be found in any input.  The fake alternative exists to fool Marpa into thinking
+# <body> and its child symbols are accessible.  This is not necessary --
+# Marpa can turn off warnings for inaccessible symbols, but it was
+# helpful for grammar debugging.  Inclusion of <body> and its child
+# symbols increases the grammar size, but the start-up cost of increasing the
+# size of a Marpa grammar is reasonable, and the runtime cost of the
+# larger grammar is negligible.
+
 laidout_body ::= ('{') ruby_x_body ('}')
 	 | ruby_i_body
-	 # The next line is a fake, to fool the parser into thinking
-	 # that <body> is accessible.  <unicorn> will
-	 # never be found in any input.
 	 | L0_unicorn body L0_unicorn
 
 optExports ::= '(' exports ')'
@@ -84,6 +176,8 @@ export ::= qtycls
 
 topdecls ::= topdecl* separator => virtual_semicolon
 
+# Semicolons may be provided by the Ruby Slippers, or
+# they may be real.
 virtual_semicolon ::= ruby_semicolon
 virtual_semicolon ::= L0_semicolon
 
