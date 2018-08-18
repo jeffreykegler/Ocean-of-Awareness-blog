@@ -715,7 +715,7 @@ for my $key ( keys %main::GRAMMARS ) {
 
 local $main::DEBUG = 0;
 
-sub topParser {
+sub parse {
     my ($inputRef) = @_;
     my ($initialWS) = ${$inputRef} =~ m/ ^ ([\s]*) /xms;
     my $firstLexemeOffset = length $initialWS;

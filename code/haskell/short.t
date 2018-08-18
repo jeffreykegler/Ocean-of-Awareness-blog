@@ -162,7 +162,7 @@ $main::DEBUG = 0;
 
 sub doTest {
     my ($inputRef, $expected_value ) = @_;
-    my ($result, $valueRef) = MarpaX::R2::Haskell::topParser($inputRef);
+    my ($result, $valueRef) = MarpaX::R2::Haskell::parse($inputRef);
     if ( $result ne 'OK' ) {
         Test::More::fail(qq{Result was "$result", not OK});
         Test::More::fail(qq{No value test, because result was not OK});
