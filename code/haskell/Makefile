@@ -2,4 +2,4 @@
 all: test
 
 test:
-	prove -I. hs3.pl
+	prove -I. long.t short.t
