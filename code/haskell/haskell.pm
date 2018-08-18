@@ -692,7 +692,7 @@ qconsym ~ consym | modid '.' consym
 
 END_OF_DSL
 
-my $grammar = Marpa::R2::Scanless::G->new( { source => \$dsl } );
+my $topGrammar = Marpa::R2::Scanless::G->new( { source => \$dsl } );
 %main::GRAMMARS = (
     'ruby_x_body'  => ['body'],
     'ruby_x_decls' => ['decls'],
@@ -704,7 +704,6 @@ for my $key ( keys %main::GRAMMARS ) {
     my ($start)      = @{$grammar_data};
     my $this_dsl     = ":start ::= $start\n";
     $this_dsl .= "inaccessible is ok by default\n";
-    # say STDERR "Adding lines:\n$this_dsl";
     $this_dsl .= $dsl;
     my $this_grammar = Marpa::R2::Scanless::G->new( { source => \$this_dsl } );
     $grammar_data->[1] = $this_grammar;
@@ -742,7 +741,7 @@ sub topParser {
     say STDERR "Calling top level parser, indentation = $indent_is_active" if $main::DEBUG;
     my $recce = Marpa::R2::Scanless::R->new(
         {
-            grammar   => $grammar,
+            grammar   => $topGrammar,
             rejection => 'event',
 	    event_is_active => { 'indent' => $indent_is_active },
             trace_terminals => ($main::DEBUG ? 99 : 0),
@@ -797,12 +796,6 @@ sub getValue {
             # indent length is end-start less one for the newline
             my $indent_length = $indent_end - $indent_start - 1;
 
-            say STDERR join '', 'Indent event @', $indent_start, q{-@},
-              $indent_end, ': "',
-              substr( ${$input}, $indent_start,
-                ( $indent_end - $indent_start ) ),
-              qq{"; current indent = $currentIndent} if $main::DEBUG;
-
             my $next_char = substr( ${$input}, $indent_end + 1, 1 );
             if ( not defined $next_char or $indent_length < $currentIndent ) {
 		# An outdent
@@ -812,7 +805,6 @@ sub getValue {
                 last READ;
             }
             if ($next_char eq "\n") {
-		say STDERR "Empty line!!!" if $main::DEBUG;
 		# An empty line.
 		# Comments are dealt with separately, taking advantage of the
 		# fact they they must be longer and therefore preferred by
@@ -826,7 +818,6 @@ sub getValue {
                 $new_pos = $indent_end;
                 next READ;
             }
-            # say STDERR "lexeme_read('ruby_semicolon', ...)";
             $recce->lexeme_read( 'ruby_semicolon', $indent_start,
                 $indent_length, ';' )
               // divergence("lexeme_read('ruby_semicolon', ...) failed");
@@ -834,12 +825,9 @@ sub getValue {
             next READ;
         }
         if ( $name eq "'rejected" ) {
-            # say STDERR 'Rejected event; terminals expected: ',
-              # @{ $recce->terminals_expected() };
             my @expected =
               grep { /^ruby_/xms; } @{ $recce->terminals_expected() };
             if ( not scalar @expected ) {
-		say STDERR $recce->show_progress() if $main::DEBUG;
                 divergence( "All tokens rejected, expecting ",
                     ( join " ", @expected ) );
             }
@@ -857,7 +845,6 @@ sub getValue {
 		   last READ;
 		}
 		if ($prefix ne 'ruby_i_') {
-		  say STDERR $recce->show_progress(0, -1) if $main::DEBUG;
 		  divergence(qq{All tokens rejected, expecting "$expected"});
 		}
 		my $pos = $recce->pos();
@@ -877,8 +864,6 @@ sub getValue {
 
     my $value_ref = $recce->value();
     if ( !$value_ref ) {
-	# say STDERR $recce->show_progress(0, -1);
-	# say STDERR Data::Dumper::Dumper($value_ref);
         divergence( qq{input read, but there was no parse} );
     }
 
@@ -889,8 +874,6 @@ sub subParse {
     my ( $target, $input, $offset, $currentIndent ) = @_;
     my $grammar_data = $main::GRAMMARS{$target};
 
-    say STDERR "Calling subparser for $target" if $main::DEBUG;
-    # say STDERR Data::Dumper::Dumper(\%main::GRAMMARS);
     divergence(qq{No grammar for target = "$target"}) if not $grammar_data;
     my ( undef, $subgrammar ) = @{$grammar_data};
     my $indent_is_active = ($currentIndent >= 0 ? 1 : 0);
@@ -903,7 +886,6 @@ sub subParse {
         }
     );
     my ( $value_ref, $pos ) = getValue( $recce, $input, $offset, $currentIndent );
-    say STDERR "Returning from subparser for $target, indent = $currentIndent" if $main::DEBUG;
     return $value_ref, $pos;
 }
 
