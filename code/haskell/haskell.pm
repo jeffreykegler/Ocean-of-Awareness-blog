@@ -753,7 +753,6 @@ sub topParser {
     my $eval_ok =
       eval { ( $value_ref, undef ) = getValue( $recce, $inputRef, $firstLexemeOffset, $currentIndent ); 1; };
 
-    # say $recce->show_progress();
     if ( !$eval_ok ) {
         my $eval_error = $EVAL_ERROR;
       PARSE_EVAL_ERROR: {
@@ -767,15 +766,14 @@ sub topParser {
 sub getValue {
     my ( $recce, $input, $offset, $currentIndent ) = @_;
     my $input_length = length ${$input};
-    my $new_pos;
+    my $resume_pos;
     my $this_pos;
-
 
   READ:
     for (
         $this_pos = $recce->read( $input, $offset ) ;
         $this_pos < $input_length ;
-        $this_pos = $recce->resume($new_pos)
+        $this_pos = $recce->resume($resume_pos)
       )
     {
         my $events      = $recce->events();
@@ -809,19 +807,19 @@ sub getValue {
 		# Comments are dealt with separately, taking advantage of the
 		# fact they they must be longer and therefore preferred by
 		# the lexer.
-                $new_pos = $indent_end + 1;
+                $resume_pos = $indent_end + 1;
                 next READ;
 	    }
 
             if ( $indent_length > $currentIndent ) {
 		# Statement continuation
-                $new_pos = $indent_end;
+                $resume_pos = $indent_end;
                 next READ;
             }
             $recce->lexeme_read( 'ruby_semicolon', $indent_start,
                 $indent_length, ';' )
               // divergence("lexeme_read('ruby_semicolon', ...) failed");
-            $new_pos = $indent_end;
+            $resume_pos = $indent_end;
             next READ;
         }
         if ( $name eq "'rejected" ) {
@@ -856,7 +854,7 @@ sub getValue {
             $recce->lexeme_read( $expected, $this_pos,
                 $next_pos - $this_pos, $value_ref )
               // divergence("lexeme_read($expected, ...) failed");
-            $new_pos = $next_pos;
+            $resume_pos = $next_pos;
             next READ;
         }
 	divergence(qq{Unexpected event: "$name"});
