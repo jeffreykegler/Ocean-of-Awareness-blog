@@ -834,14 +834,14 @@ sub getValue {
                     ( join " ", @expected ) );
             }
             my $expected = pop @expected;
+	    if ($expected eq 'ruby_semicolon') {
+	       last READ;
+	    }
             my $subParseIndent   = -1;
 	    DETERMINE_SUBINDENT: {
 		my $prefix = substr($expected, 0, 7);
 		last DETERMINE_SUBINDENT
 		  if $prefix eq 'ruby_x_';
-		if ($expected eq 'ruby_semicolon') {
-		   last READ;
-		}
 		if ($prefix ne 'ruby_i_') {
 		  divergence(qq{All tokens rejected, expecting "$expected"});
 		}
