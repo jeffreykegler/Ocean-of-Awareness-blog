@@ -14,10 +14,6 @@ use Test::Differences;
 
 use Marpa::R2 4.000;
 
-sub divergence {
-    die join '', 'Unrecoverable internal error: ', @_;
-}
-
 require "haskell.pm";
 
 my $long_implicit = <<'EOS';
