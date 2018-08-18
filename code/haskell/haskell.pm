@@ -1,5 +1,14 @@
 #!/usr/bin/perl
 
+# TO READERS OF THIS CODE:
+
+# This is intended as an example of a method, not
+# tied to Perl, and as such might attract readers
+# not happy with having to read Perl.  To them,
+# my apologies, and these notes, which I cannot
+# eliminate the pain, but which I hope will make
+# it more brief and easier to bear.
+
 use 5.010;
 use strict;
 use warnings;
@@ -781,16 +790,9 @@ sub getValue {
 
         my $event = $events->[0];
         my $name = $event->[0];
-	# say STDERR "=== Event $name";
         if ( $name eq "indent" ) {
 
             my ( undef, $indent_start, $indent_end ) = @{$event};
-
-            # If negative currentIndent, we are ignoring indentation
-            if ( $currentIndent < 0 ) {
-                $new_pos = $indent_end;
-                next READ;
-            }
 
             # indent length is end-start less one for the newline
             my $indent_length = $indent_end - $indent_start - 1;
@@ -803,8 +805,7 @@ sub getValue {
 
             my $next_char = substr( ${$input}, $indent_end + 1, 1 );
             if ( not defined $next_char or $indent_length < $currentIndent ) {
-		say STDERR "Outdent!!!" if $main::DEBUG;
-		say STDERR join '', 'After outdent: "', substr(${$input}, $indent_end, 10), '"' if $main::DEBUG;
+		# An outdent
 		my $lastNL = rindex(${$input}, "\n", $indent_end);
 		$lastNL = 0 if $lastNL < 0; # this probably never occurs
                 $this_pos = $lastNL;
@@ -812,13 +813,16 @@ sub getValue {
             }
             if ($next_char eq "\n") {
 		say STDERR "Empty line!!!" if $main::DEBUG;
+		# An empty line.
+		# Comments are dealt with separately, taking advantage of the
+		# fact they they must be longer and therefore preferred by
+		# the lexer.
                 $new_pos = $indent_end + 1;
                 next READ;
 	    }
-            say STDERR "Statement continuation!!!"
-              if $indent_length > $currentIndent and $main::DEBUG;
-            say STDERR "New Statement!!!" if $main::DEBUG;
+
             if ( $indent_length > $currentIndent ) {
+		# Statement continuation
                 $new_pos = $indent_end;
                 next READ;
             }
