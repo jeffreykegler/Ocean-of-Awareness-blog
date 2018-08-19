@@ -966,6 +966,8 @@ sub getValue {
             # indent length is end-start less one for the newline
             my $indent_length = $indent_end - $indent_start - 1;
 
+	    # On outdent, we end the read loop.  An EOF is treated as
+	    # an outdent.
             my $next_char = substr( ${$input}, $indent_end + 1, 1 );
             if ( not defined $next_char or $indent_length < $currentIndent ) {
 		# An outdent
@@ -974,6 +976,8 @@ sub getValue {
                 $this_pos = $lastNL;
                 last READ;
             }
+
+	    # Skip empty lines -- their whitespace does not count as identation.
             if ($next_char eq "\n") {
 		# An empty line.
 		# Comments are dealt with separately, taking advantage of the
@@ -983,32 +987,62 @@ sub getValue {
                 next READ;
 	    }
 
+	    # Indentation deeper than the current indent means the current
+	    # syntactic item is being continued.  Just resume the read.
             if ( $indent_length > $currentIndent ) {
 		# Statement continuation
                 $resume_pos = $indent_end;
                 next READ;
             }
+
+	    # If we are here, indent is at the current indent level.
+	    # This means we are starting a new syntactic item.  The
+	    # parser will be expecting a Ruby Slippers semicolon,
+	    # and we provide it, then resume reading.
             $recce->lexeme_read( 'ruby_semicolon', $indent_start,
                 $indent_length, ';' )
               // divergence("lexeme_read('ruby_semicolon', ...) failed");
             $resume_pos = $indent_end;
             next READ;
         }
+
+	# Items subject to layout are represented by Ruby Slippers tokens,
+	# which are not recognized by the internal lexer.  Therefore they
+	# generate rejection events.
+
+	# Errors in the source can also generate "rejected" events.  To
+	# become ready for production, this module would need to add better
+	# logic for debugging and tracing in those cases.
         if ( $name eq "'rejected" ) {
             my @expected =
               grep { /^ruby_/xms; } @{ $recce->terminals_expected() };
+
+	    # If no Ruby Slippers tokens are expected, it probably
+	    # indicates a syntax error in the Haskell source.
             if ( not scalar @expected ) {
                 divergence( "All tokens rejected, expecting ",
                     ( join " ", @expected ) );
             }
+
+	    # More than one Ruby Slippers token expected is a
+	    # circumstance which should not occur.
             if ( scalar @expected > 2 ) {
                 divergence( "More than one ruby token expected; ",
                     ( join " ", @expected ) );
             }
+
+	    # If we rejected all tokens, and we expect a Ruby
+	    # Slippers semicolon, it indicates we have recognized
+	    # the target of this combinator.  We therefore terminate
+	    # the read.
             my $expected = pop @expected;
 	    if ($expected eq 'ruby_semicolon') {
 	       last READ;
 	    }
+
+	    # If here, we need to start a new sub-combinator.  These
+	    # can be nested arbitrarily deep.  Calculate
+	    # new current indent.
             my $subParseIndent   = -1;
 	    DETERMINE_SUBINDENT: {
 		my $prefix = substr($expected, 0, 7);
@@ -1021,16 +1055,28 @@ sub getValue {
 		my $lastNL = rindex(${$input}, "\n", $pos);
 		$subParseIndent = $pos - ($lastNL + 1);
 	    }
+
+	    # Start the new combinator.
             my ( $value_ref, $next_pos ) =
               subParse( $expected, $input, $this_pos, $subParseIndent );
+
+	    # The child combinator finished -- read its result into the current
+	    # combinator as a lexeme.
             $recce->lexeme_read( $expected, $this_pos,
                 $next_pos - $this_pos, $value_ref )
               // divergence("lexeme_read($expected, ...) failed");
+
+	    # Set up to resume this combinator where the child combinator left off.
             $resume_pos = $next_pos;
+
+	    # Resume reading.
             next READ;
         }
+
 	divergence(qq{Unexpected event: "$name"});
     }
+
+    # Return value and new offset
 
     my $value_ref = $recce->value();
     if ( !$value_ref ) {
@@ -1058,6 +1104,11 @@ sub subParse {
     my ( $value_ref, $pos ) = getValue( $recce, $input, $offset, $currentIndent );
     return $value_ref, $pos;
 }
+
+# This utility right now is primarily for testing.  It takes an
+# AST and returns one whose nodes more closely match the standard.
+# Right now, this makes it easy for test cases, but perhaps this
+# could also be the start of a compile/interpretation phase.
 
 # Takes one argument and returns a ref to an array of acceptable
 # nodes.  The array may be empty.  All scalars are acceptable
