@@ -995,14 +995,12 @@ sub flattenArray {
        my $subelement = $v->[$i];
        my $subelement_ref = ref $subelement;
        if ($subelement_ref eq 'ARRAY') {
-	 for my $j ( 0 .. $#$subelement ) {
-	    push @result, pruneNodes($subelement->[$j]);
-	 }
+	 push @result, map { pruneNodes($_); } @{$subelement};
 	 next SUBELEMENT;
        }
        push @result, pruneNodes($subelement);
    }
-   return \@result;
+   return [grep { defined } @result];
 }
 
 sub pruneNodes {
@@ -1022,6 +1020,7 @@ sub pruneNodes {
         laidout_body    => 1,
 	topdecls_seq    => 1,
         tuple_type_list => 1,
+        virtual_semicolon => 1,
     };
 
     return '!!UNDEF!!' if not defined $v;
@@ -1038,16 +1037,17 @@ sub pruneNodes {
     }
     # if here, array has length of at least 2
     if (ref $source[0]) {
-       return [map { pruneNodes($_); } @{flattenArray(\@source)}];
+       return [grep { defined } map { pruneNodes($_); } @{flattenArray(\@source)}];
     }
+    return undef if $source[0] eq 'virtual_semicolon';
     if (defined $nonStandard->{$source[0]}) {
        shift @source;
        return pruneNodes($source[0]) if scalar @source == 1;
-       return [map { pruneNodes($_); } @{flattenArray(\@source)}];
+       return [grep { defined } map { pruneNodes($_); } @{flattenArray(\@source)}];
     }
     # if here, array has length of at least 2
     my @result = (shift @source);
-    push @result, map { pruneNodes($_); } @source;
+    push @result, grep { defined } map { pruneNodes($_); } @source;
     return \@result;
 }
 
