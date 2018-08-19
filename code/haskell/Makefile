@@ -2,4 +2,4 @@
 all: test
 
 test:
-	prove -I. long.t short.t
+	prove -I. long.t short.t semis.t
