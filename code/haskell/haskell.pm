@@ -1020,23 +1020,25 @@ sub pruneNodes {
     my @source = grep { defined } @{$v};
     return [] if not scalar @source; # must have at least one element
     my $name = shift @source;
-    divergence("Tree node name has reftype ", (ref $name)) if ref $name;
-    if (not defined $nonStandard->{$name}) {
-	# An acceptable branch node
-	my @result = ($name);
-	push @result, grep { defined }
-		map { @{$_}; }
-		map { pruneNodes($_); }
-		@source;
-	return [\@result];
+    my $nameReftype = ref $name;
+    # divergence("Tree node name has reftype $nameReftype") if $nameReftype;
+    if ($nameReftype or defined $nonStandard->{$name}) {
+      # Not an acceptable branch node, but (hopefully)
+      # its children are acceptable
+      return [ grep { defined }
+	      map { @{$_}; }
+	      map { pruneNodes($_); }
+	      @source
+	    ];
     }
-    # Not an acceptable branch node, but (hopefully)
-    # its children are acceptable
-    return [ grep { defined }
+
+    # An acceptable branch node
+    my @result = ($name);
+    push @result, grep { defined }
 	    map { @{$_}; }
 	    map { pruneNodes($_); }
-	    @source
-	  ];
+	    @source;
+    return [\@result];
 }
 
 1;
