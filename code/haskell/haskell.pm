@@ -1029,25 +1029,26 @@ sub pruneNodes {
     return $v if not $reftype;
     return pruneNodes($$v) if $reftype eq 'REF';
     return $v              if $reftype ne 'ARRAY';
-    my $array_size = scalar @$v;
-    return [] if $array_size <= 0;
-    my $first_elem = $v->[0];
-    return [] if not defined $first_elem;
-    return [] if $first_elem eq 'virtual_semicolon';
-    my $first_elem_ref = ref $first_elem;
-    if ($first_elem_ref) {
-       # if first elem is not a scalar,
-       # flatten this array
-       return [map { pruneNodes($_); } @{flattenArray($v)}];
+    my @source = grep { defined } @{$v};
+    return undef if not @source;
+    if (scalar @source == 1) {
+      my $firstElem = $source[0];
+      return undef if defined $nonStandard->{$firstElem};
+      return pruneNodes($firstElem);
     }
-    my @result     = ();
-    if (defined $nonStandard->{$first_elem}) {
-       my @slice = @{$v};
-       shift @slice;
-       return pruneNodes($slice[0]) if scalar @slice == 1;
-       return [map { pruneNodes($_); } @slice];
+    # if here, array has length of at least 2
+    if (ref $source[0]) {
+       return [map { pruneNodes($_); } @{flattenArray(\@source)}];
     }
-    return [map { pruneNodes($_); } @{$v}];
+    if (defined $nonStandard->{$source[0]}) {
+       shift @source;
+       return pruneNodes($source[0]) if scalar @source == 1;
+       return [map { pruneNodes($_); } @{flattenArray(\@source)}];
+    }
+    # if here, array has length of at least 2
+    my @result = (shift @source);
+    push @result, map { pruneNodes($_); } @source;
+    return \@result;
 }
 
 1;
