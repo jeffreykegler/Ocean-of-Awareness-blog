@@ -987,12 +987,11 @@ sub subParse {
     return $value_ref, $pos;
 }
 
-# Given a array reference, flatten it one level.
-sub flattenArray {
-   my ($v) = @_;
-   return grep { defined } map { ref $_ eq 'ARRAY' ? @{$_} : $_ } @{$v};
-}
-
+# Takes one argument and returns a ref to an array of acceptable
+# nodes.  The array may be empty.  All scalars are acceptable
+# leaf nodes.  Acceptable interior nodes have length at least 1
+# and contain a Haskell Standard symbol name, followed by zero or
+# more acceptable nodes.
 sub pruneNodes {
     my ($v) = @_;
 
@@ -1013,35 +1012,31 @@ sub pruneNodes {
         virtual_semicolon => 1,
     };
 
-    return '!!UNDEF!!' if not defined $v;
+    return [] if not defined $v;
     my $reftype = ref $v;
-    return $v if not $reftype;
+    return [$v] if not $reftype; # An acceptable leaf node
     return pruneNodes($$v) if $reftype eq 'REF';
-    return $v              if $reftype ne 'ARRAY';
+    divergence("Tree node has reftype $reftype") if $reftype ne 'ARRAY';
     my @source = grep { defined } @{$v};
-    return undef if not @source;
-    return undef if $source[0] eq 'virtual_semicolon';
-    say STDERR "==== source 0 = ", $source[0];
-    $DB::single = 1 if $source[0] eq 'topdecls_seq';
-    if (scalar @source == 1) {
-      my $firstElem = $source[0];
-      return undef if defined $nonStandard->{$firstElem};
-      return pruneNodes($firstElem);
+    return [] if not scalar @source; # must have at least one element
+    my $name = shift @source;
+    divergence("Tree node name has reftype ", (ref $name)) if ref $name;
+    if (not defined $nonStandard->{$name}) {
+	# An acceptable branch node
+	my @result = ($name);
+	push @result, grep { defined }
+		map { @{$_}; }
+		map { pruneNodes($_); }
+		@source;
+	return [\@result];
     }
-    # if here, array has length of at least 2
-    if (ref $source[0]) {
-       return [grep { defined } map { pruneNodes($_); } flattenArray(\@source)];
-    }
-    if (defined $nonStandard->{$source[0]}) {
-       shift @source;
-       return pruneNodes($source[0]) if scalar @source == 1;
-	say STDERR "==== source 0 after shift = ", $source[0];
-       return [grep { defined } map { pruneNodes($_); } flattenArray(\@source)];
-    }
-    # if here, array has length of at least 2
-    my @result = (shift @source);
-    push @result, grep { defined } map { pruneNodes($_); } @source;
-    return \@result;
+    # Not an acceptable branch node, but (hopefully)
+    # its children are acceptable
+    return [ grep { defined }
+	    map { @{$_}; }
+	    map { pruneNodes($_); }
+	    @source
+	  ];
 }
 
 1;

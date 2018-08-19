@@ -175,7 +175,7 @@ sub doTest {
     say "===\n", Data::Dumper::Dumper(
     MarpaX::R2::Haskell::pruneNodes($valueRef) ), "===\n";
 
-        $value = Data::Dumper::Dumper( MarpaX::R2::Haskell::pruneNodes($valueRef) );
+        $value = Data::Dumper::Dumper( MarpaX::R2::Haskell::pruneNodes($$valueRef) );
     }
     Test::Differences::eq_or_diff( $value, $expected_value, qq{Test of value} );
 }
