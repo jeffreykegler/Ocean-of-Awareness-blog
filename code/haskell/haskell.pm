@@ -177,7 +177,7 @@ export ::= qtycls
 topdecls ::= topdecls_seq
 # <topdecls_seq> is a extra symbol which will prune from
 # the AST.
-topdecls_seq ::= topdecls_seq virtual_semicolon topdecl
+topdecls_seq ::= topdecls_seq (virtual_semicolon) topdecl
 topdecls_seq ::= topdecl
 
 # Semicolons may be provided by the Ruby Slippers, or
@@ -1022,7 +1022,22 @@ sub pruneNodes {
     my $name = shift @source;
     my $nameReftype = ref $name;
     # divergence("Tree node name has reftype $nameReftype") if $nameReftype;
-    if ($nameReftype or defined $nonStandard->{$name}) {
+    if ($nameReftype) {
+      my @result = ();
+      ELEMENT:for my $element ($name, @source) {
+	if (ref $element eq 'ARRAY') {
+	  push @result, grep { defined }
+		  map { @{$_}; }
+		  map { pruneNodes($_); }
+		  @{$element}
+		;
+	  next ELEMENT;
+	}
+	push @result, $_;
+      }
+      return [@result];
+    }
+    if (defined $nonStandard->{$name}) {
       # Not an acceptable branch node, but (hopefully)
       # its children are acceptable
       return [ grep { defined }

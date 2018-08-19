@@ -61,20 +61,15 @@ EOS
 
 my $long_explicit_ast = [
     'module', 'module', 'AStack',
-    [
-        '(',
-        [
-            [ 'export', 'Stack' ],
-            [ 'export', [ 'qvar', 'push' ] ],
-            [ 'export', [ 'qvar', 'pop' ] ],
-            [ 'export', [ 'qvar', 'top' ] ],
-            [ 'export', [ 'qvar', 'size' ] ]
-        ],
-        ')'
-    ],
+    '(',
+    [ 'export', 'Stack' ],
+    [ 'export', [ 'qvar', 'push' ] ],
+    [ 'export', [ 'qvar', 'pop' ] ],
+    [ 'export', [ 'qvar', 'top' ] ],
+    [ 'export', [ 'qvar', 'size' ] ],
+    ')',
     'where',
     [
-        [
             'body',
             [
                 'topdecls',
@@ -802,7 +797,6 @@ my $long_explicit_ast = [
                     ]
                 ]
             ]
-        ]
     ]
 ];
 
