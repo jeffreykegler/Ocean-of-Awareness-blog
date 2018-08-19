@@ -103,8 +103,8 @@ Marpa and combinator parsing 2
     </p>
     <p>The Hutton and Meijer example is for Gofer,
     a new obsolete implementation of Haskell.
-    To make the example more interesting,
-    I wrote a Haskell parser instead.
+    To make the example more relevant,
+    I wrote a parser for Haskell layout instead.
     </p>
     <p>For tests,
     I used the two examples of layout in the 2010 Haskell
