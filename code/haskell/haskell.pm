@@ -532,7 +532,9 @@ qop ::= qvarop | qconop
 
 gconsym ::= L0_colon | L0_qconsym
 
-# Lexical syntax from Section 10.2
+# ===== Part 3: Haskell lexical syntax =====
+
+# This is from Section 10.2 of the 2010 Standard.
 
 # A unicorn is a lexeme which cannot occur.
 # Unicorns are used as dummy RHSs for Ruby Slippers
@@ -579,6 +581,11 @@ semicolon ~ [;]
 whitechars ~ whitechar*
 whitechar ~ [\t ]
 
+# <commentline> will be longer than
+# any <indent>, so that Marpa's own lexer
+# can "eat" these lines.  This is cleaner
+# and easier than dealing with these in the
+# event handler.
 :discard ~ comment
 :discard ~ commentLine
 commentLine ~ newline whitechars '--' nonNewlines
@@ -808,12 +815,25 @@ qconsym ~ consym | modid '.' consym
 
 END_OF_DSL
 
+# ===== Part 4: Wrappers and handlers =====
+
+# The following logic pre-generates all the grammars we
+# will need, both for the top level and the combinators.
+
 my $topGrammar = Marpa::R2::Scanless::G->new( { source => \$dsl } );
+
 %main::GRAMMARS = (
     'ruby_x_body'  => ['body'],
     'ruby_x_decls' => ['decls'],
     'ruby_x_alts'  => ['alts'],
 );
+
+# Rather than writing 6 grammars for the combinators, we can
+# (mostly) reuse the top-level grammar.  Marpa's ":start"
+# pseudo-symbol allows us to override the default start
+# symbol.  Changing the start symbol makes a long of symbols
+# inaccessible, but the "inaccessible is ok by default"
+# statement turns of the warnings for these.
 
 for my $key ( keys %main::GRAMMARS ) {
     my $grammar_data = $main::GRAMMARS{$key};
@@ -830,6 +850,8 @@ for my $key ( keys %main::GRAMMARS ) {
 }
 
 local $main::DEBUG = 0;
+
+# This is the top level parse routine.
 
 sub parse {
     my ($inputRef) = @_;
@@ -853,6 +875,15 @@ sub parse {
       $currentIndent = $lastNL + 1;
     }
 
+    # $currentIndent is the column number of the indent, or
+    # -1 is explicit layout is being used.  Note column indents here
+    # are zero-based, as opposed to the 2010 standard, whose
+    # description uses 1-based column indents.
+
+    # Create the recognizer instance.
+    # The 'indent' event is turned on or off, depending on whether
+    # explicit or implicit layout is in use.
+
     my $indent_is_active = ($currentIndent >= 0 ? 1 : 0);
     say STDERR "Calling top level parser, indentation = $indent_is_active" if $main::DEBUG;
     my $recce = Marpa::R2::Scanless::R->new(
@@ -864,26 +895,37 @@ sub parse {
         }
     );
 
+    # Get the parse value.
+
     my $value_ref;
     my $result = 'OK';
     my $eval_ok =
       eval { ( $value_ref, undef ) = getValue( $recce, $inputRef, $firstLexemeOffset, $currentIndent ); 1; };
 
+    # Return result and parse value
+
     if ( !$eval_ok ) {
         my $eval_error = $EVAL_ERROR;
-      PARSE_EVAL_ERROR: {
-            $result = "Error: $EVAL_ERROR";
-            Test::More::diag($result);
-        }
+	$result = "Error: $EVAL_ERROR";
     }
     return $result, $value_ref;
 }
+
+# This handler assumes a recognizer has been created.  Given
+# an input, an offset into that input, and a current indent
+# level, it reads using that recognizer.  The return values
+# are the parse value and a new offset in the input.
+# Errors are thrown.
 
 sub getValue {
     my ( $recce, $input, $offset, $currentIndent ) = @_;
     my $input_length = length ${$input};
     my $resume_pos;
     my $this_pos;
+
+  # The main read loop.  Read starting at $offset.
+  # If interrupted execute the handler logic,
+  # and, possibly, resume.
 
   READ:
     for (
@@ -892,6 +934,10 @@ sub getValue {
         $this_pos = $recce->resume($resume_pos)
       )
     {
+	# Only one event at a time is expected -- more
+	# than one is an error.  No event means parsing
+	# is exhausted.
+
         my $events      = $recce->events();
         my $event_count = scalar @{$events};
         if ( $event_count < 0 ) {
@@ -901,8 +947,16 @@ sub getValue {
             divergence("One event expected, instead got $event_count");
         }
 
+	# Find the event name
+
         my $event = $events->[0];
         my $name = $event->[0];
+
+	# An "indent" event occurs whenever indentation is recognized.
+	# The Marpa parser discards indentation, but it also can generate
+	# an event.  "indent" events are only turned on if we are using
+	# implicit layout.
+
         if ( $name eq 'indent' ) {
 
             my ( undef, $indent_start, $indent_end ) = @{$event};
