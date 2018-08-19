@@ -174,9 +174,25 @@ export ::= qtycls
 #  
 # topdecls	→	topdecl1 ; … ; topdecln	    (n ≥ 0)
 
+# The 2010 standard is ambiguous -- an empty string can
+# be either a zero-length sequence of <topdecls>, or
+# a <topdecls> sequence of length one consisting of
+# an empty <gendecl>.  Marpa can handle ambiguity but
+# this one has no semantic relevance and is a pointless
+# nuisance.  I resolve it by requiring a <topdecls>
+# sequence to have a minimm length of one.
+
+# Marpa (to prevent confusions like that of the 2010
+# Standard) bans nullable RHS symbols in its sequence rules,
+# so we have to write this one out in BNF.
+# <topdecls_seq> is an introduced symbol which will
+# be eliminated from the AST.
+
+# Note the parentheses around <virtual_semicolon>.  They
+# indicate that it is to hid from the semantics -- in this case,
+# this avoids clutter in the AST.
+
 topdecls ::= topdecls_seq
-# <topdecls_seq> is a extra symbol which will prune from
-# the AST.
 topdecls_seq ::= topdecls_seq (virtual_semicolon) topdecl
 topdecls_seq ::= topdecl
 
@@ -334,13 +350,12 @@ apats1 ::= apat+
 rhs ::= '=' exp
 rhs ::= '=' exp resword_where laidout_decls
 
+# Here the logic is similar to <laidout_body>,
+# see which above.
 laidout_decls ::= ('{') ruby_x_decls ('}')
 	 | ruby_i_decls
-	 # The next line is a fake, to fool the parser into thinking
-	 # that <decls> is accessible.  <unicorn> will
-	 # never be found in any input.
 	 | L0_unicorn decls L0_unicorn
-#  
+
 # gdrhs	→	guards = exp [gdrhs]
 #  
 # guards	→	| guard1, …, guardn	    (n ≥ 1)
@@ -372,11 +387,10 @@ lexp ::= fexp
 lexp ::= resword_let laidout_decls resword_in exp
 lexp ::= resword_case exp resword_of laidout_alts
 
+# Here the logic is similar to <laidout_body>,
+# see which above.
 laidout_alts ::= ('{') ruby_x_alts ('}')
 	 | ruby_i_alts
-	 # The next line is a fake, to fool the parser into thinking
-	 # that <alts> is accessible.  <unicorn> will
-	 # never be found in any input.
 	 | L0_unicorn alts L0_unicorn
 
 # fexp	→	[fexp] aexp	    (function application)
@@ -417,7 +431,7 @@ exp_tuple_list ::= exp_tuple_list L0_comma exp
 # allow a RHS nullable, and <alt> is
 # nullable
 alts ::= alt
-alts ::= alts virtual_semicolon alt
+alts ::= alts (virtual_semicolon) alt
 
 # alt	→	pat -> exp [where decls]
 # |	pat gdpat [where decls]
