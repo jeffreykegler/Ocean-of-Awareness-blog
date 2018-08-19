@@ -990,17 +990,7 @@ sub subParse {
 # Given a array reference, flatten it one level.
 sub flattenArray {
    my ($v) = @_;
-   my @result = ();
-   SUBELEMENT: for my $i ( 0 .. $#$v ) {
-       my $subelement = $v->[$i];
-       my $subelement_ref = ref $subelement;
-       if ($subelement_ref eq 'ARRAY') {
-	 push @result, map { pruneNodes($_); } @{$subelement};
-	 next SUBELEMENT;
-       }
-       push @result, pruneNodes($subelement);
-   }
-   return [grep { defined } @result];
+   return grep { defined } map { ref $_ eq 'ARRAY' ? @{$_} : $_ } @{$v};
 }
 
 sub pruneNodes {
@@ -1030,6 +1020,9 @@ sub pruneNodes {
     return $v              if $reftype ne 'ARRAY';
     my @source = grep { defined } @{$v};
     return undef if not @source;
+    return undef if $source[0] eq 'virtual_semicolon';
+    say STDERR "==== source 0 = ", $source[0];
+    $DB::single = 1 if $source[0] eq 'topdecls_seq';
     if (scalar @source == 1) {
       my $firstElem = $source[0];
       return undef if defined $nonStandard->{$firstElem};
@@ -1037,13 +1030,13 @@ sub pruneNodes {
     }
     # if here, array has length of at least 2
     if (ref $source[0]) {
-       return [grep { defined } map { pruneNodes($_); } @{flattenArray(\@source)}];
+       return [grep { defined } map { pruneNodes($_); } flattenArray(\@source)];
     }
-    return undef if $source[0] eq 'virtual_semicolon';
     if (defined $nonStandard->{$source[0]}) {
        shift @source;
        return pruneNodes($source[0]) if scalar @source == 1;
-       return [grep { defined } map { pruneNodes($_); } @{flattenArray(\@source)}];
+	say STDERR "==== source 0 after shift = ", $source[0];
+       return [grep { defined } map { pruneNodes($_); } flattenArray(\@source)];
     }
     # if here, array has length of at least 2
     my @result = (shift @source);
