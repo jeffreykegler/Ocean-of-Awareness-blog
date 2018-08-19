@@ -174,7 +174,11 @@ export ::= qtycls
 #  
 # topdecls	→	topdecl1 ; … ; topdecln	    (n ≥ 0)
 
-topdecls ::= topdecl* separator => virtual_semicolon
+topdecls ::= topdecls_seq
+# <topdecls_seq> is a extra symbol which will prune from
+# the AST.
+topdecls_seq ::= topdecls_seq virtual_semicolon topdecl
+topdecls_seq ::= topdecl
 
 # Semicolons may be provided by the Ruby Slippers, or
 # they may be real.
@@ -881,9 +885,11 @@ sub getValue {
 
         my $event = $events->[0];
         my $name = $event->[0];
-        if ( $name eq "indent" ) {
+        if ( $name eq 'indent' ) {
 
             my ( undef, $indent_start, $indent_end ) = @{$event};
+	    say STDERR 'Indent event @', $indent_start, '-',
+	       $indent_end if $main::DEBUG;
 
             # indent length is end-start less one for the newline
             my $indent_length = $indent_end - $indent_start - 1;
@@ -981,6 +987,24 @@ sub subParse {
     return $value_ref, $pos;
 }
 
+# Given a array reference, flatten it one level.
+sub flattenArray {
+   my ($v) = @_;
+   my @result = ();
+   SUBELEMENT: for my $i ( 0 .. $#$v ) {
+       my $subelement = $v->[$i];
+       my $subelement_ref = ref $subelement;
+       if ($subelement_ref eq 'ARRAY') {
+	 for my $j ( 0 .. $#$subelement ) {
+	    push @result, pruneNodes($subelement->[$j]);
+	 }
+	 next SUBELEMENT;
+       }
+       push @result, pruneNodes($subelement);
+   }
+   return \@result;
+}
+
 sub pruneNodes {
     my ($v) = @_;
 
@@ -996,24 +1020,34 @@ sub pruneNodes {
         laidout_alts    => 1,
         laidout_decls   => 1,
         laidout_body    => 1,
+	topdecls_seq    => 1,
         tuple_type_list => 1,
     };
 
+    return '!!UNDEF!!' if not defined $v;
     my $reftype = ref $v;
-    return $v              if not $reftype;
+    return $v if not $reftype;
     return pruneNodes($$v) if $reftype eq 'REF';
     return $v              if $reftype ne 'ARRAY';
-    my @result     = ();
+    my $array_size = scalar @$v;
+    return [] if $array_size <= 0;
     my $first_elem = $v->[0];
     return [] if not defined $first_elem;
-
-    if ( not defined $nonStandard->{$first_elem} ) {
-        push @result, $first_elem;
+    return [] if $first_elem eq 'virtual_semicolon';
+    my $first_elem_ref = ref $first_elem;
+    if ($first_elem_ref) {
+       # if first elem is not a scalar,
+       # flatten this array
+       return [map { pruneNodes($_); } @{flattenArray($v)}];
     }
-    for my $i ( 1 .. $#$v ) {
-        push @result, pruneNodes( $v->[$i] );
+    my @result     = ();
+    if (defined $nonStandard->{$first_elem}) {
+       my @slice = @{$v};
+       shift @slice;
+       return pruneNodes($slice[0]) if scalar @slice == 1;
+       return [map { pruneNodes($_); } @slice];
     }
-    return \@result;
+    return [map { pruneNodes($_); } @{$v}];
 }
 
 1;

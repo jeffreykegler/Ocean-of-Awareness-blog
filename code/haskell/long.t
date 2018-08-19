@@ -827,5 +827,9 @@ sub doTest {
     if ($valueRef) {
         $value = Data::Dumper::Dumper( MarpaX::R2::Haskell::pruneNodes($valueRef) );
     }
+
+    say "===\n", Data::Dumper::Dumper(
+    MarpaX::R2::Haskell::pruneNodes($valueRef) ), "===\n";
+
     Test::Differences::eq_or_diff( $value, $expected_value, qq{Test of value} );
 }

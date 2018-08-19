@@ -49,7 +49,7 @@ my $short_implicit_ast =
   [ 'module', [ 'body', [ 'topdecls', [ 'topdecl', [ 'decl', [ 'funlhs', [ 'var', 'main'
 	      ], [] ], [ 'rhs', '=',
 	      [ 'exp', [ 'infixexp', [ 'lexp', 'let',
-		    [ [ 'decls', [ 'decl', [ 'funlhs', [ 'var', 'y'
+		    [ 'decls', [ 'decl', [ 'funlhs', [ 'var', 'y'
 			    ], [] ], [ 'rhs', '=',
 			    [ 'exp', [ 'infixexp', [ 'lexp', [ 'fexp', [ 'aexp', [ 'qvar', 'a'
 				      ] ] ] ], [ 'qop', [ 'qvarop', '*'
@@ -57,8 +57,8 @@ my $short_implicit_ast =
 					] ] ] ] ] ] ] ] ],
 			[ 'decl', [ 'funlhs',
 			    [ 'var', 'f'
-			    ], [ [ 'apat', [ 'var', 'x'
-				] ] ],
+			    ], [ 'apat', [ 'var', 'x'
+				] ],
 			    ], [ 'rhs', '=',
 			    [ 'exp', [ 'infixexp', [ 'lexp', [ 'fexp', [ 'aexp', '(',
 				      [ 'exp', [ 'infixexp', [ 'lexp', [ 'fexp', [ 'aexp', [ 'qvar', 'x'
@@ -68,7 +68,7 @@ my $short_implicit_ast =
 						  ] ] ] ] ] ] ], ')'
 				    ] ] ], [ 'qop', [ 'qvarop', '/'
 				  ] ], [ 'infixexp', [ 'lexp', [ 'fexp', [ 'aexp', [ 'qvar', 'y'
-					] ] ] ] ] ] ] ] ] ] ], 'in',
+					] ] ] ] ] ] ] ] ] ], 'in',
 		    [ 'exp', [ 'infixexp', [ 'lexp', [ 'fexp', [ 'fexp', [ 'aexp', [ 'qvar', 'f'
 				] ] ], [ 'aexp', [ 'qvar', 'c'
 			      ] ] ] ] ] ] ], [ 'qop', [ 'qvarop', '+'
@@ -82,7 +82,7 @@ my $short_mixed_ast =
   [ 'module', [ 'body', [ 'topdecls', [ 'topdecl', [ 'decl', [ 'funlhs', [ 'var', 'main'
 	      ], [] ], [ 'rhs', '=',
 	      [ 'exp', [ 'infixexp', [ 'lexp', 'let',
-		    [ [ 'decls', [ 'decl', [ 'funlhs', [ 'var', 'y'
+		    [ 'decls', [ 'decl', [ 'funlhs', [ 'var', 'y'
 			    ], [] ], [ 'rhs', '=',
 			    [ 'exp', [ 'infixexp', [ 'lexp', [ 'fexp', [ 'aexp', [ 'qvar', 'a'
 				      ] ] ] ], [ 'qop', [ 'qvarop', '*'
@@ -99,8 +99,8 @@ my $short_mixed_ast =
 
 			[ 'decl', [ 'funlhs',
 			    [ 'var', 'f'
-			    ], [ [ 'apat', [ 'var', 'x'
-				] ] ],
+			    ], [ 'apat', [ 'var', 'x'
+				] ],
 			    ], [ 'rhs', '=',
 			    [ 'exp', [ 'infixexp', [ 'lexp', [ 'fexp', [ 'aexp', '(',
 				      [ 'exp', [ 'infixexp', [ 'lexp', [ 'fexp', [ 'aexp', [ 'qvar', 'x'
@@ -110,7 +110,7 @@ my $short_mixed_ast =
 						  ] ] ] ] ] ] ], ')'
 				    ] ] ], [ 'qop', [ 'qvarop', '/'
 				  ] ], [ 'infixexp', [ 'lexp', [ 'fexp', [ 'aexp', [ 'qvar', 'z'
-					] ] ] ] ] ] ] ] ] ] ], 'in',
+					] ] ] ] ] ] ] ] ] ], 'in',
 		    [ 'exp', [ 'infixexp', [ 'lexp', [ 'fexp', [ 'fexp', [ 'aexp', [ 'qvar', 'f'
 				] ] ], [ 'aexp', [ 'qvar', 'c'
 			      ] ] ] ] ] ] ], [ 'qop', [ 'qvarop', '+'
@@ -124,7 +124,7 @@ my $short_alt_ast =
   [ 'module', [ 'body', [ 'topdecls', [ 'topdecl', [ 'decl', [ 'funlhs', [ 'var', 'main'
 	      ], [] ], [ 'rhs', '=',
 	      [ 'exp', [ 'infixexp', [ 'lexp', 'let',
-		    [ [ 'decls', [ 'decl', [ 'funlhs', [ 'var', 'y'
+		    [ 'decls', [ 'decl', [ 'funlhs', [ 'var', 'y'
 			    ], [] ], [ 'rhs', '=',
 			    [ 'exp', [ 'infixexp', [ 'lexp', [ 'fexp', [ 'aexp', [ 'qvar', 'a'
 				      ] ] ] ], [ 'qop', [ 'qvarop', '*'
@@ -142,7 +142,7 @@ my $short_alt_ast =
 						  ] ] ] ] ] ] ], ')'
 				    ] ] ], [ 'qop', [ 'qvarop', '/'
 				  ] ], [ 'infixexp', [ 'lexp', [ 'fexp', [ 'aexp', [ 'qvar', 'y'
-					] ] ] ] ] ] ] ] ] ] ], 'in',
+					] ] ] ] ] ] ] ] ] ], 'in',
 		    [ 'exp', [ 'infixexp', [ 'lexp', [ 'fexp', [ 'fexp', [ 'aexp', [ 'qvar', 'f'
 				] ] ], [ 'aexp', [ 'qvar', 'c'
 			      ] ] ] ] ] ] ], [ 'qop', [ 'qvarop', '+'
@@ -171,6 +171,10 @@ sub doTest {
     Test::More::pass(qq{Result is OK});
     my $value = '[fail]';
     if ($valueRef) {
+
+    say "===\n", Data::Dumper::Dumper(
+    MarpaX::R2::Haskell::pruneNodes($valueRef) ), "===\n";
+
         $value = Data::Dumper::Dumper( MarpaX::R2::Haskell::pruneNodes($valueRef) );
     }
     Test::Differences::eq_or_diff( $value, $expected_value, qq{Test of value} );
