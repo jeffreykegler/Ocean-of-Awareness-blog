@@ -202,8 +202,11 @@ topdecl ::= decl
 #|	(funlhs | pat) rhs
 
 # Not an explicit sequence, to allow for a nullable
-# separator.
-decls ::= decl* separator => virtual_semicolon
+# <decl>
+decls ::= decls_seq
+decls_seq ::= decls_seq (virtual_semicolon) decl
+decls_seq ::= decl
+
 decl ::= gendecl
 decl ::= funlhs rhs
 
@@ -220,6 +223,7 @@ decl ::= funlhs rhs
 # |		    (empty declaration)
 
 gendecl ::= vars '::' type
+gendecl ::= # empty
 
 # ops	→	op1 , … , opn	    (n ≥ 1)
 # vars	→	var1 , …, varn	    (n ≥ 1)
@@ -996,19 +1000,20 @@ sub pruneNodes {
     my ($v) = @_;
 
     state $nonStandard = {
-        apats           => 1,
-        apats1          => 1,
-        duple_type_list => 1,
-        exports         => 1,
-        optExports      => 1,
-        exp_tuple_list  => 1,
-        flagged_atype   => 1,
-        flagged_atypes  => 1,
-        laidout_alts    => 1,
-        laidout_decls   => 1,
-        laidout_body    => 1,
-	topdecls_seq    => 1,
-        tuple_type_list => 1,
+        apats             => 1,
+        apats1            => 1,
+        decls_seq         => 1,
+        duple_type_list   => 1,
+        exports           => 1,
+        optExports        => 1,
+        exp_tuple_list    => 1,
+        flagged_atype     => 1,
+        flagged_atypes    => 1,
+        laidout_alts      => 1,
+        laidout_decls     => 1,
+        laidout_body      => 1,
+        topdecls_seq      => 1,
+        tuple_type_list   => 1,
         virtual_semicolon => 1,
     };
 
