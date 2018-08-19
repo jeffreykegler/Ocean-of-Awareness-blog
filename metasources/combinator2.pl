@@ -69,14 +69,52 @@ Marpa and combinator parsing 2
     <!--
       marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
       -->
-    <h2>A promise, and a partial delivery</h2>
+    <h2>A promise</h2>
     <p>
     In
     <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2018/05/combinator.html">
     a previous post</a>,
     I outlined a method for using the Marpa algorithm as the basis for
     better combinator parsing.
-    This post delivers on some of that promise.
+    This post is part of the delivery on that promise.
+    </p>
+    <p>To demonstrate Earley-driven combinator parsing,
+    I choose the most complex example from the classic tutorial
+    on combinator parsing by 
+    <footnote>
+    Graham Hutton and Erik Meijer,
+    <cite>Monadic parser combinators</cite>, Technical Report NOTTCS-TR-96-4.
+    Department of Computer Science, University of Nottingham, 1996,
+    pp 30-35.
+    <a href="http://eprints.nottingham.ac.uk/237/1/monparsing.pdf">
+    http://eprints.nottingham.ac.uk/237/1/monparsing.pdf</a>.
+    Accessed 19 August 2018.
+    </footnote>.
+    This is for the offside-rule parsing of a functional language --
+    parsing where whitespace indicates the syntax.<footnote>
+    I use
+    whitespace-significant parsing as a convenient example
+    for this post,
+    for historical reasons and
+    for reasons of level of complexity.
+    This should not be taken to indicate that I recommend it
+    as a language feature.
+    </footnote>
+    </p>
+    <p>The Hutton and Meijer example is for Gofer,
+    a new obsolete implementation of Haskell.
+    To make the example more interesting,
+    I wrote a Haskell parser instead.
+    </p>
+    <p>For tests,
+    I used the two examples of layout in the 2010 Haskell
+    standard and the four examples given in the "Gentle Introduction" to Haskell.
+    I implemented only enough of the Haskell syntax to run
+    these examples.
+    The examples in the "Gentle Introduction" are short,
+    but the ones in the 2010 Standard are moderately long,
+    so this amounted to a substantial subset of Haskell's
+    syntax.
     </p>
     <p>[ TO DO ].
     </p>
