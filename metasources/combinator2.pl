@@ -295,17 +295,18 @@ Marpa and combinator parsing 2
     to the parser at the current location,
     and which are not.
     </p>
-    <p>The usage of the Ruby Slippers so far in this post is relatively incidental.
-    <footnote>
+    <p>The usage of the Ruby Slippers so far in this post is relatively incidental.<footnote>
     TODO: But that could change.  Error handling.
     </footnote>
-    But Ruby Slippers parsing enables a very important trick for "liberal"
+    But Ruby Slippers parsing enables a very important trick which
+    is useful in "liberal"
     parsing -- parsing where certain elements might be in some sense
     "missing".
     </p>
-    <p>With the Ruby Slippers you can decide a "liberal" parser with
+    <p>With the Ruby Slippers you can design a "liberal" parser with
     a "fascist" grammar.
-    This is, in fact, how the Haskell context-free grammar is designed --
+    This is, in fact, how the Haskell 2010 Standard's
+    context-free grammar is designed --
     the official syntax requires explicit layout,
     but Haskell programmers are encouraged to omit most of the explicit
     layout symbols,
@@ -313,14 +314,15 @@ Marpa and combinator parsing 2
     symbols in some way.
     Marpa's method for doing this is left-eideticism and Ruby Slippers
     parsing.
-    <p>The reference is to a well-known scene in the "Wizard of Oz" movie.
+    <p>The term "Ruby Slippers" refers to a widely-known scene in the "Wizard of Oz" movie.
     Dorothy is in the fantasy world of Oz, desperate to return to Kansas,
-    but, particularly after conventional Oz wizardry turns out to be affable fakery,
-    she is completely at a loss as to how that might be done.
+    but, particularly after orthodox Oz wizardry turns out to be affable fakery,
+    she is completely at a loss as to how to escape.
     The "good witch" Glenda appears and tells Dorothy that in fact she's always
     had what she's been wishing for right with her.
-    The Ruby Slippers she's been wearing all along can return her to Kansas
-    and all she needs to do is wish for it.
+    The Ruby Slippers, which she had been wearing all through the movie,
+    can return her to Kansas.
+    All Dorothy needs to do is wish.
     </p>
     <p>In Ruby Slippers parsing,
     the "fascist" grammar wishes for lots of things that may not be in
@@ -331,7 +333,7 @@ Marpa and combinator parsing 2
     To do this,
     the procedural logic has to has a reliable way of knowing what the parser
     wants.
-    Marpa's left-eideticism provides this.
+    Marpa's left-eideticism does this.
     </p>
     <h2>Ruby Slippers combinators</h2>
     <p>This brings us to a question
