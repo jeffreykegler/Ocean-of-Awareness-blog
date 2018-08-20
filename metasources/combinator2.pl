@@ -69,7 +69,6 @@ Marpa and combinator parsing 2
     <!--
       marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
       -->
-    <h2>A promise</h2>
     <p>
     In
     <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2018/05/combinator.html">
@@ -100,9 +99,8 @@ Marpa and combinator parsing 2
     This should not be taken to indicate that I recommend it
     as a language feature.
     </footnote>
-    </p>
-    <p>The Hutton and Meijer example is for Gofer,
-    a new obsolete implementation of Haskell.
+    The Hutton and Meijer example is for Gofer,
+    a now obsolete implementation of Haskell.
     To make the example more relevant,
     I wrote a parser for Haskell layout instead.
     </p>
@@ -227,6 +225,113 @@ Marpa and combinator parsing 2
     and its adds lexemes values as they are produced,
     so this means that Marpa automatically assembles
     a parse tree for us.
+    </p>
+    <h2>Ruby Slippers semicolons</h2>
+    <p>In explaining this algorithm, it may be best to explain first
+    where the "missing" semicolons come from in the implicit layout.
+    Marpa allows various kinds of events,
+    including on discarded tokens.
+    ("Discards" are tokens thrown away, and not used in the parse.
+    The primary use of these in Marpa is for the handling of whitespace
+    and comments.)
+    </p>
+    The following code sets an event named 'indent', which
+    happens when Marpa find a newline followed by zero or more
+    whitespace characters.<footnote>
+    Single-line comments are dealt with properly by lexing them
+    as a different token and discarding them separately.
+    Handling multi-line comments is not yet implemented --
+    it is easy in principle but
+    tedious in practice and the examples drawn from the
+    Haskell literature did not include any test cases.
+    </footnote>
+    This does not capture the indent of the first line of a file,
+    but the standard requires that the first indent be treated as a
+    special case anyway.<footnote>TODO
+    </footnote>
+    <pre><tt>
+      :discard ~ indent event => indent=off
+      indent ~ newline whitechars
+    </tt></pre>
+    <p>
+    Indent events, like others, occur in the main read loop
+    of each combinator.  Outdents and EOFs are dealt with by terminating
+    the loop.<footnote>
+    TODO: Code link</footnote>
+    Line indents deeper than the current block indent are dealt with by
+    resuming the read loop.
+    .<footnote>
+    TODO: Code link</footnote>
+    Line indents equal to the block indent trigger the reading of a
+    Ruby Slippers semicolon.<footnote>
+    TODO: Code link
+    </footnote>
+    <pre><tt>
+	$recce->lexeme_read( 'ruby_semicolon', $indent_start,
+	    $indent_length, ';' )
+    </tt></pre>
+    </p>
+    <h2>Ruby Slippers</h2>
+    <p>
+    In Marpa, a "Ruby Slippers" symbol is one which does not actually occur
+    in the input.
+    Ruby Slippers parsing is new with Marpa,
+    and made possible because Marpa is left-eidetic.
+    By left-eidetic, I mean that Marpa knows, in full
+    detail, about the parse to the left of its current position,
+    and can provide that information to the parsing app.
+    This implies that Marpa also knows which tokens are acceptable
+    to the parser at the current location,
+    and which are not.
+    </p>
+    <p>The usage of the Ruby Slippers above is relatively incidental.
+    <footnote>
+    TODO: But that could change.  Error handling.
+    </footnote>
+    But Ruby Slippers parsing enables a very important trick for "liberal"
+    parsing -- parsing where certain elements might be in some sense
+    "missing".
+    </p>
+    <p>With the Ruby Slippers you can decide a "liberal" parser with
+    a "fascist" grammar.
+    This is, in fact, how the Haskell context-free grammar is designed --
+    the official syntax requires explicit layout,
+    but Haskell programmers are encouraged to omit most of the explicit
+    layout symbols,
+    and Haskell implementations are required to "dummy up" those
+    symbols in some way.
+    Marpa's method for doing this is left-eideticism and Ruby Slippers
+    parsing.
+    <p>The reference is to a well-known scene in the "Wizard of Oz" movie.
+    Dorothy is in the fantasy world of Oz, desperate to return to Kansas,
+    but, particularly after conventional Oz wizardry turns out to be affable fakery,
+    she is completely at a loss as to how that might be done.
+    The "good witch" Glenda appears and tells Dorothy that in fact she's always
+    had what she's been wishing for right with her.
+    The Ruby Slippers she's been wearing all along can return her to Kansas
+    and all she needs to do is wish for it.
+    </p>
+    <p>In Ruby Slippers parsing,
+    the "fascist" grammar wishes for lots of things that may not be in
+    the actual input.
+    Procedural logic here plays the part of a "good witch" -- it tells
+    the "fascist" grammar that what it wants has been there all along,
+    and provides it.
+    To do this,
+    the procedural logic has to has a reliable way of knowing what the parser
+    wants.
+    Marpa's left-eideticism provides this.
+    </p>
+    <h2>Ruby Slippers combinators</h2>
+    <p>This brings us to a question
+    we've posponed until now -- how do we know which combinator
+    to call when?
+    The answer is Ruby Slippers parsing.
+    <pre><tt>
+      laidout_decls ::= ('{') ruby_x_decls ('}')
+	       | ruby_i_decls
+	       | L0_unicorn decls L0_unicorn
+    </tt></pre>
     </p>
     <p>[ TO DO ].
     </p>
