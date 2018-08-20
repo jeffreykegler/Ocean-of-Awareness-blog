@@ -116,6 +116,96 @@ Marpa and combinator parsing 2
     so this amounted to a substantial subset of Haskell's
     syntax.
     </p>
+    <h2>Layout parsing and the off-side rule</h2>
+    <p>It won't be necessary to know Haskell to follow this post.
+    or even to understand any of its syntax beyond layout.
+    This section will describe Haskell's layout parsing informally.
+    Briefly, these two code snippets should have the same effect,
+    and in my test suite, they produce the same AST:
+    <pre><tt>
+       let y   = a*b
+	   f x = (x+y)/y
+       in f c + f d
+    </tt></pre>
+    <pre><tt>
+       let { y   = a*b
+	   ; f x = (x+y)/y
+	   }
+    </tt></pre>
+    The first code display uses Haskell's layout parsing,
+    and the second code display uses explicit layout.
+    In each, the "<tt>let</tt>" is followed by a block
+    of declarations
+    (symbol <tt>&lt;decls&gt;</tt>).
+    Each decls contains one or more 
+    declaration
+    (symbol <tt>&lt;decl&gt;</tt>).
+    For the purposes of determining layout,
+    Haskell regards
+    <tt>&lt;decls&gt;</tt> as a "block",
+    and each
+    <tt>&lt;decl&gt;</tt> as a block "item".
+    In both displays, there are two items in
+    the 
+    <tt>&lt;decls&gt;</tt>
+    block.
+    The first item is
+    <tt>y = a*b</tt>,
+    and the second
+    <tt>&lt;decl&gt;</tt> item
+    is <tt>f x = (x+y)/y</tt>.
+    </p>
+    <p>F
+    </p>
+    </p>
+    In explicit layout, curly braces surround the
+    (symbol <tt>&lt;decls&gt;</tt>) block,
+    and semicolons separate each
+    <tt>&lt;decl&gt;</tt>.
+    Implicit layout follows the "offside rule":
+    The first element of the laid out block
+    determines the "block indent".
+    The first non-whitespace character of every subsequent non-empty line
+    determines the line indent.
+    The line indent is compared to the block indent.
+    <ul>
+    <li>If the line's indent is deeper than the block indent,
+    then the line continues the current block item.
+    </li>
+    <li>If the line's indent is equal to the block indent,
+    then the line starts a new block item.
+    </li>
+    <li>If the line's indent is less than the block indent,
+    (an "outdent")
+    then the line ends the block.
+    An end of file also ends the block.
+    </li>
+    </ul>
+    Lines containing only whitespace are ignored.
+    Comments count as whitespace.
+    </p>
+    <p>
+    Implicit and explicit layout can be mixed.
+    If a semicolons occurs in implicit layout,
+    it separates block items.
+    In our test suite,
+    the example
+    <pre><tt>
+       let y   = a*b;  z = a/b
+	   f x = (x+y)/z
+       in f c + f d
+    </tt></pre>
+    contains three 
+    <tt>&lt;decl&gt;</tt> items.
+    </p>
+    <p>There are additional rules,
+    including for tabs, Unicode characters and
+    multi-line comments.
+    These present no theoretical challenge to this parsing method,
+    and none of them are implemented in the current Haskell subset
+    parser.
+    </p>
+    </p>
     <p>[ TO DO ].
     </p>
     <h2>What is still missing</h2>
@@ -142,177 +232,6 @@ Marpa and combinator parsing 2
     The unproblematic parts include support of Unicode, tabs, strings,
     and other bits of unimplemented syntax.
     Those most problematic part is fixity.
-    </p>
-    <p>[ TO HERE ].
-    </p>
-    <p>In the post on procedural parsing,
-    the subparsers<footnote>
-    In some of the descriptions of Marpa's procedural
-    parsing, these subparsers are called "lexers".
-    This emphasizes the usual case in current practice,
-    where the subparsers are the bottom layer of the
-    parsing application,
-    and do not invoke their own child subparsers.
-    </footnote>
-    were like combinators,
-    in that they could be called recursively,
-    so that a parse could be built up from components.
-    Like combinators,
-    each child could return,
-    not just a parse,
-    but a set of parses.
-    And, as in combinators, once a child combinator
-    returned its value,
-    the parent parser could resume parsing
-    at a location specified by the child combinator.
-    So what was missing?
-    <p>A combinator,
-    in order to handle ambiguity,
-    returns not a subparse, but a set of subparses.
-    In the full combinator model,
-    each subparse can have its own "resume location".<footnote>
-    In notational terms, a full combinator is a function of the form
-    <br>
-    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-    <tt>A* &#8594; &#8473;( P &#215; A* )</tt>,
-    <br>
-    where <tt>A</tt> is the alphabet of the grammar;
-    <tt>P</tt> is a representation of a single parser
-    (for example, a parse tree);
-    <tt>&#8473;(X)</tt> is the power set of a set <tt>X</tt>:
-    and
-    <tt>X &#215; Y</tt> is the Cartesian product
-    of sets <tt>X</tt> and <tt>Y</tt>.
-    The subparsers
-    of the procedural parsing post
-    were of the form
-    <br>
-    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-    <tt>A* &#8594; &#8473;( P ) &#215; A*</tt>.
-    <br>
-    </footnote>
-    The procedural parsing post did not provide for multiple
-    resume locations.
-    We will now proceed to make up for that.
-    </p>
-    <h2>How it works</h2>
-    <p>The Marpa parser has the ability to accept
-    multiple subparses,
-    each with its own length.
-    This allows child subparses to overlap in any fashion,
-    forming a mosaic as complex as the application needs.
-    </p>
-    </p>An Earley parser is table-driven --
-    its parse tables consists of Earley sets,
-    with an initial Earley set
-    and one Earley set per token.
-    This makes for a very simple idea of location.
-    Location 0 is the location of the initial Earley set.
-    Location <tt>N</tt> is the location of the Earley set after the <tt>N</tt>'th
-    token has been consumed.
-    </p>
-    <p>Simplicity is great, but unfortunately
-    this won't work for variable-length
-    tokens.
-    To handle those, Marpa introduces another idea of location:
-    the <b>earleme</b>.
-    Like Earley set locations,
-    the earlemes begin at 0,
-    and advance in integer sequence.
-    Earley set 0 is always at earleme 0.
-    Every Earley set has an earleme location.
-    On the other hand,
-    not every earleme has a corresponding Earley set --
-    there can be "empty" earlemes.
-    </p>
-    <p>The lower-level interface for Marpa is Libmarpa.
-    Every time Libmarpa adds a token,
-    a length in earlemes must be specified.
-    In the most-used higher level Marpa interfaces,
-    this "earleme length" is always 1,
-    which makes the Libmarpa location model collapse into the traditional one.
-    </p>
-    <p>
-    The Libmarpa recognizer advances earleme-by-earleme.
-    In the most-used higher level Marpa interfaces,
-    a token ends at every earleme
-    (unless of course that earleme is after end-of-input).
-    This means that the most-used Marpa interfaces
-    create a new Earley set every time they advance one earleme.
-    Again, in this case, the Libmarpa model collapses into
-    the traditional one.
-    </p>
-    <p>In Libmarpa and other lower-level interfaces,
-    there may be cases where
-    <ul>
-    <li>one or more tokens
-    end after the current earleme, but</li>
-    <li>no tokens end <b>at</b> the current earleme.</li>
-    </ul>
-    In such cases the current earleme will be empty.
-    </p>
-    <p>This is only an outline of the basic concepts behind the
-    Marpa input model.
-    The formalisms are in the Marpa theory paper.<footnote>
-    Kegler, Jeffrey.<a
-    href="http://dinhe.net/~aredridel/.notmine/PDFs/Parsing/KEGLER,%20Jeffrey%20-%20Marpa,%20a%20practical%20general%20parser:%20the%20recognizer.pdf">
-    "Marpa, a Practical General Parser: The Recognizer".</a>
-    2013.
-    Section 12, "The Marpa input model", pp. 39-40.
-    </footnote>
-    The documentation for Libmarpa and Marpa's other low-level interfaces contains
-    more accessible,
-    but detailed, descriptions.<footnote>
-    Libmarpa API document,
-    <a href="http://jeffreykegler.github.io/Marpa-web-site/libmarpa_api/stable/api_one_page.html#Input">
-    the "Input" section</a>.
-    Marpa::R2's NAIF interface allows
-    access to the full Libmarpa input model
-    and its documentation contains
-    <a href="https://metacpan.org/pod/distribution/Marpa-R2/pod/Advanced/Models.pod">
-    a higher-level description of Marpa's alternative input models.</a>
-    There is also a thin Perl interface to Libmarpa,
-    <a href="http://jeffreykegler.github.io/Marpa-web-site/libmarpa_api/stable/api_one_page.html#Input">the THIF interface</a>,
-    which allows full access to the alternative input models.
-    </footnote>
-    </p>
-    <h2>Value added</h2>
-    <h3>Left-eidetic information</h3>
-    <p>As readers of my previous posts<footnote>
-    For example, the
-    <a href="http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2018/05/csg.html">
-    post on procedural parsing</a> contains a good,
-    simple, example of the use of Marpa's left-eideticism.
-    </footnote>
-    will know,
-    Marpa is "left-eidetic" -- the application has access to everything to its left.
-    This is an advantage over the traditional implementation of combinator parsing,
-    where parse information about the left context may be difficult
-    or impossible to access.<footnote>
-    For best effect,
-    left-eidetism and functional purity
-    probably should be used in combination.
-    For the moment at least,
-    I am focusing on explaining the capabilities,
-    and leaving it to others to find the monadic
-    or other solutions that will allow programmers to leverage
-    this power in functionally pure ways.
-    </footnote>
-    </p>
-    <h3>More powerful linear-time combinators</h3>
-    <p>Marpa parses a superset of LR-regular grammars in linear time,
-    which makes it a more powerful "building block"
-    than traditionally available for combinator parsing.
-    This gives the programmer of a combinator parser more options.
-    </p>
-    <h3>State of the art worse-than-linear combinators</h3>
-    <p>In special circumstances, programmers may want to use subparsers 
-    which are worse than linear -- for example, they may know that
-    the string is very short.
-    Marpa parses context-free grammars in state of the art time.<footnote>
-    Specifically O(n^2) for unambiguous grammars,
-    and O(n^3) for ambiguous grammars.
-    </footnote>
     </p>
     <h2>The code, comments, etc.</h2>
       To learn more about Marpa,

@@ -590,6 +590,8 @@ whitechar ~ [\t ]
 :discard ~ commentLine
 commentLine ~ newline whitechars '--' nonNewlines
 
+# Here we define an "event" for <indent>.
+# The event is initially set to off.
 :discard ~ indent event => indent=off
 indent ~ newline whitechars
 
@@ -677,6 +679,11 @@ conid ~ large nonInitials
 # |	infixr | instance | let | module | newtype | of
 # |	then | type | where | _
 
+# Lexemes are set to priority 1.  Priorities allow
+# one lexeme to "outprioritize" others.  They only
+# apply if both lexemes start and end at the same location.
+# Default priority is zero, so lexemes will outprioritize
+# most lexemes, including normal variables.
 :lexeme ~ resword_case priority => 1
 resword_case ~ 'case'
 # :lexeme ~ resword_class priority => 1
