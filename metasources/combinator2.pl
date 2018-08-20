@@ -519,7 +519,11 @@ Marpa and combinator parsing 2
     </p>
     <h2>The code, comments, etc.</h2>
     <p>Full code and a test suite for this prototype can be found
-    on Github.
+    <a href="https://github.com/jeffreykegler/Ocean-of-Awareness-blog/tree/gh-pages/code/haskell">
+    on Github</a>.
+    Note that, in order to guarantee they stay relevant,
+    links for specific lines of code in this post will often be, not to the latest
+    version, but to specific earlier commits.
     </p>
     <p>
       To learn more about Marpa,
