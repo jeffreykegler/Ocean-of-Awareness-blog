@@ -109,17 +109,23 @@ Marpa and combinator parsing 2
     standard and the four examples given in the "Gentle Introduction" to Haskell.
     I implemented only enough of the Haskell syntax to run
     these examples.
-    The examples in the "Gentle Introduction" are short,
-    but the ones in the 2010 Standard are moderately long,
+    The ones in the 2010 Standard are moderately long,
     so this amounted to a substantial subset of Haskell's
     syntax.
     </p>
+    <p>The full code and test suite for this example are
+    <a href="https://github.com/jeffreykegler/Ocean-of-Awareness-blog/tree/gh-pages/code/haskell">
+    on Github</a>.
+    While they do not amount to a tutorial, the code has very
+    extensive comments and
+    readers who like to "peek ahead" are encouraged to do so.
+    </p>
     <h2>Layout parsing and the off-side rule</h2>
     <p>It won't be necessary to know Haskell to follow this post.
-    or even to understand any of its syntax beyond layout.
-    This section will describe Haskell's layout parsing informally.
-    Briefly, these two code snippets should have the same effect,
-    and in my test suite, they produce the same AST:
+    or even to understand more about its syntax than is necessary to
+    illustrate layout.
+    This section will describe Haskell's layout informally.
+    Briefly, these two code snippets should have the same effect:
     <pre><tt>
        let y   = a*b
 	   f x = (x+y)/y
@@ -130,13 +136,15 @@ Marpa and combinator parsing 2
 	   ; f x = (x+y)/y
 	   }
     </tt></pre>
+    <p>
+    In my test suite, both code snippets produce the same AST.
     The first code display uses Haskell's layout parsing,
     and the second code display uses explicit layout.
     In each, the "<tt>let</tt>" is followed by a block
     of declarations
     (symbol <tt>&lt;decls&gt;</tt>).
     Each decls contains one or more 
-    declaration
+    declarations
     (symbol <tt>&lt;decl&gt;</tt>).
     For the purposes of determining layout,
     Haskell regards
@@ -144,9 +152,7 @@ Marpa and combinator parsing 2
     and each
     <tt>&lt;decl&gt;</tt> as a block "item".
     In both displays, there are two items in
-    the 
-    <tt>&lt;decls&gt;</tt>
-    block.
+    the block.
     The first item is
     <tt>y = a*b</tt>,
     and the second
@@ -154,10 +160,9 @@ Marpa and combinator parsing 2
     is <tt>f x = (x+y)/y</tt>.
     </p>
     <p>
-    In explicit layout, curly braces surround the
-    (symbol <tt>&lt;decls&gt;</tt>) block,
+    In explicit layout, curly braces surround the block,
     and semicolons separate each
-    <tt>&lt;decl&gt;</tt>.
+    item.
     Implicit layout follows the "offside rule":
     The first element of the laid out block
     determines the "block indent".
@@ -171,8 +176,8 @@ Marpa and combinator parsing 2
     <li>If the line's indent is equal to the block indent,
     then the line starts a new block item.
     </li>
-    <li>If the line's indent is less than the block indent,
-    (an "outdent")
+    <li>If the line's indent is less than the block indent
+    (an "outdent"),
     then the line ends the block.
     An end of file also ends the block.
     </li>
@@ -181,7 +186,7 @@ Marpa and combinator parsing 2
     Comments count as whitespace.
     </p>
     <p>
-    Explicity semicolons can be used
+    Explicit semicolons can be used
     in implicit layout:
     If a semicolons occurs in implicit layout,
     it separates block items.
@@ -196,41 +201,48 @@ Marpa and combinator parsing 2
     <tt>&lt;decl&gt;</tt> items.
     </p>
     <p>The examples in the displays above are simple.
-    The test suite has
-    a more complicated example
-    with 6 blocks of 4 different kinds,
-    nested to a maximum depth of 4.
+    The two examples from the 2010 Standard are
+    more complicated:
+    6 blocks of 4 different kinds,
+    with nesting twice reaching
+    a depth of 4.
+    The two examples in the 2010 Standard are the same
+    except one uses implicit layout and the other uses
+    explicit layout.
+    In the test of my Haskell subset parser,
+    the two examples produce identical ASTs.
     </p>
     <p>There are additional rules,
     including for tabs, Unicode characters and
     multi-line comments.
-    These present no theoretical challenge to this parsing method,
-    and none of them are implemented in the current Haskell subset
-    parser.
+    These rules are not relevant in the examples I took from the Haskell literature,
+    they present no theoretical challenge to this parsing method,
+    and they are not implemented in this prototype Haskell parser.
     </p>
     <h2>The strategy</h2>
-    <p>To tackle Haskell layout parsing, I chose to use a separate
+    <p>To tackle Haskell layout parsing, I use a separate
     combinator for each layout block.
-    Every block, therefore, had its own block and item symbols,
+    Every combinator, therefore, had its own block and item symbols,
     its own block indent,
-    and each was either explicit or implicit.
+    and each combinator applies implements exactly one of explicit or implicit layout.
     </p>
     <p>From the point of view of its parent combinator,
     a child combinator is a lexeme,
     and the parse tree it produces is the
     value of the lexeme.
     Marpa can automatically produce an AST,
-    and its adds lexemes values as they are produced,
-    so this means that Marpa automatically assembles
-    a parse tree for us.
+    and its adds lexemes values as leaves of the AST.
+    The effect is that Marpa automatically assembles
+    a parse tree for us from the tree segments returned by the
+    combinators.
     </p>
     <h2>Ruby Slippers semicolons</h2>
-    <p>In explaining this algorithm, it may be best to explain first
+    <p>In outlining this algorithm, I will start by explaining
     where the "missing" semicolons come from in the implicit layout.
     Marpa allows various kinds of events,
     including on discarded tokens.
     ("Discards" are tokens thrown away, and not used in the parse.
-    The primary use of these in Marpa is for the handling of whitespace
+    The typical use of token discarding in Marpa is for the handling of whitespace
     and comments.)
     </p>
     The following code sets an event named 'indent', which
@@ -244,7 +256,8 @@ Marpa and combinator parsing 2
     Haskell literature did not include any test cases.
     </footnote>
     This does not capture the indent of the first line of a file,
-    but the standard requires that the first indent be treated as a
+    but that is not an issue --
+    the 2010 Standard requires that the first indent be treated as a
     special case anyway.<footnote>TODO
     </footnote>
     <pre><tt>
@@ -258,10 +271,10 @@ Marpa and combinator parsing 2
     TODO: Code link</footnote>
     Line indents deeper than the current block indent are dealt with by
     resuming the read loop.
-    .<footnote>
+    <footnote>
     TODO: Code link</footnote>
     Line indents equal to the block indent trigger the reading of a
-    Ruby Slippers semicolon.<footnote>
+    Ruby Slippers semicolon as shown in the following:<footnote>
     TODO: Code link
     </footnote>
     <pre><tt>
@@ -282,7 +295,7 @@ Marpa and combinator parsing 2
     to the parser at the current location,
     and which are not.
     </p>
-    <p>The usage of the Ruby Slippers above is relatively incidental.
+    <p>The usage of the Ruby Slippers so far in this post is relatively incidental.
     <footnote>
     TODO: But that could change.  Error handling.
     </footnote>
