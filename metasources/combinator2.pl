@@ -337,7 +337,7 @@ Marpa and combinator parsing 2
     </p>
     <h2>Ruby Slippers combinators</h2>
     <p>This brings us to a question
-    we've posponed until now -- how do we know which combinator
+    I've postponed -- how do we know which combinator
     to call when?
     The answer is Ruby Slippers parsing.
     First, here are some lexer rules for "unicorn" symbols.
@@ -437,7 +437,7 @@ Marpa and combinator parsing 2
     causing a "rejected" event.
     <h2>Rejected events</h2>
     <p>In this code, as often,
-    the "good with" of Ruby Slippers does her work through
+    the "good witch" of Ruby Slippers does her work through
     "rejected" events.
     These events can be set up to happen when, at some parse
     location, none of the tokens that Marpa's internal lexer
