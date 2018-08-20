@@ -327,40 +327,201 @@ Marpa and combinator parsing 2
     we've posponed until now -- how do we know which combinator
     to call when?
     The answer is Ruby Slippers parsing.
+    First, here are some lexer rules for "unicorn" symbols.
+    We use unicorns when symbols must appear in Marpa's lexer,
+    but must never be found in actual input.
+    </p>
+    <pre><tt>
+      :lexeme ~ L0_unicorn
+      L0_unicorn ~ unicorn
+      unicorn ~ [^\d\D]
+      ruby_i_decls ~ unicorn
+      ruby_x_decls ~ unicorn
+    </tt></pre>
+    <p>
+    <tt>&lt;unicorn&gt;</tt> is defined to match 
+    <tt>[^\d\D]</tt>.
+    This pattern is all the symbols which are not digits
+    and not non-digits -- in other words, it's impossible that this
+    pattern will ever match any character.
+    The rest of the statements declare other unicorn lexemes
+    that we will need.
+    <tt>&lt;unicorn&gt;</tt> and
+    <tt>&lt;L0_unicorn&gt;</tt> are separate,
+    because we need to use
+    <tt>&lt;unicorn&gt;</tt> on the RHS of some lexer rules,
+    and a Marpa lexeme can never occur
+    on the RHS of a lexer rule.<footnote>
+    The reason for this is that by default Marpa uses the LHS and RHS
+    status of symbols to determine which symbols are lexemes.
+    This makes a typical Marpa grammar quite elegant.
+    and requires a minimum of explicit lexeme declarations
+    (Lexeme declarations are statements with the <tt>:lexeme</tt>
+    pseudo-symbol on their LHS.)
+    As an aside,
+    the Haskell 2010 Standard is not careful about the lexer/context-free
+    boundary,
+    and this required more use of Marpa's explicit lexeme declarations
+    than usual.
+    </footnote>
+    </p>
+    <p>In the above Marpa rule,
+    <ul>
+    <li>
+    <tt>&lt;decls&gt;</tt> is the symbol from the 2010 Standard;
+    </li>
+    <li>
+    <tt>&lt;ruby_i_decls&gt;</tt> is a Ruby Slippers symbol for
+    a block of declarations with implicit layout.
+    </li>
+    <li>
+    <tt>&lt;ruby_x_decls&gt;</tt> is a Ruby Slippers symbol for
+    a block of declarations with explicit layout.
+    </li>
+    <li>
+    <tt>&lt;laidout_decls&gt;</tt> is a symbol (not in the 2010 standard)
+    for a block of declarations covering all the possibilities for
+    a block of declarations.
+    </li>
+    </ul>
     <pre><tt>
       laidout_decls ::= ('{') ruby_x_decls ('}')
 	       | ruby_i_decls
 	       | L0_unicorn decls L0_unicorn
     </tt></pre>
     </p>
-    <p>[ TO DO ].
+    <p>It is the expectation of a 
+    <tt>&lt;laidout_decls&gt;</tt> symbol that causes child
+    combinators to be invoked.
+    Because <tt>&lt;L0_unicorn&gt;</tt> will never be found
+    in the input,
+    the 
+    <tt>&lt;decls&gt;</tt> alternative will never match --
+    it is there for documentation and debugging reasons.<footnote>
+    Specifically, the presense of a 
+    <tt>&lt;decls&gt;</tt> alternative silences the usual warnings about
+    symbols inaccessible from the start symbol.
+    These warnings can be silenced in other ways,
+    but at the prototype stage it is convenient to check that
+    all symbols supposed to be accessible through
+    <tt>&lt;decls&gt;</tt> are in fact accessible.
+    There is a small startup cost to allowing the extra symbols
+    in the grammars,
+    but the runtime the cost is probably not measureable.
+    </footnote>
+    Therefore Marpa, when it wants a
+    <tt>&lt;laidout_decls&gt;</tt>,
+    will look either for a
+    <tt>&lt;ruby_x_decls&gt;</tt> 
+    if a open curly brace is read;
+    and a
+    <tt>&lt;ruby_i_decls&gt;</tt> otherwise.
+    Neither <tt>&lt;ruby_x_decls&gt;</tt> 
+    or
+    <tt>&lt;ruby_i_decls&gt;</tt> will ever be found in the
+    input,
+    and Marpa will reject the input,
+    causing a "rejected" event.
+    <h2>Rejected events</h2>
+    <p>In this code, as often,
+    the "good with" of Ruby Slippers does her work through
+    "rejected" events.
+    These events can be set up to happen when, at some parse
+    location, none of the tokens that Marpa's internal lexer
+    finds are acceptable.
     </p>
-    <h2>What is still missing</h2>
     <p>
-    I believe that
-    the Haskell parser implemented for this post could be the basis of
-    a full Haskell parser.
-    It would have linear complexity,
-    though as long as much of it is in Perl,
-    speed and space requirements will be far inferior to that
-    of native Haskell parsers.
+    In the "rejected" event handler,
+    we can use Marpa's left eideticism to find out what
+    lexemes Marpa <b>would</b> consider acceptable.
+    Specifically, there is a <tt>terminals_expected()</tt>
+    method which returns a list of the symbols acceptable
+    at the current location.
     </p>
-    <p>What is missing should be noted:
-    Marpa::R2's tracing and error handling is excellent
-    for single grammars,
-    but it needs to be updated to understand about those
-    grammars built into a combinator hierarchy.
+    <pre><tt>
+            my @expected =
+              grep { /^ruby_/xms; } @{ $recce->terminals_expected() };
+    </tt></pre>
+    <p>We "grep" out all but the symbols with the "<tt>ruby_</tt>" prefix.
+    There are only 4 non-overlapping possibilities:
     </p>
-    <p>Large pieces of the Haskell grammar remain unimplemented.
-    The missing parts are of two kinds:
-    Those that these would be tedious, but unproblematic, to add;
-    and those whose problems are completely separate from the
-    issue of combinator parsing dealt with in this post.
-    The unproblematic parts include support of Unicode, tabs, strings,
-    and other bits of unimplemented syntax.
-    Those most problematic part is fixity.
+    <ul>
+    <li>Marpa expect a 
+    <tt>&lt;ruby_i_decls&gt;</tt>
+    lexeme;
+    </li>
+    <li>Marpa expect a 
+    <tt>&lt;ruby_x_decls&gt;</tt>
+    lexeme;
+    </li>
+    <li>Marpa expect a 
+    <tt>&lt;ruby_semicolon&gt;</tt>
+    lexeme;
+    </li>
+    <li>Marpa does not expect
+    any of the Ruby Slippers lexemes;
+    </li>
+    </ul>
+    <p>If Marpa does not expect any of the Ruby Slippers
+    lexemes, there was a syntax error in the Haskell code.<footnote>
+    TODO:
+    Currently the handling of these is simplistic.
+    </footnote>
+    <p>If a <tt>&lt;ruby_i_decls&gt;</tt>
+    or a <tt>&lt;ruby_x_decls&gt;</tt>
+    lexeme is expected, a child combinator is invoked.
+    The Ruby Slippers symbol determines
+    whether the child combinator looks for implicit
+    or explicit layout.
+    In the case of implicit layout, the location of
+    the rejection determines the block indent.
+    </p>
+    <p>If a 
+    <tt>&lt;ruby_semicolon&gt;</tt>
+    is expected, then the parser is at the point where a
+    new block item could start,
+    but none was found.
+    Whether the block was implicit or explicit,
+    this indicates we have reached the end of the block,
+    and should return control to the parent combinator.
+    </p>
+    <p>
+    To explain, we look at both cases.
+    In the case of an explicit layout combinator,
+    the rejection should have been caused by a closing
+    curly brace, and
+    we return to the parent combinator
+    and retry it.
+    In the parent combinator, the closing curly brace
+    will be acceptable.
+    </p>
+    <p>If we experience a "rejected" event while
+    expecting a
+    <tt>&lt;ruby_semicolon&gt;</tt> in an implicit layout
+    combinator,
+    it means we did not find an explicit semicolon;
+    and we also never the right indent for creating a Ruby semicolon.
+    In other words, the indentation is telling us we are at the end
+    of the block.
+    We therefore return control to the parent combinator.
+    </p>
+    <h2>Conclusion</h2>
+    <p>
+    With this, we've covered the major points of this Haskell prototype
+    parser.
+    In the code, the grammars from the 2010 standard are included for
+    comparison, so a reader can easily determine what syntax we left out.
+    It might be tedious to add the rest,
+    but I believe it would be unproblematic, with one interesting exception:
+    fixity.
+    To deal with fixity, we may have to haul out the Ruby Slippers once
+    again.
     </p>
     <h2>The code, comments, etc.</h2>
+    <p>Full code and a test suite for this prototype can be found
+    on Github.
+    </p>
+    <p>
       To learn more about Marpa,
       a good first stop is the
       <a href="http://savage.net.au/Marpa.html">semi-official web site, maintained by Ron Savage</a>.
