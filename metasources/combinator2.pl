@@ -185,7 +185,8 @@ Marpa and combinator parsing 2
     Comments count as whitespace.
     </p>
     <p>
-    Implicit and explicit layout can be mixed.
+    Explicity semicolons can be used
+    in implicit layout:
     If a semicolons occurs in implicit layout,
     it separates block items.
     In our test suite,
@@ -198,6 +199,12 @@ Marpa and combinator parsing 2
     contains three 
     <tt>&lt;decl&gt;</tt> items.
     </p>
+    <p>The examples in the displays above are simple.
+    The test suite has
+    a more complicated example
+    with 6 blocks of 4 different kinds,
+    nested to a maximum depth of 4.
+    </p>
     <p>There are additional rules,
     including for tabs, Unicode characters and
     multi-line comments.
@@ -205,6 +212,21 @@ Marpa and combinator parsing 2
     and none of them are implemented in the current Haskell subset
     parser.
     </p>
+    <h2>The strategy</h2>
+    <p>To tackle Haskell layout parsing, I chose to use a separate
+    combinator for each layout block.
+    Every block, therefore, had its own block and item symbols,
+    its own block indent,
+    and each was either explicit or implicit.
+    </p>
+    <p>From the point of view of its parent combinator,
+    a child combinator is a lexeme,
+    and the parse tree it produces is the
+    value of the lexeme.
+    Marpa can automatically produce an AST,
+    and its adds lexemes values as they are produced,
+    so this means that Marpa automatically assembles
+    a parse tree for us.
     </p>
     <p>[ TO DO ].
     </p>

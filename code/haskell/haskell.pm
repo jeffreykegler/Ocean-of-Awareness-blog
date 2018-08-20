@@ -1095,6 +1095,8 @@ sub getValue {
 
 sub subParse {
     my ( $target, $input, $offset, $currentIndent ) = @_;
+    say STDERR qq{Starting combinator for "$target" at $currentIndent}
+        if $main::DEBUG;
     my $grammar_data = $main::GRAMMARS{$target};
 
     divergence(qq{No grammar for target = "$target"}) if not $grammar_data;
@@ -1109,6 +1111,8 @@ sub subParse {
         }
     );
     my ( $value_ref, $pos ) = getValue( $recce, $input, $offset, $currentIndent );
+    say STDERR qq{Returing from combinator for "$target" at $currentIndent}
+        if $main::DEBUG;
     return $value_ref, $pos;
 }
 
