@@ -153,9 +153,7 @@ Marpa and combinator parsing 2
     <tt>&lt;decl&gt;</tt> item
     is <tt>f x = (x+y)/y</tt>.
     </p>
-    <p>F
-    </p>
-    </p>
+    <p>
     In explicit layout, curly braces surround the
     (symbol <tt>&lt;decls&gt;</tt>) block,
     and semicolons separate each
@@ -446,15 +444,15 @@ Marpa and combinator parsing 2
     There are only 4 non-overlapping possibilities:
     </p>
     <ul>
-    <li>Marpa expect a 
+    <li>Marpa expects a 
     <tt>&lt;ruby_i_decls&gt;</tt>
     lexeme;
     </li>
-    <li>Marpa expect a 
+    <li>Marpa expects a 
     <tt>&lt;ruby_x_decls&gt;</tt>
     lexeme;
     </li>
-    <li>Marpa expect a 
+    <li>Marpa expects a 
     <tt>&lt;ruby_semicolon&gt;</tt>
     lexeme;
     </li>
