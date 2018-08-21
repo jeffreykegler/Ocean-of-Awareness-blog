@@ -980,6 +980,11 @@ sub getValue {
 	# an event.  "indent" events are only turned on if we are using
 	# implicit layout.
 
+        if ( $name eq 'reservedid' ) {
+	    say STDERR show_last_expression($recce, 'decls') if $main::DEBUG;
+	    last READ;
+	}
+
         if ( $name eq 'indent' ) {
 
             my ( undef, $indent_start, $indent_end ) = @{$event};
@@ -1101,7 +1106,6 @@ sub getValue {
 
     # Return value and new offset
 
-    say STDERR show_last_expression($recce, 'decls') if $main::DEBUG;
     my $value_ref = $recce->value();
     if ( !$value_ref ) {
         divergence( qq{input read, but there was no parse} );

@@ -9,7 +9,7 @@ $Data::Dumper::Terse    = 1;
 $Data::Dumper::Deepcopy = 1;
 use English qw( -no_match_vars );
 
-use Test::More tests => 8;
+use Test::More tests => 4;
 use Test::Differences;
 
 use Marpa::R2 4.000;
@@ -26,7 +26,132 @@ main =
  let { x = e; y = x } in e'
 EOS
 
-my $note1_implicit_ast = []
+my $note1_implicit_ast =
+  [
+    'module',
+    [
+      'body',
+      [
+        'topdecls',
+        [
+          'topdecl',
+          [
+            'decl',
+            [
+              'funlhs',
+              [
+                'var',
+                'main'
+              ]
+            ],
+            [
+              'rhs',
+              '=',
+              [
+                'exp',
+                [
+                  'infixexp',
+                  [
+                    'lexp',
+                    'let',
+                    [
+                      'decls',
+                      [
+                        'decl',
+                        [
+                          'funlhs',
+                          [
+                            'var',
+                            'x'
+                          ]
+                        ],
+                        [
+                          'rhs',
+                          '=',
+                          [
+                            'exp',
+                            [
+                              'infixexp',
+                              [
+                                'lexp',
+                                [
+                                  'fexp',
+                                  [
+                                    'aexp',
+                                    [
+                                      'qvar',
+                                      'e'
+                                    ]
+                                  ]
+                                ]
+                              ]
+                            ]
+                          ]
+                        ]
+                      ],
+                      [
+                        'decl',
+                        [
+                          'funlhs',
+                          [
+                            'var',
+                            'y'
+                          ]
+                        ],
+                        [
+                          'rhs',
+                          '=',
+                          [
+                            'exp',
+                            [
+                              'infixexp',
+                              [
+                                'lexp',
+                                [
+                                  'fexp',
+                                  [
+                                    'aexp',
+                                    [
+                                      'qvar',
+                                      'x'
+                                    ]
+                                  ]
+                                ]
+                              ]
+                            ]
+                          ]
+                        ]
+                      ]
+                    ],
+                    'in',
+                    [
+                      'exp',
+                      [
+                        'infixexp',
+                        [
+                          'lexp',
+                          [
+                            'fexp',
+                            [
+                              'aexp',
+                              [
+                                'qvar',
+                                'e\''
+                              ]
+                            ]
+                          ]
+                        ]
+                      ]
+                    ]
+                  ]
+                ]
+              ]
+            ]
+          ]
+        ]
+      ]
+    ]
+  ]
   ;
 
 my $note1_implicit_expected = Data::Dumper::Dumper( MarpaX::R2::Haskell::pruneNodes($note1_implicit_ast) );
