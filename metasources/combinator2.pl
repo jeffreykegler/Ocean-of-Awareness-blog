@@ -237,22 +237,22 @@ Marpa and combinator parsing 2
     <tt>&lt;decl&gt;</tt> items.
     </p>
     <p>The examples in the displays above are simple.
-    The two examples from the 2010 Report are
+    The two long examples from the 2010 Report are
     more complicated:
     6 blocks of 4 different kinds,
     with nesting twice reaching
     a depth of 4.
-    The two examples in the 2010 Report are the same
-    except one uses implicit layout and the other uses
+    The two long examples in the 2010 Report are the same,
+    except that one uses implicit layout and the other uses
     explicit layout.
     In the test of my Haskell subset parser,
-    the two examples produce identical ASTs.
+    both examples produce identical ASTs.
     </p>
     <p>There are additional rules,
     including for tabs, Unicode characters and
     multi-line comments.
-    These rules are not relevant in the examples I took from the Haskell literature,
-    they present no theoretical challenge to this parsing method,
+    These rules are not relevant in the examples I took from the Haskell literature;
+    they present no theoretical challenge to this parsing method;
     and they are not implemented in this prototype Haskell parser.
     </p>
     <h2>The strategy</h2>
@@ -260,14 +260,14 @@ Marpa and combinator parsing 2
     combinator for each layout block.
     Every combinator, therefore, has its own block and item symbols,
     and its own block indent;
-    and each combinator applies implements exactly one of explicit or implicit layout.
+    and each combinator implements exactly one method of layout -- explicit or implicit.
     </p>
     <p>From the point of view of its parent combinator,
     a child combinator is a lexeme,
     and the parse tree it produces is the
     value of the lexeme.
     Marpa can automatically produce an AST,
-    and its adds lexemes values to the AST as leaves.
+    and its adds lexeme values to the AST as leaves.
     The effect is that Marpa automatically assembles
     a parse tree for us from the tree segments returned by the
     combinators.
@@ -315,10 +315,7 @@ Marpa and combinator parsing 2
     Github Permalink.</a>
     </footnote>
     Line indents equal to the block indent trigger the reading of a
-    Ruby Slippers semicolon as shown in the following:<footnote>
-    <a href="https://github.com/jeffreykegler/Ocean-of-Awareness-blog/blob/6c76ffc791d24f4515edea376ac31ad7264a420c/code/haskell/haskell.pm#L1036">
-    Github Permalink.</a>
-    </footnote>
+    Ruby Slippers semicolon as shown in the following:
     <pre><tt>
 	$recce->lexeme_read( 'ruby_semicolon', $indent_start,
 	    $indent_length, ';' ) </tt><footnote>
