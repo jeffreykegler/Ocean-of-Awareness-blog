@@ -1,5 +1,8 @@
 #!/usr/bin/perl)
 
+# The example from the Haskell 2010 Language Report,
+# p. 134.
+
 use 5.010;
 use strict;
 use warnings;

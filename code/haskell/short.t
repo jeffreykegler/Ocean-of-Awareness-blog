@@ -1,5 +1,7 @@
 #!/usr/bin/perl)
 
+# Examples from the Gentle Introduction to Haskell.
+
 use 5.010;
 use strict;
 use warnings;

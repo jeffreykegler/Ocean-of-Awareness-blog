@@ -1,5 +1,9 @@
 #!/usr/bin/perl)
 
+# Variations on the examples
+# from the Gentle Introduction to Haskell,
+# introducing extra semicolons.
+
 use 5.010;
 use strict;
 use warnings;
