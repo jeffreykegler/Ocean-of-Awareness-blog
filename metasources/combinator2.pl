@@ -156,13 +156,19 @@ Marpa and combinator parsing 2
     <pre><tt>
        let y   = a*b
 	   f x = (x+y)/y
-       in f c + f d
-    </tt></pre>
+       in f c + f d </tt><footnote>
+      <a href="https://github.com/jeffreykegler/Ocean-of-Awareness-blog/blob/6c76ffc791d24f4515edea376ac31ad7264a420c/code/haskell/short.t#L21">
+      Github Permalink.</a>
+      </footnote>
+     </pre>
     <pre><tt>
        let { y   = a*b
 	   ; f x = (x+y)/y
-	   }
-    </tt></pre>
+	   } </tt><footnote>
+      <a href="https://github.com/jeffreykegler/Ocean-of-Awareness-blog/blob/6c76ffc791d24f4515edea376ac31ad7264a420c/code/haskell/short.t#L28">
+      Github Permalink.</a>
+       </footnote>
+    </pre>
     <p>
     In my test suite, both code snippets produce the same AST.
     The first code display uses Haskell's implicit layout parsing,
@@ -222,8 +228,11 @@ Marpa and combinator parsing 2
     <pre><tt>
        let y   = a*b;  z = a/b
 	   f x = (x+y)/z
-       in f c + f d
-    </tt></pre>
+       in f c + f d </tt><footnote>
+      <a href="https://github.com/jeffreykegler/Ocean-of-Awareness-blog/blob/6c76ffc791d24f4515edea376ac31ad7264a420c/code/haskell/short.t#L43">
+      Github Permalink.</a>
+      </footnote>
+    </pre>
     contains three 
     <tt>&lt;decl&gt;</tt> items.
     </p>
@@ -285,29 +294,39 @@ Marpa and combinator parsing 2
     This does not capture the indent of the first line of a file,
     but that is not an issue --
     the 2010 Report requires that the first indent be treated as a
-    special case anyway.<footnote>TODO
-    </footnote>
+    special case anyway.
     <pre><tt>
       :discard ~ indent event => indent=off
-      indent ~ newline whitechars
-    </tt></pre>
+      indent ~ newline whitechars </tt><footnote>
+      <a href="https://github.com/jeffreykegler/Ocean-of-Awareness-blog/blob/6c76ffc791d24f4515edea376ac31ad7264a420c/code/haskell/haskell.pm#L608">
+      Github Permalink.</a>
+      </footnote>
+      </pre>
     <p>
     Indent events, like others, occur in the main read loop
     of each combinator.  Outdents and EOFs are dealt with by terminating
     the read loop.<footnote>
-    TODO: Code link</footnote>
+    <a href="https://github.com/jeffreykegler/Ocean-of-Awareness-blog/blob/6c76ffc791d24f4515edea376ac31ad7264a420c/code/haskell/haskell.pm#L1007">
+    Github Permalink.</a>
+    </footnote>
     Line indents deeper than the current block indent are dealt with by
-    resuming the read loop.
-    <footnote>
-    TODO: Code link</footnote>
+    resuming the read loop.  <footnote>
+    <a href="https://github.com/jeffreykegler/Ocean-of-Awareness-blog/blob/6c76ffc791d24f4515edea376ac31ad7264a420c/code/haskell/haskell.pm#L1028">
+    Github Permalink.</a>
+    </footnote>
     Line indents equal to the block indent trigger the reading of a
     Ruby Slippers semicolon as shown in the following:<footnote>
-    TODO: Code link
+    <a href="https://github.com/jeffreykegler/Ocean-of-Awareness-blog/blob/6c76ffc791d24f4515edea376ac31ad7264a420c/code/haskell/haskell.pm#L1036">
+    Github Permalink.</a>
     </footnote>
     <pre><tt>
 	$recce->lexeme_read( 'ruby_semicolon', $indent_start,
-	    $indent_length, ';' )
-    </tt></pre>
+	    $indent_length, ';' ) </tt><footnote>
+      <a href="https://github.com/jeffreykegler/Ocean-of-Awareness-blog/blob/6c76ffc791d24f4515edea376ac31ad7264a420c/code/haskell/haskell.pm#L1101">
+      Github Permalink.</a>
+      </footnote>
+    </footnote>
+    </pre>
     </p>
     <h2>Ruby Slippers</h2>
     <p>
@@ -373,8 +392,12 @@ Marpa and combinator parsing 2
       L0_unicorn ~ unicorn
       unicorn ~ [^\d\D]
       ruby_i_decls ~ unicorn
-      ruby_x_decls ~ unicorn
-    </tt></pre>
+      ruby_x_decls ~ unicorn </tt><footnote>
+      <a href="https://github.com/jeffreykegler/Ocean-of-Awareness-blog/blob/6c76ffc791d24f4515edea376ac31ad7264a420c/code/haskell/haskell.pm#L550">
+      Github Permalink.</a>
+      </footnote>
+    </footnote>
+    </pre>
     <p>
     <tt>&lt;unicorn&gt;</tt> is defined to match 
     <tt>[^\d\D]</tt>.
@@ -428,9 +451,10 @@ Marpa and combinator parsing 2
     <pre><tt>
       laidout_decls ::= ('{') ruby_x_decls ('}')
 	       | ruby_i_decls
-	       | L0_unicorn decls L0_unicorn</tt><footnote>
-    TODO: Code link inside pre.
-    </footnote>
+	       | L0_unicorn decls L0_unicorn </tt><footnote>
+      <a href="https://github.com/jeffreykegler/Ocean-of-Awareness-blog/blob/6c76ffc791d24f4515edea376ac31ad7264a420c/code/haskell/haskell.pm#L361">
+      Github Permalink.</a>
+      </footnote>
     </pre>
     </p>
     <p>It is the expectation of a 
@@ -483,8 +507,11 @@ Marpa and combinator parsing 2
     </p>
     <pre><tt>
             my @expected =
-              grep { /^ruby_/xms; } @{ $recce->terminals_expected() };
-    </tt></pre>
+              grep { /^ruby_/xms; } @{ $recce->terminals_expected() }; </tt><footnote>
+      <a href="https://github.com/jeffreykegler/Ocean-of-Awareness-blog/blob/6c76ffc791d24f4515edea376ac31ad7264a420c/code/haskell/haskell.pm#L1055">
+      Github Permalink.</a>
+      </footnote>
+    </footnote></pre>
     <p>Once we "grep" out all but the symbols with the "<tt>ruby_</tt>" prefix,
     there are only 4 non-overlapping possibilities:
     </p>
@@ -520,7 +547,9 @@ Marpa and combinator parsing 2
     or explicit layout.
     In the case of implicit layout, the location of
     the rejection determines the block indent.<footnote>
-    TODO: Code link.
+      <a href="https://github.com/jeffreykegler/Ocean-of-Awareness-blog/blob/6c76ffc791d24f4515edea376ac31ad7264a420c/code/haskell/haskell.pm#L1081">
+      Github Permalink.</a>
+      </footnote>
     </footnote>
     </p>
     <p>If a 
@@ -531,7 +560,9 @@ Marpa and combinator parsing 2
     Whether the block was implicit or explicit,
     this indicates we have reached the end of the block,
     and should return control to the parent combinator.<footnote>
-    TODO: Code link.
+      <a href="https://github.com/jeffreykegler/Ocean-of-Awareness-blog/blob/6c76ffc791d24f4515edea376ac31ad7264a420c/code/haskell/haskell.pm#L1072">
+      Github Permalink.</a>
+      </footnote>
     </footnote>
     </p>
     <p>
@@ -571,7 +602,7 @@ Marpa and combinator parsing 2
     on Github</a>.
     Note that, in order to guarantee they stay relevant,
     links for specific lines of code in this post will often be, not to the latest
-    version, but to specific earlier commits.
+    version, but permalinks to specific earlier commits.
     </p>
     <p>
       To learn more about Marpa,
