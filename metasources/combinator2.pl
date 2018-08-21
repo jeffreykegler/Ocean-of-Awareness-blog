@@ -79,9 +79,9 @@ Marpa and combinator parsing 2
     with an implementation.
     </p>
     <p>To demonstrate Earley-driven combinator parsing,
-    I choose the most complex example from the classic tutorial
+    I choose the most complex example from the classic 1996 tutorial
     on combinator parsing by 
-    <footnote>
+    Hutton and Meijer<footnote>
     Graham Hutton and Erik Meijer,
     <cite>Monadic parser combinators</cite>, Technical Report NOTTCS-TR-96-4.
     Department of Computer Science, University of Nottingham, 1996,
@@ -90,8 +90,8 @@ Marpa and combinator parsing 2
     http://eprints.nottingham.ac.uk/237/1/monparsing.pdf</a>.
     Accessed 19 August 2018.
     </footnote>.
-    This is for the offside-rule parsing of a functional language --
-    parsing where whitespace indicates the syntax.<footnote>
+    Their example implements the offside-rule parsing of a functional language --
+    parsing where whitespace is part of the syntax.<footnote>
     I use
     whitespace-significant parsing as a convenient example
     for this post,
@@ -103,14 +103,29 @@ Marpa and combinator parsing 2
     The Hutton and Meijer example is for Gofer,
     a now obsolete implementation of Haskell.
     To make the example more relevant,
-    I wrote a parser for Haskell layout instead.
+    I wrote a parser for Haskell layout
+    according to the Haskell 2010 Language Report<footnote>
+    Simon Marlow,
+    <cite>Haskell 2010 Language Report</cite>,
+    2010.
+    For layout, see in particular
+    section 2.7 (pp. 12-14)
+    and section 10.3 (pp. 131-134).
+    </footnote>.
     </p>
     <p>For tests,
-    I used the two examples of layout in the 2010 Haskell
-    Standard and the four examples given in the "Gentle Introduction" to Haskell.
+    I used the four examples,
+    two long<footnote>
+    2010 Report, p 14.
+    </footnote>
+    and two short<footnote>
+    2010 Report, p 134.
+    </footnote>,
+    from the 2010 Haskell Standard
+    and the four examples given in the "Gentle Introduction" to Haskell.
     I implemented only enough of the Haskell syntax to run
     these examples.
-    The ones in the 2010 Standard are moderately long,
+    The ones in the 2010 Report are moderately long,
     so this amounted to a substantial subset of Haskell's
     syntax.
     </p>
@@ -202,12 +217,12 @@ Marpa and combinator parsing 2
     <tt>&lt;decl&gt;</tt> items.
     </p>
     <p>The examples in the displays above are simple.
-    The two examples from the 2010 Standard are
+    The two examples from the 2010 Report are
     more complicated:
     6 blocks of 4 different kinds,
     with nesting twice reaching
     a depth of 4.
-    The two examples in the 2010 Standard are the same
+    The two examples in the 2010 Report are the same
     except one uses implicit layout and the other uses
     explicit layout.
     In the test of my Haskell subset parser,
@@ -258,7 +273,7 @@ Marpa and combinator parsing 2
     </footnote>
     This does not capture the indent of the first line of a file,
     but that is not an issue --
-    the 2010 Standard requires that the first indent be treated as a
+    the 2010 Report requires that the first indent be treated as a
     special case anyway.<footnote>TODO
     </footnote>
     <pre><tt>
@@ -306,7 +321,7 @@ Marpa and combinator parsing 2
     </p>
     <p>With the Ruby Slippers you can design a "liberal" parser with
     a "fascist" grammar.
-    This is, in fact, how the Haskell 2010 Standard's
+    This is, in fact, how the Haskell 2010 Report's
     context-free grammar is designed --
     the official syntax requires explicit layout,
     but Haskell programmers are encouraged to omit most of the explicit
@@ -373,7 +388,7 @@ Marpa and combinator parsing 2
     (Lexeme declarations are statements with the <tt>:lexeme</tt>
     pseudo-symbol on their LHS.)
     As an aside,
-    the Haskell 2010 Standard is not careful about the lexer/context-free
+    the Haskell 2010 Report is not careful about the lexer/context-free
     boundary,
     and this required more use of Marpa's explicit lexeme declarations
     than usual.
@@ -382,7 +397,7 @@ Marpa and combinator parsing 2
     <p>In the above Marpa rule,
     <ul>
     <li>
-    <tt>&lt;decls&gt;</tt> is the symbol from the 2010 Standard;
+    <tt>&lt;decls&gt;</tt> is the symbol from the 2010 Report;
     </li>
     <li>
     <tt>&lt;ruby_i_decls&gt;</tt> is a Ruby Slippers symbol for
@@ -393,7 +408,7 @@ Marpa and combinator parsing 2
     a block of declarations with explicit layout.
     </li>
     <li>
-    <tt>&lt;laidout_decls&gt;</tt> is a symbol (not in the 2010 Standard)
+    <tt>&lt;laidout_decls&gt;</tt> is a symbol (not in the 2010 Report)
     for a block of declarations covering all the possibilities for
     a block of declarations.
     </li>
@@ -525,7 +540,7 @@ Marpa and combinator parsing 2
     <p>
     With this, we've covered the major points of this Haskell prototype
     parser.
-    In the code, the grammars from the 2010 Standard are included for
+    In the code, the grammars from the 2010 Report are included for
     comparison, so a reader can easily determine what syntax we left out.
     It might be tedious to add the rest,
     but I believe it would be unproblematic, with one interesting exception:
