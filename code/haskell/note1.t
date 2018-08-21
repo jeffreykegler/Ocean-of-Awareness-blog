@@ -156,7 +156,7 @@ my $note1_implicit_ast =
 
 my $note1_implicit_expected = Data::Dumper::Dumper( MarpaX::R2::Haskell::pruneNodes($note1_implicit_ast) );
 
-local $main::DEBUG = 1;
+local $main::DEBUG = 0;
 
 doTest( \$note1_implicit, $note1_implicit_expected );
 $main::DEBUG = 0;
