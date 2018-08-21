@@ -75,7 +75,8 @@ Marpa and combinator parsing 2
     a previous post</a>,
     I outlined a method for using the Marpa algorithm as the basis for
     better combinator parsing.
-    This post is part of the delivery on that promise.
+    This post follows up
+    with an implementation.
     </p>
     <p>To demonstrate Earley-driven combinator parsing,
     I choose the most complex example from the classic tutorial
@@ -106,7 +107,7 @@ Marpa and combinator parsing 2
     </p>
     <p>For tests,
     I used the two examples of layout in the 2010 Haskell
-    standard and the four examples given in the "Gentle Introduction" to Haskell.
+    Standard and the four examples given in the "Gentle Introduction" to Haskell.
     I implemented only enough of the Haskell syntax to run
     these examples.
     The ones in the 2010 Standard are moderately long,
@@ -392,7 +393,7 @@ Marpa and combinator parsing 2
     a block of declarations with explicit layout.
     </li>
     <li>
-    <tt>&lt;laidout_decls&gt;</tt> is a symbol (not in the 2010 standard)
+    <tt>&lt;laidout_decls&gt;</tt> is a symbol (not in the 2010 Standard)
     for a block of declarations covering all the possibilities for
     a block of declarations.
     </li>
@@ -400,8 +401,10 @@ Marpa and combinator parsing 2
     <pre><tt>
       laidout_decls ::= ('{') ruby_x_decls ('}')
 	       | ruby_i_decls
-	       | L0_unicorn decls L0_unicorn
-    </tt></pre>
+	       | L0_unicorn decls L0_unicorn</tt><footnote>
+    TODO: Code link inside pre.
+    </footnote>
+    </pre>
     </p>
     <p>It is the expectation of a 
     <tt>&lt;laidout_decls&gt;</tt> symbol that causes child
@@ -513,7 +516,7 @@ Marpa and combinator parsing 2
     <tt>&lt;ruby_semicolon&gt;</tt> in an implicit layout
     combinator,
     it means we did not find an explicit semicolon;
-    and we also never the right indent for creating a Ruby semicolon.
+    and we also never found the right indent for creating a Ruby semicolon.
     In other words, the indentation is telling us we are at the end
     of the block.
     We therefore return control to the parent combinator.
@@ -522,7 +525,7 @@ Marpa and combinator parsing 2
     <p>
     With this, we've covered the major points of this Haskell prototype
     parser.
-    In the code, the grammars from the 2010 standard are included for
+    In the code, the grammars from the 2010 Standard are included for
     comparison, so a reader can easily determine what syntax we left out.
     It might be tedious to add the rest,
     but I believe it would be unproblematic, with one interesting exception:
