@@ -27,140 +27,28 @@ main =
 EOS
 
 my $note1_implicit_ast =
-  [
-    'module',
-    [
-      'body',
-      [
-        'topdecls',
-        [
-          'topdecl',
-          [
-            'decl',
-            [
-              'funlhs',
-              [
-                'var',
-                'main'
-              ]
-            ],
-            [
-              'rhs',
-              '=',
-              [
-                'exp',
-                [
-                  'infixexp',
-                  [
-                    'lexp',
-                    'let',
-                    [
-                      'decls',
-                      [
-                        'decl',
-                        [
-                          'funlhs',
-                          [
-                            'var',
-                            'x'
-                          ]
-                        ],
-                        [
-                          'rhs',
-                          '=',
-                          [
-                            'exp',
-                            [
-                              'infixexp',
-                              [
-                                'lexp',
-                                [
-                                  'fexp',
-                                  [
-                                    'aexp',
-                                    [
-                                      'qvar',
-                                      'e'
-                                    ]
-                                  ]
-                                ]
-                              ]
-                            ]
-                          ]
-                        ]
-                      ],
-                      [
-                        'decl',
-                        [
-                          'funlhs',
-                          [
-                            'var',
-                            'y'
-                          ]
-                        ],
-                        [
-                          'rhs',
-                          '=',
-                          [
-                            'exp',
-                            [
-                              'infixexp',
-                              [
-                                'lexp',
-                                [
-                                  'fexp',
-                                  [
-                                    'aexp',
-                                    [
-                                      'qvar',
-                                      'x'
-                                    ]
-                                  ]
-                                ]
-                              ]
-                            ]
-                          ]
-                        ]
-                      ]
-                    ],
-                    'in',
-                    [
-                      'exp',
-                      [
-                        'infixexp',
-                        [
-                          'lexp',
-                          [
-                            'fexp',
-                            [
-                              'aexp',
-                              [
-                                'qvar',
-                                'e\''
-                              ]
-                            ]
-                          ]
-                        ]
-                      ]
-                    ]
-                  ]
-                ]
-              ]
-            ]
-          ]
-        ]
-      ]
-    ]
-  ]
-  ;
+  [ 'module', [ 'body', [ 'topdecls', [ 'topdecl', [ 'decl', [ 'funlhs', [ 'var', 'main'
+              ] ], [ 'rhs', '=',
+              [ 'exp', [ 'infixexp', [ 'lexp', 'let',
+                    [ 'decls', [ 'decl', [ 'funlhs', [ 'var', 'x'
+                          ] ], [ 'rhs', '=',
+                          [ 'exp', [ 'infixexp', [ 'lexp', [ 'fexp', [
+                                    'aexp', [ 'qvar', 'e'
+                                    ] ] ] ] ] ] ] ],
+                      [ 'decl', [ 'funlhs', [ 'var', 'y'
+                          ] ], [ 'rhs', '=',
+                          [ 'exp', [ 'infixexp', [ 'lexp', [ 'fexp', [ 'aexp', [ 'qvar', 'x'
+                                    ] ] ] ] ] ] ] ] ], 'in',
+                    [ 'exp', [ 'infixexp', [ 'lexp', [ 'fexp', [ 'aexp', [ 'qvar', 'e\''
+                              ] ] ] ] ] ] ] ] ] ] ] ] ] ] ] ;
 
-my $note1_implicit_expected = Data::Dumper::Dumper( MarpaX::R2::Haskell::pruneNodes($note1_implicit_ast) );
+my $note1_expected = Data::Dumper::Dumper( MarpaX::R2::Haskell::pruneNodes($note1_implicit_ast) );
 
 local $main::DEBUG = 0;
 
-doTest( \$note1_implicit, $note1_implicit_expected );
+doTest( \$note1_implicit, $note1_expected );
 $main::DEBUG = 0;
-doTest( \$note1_explicit, $note1_implicit_expected );
+doTest( \$note1_explicit, $note1_expected );
 
 sub doTest {
     my ($inputRef, $expected_value ) = @_;
