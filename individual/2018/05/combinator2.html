@@ -1,67 +1,43 @@
-#!perl
-
-use 5.010;
-use strict;
-use warnings;
-use English qw( -no_match_vars );
-use autodie;
-
-sub usage {
-	my ($message) = @_;
-	die $message, "\nusage: $PROGRAM_NAME";
-}
-
-my $fn_number = 0;
-my @fn_lines = ();
-my @lines = ();
-
-LINE: while ( my $line = <DATA> ) {
-    chomp $line;
-    if ( $line =~ /<footnote>/ ) {
-        do_footnote($line);
-	next LINE;
-    }
-    push @lines, $line;
-}
-
-my $output = join "\n", @lines;
-my $footnotes = join "\n", '<h2>Footnotes</h2>', @fn_lines;
-$output =~ s[<comment>FOOTNOTES HERE</comment>][$footnotes];
-
-say $output;
-
-sub do_footnote {
-    my ($line) = @_;
-    $fn_number++;
-    my $fn_ref = join '-', 'footnote', $fn_number, 'ref';
-    my $fn_href = join '-', 'footnote', $fn_number;
-    my $footnoted_line = $line;
-    $footnoted_line =~ s/<footnote>.*$//;
-    $footnoted_line .= qq{<a id="$fn_ref" href="#$fn_href">[$fn_number]</a>};
-    push @fn_lines, qq{<p id="$fn_href"><b>$fn_number.</b>};
-    $line =~ s/^.*<footnote>//;
-    my $inside_footnote = $line;
-    $inside_footnote =~ s/^.*<footnote>//;
-    push @fn_lines, $inside_footnote if $inside_footnote =~ m/\S/;
-    my $post_footnote = '';
-  FN_LINE: while ( my $fn_line = <DATA> ) {
-        chomp $fn_line;
-        if ( $fn_line =~ m[<\/footnote>] ) {
-	    $post_footnote = $fn_line;
-	    $post_footnote =~ s[^.*<\/footnote>][];
-	    $fn_line =~ s[</footnote>.*$][];
-	    push @fn_lines, $fn_line if $fn_line =~ m/\S/;
-	    push @fn_lines, qq{ <a href="#$fn_ref">&#8617;</a></p>};
-	    last FN_LINE;
-        }
-	push @fn_lines, $fn_line;
-    }
-    $footnoted_line .= $post_footnote;
-    push @lines, $footnoted_line if $footnoted_line =~ m/\S/;
-}
-
-__DATA__
-Marpa and combinator parsing 2
+<html>
+<head>
+<link rel="alternate" title="Ocean of Awareness RSS" type="application/rss+xml" title="RSS" href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/index.rss" />
+<title>Marpa and combinator parsing 2</title>
+<style type="text/css">
+   strong {font-weight: 700;}
+</style>
+</head>
+<body>
+<div
+  style="color:white;background-color:#38B0C0;padding:1em;clear:left;text-align:center;">
+<h1>Ocean of Awareness</h1>
+</div>
+  <div style="margin:0;padding:10px 30px 10px 10px;width:150px;float:left;border-right:2px solid #38B0C0">
+  <p>
+  <strong>Jeffrey Kegler's blog</strong>
+  about Marpa, his new parsing algorithm,
+    and other topics of interest</p>
+  <p><a href="http://www.jeffreykegler.com/">Jeffrey's personal website</a></p>
+      <p>
+	<a href="https://twitter.com/jeffreykegler" class="twitter-follow-button" data-show-count="false">Follow @jeffreykegler</a>
+      </p>
+      <p style="text-align:center">
+	<!-- Place this code where you want the badge to render. -->
+	<a href="//plus.google.com/101567692867247957860?prsrc=3" rel="publisher" style="text-decoration:none;">
+	<img src="//ssl.gstatic.com/images/icons/gplus-32.png" alt="Google+" style="border:0;width:32px;height:32px;"/></a>
+      </p>
+  <h3>Marpa resources</h3>
+  <p><a href="http://jeffreykegler.github.com/Marpa-web-site/">The Marpa website</a></p>
+  <p>The Ocean of Awareness blog: <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog">home page</a>,
+  <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/metapages/chronological.html">chronological index</a>,
+  and
+  <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/metapages/annotated.html">annotated index</a>.
+  </p>
+  </div>
+  <div style="margin-left:190px;border-left:2px solid #38B0C0;padding:25px;">
+<h3>Tue, 21 Aug 2018</h3>
+<br />
+<center><a name="combinator2"> <h2>Marpa and combinator parsing 2</h2> </a>
+</center>
 <html>
   <head>
   </head>
@@ -81,60 +57,19 @@ Marpa and combinator parsing 2
     <p>For this trial,
     I choose the most complex example from the classic 1996 tutorial
     on combinator parsing by 
-    Hutton and Meijer<footnote>
-    Graham Hutton and Erik Meijer,
-    <cite>Monadic parser combinators</cite>, Technical Report NOTTCS-TR-96-4.
-    Department of Computer Science, University of Nottingham, 1996,
-    pp 30-35.
-    <a href="http://eprints.nottingham.ac.uk/237/1/monparsing.pdf">
-    http://eprints.nottingham.ac.uk/237/1/monparsing.pdf</a>.
-    Accessed 19 August 2018.
-    </footnote>.
+    Hutton and Meijer<a id="footnote-1-ref" href="#footnote-1">[1]</a>.
     Their example implements the offside-rule parsing of a functional language --
-    parsing where whitespace is part of the syntax.<footnote>
-    I use
-    whitespace-significant parsing as a convenient example
-    for this post,
-    for historical reasons and
-    for reasons of level of complexity.
-    This should not be taken to indicate that I recommend it
-    as a language feature.
-    </footnote>
+    parsing where whitespace is part of the syntax.<a id="footnote-2-ref" href="#footnote-2">[2]</a>
     The Hutton and Meijer example is for Gofer,
     a now obsolete implementation of Haskell.
     To make the example more relevant,
     I wrote a parser for Haskell layout
-    according to the Haskell 2010 Language Report<footnote>
-    Simon Marlow,
-    <cite>Haskell 2010 Language Report</cite>,
-    2010.
-    <a href="https://www.haskell.org/onlinereport/haskell2010/haskell.html#haskellpa1.html">
-    Online version accessed
-    21 August 2018.</a>
-    For layout, see in particular
-    section 2.7 (pp. 12-14)
-    and section 10.3 (pp. 131-134).
-    </footnote>.
+    according to the Haskell 2010 Language Report<a id="footnote-3-ref" href="#footnote-3">[3]</a>.
     </p>
     <p>For tests,
     I used the five examples (2 long, 3 short) provided
-    in the 2010 Report<footnote>
-    2010 Report.
-    The short examples are on p. 13 and p. 134.
-    The long examples are on p. 14.
-    </footnote>,
-    and the four examples given in the "Gentle Introduction" to Haskell<footnote>
-    Paul Hudak, John Peterson and Joseph Fasel
-    <cite>Gentle Introduction To Haskell</cite>, version 98.
-    Revised June, 2000 by Reuben Thomas.
-    <a href="https://www.haskell.org/tutorial/index.html">
-    Online version accessed
-    21 August 2018.</a>
-    The examples are in section 4.6,
-    which is on pp. 20-21 of
-    <a href="https://www.haskell.org/tutorial/haskell-98-tutorial.pdf">
-    the October 1999 PDF</a>.
-    </footnote>.
+    in the 2010 Report<a id="footnote-4-ref" href="#footnote-4">[4]</a>,
+    and the four examples given in the "Gentle Introduction" to Haskell<a id="footnote-5-ref" href="#footnote-5">[5]</a>.
     I implemented only enough of the Haskell syntax to run
     these examples,
     but this was enough to include a substantial subset of Haskell's
@@ -157,18 +92,12 @@ Marpa and combinator parsing 2
     <pre><tt>
        let y   = a*b
 	   f x = (x+y)/y
-       in f c + f d </tt><footnote>
-      <a href="https://github.com/jeffreykegler/Ocean-of-Awareness-blog/blob/6c76ffc791d24f4515edea376ac31ad7264a420c/code/haskell/short.t#L21">
-      Github Permalink.</a>
-      </footnote>
+       in f c + f d </tt><a id="footnote-6-ref" href="#footnote-6">[6]</a>
      </pre>
     <pre><tt>
        let { y   = a*b
 	   ; f x = (x+y)/y
-	   } </tt><footnote>
-      <a href="https://github.com/jeffreykegler/Ocean-of-Awareness-blog/blob/6c76ffc791d24f4515edea376ac31ad7264a420c/code/haskell/short.t#L28">
-      Github Permalink.</a>
-       </footnote>
+	   } </tt><a id="footnote-7-ref" href="#footnote-7">[7]</a>
     </pre>
     <p>
     In my test suite, both code snippets produce the same AST.
@@ -229,10 +158,7 @@ Marpa and combinator parsing 2
     <pre><tt>
        let y   = a*b;  z = a/b
 	   f x = (x+y)/z
-       in f c + f d </tt><footnote>
-      <a href="https://github.com/jeffreykegler/Ocean-of-Awareness-blog/blob/6c76ffc791d24f4515edea376ac31ad7264a420c/code/haskell/short.t#L43">
-      Github Permalink.</a>
-      </footnote>
+       in f c + f d </tt><a id="footnote-8-ref" href="#footnote-8">[8]</a>
     </pre>
     contains three 
     <tt>&lt;decl&gt;</tt> items.
@@ -284,45 +210,26 @@ Marpa and combinator parsing 2
     </p>
     The following code sets an event named 'indent', which
     happens when Marpa finds a newline followed by zero or more
-    whitespace characters.<footnote>
-    Single-line comments are dealt with properly by lexing them
-    as a different token and discarding them separately.
-    Handling multi-line comments is not yet implemented --
-    it is easy in principle but
-    tedious in practice and the examples drawn from the
-    Haskell literature did not provide any test cases.
-    </footnote>
+    whitespace characters.<a id="footnote-9-ref" href="#footnote-9">[9]</a>
     This does not capture the indent of the first line of a file,
     but that is not an issue --
     the 2010 Report requires that the first indent be treated as a
     special case anyway.
     <pre><tt>
       :discard ~ indent event => indent=off
-      indent ~ newline whitechars </tt><footnote>
-      <a href="https://github.com/jeffreykegler/Ocean-of-Awareness-blog/blob/6c76ffc791d24f4515edea376ac31ad7264a420c/code/haskell/haskell.pm#L608">
-      Github Permalink.</a>
-      </footnote>
+      indent ~ newline whitechars </tt><a id="footnote-10-ref" href="#footnote-10">[10]</a>
       </pre>
     <p>
     Indent events, like others, occur in the main read loop
     of each combinator.  Outdents and EOFs are dealt with by terminating
-    the read loop.<footnote>
-    <a href="https://github.com/jeffreykegler/Ocean-of-Awareness-blog/blob/6c76ffc791d24f4515edea376ac31ad7264a420c/code/haskell/haskell.pm#L1007">
-    Github Permalink.</a>
-    </footnote>
+    the read loop.<a id="footnote-11-ref" href="#footnote-11">[11]</a>
     Line indents deeper than the current block indent are dealt with by
-    resuming the read loop.  <footnote>
-    <a href="https://github.com/jeffreykegler/Ocean-of-Awareness-blog/blob/6c76ffc791d24f4515edea376ac31ad7264a420c/code/haskell/haskell.pm#L1028">
-    Github Permalink.</a>
-    </footnote>
+    resuming the read loop.  <a id="footnote-12-ref" href="#footnote-12">[12]</a>
     Line indents equal to the block indent trigger the reading of a
     Ruby Slippers semicolon as shown in the following:
     <pre><tt>
 	$recce->lexeme_read( 'ruby_semicolon', $indent_start,
-	    $indent_length, ';' ) </tt><footnote>
-      <a href="https://github.com/jeffreykegler/Ocean-of-Awareness-blog/blob/6c76ffc791d24f4515edea376ac31ad7264a420c/code/haskell/haskell.pm#L1101">
-      Github Permalink.</a>
-      </footnote>
+	    $indent_length, ';' ) </tt><a id="footnote-13-ref" href="#footnote-13">[13]</a>
     </footnote>
     </pre>
     </p>
@@ -390,10 +297,7 @@ Marpa and combinator parsing 2
       L0_unicorn ~ unicorn
       unicorn ~ [^\d\D]
       ruby_i_decls ~ unicorn
-      ruby_x_decls ~ unicorn </tt><footnote>
-      <a href="https://github.com/jeffreykegler/Ocean-of-Awareness-blog/blob/6c76ffc791d24f4515edea376ac31ad7264a420c/code/haskell/haskell.pm#L550">
-      Github Permalink.</a>
-      </footnote>
+      ruby_x_decls ~ unicorn </tt><a id="footnote-14-ref" href="#footnote-14">[14]</a>
     </footnote>
     </pre>
     <p>
@@ -409,23 +313,7 @@ Marpa and combinator parsing 2
     because we need to use
     <tt>&lt;unicorn&gt;</tt> on the RHS of some lexer rules,
     and a Marpa lexeme can never occur
-    on the RHS of a lexer rule.<footnote>
-    The reason for this is that by default a Marpa grammar determines
-    which of its symbols are lexemes using the presence of those
-    symbol on the LHS and RHS
-    of the rules
-    in its lexical and context-free grammars.
-    A typical Marpa grammar
-    requires a minimum of explicit lexeme declarations.
-    (Lexeme declarations are statements with the <tt>:lexeme</tt>
-    pseudo-symbol on their LHS.)
-    As an aside,
-    the Haskell 2010 Report is not always careful about the lexer/context-free
-    boundary,
-    and adopting its grammar
-    required more use of Marpa's explicit lexeme declarations
-    than usual.
-    </footnote>
+    on the RHS of a lexer rule.<a id="footnote-15-ref" href="#footnote-15">[15]</a>
     </p>
     <p>In the above Marpa rule,
     <ul>
@@ -449,10 +337,7 @@ Marpa and combinator parsing 2
     <pre><tt>
       laidout_decls ::= ('{') ruby_x_decls ('}')
 	       | ruby_i_decls
-	       | L0_unicorn decls L0_unicorn </tt><footnote>
-      <a href="https://github.com/jeffreykegler/Ocean-of-Awareness-blog/blob/6c76ffc791d24f4515edea376ac31ad7264a420c/code/haskell/haskell.pm#L361">
-      Github Permalink.</a>
-      </footnote>
+	       | L0_unicorn decls L0_unicorn </tt><a id="footnote-16-ref" href="#footnote-16">[16]</a>
     </pre>
     </p>
     <p>It is the expectation of a 
@@ -462,18 +347,7 @@ Marpa and combinator parsing 2
     in the input,
     the 
     <tt>&lt;decls&gt;</tt> alternative will never match --
-    it is there for documentation and debugging reasons.<footnote>
-    Specifically, the presense of a 
-    <tt>&lt;decls&gt;</tt> alternative silences the usual warnings about
-    symbols inaccessible from the start symbol.
-    These warnings can be silenced in other ways,
-    but at the prototype stage it is convenient to check that
-    all symbols supposed to be accessible through
-    <tt>&lt;decls&gt;</tt> are in fact accessible.
-    There is a small startup cost to allowing the extra symbols
-    in the grammars,
-    but the runtime cost is probably not measureable.
-    </footnote>
+    it is there for documentation and debugging reasons.<a id="footnote-17-ref" href="#footnote-17">[17]</a>
     Therefore Marpa, when it wants a
     <tt>&lt;laidout_decls&gt;</tt>,
     will look for a
@@ -505,10 +379,7 @@ Marpa and combinator parsing 2
     </p>
     <pre><tt>
             my @expected =
-              grep { /^ruby_/xms; } @{ $recce->terminals_expected() }; </tt><footnote>
-      <a href="https://github.com/jeffreykegler/Ocean-of-Awareness-blog/blob/6c76ffc791d24f4515edea376ac31ad7264a420c/code/haskell/haskell.pm#L1055">
-      Github Permalink.</a>
-      </footnote>
+              grep { /^ruby_/xms; } @{ $recce->terminals_expected() }; </tt><a id="footnote-18-ref" href="#footnote-18">[18]</a>
     </footnote></pre>
     <p>Once we "grep" out all but the symbols with the "<tt>ruby_</tt>" prefix,
     there are only 4 non-overlapping possibilities:
@@ -531,12 +402,7 @@ Marpa and combinator parsing 2
     </li>
     </ul>
     <p>If Marpa does not expect any of the Ruby Slippers
-    lexemes, there was a syntax error in the Haskell code.<footnote>
-    Currently the handling of these is simplistic.
-    A practical implementation of this method would want better reporting.
-    In fact, Marpa's left eideticism allows some interesting things
-    to be done in this respect.
-    </footnote>
+    lexemes, there was a syntax error in the Haskell code.<a id="footnote-19-ref" href="#footnote-19">[19]</a>
     <p>If a <tt>&lt;ruby_i_decls&gt;</tt>
     or a <tt>&lt;ruby_x_decls&gt;</tt>
     lexeme is expected, a child combinator is invoked.
@@ -544,10 +410,7 @@ Marpa and combinator parsing 2
     whether the child combinator looks for implicit
     or explicit layout.
     In the case of implicit layout, the location of
-    the rejection determines the block indent.<footnote>
-      <a href="https://github.com/jeffreykegler/Ocean-of-Awareness-blog/blob/6c76ffc791d24f4515edea376ac31ad7264a420c/code/haskell/haskell.pm#L1081">
-      Github Permalink.</a>
-      </footnote>
+    the rejection determines the block indent.<a id="footnote-20-ref" href="#footnote-20">[20]</a>
     </footnote>
     </p>
     <p>If a 
@@ -557,10 +420,7 @@ Marpa and combinator parsing 2
     but none was found.
     Whether the block was implicit or explicit,
     this indicates we have reached the end of the block,
-    and should return control to the parent combinator.<footnote>
-      <a href="https://github.com/jeffreykegler/Ocean-of-Awareness-blog/blob/6c76ffc791d24f4515edea376ac31ad7264a420c/code/haskell/haskell.pm#L1072">
-      Github Permalink.</a>
-      </footnote>
+    and should return control to the parent combinator.<a id="footnote-21-ref" href="#footnote-21">[21]</a>
     </footnote>
     </p>
     <p>
@@ -622,6 +482,172 @@ Marpa and combinator parsing 2
         Marpa's Google group</a>,
       or on our IRC channel: #marpa at freenode.net.
     </p>
-    <comment>FOOTNOTES HERE</comment>
+    <h2>Footnotes</h2>
+<p id="footnote-1"><b>1.</b>
+    Graham Hutton and Erik Meijer,
+    <cite>Monadic parser combinators</cite>, Technical Report NOTTCS-TR-96-4.
+    Department of Computer Science, University of Nottingham, 1996,
+    pp 30-35.
+    <a href="http://eprints.nottingham.ac.uk/237/1/monparsing.pdf">
+    http://eprints.nottingham.ac.uk/237/1/monparsing.pdf</a>.
+    Accessed 19 August 2018.
+ <a href="#footnote-1-ref">&#8617;</a></p>
+<p id="footnote-2"><b>2.</b>
+    I use
+    whitespace-significant parsing as a convenient example
+    for this post,
+    for historical reasons and
+    for reasons of level of complexity.
+    This should not be taken to indicate that I recommend it
+    as a language feature.
+ <a href="#footnote-2-ref">&#8617;</a></p>
+<p id="footnote-3"><b>3.</b>
+    Simon Marlow,
+    <cite>Haskell 2010 Language Report</cite>,
+    2010.
+    <a href="https://www.haskell.org/onlinereport/haskell2010/haskell.html#haskellpa1.html">
+    Online version accessed
+    21 August 2018.</a>
+    For layout, see in particular
+    section 2.7 (pp. 12-14)
+    and section 10.3 (pp. 131-134).
+ <a href="#footnote-3-ref">&#8617;</a></p>
+<p id="footnote-4"><b>4.</b>
+    2010 Report.
+    The short examples are on p. 13 and p. 134.
+    The long examples are on p. 14.
+ <a href="#footnote-4-ref">&#8617;</a></p>
+<p id="footnote-5"><b>5.</b>
+    Paul Hudak, John Peterson and Joseph Fasel
+    <cite>Gentle Introduction To Haskell</cite>, version 98.
+    Revised June, 2000 by Reuben Thomas.
+    <a href="https://www.haskell.org/tutorial/index.html">
+    Online version accessed
+    21 August 2018.</a>
+    The examples are in section 4.6,
+    which is on pp. 20-21 of
+    <a href="https://www.haskell.org/tutorial/haskell-98-tutorial.pdf">
+    the October 1999 PDF</a>.
+ <a href="#footnote-5-ref">&#8617;</a></p>
+<p id="footnote-6"><b>6.</b>
+      <a href="https://github.com/jeffreykegler/Ocean-of-Awareness-blog/blob/6c76ffc791d24f4515edea376ac31ad7264a420c/code/haskell/short.t#L21">
+      Github Permalink.</a>
+ <a href="#footnote-6-ref">&#8617;</a></p>
+<p id="footnote-7"><b>7.</b>
+      <a href="https://github.com/jeffreykegler/Ocean-of-Awareness-blog/blob/6c76ffc791d24f4515edea376ac31ad7264a420c/code/haskell/short.t#L28">
+      Github Permalink.</a>
+ <a href="#footnote-7-ref">&#8617;</a></p>
+<p id="footnote-8"><b>8.</b>
+      <a href="https://github.com/jeffreykegler/Ocean-of-Awareness-blog/blob/6c76ffc791d24f4515edea376ac31ad7264a420c/code/haskell/short.t#L43">
+      Github Permalink.</a>
+ <a href="#footnote-8-ref">&#8617;</a></p>
+<p id="footnote-9"><b>9.</b>
+    Single-line comments are dealt with properly by lexing them
+    as a different token and discarding them separately.
+    Handling multi-line comments is not yet implemented --
+    it is easy in principle but
+    tedious in practice and the examples drawn from the
+    Haskell literature did not provide any test cases.
+ <a href="#footnote-9-ref">&#8617;</a></p>
+<p id="footnote-10"><b>10.</b>
+      <a href="https://github.com/jeffreykegler/Ocean-of-Awareness-blog/blob/6c76ffc791d24f4515edea376ac31ad7264a420c/code/haskell/haskell.pm#L608">
+      Github Permalink.</a>
+ <a href="#footnote-10-ref">&#8617;</a></p>
+<p id="footnote-11"><b>11.</b>
+    <a href="https://github.com/jeffreykegler/Ocean-of-Awareness-blog/blob/6c76ffc791d24f4515edea376ac31ad7264a420c/code/haskell/haskell.pm#L1007">
+    Github Permalink.</a>
+ <a href="#footnote-11-ref">&#8617;</a></p>
+<p id="footnote-12"><b>12.</b>
+    <a href="https://github.com/jeffreykegler/Ocean-of-Awareness-blog/blob/6c76ffc791d24f4515edea376ac31ad7264a420c/code/haskell/haskell.pm#L1028">
+    Github Permalink.</a>
+ <a href="#footnote-12-ref">&#8617;</a></p>
+<p id="footnote-13"><b>13.</b>
+      <a href="https://github.com/jeffreykegler/Ocean-of-Awareness-blog/blob/6c76ffc791d24f4515edea376ac31ad7264a420c/code/haskell/haskell.pm#L1101">
+      Github Permalink.</a>
+ <a href="#footnote-13-ref">&#8617;</a></p>
+<p id="footnote-14"><b>14.</b>
+      <a href="https://github.com/jeffreykegler/Ocean-of-Awareness-blog/blob/6c76ffc791d24f4515edea376ac31ad7264a420c/code/haskell/haskell.pm#L550">
+      Github Permalink.</a>
+ <a href="#footnote-14-ref">&#8617;</a></p>
+<p id="footnote-15"><b>15.</b>
+    The reason for this is that by default a Marpa grammar determines
+    which of its symbols are lexemes using the presence of those
+    symbol on the LHS and RHS
+    of the rules
+    in its lexical and context-free grammars.
+    A typical Marpa grammar
+    requires a minimum of explicit lexeme declarations.
+    (Lexeme declarations are statements with the <tt>:lexeme</tt>
+    pseudo-symbol on their LHS.)
+    As an aside,
+    the Haskell 2010 Report is not always careful about the lexer/context-free
+    boundary,
+    and adopting its grammar
+    required more use of Marpa's explicit lexeme declarations
+    than usual.
+ <a href="#footnote-15-ref">&#8617;</a></p>
+<p id="footnote-16"><b>16.</b>
+      <a href="https://github.com/jeffreykegler/Ocean-of-Awareness-blog/blob/6c76ffc791d24f4515edea376ac31ad7264a420c/code/haskell/haskell.pm#L361">
+      Github Permalink.</a>
+ <a href="#footnote-16-ref">&#8617;</a></p>
+<p id="footnote-17"><b>17.</b>
+    Specifically, the presense of a 
+    <tt>&lt;decls&gt;</tt> alternative silences the usual warnings about
+    symbols inaccessible from the start symbol.
+    These warnings can be silenced in other ways,
+    but at the prototype stage it is convenient to check that
+    all symbols supposed to be accessible through
+    <tt>&lt;decls&gt;</tt> are in fact accessible.
+    There is a small startup cost to allowing the extra symbols
+    in the grammars,
+    but the runtime cost is probably not measureable.
+ <a href="#footnote-17-ref">&#8617;</a></p>
+<p id="footnote-18"><b>18.</b>
+      <a href="https://github.com/jeffreykegler/Ocean-of-Awareness-blog/blob/6c76ffc791d24f4515edea376ac31ad7264a420c/code/haskell/haskell.pm#L1055">
+      Github Permalink.</a>
+ <a href="#footnote-18-ref">&#8617;</a></p>
+<p id="footnote-19"><b>19.</b>
+    Currently the handling of these is simplistic.
+    A practical implementation of this method would want better reporting.
+    In fact, Marpa's left eideticism allows some interesting things
+    to be done in this respect.
+ <a href="#footnote-19-ref">&#8617;</a></p>
+<p id="footnote-20"><b>20.</b>
+      <a href="https://github.com/jeffreykegler/Ocean-of-Awareness-blog/blob/6c76ffc791d24f4515edea376ac31ad7264a420c/code/haskell/haskell.pm#L1081">
+      Github Permalink.</a>
+ <a href="#footnote-20-ref">&#8617;</a></p>
+<p id="footnote-21"><b>21.</b>
+      <a href="https://github.com/jeffreykegler/Ocean-of-Awareness-blog/blob/6c76ffc791d24f4515edea376ac31ad7264a420c/code/haskell/haskell.pm#L1072">
+      Github Permalink.</a>
+ <a href="#footnote-21-ref">&#8617;</a></p>
   </body>
 </html>
+<br />
+<p>posted at: 10:24 |
+<a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2018/05/combinator2.html">direct link to this entry</a>
+</p>
+<div style="color:#38B0C0;padding:1px;text-align:center;">
+&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&sect;
+</div>
+</div>
+</div>
+<div id="footer" style="border-top:thick solid #38B0C0;clear:left;padding:1em;">
+<p>This is Ocean of Awareness's
+  new home.  This blog has been hosted at
+  <a href="http://blogs.perl.org/users/jeffrey_kegler/">blogs.perl.org</a>
+  but I have succumbed to the lure of static blogging.
+</div>
+	<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+              <script type="text/javascript">
+            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+          </script>
+          <script type="text/javascript">
+            try {
+              var pageTracker = _gat._getTracker("UA-33430331-1");
+            pageTracker._trackPageview();
+            } catch(err) {}
+          </script>
+</body></html>
