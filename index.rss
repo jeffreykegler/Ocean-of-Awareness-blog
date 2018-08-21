@@ -438,12 +438,18 @@
     To deal with fixity, we may haul out the Ruby Slippers again.
     &lt;/p&gt;
     &lt;h2&gt;The code, comments, etc.&lt;/h2&gt;
-    &lt;p&gt;Full code and a test suite for this prototype can be found
-    &lt;a href=&quot;https://github.com/jeffreykegler/Ocean-of-Awareness-blog/tree/gh-pages/code/haskell&quot;&gt;
+    &lt;p&gt;A permalink to the
+    full code and a test suite for this prototype,
+    as described in this blog post,
+    is
+    &lt;a href=&quot;https://github.com/jeffreykegler/Ocean-of-Awareness-blog/tree/6c76ffc791d24f4515edea376ac31ad7264a420c/code/haskell&quot;&gt;
     on Github&lt;/a&gt;.
-    Note that, in order to guarantee they stay relevant,
-    links for specific lines of code in this post will often be, not to the latest
-    version, but permalinks to specific earlier commits.
+    I expect to update this code,
+    and the latest commit can be found
+    &lt;a href=&quot;https://github.com/jeffreykegler/Ocean-of-Awareness-blog/tree/gh-pages/code/haskell&quot;&gt;
+    here&lt;/a&gt;.
+    Links for specific lines of code in this post are usually
+    static permalinks to earlier commits.
     &lt;/p&gt;
     &lt;p&gt;
       To learn more about Marpa,
