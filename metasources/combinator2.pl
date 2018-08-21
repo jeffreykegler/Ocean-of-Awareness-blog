@@ -76,9 +76,9 @@ Marpa and combinator parsing 2
     I outlined a method for using the Marpa algorithm as the basis for
     better combinator parsing.
     This post follows up
-    with an implementation.
+    with a trial implementation.
     </p>
-    <p>To demonstrate Earley-driven combinator parsing,
+    <p>For this trial,
     I choose the most complex example from the classic 1996 tutorial
     on combinator parsing by 
     Hutton and Meijer<footnote>
@@ -114,27 +114,38 @@ Marpa and combinator parsing 2
     </footnote>.
     </p>
     <p>For tests,
-    I used the four examples,
-    two long<footnote>
-    2010 Report, p 14.
-    </footnote>
-    and two short<footnote>
-    2010 Report, p 134.
+    I used the five examples (2 long, 3 short) provided
+    in the 2010 Report<footnote>
+    2010 Report.
+    The short examples are on p. 13 and p. 134.
+    The long examples are on p. 14.
     </footnote>,
-    from the 2010 Haskell Standard
-    and the four examples given in the "Gentle Introduction" to Haskell.
+    and the four examples given in the "Gentle Introduction" to Haskell<footnote>
+    Paul Hudak, John Peterson and Joseph Fasel
+    <cite>Gentle Introduction To Haskell</cite>, version 98.
+    Revised June, 2000 by Reuben Thomas.
+    <a href="https://www.haskell.org/tutorial/index.html">
+    Online version accessed
+    21 August 2018.</a>
+    The examples are in section 4.6,
+    which is on pp. 20-21 of
+    <a href="https://www.haskell.org/tutorial/haskell-98-tutorial.pdf">
+    the October 1999 PDF</a>.
+    </footnote>.
     I implemented only enough of the Haskell syntax to run
-    these examples.
-    The ones in the 2010 Report are moderately long,
-    so this amounted to a substantial subset of Haskell's
+    these examples,
+    but this was enough to include a substantial subset of Haskell's
     syntax.
     </p>
-    <p>The full code and test suite for this example are
+    <p>This description of the implementation includes many extracts from
+    the code.
+    For those who looking for more detail,
+    the full code and test suite for this example are
     <a href="https://github.com/jeffreykegler/Ocean-of-Awareness-blog/tree/gh-pages/code/haskell">
     on Github</a>.
-    While they do not amount to a tutorial, the code has very
-    extensive comments and
-    readers who like to "peek ahead" are encouraged to do so.
+    While the comments in the code do not amount to a tutorial, they are
+    extensive.
+    Readers who like to "peek ahead" are encouraged to do so.
     </p>
     <h2>Layout parsing and the off-side rule</h2>
     <p>It won't be necessary to know Haskell to follow this post.
@@ -154,7 +165,7 @@ Marpa and combinator parsing 2
     </tt></pre>
     <p>
     In my test suite, both code snippets produce the same AST.
-    The first code display uses Haskell's layout parsing,
+    The first code display uses Haskell's implicit layout parsing,
     and the second code display uses explicit layout.
     In each, the "<tt>let</tt>" is followed by a block
     of declarations
@@ -186,13 +197,13 @@ Marpa and combinator parsing 2
     determines the line indent.
     The line indent is compared to the block indent.
     <ul>
-    <li>If the line's indent is deeper than the block indent,
+    <li>If the line indent is deeper than the block indent,
     then the line continues the current block item.
     </li>
-    <li>If the line's indent is equal to the block indent,
+    <li>If the line indent is equal to the block indent,
     then the line starts a new block item.
     </li>
-    <li>If the line's indent is less than the block indent
+    <li>If the line indent is less than the block indent
     (an "outdent"),
     then the line ends the block.
     An end of file also ends the block.
@@ -204,7 +215,7 @@ Marpa and combinator parsing 2
     <p>
     Explicit semicolons can be used
     in implicit layout:
-    If a semicolons occurs in implicit layout,
+    If a semicolons occur in implicit layout,
     it separates block items.
     In our test suite,
     the example
@@ -238,8 +249,8 @@ Marpa and combinator parsing 2
     <h2>The strategy</h2>
     <p>To tackle Haskell layout parsing, I use a separate
     combinator for each layout block.
-    Every combinator, therefore, had its own block and item symbols,
-    its own block indent,
+    Every combinator, therefore, has its own block and item symbols,
+    and its own block indent;
     and each combinator applies implements exactly one of explicit or implicit layout.
     </p>
     <p>From the point of view of its parent combinator,
@@ -247,7 +258,7 @@ Marpa and combinator parsing 2
     and the parse tree it produces is the
     value of the lexeme.
     Marpa can automatically produce an AST,
-    and its adds lexemes values as leaves of the AST.
+    and its adds lexemes values to the AST as leaves.
     The effect is that Marpa automatically assembles
     a parse tree for us from the tree segments returned by the
     combinators.
@@ -255,21 +266,21 @@ Marpa and combinator parsing 2
     <h2>Ruby Slippers semicolons</h2>
     <p>In outlining this algorithm, I will start by explaining
     where the "missing" semicolons come from in the implicit layout.
-    Marpa allows various kinds of events,
+    Marpa allows various kinds of "events",
     including on discarded tokens.
     ("Discards" are tokens thrown away, and not used in the parse.
     The typical use of token discarding in Marpa is for the handling of whitespace
     and comments.)
     </p>
     The following code sets an event named 'indent', which
-    happens when Marpa find a newline followed by zero or more
+    happens when Marpa finds a newline followed by zero or more
     whitespace characters.<footnote>
     Single-line comments are dealt with properly by lexing them
     as a different token and discarding them separately.
     Handling multi-line comments is not yet implemented --
     it is easy in principle but
     tedious in practice and the examples drawn from the
-    Haskell literature did not include any test cases.
+    Haskell literature did not provide any test cases.
     </footnote>
     This does not capture the indent of the first line of a file,
     but that is not an issue --
@@ -283,7 +294,7 @@ Marpa and combinator parsing 2
     <p>
     Indent events, like others, occur in the main read loop
     of each combinator.  Outdents and EOFs are dealt with by terminating
-    the loop.<footnote>
+    the read loop.<footnote>
     TODO: Code link</footnote>
     Line indents deeper than the current block indent are dealt with by
     resuming the read loop.
@@ -311,15 +322,11 @@ Marpa and combinator parsing 2
     to the parser at the current location,
     and which are not.
     </p>
-    <p>The usage of the Ruby Slippers so far in this post is relatively incidental.<footnote>
-    TODO: But that could change.  Error handling.
-    </footnote>
-    But Ruby Slippers parsing enables a very important trick which
+    Ruby Slippers parsing enables a very important trick which
     is useful in "liberal"
     parsing -- parsing where certain elements might be in some sense
     "missing".
-    </p>
-    <p>With the Ruby Slippers you can design a "liberal" parser with
+    With the Ruby Slippers you can design a "liberal" parser with
     a "fascist" grammar.
     This is, in fact, how the Haskell 2010 Report's
     context-free grammar is designed --
@@ -331,25 +338,26 @@ Marpa and combinator parsing 2
     Marpa's method for doing this is left-eideticism and Ruby Slippers
     parsing.
     <p>The term "Ruby Slippers" refers to a widely-known scene in the "Wizard of Oz" movie.
-    Dorothy is in the fantasy world of Oz, desperate to return to Kansas,
-    but, particularly after orthodox Oz wizardry turns out to be affable fakery,
+    Dorothy is in the fantasy world of Oz, desperate to return to Kansas.
+    But, particularly after a shocking incident in which orthodox Oz wizardry
+    is exposed as an affable fakery,
     she is completely at a loss as to how to escape.
     The "good witch" Glenda appears and tells Dorothy that in fact she's always
-    had what she's been wishing for right with her.
+    had what she's been wishing for.
     The Ruby Slippers, which she had been wearing all through the movie,
     can return her to Kansas.
     All Dorothy needs to do is wish.
     </p>
     <p>In Ruby Slippers parsing,
-    the "fascist" grammar wishes for lots of things that may not be in
+    the "fascist" grammar "wishes" for lots of things that may not be in
     the actual input.
     Procedural logic here plays the part of a "good witch" -- it tells
     the "fascist" grammar that what it wants has been there all along,
-    and provides it.
+    and supplies it.
     To do this,
-    the procedural logic has to has a reliable way of knowing what the parser
+    the procedural logic has to have a reliable way of knowing what the parser
     wants.
-    Marpa's left-eideticism does this.
+    Marpa's left-eideticism provides this.
     </p>
     <h2>Ruby Slippers combinators</h2>
     <p>This brings us to a question
@@ -357,7 +365,7 @@ Marpa and combinator parsing 2
     to call when?
     The answer is Ruby Slippers parsing.
     First, here are some lexer rules for "unicorn" symbols.
-    We use unicorns when symbols must appear in Marpa's lexer,
+    We use unicorns when symbols need to appear in Marpa's lexer,
     but must never be found in actual input.
     </p>
     <pre><tt>
@@ -381,16 +389,20 @@ Marpa and combinator parsing 2
     <tt>&lt;unicorn&gt;</tt> on the RHS of some lexer rules,
     and a Marpa lexeme can never occur
     on the RHS of a lexer rule.<footnote>
-    The reason for this is that by default Marpa uses the LHS and RHS
-    status of symbols to determine which symbols are lexemes.
-    This makes a typical Marpa grammar quite elegant.
-    and requires a minimum of explicit lexeme declarations
+    The reason for this is that by default a Marpa grammar determines
+    which of its symbols are lexemes using the presence of those
+    symbol on the LHS and RHS
+    of the rules
+    in its lexical and context-free grammars.
+    A typical Marpa grammar
+    requires a minimum of explicit lexeme declarations.
     (Lexeme declarations are statements with the <tt>:lexeme</tt>
     pseudo-symbol on their LHS.)
     As an aside,
-    the Haskell 2010 Report is not careful about the lexer/context-free
+    the Haskell 2010 Report is not always careful about the lexer/context-free
     boundary,
-    and this required more use of Marpa's explicit lexeme declarations
+    and adopting its grammar
+    required more use of Marpa's explicit lexeme declarations
     than usual.
     </footnote>
     </p>
@@ -438,11 +450,11 @@ Marpa and combinator parsing 2
     <tt>&lt;decls&gt;</tt> are in fact accessible.
     There is a small startup cost to allowing the extra symbols
     in the grammars,
-    but the runtime the cost is probably not measureable.
+    but the runtime cost is probably not measureable.
     </footnote>
     Therefore Marpa, when it wants a
     <tt>&lt;laidout_decls&gt;</tt>,
-    will look either for a
+    will look for a
     <tt>&lt;ruby_x_decls&gt;</tt> 
     if a open curly brace is read;
     and a
@@ -473,8 +485,8 @@ Marpa and combinator parsing 2
             my @expected =
               grep { /^ruby_/xms; } @{ $recce->terminals_expected() };
     </tt></pre>
-    <p>We "grep" out all but the symbols with the "<tt>ruby_</tt>" prefix.
-    There are only 4 non-overlapping possibilities:
+    <p>Once we "grep" out all but the symbols with the "<tt>ruby_</tt>" prefix,
+    there are only 4 non-overlapping possibilities:
     </p>
     <ul>
     <li>Marpa expects a 
@@ -495,8 +507,10 @@ Marpa and combinator parsing 2
     </ul>
     <p>If Marpa does not expect any of the Ruby Slippers
     lexemes, there was a syntax error in the Haskell code.<footnote>
-    TODO:
     Currently the handling of these is simplistic.
+    A practical implementation of this method would want better reporting.
+    In fact, Marpa's left eideticism allows some interesting things
+    to be done in this respect.
     </footnote>
     <p>If a <tt>&lt;ruby_i_decls&gt;</tt>
     or a <tt>&lt;ruby_x_decls&gt;</tt>
@@ -505,7 +519,9 @@ Marpa and combinator parsing 2
     whether the child combinator looks for implicit
     or explicit layout.
     In the case of implicit layout, the location of
-    the rejection determines the block indent.
+    the rejection determines the block indent.<footnote>
+    TODO: Code link.
+    </footnote>
     </p>
     <p>If a 
     <tt>&lt;ruby_semicolon&gt;</tt>
@@ -514,7 +530,9 @@ Marpa and combinator parsing 2
     but none was found.
     Whether the block was implicit or explicit,
     this indicates we have reached the end of the block,
-    and should return control to the parent combinator.
+    and should return control to the parent combinator.<footnote>
+    TODO: Code link.
+    </footnote>
     </p>
     <p>
     To explain, we look at both cases.
@@ -532,7 +550,7 @@ Marpa and combinator parsing 2
     combinator,
     it means we did not find an explicit semicolon;
     and we also never found the right indent for creating a Ruby semicolon.
-    In other words, the indentation is telling us we are at the end
+    In other words, the indentation is telling us that we are at the end
     of the block.
     We therefore return control to the parent combinator.
     </p>
@@ -545,8 +563,7 @@ Marpa and combinator parsing 2
     It might be tedious to add the rest,
     but I believe it would be unproblematic, with one interesting exception:
     fixity.
-    To deal with fixity, we may have to haul out the Ruby Slippers once
-    again.
+    To deal with fixity, we may haul out the Ruby Slippers again.
     </p>
     <h2>The code, comments, etc.</h2>
     <p>Full code and a test suite for this prototype can be found
