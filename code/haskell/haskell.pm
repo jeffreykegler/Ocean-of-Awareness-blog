@@ -420,6 +420,7 @@ fexp ::= aexp
 # |	aexp⟨qcon⟩ { fbind1 , … , fbindn }	    (labeled update, n  ≥  1)
 
 aexp ::= qvar
+aexp ::= literal
 aexp ::= '(' exp ')'
 aexp ::= '(' exp_tuple_list ')'
 aexp ::= gcon
@@ -484,6 +485,7 @@ lpat ::= gcon apats1
 # |	~ apat	    (irrefutable pattern)
 
 apat ::= var
+apat ::= literal
 apat ::= var '@' apat
 apat ::= gcon
 apat ::= '(' pat ')'
@@ -585,6 +587,8 @@ comma ~ [,]
 L0_semicolon ~ semicolon
 ruby_semicolon ~ unicorn
 semicolon ~ [;]
+
+literal ~ integer
 
 :discard ~ whitechars
 whitechars ~ whitechar*
@@ -815,12 +819,18 @@ L0_qconsym ~ qconsym
 qconsym ~ consym | modid '.' consym
 
 # decimal	→	digit{digit}
+
+decimal ~ digit+
+
 # octal	→	octit{octit}
 # hexadecimal	→	hexit{hexit}
 #  
 # integer	→	decimal
 # |	0o octal | 0O octal
 # |	0x hexadecimal | 0X hexadecimal
+
+integer ~ decimal
+
 # float	→	decimal . decimal [exponent]
 # |	decimal exponent
 # exponent	→	(e | E) [+ | -] decimal
