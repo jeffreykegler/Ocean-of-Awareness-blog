@@ -43,6 +43,14 @@ $Data::Dumper::Deepcopy = 1;
 
 use English qw( -no_match_vars );
 
+sub show_last_expression {
+    my ($recce, $target) = @_;
+    my ( $g1_start, $g1_length ) = $recce->last_completed($target);
+    return qq{No "$target" was successfully parsed} if not defined $g1_start;
+    my $last_expression = $recce->substring( $g1_start, $g1_length );
+    return "Last expression successfully parsed was: $last_expression";
+} 
+
 sub divergence {
     die join '', 'Unrecoverable internal error: ', @_;
 }
@@ -494,11 +502,11 @@ gcon ::= qcon
 
 # var	→	varid | ( varsym )	    (variable)
 
-var ::= L0_varid | '(' L0_varsym ')'
+var ::= L0_reservedid_error | L0_varid | '(' L0_varsym ')'
 
 # qvar	→	qvarid | ( qvarsym )	    (qualified variable)
 
-qvar ::= qvarid | '(' qvarsym ')'
+qvar ::= qvarid | '(' qvarsym ')' | L0_reservedid_error
 
 # con	→	conid | ( consym )	    (constructor)
 
@@ -512,11 +520,12 @@ qcon ::= L0_qconid
 
 # varop	→	varsym | `  varid `	    (variable operator)
 
-varop ::= L0_varsym | [`] L0_varid [`]
+varop ::= L0_varsym | [`] L0_varid [`] |
+ [`] L0_reservedid_error [`]
 
 # qvarop	→	qvarsym | `  qvarid `	    (qualified variable operator)
 
-qvarop ::= qvarsym | [`] qvarid [`]
+qvarop ::= qvarsym | [`] qvarid [`] | [`] L0_reservedid_error [`]
 
 # conop	→	consym | `  conid `	    (constructor operator)
 # qconop	→	gconsym | `  qconid `	    (qualified constructor operator)
@@ -678,6 +687,13 @@ conid ~ large nonInitials
 # |	foreign | if | import | in | infix | infixl
 # |	infixr | instance | let | module | newtype | of
 # |	then | type | where | _
+
+:lexeme ~ L0_reservedid_error event => reservedid pause=>before
+L0_reservedid_error ~ reservedid
+reservedid ~ 'case' | 'class' | 'data' | 'default' | 'deriving' | 'do' | 'else'
+|	'foreign' | 'if' | 'import' | 'in' | 'infix' | 'infixl'
+|	'infixr' | 'instance' | 'let' | 'module' | 'newtype' | 'of'
+|	'then' | 'type' | 'where' | '_'
 
 # Lexemes are set to priority 1.  Priorities allow
 # one lexeme to "outprioritize" others.  They only
@@ -907,7 +923,7 @@ sub parse {
     my $value_ref;
     my $result = 'OK';
     my $eval_ok =
-      eval { ( $value_ref, undef ) = getValue( $recce, $inputRef, $firstLexemeOffset, $currentIndent ); 1; };
+      eval { ( $value_ref, undef ) = getValue( $recce, 'module', $inputRef, $firstLexemeOffset, $currentIndent ); 1; };
 
     # Return result and parse value
 
@@ -925,7 +941,7 @@ sub parse {
 # Errors are thrown.
 
 sub getValue {
-    my ( $recce, $input, $offset, $currentIndent ) = @_;
+    my ( $recce, $target, $input, $offset, $currentIndent ) = @_;
     my $input_length = length ${$input};
     my $resume_pos;
     my $this_pos;
@@ -1085,6 +1101,7 @@ sub getValue {
 
     # Return value and new offset
 
+    say STDERR show_last_expression($recce, 'decls') if $main::DEBUG;
     my $value_ref = $recce->value();
     if ( !$value_ref ) {
         divergence( qq{input read, but there was no parse} );
@@ -1110,7 +1127,7 @@ sub subParse {
             trace_terminals => ($main::DEBUG ? 99 : 0),
         }
     );
-    my ( $value_ref, $pos ) = getValue( $recce, $input, $offset, $currentIndent );
+    my ( $value_ref, $pos ) = getValue( $recce, $target, $input, $offset, $currentIndent );
     say STDERR qq{Returing from combinator for "$target" at $currentIndent}
         if $main::DEBUG;
     return $value_ref, $pos;
