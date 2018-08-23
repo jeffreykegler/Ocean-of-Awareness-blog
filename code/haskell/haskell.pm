@@ -547,6 +547,19 @@ gconsym ::= L0_colon | L0_qconsym
 
 # This is from Section 10.2 of the 2010 Standard.
 
+# Lexeme priorities follow this scheme:
+#
+# 2, the highest, is for lexemes intended to override "normal"
+# ones.  For example, this is used to make reserved words and
+# ops override normal variables and ops.
+#
+# 1 is used for "error lexemes".  For example, if a reserved
+# word or op occurs where it should not, it is treated
+# overriding normal variables and ops, but an event is generated
+# which manually rejects it, causing a parse fail.
+#
+# 0 (the default) is used for everything else.
+
 # A unicorn is a lexeme which cannot occur.
 # Unicorns are used as dummy RHSs for Ruby Slippers
 # tokens
@@ -692,63 +705,63 @@ conid ~ large nonInitials
 # |	infixr | instance | let | module | newtype | of
 # |	then | type | where | _
 
-:lexeme ~ L0_reservedid_error event => reservedid pause=>before
+:lexeme ~ L0_reservedid_error event => reservedid pause=>before priority => 1
 L0_reservedid_error ~ reservedid
 reservedid ~ 'case' | 'class' | 'data' | 'default' | 'deriving' | 'do' | 'else'
 |	'foreign' | 'if' | 'import' | 'in' | 'infix' | 'infixl'
 |	'infixr' | 'instance' | 'let' | 'module' | 'newtype' | 'of'
 |	'then' | 'type' | 'where' | '_'
 
-# Lexemes are set to priority 1.  Priorities allow
+# Revered word lexemes are set to priority 2.  Priorities allow
 # one lexeme to "outprioritize" others.  They only
 # apply if both lexemes start and end at the same location.
 # Default priority is zero, so lexemes will outprioritize
 # most lexemes, including normal variables.
-:lexeme ~ resword_case priority => 1
+:lexeme ~ resword_case priority => 2
 resword_case ~ 'case'
-# :lexeme ~ resword_class priority => 1
+# :lexeme ~ resword_class priority => 2
 # resword_class ~ 'class'
-:lexeme ~ resword_data priority => 1
+:lexeme ~ resword_data priority => 2
 resword_data ~ 'data'
-# :lexeme ~ resword_default priority => 1
+# :lexeme ~ resword_default priority => 2
 # resword_default ~ 'default'
-# :lexeme ~ resword_deriving priority => 1
+# :lexeme ~ resword_deriving priority => 2
 # resword_deriving ~ 'deriving'
-# :lexeme ~ resword_do priority => 1
+# :lexeme ~ resword_do priority => 2
 # resword_do ~ 'do'
-# :lexeme ~ resword_else priority => 1
+# :lexeme ~ resword_else priority => 2
 # resword_else ~ 'else'
-# :lexeme ~ resword_foreign priority => 1
+# :lexeme ~ resword_foreign priority => 2
 # resword_foreign ~ 'foreign'
-# :lexeme ~ resword_if priority => 1
+# :lexeme ~ resword_if priority => 2
 # resword_if ~ 'if'
-# :lexeme ~ resword_import priority => 1
+# :lexeme ~ resword_import priority => 2
 # resword_import ~ 'import'
-:lexeme ~ resword_in priority => 1
+:lexeme ~ resword_in priority => 2
 resword_in ~ 'in'
-# :lexeme ~ resword_infix priority => 1
+# :lexeme ~ resword_infix priority => 2
 # resword_infix ~ 'infix'
-# :lexeme ~ resword_infixl priority => 1
+# :lexeme ~ resword_infixl priority => 2
 # resword_infixl ~ 'infixl'
-# :lexeme ~ resword_infixr priority => 1
+# :lexeme ~ resword_infixr priority => 2
 # resword_infixr ~ 'infixr'
-# :lexeme ~ resword_instance priority => 1
+# :lexeme ~ resword_instance priority => 2
 # resword_instance ~ 'instance'
-:lexeme ~ resword_let priority => 1
+:lexeme ~ resword_let priority => 2
 resword_let ~ 'let'
-:lexeme ~ resword_module priority => 1
+:lexeme ~ resword_module priority => 2
 resword_module ~ 'module'
-# :lexeme ~ resword_newtype priority => 1
+# :lexeme ~ resword_newtype priority => 2
 # resword_newtype ~ 'newtype'
-:lexeme ~ resword_of priority => 1
+:lexeme ~ resword_of priority => 2
 resword_of ~ 'of'
-# :lexeme ~ resword_then priority => 1
+# :lexeme ~ resword_then priority => 2
 # resword_then ~ 'then'
-# :lexeme ~ resword_type priority => 1
+# :lexeme ~ resword_type priority => 2
 # resword_type ~ 'type'
-:lexeme ~ resword_where priority => 1
+:lexeme ~ resword_where priority => 2
 resword_where ~ 'where'
-# :lexeme ~ resword_underscore priority => 1
+# :lexeme ~ resword_underscore priority => 2
 # resword_underscore ~ '_'
 
 #  
@@ -766,6 +779,7 @@ L0_consym ~ consym
 consym ~ colon symbols
 
 # reservedop	→	.. | : | :: | = | \ | | | <- | -> |  @ | ~ | =>
+
 #  
 # varid	    	    (variables)
 # conid	    	    (constructors)
