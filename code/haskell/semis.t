@@ -13,7 +13,7 @@ $Data::Dumper::Terse    = 1;
 $Data::Dumper::Deepcopy = 1;
 use English qw( -no_match_vars );
 
-use Test::More tests => 10;
+use Test::More tests => 12;
 use Test::Differences;
 
 use Marpa::R2 4.000;
@@ -58,6 +58,14 @@ main =
  in f c + f d
 EOS
 
+my $short_explicit4 = <<'EOS';
+main =
+ let { y   = a*b ;;
+     ; f x = (x+y)/y ;
+     }
+ in f c + f d
+EOS
+
 my $short_implicit_ast =
   [ 'module', [ 'body', [ 'topdecls', [ 'topdecl', [ 'decl', [ 'funlhs', [ 'var', 'main'
 	      ], [] ], [ 'rhs', '=',
@@ -68,7 +76,6 @@ my $short_implicit_ast =
 				      ] ] ] ], [ 'qop', [ 'qvarop', '*'
 				  ] ], [ 'infixexp', [ 'lexp', [ 'fexp', [ 'aexp', [ 'qvar', 'b'
 					] ] ] ] ] ] ] ] ],
-			[ 'decl' ],
 			[ 'decl', [ 'funlhs',
 			    [ 'var', 'f'
 			    ], [ 'apat', [ 'var', 'x'
@@ -99,6 +106,7 @@ doTest( \$short_explicit, $short_implicit_expected );
 doTest( \$short_implicit2, $short_implicit_expected );
 doTest( \$short_explicit2, $short_implicit_expected );
 doTest( \$short_explicit3, $short_implicit_expected );
+doTest( \$short_explicit4, $short_implicit_expected );
 $main::DEBUG = 0;
 
 sub doTest {

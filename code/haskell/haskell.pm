@@ -1229,6 +1229,7 @@ sub pruneNodes {
 
     state $deleteIfEmpty = {
         topdecl => 1,
+        decl => 1,
     };
 
     state $nonStandard = {
