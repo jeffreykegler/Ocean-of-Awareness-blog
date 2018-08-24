@@ -1059,10 +1059,30 @@ sub getValue {
 	       $indent_end if $main::DEBUG;
 
 	    my $lastNL = rindex(${$input}, "\n", $indent_end);
-	    $lastNL = 0 if $lastNL < 0; # this probably never occurs
 
             # indent length is end-start less one for the newline
             my $indent_length = $indent_end - $indent_start - 1;
+
+
+	    my $new_indent_length = ($indent_end - $lastNL) - 1;
+	    $new_indent_length = 0 if $new_indent_length < 0;
+	    $indent_length = $new_indent_length;
+	    {
+	      my $nextNL = index(${$input}, "\n", $lastNL+1);
+	      $nextNL = -1 if $nextNL < 0;
+	      my $line = substr(${$input}, $lastNL+1, $nextNL - $lastNL);
+	      say STDERR "old,new,line: $indent_length, $new_indent_length, '$line'";
+	    }
+	    if (0) {
+		say STDERR "new, old: $new_indent_length, $indent_length";
+		my $string = substr(${$input}, $indent_start, $indent_length+2);
+		say STDERR '@', "$indent_start-$indent_end: '", substr(${$input}, $indent_start, $indent_length),
+		  "'";
+		say STDERR "lastNL=$lastNL";
+		say STDERR '"', substr(${$input}, $indent_start, 10), '"';
+		$string =~ s/\n/x/g;
+		say STDERR '"', $string, '"';
+	    }
 
 	    # On outdent, we end the read loop.  An EOF is treated as
 	    # an outdent.
@@ -1228,6 +1248,10 @@ sub subParse {
 sub pruneNodes {
     my ($v) = @_;
 
+    state $deleteIfEmpty = {
+        topdecl => 1,
+    };
+
     state $nonStandard = {
         apats             => 1,
         apats1            => 1,
@@ -1252,7 +1276,8 @@ sub pruneNodes {
     return pruneNodes($$v) if $reftype eq 'REF';
     divergence("Tree node has reftype $reftype") if $reftype ne 'ARRAY';
     my @source = grep { defined } @{$v};
-    return [] if not scalar @source; # must have at least one element
+    my $element_count = scalar @source;
+    return [] if $element_count <= 0; # must have at least one element
     my $name = shift @source;
     my $nameReftype = ref $name;
     # divergence("Tree node name has reftype $nameReftype") if $nameReftype;
@@ -1270,6 +1295,9 @@ sub pruneNodes {
 	push @result, $_;
       }
       return [@result];
+    }
+    if (defined $deleteIfEmpty->{$name} and $element_count == 1) {
+      return [];
     }
     if (defined $nonStandard->{$name}) {
       # Not an acceptable branch node, but (hopefully)
