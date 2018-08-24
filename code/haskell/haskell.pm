@@ -1060,29 +1060,8 @@ sub getValue {
 
 	    my $lastNL = rindex(${$input}, "\n", $indent_end);
 
-            # indent length is end-start less one for the newline
-            my $indent_length = $indent_end - $indent_start - 1;
-
-
-	    my $new_indent_length = ($indent_end - $lastNL) - 1;
-	    $new_indent_length = 0 if $new_indent_length < 0;
-	    $indent_length = $new_indent_length;
-	    {
-	      my $nextNL = index(${$input}, "\n", $lastNL+1);
-	      $nextNL = -1 if $nextNL < 0;
-	      my $line = substr(${$input}, $lastNL+1, $nextNL - $lastNL);
-	      say STDERR "old,new,line: $indent_length, $new_indent_length, '$line'";
-	    }
-	    if (0) {
-		say STDERR "new, old: $new_indent_length, $indent_length";
-		my $string = substr(${$input}, $indent_start, $indent_length+2);
-		say STDERR '@', "$indent_start-$indent_end: '", substr(${$input}, $indent_start, $indent_length),
-		  "'";
-		say STDERR "lastNL=$lastNL";
-		say STDERR '"', substr(${$input}, $indent_start, 10), '"';
-		$string =~ s/\n/x/g;
-		say STDERR '"', $string, '"';
-	    }
+	    my $indent_length = ($indent_end - $lastNL) - 1;
+	    $indent_length = 0 if $indent_length < 0;
 
 	    # On outdent, we end the read loop.  An EOF is treated as
 	    # an outdent.
