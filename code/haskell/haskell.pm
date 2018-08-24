@@ -1058,6 +1058,9 @@ sub getValue {
 	    say STDERR 'Indent event @', $indent_start, '-',
 	       $indent_end if $main::DEBUG;
 
+	    my $lastNL = rindex(${$input}, "\n", $indent_end);
+	    $lastNL = 0 if $lastNL < 0; # this probably never occurs
+
             # indent length is end-start less one for the newline
             my $indent_length = $indent_end - $indent_start - 1;
 
@@ -1067,8 +1070,6 @@ sub getValue {
             if ( not defined $next_char or $indent_length < $currentIndent ) {
 		say STDERR 'Indent is outdent'
 		   if $main::DEBUG;
-		my $lastNL = rindex(${$input}, "\n", $indent_end);
-		$lastNL = 0 if $lastNL < 0; # this probably never occurs
                 $this_pos = $lastNL;
                 last READ;
             }
