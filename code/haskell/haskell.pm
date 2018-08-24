@@ -1087,7 +1087,9 @@ sub getValue {
 		# Comments are dealt with separately, taking advantage of the
 		# fact they they must be longer and therefore preferred by
 		# the lexer.
-                $resume_pos = $indent_end + 1;
+		say STDERR 'Indent is an empty line'
+		   if $main::DEBUG;
+                $resume_pos = $indent_end;
                 next READ;
 	    }
 
