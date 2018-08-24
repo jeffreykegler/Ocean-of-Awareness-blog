@@ -218,7 +218,7 @@ virtual_semicolon ::= L0_semicolon
 #|	foreign fdecl
 #|	decl
 
-topdecl ::= resword_data simpletype '=' constrs
+topdecl ::= resword_data simpletype L0_equal constrs
 topdecl ::= decl
 
 #decls	→	{ decl1 ; … ; decln }	    (n ≥ 0)
@@ -355,8 +355,8 @@ apats1 ::= apat+
 # rhs	→	= exp [where decls]
 # |	gdrhs [where decls]
 
-rhs ::= '=' exp
-rhs ::= '=' exp resword_where laidout_decls
+rhs ::= L0_equal exp
+rhs ::= L0_equal exp resword_where laidout_decls
 
 # Here the logic is similar to <laidout_body>,
 # see which above.
@@ -504,7 +504,10 @@ gcon ::= qcon
 
 # var	→	varid | ( varsym )	    (variable)
 
-var ::= L0_reservedid_error | L0_varid | '(' L0_varsym ')'
+var ::= L0_reservedid_error
+  | L0_varid
+  | '(' L0_varsym ')'
+  | '(' L0_ReservedOpError ')'
 
 # qvar	→	qvarid | ( qvarsym )	    (qualified variable)
 
@@ -514,6 +517,7 @@ qvar ::= qvarid | '(' qvarsym ')' | L0_reservedid_error
 
 con ::= L0_conid
        | '(' L0_consym ')'
+       | '(' L0_ReservedColonOpError ')'
 
 # qcon	→	qconid | ( gconsym )	    (qualified constructor)
 
@@ -522,8 +526,10 @@ qcon ::= L0_qconid
 
 # varop	→	varsym | `  varid `	    (variable operator)
 
-varop ::= L0_varsym | [`] L0_varid [`] |
- [`] L0_reservedid_error [`]
+varop ::= L0_varsym
+  | L0_ReservedOpError
+  | [`] L0_varid [`] |
+  [`] L0_reservedid_error [`]
 
 # qvarop	→	qvarsym | `  qvarid `	    (qualified variable operator)
 
@@ -764,8 +770,10 @@ resword_where ~ 'where'
 # :lexeme ~ resword_underscore priority => 2
 # resword_underscore ~ '_'
 
-#  
 # varsym	→	( symbol⟨:⟩ {symbol} )⟨reservedop | dashes⟩
+
+# TODO Ensure <dashes> do not match as a <varsym> --
+# this is a problem if they are just before a newline.
 
 :lexeme ~ L0_varsym
 L0_varsym ~ varsym
@@ -779,6 +787,18 @@ L0_consym ~ consym
 consym ~ colon symbols
 
 # reservedop	→	.. | : | :: | = | \ | | | <- | -> |  @ | ~ | =>
+
+:lexeme ~ L0_ReservedColonOpError event => reservedColonOp pause=>before priority => 1
+L0_ReservedColonOpError ~ reservedColonOp
+reservedColonOp ~ ':' | '::'
+
+:lexeme ~ L0_ReservedOpError event => reservedop pause=>before priority => 1
+L0_ReservedOpError ~ reservedop
+reservedop ~ '..' | '=' | '\' | '|' | '<-' | '->' | '@' | '~' | '=>'
+    | reservedColonOp
+
+:lexeme ~ L0_equal priority => 2
+L0_equal ~ '='
 
 #  
 # varid	    	    (variables)
@@ -1005,6 +1025,12 @@ sub getValue {
 	# implicit layout.
 
         if ( $name eq 'reservedid' ) {
+	    say STDERR 'Reserved Id event' if $main::DEBUG;
+	    say STDERR show_last_expression($recce, 'decls') if $main::DEBUG;
+	    last READ;
+	}
+        if ( $name eq 'reservedop' ) {
+	    say STDERR 'Reserved Op event' if $main::DEBUG;
 	    say STDERR show_last_expression($recce, 'decls') if $main::DEBUG;
 	    last READ;
 	}
