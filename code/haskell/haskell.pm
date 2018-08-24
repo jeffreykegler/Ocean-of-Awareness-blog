@@ -619,23 +619,31 @@ semicolon ~ [;]
 
 literal ~ integer
 
-:discard ~ whitechars
-whitechars ~ whitechar*
-whitechar ~ [\t ]
+:discard ~ L0_horizontalWhitechars
+L0_horizontalWhitechars ~ horizontalWhitechars
+horizontalWhitechars ~ horizontalWhitechar*
+horizontalWhitechar ~ [ ]
+
+# Right now this will fail -- tabs are a
+# nuisance and I am not in a hurry to implement
+# them
+:discard ~ tab event => tab
+tab ~ [\t]
 
 # <commentline> will be longer than
 # any <indent>, so that Marpa's own lexer
 # can "eat" these lines.  This is cleaner
 # and easier than dealing with these in the
 # event handler.
-:discard ~ comment
-:discard ~ commentLine
-commentLine ~ newline whitechars '--' nonNewlines
 
 # Here we define an "event" for <indent>.
 # The event is initially set to off.
 :discard ~ indent event => indent=off
-indent ~ newline whitechars
+indent ~ newline horizontalWhitechars
+indent ~ commentLine
+commentLine ~ horizontalWhitechars '--' nonNewlines newline horizontalWhitechars
+nonNewlines ~ nonNewline*
+nonNewline ~ [^\n]
 
 # space	→	a space
 # tab	→	a horizontal tab
@@ -643,9 +651,6 @@ indent ~ newline whitechars
 #  
 # comment	→	dashes [ any⟨symbol⟩ {any} ] newline
 
-comment ~ '--' nonNewlines
-nonNewlines ~ nonNewline*
-nonNewline ~ [^\n]
 
 # dashes	→	-- {-}
 # opencom	→	{-
@@ -782,7 +787,10 @@ resword_where ~ 'where'
 
 # varsym	→	( symbol⟨:⟩ {symbol} )⟨reservedop | dashes⟩
 
-# TODO Ensure <dashes> do not match as a <varsym> --
+# Handling <dashes>, since they start a comment, is implemented
+# in the comment processing.  Comments always include a newline,
+# while <varsym>'s never do, so comments will always be preferred
+# by the LATM lexing discipline.
 # this is a problem if they are just before a newline.
 
 :lexeme ~ L0_varsym
