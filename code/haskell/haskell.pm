@@ -246,7 +246,7 @@ decl ::= funlhs rhs
 # |	fixity [integer] ops	    (fixity declaration)
 # |		    (empty declaration)
 
-gendecl ::= vars '::' type
+gendecl ::= vars L0_DoubleColon type
 gendecl ::= # empty
 
 # ops	→	op1 , … , opn	    (n ≥ 1)
@@ -791,6 +791,9 @@ consym ~ colon symbols
 :lexeme ~ L0_ReservedColonOpError event => reservedColonOp pause=>before priority => 1
 L0_ReservedColonOpError ~ reservedColonOp
 reservedColonOp ~ ':' | '::'
+
+:lexeme ~ L0_DoubleColon priority => 2
+L0_DoubleColon ~ '::'
 
 :lexeme ~ L0_ReservedOpError event => reservedop pause=>before priority => 1
 L0_ReservedOpError ~ reservedop
