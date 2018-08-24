@@ -273,6 +273,7 @@ btype ::= btype atype | atype
 atype ::= gtycon
 atype ::= tyvar
 atype ::= '(' tuple_type_list ')'
+atype ::= '[' type ']'
 atype ::= '(' type ')'
 
 tuple_type_list ::= duple_type_list
@@ -423,10 +424,15 @@ aexp ::= qvar
 aexp ::= literal
 aexp ::= '(' exp ')'
 aexp ::= '(' exp_tuple_list ')'
+aexp ::= '[' exps ']'
+aexp ::= '[' exp L0_pipe quals ']'
+quals ::= qual+ separator => L0_comma
 aexp ::= gcon
 
 exp_tuple_list ::= exp L0_comma exp
 exp_tuple_list ::= exp_tuple_list L0_comma exp
+
+exps ::= exp+ separator => L0_comma
 
 #  
 # qual	→	pat <- exp	    (generator)
@@ -434,6 +440,10 @@ exp_tuple_list ::= exp_tuple_list L0_comma exp
 # |	exp	    (guard)
 #  
 # alts	→	alt1 ; … ; altn	    (n ≥ 1)
+
+qual ::= pat L0_leftSingle exp
+qual ::= resword_let decls
+qual ::= exp
 
 # Explicit BNF recursion needed, 
 # because Marpa's counted rules do not
@@ -802,6 +812,10 @@ reservedop ~ '..' | '=' | '\' | '|' | '<-' | '->' | '@' | '~' | '=>'
 
 :lexeme ~ L0_equal priority => 2
 L0_equal ~ '='
+:lexeme ~ L0_pipe priority => 2
+L0_pipe ~ '|'
+:lexeme ~ L0_leftSingle priority => 2
+L0_leftSingle ~ '|'
 
 #  
 # varid	    	    (variables)
@@ -1051,7 +1065,8 @@ sub getValue {
 	    # an outdent.
             my $next_char = substr( ${$input}, $indent_end + 1, 1 );
             if ( not defined $next_char or $indent_length < $currentIndent ) {
-		# An outdent
+		say STDERR 'Indent is outdent'
+		   if $main::DEBUG;
 		my $lastNL = rindex(${$input}, "\n", $indent_end);
 		$lastNL = 0 if $lastNL < 0; # this probably never occurs
                 $this_pos = $lastNL;
@@ -1072,9 +1087,18 @@ sub getValue {
 	    # syntactic item is being continued.  Just resume the read.
             if ( $indent_length > $currentIndent ) {
 		# Statement continuation
+		say STDERR 'Indent is item continuation: "',
+		      substr(${$input}, $indent_end, 10),
+		      '"'
+		   if $main::DEBUG;
                 $resume_pos = $indent_end;
                 next READ;
             }
+
+	    say STDERR 'Indent is new item : "',
+		  substr(${$input}, $indent_end, 10),
+		  '"'
+	       if $main::DEBUG;
 
 	    # If we are here, indent is at the current indent level.
 	    # This means we are starting a new syntactic item.  The
