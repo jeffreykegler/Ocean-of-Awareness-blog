@@ -1204,6 +1204,8 @@ sub getValue {
 sub subParse {
     my ( $target, $input, $offset, $currentIndent ) = @_;
     say STDERR qq{Starting combinator for "$target" at $currentIndent}
+        if $main::TRACE_ES;
+    say STDERR qq{Starting combinator for "$target" at $currentIndent}
         if $main::DEBUG;
     my $grammar_data = $main::GRAMMARS{$target};
 
@@ -1219,8 +1221,20 @@ sub subParse {
         }
     );
     my ( $value_ref, $pos ) = getValue( $recce, $target, $input, $offset, $currentIndent );
-    say STDERR qq{Returing from combinator for "$target" at $currentIndent}
+    say STDERR qq{Returning from combinator for "$target" at $currentIndent}
         if $main::DEBUG;
+
+    if ($main::TRACE_ES) {
+      my $thick_recce = $recce->thick_g1_recce();
+      say STDERR qq{Returning from combinator for "$target" at $currentIndent};
+      my $latest_es = $thick_recce->latest_earley_set();
+      say STDERR "latest ES = ", $latest_es;
+      for my $es (0 .. $latest_es) {
+	say STDERR "ES $es = ", $thick_recce->earley_set_size($es);
+      }
+      say STDERR qq{Returning from combinator for "$target" at $currentIndent};
+    }
+
     return $value_ref, $pos;
 }
 
