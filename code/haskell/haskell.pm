@@ -395,6 +395,7 @@ infixexp ::= lexp
 lexp ::= fexp
 lexp ::= resword_let laidout_decls resword_in exp
 lexp ::= resword_case exp resword_of laidout_alts
+lexp ::= resword_do laidout_stmts
 
 # Here the logic is similar to <laidout_body>,
 # see which above.
@@ -467,6 +468,17 @@ alt ::= # empty
 # |	pat <- exp ;
 # |	let decls ;
 # |	;	    (empty statement)
+
+laidout_stmts ::= ('{') ruby_x_stmts ('}')
+	 | ruby_i_stmts
+	 | L0_unicorn stmts L0_unicorn
+stmts ::= stmt_seq
+stmt_seq ::= stmt_seq (virtual_semicolon) stmt
+stmt_seq ::= stmt
+
+stmt ::= exp
+stmt ::= # empty
+
 #  
 # fbind	→	qvar = exp
 #  
@@ -587,6 +599,8 @@ L0_unicorn ~ unicorn
 unicorn ~ [^\d\D]
 ruby_i_body ~ unicorn
 ruby_x_body ~ unicorn
+ruby_i_stmts ~ unicorn
+ruby_x_stmts ~ unicorn
 ruby_i_decls ~ unicorn
 ruby_x_decls ~ unicorn
 ruby_i_alts ~ unicorn
@@ -751,8 +765,8 @@ resword_data ~ 'data'
 # resword_default ~ 'default'
 # :lexeme ~ resword_deriving priority => 2
 # resword_deriving ~ 'deriving'
-# :lexeme ~ resword_do priority => 2
-# resword_do ~ 'do'
+:lexeme ~ resword_do priority => 2
+resword_do ~ 'do'
 # :lexeme ~ resword_else priority => 2
 # resword_else ~ 'else'
 # :lexeme ~ resword_foreign priority => 2
@@ -919,6 +933,7 @@ my $topGrammar = Marpa::R2::Scanless::G->new( { source => \$dsl } );
 
 %main::GRAMMARS = (
     'ruby_x_body'  => ['body'],
+    'ruby_x_stmts'  => ['stmts'],
     'ruby_x_decls' => ['decls'],
     'ruby_x_alts'  => ['alts'],
 );
@@ -1155,6 +1170,8 @@ sub getValue {
 	    # the read.
             my $expected = pop @expected;
 	    if ($expected eq 'ruby_semicolon') {
+	       say STDERR "Ending READ loop expecting ruby_semicolon"
+	           if $main::DEBUG;
 	       last READ;
 	    }
 
@@ -1194,10 +1211,13 @@ sub getValue {
 	divergence(qq{Unexpected event: "$name"});
     }
 
+    say STDERR "Left main READ loop" if $main::DEBUG;
+
     # Return value and new offset
 
     my $value_ref = $recce->value();
     if ( !$value_ref ) {
+	say STDERR $recce->show_progress() if $main::DEBUG;
         divergence( qq{input read, but there was no parse} );
     }
 

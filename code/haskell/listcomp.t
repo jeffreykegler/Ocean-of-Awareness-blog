@@ -21,26 +21,28 @@ use Marpa::R2 4.000;
 require "haskell.pm";
 
 my $listComp = <<'EOS';
-module Try () where
-
 xss :: [[Integer]]
-xss = [ [ 1, 2, 3 ] ]
+xss = [ [ 42, 1729, 99 ] ]
 
 ys :: [Integer]
-ys = [ 42, 8675309, 1729 ]
+ys = [ 42, 1729, 99 ]
 
-list = [ x | [x, 2, 3, 4,
-                5, 6, 7, 8, 5, 6, 7, 8, 5, 6, 7, 8, 5, 6, 7, 8,
+list = [ x | [x, 1729,
+                -- insert more here
                 99
              ] <- xss ]
 
-list2 = [ x | [x] <- xss,
-               [x, 2, 3, 4,
-                  5, 6, 7, 8, 5, 6, 7, 8, 5, 6, 7, 8, 5, 6, 7, 8,
+list2 = [ x | [x, 1729, 99] <- xss,
+               [x, 1729,
+                  -- insert more here
                   99
                ] == ys,
-             [1, 2, 3] <- xss
+             [ 42, 1729, 99 ] <- xss
              ]
+
+main = do
+    putStrLn (show list)
+    putStrLn (show list2)
 EOS
 
 my $listComp_ast  =  []
@@ -48,7 +50,7 @@ my $listComp_ast  =  []
 
 my $listComp_expected = Data::Dumper::Dumper( MarpaX::R2::Haskell::pruneNodes($listComp_ast) );
 
-local $main::DEBUG = 0;
+local $main::DEBUG = 1;
 
 doTest( \$listComp, $listComp_expected );
 $main::DEBUG = 0;
