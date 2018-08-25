@@ -184,8 +184,5 @@ sub doTest {
 
         $value = Data::Dumper::Dumper( MarpaX::R2::Haskell::pruneNodes($$valueRef) );
     }
-    TODO: {
-      local $TODO = 'NYI';
-      Test::Differences::eq_or_diff( $value, $expected_value, qq{Test of value} );
-    }
+    Test::Differences::eq_or_diff( $value, $expected_value, qq{Test of value} );
 }
