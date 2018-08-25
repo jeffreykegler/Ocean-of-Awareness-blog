@@ -50,8 +50,7 @@ my $listComp_ast  =  []
 
 my $listComp_expected = Data::Dumper::Dumper( MarpaX::R2::Haskell::pruneNodes($listComp_ast) );
 
-local $main::DEBUG = 1;
-
+local $main::DEBUG = 0;
 doTest( \$listComp, $listComp_expected );
 $main::DEBUG = 0;
 
@@ -67,8 +66,8 @@ sub doTest {
     my $value = '[fail]';
     if ($valueRef) {
 
-    # say "===\n", Data::Dumper::Dumper(
-    # MarpaX::R2::Haskell::pruneNodes($valueRef) ), "===\n";
+    say "===\n", Data::Dumper::Dumper(
+    MarpaX::R2::Haskell::pruneNodes($valueRef) ), "===\n";
 
         $value = Data::Dumper::Dumper( MarpaX::R2::Haskell::pruneNodes($$valueRef) );
     }

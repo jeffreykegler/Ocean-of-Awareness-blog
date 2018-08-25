@@ -472,9 +472,9 @@ alt ::= # empty
 laidout_stmts ::= ('{') ruby_x_stmts ('}')
 	 | ruby_i_stmts
 	 | L0_unicorn stmts L0_unicorn
-stmts ::= stmt_seq
-stmt_seq ::= stmt_seq (virtual_semicolon) stmt
-stmt_seq ::= stmt
+stmts ::= stmts_seq
+stmts_seq ::= stmts_seq (virtual_semicolon) stmt
+stmts_seq ::= stmt
 
 stmt ::= exp
 stmt ::= # empty
@@ -1292,6 +1292,8 @@ sub pruneNodes {
         laidout_alts      => 1,
         laidout_decls     => 1,
         laidout_body      => 1,
+        laidout_stmts      => 1,
+        stmts_seq      => 1,
         topdecls_seq      => 1,
         tuple_type_list   => 1,
         virtual_semicolon => 1,
