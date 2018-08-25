@@ -382,7 +382,7 @@ exp ::= infixexp
 # |	lexp
 
 infixexp ::= lexp qop infixexp
-infixexp ::= '-' infixexp
+infixexp ::= L0_dash infixexp
 infixexp ::= lexp
 
 # lexp	→	\ apat1 … apatn -> exp	    (lambda abstraction, n ≥ 1)
@@ -507,7 +507,7 @@ lpat ::= gcon apats1
 # |	~ apat	    (irrefutable pattern)
 
 apat ::= var
-apat ::= var '@' apat
+apat ::= var L0_atSign apat
 apat ::= gcon
 apat ::= literal
 apat ::= L0_leftParen pat L0_rightParen
@@ -726,6 +726,9 @@ nonColonAscSymbol ~ '!' | '#' | '$' | '%' | '&'
 :lexeme ~ L0_colon
 L0_colon ~ colon
 colon ~ ':'
+:lexeme ~ L0_dash
+L0_dash ~ dash
+dash ~ '-'
 ascSymbol ~ colon | nonColonAscSymbol
 
 # |	\ | ^ | | | - | ~ | :
@@ -856,6 +859,8 @@ L0_equal ~ '='
 L0_pipe ~ '|'
 :lexeme ~ L0_leftSingle priority => 2
 L0_leftSingle ~ '<-'
+:lexeme ~ L0_atSign priority => 2
+L0_atSign ~ '<-'
 
 #  
 # varid	    	    (variables)
