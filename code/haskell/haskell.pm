@@ -499,6 +499,9 @@ apat ::= var '@' apat
 apat ::= gcon
 apat ::= literal
 apat ::= '(' pat ')'
+apat ::= '[' pats1 ']'
+
+pats1 ::= pat+ separator => L0_comma
 
 # fpat	→	qvar = pat
 #  
@@ -823,7 +826,7 @@ L0_equal ~ '='
 :lexeme ~ L0_pipe priority => 2
 L0_pipe ~ '|'
 :lexeme ~ L0_leftSingle priority => 2
-L0_leftSingle ~ '|'
+L0_leftSingle ~ '<-'
 
 #  
 # varid	    	    (variables)
