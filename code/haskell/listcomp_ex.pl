@@ -51,13 +51,9 @@ EOS
 my $insertion = ($insertLine x 100);
 $listComp =~ s/^ [ -]* INSERT [ ] HERE [^\n]* $/$insertion/xms;
 
-local $main::TRACE_ES = 0;
+local $main::TRACE_ES = 1;
 local $main::DEBUG = 0;
 my $inputRef = \$listComp;
-
-say STDERR '===';
-say STDERR $listComp;
-say STDERR '===';
 
 my ($result, $valueRef) = MarpaX::R2::Haskell::parse($inputRef);
 if ( $result ne 'OK' ) {
