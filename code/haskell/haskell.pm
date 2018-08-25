@@ -495,9 +495,9 @@ lpat ::= gcon apats1
 # |	~ apat	    (irrefutable pattern)
 
 apat ::= var
-apat ::= literal
 apat ::= var '@' apat
 apat ::= gcon
+apat ::= literal
 apat ::= '(' pat ')'
 
 # fpat	→	qvar = pat
