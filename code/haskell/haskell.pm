@@ -1012,6 +1012,16 @@ sub parse {
     my $eval_ok =
       eval { ( $value_ref, undef ) = getValue( $recce, 'module', $inputRef, $firstLexemeOffset, $currentIndent ); 1; };
 
+    if ($main::TRACE_ES) {
+      my $thick_recce = $recce->thick_g1_recce();
+      say STDERR qq{Returning from top level parser};
+      my $latest_es = $thick_recce->latest_earley_set();
+      say STDERR "latest ES = ", $latest_es;
+      for my $es (0 .. $latest_es) {
+	say STDERR "ES $es = ", $thick_recce->earley_set_size($es);
+	say STDERR $thick_recce->show_progress($es);
+      }
+    }
     # Return result and parse value
 
     if ( !$eval_ok ) {
