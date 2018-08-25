@@ -140,11 +140,11 @@ module ::= resword_module L0_modid optExports resword_where laidout_body
 # size of a Marpa grammar is reasonable, and the runtime cost of the
 # larger grammar is negligible.
 
-laidout_body ::= ('{') ruby_x_body ('}')
+laidout_body ::= (L0_leftCurly) ruby_x_body (L0_rightCurly)
 	 | ruby_i_body
 	 | L0_unicorn body L0_unicorn
 
-optExports ::= '(' exports ')'
+optExports ::= L0_leftParen exports L0_rightParen
 optExports ::= # empty
 
 # body	→	{ impdecls ; topdecls }
@@ -272,9 +272,9 @@ btype ::= btype atype | atype
 
 atype ::= gtycon
 atype ::= tyvar
-atype ::= '(' tuple_type_list ')'
-atype ::= '[' type ']'
-atype ::= '(' type ')'
+atype ::= L0_leftParen tuple_type_list L0_rightParen
+atype ::= L0_leftSquare type L0_rightSquare
+atype ::= L0_leftParen type L0_rightParen
 
 tuple_type_list ::= duple_type_list
 tuple_type_list ::= duple_type_list L0_comma type
@@ -348,7 +348,7 @@ optBang ::= # empty
 
 funlhs ::= var apats
 funlhs ::= pat varop pat
-funlhs ::= '(' funlhs ')' apats
+funlhs ::= L0_leftParen funlhs L0_rightParen apats
 apats  ::= apat*
 apats1 ::= apat+
 
@@ -361,7 +361,7 @@ rhs ::= L0_equal exp resword_where laidout_decls
 
 # Here the logic is similar to <laidout_body>,
 # see which above.
-laidout_decls ::= ('{') ruby_x_decls ('}')
+laidout_decls ::= (L0_leftCurly) ruby_x_decls (L0_rightCurly)
 	 | ruby_i_decls
 	 | L0_unicorn decls L0_unicorn
 
@@ -399,7 +399,7 @@ lexp ::= resword_do laidout_stmts
 
 # Here the logic is similar to <laidout_body>,
 # see which above.
-laidout_alts ::= ('{') ruby_x_alts ('}')
+laidout_alts ::= (L0_leftCurly) ruby_x_alts (L0_rightCurly)
 	 | ruby_i_alts
 	 | L0_unicorn alts L0_unicorn
 
@@ -423,10 +423,10 @@ fexp ::= aexp
 
 aexp ::= qvar
 aexp ::= literal
-aexp ::= '(' exp ')'
-aexp ::= '(' exp_tuple_list ')'
-aexp ::= '[' exps ']'
-aexp ::= '[' exp L0_pipe quals ']'
+aexp ::= L0_leftParen exp L0_rightParen
+aexp ::= L0_leftParen exp_tuple_list L0_rightParen
+aexp ::= L0_leftSquare exps L0_rightSquare
+aexp ::= L0_leftSquare exp L0_pipe quals L0_rightSquare
 quals ::= qual+ separator => L0_comma
 aexp ::= gcon
 
@@ -469,7 +469,7 @@ alt ::= # empty
 # |	let decls ;
 # |	;	    (empty statement)
 
-laidout_stmts ::= ('{') ruby_x_stmts ('}')
+laidout_stmts ::= (L0_leftCurly) ruby_x_stmts (L0_rightCurly)
 	 | ruby_i_stmts
 	 | L0_unicorn stmts L0_unicorn
 stmts ::= stmts_seq
@@ -510,8 +510,8 @@ apat ::= var
 apat ::= var '@' apat
 apat ::= gcon
 apat ::= literal
-apat ::= '(' pat ')'
-apat ::= '[' pats1 ']'
+apat ::= L0_leftParen pat L0_rightParen
+apat ::= L0_leftSquare pats1 L0_rightSquare
 
 pats1 ::= pat+ separator => L0_comma
 
@@ -524,46 +524,46 @@ pats1 ::= pat+ separator => L0_comma
 
 gcon ::= '()'
 gcon ::= '[]'
-gcon ::= '(' L0_commas ')'
+gcon ::= L0_leftParen L0_commas L0_rightParen
 gcon ::= qcon
 
 # var	→	varid | ( varsym )	    (variable)
 
 var ::= L0_reservedid_error
   | L0_varid
-  | '(' L0_varsym ')'
-  | '(' L0_ReservedOpError ')'
+  | L0_leftParen L0_varsym L0_rightParen
+  | L0_leftParen L0_ReservedOpError L0_rightParen
 
 # qvar	→	qvarid | ( qvarsym )	    (qualified variable)
 
-qvar ::= qvarid | '(' qvarsym ')' | L0_reservedid_error
+qvar ::= qvarid | L0_leftParen qvarsym L0_rightParen | L0_reservedid_error
 
 # con	→	conid | ( consym )	    (constructor)
 
 con ::= L0_conid
-       | '(' L0_consym ')'
-       | '(' L0_ReservedColonOpError ')'
+       | L0_leftParen L0_consym L0_rightParen
+       | L0_leftParen L0_ReservedColonOpError L0_rightParen
 
 # qcon	→	qconid | ( gconsym )	    (qualified constructor)
 
 qcon ::= L0_qconid
-       | '(' gconsym ')'
+       | L0_leftParen gconsym L0_rightParen
 
 # varop	→	varsym | `  varid `	    (variable operator)
 
 varop ::= L0_varsym
   | L0_ReservedOpError
-  | [`] L0_varid [`] |
-  [`] L0_reservedid_error [`]
+  | L0_tick L0_varid L0_tick |
+  L0_tick L0_reservedid_error L0_tick
 
 # qvarop	→	qvarsym | `  qvarid `	    (qualified variable operator)
 
-qvarop ::= qvarsym | [`] qvarid [`] | [`] L0_reservedid_error [`]
+qvarop ::= qvarsym | L0_tick qvarid L0_tick | L0_tick L0_reservedid_error L0_tick
 
 # conop	→	consym | `  conid `	    (constructor operator)
 # qconop	→	gconsym | `  qconid `	    (qualified constructor operator)
 
-qconop ::= gconsym | [`] L0_qconid [`]
+qconop ::= gconsym | L0_tick L0_qconid L0_tick
 
 # op	→	varop | conop	    (operator)
 # qop	→	qvarop | qconop	    (qualified operator)
@@ -622,6 +622,21 @@ ruby_x_alts ~ unicorn
 # formfeed	→	a form feed
 
 newline ~ [\n]
+
+:lexeme ~ L0_leftParen
+L0_leftParen ~ '('
+:lexeme ~ L0_rightParen
+L0_rightParen ~ ')'
+:lexeme ~ L0_leftSquare
+L0_leftSquare ~ '['
+:lexeme ~ L0_rightSquare
+L0_rightSquare ~ ']'
+:lexeme ~ L0_leftCurly
+L0_leftCurly ~ '{'
+:lexeme ~ L0_rightCurly
+L0_rightCurly ~ '}'
+:lexeme ~ L0_tick
+L0_tick ~ '`'
 
 :lexeme ~ L0_commas
 :lexeme ~ L0_comma
