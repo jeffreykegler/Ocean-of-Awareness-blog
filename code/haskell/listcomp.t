@@ -45,8 +45,121 @@ main = do
     putStrLn (show list2)
 EOS
 
-my $listComp_ast  =  []
-  ;
+my $listComp_ast  = 
+  [ 'module', [ 'body', [ 'topdecls', [ 'topdecl', [ 'decl',
+            [ 'gendecl', [ 'vars', [ 'var', 'xss'
+                ] ], '::',
+              [ 'type', [ 'btype', [ 'atype', '[',
+                    [ 'type', [ 'btype', [ 'atype', '[', [ 'type', [ 'btype', [ 'atype', [ 'gtycon', 'Integer'
+                                ] ] ] ], ']'
+                        ] ] ], ']'
+                  ] ] ] ] ] ],
+        [ 'topdecl', [ 'decl', [ 'funlhs', [ 'var', 'xss'
+              ] ], [ 'rhs', '=',
+              [ 'exp', [ 'infixexp', [ 'lexp', [ 'fexp', [ 'aexp', '[',
+                        [ 'exps', [ 'exp', [ 'infixexp', [ 'lexp', [ 'fexp', [ 'aexp', '[',
+                                    [ 'exps', [ 'exp', [ 'infixexp', [ 'lexp', [ 'fexp', [ 'aexp', '42'
+                                              ] ] ] ] ],
+                                      [ 'exp', [ 'infixexp', [ 'lexp', [ 'fexp', [ 'aexp', '1729'
+                                              ] ] ] ] ],
+                                      [ 'exp', [ 'infixexp', [ 'lexp', [ 'fexp', [ 'aexp', '99'
+                                              ] ] ] ] ] ],
+                                    ']'
+                                  ] ] ] ] ] ], ']'
+                      ] ] ] ] ] ] ] ],
+        [ 'topdecl', [ 'decl', [ 'gendecl', [ 'vars', [ 'var', 'ys'
+                ] ], '::',
+              [ 'type', [ 'btype', [ 'atype', '[',
+                    [ 'type', [ 'btype', [ 'atype', [ 'gtycon', 'Integer'
+                          ] ] ] ], ']'
+                  ] ] ] ] ] ],
+        [ 'topdecl', [ 'decl', [ 'funlhs', [ 'var', 'ys'
+              ] ],
+            [ 'rhs', '=',
+              [ 'exp', [ 'infixexp', [ 'lexp', [ 'fexp', [ 'aexp', '[',
+                        [ 'exps', [ 'exp', [ 'infixexp', [ 'lexp', [ 'fexp', [ 'aexp', '42'
+                                  ] ] ] ] ],
+                          [ 'exp', [ 'infixexp', [ 'lexp', [ 'fexp', [ 'aexp', '1729'
+                                  ] ] ] ] ],
+                          [ 'exp', [ 'infixexp', [ 'lexp', [ 'fexp', [ 'aexp', '99'
+                                  ] ] ] ] ] ],
+                        ']'
+                      ] ] ] ] ] ] ] ],
+        [ 'topdecl', [ 'decl', [ 'funlhs', [ 'var', 'list'
+              ] ], [ 'rhs', '=',
+              [ 'exp', [ 'infixexp', [ 'lexp', [ 'fexp', [ 'aexp', '[',
+                        [ 'exp', [ 'infixexp', [ 'lexp', [ 'fexp', [ 'aexp', [ 'qvar', 'x'
+                                  ] ] ] ] ] ],
+                        '|',
+                        [ 'quals', [ 'qual', [ 'pat', [ 'lpat', [ 'apat', '[',
+                                  [ 'pats1', [ 'pat', [ 'lpat', [ 'apat', [ 'var', 'x'
+                                          ] ] ] ], [ 'pat', [ 'lpat', [ 'apat', '1729'
+                                        ] ] ], [
+                                      'pat', [ 'lpat', [ 'apat', '99'
+                                        ] ] ] ],
+                                  ']'
+                                ] ] ], '<-',
+                            [ 'exp', [ 'infixexp', [ 'lexp', [ 'fexp', [ 'aexp', [ 'qvar', 'xss'
+                                      ] ] ] ] ] ] ] ],
+                        ']'
+                      ] ] ] ] ] ] ] ],
+        [ 'topdecl', [ 'decl', [ 'funlhs', [ 'var', 'list2'
+              ] ], [ 'rhs', '=',
+              [ 'exp', [ 'infixexp', [ 'lexp', [ 'fexp', [ 'aexp', '[',
+                        [ 'exp', [ 'infixexp', [ 'lexp', [ 'fexp', [ 'aexp', [ 'qvar', 'x'
+                                  ] ] ] ] ] ],
+                        '|',
+                        [ 'quals', [ 'qual', [ 'pat', [ 'lpat', [ 'apat', '[', [ 'pats1', [ 'pat',
+                                      [ 'lpat', [ 'apat', [ 'var', 'x'
+                                          ] ] ] ],
+                                    [ 'pat', [ 'lpat', [ 'apat', '1729'
+                                        ] ] ],
+                                    [ 'pat', [ 'lpat', [ 'apat', '99'
+                                        ] ] ] ],
+                                  ']'
+                                ] ] ], '<-',
+                            [ 'exp', [ 'infixexp', [ 'lexp', [ 'fexp', [ 'aexp', [ 'qvar', 'xss'
+                                      ] ] ] ] ] ] ],
+                          [ 'qual', [ 'exp', [ 'infixexp', [ 'lexp', [ 'fexp', [ 'aexp', '[',
+                                      [ 'exps', [ 'exp', [ 'infixexp', [ 'lexp', [ 'fexp', [ 'aexp', [ 'qvar', 'x'
+                                                  ] ] ] ] ] ],
+                                        [ 'exp', [ 'infixexp', [ 'lexp', [ 'fexp', [ 'aexp', '1729'
+                                                ] ] ] ] ],
+                                        [ 'exp', [ 'infixexp', [ 'lexp', [ 'fexp', [ 'aexp', '99'
+                                                ] ] ] ] ] ],
+                                      ']'
+                                    ] ] ], [
+                                  'qop', [ 'qvarop', '=='
+                                  ] ],
+                                [ 'infixexp', [ 'lexp', [ 'fexp', [ 'aexp', [ 'qvar', 'ys'
+                                        ] ] ] ] ] ] ] ],
+                          [ 'qual', [ 'pat', [ 'lpat', [ 'apat', '[',
+			    [ 'pats1', [ 'pat', [ 'lpat', [ 'apat', '42'
+                                        ] ] ], [ 'pat',
+                                      [ 'lpat', [ 'apat', '1729'
+                                        ] ] ], [ 'pat', [ 'lpat', [ 'apat', '99'
+                                        ] ] ] ], ']'
+                                ] ] ], '<-',
+                            [ 'exp', [ 'infixexp', [ 'lexp', [ 'fexp', [ 'aexp', [ 'qvar', 'xss'
+                                      ] ] ] ] ] ] ] ], ']'
+                      ] ] ] ] ] ] ] ],
+        [ 'topdecl', [ 'decl', [ 'funlhs', [ 'var', 'main'
+              ] ], [ 'rhs', '=',
+              [ 'exp', [ 'infixexp', [ 'lexp', 'do',
+                    [ 'stmts', [ 'stmt',
+                        [ 'exp', [ 'infixexp', [ 'lexp', [ 'fexp', [ 'fexp', [ 'aexp', [ 'qvar', 'putStrLn'
+                                    ] ] ], [ 'aexp', '(',
+                                  [ 'exp', [ 'infixexp', [ 'lexp', [ 'fexp', [ 'fexp', [ 'aexp', [ 'qvar', 'show'
+                                              ] ] ], [ 'aexp', [ 'qvar', 'list'
+                                            ] ] ] ] ] ], ')'
+                                ] ] ] ] ] ],
+                      [ 'stmt', [ 'exp', [ 'infixexp', [ 'lexp', [ 'fexp', [ 'fexp', [ 'aexp', [ 'qvar', 'putStrLn'
+                                    ] ] ], [ 'aexp', '(',
+                                  [ 'exp', [ 'infixexp', [ 'lexp', [ 'fexp', [ 'fexp', [ 'aexp', [ 'qvar', 'show'
+                                              ] ] ], [ 'aexp', [ 'qvar', 'list2'
+                                            ] ] ] ] ] ], ')'
+                                ] ] ] ] ] ] ] ] ] ] ] ] ] ] ]
+];
 
 my $listComp_expected = Data::Dumper::Dumper( MarpaX::R2::Haskell::pruneNodes($listComp_ast) );
 
