@@ -656,6 +656,17 @@ L0_horizontalWhitechars ~ horizontalWhitechars
 horizontalWhitechars ~ horizontalWhitechar*
 horizontalWhitechar ~ [ ]
 
+verticalWhitechar ~ [\n]
+
+whitechars ~ whitechar*
+whitechar ~ horizontalWhitechar
+whitechar ~ verticalWhitechar
+whitechar ~ dashComment
+
+dashComment ~ '--' nonNewlines
+nonNewlines ~ nonNewline*
+nonNewline ~ [^\n]
+
 # Right now this will fail -- tabs are a
 # nuisance and I am not in a hurry to implement
 # them
@@ -671,11 +682,7 @@ tab ~ [\t]
 # Here we define an "event" for <indent>.
 # The event is initially set to off.
 :discard ~ indent event => indent=off
-indent ~ newline horizontalWhitechars
-indent ~ commentLine
-commentLine ~ horizontalWhitechars '--' nonNewlines newline horizontalWhitechars
-nonNewlines ~ nonNewline*
-nonNewline ~ [^\n]
+indent ~ whitechars newline horizontalWhitechars
 
 # space	→	a space
 # tab	→	a horizontal tab
@@ -1074,6 +1081,7 @@ sub getValue {
         $this_pos = $recce->resume($resume_pos)
       )
     {
+
 	# Only one event at a time is expected -- more
 	# than one is an error.  No event means parsing
 	# is exhausted.
@@ -1112,12 +1120,16 @@ sub getValue {
 
             my ( undef, $indent_start, $indent_end ) = @{$event};
 	    say STDERR 'Indent event @', $indent_start, '-',
-	       $indent_end if $main::DEBUG;
+	       $indent_end, '; current = ', $currentIndent
+	       if $main::DEBUG;
 
 	    my $lastNL = rindex(${$input}, "\n", $indent_end);
 
 	    my $indent_length = ($indent_end - $lastNL) - 1;
 	    $indent_length = 0 if $indent_length < 0;
+
+	    say STDERR 'Indent length = ', $indent_length
+	       if $main::DEBUG;
 
 	    # On outdent, we end the read loop.  An EOF is treated as
 	    # an outdent.
@@ -1162,9 +1174,14 @@ sub getValue {
 	    # This means we are starting a new syntactic item.  The
 	    # parser will be expecting a Ruby Slippers semicolon,
 	    # and we provide it, then resume reading.
-            $recce->lexeme_read( 'ruby_semicolon', $indent_start,
-                $indent_length, ';' )
-              // divergence("lexeme_read('ruby_semicolon', ...) failed");
+	    {
+	      my $result = $recce->lexeme_read( 'ruby_semicolon', $indent_start,
+		  $indent_length, ';' );
+	      say STDERR "lexeme-read('ruby_semicolon',...) returned ",
+		  Data::Dumper::Dumper(\$result)
+		  if $main::DEBUG;
+
+	    }
             $resume_pos = $indent_end;
             next READ;
         }
