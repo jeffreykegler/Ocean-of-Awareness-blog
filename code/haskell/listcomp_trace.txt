@@ -1,0 +1,1563 @@
+1..1
+Name "main::DEBUG" used only once: possible typo at listcomp_ex.pl line 37.
+Name "main::TRACE_ES" used only once: possible typo at listcomp_ex.pl line 35.
+Returning from top level parser
+ES = 0
+Size of ES 0 is 47
+P0 @0-0 L0c0 module -> . resword_module L0_modid optExports resword_where laidout_body
+P1 @0-0 L0c0 module -> . body
+P7 @0-0 L0c0 body -> . topdecls
+P12 @0-0 L0c0 topdecls -> . topdecls_seq
+P13 @0-0 L0c0 topdecls_seq -> . topdecls_seq virtual_semicolon topdecl
+R13:1 @0-0 L0c0 topdecls_seq -> topdecls_seq . virtual_semicolon topdecl
+P14 @0-0 L0c0 topdecls_seq -> . topdecl
+P15 @0-0 L0c0 virtual_semicolon -> . ruby_semicolon
+P16 @0-0 L0c0 virtual_semicolon -> . L0_semicolon
+P17 @0-0 L0c0 topdecl -> . resword_data simpletype L0_equal constrs
+P18 @0-0 L0c0 topdecl -> . decl
+P22 @0-0 L0c0 decl -> . gendecl
+P23 @0-0 L0c0 decl -> . funlhs rhs
+P24 @0-0 L0c0 gendecl -> . vars L0_DoubleColon type
+P26 @0-0 L0c0 vars -> . var +
+P48 @0-0 L0c0 funlhs -> . var apats
+P49 @0-0 L0c0 funlhs -> . pat varop pat
+P50 @0-0 L0c0 funlhs -> . L0_leftParen funlhs L0_rightParen apats
+P98 @0-0 L0c0 pat -> . lpat qconop pat
+P99 @0-0 L0c0 pat -> . lpat
+P100 @0-0 L0c0 lpat -> . apat
+P101 @0-0 L0c0 lpat -> . gcon apats1
+P102 @0-0 L0c0 apat -> . var
+P103 @0-0 L0c0 apat -> . var L0_atSign apat
+P104 @0-0 L0c0 apat -> . gcon
+P105 @0-0 L0c0 apat -> . literal
+P106 @0-0 L0c0 apat -> . L0_leftParen pat L0_rightParen
+P107 @0-0 L0c0 apat -> . L0_leftSquare pats1 L0_rightSquare
+P109 @0-0 L0c0 gcon -> . '()'
+P110 @0-0 L0c0 gcon -> . '[]'
+P111 @0-0 L0c0 gcon -> . L0_leftParen L0_commas L0_rightParen
+P112 @0-0 L0c0 gcon -> . qcon
+P113 @0-0 L0c0 var -> . L0_reservedid_error
+P114 @0-0 L0c0 var -> . L0_varid
+P115 @0-0 L0c0 var -> . L0_leftParen L0_varsym L0_rightParen
+P116 @0-0 L0c0 var -> . L0_leftParen L0_ReservedOpError L0_rightParen
+P123 @0-0 L0c0 qcon -> . L0_qconid
+P124 @0-0 L0c0 qcon -> . L0_leftParen gconsym L0_rightParen
+P138 @0-0 L0c0 :start -> . module
+
+ES = 1
+Size of ES 1 is 43
+R23:1 @0-1 L1c1-3 decl -> funlhs . rhs
+R24:1 @0-1 L1c1-3 gendecl -> vars . L0_DoubleColon type
+F26 @0-1 L1c1-3 vars -> var + .
+R48:1 @0-1 L1c1-3 funlhs -> var . apats
+F48 @0-1 L1c1-3 funlhs -> var apats .
+R49:1 @0-1 L1c1-3 funlhs -> pat . varop pat
+P51 @1-1 L1c1-3 apats -> . apat *
+P53 @1-1 L1c1-3 rhs -> . L0_equal exp
+P54 @1-1 L1c1-3 rhs -> . L0_equal exp resword_where laidout_decls
+R98:1 @0-1 L1c1-3 pat -> lpat . qconop pat
+F99 @0-1 L1c1-3 pat -> lpat .
+F100 @0-1 L1c1-3 lpat -> apat .
+P102 @1-1 L1c1-3 apat -> . var
+F102 @0-1 L1c1-3 apat -> var .
+P103 @1-1 L1c1-3 apat -> . var L0_atSign apat
+R103:1 @0-1 L1c1-3 apat -> var . L0_atSign apat
+P104 @1-1 L1c1-3 apat -> . gcon
+P105 @1-1 L1c1-3 apat -> . literal
+P106 @1-1 L1c1-3 apat -> . L0_leftParen pat L0_rightParen
+P107 @1-1 L1c1-3 apat -> . L0_leftSquare pats1 L0_rightSquare
+P109 @1-1 L1c1-3 gcon -> . '()'
+P110 @1-1 L1c1-3 gcon -> . '[]'
+P111 @1-1 L1c1-3 gcon -> . L0_leftParen L0_commas L0_rightParen
+P112 @1-1 L1c1-3 gcon -> . qcon
+P113 @1-1 L1c1-3 var -> . L0_reservedid_error
+P114 @1-1 L1c1-3 var -> . L0_varid
+F114 @0-1 L1c1-3 var -> L0_varid .
+P115 @1-1 L1c1-3 var -> . L0_leftParen L0_varsym L0_rightParen
+P116 @1-1 L1c1-3 var -> . L0_leftParen L0_ReservedOpError L0_rightParen
+P123 @1-1 L1c1-3 qcon -> . L0_qconid
+P124 @1-1 L1c1-3 qcon -> . L0_leftParen gconsym L0_rightParen
+P125 @1-1 L1c1-3 varop -> . L0_varsym
+P126 @1-1 L1c1-3 varop -> . L0_ReservedOpError
+P127 @1-1 L1c1-3 varop -> . L0_tick L0_varid L0_tick
+P128 @1-1 L1c1-3 varop -> . L0_tick L0_reservedid_error L0_tick
+P132 @1-1 L1c1-3 qconop -> . gconsym
+P133 @1-1 L1c1-3 qconop -> . L0_tick L0_qconid L0_tick
+P136 @1-1 L1c1-3 gconsym -> . L0_colon
+P137 @1-1 L1c1-3 gconsym -> . L0_qconsym
+
+ES = 2
+Size of ES 2 is 11
+R24:2 @0-2 L1c1-6 gendecl -> vars L0_DoubleColon . type
+P27 @2-2 L1c5-6 type -> . btype '->' type
+P28 @2-2 L1c5-6 type -> . btype
+P29 @2-2 L1c5-6 btype -> . btype atype
+P30 @2-2 L1c5-6 btype -> . atype
+P31 @2-2 L1c5-6 atype -> . gtycon
+P32 @2-2 L1c5-6 atype -> . tyvar
+P33 @2-2 L1c5-6 atype -> . L0_leftParen tuple_type_list L0_rightParen
+P34 @2-2 L1c5-6 atype -> . L0_leftSquare type L0_rightSquare
+P35 @2-2 L1c5-6 atype -> . L0_leftParen type L0_rightParen
+P39 @2-2 L1c5-6 gtycon -> . qtycon
+
+ES = 3
+Size of ES 3 is 11
+P27 @3-3 L1c8 type -> . btype '->' type
+P28 @3-3 L1c8 type -> . btype
+P29 @3-3 L1c8 btype -> . btype atype
+P30 @3-3 L1c8 btype -> . atype
+P31 @3-3 L1c8 atype -> . gtycon
+P32 @3-3 L1c8 atype -> . tyvar
+P33 @3-3 L1c8 atype -> . L0_leftParen tuple_type_list L0_rightParen
+P34 @3-3 L1c8 atype -> . L0_leftSquare type L0_rightSquare
+R34:1 @2-3 L1c5-8 atype -> L0_leftSquare . type L0_rightSquare
+P35 @3-3 L1c8 atype -> . L0_leftParen type L0_rightParen
+P39 @3-3 L1c8 gtycon -> . qtycon
+
+ES = 4
+Size of ES 4 is 11
+P27 @4-4 L1c9 type -> . btype '->' type
+P28 @4-4 L1c9 type -> . btype
+P29 @4-4 L1c9 btype -> . btype atype
+P30 @4-4 L1c9 btype -> . atype
+P31 @4-4 L1c9 atype -> . gtycon
+P32 @4-4 L1c9 atype -> . tyvar
+P33 @4-4 L1c9 atype -> . L0_leftParen tuple_type_list L0_rightParen
+P34 @4-4 L1c9 atype -> . L0_leftSquare type L0_rightSquare
+R34:1 @3-4 L1c8-9 atype -> L0_leftSquare . type L0_rightSquare
+P35 @4-4 L1c9 atype -> . L0_leftParen type L0_rightParen
+P39 @4-4 L1c9 gtycon -> . qtycon
+
+ES = 5
+Size of ES 5 is 13
+R27:1 @4-5 L1c9-16 type -> btype . '->' type
+F28 @4-5 L1c9-16 type -> btype .
+R29:1 @4-5 L1c9-16 btype -> btype . atype
+F30 @4-5 L1c9-16 btype -> atype .
+P31 @5-5 L1c10-16 atype -> . gtycon
+F31 @4-5 L1c9-16 atype -> gtycon .
+P32 @5-5 L1c10-16 atype -> . tyvar
+P33 @5-5 L1c10-16 atype -> . L0_leftParen tuple_type_list L0_rightParen
+P34 @5-5 L1c10-16 atype -> . L0_leftSquare type L0_rightSquare
+R34:2 @3-5 L1c8-16 atype -> L0_leftSquare type . L0_rightSquare
+P35 @5-5 L1c10-16 atype -> . L0_leftParen type L0_rightParen
+P39 @5-5 L1c10-16 gtycon -> . qtycon
+F39 @4-5 L1c9-16 gtycon -> qtycon .
+
+ES = 6
+Size of ES 6 is 12
+R27:1 @3-6 L1c8-17 type -> btype . '->' type
+F28 @3-6 L1c8-17 type -> btype .
+R29:1 @3-6 L1c8-17 btype -> btype . atype
+F30 @3-6 L1c8-17 btype -> atype .
+P31 @6-6 L1c17 atype -> . gtycon
+P32 @6-6 L1c17 atype -> . tyvar
+P33 @6-6 L1c17 atype -> . L0_leftParen tuple_type_list L0_rightParen
+P34 @6-6 L1c17 atype -> . L0_leftSquare type L0_rightSquare
+R34:2 @2-6 L1c5-17 atype -> L0_leftSquare type . L0_rightSquare
+F34 @3-6 L1c8-17 atype -> L0_leftSquare type L0_rightSquare .
+P35 @6-6 L1c17 atype -> . L0_leftParen type L0_rightParen
+P39 @6-6 L1c17 gtycon -> . qtycon
+
+ES = 7
+Size of ES 7 is 24
+F1 @0-7 L1c1-18 module -> body .
+F7 @0-7 L1c1-18 body -> topdecls .
+F12 @0-7 L1c1-18 topdecls -> topdecls_seq .
+R13:1 @0-7 L1c1-18 topdecls_seq -> topdecls_seq . virtual_semicolon topdecl
+F14 @0-7 L1c1-18 topdecls_seq -> topdecl .
+P15 @7-7 L1c18 virtual_semicolon -> . ruby_semicolon
+P16 @7-7 L1c18 virtual_semicolon -> . L0_semicolon
+F18 @0-7 L1c1-18 topdecl -> decl .
+F22 @0-7 L1c1-18 decl -> gendecl .
+F24 @0-7 L1c1-18 gendecl -> vars L0_DoubleColon type .
+R27:1 @2-7 L1c5-18 type -> btype . '->' type
+F28 @2-7 L1c5-18 type -> btype .
+R29:1 @2-7 L1c5-18 btype -> btype . atype
+F30 @2-7 L1c5-18 btype -> atype .
+P31 @7-7 L1c18 atype -> . gtycon
+P32 @7-7 L1c18 atype -> . tyvar
+P33 @7-7 L1c18 atype -> . L0_leftParen tuple_type_list L0_rightParen
+P34 @7-7 L1c18 atype -> . L0_leftSquare type L0_rightSquare
+F34 @2-7 L1c5-18 atype -> L0_leftSquare type L0_rightSquare .
+P35 @7-7 L1c18 atype -> . L0_leftParen type L0_rightParen
+P39 @7-7 L1c18 gtycon -> . qtycon
+F138 @0-7 L1c1-18 :start -> module .
+
+ES = 8
+Size of ES 8 is 45
+F1 @0-8 L1c1-19 module -> body .
+F7 @0-8 L1c1-19 body -> topdecls .
+F12 @0-8 L1c1-19 topdecls -> topdecls_seq .
+R13:1 @0-8 L1c1-19 topdecls_seq -> topdecls_seq . virtual_semicolon topdecl
+R13:2 @0-8 L1c1-19 topdecls_seq -> topdecls_seq virtual_semicolon . topdecl
+F13 @0-8 L1c1-19 topdecls_seq -> topdecls_seq virtual_semicolon topdecl .
+P15 @8-8 L1c19 virtual_semicolon -> . ruby_semicolon
+F15 @7-8 L1c18-19 virtual_semicolon -> ruby_semicolon .
+P16 @8-8 L1c19 virtual_semicolon -> . L0_semicolon
+P17 @8-8 L1c19 topdecl -> . resword_data simpletype L0_equal constrs
+P18 @8-8 L1c19 topdecl -> . decl
+P22 @8-8 L1c19 decl -> . gendecl
+P23 @8-8 L1c19 decl -> . funlhs rhs
+P24 @8-8 L1c19 gendecl -> . vars L0_DoubleColon type
+P26 @8-8 L1c19 vars -> . var +
+P48 @8-8 L1c19 funlhs -> . var apats
+P49 @8-8 L1c19 funlhs -> . pat varop pat
+P50 @8-8 L1c19 funlhs -> . L0_leftParen funlhs L0_rightParen apats
+P98 @8-8 L1c19 pat -> . lpat qconop pat
+P99 @8-8 L1c19 pat -> . lpat
+P100 @8-8 L1c19 lpat -> . apat
+P101 @8-8 L1c19 lpat -> . gcon apats1
+P102 @8-8 L1c19 apat -> . var
+P103 @8-8 L1c19 apat -> . var L0_atSign apat
+P104 @8-8 L1c19 apat -> . gcon
+P105 @8-8 L1c19 apat -> . literal
+P106 @8-8 L1c19 apat -> . L0_leftParen pat L0_rightParen
+P107 @8-8 L1c19 apat -> . L0_leftSquare pats1 L0_rightSquare
+P109 @8-8 L1c19 gcon -> . '()'
+P110 @8-8 L1c19 gcon -> . '[]'
+P111 @8-8 L1c19 gcon -> . L0_leftParen L0_commas L0_rightParen
+P112 @8-8 L1c19 gcon -> . qcon
+P113 @8-8 L1c19 var -> . L0_reservedid_error
+P114 @8-8 L1c19 var -> . L0_varid
+P115 @8-8 L1c19 var -> . L0_leftParen L0_varsym L0_rightParen
+P116 @8-8 L1c19 var -> . L0_leftParen L0_ReservedOpError L0_rightParen
+P123 @8-8 L1c19 qcon -> . L0_qconid
+P124 @8-8 L1c19 qcon -> . L0_leftParen gconsym L0_rightParen
+F138 @0-8 L1c1-19 :start -> module .
+
+ES = 9
+Size of ES 9 is 43
+R23:1 @8-9 L1c19-L2c3 decl -> funlhs . rhs
+R24:1 @8-9 L1c19-L2c3 gendecl -> vars . L0_DoubleColon type
+F26 @8-9 L1c19-L2c3 vars -> var + .
+R48:1 @8-9 L1c19-L2c3 funlhs -> var . apats
+F48 @8-9 L1c19-L2c3 funlhs -> var apats .
+R49:1 @8-9 L1c19-L2c3 funlhs -> pat . varop pat
+P51 @9-9 L2c1-3 apats -> . apat *
+P53 @9-9 L2c1-3 rhs -> . L0_equal exp
+P54 @9-9 L2c1-3 rhs -> . L0_equal exp resword_where laidout_decls
+R98:1 @8-9 L1c19-L2c3 pat -> lpat . qconop pat
+F99 @8-9 L1c19-L2c3 pat -> lpat .
+F100 @8-9 L1c19-L2c3 lpat -> apat .
+P102 @9-9 L2c1-3 apat -> . var
+F102 @8-9 L1c19-L2c3 apat -> var .
+P103 @9-9 L2c1-3 apat -> . var L0_atSign apat
+R103:1 @8-9 L1c19-L2c3 apat -> var . L0_atSign apat
+P104 @9-9 L2c1-3 apat -> . gcon
+P105 @9-9 L2c1-3 apat -> . literal
+P106 @9-9 L2c1-3 apat -> . L0_leftParen pat L0_rightParen
+P107 @9-9 L2c1-3 apat -> . L0_leftSquare pats1 L0_rightSquare
+P109 @9-9 L2c1-3 gcon -> . '()'
+P110 @9-9 L2c1-3 gcon -> . '[]'
+P111 @9-9 L2c1-3 gcon -> . L0_leftParen L0_commas L0_rightParen
+P112 @9-9 L2c1-3 gcon -> . qcon
+P113 @9-9 L2c1-3 var -> . L0_reservedid_error
+P114 @9-9 L2c1-3 var -> . L0_varid
+F114 @8-9 L1c19-L2c3 var -> L0_varid .
+P115 @9-9 L2c1-3 var -> . L0_leftParen L0_varsym L0_rightParen
+P116 @9-9 L2c1-3 var -> . L0_leftParen L0_ReservedOpError L0_rightParen
+P123 @9-9 L2c1-3 qcon -> . L0_qconid
+P124 @9-9 L2c1-3 qcon -> . L0_leftParen gconsym L0_rightParen
+P125 @9-9 L2c1-3 varop -> . L0_varsym
+P126 @9-9 L2c1-3 varop -> . L0_ReservedOpError
+P127 @9-9 L2c1-3 varop -> . L0_tick L0_varid L0_tick
+P128 @9-9 L2c1-3 varop -> . L0_tick L0_reservedid_error L0_tick
+P132 @9-9 L2c1-3 qconop -> . gconsym
+P133 @9-9 L2c1-3 qconop -> . L0_tick L0_qconid L0_tick
+P136 @9-9 L2c1-3 gconsym -> . L0_colon
+P137 @9-9 L2c1-3 gconsym -> . L0_qconsym
+
+ES = 10
+Size of ES 10 is 28
+R53:1 @9-10 L2c1-5 rhs -> L0_equal . exp
+R54:1 @9-10 L2c1-5 rhs -> L0_equal . exp resword_where laidout_decls
+P58 @10-10 L2c5 exp -> . infixexp
+P59 @10-10 L2c5 infixexp -> . lexp qop infixexp
+P60 @10-10 L2c5 infixexp -> . L0_dash infixexp
+P61 @10-10 L2c5 infixexp -> . lexp
+P62 @10-10 L2c5 lexp -> . fexp
+P63 @10-10 L2c5 lexp -> . resword_let laidout_decls resword_in exp
+P64 @10-10 L2c5 lexp -> . resword_case exp resword_of laidout_alts
+P65 @10-10 L2c5 lexp -> . resword_do laidout_stmts
+P69 @10-10 L2c5 fexp -> . fexp aexp
+P70 @10-10 L2c5 fexp -> . aexp
+P71 @10-10 L2c5 aexp -> . qvar
+P72 @10-10 L2c5 aexp -> . literal
+P73 @10-10 L2c5 aexp -> . L0_leftParen exp L0_rightParen
+P74 @10-10 L2c5 aexp -> . L0_leftParen exp_tuple_list L0_rightParen
+P75 @10-10 L2c5 aexp -> . L0_leftSquare exps L0_rightSquare
+P76 @10-10 L2c5 aexp -> . L0_leftSquare exp L0_pipe quals L0_rightSquare
+P78 @10-10 L2c5 aexp -> . gcon
+P109 @10-10 L2c5 gcon -> . '()'
+P110 @10-10 L2c5 gcon -> . '[]'
+P111 @10-10 L2c5 gcon -> . L0_leftParen L0_commas L0_rightParen
+P112 @10-10 L2c5 gcon -> . qcon
+P117 @10-10 L2c5 qvar -> . qvarid
+P118 @10-10 L2c5 qvar -> . L0_leftParen qvarsym L0_rightParen
+P119 @10-10 L2c5 qvar -> . L0_reservedid_error
+P123 @10-10 L2c5 qcon -> . L0_qconid
+P124 @10-10 L2c5 qcon -> . L0_leftParen gconsym L0_rightParen
+
+ES = 11
+Size of ES 11 is 32
+P58 @11-11 L2c7 exp -> . infixexp
+P59 @11-11 L2c7 infixexp -> . lexp qop infixexp
+P60 @11-11 L2c7 infixexp -> . L0_dash infixexp
+P61 @11-11 L2c7 infixexp -> . lexp
+P62 @11-11 L2c7 lexp -> . fexp
+P63 @11-11 L2c7 lexp -> . resword_let laidout_decls resword_in exp
+P64 @11-11 L2c7 lexp -> . resword_case exp resword_of laidout_alts
+P65 @11-11 L2c7 lexp -> . resword_do laidout_stmts
+P69 @11-11 L2c7 fexp -> . fexp aexp
+P70 @11-11 L2c7 fexp -> . aexp
+P71 @11-11 L2c7 aexp -> . qvar
+P72 @11-11 L2c7 aexp -> . literal
+P73 @11-11 L2c7 aexp -> . L0_leftParen exp L0_rightParen
+P74 @11-11 L2c7 aexp -> . L0_leftParen exp_tuple_list L0_rightParen
+P75 @11-11 L2c7 aexp -> . L0_leftSquare exps L0_rightSquare
+R75:1 @10-11 L2c5-7 aexp -> L0_leftSquare . exps L0_rightSquare
+P76 @11-11 L2c7 aexp -> . L0_leftSquare exp L0_pipe quals L0_rightSquare
+R76:1 @10-11 L2c5-7 aexp -> L0_leftSquare . exp L0_pipe quals L0_rightSquare
+P78 @11-11 L2c7 aexp -> . gcon
+P81 @11-11 L2c7 exps -> . exp +
+P109 @11-11 L2c7 gcon -> . '()'
+P110 @11-11 L2c7 gcon -> . '[]'
+P111 @11-11 L2c7 gcon -> . L0_leftParen L0_commas L0_rightParen
+P112 @11-11 L2c7 gcon -> . qcon
+P117 @11-11 L2c7 qvar -> . qvarid
+P118 @11-11 L2c7 qvar -> . L0_leftParen qvarsym L0_rightParen
+P119 @11-11 L2c7 qvar -> . L0_reservedid_error
+P123 @11-11 L2c7 qcon -> . L0_qconid
+P124 @11-11 L2c7 qcon -> . L0_leftParen gconsym L0_rightParen
+
+ES = 12
+Size of ES 12 is 32
+P58 @12-12 L2c9 exp -> . infixexp
+P59 @12-12 L2c9 infixexp -> . lexp qop infixexp
+P60 @12-12 L2c9 infixexp -> . L0_dash infixexp
+P61 @12-12 L2c9 infixexp -> . lexp
+P62 @12-12 L2c9 lexp -> . fexp
+P63 @12-12 L2c9 lexp -> . resword_let laidout_decls resword_in exp
+P64 @12-12 L2c9 lexp -> . resword_case exp resword_of laidout_alts
+P65 @12-12 L2c9 lexp -> . resword_do laidout_stmts
+P69 @12-12 L2c9 fexp -> . fexp aexp
+P70 @12-12 L2c9 fexp -> . aexp
+P71 @12-12 L2c9 aexp -> . qvar
+P72 @12-12 L2c9 aexp -> . literal
+P73 @12-12 L2c9 aexp -> . L0_leftParen exp L0_rightParen
+P74 @12-12 L2c9 aexp -> . L0_leftParen exp_tuple_list L0_rightParen
+P75 @12-12 L2c9 aexp -> . L0_leftSquare exps L0_rightSquare
+R75:1 @11-12 L2c7-9 aexp -> L0_leftSquare . exps L0_rightSquare
+P76 @12-12 L2c9 aexp -> . L0_leftSquare exp L0_pipe quals L0_rightSquare
+R76:1 @11-12 L2c7-9 aexp -> L0_leftSquare . exp L0_pipe quals L0_rightSquare
+P78 @12-12 L2c9 aexp -> . gcon
+P81 @12-12 L2c9 exps -> . exp +
+P109 @12-12 L2c9 gcon -> . '()'
+P110 @12-12 L2c9 gcon -> . '[]'
+P111 @12-12 L2c9 gcon -> . L0_leftParen L0_commas L0_rightParen
+P112 @12-12 L2c9 gcon -> . qcon
+P117 @12-12 L2c9 qvar -> . qvarid
+P118 @12-12 L2c9 qvar -> . L0_leftParen qvarsym L0_rightParen
+P119 @12-12 L2c9 qvar -> . L0_reservedid_error
+P123 @12-12 L2c9 qcon -> . L0_qconid
+P124 @12-12 L2c9 qcon -> . L0_leftParen gconsym L0_rightParen
+
+ES = 13
+Size of ES 13 is 38
+F58 @12-13 L2c9-12 exp -> infixexp .
+R59:1 @12-13 L2c9-12 infixexp -> lexp . qop infixexp
+F61 @12-13 L2c9-12 infixexp -> lexp .
+F62 @12-13 L2c9-12 lexp -> fexp .
+R69:1 @12-13 L2c9-12 fexp -> fexp . aexp
+F70 @12-13 L2c9-12 fexp -> aexp .
+P71 @13-13 L2c11-12 aexp -> . qvar
+P72 @13-13 L2c11-12 aexp -> . literal
+F72 @12-13 L2c9-12 aexp -> literal .
+P73 @13-13 L2c11-12 aexp -> . L0_leftParen exp L0_rightParen
+P74 @13-13 L2c11-12 aexp -> . L0_leftParen exp_tuple_list L0_rightParen
+P75 @13-13 L2c11-12 aexp -> . L0_leftSquare exps L0_rightSquare
+R75:2 @11-13 L2c7-12 aexp -> L0_leftSquare exps . L0_rightSquare
+P76 @13-13 L2c11-12 aexp -> . L0_leftSquare exp L0_pipe quals L0_rightSquare
+R76:2 @11-13 L2c7-12 aexp -> L0_leftSquare exp . L0_pipe quals L0_rightSquare
+P78 @13-13 L2c11-12 aexp -> . gcon
+F81 @12-13 L2c9-12 exps -> exp + .
+P109 @13-13 L2c11-12 gcon -> . '()'
+P110 @13-13 L2c11-12 gcon -> . '[]'
+P111 @13-13 L2c11-12 gcon -> . L0_leftParen L0_commas L0_rightParen
+P112 @13-13 L2c11-12 gcon -> . qcon
+P117 @13-13 L2c11-12 qvar -> . qvarid
+P118 @13-13 L2c11-12 qvar -> . L0_leftParen qvarsym L0_rightParen
+P119 @13-13 L2c11-12 qvar -> . L0_reservedid_error
+P123 @13-13 L2c11-12 qcon -> . L0_qconid
+P124 @13-13 L2c11-12 qcon -> . L0_leftParen gconsym L0_rightParen
+P129 @13-13 L2c11-12 qvarop -> . qvarsym
+P130 @13-13 L2c11-12 qvarop -> . L0_tick qvarid L0_tick
+P131 @13-13 L2c11-12 qvarop -> . L0_tick L0_reservedid_error L0_tick
+P132 @13-13 L2c11-12 qconop -> . gconsym
+P133 @13-13 L2c11-12 qconop -> . L0_tick L0_qconid L0_tick
+P134 @13-13 L2c11-12 qop -> . qvarop
+P135 @13-13 L2c11-12 qop -> . qconop
+P136 @13-13 L2c11-12 gconsym -> . L0_colon
+P137 @13-13 L2c11-12 gconsym -> . L0_qconsym
+
+ES = 14
+Size of ES 14 is 29
+P58 @14-14 L2c13 exp -> . infixexp
+P59 @14-14 L2c13 infixexp -> . lexp qop infixexp
+P60 @14-14 L2c13 infixexp -> . L0_dash infixexp
+P61 @14-14 L2c13 infixexp -> . lexp
+P62 @14-14 L2c13 lexp -> . fexp
+P63 @14-14 L2c13 lexp -> . resword_let laidout_decls resword_in exp
+P64 @14-14 L2c13 lexp -> . resword_case exp resword_of laidout_alts
+P65 @14-14 L2c13 lexp -> . resword_do laidout_stmts
+P69 @14-14 L2c13 fexp -> . fexp aexp
+P70 @14-14 L2c13 fexp -> . aexp
+P71 @14-14 L2c13 aexp -> . qvar
+P72 @14-14 L2c13 aexp -> . literal
+P73 @14-14 L2c13 aexp -> . L0_leftParen exp L0_rightParen
+P74 @14-14 L2c13 aexp -> . L0_leftParen exp_tuple_list L0_rightParen
+P75 @14-14 L2c13 aexp -> . L0_leftSquare exps L0_rightSquare
+R75:2 @11-14 L2c7-13 aexp -> L0_leftSquare exps . L0_rightSquare
+P76 @14-14 L2c13 aexp -> . L0_leftSquare exp L0_pipe quals L0_rightSquare
+P78 @14-14 L2c13 aexp -> . gcon
+F81 @12-14 L2c9-13 exps -> exp + .
+P109 @14-14 L2c13 gcon -> . '()'
+P110 @14-14 L2c13 gcon -> . '[]'
+P111 @14-14 L2c13 gcon -> . L0_leftParen L0_commas L0_rightParen
+P112 @14-14 L2c13 gcon -> . qcon
+P117 @14-14 L2c13 qvar -> . qvarid
+P118 @14-14 L2c13 qvar -> . L0_leftParen qvarsym L0_rightParen
+P119 @14-14 L2c13 qvar -> . L0_reservedid_error
+P123 @14-14 L2c13 qcon -> . L0_qconid
+P124 @14-14 L2c13 qcon -> . L0_leftParen gconsym L0_rightParen
+
+ES = 15
+Size of ES 15 is 37
+F58 @14-15 L2c13-18 exp -> infixexp .
+R59:1 @14-15 L2c13-18 infixexp -> lexp . qop infixexp
+F61 @14-15 L2c13-18 infixexp -> lexp .
+F62 @14-15 L2c13-18 lexp -> fexp .
+R69:1 @14-15 L2c13-18 fexp -> fexp . aexp
+F70 @14-15 L2c13-18 fexp -> aexp .
+P71 @15-15 L2c15-18 aexp -> . qvar
+P72 @15-15 L2c15-18 aexp -> . literal
+F72 @14-15 L2c13-18 aexp -> literal .
+P73 @15-15 L2c15-18 aexp -> . L0_leftParen exp L0_rightParen
+P74 @15-15 L2c15-18 aexp -> . L0_leftParen exp_tuple_list L0_rightParen
+P75 @15-15 L2c15-18 aexp -> . L0_leftSquare exps L0_rightSquare
+R75:2 @11-15 L2c7-18 aexp -> L0_leftSquare exps . L0_rightSquare
+P76 @15-15 L2c15-18 aexp -> . L0_leftSquare exp L0_pipe quals L0_rightSquare
+P78 @15-15 L2c15-18 aexp -> . gcon
+F81 @12-15 L2c9-18 exps -> exp + .
+P109 @15-15 L2c15-18 gcon -> . '()'
+P110 @15-15 L2c15-18 gcon -> . '[]'
+P111 @15-15 L2c15-18 gcon -> . L0_leftParen L0_commas L0_rightParen
+P112 @15-15 L2c15-18 gcon -> . qcon
+P117 @15-15 L2c15-18 qvar -> . qvarid
+P118 @15-15 L2c15-18 qvar -> . L0_leftParen qvarsym L0_rightParen
+P119 @15-15 L2c15-18 qvar -> . L0_reservedid_error
+P123 @15-15 L2c15-18 qcon -> . L0_qconid
+P124 @15-15 L2c15-18 qcon -> . L0_leftParen gconsym L0_rightParen
+P129 @15-15 L2c15-18 qvarop -> . qvarsym
+P130 @15-15 L2c15-18 qvarop -> . L0_tick qvarid L0_tick
+P131 @15-15 L2c15-18 qvarop -> . L0_tick L0_reservedid_error L0_tick
+P132 @15-15 L2c15-18 qconop -> . gconsym
+P133 @15-15 L2c15-18 qconop -> . L0_tick L0_qconid L0_tick
+P134 @15-15 L2c15-18 qop -> . qvarop
+P135 @15-15 L2c15-18 qop -> . qconop
+P136 @15-15 L2c15-18 gconsym -> . L0_colon
+P137 @15-15 L2c15-18 gconsym -> . L0_qconsym
+
+ES = 16
+Size of ES 16 is 29
+P58 @16-16 L2c19 exp -> . infixexp
+P59 @16-16 L2c19 infixexp -> . lexp qop infixexp
+P60 @16-16 L2c19 infixexp -> . L0_dash infixexp
+P61 @16-16 L2c19 infixexp -> . lexp
+P62 @16-16 L2c19 lexp -> . fexp
+P63 @16-16 L2c19 lexp -> . resword_let laidout_decls resword_in exp
+P64 @16-16 L2c19 lexp -> . resword_case exp resword_of laidout_alts
+P65 @16-16 L2c19 lexp -> . resword_do laidout_stmts
+P69 @16-16 L2c19 fexp -> . fexp aexp
+P70 @16-16 L2c19 fexp -> . aexp
+P71 @16-16 L2c19 aexp -> . qvar
+P72 @16-16 L2c19 aexp -> . literal
+P73 @16-16 L2c19 aexp -> . L0_leftParen exp L0_rightParen
+P74 @16-16 L2c19 aexp -> . L0_leftParen exp_tuple_list L0_rightParen
+P75 @16-16 L2c19 aexp -> . L0_leftSquare exps L0_rightSquare
+R75:2 @11-16 L2c7-19 aexp -> L0_leftSquare exps . L0_rightSquare
+P76 @16-16 L2c19 aexp -> . L0_leftSquare exp L0_pipe quals L0_rightSquare
+P78 @16-16 L2c19 aexp -> . gcon
+F81 @12-16 L2c9-19 exps -> exp + .
+P109 @16-16 L2c19 gcon -> . '()'
+P110 @16-16 L2c19 gcon -> . '[]'
+P111 @16-16 L2c19 gcon -> . L0_leftParen L0_commas L0_rightParen
+P112 @16-16 L2c19 gcon -> . qcon
+P117 @16-16 L2c19 qvar -> . qvarid
+P118 @16-16 L2c19 qvar -> . L0_leftParen qvarsym L0_rightParen
+P119 @16-16 L2c19 qvar -> . L0_reservedid_error
+P123 @16-16 L2c19 qcon -> . L0_qconid
+P124 @16-16 L2c19 qcon -> . L0_leftParen gconsym L0_rightParen
+
+ES = 17
+Size of ES 17 is 37
+F58 @16-17 L2c19-22 exp -> infixexp .
+R59:1 @16-17 L2c19-22 infixexp -> lexp . qop infixexp
+F61 @16-17 L2c19-22 infixexp -> lexp .
+F62 @16-17 L2c19-22 lexp -> fexp .
+R69:1 @16-17 L2c19-22 fexp -> fexp . aexp
+F70 @16-17 L2c19-22 fexp -> aexp .
+P71 @17-17 L2c21-22 aexp -> . qvar
+P72 @17-17 L2c21-22 aexp -> . literal
+F72 @16-17 L2c19-22 aexp -> literal .
+P73 @17-17 L2c21-22 aexp -> . L0_leftParen exp L0_rightParen
+P74 @17-17 L2c21-22 aexp -> . L0_leftParen exp_tuple_list L0_rightParen
+P75 @17-17 L2c21-22 aexp -> . L0_leftSquare exps L0_rightSquare
+R75:2 @11-17 L2c7-22 aexp -> L0_leftSquare exps . L0_rightSquare
+P76 @17-17 L2c21-22 aexp -> . L0_leftSquare exp L0_pipe quals L0_rightSquare
+P78 @17-17 L2c21-22 aexp -> . gcon
+F81 @12-17 L2c9-22 exps -> exp + .
+P109 @17-17 L2c21-22 gcon -> . '()'
+P110 @17-17 L2c21-22 gcon -> . '[]'
+P111 @17-17 L2c21-22 gcon -> . L0_leftParen L0_commas L0_rightParen
+P112 @17-17 L2c21-22 gcon -> . qcon
+P117 @17-17 L2c21-22 qvar -> . qvarid
+P118 @17-17 L2c21-22 qvar -> . L0_leftParen qvarsym L0_rightParen
+P119 @17-17 L2c21-22 qvar -> . L0_reservedid_error
+P123 @17-17 L2c21-22 qcon -> . L0_qconid
+P124 @17-17 L2c21-22 qcon -> . L0_leftParen gconsym L0_rightParen
+P129 @17-17 L2c21-22 qvarop -> . qvarsym
+P130 @17-17 L2c21-22 qvarop -> . L0_tick qvarid L0_tick
+P131 @17-17 L2c21-22 qvarop -> . L0_tick L0_reservedid_error L0_tick
+P132 @17-17 L2c21-22 qconop -> . gconsym
+P133 @17-17 L2c21-22 qconop -> . L0_tick L0_qconid L0_tick
+P134 @17-17 L2c21-22 qop -> . qvarop
+P135 @17-17 L2c21-22 qop -> . qconop
+P136 @17-17 L2c21-22 gconsym -> . L0_colon
+P137 @17-17 L2c21-22 gconsym -> . L0_qconsym
+
+ES = 18
+Size of ES 18 is 38
+F58 @11-18 L2c7-24 exp -> infixexp .
+R59:1 @11-18 L2c7-24 infixexp -> lexp . qop infixexp
+F61 @11-18 L2c7-24 infixexp -> lexp .
+F62 @11-18 L2c7-24 lexp -> fexp .
+R69:1 @11-18 L2c7-24 fexp -> fexp . aexp
+F70 @11-18 L2c7-24 fexp -> aexp .
+P71 @18-18 L2c24 aexp -> . qvar
+P72 @18-18 L2c24 aexp -> . literal
+P73 @18-18 L2c24 aexp -> . L0_leftParen exp L0_rightParen
+P74 @18-18 L2c24 aexp -> . L0_leftParen exp_tuple_list L0_rightParen
+P75 @18-18 L2c24 aexp -> . L0_leftSquare exps L0_rightSquare
+R75:2 @10-18 L2c5-24 aexp -> L0_leftSquare exps . L0_rightSquare
+F75 @11-18 L2c7-24 aexp -> L0_leftSquare exps L0_rightSquare .
+P76 @18-18 L2c24 aexp -> . L0_leftSquare exp L0_pipe quals L0_rightSquare
+R76:2 @10-18 L2c5-24 aexp -> L0_leftSquare exp . L0_pipe quals L0_rightSquare
+P78 @18-18 L2c24 aexp -> . gcon
+F81 @11-18 L2c7-24 exps -> exp + .
+P109 @18-18 L2c24 gcon -> . '()'
+P110 @18-18 L2c24 gcon -> . '[]'
+P111 @18-18 L2c24 gcon -> . L0_leftParen L0_commas L0_rightParen
+P112 @18-18 L2c24 gcon -> . qcon
+P117 @18-18 L2c24 qvar -> . qvarid
+P118 @18-18 L2c24 qvar -> . L0_leftParen qvarsym L0_rightParen
+P119 @18-18 L2c24 qvar -> . L0_reservedid_error
+P123 @18-18 L2c24 qcon -> . L0_qconid
+P124 @18-18 L2c24 qcon -> . L0_leftParen gconsym L0_rightParen
+P129 @18-18 L2c24 qvarop -> . qvarsym
+P130 @18-18 L2c24 qvarop -> . L0_tick qvarid L0_tick
+P131 @18-18 L2c24 qvarop -> . L0_tick L0_reservedid_error L0_tick
+P132 @18-18 L2c24 qconop -> . gconsym
+P133 @18-18 L2c24 qconop -> . L0_tick L0_qconid L0_tick
+P134 @18-18 L2c24 qop -> . qvarop
+P135 @18-18 L2c24 qop -> . qconop
+P136 @18-18 L2c24 gconsym -> . L0_colon
+P137 @18-18 L2c24 gconsym -> . L0_qconsym
+
+ES = 19
+Size of ES 19 is 46
+F1 @0-19 L1c1-L2c26 module -> body .
+F7 @0-19 L1c1-L2c26 body -> topdecls .
+F12 @0-19 L1c1-L2c26 topdecls -> topdecls_seq .
+R13:1 @0-19 L1c1-L2c26 topdecls_seq -> topdecls_seq . virtual_semicolon topdecl
+F13 @0-19 L1c1-L2c26 topdecls_seq -> topdecls_seq virtual_semicolon topdecl .
+P15 @19-19 L2c26 virtual_semicolon -> . ruby_semicolon
+P16 @19-19 L2c26 virtual_semicolon -> . L0_semicolon
+F18 @8-19 L1c19-L2c26 topdecl -> decl .
+F23 @8-19 L1c19-L2c26 decl -> funlhs rhs .
+F53 @9-19 L2c1-26 rhs -> L0_equal exp .
+R54:2 @9-19 L2c1-26 rhs -> L0_equal exp . resword_where laidout_decls
+F58 @10-19 L2c5-26 exp -> infixexp .
+R59:1 @10-19 L2c5-26 infixexp -> lexp . qop infixexp
+F61 @10-19 L2c5-26 infixexp -> lexp .
+F62 @10-19 L2c5-26 lexp -> fexp .
+R69:1 @10-19 L2c5-26 fexp -> fexp . aexp
+F70 @10-19 L2c5-26 fexp -> aexp .
+P71 @19-19 L2c26 aexp -> . qvar
+P72 @19-19 L2c26 aexp -> . literal
+P73 @19-19 L2c26 aexp -> . L0_leftParen exp L0_rightParen
+P74 @19-19 L2c26 aexp -> . L0_leftParen exp_tuple_list L0_rightParen
+P75 @19-19 L2c26 aexp -> . L0_leftSquare exps L0_rightSquare
+F75 @10-19 L2c5-26 aexp -> L0_leftSquare exps L0_rightSquare .
+P76 @19-19 L2c26 aexp -> . L0_leftSquare exp L0_pipe quals L0_rightSquare
+P78 @19-19 L2c26 aexp -> . gcon
+P109 @19-19 L2c26 gcon -> . '()'
+P110 @19-19 L2c26 gcon -> . '[]'
+P111 @19-19 L2c26 gcon -> . L0_leftParen L0_commas L0_rightParen
+P112 @19-19 L2c26 gcon -> . qcon
+P117 @19-19 L2c26 qvar -> . qvarid
+P118 @19-19 L2c26 qvar -> . L0_leftParen qvarsym L0_rightParen
+P119 @19-19 L2c26 qvar -> . L0_reservedid_error
+P123 @19-19 L2c26 qcon -> . L0_qconid
+P124 @19-19 L2c26 qcon -> . L0_leftParen gconsym L0_rightParen
+P129 @19-19 L2c26 qvarop -> . qvarsym
+P130 @19-19 L2c26 qvarop -> . L0_tick qvarid L0_tick
+P131 @19-19 L2c26 qvarop -> . L0_tick L0_reservedid_error L0_tick
+P132 @19-19 L2c26 qconop -> . gconsym
+P133 @19-19 L2c26 qconop -> . L0_tick L0_qconid L0_tick
+P134 @19-19 L2c26 qop -> . qvarop
+P135 @19-19 L2c26 qop -> . qconop
+P136 @19-19 L2c26 gconsym -> . L0_colon
+P137 @19-19 L2c26 gconsym -> . L0_qconsym
+F138 @0-19 L1c1-L2c26 :start -> module .
+
+ES = 20
+Size of ES 20 is 45
+F1 @0-20 L1c1-L2c27 module -> body .
+F7 @0-20 L1c1-L2c27 body -> topdecls .
+F12 @0-20 L1c1-L2c27 topdecls -> topdecls_seq .
+R13:1 @0-20 L1c1-L2c27 topdecls_seq -> topdecls_seq . virtual_semicolon topdecl
+R13:2 @0-20 L1c1-L2c27 topdecls_seq -> topdecls_seq virtual_semicolon . topdecl
+F13 @0-20 L1c1-L2c27 topdecls_seq -> topdecls_seq virtual_semicolon topdecl .
+P15 @20-20 L2c27 virtual_semicolon -> . ruby_semicolon
+F15 @19-20 L2c26-27 virtual_semicolon -> ruby_semicolon .
+P16 @20-20 L2c27 virtual_semicolon -> . L0_semicolon
+P17 @20-20 L2c27 topdecl -> . resword_data simpletype L0_equal constrs
+P18 @20-20 L2c27 topdecl -> . decl
+P22 @20-20 L2c27 decl -> . gendecl
+P23 @20-20 L2c27 decl -> . funlhs rhs
+P24 @20-20 L2c27 gendecl -> . vars L0_DoubleColon type
+P26 @20-20 L2c27 vars -> . var +
+P48 @20-20 L2c27 funlhs -> . var apats
+P49 @20-20 L2c27 funlhs -> . pat varop pat
+P50 @20-20 L2c27 funlhs -> . L0_leftParen funlhs L0_rightParen apats
+P98 @20-20 L2c27 pat -> . lpat qconop pat
+P99 @20-20 L2c27 pat -> . lpat
+P100 @20-20 L2c27 lpat -> . apat
+P101 @20-20 L2c27 lpat -> . gcon apats1
+P102 @20-20 L2c27 apat -> . var
+P103 @20-20 L2c27 apat -> . var L0_atSign apat
+P104 @20-20 L2c27 apat -> . gcon
+P105 @20-20 L2c27 apat -> . literal
+P106 @20-20 L2c27 apat -> . L0_leftParen pat L0_rightParen
+P107 @20-20 L2c27 apat -> . L0_leftSquare pats1 L0_rightSquare
+P109 @20-20 L2c27 gcon -> . '()'
+P110 @20-20 L2c27 gcon -> . '[]'
+P111 @20-20 L2c27 gcon -> . L0_leftParen L0_commas L0_rightParen
+P112 @20-20 L2c27 gcon -> . qcon
+P113 @20-20 L2c27 var -> . L0_reservedid_error
+P114 @20-20 L2c27 var -> . L0_varid
+P115 @20-20 L2c27 var -> . L0_leftParen L0_varsym L0_rightParen
+P116 @20-20 L2c27 var -> . L0_leftParen L0_ReservedOpError L0_rightParen
+P123 @20-20 L2c27 qcon -> . L0_qconid
+P124 @20-20 L2c27 qcon -> . L0_leftParen gconsym L0_rightParen
+F138 @0-20 L1c1-L2c27 :start -> module .
+
+ES = 21
+Size of ES 21 is 43
+R23:1 @20-21 L2c27-L4c4 decl -> funlhs . rhs
+R24:1 @20-21 L2c27-L4c4 gendecl -> vars . L0_DoubleColon type
+F26 @20-21 L2c27-L4c4 vars -> var + .
+R48:1 @20-21 L2c27-L4c4 funlhs -> var . apats
+F48 @20-21 L2c27-L4c4 funlhs -> var apats .
+R49:1 @20-21 L2c27-L4c4 funlhs -> pat . varop pat
+P51 @21-21 L4c1-4 apats -> . apat *
+P53 @21-21 L4c1-4 rhs -> . L0_equal exp
+P54 @21-21 L4c1-4 rhs -> . L0_equal exp resword_where laidout_decls
+R98:1 @20-21 L2c27-L4c4 pat -> lpat . qconop pat
+F99 @20-21 L2c27-L4c4 pat -> lpat .
+F100 @20-21 L2c27-L4c4 lpat -> apat .
+P102 @21-21 L4c1-4 apat -> . var
+F102 @20-21 L2c27-L4c4 apat -> var .
+P103 @21-21 L4c1-4 apat -> . var L0_atSign apat
+R103:1 @20-21 L2c27-L4c4 apat -> var . L0_atSign apat
+P104 @21-21 L4c1-4 apat -> . gcon
+P105 @21-21 L4c1-4 apat -> . literal
+P106 @21-21 L4c1-4 apat -> . L0_leftParen pat L0_rightParen
+P107 @21-21 L4c1-4 apat -> . L0_leftSquare pats1 L0_rightSquare
+P109 @21-21 L4c1-4 gcon -> . '()'
+P110 @21-21 L4c1-4 gcon -> . '[]'
+P111 @21-21 L4c1-4 gcon -> . L0_leftParen L0_commas L0_rightParen
+P112 @21-21 L4c1-4 gcon -> . qcon
+P113 @21-21 L4c1-4 var -> . L0_reservedid_error
+P114 @21-21 L4c1-4 var -> . L0_varid
+F114 @20-21 L2c27-L4c4 var -> L0_varid .
+P115 @21-21 L4c1-4 var -> . L0_leftParen L0_varsym L0_rightParen
+P116 @21-21 L4c1-4 var -> . L0_leftParen L0_ReservedOpError L0_rightParen
+P123 @21-21 L4c1-4 qcon -> . L0_qconid
+P124 @21-21 L4c1-4 qcon -> . L0_leftParen gconsym L0_rightParen
+P125 @21-21 L4c1-4 varop -> . L0_varsym
+P126 @21-21 L4c1-4 varop -> . L0_ReservedOpError
+P127 @21-21 L4c1-4 varop -> . L0_tick L0_varid L0_tick
+P128 @21-21 L4c1-4 varop -> . L0_tick L0_reservedid_error L0_tick
+P132 @21-21 L4c1-4 qconop -> . gconsym
+P133 @21-21 L4c1-4 qconop -> . L0_tick L0_qconid L0_tick
+P136 @21-21 L4c1-4 gconsym -> . L0_colon
+P137 @21-21 L4c1-4 gconsym -> . L0_qconsym
+
+ES = 22
+Size of ES 22 is 28
+R53:1 @21-22 L4c1-6 rhs -> L0_equal . exp
+R54:1 @21-22 L4c1-6 rhs -> L0_equal . exp resword_where laidout_decls
+P58 @22-22 L4c6 exp -> . infixexp
+P59 @22-22 L4c6 infixexp -> . lexp qop infixexp
+P60 @22-22 L4c6 infixexp -> . L0_dash infixexp
+P61 @22-22 L4c6 infixexp -> . lexp
+P62 @22-22 L4c6 lexp -> . fexp
+P63 @22-22 L4c6 lexp -> . resword_let laidout_decls resword_in exp
+P64 @22-22 L4c6 lexp -> . resword_case exp resword_of laidout_alts
+P65 @22-22 L4c6 lexp -> . resword_do laidout_stmts
+P69 @22-22 L4c6 fexp -> . fexp aexp
+P70 @22-22 L4c6 fexp -> . aexp
+P71 @22-22 L4c6 aexp -> . qvar
+P72 @22-22 L4c6 aexp -> . literal
+P73 @22-22 L4c6 aexp -> . L0_leftParen exp L0_rightParen
+P74 @22-22 L4c6 aexp -> . L0_leftParen exp_tuple_list L0_rightParen
+P75 @22-22 L4c6 aexp -> . L0_leftSquare exps L0_rightSquare
+P76 @22-22 L4c6 aexp -> . L0_leftSquare exp L0_pipe quals L0_rightSquare
+P78 @22-22 L4c6 aexp -> . gcon
+P109 @22-22 L4c6 gcon -> . '()'
+P110 @22-22 L4c6 gcon -> . '[]'
+P111 @22-22 L4c6 gcon -> . L0_leftParen L0_commas L0_rightParen
+P112 @22-22 L4c6 gcon -> . qcon
+P117 @22-22 L4c6 qvar -> . qvarid
+P118 @22-22 L4c6 qvar -> . L0_leftParen qvarsym L0_rightParen
+P119 @22-22 L4c6 qvar -> . L0_reservedid_error
+P123 @22-22 L4c6 qcon -> . L0_qconid
+P124 @22-22 L4c6 qcon -> . L0_leftParen gconsym L0_rightParen
+
+ES = 23
+Size of ES 23 is 32
+P58 @23-23 L4c8 exp -> . infixexp
+P59 @23-23 L4c8 infixexp -> . lexp qop infixexp
+P60 @23-23 L4c8 infixexp -> . L0_dash infixexp
+P61 @23-23 L4c8 infixexp -> . lexp
+P62 @23-23 L4c8 lexp -> . fexp
+P63 @23-23 L4c8 lexp -> . resword_let laidout_decls resword_in exp
+P64 @23-23 L4c8 lexp -> . resword_case exp resword_of laidout_alts
+P65 @23-23 L4c8 lexp -> . resword_do laidout_stmts
+P69 @23-23 L4c8 fexp -> . fexp aexp
+P70 @23-23 L4c8 fexp -> . aexp
+P71 @23-23 L4c8 aexp -> . qvar
+P72 @23-23 L4c8 aexp -> . literal
+P73 @23-23 L4c8 aexp -> . L0_leftParen exp L0_rightParen
+P74 @23-23 L4c8 aexp -> . L0_leftParen exp_tuple_list L0_rightParen
+P75 @23-23 L4c8 aexp -> . L0_leftSquare exps L0_rightSquare
+R75:1 @22-23 L4c6-8 aexp -> L0_leftSquare . exps L0_rightSquare
+P76 @23-23 L4c8 aexp -> . L0_leftSquare exp L0_pipe quals L0_rightSquare
+R76:1 @22-23 L4c6-8 aexp -> L0_leftSquare . exp L0_pipe quals L0_rightSquare
+P78 @23-23 L4c8 aexp -> . gcon
+P81 @23-23 L4c8 exps -> . exp +
+P109 @23-23 L4c8 gcon -> . '()'
+P110 @23-23 L4c8 gcon -> . '[]'
+P111 @23-23 L4c8 gcon -> . L0_leftParen L0_commas L0_rightParen
+P112 @23-23 L4c8 gcon -> . qcon
+P117 @23-23 L4c8 qvar -> . qvarid
+P118 @23-23 L4c8 qvar -> . L0_leftParen qvarsym L0_rightParen
+P119 @23-23 L4c8 qvar -> . L0_reservedid_error
+P123 @23-23 L4c8 qcon -> . L0_qconid
+P124 @23-23 L4c8 qcon -> . L0_leftParen gconsym L0_rightParen
+
+ES = 24
+Size of ES 24 is 39
+F58 @23-24 L4c8-10 exp -> infixexp .
+R59:1 @23-24 L4c8-10 infixexp -> lexp . qop infixexp
+F61 @23-24 L4c8-10 infixexp -> lexp .
+F62 @23-24 L4c8-10 lexp -> fexp .
+R69:1 @23-24 L4c8-10 fexp -> fexp . aexp
+F70 @23-24 L4c8-10 fexp -> aexp .
+P71 @24-24 L4c10 aexp -> . qvar
+F71 @23-24 L4c8-10 aexp -> qvar .
+P72 @24-24 L4c10 aexp -> . literal
+P73 @24-24 L4c10 aexp -> . L0_leftParen exp L0_rightParen
+P74 @24-24 L4c10 aexp -> . L0_leftParen exp_tuple_list L0_rightParen
+P75 @24-24 L4c10 aexp -> . L0_leftSquare exps L0_rightSquare
+R75:2 @22-24 L4c6-10 aexp -> L0_leftSquare exps . L0_rightSquare
+P76 @24-24 L4c10 aexp -> . L0_leftSquare exp L0_pipe quals L0_rightSquare
+R76:2 @22-24 L4c6-10 aexp -> L0_leftSquare exp . L0_pipe quals L0_rightSquare
+P78 @24-24 L4c10 aexp -> . gcon
+F81 @23-24 L4c8-10 exps -> exp + .
+P109 @24-24 L4c10 gcon -> . '()'
+P110 @24-24 L4c10 gcon -> . '[]'
+P111 @24-24 L4c10 gcon -> . L0_leftParen L0_commas L0_rightParen
+P112 @24-24 L4c10 gcon -> . qcon
+P117 @24-24 L4c10 qvar -> . qvarid
+F117 @23-24 L4c8-10 qvar -> qvarid .
+P118 @24-24 L4c10 qvar -> . L0_leftParen qvarsym L0_rightParen
+P119 @24-24 L4c10 qvar -> . L0_reservedid_error
+P123 @24-24 L4c10 qcon -> . L0_qconid
+P124 @24-24 L4c10 qcon -> . L0_leftParen gconsym L0_rightParen
+P129 @24-24 L4c10 qvarop -> . qvarsym
+P130 @24-24 L4c10 qvarop -> . L0_tick qvarid L0_tick
+P131 @24-24 L4c10 qvarop -> . L0_tick L0_reservedid_error L0_tick
+P132 @24-24 L4c10 qconop -> . gconsym
+P133 @24-24 L4c10 qconop -> . L0_tick L0_qconid L0_tick
+P134 @24-24 L4c10 qop -> . qvarop
+P135 @24-24 L4c10 qop -> . qconop
+P136 @24-24 L4c10 gconsym -> . L0_colon
+P137 @24-24 L4c10 gconsym -> . L0_qconsym
+
+ES = 25
+Size of ES 25 is 49
+P58 @25-25 L4c12 exp -> . infixexp
+P59 @25-25 L4c12 infixexp -> . lexp qop infixexp
+P60 @25-25 L4c12 infixexp -> . L0_dash infixexp
+P61 @25-25 L4c12 infixexp -> . lexp
+P62 @25-25 L4c12 lexp -> . fexp
+P63 @25-25 L4c12 lexp -> . resword_let laidout_decls resword_in exp
+P64 @25-25 L4c12 lexp -> . resword_case exp resword_of laidout_alts
+P65 @25-25 L4c12 lexp -> . resword_do laidout_stmts
+P69 @25-25 L4c12 fexp -> . fexp aexp
+P70 @25-25 L4c12 fexp -> . aexp
+P71 @25-25 L4c12 aexp -> . qvar
+P72 @25-25 L4c12 aexp -> . literal
+P73 @25-25 L4c12 aexp -> . L0_leftParen exp L0_rightParen
+P74 @25-25 L4c12 aexp -> . L0_leftParen exp_tuple_list L0_rightParen
+P75 @25-25 L4c12 aexp -> . L0_leftSquare exps L0_rightSquare
+P76 @25-25 L4c12 aexp -> . L0_leftSquare exp L0_pipe quals L0_rightSquare
+R76:3 @22-25 L4c6-12 aexp -> L0_leftSquare exp L0_pipe . quals L0_rightSquare
+P77 @25-25 L4c12 quals -> . qual +
+P78 @25-25 L4c12 aexp -> . gcon
+P82 @25-25 L4c12 qual -> . pat L0_leftSingle exp
+P83 @25-25 L4c12 qual -> . resword_let decls
+P84 @25-25 L4c12 qual -> . exp
+P98 @25-25 L4c12 pat -> . lpat qconop pat
+P99 @25-25 L4c12 pat -> . lpat
+P100 @25-25 L4c12 lpat -> . apat
+P101 @25-25 L4c12 lpat -> . gcon apats1
+P102 @25-25 L4c12 apat -> . var
+P103 @25-25 L4c12 apat -> . var L0_atSign apat
+P104 @25-25 L4c12 apat -> . gcon
+P105 @25-25 L4c12 apat -> . literal
+P106 @25-25 L4c12 apat -> . L0_leftParen pat L0_rightParen
+P107 @25-25 L4c12 apat -> . L0_leftSquare pats1 L0_rightSquare
+P109 @25-25 L4c12 gcon -> . '()'
+P110 @25-25 L4c12 gcon -> . '[]'
+P111 @25-25 L4c12 gcon -> . L0_leftParen L0_commas L0_rightParen
+P112 @25-25 L4c12 gcon -> . qcon
+P113 @25-25 L4c12 var -> . L0_reservedid_error
+P114 @25-25 L4c12 var -> . L0_varid
+P115 @25-25 L4c12 var -> . L0_leftParen L0_varsym L0_rightParen
+P116 @25-25 L4c12 var -> . L0_leftParen L0_ReservedOpError L0_rightParen
+P117 @25-25 L4c12 qvar -> . qvarid
+P118 @25-25 L4c12 qvar -> . L0_leftParen qvarsym L0_rightParen
+P119 @25-25 L4c12 qvar -> . L0_reservedid_error
+P123 @25-25 L4c12 qcon -> . L0_qconid
+P124 @25-25 L4c12 qcon -> . L0_leftParen gconsym L0_rightParen
+
+ES = 26
+Size of ES 26 is 51
+P58 @26-26 L4c14 exp -> . infixexp
+P59 @26-26 L4c14 infixexp -> . lexp qop infixexp
+P60 @26-26 L4c14 infixexp -> . L0_dash infixexp
+P61 @26-26 L4c14 infixexp -> . lexp
+P62 @26-26 L4c14 lexp -> . fexp
+P63 @26-26 L4c14 lexp -> . resword_let laidout_decls resword_in exp
+P64 @26-26 L4c14 lexp -> . resword_case exp resword_of laidout_alts
+P65 @26-26 L4c14 lexp -> . resword_do laidout_stmts
+P69 @26-26 L4c14 fexp -> . fexp aexp
+P70 @26-26 L4c14 fexp -> . aexp
+P71 @26-26 L4c14 aexp -> . qvar
+P72 @26-26 L4c14 aexp -> . literal
+P73 @26-26 L4c14 aexp -> . L0_leftParen exp L0_rightParen
+P74 @26-26 L4c14 aexp -> . L0_leftParen exp_tuple_list L0_rightParen
+P75 @26-26 L4c14 aexp -> . L0_leftSquare exps L0_rightSquare
+R75:1 @25-26 L4c12-14 aexp -> L0_leftSquare . exps L0_rightSquare
+P76 @26-26 L4c14 aexp -> . L0_leftSquare exp L0_pipe quals L0_rightSquare
+R76:1 @25-26 L4c12-14 aexp -> L0_leftSquare . exp L0_pipe quals L0_rightSquare
+P78 @26-26 L4c14 aexp -> . gcon
+P81 @26-26 L4c14 exps -> . exp +
+P98 @26-26 L4c14 pat -> . lpat qconop pat
+P99 @26-26 L4c14 pat -> . lpat
+P100 @26-26 L4c14 lpat -> . apat
+P101 @26-26 L4c14 lpat -> . gcon apats1
+P102 @26-26 L4c14 apat -> . var
+P103 @26-26 L4c14 apat -> . var L0_atSign apat
+P104 @26-26 L4c14 apat -> . gcon
+P105 @26-26 L4c14 apat -> . literal
+P106 @26-26 L4c14 apat -> . L0_leftParen pat L0_rightParen
+P107 @26-26 L4c14 apat -> . L0_leftSquare pats1 L0_rightSquare
+R107:1 @25-26 L4c12-14 apat -> L0_leftSquare . pats1 L0_rightSquare
+P108 @26-26 L4c14 pats1 -> . pat +
+P109 @26-26 L4c14 gcon -> . '()'
+P110 @26-26 L4c14 gcon -> . '[]'
+P111 @26-26 L4c14 gcon -> . L0_leftParen L0_commas L0_rightParen
+P112 @26-26 L4c14 gcon -> . qcon
+P113 @26-26 L4c14 var -> . L0_reservedid_error
+P114 @26-26 L4c14 var -> . L0_varid
+P115 @26-26 L4c14 var -> . L0_leftParen L0_varsym L0_rightParen
+P116 @26-26 L4c14 var -> . L0_leftParen L0_ReservedOpError L0_rightParen
+P117 @26-26 L4c14 qvar -> . qvarid
+P118 @26-26 L4c14 qvar -> . L0_leftParen qvarsym L0_rightParen
+P119 @26-26 L4c14 qvar -> . L0_reservedid_error
+P123 @26-26 L4c14 qcon -> . L0_qconid
+P124 @26-26 L4c14 qcon -> . L0_leftParen gconsym L0_rightParen
+
+ES = 27
+Size of ES 27 is 50
+F58 @26-27 L4c14-15 exp -> infixexp .
+R59:1 @26-27 L4c14-15 infixexp -> lexp . qop infixexp
+F61 @26-27 L4c14-15 infixexp -> lexp .
+F62 @26-27 L4c14-15 lexp -> fexp .
+R69:1 @26-27 L4c14-15 fexp -> fexp . aexp
+F70 @26-27 L4c14-15 fexp -> aexp .
+P71 @27-27 L4c15 aexp -> . qvar
+F71 @26-27 L4c14-15 aexp -> qvar .
+P72 @27-27 L4c15 aexp -> . literal
+P73 @27-27 L4c15 aexp -> . L0_leftParen exp L0_rightParen
+P74 @27-27 L4c15 aexp -> . L0_leftParen exp_tuple_list L0_rightParen
+P75 @27-27 L4c15 aexp -> . L0_leftSquare exps L0_rightSquare
+R75:2 @25-27 L4c12-15 aexp -> L0_leftSquare exps . L0_rightSquare
+P76 @27-27 L4c15 aexp -> . L0_leftSquare exp L0_pipe quals L0_rightSquare
+R76:2 @25-27 L4c12-15 aexp -> L0_leftSquare exp . L0_pipe quals L0_rightSquare
+P78 @27-27 L4c15 aexp -> . gcon
+F81 @26-27 L4c14-15 exps -> exp + .
+R98:1 @26-27 L4c14-15 pat -> lpat . qconop pat
+F99 @26-27 L4c14-15 pat -> lpat .
+F100 @26-27 L4c14-15 lpat -> apat .
+F102 @26-27 L4c14-15 apat -> var .
+R103:1 @26-27 L4c14-15 apat -> var . L0_atSign apat
+R107:2 @25-27 L4c12-15 apat -> L0_leftSquare pats1 . L0_rightSquare
+F108 @26-27 L4c14-15 pats1 -> pat + .
+P109 @27-27 L4c15 gcon -> . '()'
+P110 @27-27 L4c15 gcon -> . '[]'
+P111 @27-27 L4c15 gcon -> . L0_leftParen L0_commas L0_rightParen
+P112 @27-27 L4c15 gcon -> . qcon
+F114 @26-27 L4c14-15 var -> L0_varid .
+P117 @27-27 L4c15 qvar -> . qvarid
+F117 @26-27 L4c14-15 qvar -> qvarid .
+P118 @27-27 L4c15 qvar -> . L0_leftParen qvarsym L0_rightParen
+P119 @27-27 L4c15 qvar -> . L0_reservedid_error
+P123 @27-27 L4c15 qcon -> . L0_qconid
+P124 @27-27 L4c15 qcon -> . L0_leftParen gconsym L0_rightParen
+P129 @27-27 L4c15 qvarop -> . qvarsym
+P130 @27-27 L4c15 qvarop -> . L0_tick qvarid L0_tick
+P131 @27-27 L4c15 qvarop -> . L0_tick L0_reservedid_error L0_tick
+P132 @27-27 L4c15 qconop -> . gconsym
+P133 @27-27 L4c15 qconop -> . L0_tick L0_qconid L0_tick
+P134 @27-27 L4c15 qop -> . qvarop
+P135 @27-27 L4c15 qop -> . qconop
+P136 @27-27 L4c15 gconsym -> . L0_colon
+P137 @27-27 L4c15 gconsym -> . L0_qconsym
+
+ES = 28
+Size of ES 28 is 46
+P58 @28-28 L4c16 exp -> . infixexp
+P59 @28-28 L4c16 infixexp -> . lexp qop infixexp
+P60 @28-28 L4c16 infixexp -> . L0_dash infixexp
+P61 @28-28 L4c16 infixexp -> . lexp
+P62 @28-28 L4c16 lexp -> . fexp
+P63 @28-28 L4c16 lexp -> . resword_let laidout_decls resword_in exp
+P64 @28-28 L4c16 lexp -> . resword_case exp resword_of laidout_alts
+P65 @28-28 L4c16 lexp -> . resword_do laidout_stmts
+P69 @28-28 L4c16 fexp -> . fexp aexp
+P70 @28-28 L4c16 fexp -> . aexp
+P71 @28-28 L4c16 aexp -> . qvar
+P72 @28-28 L4c16 aexp -> . literal
+P73 @28-28 L4c16 aexp -> . L0_leftParen exp L0_rightParen
+P74 @28-28 L4c16 aexp -> . L0_leftParen exp_tuple_list L0_rightParen
+P75 @28-28 L4c16 aexp -> . L0_leftSquare exps L0_rightSquare
+R75:2 @25-28 L4c12-16 aexp -> L0_leftSquare exps . L0_rightSquare
+P76 @28-28 L4c16 aexp -> . L0_leftSquare exp L0_pipe quals L0_rightSquare
+P78 @28-28 L4c16 aexp -> . gcon
+F81 @26-28 L4c14-16 exps -> exp + .
+P98 @28-28 L4c16 pat -> . lpat qconop pat
+P99 @28-28 L4c16 pat -> . lpat
+P100 @28-28 L4c16 lpat -> . apat
+P101 @28-28 L4c16 lpat -> . gcon apats1
+P102 @28-28 L4c16 apat -> . var
+P103 @28-28 L4c16 apat -> . var L0_atSign apat
+P104 @28-28 L4c16 apat -> . gcon
+P105 @28-28 L4c16 apat -> . literal
+P106 @28-28 L4c16 apat -> . L0_leftParen pat L0_rightParen
+P107 @28-28 L4c16 apat -> . L0_leftSquare pats1 L0_rightSquare
+R107:2 @25-28 L4c12-16 apat -> L0_leftSquare pats1 . L0_rightSquare
+F108 @26-28 L4c14-16 pats1 -> pat + .
+P109 @28-28 L4c16 gcon -> . '()'
+P110 @28-28 L4c16 gcon -> . '[]'
+P111 @28-28 L4c16 gcon -> . L0_leftParen L0_commas L0_rightParen
+P112 @28-28 L4c16 gcon -> . qcon
+P113 @28-28 L4c16 var -> . L0_reservedid_error
+P114 @28-28 L4c16 var -> . L0_varid
+P115 @28-28 L4c16 var -> . L0_leftParen L0_varsym L0_rightParen
+P116 @28-28 L4c16 var -> . L0_leftParen L0_ReservedOpError L0_rightParen
+P117 @28-28 L4c16 qvar -> . qvarid
+P118 @28-28 L4c16 qvar -> . L0_leftParen qvarsym L0_rightParen
+P119 @28-28 L4c16 qvar -> . L0_reservedid_error
+P123 @28-28 L4c16 qcon -> . L0_qconid
+P124 @28-28 L4c16 qcon -> . L0_leftParen gconsym L0_rightParen
+
+ES = 29
+Size of ES 29 is 46
+F58 @28-29 L4c16-21 exp -> infixexp .
+R59:1 @28-29 L4c16-21 infixexp -> lexp . qop infixexp
+F61 @28-29 L4c16-21 infixexp -> lexp .
+F62 @28-29 L4c16-21 lexp -> fexp .
+R69:1 @28-29 L4c16-21 fexp -> fexp . aexp
+F70 @28-29 L4c16-21 fexp -> aexp .
+P71 @29-29 L4c18-21 aexp -> . qvar
+P72 @29-29 L4c18-21 aexp -> . literal
+F72 @28-29 L4c16-21 aexp -> literal .
+P73 @29-29 L4c18-21 aexp -> . L0_leftParen exp L0_rightParen
+P74 @29-29 L4c18-21 aexp -> . L0_leftParen exp_tuple_list L0_rightParen
+P75 @29-29 L4c18-21 aexp -> . L0_leftSquare exps L0_rightSquare
+R75:2 @25-29 L4c12-21 aexp -> L0_leftSquare exps . L0_rightSquare
+P76 @29-29 L4c18-21 aexp -> . L0_leftSquare exp L0_pipe quals L0_rightSquare
+P78 @29-29 L4c18-21 aexp -> . gcon
+F81 @26-29 L4c14-21 exps -> exp + .
+R98:1 @28-29 L4c16-21 pat -> lpat . qconop pat
+F99 @28-29 L4c16-21 pat -> lpat .
+F100 @28-29 L4c16-21 lpat -> apat .
+F105 @28-29 L4c16-21 apat -> literal .
+R107:2 @25-29 L4c12-21 apat -> L0_leftSquare pats1 . L0_rightSquare
+F108 @26-29 L4c14-21 pats1 -> pat + .
+P109 @29-29 L4c18-21 gcon -> . '()'
+P110 @29-29 L4c18-21 gcon -> . '[]'
+P111 @29-29 L4c18-21 gcon -> . L0_leftParen L0_commas L0_rightParen
+P112 @29-29 L4c18-21 gcon -> . qcon
+P117 @29-29 L4c18-21 qvar -> . qvarid
+P118 @29-29 L4c18-21 qvar -> . L0_leftParen qvarsym L0_rightParen
+P119 @29-29 L4c18-21 qvar -> . L0_reservedid_error
+P123 @29-29 L4c18-21 qcon -> . L0_qconid
+P124 @29-29 L4c18-21 qcon -> . L0_leftParen gconsym L0_rightParen
+P129 @29-29 L4c18-21 qvarop -> . qvarsym
+P130 @29-29 L4c18-21 qvarop -> . L0_tick qvarid L0_tick
+P131 @29-29 L4c18-21 qvarop -> . L0_tick L0_reservedid_error L0_tick
+P132 @29-29 L4c18-21 qconop -> . gconsym
+P133 @29-29 L4c18-21 qconop -> . L0_tick L0_qconid L0_tick
+P134 @29-29 L4c18-21 qop -> . qvarop
+P135 @29-29 L4c18-21 qop -> . qconop
+P136 @29-29 L4c18-21 gconsym -> . L0_colon
+P137 @29-29 L4c18-21 gconsym -> . L0_qconsym
+
+ES = 30
+Size of ES 30 is 46
+P58 @30-30 L4c22 exp -> . infixexp
+P59 @30-30 L4c22 infixexp -> . lexp qop infixexp
+P60 @30-30 L4c22 infixexp -> . L0_dash infixexp
+P61 @30-30 L4c22 infixexp -> . lexp
+P62 @30-30 L4c22 lexp -> . fexp
+P63 @30-30 L4c22 lexp -> . resword_let laidout_decls resword_in exp
+P64 @30-30 L4c22 lexp -> . resword_case exp resword_of laidout_alts
+P65 @30-30 L4c22 lexp -> . resword_do laidout_stmts
+P69 @30-30 L4c22 fexp -> . fexp aexp
+P70 @30-30 L4c22 fexp -> . aexp
+P71 @30-30 L4c22 aexp -> . qvar
+P72 @30-30 L4c22 aexp -> . literal
+P73 @30-30 L4c22 aexp -> . L0_leftParen exp L0_rightParen
+P74 @30-30 L4c22 aexp -> . L0_leftParen exp_tuple_list L0_rightParen
+P75 @30-30 L4c22 aexp -> . L0_leftSquare exps L0_rightSquare
+R75:2 @25-30 L4c12-22 aexp -> L0_leftSquare exps . L0_rightSquare
+P76 @30-30 L4c22 aexp -> . L0_leftSquare exp L0_pipe quals L0_rightSquare
+P78 @30-30 L4c22 aexp -> . gcon
+F81 @26-30 L4c14-22 exps -> exp + .
+P98 @30-30 L4c22 pat -> . lpat qconop pat
+P99 @30-30 L4c22 pat -> . lpat
+P100 @30-30 L4c22 lpat -> . apat
+P101 @30-30 L4c22 lpat -> . gcon apats1
+P102 @30-30 L4c22 apat -> . var
+P103 @30-30 L4c22 apat -> . var L0_atSign apat
+P104 @30-30 L4c22 apat -> . gcon
+P105 @30-30 L4c22 apat -> . literal
+P106 @30-30 L4c22 apat -> . L0_leftParen pat L0_rightParen
+P107 @30-30 L4c22 apat -> . L0_leftSquare pats1 L0_rightSquare
+R107:2 @25-30 L4c12-22 apat -> L0_leftSquare pats1 . L0_rightSquare
+F108 @26-30 L4c14-22 pats1 -> pat + .
+P109 @30-30 L4c22 gcon -> . '()'
+P110 @30-30 L4c22 gcon -> . '[]'
+P111 @30-30 L4c22 gcon -> . L0_leftParen L0_commas L0_rightParen
+P112 @30-30 L4c22 gcon -> . qcon
+P113 @30-30 L4c22 var -> . L0_reservedid_error
+P114 @30-30 L4c22 var -> . L0_varid
+P115 @30-30 L4c22 var -> . L0_leftParen L0_varsym L0_rightParen
+P116 @30-30 L4c22 var -> . L0_leftParen L0_ReservedOpError L0_rightParen
+P117 @30-30 L4c22 qvar -> . qvarid
+P118 @30-30 L4c22 qvar -> . L0_leftParen qvarsym L0_rightParen
+P119 @30-30 L4c22 qvar -> . L0_reservedid_error
+P123 @30-30 L4c22 qcon -> . L0_qconid
+P124 @30-30 L4c22 qcon -> . L0_leftParen gconsym L0_rightParen
+
+ES = 31
+Size of ES 31 is 46
+F58 @30-31 L4c22-L5c17 exp -> infixexp .
+R59:1 @30-31 L4c22-L5c17 infixexp -> lexp . qop infixexp
+F61 @30-31 L4c22-L5c17 infixexp -> lexp .
+F62 @30-31 L4c22-L5c17 lexp -> fexp .
+R69:1 @30-31 L4c22-L5c17 fexp -> fexp . aexp
+F70 @30-31 L4c22-L5c17 fexp -> aexp .
+P71 @31-31 L5c17 aexp -> . qvar
+P72 @31-31 L5c17 aexp -> . literal
+F72 @30-31 L4c22-L5c17 aexp -> literal .
+P73 @31-31 L5c17 aexp -> . L0_leftParen exp L0_rightParen
+P74 @31-31 L5c17 aexp -> . L0_leftParen exp_tuple_list L0_rightParen
+P75 @31-31 L5c17 aexp -> . L0_leftSquare exps L0_rightSquare
+R75:2 @25-31 L4c12-L5c17 aexp -> L0_leftSquare exps . L0_rightSquare
+P76 @31-31 L5c17 aexp -> . L0_leftSquare exp L0_pipe quals L0_rightSquare
+P78 @31-31 L5c17 aexp -> . gcon
+F81 @26-31 L4c14-L5c17 exps -> exp + .
+R98:1 @30-31 L4c22-L5c17 pat -> lpat . qconop pat
+F99 @30-31 L4c22-L5c17 pat -> lpat .
+F100 @30-31 L4c22-L5c17 lpat -> apat .
+F105 @30-31 L4c22-L5c17 apat -> literal .
+R107:2 @25-31 L4c12-L5c17 apat -> L0_leftSquare pats1 . L0_rightSquare
+F108 @26-31 L4c14-L5c17 pats1 -> pat + .
+P109 @31-31 L5c17 gcon -> . '()'
+P110 @31-31 L5c17 gcon -> . '[]'
+P111 @31-31 L5c17 gcon -> . L0_leftParen L0_commas L0_rightParen
+P112 @31-31 L5c17 gcon -> . qcon
+P117 @31-31 L5c17 qvar -> . qvarid
+P118 @31-31 L5c17 qvar -> . L0_leftParen qvarsym L0_rightParen
+P119 @31-31 L5c17 qvar -> . L0_reservedid_error
+P123 @31-31 L5c17 qcon -> . L0_qconid
+P124 @31-31 L5c17 qcon -> . L0_leftParen gconsym L0_rightParen
+P129 @31-31 L5c17 qvarop -> . qvarsym
+P130 @31-31 L5c17 qvarop -> . L0_tick qvarid L0_tick
+P131 @31-31 L5c17 qvarop -> . L0_tick L0_reservedid_error L0_tick
+P132 @31-31 L5c17 qconop -> . gconsym
+P133 @31-31 L5c17 qconop -> . L0_tick L0_qconid L0_tick
+P134 @31-31 L5c17 qop -> . qvarop
+P135 @31-31 L5c17 qop -> . qconop
+P136 @31-31 L5c17 gconsym -> . L0_colon
+P137 @31-31 L5c17 gconsym -> . L0_qconsym
+
+ES = 32
+Size of ES 32 is 46
+P58 @32-32 L5c18 exp -> . infixexp
+P59 @32-32 L5c18 infixexp -> . lexp qop infixexp
+P60 @32-32 L5c18 infixexp -> . L0_dash infixexp
+P61 @32-32 L5c18 infixexp -> . lexp
+P62 @32-32 L5c18 lexp -> . fexp
+P63 @32-32 L5c18 lexp -> . resword_let laidout_decls resword_in exp
+P64 @32-32 L5c18 lexp -> . resword_case exp resword_of laidout_alts
+P65 @32-32 L5c18 lexp -> . resword_do laidout_stmts
+P69 @32-32 L5c18 fexp -> . fexp aexp
+P70 @32-32 L5c18 fexp -> . aexp
+P71 @32-32 L5c18 aexp -> . qvar
+P72 @32-32 L5c18 aexp -> . literal
+P73 @32-32 L5c18 aexp -> . L0_leftParen exp L0_rightParen
+P74 @32-32 L5c18 aexp -> . L0_leftParen exp_tuple_list L0_rightParen
+P75 @32-32 L5c18 aexp -> . L0_leftSquare exps L0_rightSquare
+R75:2 @25-32 L4c12-L5c18 aexp -> L0_leftSquare exps . L0_rightSquare
+P76 @32-32 L5c18 aexp -> . L0_leftSquare exp L0_pipe quals L0_rightSquare
+P78 @32-32 L5c18 aexp -> . gcon
+F81 @26-32 L4c14-L5c18 exps -> exp + .
+P98 @32-32 L5c18 pat -> . lpat qconop pat
+P99 @32-32 L5c18 pat -> . lpat
+P100 @32-32 L5c18 lpat -> . apat
+P101 @32-32 L5c18 lpat -> . gcon apats1
+P102 @32-32 L5c18 apat -> . var
+P103 @32-32 L5c18 apat -> . var L0_atSign apat
+P104 @32-32 L5c18 apat -> . gcon
+P105 @32-32 L5c18 apat -> . literal
+P106 @32-32 L5c18 apat -> . L0_leftParen pat L0_rightParen
+P107 @32-32 L5c18 apat -> . L0_leftSquare pats1 L0_rightSquare
+R107:2 @25-32 L4c12-L5c18 apat -> L0_leftSquare pats1 . L0_rightSquare
+F108 @26-32 L4c14-L5c18 pats1 -> pat + .
+P109 @32-32 L5c18 gcon -> . '()'
+P110 @32-32 L5c18 gcon -> . '[]'
+P111 @32-32 L5c18 gcon -> . L0_leftParen L0_commas L0_rightParen
+P112 @32-32 L5c18 gcon -> . qcon
+P113 @32-32 L5c18 var -> . L0_reservedid_error
+P114 @32-32 L5c18 var -> . L0_varid
+P115 @32-32 L5c18 var -> . L0_leftParen L0_varsym L0_rightParen
+P116 @32-32 L5c18 var -> . L0_leftParen L0_ReservedOpError L0_rightParen
+P117 @32-32 L5c18 qvar -> . qvarid
+P118 @32-32 L5c18 qvar -> . L0_leftParen qvarsym L0_rightParen
+P119 @32-32 L5c18 qvar -> . L0_reservedid_error
+P123 @32-32 L5c18 qcon -> . L0_qconid
+P124 @32-32 L5c18 qcon -> . L0_leftParen gconsym L0_rightParen
+
+ES = 33
+Size of ES 33 is 46
+F58 @32-33 L5c18-20 exp -> infixexp .
+R59:1 @32-33 L5c18-20 infixexp -> lexp . qop infixexp
+F61 @32-33 L5c18-20 infixexp -> lexp .
+F62 @32-33 L5c18-20 lexp -> fexp .
+R69:1 @32-33 L5c18-20 fexp -> fexp . aexp
+F70 @32-33 L5c18-20 fexp -> aexp .
+P71 @33-33 L5c20 aexp -> . qvar
+P72 @33-33 L5c20 aexp -> . literal
+F72 @32-33 L5c18-20 aexp -> literal .
+P73 @33-33 L5c20 aexp -> . L0_leftParen exp L0_rightParen
+P74 @33-33 L5c20 aexp -> . L0_leftParen exp_tuple_list L0_rightParen
+P75 @33-33 L5c20 aexp -> . L0_leftSquare exps L0_rightSquare
+R75:2 @25-33 L4c12-L5c20 aexp -> L0_leftSquare exps . L0_rightSquare
+P76 @33-33 L5c20 aexp -> . L0_leftSquare exp L0_pipe quals L0_rightSquare
+P78 @33-33 L5c20 aexp -> . gcon
+F81 @26-33 L4c14-L5c20 exps -> exp + .
+R98:1 @32-33 L5c18-20 pat -> lpat . qconop pat
+F99 @32-33 L5c18-20 pat -> lpat .
+F100 @32-33 L5c18-20 lpat -> apat .
+F105 @32-33 L5c18-20 apat -> literal .
+R107:2 @25-33 L4c12-L5c20 apat -> L0_leftSquare pats1 . L0_rightSquare
+F108 @26-33 L4c14-L5c20 pats1 -> pat + .
+P109 @33-33 L5c20 gcon -> . '()'
+P110 @33-33 L5c20 gcon -> . '[]'
+P111 @33-33 L5c20 gcon -> . L0_leftParen L0_commas L0_rightParen
+P112 @33-33 L5c20 gcon -> . qcon
+P117 @33-33 L5c20 qvar -> . qvarid
+P118 @33-33 L5c20 qvar -> . L0_leftParen qvarsym L0_rightParen
+P119 @33-33 L5c20 qvar -> . L0_reservedid_error
+P123 @33-33 L5c20 qcon -> . L0_qconid
+P124 @33-33 L5c20 qcon -> . L0_leftParen gconsym L0_rightParen
+P129 @33-33 L5c20 qvarop -> . qvarsym
+P130 @33-33 L5c20 qvarop -> . L0_tick qvarid L0_tick
+P131 @33-33 L5c20 qvarop -> . L0_tick L0_reservedid_error L0_tick
+P132 @33-33 L5c20 qconop -> . gconsym
+P133 @33-33 L5c20 qconop -> . L0_tick L0_qconid L0_tick
+P134 @33-33 L5c20 qop -> . qvarop
+P135 @33-33 L5c20 qop -> . qconop
+P136 @33-33 L5c20 gconsym -> . L0_colon
+P137 @33-33 L5c20 gconsym -> . L0_qconsym
+
+ES = 34
+Size of ES 34 is 46
+P58 @34-34 L5c21 exp -> . infixexp
+P59 @34-34 L5c21 infixexp -> . lexp qop infixexp
+P60 @34-34 L5c21 infixexp -> . L0_dash infixexp
+P61 @34-34 L5c21 infixexp -> . lexp
+P62 @34-34 L5c21 lexp -> . fexp
+P63 @34-34 L5c21 lexp -> . resword_let laidout_decls resword_in exp
+P64 @34-34 L5c21 lexp -> . resword_case exp resword_of laidout_alts
+P65 @34-34 L5c21 lexp -> . resword_do laidout_stmts
+P69 @34-34 L5c21 fexp -> . fexp aexp
+P70 @34-34 L5c21 fexp -> . aexp
+P71 @34-34 L5c21 aexp -> . qvar
+P72 @34-34 L5c21 aexp -> . literal
+P73 @34-34 L5c21 aexp -> . L0_leftParen exp L0_rightParen
+P74 @34-34 L5c21 aexp -> . L0_leftParen exp_tuple_list L0_rightParen
+P75 @34-34 L5c21 aexp -> . L0_leftSquare exps L0_rightSquare
+R75:2 @25-34 L4c12-L5c21 aexp -> L0_leftSquare exps . L0_rightSquare
+P76 @34-34 L5c21 aexp -> . L0_leftSquare exp L0_pipe quals L0_rightSquare
+P78 @34-34 L5c21 aexp -> . gcon
+F81 @26-34 L4c14-L5c21 exps -> exp + .
+P98 @34-34 L5c21 pat -> . lpat qconop pat
+P99 @34-34 L5c21 pat -> . lpat
+P100 @34-34 L5c21 lpat -> . apat
+P101 @34-34 L5c21 lpat -> . gcon apats1
+P102 @34-34 L5c21 apat -> . var
+P103 @34-34 L5c21 apat -> . var L0_atSign apat
+P104 @34-34 L5c21 apat -> . gcon
+P105 @34-34 L5c21 apat -> . literal
+P106 @34-34 L5c21 apat -> . L0_leftParen pat L0_rightParen
+P107 @34-34 L5c21 apat -> . L0_leftSquare pats1 L0_rightSquare
+R107:2 @25-34 L4c12-L5c21 apat -> L0_leftSquare pats1 . L0_rightSquare
+F108 @26-34 L4c14-L5c21 pats1 -> pat + .
+P109 @34-34 L5c21 gcon -> . '()'
+P110 @34-34 L5c21 gcon -> . '[]'
+P111 @34-34 L5c21 gcon -> . L0_leftParen L0_commas L0_rightParen
+P112 @34-34 L5c21 gcon -> . qcon
+P113 @34-34 L5c21 var -> . L0_reservedid_error
+P114 @34-34 L5c21 var -> . L0_varid
+P115 @34-34 L5c21 var -> . L0_leftParen L0_varsym L0_rightParen
+P116 @34-34 L5c21 var -> . L0_leftParen L0_ReservedOpError L0_rightParen
+P117 @34-34 L5c21 qvar -> . qvarid
+P118 @34-34 L5c21 qvar -> . L0_leftParen qvarsym L0_rightParen
+P119 @34-34 L5c21 qvar -> . L0_reservedid_error
+P123 @34-34 L5c21 qcon -> . L0_qconid
+P124 @34-34 L5c21 qcon -> . L0_leftParen gconsym L0_rightParen
+
+ES = 35
+Size of ES 35 is 46
+F58 @34-35 L5c21-23 exp -> infixexp .
+R59:1 @34-35 L5c21-23 infixexp -> lexp . qop infixexp
+F61 @34-35 L5c21-23 infixexp -> lexp .
+F62 @34-35 L5c21-23 lexp -> fexp .
+R69:1 @34-35 L5c21-23 fexp -> fexp . aexp
+F70 @34-35 L5c21-23 fexp -> aexp .
+P71 @35-35 L5c23 aexp -> . qvar
+P72 @35-35 L5c23 aexp -> . literal
+F72 @34-35 L5c21-23 aexp -> literal .
+P73 @35-35 L5c23 aexp -> . L0_leftParen exp L0_rightParen
+P74 @35-35 L5c23 aexp -> . L0_leftParen exp_tuple_list L0_rightParen
+P75 @35-35 L5c23 aexp -> . L0_leftSquare exps L0_rightSquare
+R75:2 @25-35 L4c12-L5c23 aexp -> L0_leftSquare exps . L0_rightSquare
+P76 @35-35 L5c23 aexp -> . L0_leftSquare exp L0_pipe quals L0_rightSquare
+P78 @35-35 L5c23 aexp -> . gcon
+F81 @26-35 L4c14-L5c23 exps -> exp + .
+R98:1 @34-35 L5c21-23 pat -> lpat . qconop pat
+F99 @34-35 L5c21-23 pat -> lpat .
+F100 @34-35 L5c21-23 lpat -> apat .
+F105 @34-35 L5c21-23 apat -> literal .
+R107:2 @25-35 L4c12-L5c23 apat -> L0_leftSquare pats1 . L0_rightSquare
+F108 @26-35 L4c14-L5c23 pats1 -> pat + .
+P109 @35-35 L5c23 gcon -> . '()'
+P110 @35-35 L5c23 gcon -> . '[]'
+P111 @35-35 L5c23 gcon -> . L0_leftParen L0_commas L0_rightParen
+P112 @35-35 L5c23 gcon -> . qcon
+P117 @35-35 L5c23 qvar -> . qvarid
+P118 @35-35 L5c23 qvar -> . L0_leftParen qvarsym L0_rightParen
+P119 @35-35 L5c23 qvar -> . L0_reservedid_error
+P123 @35-35 L5c23 qcon -> . L0_qconid
+P124 @35-35 L5c23 qcon -> . L0_leftParen gconsym L0_rightParen
+P129 @35-35 L5c23 qvarop -> . qvarsym
+P130 @35-35 L5c23 qvarop -> . L0_tick qvarid L0_tick
+P131 @35-35 L5c23 qvarop -> . L0_tick L0_reservedid_error L0_tick
+P132 @35-35 L5c23 qconop -> . gconsym
+P133 @35-35 L5c23 qconop -> . L0_tick L0_qconid L0_tick
+P134 @35-35 L5c23 qop -> . qvarop
+P135 @35-35 L5c23 qop -> . qconop
+P136 @35-35 L5c23 gconsym -> . L0_colon
+P137 @35-35 L5c23 gconsym -> . L0_qconsym
+
+ES = 36
+Size of ES 36 is 46
+P58 @36-36 L5c24 exp -> . infixexp
+P59 @36-36 L5c24 infixexp -> . lexp qop infixexp
+P60 @36-36 L5c24 infixexp -> . L0_dash infixexp
+P61 @36-36 L5c24 infixexp -> . lexp
+P62 @36-36 L5c24 lexp -> . fexp
+P63 @36-36 L5c24 lexp -> . resword_let laidout_decls resword_in exp
+P64 @36-36 L5c24 lexp -> . resword_case exp resword_of laidout_alts
+P65 @36-36 L5c24 lexp -> . resword_do laidout_stmts
+P69 @36-36 L5c24 fexp -> . fexp aexp
+P70 @36-36 L5c24 fexp -> . aexp
+P71 @36-36 L5c24 aexp -> . qvar
+P72 @36-36 L5c24 aexp -> . literal
+P73 @36-36 L5c24 aexp -> . L0_leftParen exp L0_rightParen
+P74 @36-36 L5c24 aexp -> . L0_leftParen exp_tuple_list L0_rightParen
+P75 @36-36 L5c24 aexp -> . L0_leftSquare exps L0_rightSquare
+R75:2 @25-36 L4c12-L5c24 aexp -> L0_leftSquare exps . L0_rightSquare
+P76 @36-36 L5c24 aexp -> . L0_leftSquare exp L0_pipe quals L0_rightSquare
+P78 @36-36 L5c24 aexp -> . gcon
+F81 @26-36 L4c14-L5c24 exps -> exp + .
+P98 @36-36 L5c24 pat -> . lpat qconop pat
+P99 @36-36 L5c24 pat -> . lpat
+P100 @36-36 L5c24 lpat -> . apat
+P101 @36-36 L5c24 lpat -> . gcon apats1
+P102 @36-36 L5c24 apat -> . var
+P103 @36-36 L5c24 apat -> . var L0_atSign apat
+P104 @36-36 L5c24 apat -> . gcon
+P105 @36-36 L5c24 apat -> . literal
+P106 @36-36 L5c24 apat -> . L0_leftParen pat L0_rightParen
+P107 @36-36 L5c24 apat -> . L0_leftSquare pats1 L0_rightSquare
+R107:2 @25-36 L4c12-L5c24 apat -> L0_leftSquare pats1 . L0_rightSquare
+F108 @26-36 L4c14-L5c24 pats1 -> pat + .
+P109 @36-36 L5c24 gcon -> . '()'
+P110 @36-36 L5c24 gcon -> . '[]'
+P111 @36-36 L5c24 gcon -> . L0_leftParen L0_commas L0_rightParen
+P112 @36-36 L5c24 gcon -> . qcon
+P113 @36-36 L5c24 var -> . L0_reservedid_error
+P114 @36-36 L5c24 var -> . L0_varid
+P115 @36-36 L5c24 var -> . L0_leftParen L0_varsym L0_rightParen
+P116 @36-36 L5c24 var -> . L0_leftParen L0_ReservedOpError L0_rightParen
+P117 @36-36 L5c24 qvar -> . qvarid
+P118 @36-36 L5c24 qvar -> . L0_leftParen qvarsym L0_rightParen
+P119 @36-36 L5c24 qvar -> . L0_reservedid_error
+P123 @36-36 L5c24 qcon -> . L0_qconid
+P124 @36-36 L5c24 qcon -> . L0_leftParen gconsym L0_rightParen
+
+ES = 37
+Size of ES 37 is 46
+F58 @36-37 L5c24-L6c18 exp -> infixexp .
+R59:1 @36-37 L5c24-L6c18 infixexp -> lexp . qop infixexp
+F61 @36-37 L5c24-L6c18 infixexp -> lexp .
+F62 @36-37 L5c24-L6c18 lexp -> fexp .
+R69:1 @36-37 L5c24-L6c18 fexp -> fexp . aexp
+F70 @36-37 L5c24-L6c18 fexp -> aexp .
+P71 @37-37 L6c17-18 aexp -> . qvar
+P72 @37-37 L6c17-18 aexp -> . literal
+F72 @36-37 L5c24-L6c18 aexp -> literal .
+P73 @37-37 L6c17-18 aexp -> . L0_leftParen exp L0_rightParen
+P74 @37-37 L6c17-18 aexp -> . L0_leftParen exp_tuple_list L0_rightParen
+P75 @37-37 L6c17-18 aexp -> . L0_leftSquare exps L0_rightSquare
+R75:2 @25-37 L4c12-L6c18 aexp -> L0_leftSquare exps . L0_rightSquare
+P76 @37-37 L6c17-18 aexp -> . L0_leftSquare exp L0_pipe quals L0_rightSquare
+P78 @37-37 L6c17-18 aexp -> . gcon
+F81 @26-37 L4c14-L6c18 exps -> exp + .
+R98:1 @36-37 L5c24-L6c18 pat -> lpat . qconop pat
+F99 @36-37 L5c24-L6c18 pat -> lpat .
+F100 @36-37 L5c24-L6c18 lpat -> apat .
+F105 @36-37 L5c24-L6c18 apat -> literal .
+R107:2 @25-37 L4c12-L6c18 apat -> L0_leftSquare pats1 . L0_rightSquare
+F108 @26-37 L4c14-L6c18 pats1 -> pat + .
+P109 @37-37 L6c17-18 gcon -> . '()'
+P110 @37-37 L6c17-18 gcon -> . '[]'
+P111 @37-37 L6c17-18 gcon -> . L0_leftParen L0_commas L0_rightParen
+P112 @37-37 L6c17-18 gcon -> . qcon
+P117 @37-37 L6c17-18 qvar -> . qvarid
+P118 @37-37 L6c17-18 qvar -> . L0_leftParen qvarsym L0_rightParen
+P119 @37-37 L6c17-18 qvar -> . L0_reservedid_error
+P123 @37-37 L6c17-18 qcon -> . L0_qconid
+P124 @37-37 L6c17-18 qcon -> . L0_leftParen gconsym L0_rightParen
+P129 @37-37 L6c17-18 qvarop -> . qvarsym
+P130 @37-37 L6c17-18 qvarop -> . L0_tick qvarid L0_tick
+P131 @37-37 L6c17-18 qvarop -> . L0_tick L0_reservedid_error L0_tick
+P132 @37-37 L6c17-18 qconop -> . gconsym
+P133 @37-37 L6c17-18 qconop -> . L0_tick L0_qconid L0_tick
+P134 @37-37 L6c17-18 qop -> . qvarop
+P135 @37-37 L6c17-18 qop -> . qconop
+P136 @37-37 L6c17-18 gconsym -> . L0_colon
+P137 @37-37 L6c17-18 gconsym -> . L0_qconsym
+
+ES = 38
+Size of ES 38 is 43
+F58 @25-38 L4c12-L7c14 exp -> infixexp .
+R59:1 @25-38 L4c12-L7c14 infixexp -> lexp . qop infixexp
+F61 @25-38 L4c12-L7c14 infixexp -> lexp .
+F62 @25-38 L4c12-L7c14 lexp -> fexp .
+R69:1 @25-38 L4c12-L7c14 fexp -> fexp . aexp
+F70 @25-38 L4c12-L7c14 fexp -> aexp .
+P71 @38-38 L7c14 aexp -> . qvar
+P72 @38-38 L7c14 aexp -> . literal
+P73 @38-38 L7c14 aexp -> . L0_leftParen exp L0_rightParen
+P74 @38-38 L7c14 aexp -> . L0_leftParen exp_tuple_list L0_rightParen
+P75 @38-38 L7c14 aexp -> . L0_leftSquare exps L0_rightSquare
+F75 @25-38 L4c12-L7c14 aexp -> L0_leftSquare exps L0_rightSquare .
+P76 @38-38 L7c14 aexp -> . L0_leftSquare exp L0_pipe quals L0_rightSquare
+R76:4 @22-38 L4c6-L7c14 aexp -> L0_leftSquare exp L0_pipe quals . L0_rightSquare
+F77 @25-38 L4c12-L7c14 quals -> qual + .
+P78 @38-38 L7c14 aexp -> . gcon
+R82:1 @25-38 L4c12-L7c14 qual -> pat . L0_leftSingle exp
+F84 @25-38 L4c12-L7c14 qual -> exp .
+R98:1 @25-38 L4c12-L7c14 pat -> lpat . qconop pat
+F99 @25-38 L4c12-L7c14 pat -> lpat .
+F100 @25-38 L4c12-L7c14 lpat -> apat .
+F107 @25-38 L4c12-L7c14 apat -> L0_leftSquare pats1 L0_rightSquare .
+P109 @38-38 L7c14 gcon -> . '()'
+P110 @38-38 L7c14 gcon -> . '[]'
+P111 @38-38 L7c14 gcon -> . L0_leftParen L0_commas L0_rightParen
+P112 @38-38 L7c14 gcon -> . qcon
+P117 @38-38 L7c14 qvar -> . qvarid
+P118 @38-38 L7c14 qvar -> . L0_leftParen qvarsym L0_rightParen
+P119 @38-38 L7c14 qvar -> . L0_reservedid_error
+P123 @38-38 L7c14 qcon -> . L0_qconid
+P124 @38-38 L7c14 qcon -> . L0_leftParen gconsym L0_rightParen
+P129 @38-38 L7c14 qvarop -> . qvarsym
+P130 @38-38 L7c14 qvarop -> . L0_tick qvarid L0_tick
+P131 @38-38 L7c14 qvarop -> . L0_tick L0_reservedid_error L0_tick
+P132 @38-38 L7c14 qconop -> . gconsym
+P133 @38-38 L7c14 qconop -> . L0_tick L0_qconid L0_tick
+P134 @38-38 L7c14 qop -> . qvarop
+P135 @38-38 L7c14 qop -> . qconop
+P136 @38-38 L7c14 gconsym -> . L0_colon
+P137 @38-38 L7c14 gconsym -> . L0_qconsym
+
+ES = 39
+Size of ES 39 is 27
+P58 @39-39 L7c16-17 exp -> . infixexp
+P59 @39-39 L7c16-17 infixexp -> . lexp qop infixexp
+P60 @39-39 L7c16-17 infixexp -> . L0_dash infixexp
+P61 @39-39 L7c16-17 infixexp -> . lexp
+P62 @39-39 L7c16-17 lexp -> . fexp
+P63 @39-39 L7c16-17 lexp -> . resword_let laidout_decls resword_in exp
+P64 @39-39 L7c16-17 lexp -> . resword_case exp resword_of laidout_alts
+P65 @39-39 L7c16-17 lexp -> . resword_do laidout_stmts
+P69 @39-39 L7c16-17 fexp -> . fexp aexp
+P70 @39-39 L7c16-17 fexp -> . aexp
+P71 @39-39 L7c16-17 aexp -> . qvar
+P72 @39-39 L7c16-17 aexp -> . literal
+P73 @39-39 L7c16-17 aexp -> . L0_leftParen exp L0_rightParen
+P74 @39-39 L7c16-17 aexp -> . L0_leftParen exp_tuple_list L0_rightParen
+P75 @39-39 L7c16-17 aexp -> . L0_leftSquare exps L0_rightSquare
+P76 @39-39 L7c16-17 aexp -> . L0_leftSquare exp L0_pipe quals L0_rightSquare
+P78 @39-39 L7c16-17 aexp -> . gcon
+R82:2 @25-39 L4c12-L7c17 qual -> pat L0_leftSingle . exp
+P109 @39-39 L7c16-17 gcon -> . '()'
+P110 @39-39 L7c16-17 gcon -> . '[]'
+P111 @39-39 L7c16-17 gcon -> . L0_leftParen L0_commas L0_rightParen
+P112 @39-39 L7c16-17 gcon -> . qcon
+P117 @39-39 L7c16-17 qvar -> . qvarid
+P118 @39-39 L7c16-17 qvar -> . L0_leftParen qvarsym L0_rightParen
+P119 @39-39 L7c16-17 qvar -> . L0_reservedid_error
+P123 @39-39 L7c16-17 qcon -> . L0_qconid
+P124 @39-39 L7c16-17 qcon -> . L0_leftParen gconsym L0_rightParen
+
+ES = 40
+Size of ES 40 is 39
+F58 @39-40 L7c16-21 exp -> infixexp .
+R59:1 @39-40 L7c16-21 infixexp -> lexp . qop infixexp
+F61 @39-40 L7c16-21 infixexp -> lexp .
+F62 @39-40 L7c16-21 lexp -> fexp .
+R69:1 @39-40 L7c16-21 fexp -> fexp . aexp
+F70 @39-40 L7c16-21 fexp -> aexp .
+P71 @40-40 L7c19-21 aexp -> . qvar
+F71 @39-40 L7c16-21 aexp -> qvar .
+P72 @40-40 L7c19-21 aexp -> . literal
+P73 @40-40 L7c19-21 aexp -> . L0_leftParen exp L0_rightParen
+P74 @40-40 L7c19-21 aexp -> . L0_leftParen exp_tuple_list L0_rightParen
+P75 @40-40 L7c19-21 aexp -> . L0_leftSquare exps L0_rightSquare
+P76 @40-40 L7c19-21 aexp -> . L0_leftSquare exp L0_pipe quals L0_rightSquare
+R76:4 @22-40 L4c6-L7c21 aexp -> L0_leftSquare exp L0_pipe quals . L0_rightSquare
+F77 @25-40 L4c12-L7c21 quals -> qual + .
+P78 @40-40 L7c19-21 aexp -> . gcon
+F82 @25-40 L4c12-L7c21 qual -> pat L0_leftSingle exp .
+P109 @40-40 L7c19-21 gcon -> . '()'
+P110 @40-40 L7c19-21 gcon -> . '[]'
+P111 @40-40 L7c19-21 gcon -> . L0_leftParen L0_commas L0_rightParen
+P112 @40-40 L7c19-21 gcon -> . qcon
+P117 @40-40 L7c19-21 qvar -> . qvarid
+F117 @39-40 L7c16-21 qvar -> qvarid .
+P118 @40-40 L7c19-21 qvar -> . L0_leftParen qvarsym L0_rightParen
+P119 @40-40 L7c19-21 qvar -> . L0_reservedid_error
+P123 @40-40 L7c19-21 qcon -> . L0_qconid
+P124 @40-40 L7c19-21 qcon -> . L0_leftParen gconsym L0_rightParen
+P129 @40-40 L7c19-21 qvarop -> . qvarsym
+P130 @40-40 L7c19-21 qvarop -> . L0_tick qvarid L0_tick
+P131 @40-40 L7c19-21 qvarop -> . L0_tick L0_reservedid_error L0_tick
+P132 @40-40 L7c19-21 qconop -> . gconsym
+P133 @40-40 L7c19-21 qconop -> . L0_tick L0_qconid L0_tick
+P134 @40-40 L7c19-21 qop -> . qvarop
+P135 @40-40 L7c19-21 qop -> . qconop
+P136 @40-40 L7c19-21 gconsym -> . L0_colon
+P137 @40-40 L7c19-21 gconsym -> . L0_qconsym
+
+ES = 41
+Size of ES 41 is 46
+F1 @0-41 L1c1-L7c23 module -> body .
+F7 @0-41 L1c1-L7c23 body -> topdecls .
+F12 @0-41 L1c1-L7c23 topdecls -> topdecls_seq .
+R13:1 @0-41 L1c1-L7c23 topdecls_seq -> topdecls_seq . virtual_semicolon topdecl
+F13 @0-41 L1c1-L7c23 topdecls_seq -> topdecls_seq virtual_semicolon topdecl .
+P15 @41-41 L7c23 virtual_semicolon -> . ruby_semicolon
+P16 @41-41 L7c23 virtual_semicolon -> . L0_semicolon
+F18 @20-41 L2c27-L7c23 topdecl -> decl .
+F23 @20-41 L2c27-L7c23 decl -> funlhs rhs .
+F53 @21-41 L4c1-L7c23 rhs -> L0_equal exp .
+R54:2 @21-41 L4c1-L7c23 rhs -> L0_equal exp . resword_where laidout_decls
+F58 @22-41 L4c6-L7c23 exp -> infixexp .
+R59:1 @22-41 L4c6-L7c23 infixexp -> lexp . qop infixexp
+F61 @22-41 L4c6-L7c23 infixexp -> lexp .
+F62 @22-41 L4c6-L7c23 lexp -> fexp .
+R69:1 @22-41 L4c6-L7c23 fexp -> fexp . aexp
+F70 @22-41 L4c6-L7c23 fexp -> aexp .
+P71 @41-41 L7c23 aexp -> . qvar
+P72 @41-41 L7c23 aexp -> . literal
+P73 @41-41 L7c23 aexp -> . L0_leftParen exp L0_rightParen
+P74 @41-41 L7c23 aexp -> . L0_leftParen exp_tuple_list L0_rightParen
+P75 @41-41 L7c23 aexp -> . L0_leftSquare exps L0_rightSquare
+P76 @41-41 L7c23 aexp -> . L0_leftSquare exp L0_pipe quals L0_rightSquare
+F76 @22-41 L4c6-L7c23 aexp -> L0_leftSquare exp L0_pipe quals L0_rightSquare .
+P78 @41-41 L7c23 aexp -> . gcon
+P109 @41-41 L7c23 gcon -> . '()'
+P110 @41-41 L7c23 gcon -> . '[]'
+P111 @41-41 L7c23 gcon -> . L0_leftParen L0_commas L0_rightParen
+P112 @41-41 L7c23 gcon -> . qcon
+P117 @41-41 L7c23 qvar -> . qvarid
+P118 @41-41 L7c23 qvar -> . L0_leftParen qvarsym L0_rightParen
+P119 @41-41 L7c23 qvar -> . L0_reservedid_error
+P123 @41-41 L7c23 qcon -> . L0_qconid
+P124 @41-41 L7c23 qcon -> . L0_leftParen gconsym L0_rightParen
+P129 @41-41 L7c23 qvarop -> . qvarsym
+P130 @41-41 L7c23 qvarop -> . L0_tick qvarid L0_tick
+P131 @41-41 L7c23 qvarop -> . L0_tick L0_reservedid_error L0_tick
+P132 @41-41 L7c23 qconop -> . gconsym
+P133 @41-41 L7c23 qconop -> . L0_tick L0_qconid L0_tick
+P134 @41-41 L7c23 qop -> . qvarop
+P135 @41-41 L7c23 qop -> . qconop
+P136 @41-41 L7c23 gconsym -> . L0_colon
+P137 @41-41 L7c23 gconsym -> . L0_qconsym
+F138 @0-41 L1c1-L7c23 :start -> module .
+
+ok 1 - Result is OK

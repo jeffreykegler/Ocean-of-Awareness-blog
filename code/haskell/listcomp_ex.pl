@@ -24,32 +24,12 @@ my $listComp = <<'EOS';
 xss :: [[Integer]]
 xss = [ [ 42, 1729, 99 ] ]
 
-ys :: [Integer]
-ys = [ 42, 1729, 99 ]
-
 list = [ x | [x, 1729,
-                -- INSERT HERE
+                1, 2, 3,
                 99
              ] <- xss ]
 
-list2 = [ x | [x, 1729, 99] <- xss,
-               [x, 1729,
-                  99
-               ] == ys,
-             [ 42, 1729, 99 ] <- xss
-             ]
-
-main = do
-    putStrLn (show list)
-    putStrLn (show list2)
 EOS
-
-my $insertLine = <<'EOS';
-                1, 2, 3, 4, 5, 6, 7, 8, 9,
-EOS
-
-my $insertion = ($insertLine x 100);
-$listComp =~ s/^ [ -]* INSERT [ ] HERE [^\n]* $/$insertion/xms;
 
 # This trace level above that allowed in test suite
 local $main::TRACE_ES = 2;
