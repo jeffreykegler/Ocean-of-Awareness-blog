@@ -51,7 +51,9 @@ EOS
 my $insertion = ($insertLine x 100);
 $listComp =~ s/^ [ -]* INSERT [ ] HERE [^\n]* $/$insertion/xms;
 
-local $main::TRACE_ES = 1;
+# This trace level above that allowed in test suite
+local $main::TRACE_ES = 2;
+
 local $main::DEBUG = 0;
 my $inputRef = \$listComp;
 

@@ -1043,7 +1043,13 @@ sub parse {
       say STDERR qq{Returning from top level parser};
       my $latest_es = $recce->current_g1_location();
       for my $es (0 .. $latest_es) {
-	say STDERR "ES = ", $latest_es;
+	say STDERR "ES = ", $es;
+	if ($main::TRACE_ES >= 2) {
+	    # These calls are undocumented, and should not be
+	    # called in the test suite.
+	    my $thick_recce = $recce->thick_g1_recce();
+	    say STDERR "Size of ES $es is ", $thick_recce->earley_set_size($es);
+	}
 	say STDERR $recce->show_progress($es);
       }
     }
