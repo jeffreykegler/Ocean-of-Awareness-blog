@@ -1,3 +1,6 @@
 docs/
 nogit/
 junk*
+errs
+listcomp_ex[.]pl[.]out
+*[.]o
