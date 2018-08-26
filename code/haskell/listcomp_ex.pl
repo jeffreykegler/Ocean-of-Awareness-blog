@@ -4,6 +4,10 @@
 # list comprehension: Boolean guards versus
 # generators.
 
+# This example is for a specific blog post,
+# and is not to be included in the test
+# suite.
+
 use 5.010;
 use strict;
 use warnings;

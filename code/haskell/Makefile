@@ -11,5 +11,5 @@ test_suite:
 
 undoc_tests:
 	perl -I. listcomp_ex.pl >listcomp_ex.pl.out 2>&1
-	diff listcomp_ex.pl.out listcomp_trace.txt || echo 'Trace example FAILED'
+	diff listcomp_ex.pl.out listcomp_trace.out || echo 'Trace example FAILED'
 
