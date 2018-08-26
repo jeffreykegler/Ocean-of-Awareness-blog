@@ -1133,25 +1133,14 @@ sub getValue {
 
 	    # On outdent, we end the read loop.  An EOF is treated as
 	    # an outdent.
-            my $next_char = substr( ${$input}, $indent_end + 1, 1 );
-            if ( not defined $next_char or $indent_length < $currentIndent ) {
-		say STDERR 'Indent is outdent'
-		   if $main::DEBUG;
+            if (   $indent_length < $currentIndent
+                or $indent_end >= length ${$input} )
+            {
+                say STDERR 'Indent is outdent'
+                  if $main::DEBUG;
                 $this_pos = $lastNL;
                 last READ;
             }
-
-	    # Skip empty lines -- their whitespace does not count as identation.
-            if ($next_char eq "\n") {
-		# An empty line.
-		# Comments are dealt with separately, taking advantage of the
-		# fact they they must be longer and therefore preferred by
-		# the lexer.
-		say STDERR 'Indent is an empty line'
-		   if $main::DEBUG;
-                $resume_pos = $indent_end;
-                next READ;
-	    }
 
 	    # Indentation deeper than the current indent means the current
 	    # syntactic item is being continued.  Just resume the read.
