@@ -1,6 +1,6 @@
 1..1
-Name "main::DEBUG" used only once: possible typo at listcomp_ex.pl line 37.
-Name "main::TRACE_ES" used only once: possible typo at listcomp_ex.pl line 35.
+Name "main::DEBUG" used only once: possible typo at listcomp_ex.pl line 41.
+Name "main::TRACE_ES" used only once: possible typo at listcomp_ex.pl line 39.
 Returning from top level parser
 ES = 0
 Size of ES 0 is 47
