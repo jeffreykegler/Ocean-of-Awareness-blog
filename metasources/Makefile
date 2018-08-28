@@ -12,6 +12,7 @@ all: \
   ../source/individual/2018/05/lrecursion.txt \
   ../source/individual/2018/07/knuth_1965_2.txt \
   ../source/individual/2018/05/combinator2.txt \
+  ../source/individual/2018/08/rntz.txt \
 
 ../source/individual/2018/05/fast_power.txt: fast_power.pl
 	perl fast_power.pl > ../source/individual/2018/05/fast_power.txt
@@ -39,4 +40,7 @@ all: \
 
 ../source/individual/2018/05/combinator2.txt: combinator2.pl
 	perl combinator2.pl > ../source/individual/2018/05/combinator2.txt
+
+../source/individual/2018/08/rntz.txt: rntz.pl
+	perl rntz.pl > ../source/individual/2018/08/rntz.txt
 

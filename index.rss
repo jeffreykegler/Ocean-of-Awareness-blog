@@ -10,6 +10,443 @@
     <language>en</language>
 
   <item>
+    <title>A Haskell challenge</title>
+    <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2018/08/rntz.html</link>
+    <description>&lt;html&gt;
+  &lt;head&gt;
+  &lt;/head&gt;
+  &lt;body style=&quot;max-width:850px&quot;&gt;
+    &lt;!--
+      marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
+      --&gt;
+    &lt;h2&gt;The challenge&lt;/h2&gt;
+    &lt;p&gt;
+    A &lt;a href=&quot;http://www.rntz.net/post/2018-07-10-parsing-list-comprehensions.html&quot;&gt;recent
+    blog post by Michael Arntzenius&lt;/a&gt; ended with a friendly challenge to Marpa.
+    Haskell list comprehensions are something that
+    Haskell's own parser handles only with difficulty.
+    A point of Michael's critique of Haskell's parsing was
+    that Haskell's list comprehension could be even more powerful if not
+    for these syntactic limits.
+    &lt;/p&gt;
+    Michael wondered aloud if Marpa could do better.
+    It can.
+    &lt;/p&gt;
+    &lt;p&gt;The problem syntax occurs with the &quot;guards&quot;,
+    a very powerful facility of
+    Haskell's list comprehension.
+    Haskell allows several kinds of &quot;guards&quot;.
+    Two of these &quot;guards&quot; can have the same prefix,
+    and these ambiguous prefixes can
+    be of arbitrary length.
+    In other words,
+    parsing Haskell's list comprehension requires
+    either lookahead of arbitrary length,
+    or its equivalent.
+    &lt;p&gt;
+    &lt;p&gt;To answer Michael's challenge,
+    I extended my Haskell subset parser to deal with
+    list comprehension.
+    That parser, with its test examples, is online.&lt;a id=&quot;footnote-1-ref&quot; href=&quot;#footnote-1&quot;&gt;[1]&lt;/a&gt;
+    I have run it for examples thousands of tokens long and,
+    more to the point,
+    have checked the Earley sets to ensure that Marpa
+    will stay linear,
+    no matter how long the ambiguous prefix gets.&lt;a id=&quot;footnote-2-ref&quot; href=&quot;#footnote-2&quot;&gt;[2]&lt;/a&gt;
+    &lt;/p&gt;
+    Earley parsing, which Marpa uses,
+    accomplishes the seemingly impossible here.
+    It does the equivalent of infinite lookahead efficiently,
+    without actually doing any lookahead or
+    backtracking.
+    That Earley's algorithm can do this has been a settled
+    fact in the literature for some time.
+    But today Earley's algorithm is little known even
+    among those well acquainted with parsing,
+    and to many claiming the equivalent of infinite lookahead,
+    without actually doing any lookahead at all,
+    sounds like a boast of magical powers.
+    &lt;/p&gt;
+    &lt;p&gt;
+    In the rest of this blog post,
+    I hope to indicate how Earley parsing follows more than
+    one potential parse at a time.
+    I will not describe Earley's algorithm in full.&lt;a id=&quot;footnote-3-ref&quot; href=&quot;#footnote-3&quot;&gt;[3]&lt;/a&gt;
+    But I will show that no magic is involved,
+    and that in fact the basic ideas behind Earley's method
+    are intuitive and reasonable.
+    &lt;/p&gt;
+    &lt;h2&gt;A quick cheat sheet on list comprehension&lt;/h2&gt;
+    &lt;p&gt;
+    List comprehension in Haskell is impressive.
+    Haskell allows
+    you to build a list using a series of &quot;guards&quot;,
+    which can be of several kinds.
+    The parsing issue arises because two of the guard types --
+    generators and boolean expressions --
+    must be treated quite differently,
+    but can look the same over an arbitrarily long prefix.
+    &lt;/p&gt;
+    &lt;h3&gt;Generators&lt;/h3&gt;
+    &lt;p&gt;Here is one example of a Haskell generator,
+    from the test case for this blog post:
+    &lt;/p&gt;
+    &lt;pre&gt;&lt;tt&gt;
+          list = [ x | [x, 1729,
+		      -- insert more here
+		      99
+		   ] &lt;- xss ] &lt;/tt&gt;&lt;a id=&quot;footnote-4-ref&quot; href=&quot;#footnote-4&quot;&gt;[4]&lt;/a&gt;&lt;/pre&gt;
+    &lt;p&gt;
+    This says to build a lists of &lt;tt&gt;x&lt;/tt&gt;'s
+    such that the guard
+    &lt;tt&gt;[x, 1729, 99 ] &amp;lt;- xss&lt;/tt&gt;
+    holds.
+    The clue that this guard is a generator is the
+    &lt;tt&gt;&amp;lt;-&lt;/tt&gt; operator.
+    The &lt;tt&gt;&amp;lt;-&lt;/tt&gt; operator
+    will appear in every generator,
+    and means &quot;draw from&quot;.
+    &lt;/p&gt;
+    &lt;p&gt;
+    The LHS of the &lt;tt&gt;&amp;lt;-&lt;/tt&gt; operator is a pattern
+    and the RHS is an expression.
+    This generator draws all the elements from &lt;tt&gt;xss&lt;/tt&gt;
+    which match the pattern &lt;tt&gt;[x, 1729, 99 ]&lt;/tt&gt;.
+    In other words, it draws out
+    all the elements of &lt;tt&gt;xss&lt;/tt&gt;,
+    and tests that they
+    are lists of length 3
+    whose last two subelements are 1729 and 99.
+    &lt;/p&gt;
+    &lt;p&gt;The variable &lt;tt&gt;x&lt;/tt&gt; is set to the 1st subelement.
+    &lt;tt&gt;list&lt;/tt&gt; will be a list of all those &lt;tt&gt;x&lt;/tt&gt;'s.
+    In the test suite, we have
+    &lt;pre&gt;&lt;tt&gt;
+    xss = [ [ 42, 1729, 99 ] ] &lt;/tt&gt;&lt;a id=&quot;footnote-5-ref&quot; href=&quot;#footnote-5&quot;&gt;[5]&lt;/a&gt;&lt;/pre&gt;
+    &lt;/p&gt;
+    so that list becomes &lt;tt&gt;[42]&lt;/tt&gt; -- a list
+    of one element whose value is 42.
+    &lt;/p&gt;
+    &lt;h3&gt;Boolean guards&lt;/h3&gt;
+    &lt;p&gt;Generators can share very long prefixes with Boolean guards.
+    &lt;pre&gt;&lt;tt&gt;
+	list2 = [ x | [x, 1729, 99] &amp;lt;- xss,
+               [x, 1729,
+                  -- insert more here
+                  99
+               ] == ys,
+             [ 42, 1729, 99 ] &amp;lt;- xss
+             ] &lt;/tt&gt;&lt;a id=&quot;footnote-6-ref&quot; href=&quot;#footnote-6&quot;&gt;[6]&lt;/a&gt;&lt;/pre&gt;
+    &lt;/p&gt;
+    &lt;p&gt;The expression defining &lt;tt&gt;list2&lt;/tt&gt;
+    has 3 comma-separated guards:
+    The first guard is a generator,
+    the same one as in the previous example.
+    The last guard is also a generator.
+    &lt;/p&gt;
+    &lt;p&gt;
+    The middle guard is of a new type: it is a Boolean:
+    &lt;tt&gt;[x, 1729, 99 ] == ys&lt;/tt&gt;.
+    This guard insists that &lt;tt&gt;x&lt;/tt&gt; be such that the triple
+    &lt;tt&gt;[x, 1729, 99 ]&lt;/tt&gt; is equal to &lt;tt&gt;ys&lt;/tt&gt;.
+    &lt;/p&gt;
+    &lt;p&gt;
+    In the test suite, we have
+    &lt;pre&gt;&lt;tt&gt;
+    ys = [ 42, 1729, 99 ] &lt;/tt&gt;&lt;a id=&quot;footnote-7-ref&quot; href=&quot;#footnote-7&quot;&gt;[7]&lt;/a&gt;&lt;/pre&gt;
+    so that &lt;tt&gt;list2&lt;/tt&gt; is also
+    &lt;tt&gt;[42]&lt;/tt&gt;.
+    &lt;/p&gt;
+    &lt;h2&gt;Boolean guards versus generators&lt;/h2&gt;
+    &lt;p&gt;From the parser's point of view, Boolean guards
+    and generators start out looking the same --
+    in the examples above, three of our guards start out
+    the same -- with the string &lt;tt&gt;[x, 1729, 99 ]&lt;/tt&gt;,
+    but
+    &lt;ul&gt;
+    &lt;li&gt;in one case (the Boolean guard),
+    &lt;tt&gt;[x, 1729, 99 ]&lt;/tt&gt; is the beginning of an expression; and &lt;/li&gt;
+    &lt;li&gt;in the other two cases (the generators),
+    &lt;tt&gt;[x, 1729, 99 ]&lt;/tt&gt; is a pattern.&lt;/li&gt;
+    &lt;/ul&gt;
+    Clearly patterns and expressions can look identical.
+    And they can look identical for an arbitrarily long time --
+    I tested the &lt;a href=&quot;https://www.haskell.org/ghc/&quot;&gt;Glasgow Haskell Compiler&lt;/a&gt;
+    (GHC)
+    with identical expression/pattern prefixes
+    thousands of tokens in length.
+    My virtual memory eventually gives out,
+    but GHC itself never complains.&lt;a id=&quot;footnote-8-ref&quot; href=&quot;#footnote-8&quot;&gt;[8]&lt;/a&gt;
+    (The comments &quot;&lt;tt&gt;insert more here&lt;/tt&gt;&quot; show the points at which the
+    comma-separated lists of integers can be extended.)
+    &lt;/p&gt;
+    &lt;h2&gt;The problem for parsers&lt;/h2&gt;
+    &lt;p&gt;So Haskell list comprehension presents a problem for parsers.
+    A parser must determine whether it is parsing an expression or
+    a pattern, but it cannot know this for an arbitrarily long time.
+    A parser must keep track of two possibilities at once --
+    something traditional parsing has refused to do.
+    As I have pointed out&lt;a id=&quot;footnote-9-ref&quot; href=&quot;#footnote-9&quot;&gt;[9]&lt;/a&gt;,
+    belief that traditional parsing &quot;solves&quot; the parsing problem is
+    belief in human exceptionalism --
+    that human have calculating abilities that Turing machines do not.
+    Keeping two possibilites in mind for a long time is trivial for
+    human beings -- in one form we call it worrying,
+    and try to prevent ourselves from doing it obsessively.
+    But it has been the orthodoxy that practical parsing algorithms
+    cannot do this.
+    &lt;/footnote&gt;
+    &lt;/p&gt;
+    &lt;p&gt;Arntzenius has a nice summary of the attempts to parse this
+    construct while only allowing one possibility at a time --
+    that is, determistically.
+    Lookahead clearly cannot work -- it would have to be arbitrarily
+    long.
+    Backtracking can work, but can be very costly
+    and is a major obstacle to quality error reporting.
+    &lt;/p&gt;
+    &lt;p&gt;
+    GHC avoids the problems with backtracking by using post-processing.
+    At parsing time, GHC treats an ambiguous guard as a
+    Boolean.
+    Then, if it turns out that is a generator,
+    it rewrites it in post-processing.
+    This inelegance incurs some real technical debt --
+    either a pattern must &lt;b&gt;always&lt;/b&gt; be a valid expression,
+    or even more trickery must be resorted to.&lt;a id=&quot;footnote-10-ref&quot; href=&quot;#footnote-10&quot;&gt;[10]&lt;/a&gt;
+    &lt;h2&gt;The Earley solution&lt;/h2&gt;
+    &lt;/p&gt;
+    &lt;p&gt;Earley parsing deals with this issue by doing what 
+    a human would do --
+    keeping both possibilities in mind at once.
+    Jay Earley's innovation was to discover a way for a computer
+    to track multiple possible parses
+    that is compact,
+    efficient to create,
+    and efficient to read.
+    &lt;/p&gt;
+    &lt;p&gt;
+    Earley's algorithm maintains an &quot;Earley table&quot;
+    which contains &quot;Earley sets&quot;,
+    one for each token.
+    Each Earley set contains &quot;Earley items&quot;.
+    Here are some Earley items from Earley set 25 
+    in one of our test cases:&lt;br&gt;
+    &lt;pre&gt;&lt;tt&gt;
+	origin = 22; &amp;lt;atomic expression&amp;gt; ::=   '[' &amp;ltexpression&amp;gt; '|' . &amp;ltguards&amp;gt; ']'
+	origin = 25; &amp;lt;guards&amp;gt; ::= . &amp;lt;guard&lt;&amp;gt;
+	origin = 25; &amp;lt;guards&amp;gt; ::= . &amp;lt;guards&amp;gt; ',' &amp;lt;guard&lt;&amp;gt;
+	origin = 25; &amp;lt;guard&lt;&amp;gt;  ::= . &amp;lt;pattern&amp;gt; '&amp;lt; &amp;lt;expression&amp;gt;
+	origin = 25; &amp;lt;guard&lt;&amp;gt;  ::= . &amp;lt;expression&amp;gt; &lt;/tt&gt;&lt;a id=&quot;footnote-11-ref&quot; href=&quot;#footnote-11&quot;&gt;[11]&lt;/a&gt;&lt;/pre&gt;
+     &lt;p&gt;
+     In the code, these represent the state of the parse just after
+     the pipe symbol (&quot;&lt;tt&gt;|&lt;/tt&gt;&quot;) on line 4 of our test code.
+    &lt;/p&gt;
+    Each Earley item describes progress in one rule of the grammar.
+    There is a dot (&quot;&lt;tt&gt;.&lt;/tt&gt;&quot;) in each rule,
+    which indicates how far the parse
+    has progressed inside the rule.
+    One of the rules has the dot just after the pipe symbol,
+    as you would expect, since we have just seen a pipe symbol.
+    &lt;/p&gt;
+    &lt;p&gt;
+    The other four rules have the dot at the beginning of the RHS.
+    These four rules are &quot;predictions&quot; -- none of their symbols
+    have been parsed yet, but we know that these rules might occur,
+    starting at the location of this Earley set.
+    &lt;/p&gt;
+    &lt;p&gt;
+    Each item also records an &quot;origin&quot;: the location in the input where
+    the rule described in the item began.
+    For predictions the origin is always the same as the Earley set.
+    For the first Earley item, the origin is 3 tokens earlier,
+    in Earley set 22.
+    &lt;/p&gt;
+    &lt;p&gt;
+    &lt;h2&gt;The &quot;secret&quot; of non-determinism&lt;/h2&gt;
+    &lt;p&gt;
+    And now we have come to the secret of efficient non-deterministic parsing --
+    a &quot;secret&quot;
+    which I hope to convince the reader is not magic,
+    or even much of a mystery.
+    Here, again, are two of the items from Earley set 25:&lt;/p&gt;
+    &lt;pre&gt;&lt;tt&gt;
+	origin = 25; &amp;lt;guard&lt;&amp;gt;  ::= . &amp;lt;pattern&amp;gt; '&amp;lt; &amp;lt;expression&amp;gt;
+	origin = 25; &amp;lt;guard&lt;&amp;gt;  ::= . &amp;lt;expression&amp;gt; &lt;/tt&gt; &lt;a id=&quot;footnote-12-ref&quot; href=&quot;#footnote-12&quot;&gt;[12]&lt;/a&gt;&lt;/pre&gt;
+    &lt;/p&gt;
+    &lt;p&gt;At this point there are two possibilities going forward --
+    a generator guard or a Boolean expression guard.
+    And there is an Earley item for each of these possibilities in the Earley set.
+    &lt;/p&gt;
+    &lt;p&gt;
+    That is the basic idea -- that is all there is to it.
+    Going forward in the parse, for as long as both possibilities stay
+    live, Earley items for both will appear in the Earley sets.
+    &lt;/p&gt;
+    &lt;p&gt;From this point of view,
+    it should now be clear why the Earley algorithm can keep track
+    of several possibilities without lookahead or backtracking.
+    No lookahead is needed because all possibilities are in the
+    Earley set, and selection among them will take place as the
+    rest of the input is read.
+    And no backtracking is needed because every possibility
+    was already recorded -- there is nothing new to be found
+    by backtracking.
+    &lt;/p&gt;
+    &lt;p&gt;It may also be clearer why I claim that Marpa is left-eidetic,
+    and how the Ruby Slippers work.&lt;a id=&quot;footnote-13-ref&quot; href=&quot;#footnote-13&quot;&gt;[13]&lt;/a&gt;
+    Marpa has perfect knowledge of everything in the parse so far,
+    because it is all in the Earley tables.
+    And, given left-eidetic knowledge, Marpa also knows what
+    terminals are expected at the current location,
+    and can &quot;wish&quot; them into existence as necessary.
+    &lt;/p&gt;
+    &lt;h2&gt;The code, comments, etc.&lt;/h2&gt;
+    &lt;p&gt;A permalink to the
+    full code and a test suite for this prototype,
+    as described in this blog post,
+    is
+    &lt;a href=&quot;https://github.com/jeffreykegler/Ocean-of-Awareness-blog/tree/0df0aef7d6cb8590d3a33f857619e75f84786dd7/code/haskell&quot;&gt;
+    on Github&lt;/a&gt;.
+    In particular,
+    the permalink of the
+    the test suite file for list comprehension is
+    &lt;a href=&quot;https://github.com/jeffreykegler/Ocean-of-Awareness-blog/blob/0df0aef7d6cb8590d3a33f857619e75f84786dd7/code/haskell/listcomp.t&quot;&gt;
+    here&lt;/a&gt;.
+    I expect to update this code,
+    and the latest commit can be found
+    &lt;a href=&quot;https://github.com/jeffreykegler/Ocean-of-Awareness-blog/tree/gh-pages/code/haskell&quot;&gt;
+    here&lt;/a&gt;.
+    &lt;/p&gt;
+    &lt;p&gt;
+      To learn more about Marpa,
+      a good first stop is the
+      &lt;a href=&quot;http://savage.net.au/Marpa.html&quot;&gt;semi-official web site, maintained by Ron Savage&lt;/a&gt;.
+      The official, but more limited, Marpa website
+      &lt;a href=&quot;http://jeffreykegler.github.io/Marpa-web-site/&quot;&gt;is my personal one&lt;/a&gt;.
+      Comments on this post can be made in
+      &lt;a href=&quot;http://groups.google.com/group/marpa-parser&quot;&gt;
+        Marpa's Google group&lt;/a&gt;,
+      or on our IRC channel: #marpa at freenode.net.
+    &lt;/p&gt;
+    &lt;h2&gt;Footnotes&lt;/h2&gt;
+&lt;p id=&quot;footnote-1&quot;&gt;&lt;b&gt;1.&lt;/b&gt;
+    If you are interested in my Marpa-driven Haskell subset parser,
+    &lt;a href=&quot;http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2018/05/combinator2.html&quot;&gt;
+    this blog post&lt;/a&gt;
+    may be the best introduction.
+    The code is
+    &lt;a href=&quot;https://github.com/jeffreykegler/Ocean-of-Awareness-blog/tree/gh-pages/code/haskell&quot;&gt;
+    on Github&lt;/a&gt;.
+ &lt;a href=&quot;#footnote-1-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;p id=&quot;footnote-2&quot;&gt;&lt;b&gt;2.&lt;/b&gt;
+    The Earley sets for the ambigious prefix immediately reach a size
+    of 46 items, and then stay at that level.
+    This is experimental evidence that the Earley set
+    sizes stay constant.
+    &lt;br&gt;&lt;br&gt;
+    And, if the Earley items are examined,
+    and their derivations traced,
+    it can be seen that
+    they must repeat the same Earley item count
+    for as long as the ambiguous prefix continues.
+    The traces I examined are
+    &lt;a href=&quot;https://github.com/jeffreykegler/Ocean-of-Awareness-blog/blob/0df0aef7d6cb8590d3a33f857619e75f84786dd7/code/haskell/listcomp_trace.out&quot;&gt;here&lt;/a&gt;,
+    and the code which generated them is
+    &lt;a href=&quot;https://github.com/jeffreykegler/Ocean-of-Awareness-blog/blob/0df0aef7d6cb8590d3a33f857619e75f84786dd7/code/haskell/listcomp_ex.pl&quot;&gt;here&lt;/a&gt;,
+    for the
+    reader who wants to convince himself.
+    &lt;br&gt;&lt;br&gt;
+    The guard prefixes of Haskell are ambiguous,
+    but (modulo mistakes in the standards)
+    the overall Haskell grammar is not.
+    In the literature on Earley's,
+    it has been shown that for an unambiguous grammar,
+    each Earley item has an constant amortized cost in time.
+    Therefore,
+    if a parse produces
+    a Earley sets that are all of less than a constant size,
+    it must have linear time complexity.
+ &lt;a href=&quot;#footnote-2-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;p id=&quot;footnote-3&quot;&gt;&lt;b&gt;3.&lt;/b&gt;
+    There are many descriptions of Earley's algorithm out there.
+    &lt;a href=&quot;https://en.wikipedia.org/wiki/Earley_parser&quot;&gt;The
+    Wikipedia page on Earley's algorithm&lt;/a&gt;
+    (accessed 27 August 2018)
+    is one good place to start.
+    I did
+    another very simple introduction to Earley's in
+    &lt;a href=&quot;http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2010/06/jay-earleys-idea.html&quot;&gt;an
+    earlier blog post&lt;/a&gt;,
+    which may be worth looking at.
+    Note that Marpa contains
+    &lt;a href=&quot;http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2011/11/what-is-the-marpa-algorithm.html&quot;&gt;
+    improvements to Earley's algorithm&lt;/a&gt;.
+    Particularly, to fulfill Marpa's claim of linear time for all
+    LR-regular grammars, Marpa uses Joop Leo's speed-up.
+    But Joop's improvement is &lt;b&gt;not&lt;/b&gt; necessary or useful
+    for parsing
+    Haskell list comprehension,
+    is not used in this example,
+    and will not be described in this post.
+ &lt;a href=&quot;#footnote-3-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;p id=&quot;footnote-4&quot;&gt;&lt;b&gt;4.&lt;/b&gt;
+    &lt;a href=&quot;https://github.com/jeffreykegler/Ocean-of-Awareness-blog/blob/0df0aef7d6cb8590d3a33f857619e75f84786dd7/code/haskell/listcomp.t#L30&quot;&gt;
+    Permalink to this code&lt;/a&gt;,
+    accessed 27 August 2018.
+ &lt;a href=&quot;#footnote-4-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;p id=&quot;footnote-5&quot;&gt;&lt;b&gt;5.&lt;/b&gt;
+    &lt;a href=&quot;https://github.com/jeffreykegler/Ocean-of-Awareness-blog/blob/0df0aef7d6cb8590d3a33f857619e75f84786dd7/code/haskell/listcomp.t#L25&quot;&gt;
+    Permalink to this code&lt;/a&gt;,
+    accessed 27 August 2018.
+ &lt;a href=&quot;#footnote-5-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;p id=&quot;footnote-6&quot;&gt;&lt;b&gt;6.&lt;/b&gt;
+    &lt;a href=&quot;https://github.com/jeffreykegler/Ocean-of-Awareness-blog/blob/0df0aef7d6cb8590d3a33f857619e75f84786dd7/code/haskell/listcomp.t#L35&quot;&gt;
+    Permalink to this code&lt;/a&gt;,
+    accessed 27 August 2018.
+ &lt;a href=&quot;#footnote-6-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;p id=&quot;footnote-7&quot;&gt;&lt;b&gt;7.&lt;/b&gt;
+    &lt;a href=&quot;https://github.com/jeffreykegler/Ocean-of-Awareness-blog/blob/0df0aef7d6cb8590d3a33f857619e75f84786dd7/code/haskell/listcomp.t#L28&quot;&gt;
+    Permalink to this code&lt;/a&gt;,
+    accessed 27 August 2018.
+ &lt;a href=&quot;#footnote-7-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;p id=&quot;footnote-8&quot;&gt;&lt;b&gt;8.&lt;/b&gt;
+    Note that if the list is extended, the patterns matches and Boolean
+    tests fail, so that 42 is no longer the answer.
+    From the parsing point of view, this is immaterial.
+ &lt;a href=&quot;#footnote-8-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;p id=&quot;footnote-9&quot;&gt;&lt;b&gt;9.&lt;/b&gt;
+    In several places, including
+    &lt;a href=&quot;http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2018/07/knuth_1965_2.html&quot;&gt;
+    this blog post&lt;/a&gt;.
+ &lt;a href=&quot;#footnote-9-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;p id=&quot;footnote-10&quot;&gt;&lt;b&gt;10.&lt;/b&gt;
+    This account of the state of the art summarizes
+    &lt;a href=&quot;http://www.rntz.net/post/2018-07-10-parsing-list-comprehensions.html&quot;&gt;
+    Arntzenius's recent post&lt;/a&gt;,
+    which should be consulted for the details.
+ &lt;a href=&quot;#footnote-10-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;p id=&quot;footnote-11&quot;&gt;&lt;b&gt;11.&lt;/b&gt;
+     Adapted from
+     &lt;a href=&quot;https://github.com/jeffreykegler/Ocean-of-Awareness-blog/blob/0df0aef7d6cb8590d3a33f857619e75f84786dd7/code/haskell/listcomp_trace.out#L811&quot;&gt;
+     this trace output&lt;/a&gt;,
+     accessed 27 August 2018.
+ &lt;a href=&quot;#footnote-11-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;p id=&quot;footnote-12&quot;&gt;&lt;b&gt;12.&lt;/b&gt;
+     Adapted from
+     &lt;a href=&quot;https://github.com/jeffreykegler/Ocean-of-Awareness-blog/blob/0df0aef7d6cb8590d3a33f857619e75f84786dd7/code/haskell/listcomp_trace.out#L811&quot;&gt;
+     this trace output&lt;/a&gt;,
+     accessed 27 August 2018.
+ &lt;a href=&quot;#footnote-12-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;p id=&quot;footnote-13&quot;&gt;&lt;b&gt;13.&lt;/b&gt;
+    For more on the Ruby Slippers see
+    my &lt;a href=&quot;http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2018/05/combinator2.html&quot;&gt;
+    just previous blog post&lt;/a&gt;,
+ &lt;a href=&quot;#footnote-13-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+  &lt;/body&gt;
+&lt;/html&gt;</description>
+  </item>
+  <item>
     <title>Marpa and combinator parsing 2</title>
     <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2018/05/combinator2.html</link>
     <description>&lt;html&gt;
@@ -1805,460 +2242,6 @@
     Specifically O(n^2) for unambiguous grammars,
     and O(n^3) for ambiguous grammars.
  &lt;a href=&quot;#footnote-7-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
-  &lt;/body&gt;
-&lt;/html&gt;</description>
-  </item>
-  <item>
-    <title>Marpa and procedural parsing</title>
-    <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2018/05/csg.html</link>
-    <description>&lt;html&gt;
-  &lt;head&gt;
-  &lt;/head&gt;
-  &lt;body style=&quot;max-width:850px&quot;&gt;
-    &lt;!--
-      marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
-      --&gt;
-    &lt;h2&gt;Procedural parsing&lt;/h2&gt;
-    &lt;p&gt;Marpa is an Earley-based parser,
-      and Earley parsers are typically not good at procedural parsing.
-      Many programmers are used to recursive descent (RD),
-      which has been state-of-the-art in terms of
-      its procedural programming capabilities --
-      it was these capabilities which led to
-      &lt;a href=&quot;http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2018/05/fast_power.html&quot;&gt;
-      RD's
-      triumph over the now-forgotten Irons algorithm.&lt;/a&gt;
-    &lt;/p&gt;
-    &lt;p&gt;
-      Marpa, however, has a parse engine expressly redesigned&lt;a id=&quot;footnote-1-ref&quot; href=&quot;#footnote-1&quot;&gt;[1]&lt;/a&gt;
-      to handle procedural logic well.
-      In fact, Marpa is &lt;b&gt;better&lt;/b&gt; at procedural logic
-      than RD.
-    &lt;/p&gt;
-    &lt;h2&gt;A context-sensitive grammar&lt;/h2&gt;
-    &lt;p&gt;Marpa parses all LR-regular grammars in linear time,
-    so the first challenge is to find a grammar
-    that illustrates a
-    &lt;b&gt;need&lt;/b&gt; for procedural logic, even when Marpa is used.
-    The following is the canonical example of a grammar that is
-    context-sensitive, but not context-free:
-    &lt;/p&gt;
-    &lt;pre&gt;
-          a^n . b^n . c^n : n &gt;= 1
-    &lt;/pre&gt;
-    I will call this the &quot;ABC grammar&quot;.
-    It is a sequence of
-    &lt;tt&gt;a&lt;/tt&gt;'s,
-    &lt;tt&gt;b&lt;/tt&gt;'s, and
-    &lt;tt&gt;c&lt;/tt&gt;'s,
-    in alphabetical order,
-    where the character counts are all
-    equal to each other and greater
-    than zero.
-    &lt;/p&gt;
-    &lt;p&gt;The ABC &quot;grammar&quot; is really a counting problem more than
-    a natural parsing problem,
-    and parsing is not the fastest or easiest way to solve it.
-    Three tight loops, with counters, would do the same job nicely,
-    and would be much faster.
-    But I chose the ABC grammar for exactly this reason.
-    It &lt;b&gt;is&lt;/b&gt; simple in itself,
-    but it is tricky when treated as a parsing problem.&lt;a id=&quot;footnote-2-ref&quot; href=&quot;#footnote-2&quot;&gt;[2]&lt;/a&gt;
-    &lt;/p&gt;
-    &lt;p&gt;
-    In picking the strategy below,
-    I opted for one that illustrates
-    a nice subset of Marpa's procedural parsing capabilities.
-    Full code is
-    &lt;a href=&quot;https://github.com/jeffreykegler/Ocean-of-Awareness-blog/tree/gh-pages/code/csg&quot;&gt;
-    on-line&lt;a&gt;,
-    and readers are encouraged to &quot;peek ahead&quot;.
-    &lt;/p&gt;
-    &lt;h2&gt;Step 1: the syntax&lt;/h2&gt;
-    &lt;p&gt;Our strategy will be to start with a context-free syntax,
-    and then extend it with procedural logic.
-    Here is the context-free grammar:
-    &lt;/p&gt;
-    &lt;pre&gt;&lt;tt&gt;
-    lexeme default = latm =&gt; 1
-    :default ::= action =&gt; [name,start,length,values]
-    S ::= prefix ABC trailer
-    ABC ::= ABs Cs
-    ABs ::= A ABs B | A B
-    prefix ::= A*
-    trailer ::= C_extra*
-    A ~ 'a'
-    B ~ 'b'
-    :lexeme ~ Cs pause =&gt; before event =&gt; 'before C'
-    Cs ~ 'c' # dummy -- procedural logic reads &lt;Cs&gt;
-    C_extra ~ 'c'
-    &lt;/tt&gt;&lt;/pre&gt;
-    &lt;p&gt;The first line is boiler-plate:
-    It turns off a default which was made pointless
-    by a later enhancement to Marpa::R2.
-    Marpa::R2 is stable, and backward-compatibility is
-    a very high priority.
-    &lt;pre&gt;&lt;tt&gt;
-    :default ::= action =&gt; [name,start,length,values]
-    &lt;/tt&gt;&lt;/pre&gt;
-    &lt;p&gt;
-    We will produce a parse tree.
-    The second line defines its format --
-    each node is an array whose elements are,
-    in order,
-    the node name, its start position,
-    its length and its child nodes.
-    &lt;/p&gt;
-    &lt;pre&gt;&lt;tt&gt;
-    S ::= prefix ABC trailer
-    &lt;/tt&gt;&lt;/pre&gt;
-    &lt;p&gt;The symbol &lt;tt&gt;&amp;lt;ABC&amp;gt;&lt;/tt&gt;
-    is our &quot;target&quot; -- the counted
-    &lt;tt&gt;a&lt;/tt&gt;'s,
-    &lt;tt&gt;b&lt;/tt&gt;'s,
-    and &lt;tt&gt;c&lt;/tt&gt;'s.
-    To make things a bit more interesting,
-    and to make the problem more like a parsing problem instead of a counting problem,
-    we allow a prefix of &lt;tt&gt;a&lt;/tt&gt;'s
-    and a trailer of &lt;tt&gt;c&lt;/tt&gt;'s.
-    &lt;/p&gt;
-    &lt;pre&gt;&lt;tt&gt;
-    ABC ::= ABs Cs
-    &lt;/tt&gt;&lt;/pre&gt;
-    &lt;p&gt;We divide the
-    &lt;tt&gt;&amp;lt;ABC&amp;gt;&lt;/tt&gt; target into two parts:
-    &lt;tt&gt;&amp;lt;ABs&amp;gt;&lt;/tt&gt;, which contains the
-    &lt;tt&gt;a&lt;/tt&gt;'s,
-    and &lt;tt&gt;b&lt;/tt&gt;'s;
-    and
-    &lt;tt&gt;&amp;lt;Cs&amp;gt;&lt;/tt&gt;, which contains
-    the &lt;tt&gt;c&lt;/tt&gt;'s.
-    &lt;/p&gt;
-    &lt;p&gt;
-    The string
-    &lt;/p&gt;
-    &lt;pre&gt;&lt;tt&gt;
-    a^n . b^n
-    &lt;/tt&gt;&lt;/pre&gt;
-    &lt;p&gt;
-    is context free, so that we can handle it
-    without procedural logic, as follows:
-    &lt;/p&gt;
-    &lt;pre&gt;&lt;tt&gt;
-    ABs ::= A ABs B | A B
-    &lt;/tt&gt;&lt;/pre&gt;
-    &lt;p&gt;
-    The line above recognizes a non-empty string of
-    &lt;tt&gt;a&lt;/tt&gt;'s,
-    followed by an equal number
-    of &lt;tt&gt;b&lt;/tt&gt;'s.
-    &lt;/p&gt;
-    &lt;pre&gt;&lt;tt&gt;
-    prefix ::= A*
-    trailer ::= C_extra*
-    &lt;/tt&gt;&lt;/pre&gt;
-    &lt;p&gt;As stated above,
-    &lt;tt&gt;&amp;lt;prefix&amp;gt;&lt;/tt&gt;
-    is a series of &lt;tt&gt;a&lt;/tt&gt;'s and
-    &lt;tt&gt;&amp;lt;trailer&amp;gt;&lt;/tt&gt;
-    is a series of &lt;tt&gt;c&lt;/tt&gt;'s.
-    &lt;/p&gt;
-    &lt;pre&gt;&lt;tt&gt;
-    A ~ 'a'
-    B ~ 'b'
-    &lt;/tt&gt;&lt;/pre&gt;
-    &lt;p&gt;Marpa::R2 has a separate lexical and syntactic phase.
-    Here we define our lexemes.
-    The first two are simple enough:
-    &lt;tt&gt;&amp;lt;A&amp;gt;&lt;/tt&gt; is the character &quot;&lt;tt&gt;a&lt;/tt&gt;&quot;; and
-    &lt;tt&gt;&amp;lt;B&amp;gt;&lt;/tt&gt; is the character &quot;&lt;tt&gt;b&lt;/tt&gt;&quot;.
-    &lt;/p&gt;
-    &lt;pre&gt;&lt;tt&gt;
-    :lexeme ~ Cs pause =&gt; before event =&gt; 'before C'
-    Cs ~ 'c' # dummy -- procedural logic reads &lt;Cs&gt;
-    C_extra ~ 'c'
-    &lt;/tt&gt;&lt;/pre&gt;
-    &lt;p&gt;
-    For the character &quot;&lt;tt&gt;c&lt;/tt&gt;&quot;,
-    we need procedural logic.
-    As hooks for procedural logic,
-    Marpa allows a full range of events.
-    Events can occur on prediction and completion of symbols;
-    when symbols are nulled;
-    before lexemes;
-    and after lexemes.
-    The first line in the above display
-    declares a &quot;before lexeme&quot; event
-    on the symbol
-    &lt;tt&gt;&amp;lt;Cs&amp;gt;&lt;/tt&gt;.
-    The name of the event is &quot;&lt;tt&gt;before C&lt;/tt&gt;&quot;.
-    &lt;/p&gt;
-    &lt;p&gt;The second line is a dummy entry,
-    which is needed to allow the &quot;&lt;tt&gt;before C&lt;/tt&gt;&quot;
-    event to trigger.
-    The entry says that
-    &lt;tt&gt;&amp;lt;Cs&amp;gt;&lt;/tt&gt; is a single character &quot;&lt;tt&gt;c&lt;/tt&gt;&quot;.
-    This is false --
-    &lt;tt&gt;&amp;lt;Cs&amp;gt;&lt;/tt&gt; is a series of one or more
-    &lt;tt&gt;c&lt;/tt&gt;'s,
-    which needs to be counted.
-    But when
-    the &quot;&lt;tt&gt;before C&lt;/tt&gt;&quot; event triggers,
-    the procedural
-    logic will make things right.
-    &lt;/p&gt;
-    &lt;p&gt;The third line defines
-    &lt;tt&gt;&amp;lt;C_extra&amp;gt;&lt;/tt&gt;, which
-    is another lexeme for the character &quot;&lt;tt&gt;c&lt;/tt&gt;&quot;.
-    We have two different lexemes for
-    the character &lt;tt&gt;c&lt;/tt&gt;, because we want some
-    &lt;tt&gt;c&lt;/tt&gt;'s (those in the target)
-    to trigger events;
-    and we want other
-    &lt;tt&gt;c&lt;/tt&gt;'s (those in the trailer)
-    not to trigger events,
-    but to be consumed by Marpa directly.
-    &lt;/p&gt;
-    &lt;h2&gt;The procedural logic&lt;/h2&gt;
-    &lt;p&gt;
-    At this point, we have solved part of the problem with context-free syntax,
-    and set up a Marpa event named &quot;&lt;tt&gt;before C&lt;/tt&gt;&quot;,
-    which will solve the rest of it.
-    &lt;/p&gt;
-    &lt;pre&gt;&lt;tt&gt;
-    my $input_length = length ${$input};
-    for (
-        my $pos = $recce-&gt;read($input);
-        $pos &lt; $input_length;
-        $pos = $recce-&gt;resume()
-      )
-    {
-      &lt;/tt&gt;&lt;b&gt;... Process events ...&lt;/b&gt;&lt;tt&gt;
-    }
-    &lt;/tt&gt;&lt;/pre&gt;
-    &lt;p&gt;Processing of events takes place inside a Marpa read loop.
-    This is initialized with a &lt;tt&gt;read()&lt;/tt&gt; method,
-    and is continued with a &lt;tt&gt;resume()&lt;/tt&gt; method.
-    The &lt;tt&gt;read()&lt;/tt&gt; and &lt;tt&gt;resume()&lt;/tt&gt; methods
-    both return the current position
-    in the input.
-    If the current position is end-of-input, we are done.
-    If not, we were interrupted by an event, which we
-    must process.
-    &lt;/p&gt;
-    &lt;pre&gt;&lt;tt&gt;
-    &lt;/tt&gt;&lt;b&gt;Process events&lt;/b&gt;&lt;tt&gt;
-
-    EVENT:
-      for (
-	  my $event_ix = 0 ;
-	  my $event    = $recce-&gt;event($event_ix) ;
-	  $event_ix++
-	)
-      {
-	  my $name = $event-&gt;[0];
-	  if ( $name eq 'before C' ) {
-	      &lt;/tt&gt;&lt;b&gt;... Process &quot;before C&quot; event ...&lt;/b&gt;&lt;tt&gt;
-	  }
-	  die qq{Unexpected event: name=&quot;$name&quot;};
-      }
-    &lt;/tt&gt;&lt;/pre&gt;
-    &lt;p&gt;In this application, only one event can occur at any location,
-    so the above loop is &quot;overkill&quot;.
-    It loops through the events, one by one.
-    The &lt;tt&gt;event&lt;/tt&gt; method returns a reference to an array
-    of event data.
-    The only element we care about is the event name.
-    In fact, if we weren't being careful about error checking,
-    we would not even care about the event name,
-    since there can be only one.
-    &lt;/p&gt;
-    &lt;p&gt;If, as expected, the event name is &quot;&lt;tt&gt;before C&lt;/tt&gt;&quot;,
-    we process it.
-    In any other case, we die with an error message.
-    &lt;/p&gt;
-    &lt;pre&gt;&lt;tt&gt;
-    &lt;/tt&gt;&lt;b&gt;Process &quot;before C&quot; event&lt;/b&gt;&lt;tt&gt;
-
-    my ( $start, $length ) = $recce-&gt;last_completed_span('ABs');
-    my $c_length = ($length) / 2;
-    my $c_seq = ( 'c' x $c_length );
-    if ( substr( ${$input}, $pos, $c_length ) eq $c_seq ) {
-	$recce-&gt;lexeme_read( 'Cs', $pos, $c_length, $c_seq );
-	next EVENT;
-    }
-    die qq{Too few C's};
-    &lt;/tt&gt;&lt;/pre&gt;
-    &lt;p&gt;This is the core part of our procedural logic,
-    where we have a &quot;&lt;tt&gt;before C&lt;/tt&gt;&quot; event.
-    We must
-    &lt;ul&gt;
-    &lt;li&gt;determine the right number of &lt;tt&gt;c&lt;/tt&gt; characters;&lt;/li&gt;
-    &lt;li&gt;check that the input has
-      the right number of &lt;tt&gt;c&lt;/tt&gt; characters;&lt;/li&gt;
-    &lt;li&gt;put together a lexeme to feed the Marpa parser; and&lt;/li&gt;
-    &lt;li&gt;return control to Marpa.&lt;/li&gt;
-    &lt;/ul&gt;
-    There is a lot going on,
-    and some of Marpa's most powerful capabilities for assisting
-    procedural logic are shown here.
-    So we will go through the above display in detail.
-    &lt;/p&gt;
-    &lt;h3&gt;Left-eidetic&lt;/h3&gt;
-    &lt;pre&gt;&lt;tt&gt;
-    my ( $start, $length ) = $recce-&gt;last_completed_span('ABs');
-    my $c_length = ($length) / 2;
-    &lt;/tt&gt;&lt;/pre&gt;
-    &lt;p&gt;Marpa claims to be &quot;left-eidetic&quot;,
-    that is, to have full knowledge of the parse so far,
-    and to make this knowledge available to the programmer.
-    How does a programmer cash in on this promise?
-    &lt;p&gt;Of course, there is
-    &lt;a href=&quot;https://metacpan.org/pod/distribution/Marpa-R2/pod/Progress.pod&quot;&gt;a fully general interface&lt;/a&gt;,
-    which allows you to go through the Earley tables and extract
-    the information in any form necessary.
-    But another, more convenient interface,
-    fits our purposes here.
-    Specifically,
-    &lt;/p&gt;
-    &lt;ul&gt;&lt;li&gt;we want to determine how many &lt;tt&gt;c&lt;/tt&gt; characters we are looking for.&lt;/li&gt;
-    &lt;li&gt;How many &lt;tt&gt;c&lt;/tt&gt; characters we are looking for depends
-    on the number of
-    &lt;tt&gt;a&lt;/tt&gt; and &lt;tt&gt;b&lt;/tt&gt; characters that we have already seen
-    in the target.&lt;/li&gt;
-    &lt;li&gt;The &lt;tt&gt;a&lt;/tt&gt; and &lt;tt&gt;b&lt;/tt&gt; characters that we have already seen in the
-    target are in the
-    &lt;tt&gt;&amp;lt;ABs&amp;gt;&lt;/tt&gt; symbol instance.&lt;/li&gt;
-    &lt;li&gt;So, what we want to know is the length of the
-    most recent &lt;tt&gt;&amp;lt;ABs&amp;gt;&lt;/tt&gt; symbol instance.&lt;/li&gt;
-    &lt;/ul&gt;
-    &lt;/p&gt;
-    &lt;p&gt;Marpa has a &lt;tt&gt;last_completed_span()&lt;/tt&gt; method,
-    and that is just what we need.
-    This finds the most recent instance of a symbol.
-    (If there had been more than one most recent instance,
-    it would have found the longest.)
-    The &lt;tt&gt;last_completed_span()&lt;/tt&gt; method returns the start
-    of the symbol instance (which we do not care about)
-    and its length.
-    The desired number of &lt;tt&gt;c&lt;/tt&gt; characters,
-    &lt;tt&gt;$c_length&lt;/tt&gt;, is half the length of the
-    &lt;tt&gt;&amp;lt;ABs&amp;gt;&lt;/tt&gt; instance.
-    &lt;/p&gt;
-    &lt;h3&gt;External parsing&lt;/h3&gt;
-    &lt;pre&gt;&lt;tt&gt;
-    my $c_seq = ( 'c' x $c_length );
-    if ( substr( ${$input}, $pos, $c_length ) eq $c_seq ) { &lt;/tt&gt;&lt;b&gt;...&lt;/b&gt;&lt;tt&gt; }
-    &lt;/tt&gt;&lt;/pre&gt;
-    &lt;p&gt;Marpa allows external parsing.
-    You can pause Marpa, as we have done,
-    and hand control over to another parser -- including
-    another instance of Marpa.
-    &lt;/p&gt;
-    &lt;p&gt;
-    Here external parsing is necessary to make our parser
-    context-sensitive,
-    but the external parser does not have to be fancy.
-    All it needs to do is
-    some counting -- not hard,
-    but something that a context-free grammar cannot do.
-    &lt;/p&gt;
-    &lt;p&gt;
-    &lt;tt&gt;$pos&lt;/tt&gt; is the current position in the input,
-    as returned by the &lt;tt&gt;read()&lt;/tt&gt; or &lt;tt&gt;resume()&lt;/tt&gt;
-    method in the outer loop.
-    Our input is the string referred to by &lt;tt&gt;$input&lt;/tt&gt;.
-    We just calculated &lt;tt&gt;$c_length&lt;/tt&gt; as the number of
-    &lt;tt&gt;c&lt;/tt&gt; characters required.
-    The above code checks to see that the required number of
-    &lt;tt&gt;c&lt;/tt&gt; characters is at &lt;tt&gt;$pos&lt;/tt&gt; in the input.
-    &lt;/p&gt;
-    &lt;h3&gt;Communicating with Marpa&lt;/h3&gt;
-    &lt;pre&gt;&lt;tt&gt;
-	$recce-&gt;lexeme_read( 'Cs', $pos, $c_length, $c_seq );
-    &lt;/tt&gt;&lt;/pre&gt;
-    &lt;p&gt;
-    Our external logic is doing the parsing,
-    but we need to let Marpa know what we are finding.
-    We do this with the &lt;tt&gt;lexeme_read()&lt;/tt&gt; method.
-    &lt;tt&gt;lexeme_read()&lt;/tt&gt; needs to know what symbol we are reading
-    (&lt;tt&gt;Cs&lt;/tt&gt; in our case);
-    and its value
-    (&lt;tt&gt;$c_seq&lt;/tt&gt; in our case).
-    &lt;/p&gt;
-    &lt;p&gt;
-    Marpa requires that
-    every symbol be tied in some way to the input.
-    The tie-in is only for error reporting,
-    and it can be hack-ish or completely artificial,
-    if necessary.
-    In this application, our symbol instance is tied into
-    the input in a very natural way --
-    it is the stretch of the input that we compared
-    to &lt;tt&gt;$c_seq&lt;/tt&gt; in the display before last.
-    We therefore tell Marpa
-    that the symbol is at &lt;tt&gt;$pos&lt;/tt&gt; in the input,
-    and of length &lt;tt&gt;$c_length&lt;/tt&gt;.
-    &lt;/p&gt;
-    &lt;h3&gt;Passing control back to Marpa&lt;/h3&gt;
-    &lt;pre&gt;&lt;tt&gt;
-	next EVENT;
-    &lt;/tt&gt;&lt;/pre&gt;
-    &lt;p&gt;
-    External parsing can go on quite a long time.
-    In fact, an external parser &lt;b&gt;never&lt;/b&gt; has to hand
-    control back to Marpa.
-    But in this case, we are done very quickly.
-    &lt;/p&gt;
-    &lt;p&gt;
-    We ask for the next iteration of the &lt;tt&gt;EVENT&lt;/tt&gt;
-    loop.
-    (In this code,
-    there will not be a next iteration, unless there is an error.)
-    Once done, the &lt;tt&gt;EVENT&lt;/tt&gt; loop will hand control
-    over to the outer loop.
-    The outer loop will call the &lt;tt&gt;resume()&lt;/tt&gt;
-    method to return control back to Marpa.
-    &lt;/p&gt;
-    &lt;h2&gt;The code, comments, etc.&lt;/h2&gt;
-    &lt;p&gt;The full code for this example is 
-    &lt;a href=&quot;https://github.com/jeffreykegler/Ocean-of-Awareness-blog/tree/gh-pages/code/csg&quot;&gt;
-    on-line&lt;a&gt;.
-      There is a lot more to Marpa, including
-      more facilities for adding procedural logic to your Marpa parsers.
-      To learn more about Marpa,
-      a good first stop is the
-      &lt;a href=&quot;http://savage.net.au/Marpa.html&quot;&gt;semi-official web site, maintained by Ron Savage&lt;/a&gt;.
-      The official, but more limited, Marpa website
-      &lt;a href=&quot;http://jeffreykegler.github.io/Marpa-web-site/&quot;&gt;is my personal one&lt;/a&gt;.
-      Comments on this post can be made in
-      &lt;a href=&quot;http://groups.google.com/group/marpa-parser&quot;&gt;
-        Marpa's Google group&lt;/a&gt;,
-      or on our IRC channel: #marpa at freenode.net.
-    &lt;/p&gt;
-    &lt;h2&gt;Footnotes&lt;/h2&gt;
-&lt;p id=&quot;footnote-1&quot;&gt;&lt;b&gt;1.&lt;/b&gt;
-      To handle procedural logic well,
-      an Earley engine needs to complete its Earley sets
-      in strict order --
-      that is, Earley set &lt;tt&gt;N&lt;/tt&gt;
-      cannot change after work on Earley set &lt;tt&gt;N+1&lt;/tt&gt;
-      has begun.
-      I have not looked at every Earley parse engine,
-      and some may have had this strict-sequencing property.
-      And many of the papers are agnostic about the order
-      of operations.
-      But Marpa is the first Earley parser to recognize
-      and exploit strict-sequencing as a feature.
- &lt;a href=&quot;#footnote-1-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
-&lt;p id=&quot;footnote-2&quot;&gt;&lt;b&gt;2.&lt;/b&gt;
-    The ABC grammar, in fact,
-    is not all that easy or natural to describe
-    even with a context-sensitive phrase structure description.
-    A solution is given on Wikipedia:
-    &lt;a href=&quot;https://en.wikipedia.org/wiki/Context-sensitive_grammar#Examples&quot;&gt;
-    https://en.wikipedia.org/wiki/Context-sensitive_grammar#Examples&lt;/a&gt;.
- &lt;a href=&quot;#footnote-2-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
   &lt;/body&gt;
 &lt;/html&gt;</description>
   </item>
