@@ -297,7 +297,8 @@ A Haskell challenge
     I tested the <a href="https://www.haskell.org/ghc/">Glasgow Haskell Compiler</a>
     (GHC)
     with identical expression/pattern prefixes
-    thousands of tokens in length -- my virtual memory eventually gives out,
+    thousands of tokens in length.
+    My virtual memory eventually gives out,
     but GHC itself never complains.<footnote>
     Note that if the list is extended, the patterns matches and Boolean
     tests fail, so that 42 is no longer the answer.
@@ -461,7 +462,7 @@ A Haskell challenge
     the permalink of the
     the test suite file for list comprehension is
     <a href="https://github.com/jeffreykegler/Ocean-of-Awareness-blog/blob/0df0aef7d6cb8590d3a33f857619e75f84786dd7/code/haskell/listcomp.t">
-    here</a>
+    here</a>.
     I expect to update this code,
     and the latest commit can be found
     <a href="https://github.com/jeffreykegler/Ocean-of-Awareness-blog/tree/gh-pages/code/haskell">
