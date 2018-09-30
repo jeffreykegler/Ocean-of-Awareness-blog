@@ -74,7 +74,7 @@ Identifying programming languages
     language it is in?
     Is it C, Cobol, Haskell, Lua, Javascript, Perl or Tex?
     For this post, I will take
-    <a href="https://github.com/github/linguist">Github's linguist</a>
+    <a href="https://github.com/github/linguist">Github's <tt>linguist</tt></a>
     to represent the state of the art.
     It's very widely used,
     and the corpus that it analyzes is available to
@@ -104,8 +104,40 @@ Identifying programming languages
     Much more likely is that our current techniques under-exploit
     the power of our electronic computers.
     </p>
-    <p>
+    <p>Github's code statistics are much following,
+    and I suspect, factor into many career and business decisions.
+    Improving the quality of this data,
+    or even confirming its accuracy,
+    is likely to be of serious interest.
+    </p>For files that mostly written in a single programming language,
+    currently the majority,
+    Github's numbers are probably roughly accurate.
+    But <tt>linguist</tt> makes no attempt to accurately track multi-language files.
+    And <tt>linguist</tt> ignores code embedded in documentation.
+    As one example,
+    I use an ad-hoc ad-hoc literate programming system<footnote>
+    Largely undocumented, I call it Miranda (not relation to the Haskell precursor).
+    </footnote>,
+    which allows arbitrary other languages to be packaged inside Markdown.
+    Under <tt>linguist</tt>, this code, in my case a substantial part of the package that
+    contains it, is identified simply as "markdown"
+    and, since Markdown is a documentation format,
+    all this code,
+    a substantial part of this package it is in,
+    is ignored<footnote>
+    See the <tt>linguist</tt> <a href="https://github.com/github/linguist/blob/8cd9d744caa7bd3920c0cb8f9ca494ce7d8dc206/README.md#my-repository-isnt-showing-my-language">README.md</a>
+    (permalink accessed as of 30 September 2018).
+    <footnote>.
+    </footnote>.
+    How relevant is this to the overall statistics?
+    At the moment, probably not very.
+    Literate programming does not seem to be coming into use very rapidly.
+    But if my home-grown Markdown-powered programming system is not one-of-a-kind,
+    is part of a underground,
+    it is one that is operating well beneath the radar of
+    Github <tt>linguist</tt>.
     </p>
+    <p>
     <h2>The code, comments, etc.</h2>
     <p>A permalink to the
     full code and a test suite for this prototype,
