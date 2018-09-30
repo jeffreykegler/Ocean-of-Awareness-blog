@@ -71,98 +71,107 @@ Identifying programming languages
       -->
     <h2>Which language is it in?</h2>
     <p>Given a source file, how do you determine what programming
-    language it is in?
-    Is it C, Cobol, Haskell, Lua, Javascript, Perl or Tex?
-    For this post, I will take
-    <a href="https://github.com/github/linguist">Github's <tt>linguist</tt></a>
-    to represent the state of the art.
-    It's very widely used,
-    and the corpus that it analyzes is available to
-    any competing approach.
+      language it is in?
+      Is it C, Cobol, Haskell, Lua, Javascript, Perl or Tex?
+      For this post, I will take
+      <a href="https://github.com/github/linguist">Github's
+        <tt>linguist</tt></a>
+      to represent the state of the art.
+      It's very widely used,
+      and the corpus that it analyzes is available to
+      any competing approach.
     </p>
     <p>
-    Github's linquist primarily trusts
-    metadata, such as file name and the vim and shebang lines.
-    The actual code is scanned as a last resort, using regexes.<footnote>
-    See the methodology description in its README.md (
-    <a href="https://github.com/github/linguist/blob/8cd9d744caa7bd3920c0cb8f9ca494ce7d8dc206/README.md">
-    permalink as of 30 September 2018</a>).
-    </p>
+      Github's linquist primarily trusts
+      metadata, such as file name and the vim and shebang lines.
+      The actual code is scanned as a last resort, using regexes.<footnote>
+        See the methodology description in its README.md (
+        <a href="https://github.com/github/linguist/blob/8cd9d744caa7bd3920c0cb8f9ca494ce7d8dc206/README.md">
+          permalink as of 30 September 2018</a>).
+      </footnote></p>
     <p>
-    Human programmers can identify programming languages at a glance.
-    It seems highly unlikely that is ability is exceptionally human,
-    an unexplainable talent available only to Homo Sapiens.<footnote>
-    Of course, programmer can instantly identify only the languages they are familiar with,
-    and human programmers slow down if the languages are very similar.
-    But, both computers and chess champions memorize opening moves,
-    except that the computer can memorize a larger book
-    and recall it more quickly.
-    In the same way,
-    I expect that a computer should be able to know more languages
-    and to tell apart closely related ones more quickly than humans.
-    </footnote>.
-    Much more likely is that our current techniques under-exploit
-    the power of our electronic computers.
+      Human programmers can identify programming languages at a glance.
+      It seems highly unlikely that is ability is exceptionally human,
+      an unexplainable talent available only to Homo Sapiens.<footnote>
+        Of course, programmer can instantly identify only the languages they are familiar with,
+        and human programmers slow down if the languages are very similar.
+        But, both computers and chess champions memorize opening moves,
+        except that the computer can memorize a larger book
+        and recall it more quickly.
+        In the same way,
+        I expect that a computer should be able to know more languages
+        and to tell apart closely related ones more quickly than humans.
+      </footnote>.
+      Much more likely is that our current techniques under-exploit
+      the power of our electronic computers.
     </p>
     <p>Github's code statistics are much following,
-    and I suspect, factor into many career and business decisions.
-    Improving the quality of this data,
-    or even confirming its accuracy,
-    is likely to be of serious interest.
-    </p>For files that mostly written in a single programming language,
-    currently the majority,
-    Github's numbers are probably roughly accurate.
-    But <tt>linguist</tt> makes no attempt to accurately track multi-language files.
-    And <tt>linguist</tt> ignores code embedded in documentation.
-    As one example,
-    I use an ad-hoc ad-hoc literate programming system<footnote>
-    Largely undocumented, I call it Miranda (not relation to the Haskell precursor).
-    </footnote>,
-    which allows arbitrary other languages to be packaged inside Markdown.
-    Under <tt>linguist</tt>, this code, in my case a substantial part of the package that
-    contains it, is identified simply as "markdown"
-    and, since Markdown is a documentation format,
-    all this code,
-    a substantial part of this package it is in,
-    is ignored<footnote>
-    See the <tt>linguist</tt> <a href="https://github.com/github/linguist/blob/8cd9d744caa7bd3920c0cb8f9ca494ce7d8dc206/README.md#my-repository-isnt-showing-my-language">README.md</a>
-    (permalink accessed as of 30 September 2018).
-    <footnote>.
-    </footnote>.
-    How relevant is this to the overall statistics?
-    At the moment, probably not very.
-    Literate programming does not seem to be coming into use very rapidly.
-    But if my home-grown Markdown-powered programming system is not one-of-a-kind,
-    is part of a underground,
-    it is one that is operating well beneath the radar of
-    Github <tt>linguist</tt>.
-    </p>
+      and I suspect, factor into many career and business decisions.
+      Improving the quality of this data,
+      or even confirming its accuracy,
+      is likely to be of serious interest.
+    </p><p>For files that mostly written in a single programming language,
+      currently the majority,
+      Github's numbers are probably roughly accurate.
+      But
+      <tt>linguist</tt>
+      makes no attempt to accurately track multi-language files.
+      And
+      <tt>linguist</tt>
+      ignores code embedded in documentation.
+      As one example,
+      I use an ad-hoc ad-hoc literate programming system<footnote>
+        Largely undocumented, I call it Miranda (not relation to the Haskell precursor).
+      </footnote>,
+      which allows arbitrary other languages to be packaged inside Markdown.
+      Under
+      <tt>linguist</tt>, this code, in my case a substantial part of the package that
+      contains it, is identified simply as "markdown"
+      and, since Markdown is a documentation format,
+      all this code,
+      a substantial part of this package it is in,
+      is ignored<footnote>
+        See the
+        <tt>linguist</tt>
+        <a href="https://github.com/github/linguist/blob/8cd9d744caa7bd3920c0cb8f9ca494ce7d8dc206/README.md#my-repository-isnt-showing-my-language">README.md</a>
+        (permalink accessed as of 30 September 2018).
+        <footnote>.
+        </footnote>.
+        How relevant is this to the overall statistics?
+        At the moment, probably not very.
+        Literate programming does not seem to be coming into use very rapidly.
+        But if my home-grown Markdown-powered programming system is not one-of-a-kind,
+        is part of a underground,
+        it is one that is operating well beneath the radar of
+        Github
+        <tt>linguist</tt>.
+      </footnote></p>
     <h2>An alternative</h2>
     <p>The method I propose combines Earley/Leo parsing and combinator parsing.
-    The Earley/Leo portion of it is a general context-free parser,
-    which is capable of parsing LR-regular
-    grammars<footnote>
-    In fact, the Earley/Leo implementation is linear
-    for a superset of the LR-regular (LRR) grammars,
-    which includes many ambiguous grammars.
-    LRR is the set of all grammars which can be parsed deterministically
-    using a finite regular set for lookahead.
-    A "finite regular set" is some non-infinite set of regular expressions.
-    Regular expressions, of course, can match arbitrarily long strings,
-    and this means that LRR allows infinite lookahead.
-    </footnote>
-    in linear time.<footnote>
-    </footnote>.
-    When even this level of power fails,
-    combinator parsing allows a subparser to be invoked.
+      The Earley/Leo portion of it is a general context-free parser,
+      which is capable of parsing LR-regular
+      grammars<footnote>
+        In fact, the Earley/Leo implementation is linear
+        for a superset of the LR-regular (LRR) grammars,
+        which includes many ambiguous grammars.
+        LRR is the set of all grammars which can be parsed deterministically
+        using a finite regular set for lookahead.
+        A "finite regular set" is some non-infinite set of regular expressions.
+        Regular expressions, of course, can match arbitrarily long strings,
+        and this means that LRR allows infinite lookahead.
+      </footnote>
+      in linear time.<footnote>
+      </footnote>.
+      When even this level of power fails,
+      combinator parsing allows a subparser to be invoked.
     </p>
     <h2>The code, comments, etc.</h2>
     <p>A permalink to the
-    full code and a test suite for this prototype,
-    as described in this blog post,
-    is
-    <a href="https://github.com/jeffreykegler/Ocean-of-Awareness-blog/tree/0df0aef7d6cb8590d3a33f857619e75f84786dd7/code/haskell">
-    on Github</a>.
+      full code and a test suite for this prototype,
+      as described in this blog post,
+      is
+      <a href="https://github.com/jeffreykegler/Ocean-of-Awareness-blog/tree/0df0aef7d6cb8590d3a33f857619e75f84786dd7/code/haskell">
+        on Github</a>.
       To learn more about Marpa,
       a good first stop is the
       <a href="http://savage.net.au/Marpa.html">semi-official web site, maintained by Ron Savage</a>.
