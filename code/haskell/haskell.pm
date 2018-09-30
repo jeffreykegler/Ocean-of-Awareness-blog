@@ -1059,7 +1059,7 @@ sub parse {
         my $eval_error = $EVAL_ERROR;
 	$result = "Error: $EVAL_ERROR";
     }
-    return $result, $value_ref;
+    return $result;
 }
 
 # This handler assumes a recognizer has been created.  Given
