@@ -70,7 +70,42 @@ Identifying programming languages
       marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
       -->
     <h2>Which language is it in?</h2>
+    <p>Given a source file, how do you determine what programming
+    language it is in?
+    Is it C, Cobol, Haskell, Lua, Javascript, Perl or Tex?
+    For this post, I will take
+    <a href="https://github.com/github/linguist">Github's linguist</a>
+    to represent the state of the art.
+    It's very widely used,
+    and the corpus that it analyzes is available to
+    any competing approach.
+    </p>
     <p>
+    Github's linquist primarily trusts
+    metadata, such as file name and the vim and shebang lines.
+    The actual code is scanned as a last resort, using regexes.<footnote>
+    See the methodology description in its README.md (
+    <a href="https://github.com/github/linguist/blob/8cd9d744caa7bd3920c0cb8f9ca494ce7d8dc206/README.md">
+    permalink as of 30 September 2018</a>).
+    </p>
+    <p>
+    Human programmers can identify programming languages at a glance.
+    It seems highly unlikely that is ability is exceptionally human,
+    an unexplainable talent available only to Homo Sapiens.<footnote>
+    Of course, programmer can instantly identify only the languages they are familiar with,
+    and human programmers slow down if the languages are very similar.
+    But, both computers and chess champions memorize opening moves,
+    except that the computer can memorize a larger book
+    and recall it more quickly.
+    In the same way,
+    I expect that a computer should be able to know more languages
+    and to tell apart closely related ones more quickly than humans.
+    </footnote>.
+    Much more likely is that our current techniques under-exploit
+    the power of our electronic computers.
+    </p>
+    <p>
+    </p>
     <h2>The code, comments, etc.</h2>
     <p>A permalink to the
     full code and a test suite for this prototype,
