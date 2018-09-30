@@ -137,7 +137,25 @@ Identifying programming languages
     it is one that is operating well beneath the radar of
     Github <tt>linguist</tt>.
     </p>
-    <p>
+    <h2>An alternative</h2>
+    <p>The method I propose combines Earley/Leo parsing and combinator parsing.
+    The Earley/Leo portion of it is a general context-free parser,
+    which is capable of parsing LR-regular
+    grammars<footnote>
+    In fact, the Earley/Leo implementation is linear
+    for a superset of the LR-regular (LRR) grammars,
+    which includes many ambiguous grammars.
+    LRR is the set of all grammars which can be parsed deterministically
+    using a finite regular set for lookahead.
+    A "finite regular set" is some non-infinite set of regular expressions.
+    Regular expressions, of course, can match arbitrarily long strings,
+    and this means that LRR allows infinite lookahead.
+    </footnote>
+    in linear time.<footnote>
+    </footnote>.
+    When even this level of power fails,
+    combinator parsing allows a subparser to be invoked.
+    </p>
     <h2>The code, comments, etc.</h2>
     <p>A permalink to the
     full code and a test suite for this prototype,
@@ -145,17 +163,6 @@ Identifying programming languages
     is
     <a href="https://github.com/jeffreykegler/Ocean-of-Awareness-blog/tree/0df0aef7d6cb8590d3a33f857619e75f84786dd7/code/haskell">
     on Github</a>.
-    In particular,
-    the permalink of the
-    the test suite file for list comprehension is
-    <a href="https://github.com/jeffreykegler/Ocean-of-Awareness-blog/blob/0df0aef7d6cb8590d3a33f857619e75f84786dd7/code/haskell/listcomp.t">
-    here</a>.
-    I expect to update this code,
-    and the latest commit can be found
-    <a href="https://github.com/jeffreykegler/Ocean-of-Awareness-blog/tree/gh-pages/code/haskell">
-    here</a>.
-    </p>
-    <p>
       To learn more about Marpa,
       a good first stop is the
       <a href="http://savage.net.au/Marpa.html">semi-official web site, maintained by Ron Savage</a>.
