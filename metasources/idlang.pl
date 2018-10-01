@@ -61,7 +61,7 @@ sub do_footnote {
 }
 
 __DATA__
-Identifying programming languages
+Measuring language popularity
 <html>
   <head>
   </head>
@@ -69,84 +69,89 @@ Identifying programming languages
     <!--
       marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
       -->
-    <h2>Which language is it in?</h2>
-    <p>Given a source file, how do you determine what programming
-      language it is in?
-      Is it C, Cobol, Haskell, Lua, Javascript, Perl or Tex?
-      For this post, I will take
-      <a href="https://github.com/github/linguist">Github's
-        <tt>linguist</tt></a>
-      to represent the state of the art.
-      It's very widely used,
-      and the corpus that it analyzes is available to
-      any competing approach.
-    </p>
+    <h2>How to measure popularity</h2>
     <p>
-      Github's linquist primarily trusts
-      metadata, such as file name and the vim and shebang lines.
-      The actual code is scanned as a last resort, using regexes.<footnote>
-        See the methodology description in its README.md (
+      <a href="https://github.com/github/linguist">Github's
+      linquist</a> is being see as the most trustworihy tool
+      for estimating language popularity<footnote>
+      TODO
+      </footnote>,
+      in large part because its counts are reported in terms
+      of lines in a very large dataset.
+      It is ironic, in this context,
+      that <tt>linguist</tt>
+      avoids looking at the code,
+      preferring to use
+      metadata -- file name and the vim and shebang lines.
+      Scanned the actual code is a last resort.<footnote>
+        <tt>linguist</tt>'s methodology is described in its README.md (
         <a href="https://github.com/github/linguist/blob/8cd9d744caa7bd3920c0cb8f9ca494ce7d8dc206/README.md">
           permalink as of 30 September 2018</a>).
       </footnote></p>
     <p>
+    <p>How accurate is this?
+    For files that are mostly in a single programming language,
+      currently the majority of them,
+      <tt>linguist</tt>'s method are probably very accurate.<footnote>
+      TODO:
       Human programmers can identify programming languages at a glance.
       It seems highly unlikely that is ability is exceptionally human,
-      an unexplainable talent available only to Homo Sapiens.<footnote>
-        Of course, programmer can instantly identify only the languages they are familiar with,
+      an unexplainable talent available only to Homo Sapiens.
+        (Of course, programmer can instantly identify only the languages they are familiar with,
         and human programmers slow down if the languages are very similar.
         But, both computers and chess champions memorize opening moves,
         except that the computer can memorize a larger book
         and recall it more quickly.
         In the same way,
         I expect that a computer should be able to know more languages
-        and to tell apart closely related ones more quickly than humans.
-      </footnote>.
+        and to tell apart closely related ones more quickly than humans.)
       Much more likely is that our current techniques under-exploit
       the power of our electronic computers.
+      </footnote>.
     </p>
-    <p>Github's code statistics are much following,
-      and I suspect, factor into many career and business decisions.
-      Improving the quality of this data,
-      or even confirming its accuracy,
-      is likely to be of serious interest.
-    </p><p>For files that mostly written in a single programming language,
-      currently the majority,
-      Github's numbers are probably roughly accurate.
-      But
-      <tt>linguist</tt>
-      makes no attempt to accurately track multi-language files.
-      And
-      <tt>linguist</tt>
-      ignores code embedded in documentation.
-      As one example,
-      I use an ad-hoc ad-hoc literate programming system<footnote>
-        Largely undocumented, I call it Miranda (not relation to the Haskell precursor).
-      </footnote>,
-      which allows arbitrary other languages to be packaged inside Markdown.
-      Under
-      <tt>linguist</tt>, this code, in my case a substantial part of the package that
-      contains it, is identified simply as "markdown"
-      and, since Markdown is a documentation format,
-      all this code,
-      a substantial part of this package it is in,
-      is ignored<footnote>
-        See the
+    <p>But literate programming requires mixing languages.
+    The source for
+    much of the code used for the exammple in this blog post
+    is a Markdown file, which contains both C and Lua.
+    This code is "untangled" from the Lua by some ad-hoc scripts<footnote>
+    TODO
+    </footnote>.
+    In my codebase, <tt>linguist</tt> indentifies this code simply
+    as Markdown.
+    <tt>linguist</tt> then ignores it,
+    as it does all documentation files.<footnote>
+        For the treatment of Markdown, see
         <tt>linguist</tt>
         <a href="https://github.com/github/linguist/blob/8cd9d744caa7bd3920c0cb8f9ca494ce7d8dc206/README.md#my-repository-isnt-showing-my-language">README.md</a>
         (permalink accessed as of 30 September 2018).
-        <footnote>.
         </footnote>.
-        How relevant is this to the overall statistics?
-        At the moment, probably not very.
-        Literate programming does not seem to be coming into use very rapidly.
-        But if my home-grown Markdown-powered programming system is not one-of-a-kind,
-        is part of a underground,
-        it is one that is operating well beneath the radar of
-        Github
-        <tt>linguist</tt>.
-      </footnote></p>
-    <h2>An alternative</h2>
+	</p>
+	<p>Do mistakes like this have much of an effect on
+	<tt>linguist</tt>'s accuracy.
+	My impression is that this sort of
+	"guerrilla literate programming" is rare,
+	so probably not.
+	But if literate programming is becoming more popular,
+	it may be slipping under <tt>linguist</tt>'s radar.
+	And even those with a lot of faith in 
+	<tt>linguist</tt>'s numbers should be happy to
+	see them confirmed by more careful methods.
+	</p>
+    <h2>Token-by-token versus line-by-line</h2>
+    <p>The problem with more careful counting,
+    is that it cannot be done in a single pass
+    with traditional parsing methods.<footnote>
+    Another possibility is to do one scan
+    pass per language, but that would be expensive --
+    at least count there were 381 langauges in <tt>linguist</tt>'s
+    database.
+    Worse, it wouldn't solve the problem --
+    "liberal" recognition of a single language will
+    require a parser with most of the power required for a one-pass
+    solution.
+    </footnote>
+    These cannot handle
+    a parser must be able to handle ambiguity 
     <p>The method I propose combines Earley/Leo parsing and combinator parsing.
       The Earley/Leo portion of it is a general context-free parser,
       which is capable of parsing LR-regular
