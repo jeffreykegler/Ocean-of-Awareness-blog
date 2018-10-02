@@ -128,8 +128,8 @@ Measuring language popularity
       preferring to use
       metadata -- file name and the vim and shebang lines.
       Scanning the actual code is <tt>linguist</tt>'s last resort.<footnote>
-        <tt>linguist</tt>'s methodology is described in its README.md (
-        <a href=
+        <tt>linguist</tt>'s methodology is described in its README.md
+	(<a href=
 	"https://github.com/github/linguist/blob/8cd9d744caa7bd3920c0cb8f9ca494ce7d8dc206/README.md"
 	>permalink as of 30 September 2018</a>).
       </footnote>
@@ -291,8 +291,8 @@ Measuring language popularity
     <p>What language is our example in?
     Our example is long enough to justify classification,
     and it compiles as C code.<footnote>
-    Some might think the two LaTex lines should be counted as LaTex,
-    and, using subparsing of comments, that heuristic can be implemented.
+    Some might think the two LaTex lines should be counted as LaTex and,
+    using subparsing of comments, that heuristic can be implemented.
     </footnote>
     Our parses give us enough data for a heuristic
     to make a decision capturing this intuition.<footnote>
