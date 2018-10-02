@@ -82,6 +82,12 @@ Measuring language popularity
       in large part because it reports its result as
       the proportion of lines of code in a very large dataset,
       instead of web hits or searches.<footnote>
+        The code percentages reported by
+        <tt>linguist</tt>
+        are based on blob sizes --
+        line counts are not reliable for whole repositories:
+        <a href="https://github.com/github/linguist/issues/3131">Github linguist issue #1331</a>,
+        accessed 1 October 2018.
         As examples, see
         <a href="https://techcrunch.com/2018/09/30/what-the-heck-is-going-on-with-measures-of-programming-language-popularity/">
           Jon Evan's
@@ -103,16 +109,10 @@ Measuring language popularity
       avoids looking at the code,
       preferring to use
       metadata -- file name and the vim and shebang lines.
-      Scanned the actual code is a last resort.<footnote>
+      Scanning the actual code is <tt>linguist</tt>'s last resort.<footnote>
         <tt>linguist</tt>'s methodology is described in its README.md (
         <a href="https://github.com/github/linguist/blob/8cd9d744caa7bd3920c0cb8f9ca494ce7d8dc206/README.md">
           permalink as of 30 September 2018</a>).
-        The code percentages reported by
-        <tt>linguist</tt>
-        are based on blob sizes --
-        line counts are not reliable for whole repositories:
-        <a href="https://github.com/github/linguist/issues/3131">Github linguist issue #1331</a>,
-        accessed 1 October 2018.
       </footnote>
     </p>
     <p>How accurate is this?
@@ -147,8 +147,8 @@ Measuring language popularity
         the
         <tt>linguist-language</tt>
         git attribute.
-        This still requires that a blob be considered
-        as containing lines of a single language.
+        This still requires that each blob be 
+	reported as containing lines of only one language.
       </footnote>
       <tt>linguist</tt>
       then ignores it,
@@ -170,7 +170,8 @@ Measuring language popularity
       know they could be confirmed by more careful methods.
     </p>
     <h2>Token-by-token versus line-by-line</h2>
-    <p>Careful line counting for multiple languages
+    <p><tt>linguist</tt> avoids reporting results based looking at the code,
+    because careful line counting for multiple languages
       cannot be done with traditional parsing methods.<footnote>
         Another possibility is a multi-scan approach -- one
         pass per language.
@@ -187,21 +188,21 @@ Measuring language popularity
       ambiguous parses, ambiguous tokens, and overlapping variable-length tokens.
     </p>
     <p>
-      Dealing with
+      The ability to deal with
       "overlapping variable-length tokens" may sound like a bizarre requirement,
       but it is not.
       Line-by-line languages (BASIC, FORTRAN, JSON, .ini files, Markdown)
       and token-by-token languages (C, Java, Javascript, HTML)
       are both common,
-      and even today commonly occur in the same file (POD vs. Perl,
+      and even today commonly occur in the same file (POD and Perl,
       Haskell's Bird notation, Knuth's CWeb).
       Deterministic parsing can switch back and forth,
       though at the cost of some very hack-ish code.
     </p>
     <p>
-      For careful line counting, however,
+      For careful line counting,
       you need to parse line-by-line and token-by-token
-      <b>at the same</b>.
+      simultaneously.
     </p><p>
       Consider this example:
     </p>
@@ -214,16 +215,21 @@ Measuring language popularity
 \end{code}
 */ }
     </tt></pre>
-    <p>Those unwilling to simply accept an artifical example
-      can imagine it's part of a test case built from code
-      pulled from a LaTeX file --
-      and that the programmer thought the best way
-      to indicate the pasted code was to keep its original
-      LaTeX delimiters.
-      GCC compiles this code without warnings.
+    <p>An artificial example suffices,
+      but a reader might imagine this code is part of a test case using code
+      pulled from a LaTeX file.
+      The programmer wanted to indicate the copied portion of code,
+      and did so by commenting out its original LaTeX delimiters.
+      It's not pretty, but GCC compiles this code without warnings.
     </p>
     <p>It is not really the case that LaTeX is a line-by-line language.
-      But in literate programming systems,
+      But in literate programming systems<footnote>
+      For example, these line-alignment requirements match 
+      those in
+      <a href=
+      "https://www.haskell.org/onlinereport/haskell2010/haskellch10.html"
+      >Section 10.4</a> of the 2010 Haskell Language Report.
+      </footnote>,
       it is usually required that the
       <tt>\begin{code}</tt>
       and
@@ -232,7 +238,7 @@ Measuring language popularity
       and that the code block between them be a set of whole lines,
       so, for our purposes in this post,
       we can treat LaTeX as line-by-line.
-      For LaTeX, our parser finds.
+      For LaTeX, our parser finds
     </p><pre><tt>
   L1c1-L1c29 LaTeX line: "    int fn () { /* for later"
   L2c1-L2c13 \begin{code}
@@ -245,7 +251,7 @@ Measuring language popularity
   >test code in Github repo</a>, permalink accessed 2 October 2018.
   </footnote>
 </tt></pre><p>
-      Note that lines are respected perfectly:
+      Note that in the LaTeX parse, line alignment is respected perfectly:
       The first and last are ordinary LaTeX lines,
       the 2nd and 6th are commands bounding the code,
       and lines 3 through 5 are a code block.
@@ -253,8 +259,8 @@ Measuring language popularity
     <p>
       The C tokenization, on the other hand,
       shows no respect for lines.
-      Most tokens take only part of a line,
-      but the two comments start in the middle of
+      Most tokens are small parts of a line,
+      and the two comments start in the middle of
       a line and end in the middle of one.
       For example, the first comment starts at column 17
       of line 1 and ends at column 5 of line 3.<footnote>
@@ -280,7 +286,7 @@ Measuring language popularity
       There is <a href=
       "https://metacpan.org/pod/distribution/Marpa-R2/pod/Marpa_R2.pod"
       >documentation of the interface</a>,
-      but if have not been following the Marpa::R3 project,
+      but for a reader who has just started to look at the Marpa::R3 project,
       it is not a good starting point.
       Once a user is familiar with Marpa::R3 standard DSL-based
       interface,
@@ -296,11 +302,14 @@ Measuring language popularity
       pass a full test suite,
       and the documentation is kept up to date,
       but R3 is alpha, and the usual cautions<footnote>
-        Specifically, the cautions are that Marpa::R3 features are subject
+        Specifically,
+	since Marpa::R3 is alpha,
+	its features are subject
         to change without notice, even between micro releases,
-        and there is no concern for backward compatibility.
+        and changes are made without concern for backward compatibility.
         This makes R3 unsuitable for a production application.
-        Add to this, while R3 is tested, it has seen much less
+        Add to this that,
+	while R3 is tested, it has seen much less
         usage and testing than R2, which has been very stable for
         some time.
       </footnote>
@@ -311,7 +320,7 @@ Measuring language popularity
     >available on Github</a>.
       Most of the tools and techniques have been proven scalable,
       and I believe that all of them are,
-      but the actual grammars used are minimal.
+      but the grammars used in our example are minimal.
       Only enough LaTex is implemented
       to recognize code blocks; and
       only enough C syntax is implemented to recognize comments.
