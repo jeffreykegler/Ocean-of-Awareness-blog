@@ -93,7 +93,7 @@ Measuring language popularity
 	counts at all,
 	but instead report the sum of blob sizes.
 	Github's <tt>linguist</tt> does give a line count but
-	Github does not vouch for their accuracy:
+	Github does not vouch for its accuracy:
 "if you really need to know the lines of code of an entire repo, there are much better tools for this than Linguist."
         Quoted from
         (<a href="https://github.com/github/linguist/issues/3131">
@@ -108,7 +108,7 @@ Measuring language popularity
 	sum of blob sizes,
 	with each blob classed as one and only one language.
 	<br><br>
-	Some tallies seem even cruder than this --
+	Some tallies seem even more coarsely grained than this --
 	they are not even blob-by-blob,
 	but assign entire repos to the "primary language".
 	For more, see
