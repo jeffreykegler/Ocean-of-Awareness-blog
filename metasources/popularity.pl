@@ -258,9 +258,10 @@ Measuring language popularity
       a line and end in the middle of one.
       For example, the first comment starts at column 17
       of line 1 and ends at column 5 of line 3.<footnote>
-      See <a href=
+      See the <a href=
       "https://github.com/jeffreykegler/Marpa--R3/blob/08fa873687130fcfbe199a5f573375ad11322f3a/pub/varlex/idlit_ex2.t#L44"
-      in the test code on Gihub.
+      >test file</a>
+      on Gihub.
       </footnote>
     </p>
     <h2>The method</h2>
