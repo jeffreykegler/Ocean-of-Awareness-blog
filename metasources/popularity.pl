@@ -95,9 +95,10 @@ Measuring language popularity
 	Github's <tt>linguist</tt> does give a line count but
 	Github does not vouch for its accuracy:
 "if you really need to know the lines of code of an entire repo, there are much better tools for this than Linguist."
-        Quoted from
-        (<a href="https://github.com/github/linguist/issues/3131">
-	the resolution of
+        (Quoted from
+        <a href=
+	"https://github.com/github/linguist/issues/3131"
+	>the resolution of
 	Github linguist issue #1331</a>.)
 	The Github API's <tt>list-languages</tt> command reports language sizes
 	in bytes.
@@ -128,8 +129,9 @@ Measuring language popularity
       metadata -- file name and the vim and shebang lines.
       Scanning the actual code is <tt>linguist</tt>'s last resort.<footnote>
         <tt>linguist</tt>'s methodology is described in its README.md (
-        <a href="https://github.com/github/linguist/blob/8cd9d744caa7bd3920c0cb8f9ca494ce7d8dc206/README.md">
-          permalink as of 30 September 2018</a>).
+        <a href=
+	"https://github.com/github/linguist/blob/8cd9d744caa7bd3920c0cb8f9ca494ce7d8dc206/README.md"
+	>permalink as of 30 September 2018</a>).
       </footnote>
     </p>
     <p>How accurate is this?
@@ -187,16 +189,16 @@ Measuring language popularity
       know they could be confirmed by more careful methods.
     </p>
     <h2>Token-by-token versus line-by-line</h2>
-    <p><tt>linguist</tt> avoids reporting results based looking at the code,
+    <p><tt>linguist</tt> avoids reporting results based on looking at the code,
     because careful line counting for multiple languages
       cannot be done with traditional parsing methods.<footnote>
         Another possibility is a multi-scan approach -- one
         pass per language.
-        But that is likely to be expensive --
-        at last count there were 381 langauges in
+        But that is likely to be expensive.
+        At last count there were 381 langauges in
         <tt>linguist</tt>'s
         database.
-        Worse, it won't solve the problem --
+        Worse, it won't solve the problem:
         "liberal" recognition even of a single language
         requires more power than available from
         traditional parsers.
@@ -213,14 +215,13 @@ Measuring language popularity
       are both common,
       and even today commonly occur in the same file (POD and Perl,
       Haskell's Bird notation, Knuth's CWeb).
-      Deterministic parsing can switch back and forth,
-      though at the cost of some very hack-ish code.
     </p>
     <p>
+      Deterministic parsing can switch back and forth,
+      though at the cost of some very hack-ish code.
       For careful line counting,
       you need to parse line-by-line and token-by-token
       simultaneously.
-    </p><p>
       Consider this example:
     </p>
     <pre><tt>
@@ -232,12 +233,12 @@ Measuring language popularity
 \end{code}
 */ }
     </tt></pre>
-    <p>An artificial example suffices,
-      but a reader might imagine this code is part of a test case using code
+    <p>An artificial example would suffice,
+      but a reader can imagine that this code is part of a test case using code
       pulled from a LaTeX file.
       The programmer wanted to indicate the copied portion of code,
       and did so by commenting out its original LaTeX delimiters.
-      It's not pretty, but GCC compiles this code without warnings.
+      GCC compiles this code without warnings.
     </p>
     <p>It is not really the case that LaTeX is a line-by-line language.
       But in literate programming systems<footnote>
@@ -252,8 +253,8 @@ Measuring language popularity
       and
       <tt>\end{code}</tt>
       delimiters begin at column 0,
-      and that the code block between them be a set of whole lines,
-      so, for our purposes in this post,
+      and that the code block between them be a set of whole lines so,
+      for our purposes in this post,
       we can treat LaTeX as line-by-line.
       For LaTeX, our parser finds
     </p><pre><tt>
@@ -276,7 +277,7 @@ Measuring language popularity
     <p>
       The C tokenization, on the other hand,
       shows no respect for lines.
-      Most tokens are small parts of a line,
+      Most tokens are a small part of their line,
       and the two comments start in the middle of
       a line and end in the middle of one.
       For example, the first comment starts at column 17
@@ -299,13 +300,23 @@ Measuring language popularity
     C's syntax.
     It is perhaps not necessary to be sure that a file compiles
     before concluding it is C.
-    And we might not want to unclass a file as C because of a
+    And we might want to class a file as C in spite of a
     fleeting failure to compile.
     But we do want to lower the probably of a false positive.
     </footnote>
     </p>
     <h2>Earley/Leo parsing and combinators</h2>
-    <p>In a series of previous posts,
+    <p>In a series of previous posts<footnote>
+    <a href=
+    "http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2018/05/csg.html"
+    >Marpa and procedural parsing</a>;
+    <a href=
+    "http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2018/05/combinator.html"
+    >Marpa and combinator parsing</a>;
+    and <a href=
+    "http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2018/05/combinator2.html"
+    >Marpa and combinator parsing 2</a>
+    </footnote>,
       I have been developing a parsing method that
       integrates
       Earley/Leo parsing and combinator parsing.
@@ -350,7 +361,7 @@ Measuring language popularity
       </footnote>
       apply.
     </p>
-    <p>Earley/Leo parsing in linear for a superset
+    <p>Earley/Leo parsing is linear for a superset
     of the LR-regular grammars,
     which includes all other grammar classes in practical use,
     and Earley/Leo allows the equivalent of infinite lookahead.<footnote>
@@ -363,21 +374,14 @@ Measuring language popularity
     </footnote>
     When the power of Earley/Leo gives out,
     Marpa allows combinators (subparsers)
-    to be invoked<footnote>
-    See my previous posts:
-    <a href=
-    "http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2018/05/csg.html"
-    >Marpa and procedural parsing</a>;
-    <a href=
-    "http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2018/05/combinator.html"
-    >Marpa and combinator parsing</a>;
-    and <a href=
-    "http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2018/05/combinator2.html"
-    >Marpa and combinator parsing 2></a>
-    </footnote>.
+    to be invoked.
     The subparsers can be anything, including
     other Earley/Leo parsers,
-    and they can be called recursively.
+    and they can be called recursively<footnote>
+    See <a href=
+    "http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2018/05/combinator2.html"
+    >Marpa and combinator parsing 2</a>
+    </footnote>.
     Rare will be the grammar of practical interest that
     cannot be parsed with this combination of methods.
     </p>
@@ -386,8 +390,12 @@ Measuring language popularity
     "https://github.com/jeffreykegler/Marpa--R3/tree/08fa873687130fcfbe199a5f573375ad11322f3a/pub/varlex"
     >available on Github</a>.
       In previous posts,
-      we gave larger example,
-      and our tools and techniques have found to scale.
+      we gave larger examples<footnote>
+    The largest example is in <a href=
+    "http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2018/05/combinator2.html"
+    >Marpa and combinator parsing 2</a>
+    </footnote>,
+      and our tools and techniques have scaled.
       We expect that the variable-length subparsing
       feature will also scale -- while it was not available in
       Marpa::R2, they are not in themselves new.
@@ -398,7 +406,9 @@ Measuring language popularity
  "http://dinhe.net/~aredridel/.notmine/PDFs/Parsing/KEGLER,%20Jeffrey%20-%20Marpa,%20a%20practical%20general%20parser:%20the%20recognizer.pdf"
 >Online version accessed of 24 April 2018</a>.
 The link is to the 19 June 2013 revision of the 2012 original.
-      </footnote>
+      </footnote>.
+    </p>
+    <p>
       The grammars used in the example of this post are minimal.
       Only enough LaTex is implemented
       to recognize code blocks; and
