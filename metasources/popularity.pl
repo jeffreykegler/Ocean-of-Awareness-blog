@@ -72,19 +72,30 @@ Measuring language popularity
     <h2>How to measure popularity</h2>
     <p>
       <a href="https://github.com/github/linguist">Github's
-        linquist</a>
-      is being seen as the most trustworthy tool
+        linguist</a>
+      is seen as the most trustworthy tool
       for estimating language popularity<footnote>
-        TODO
+	This github repo for <tt>linguist</tt> is <a href=
+	"https://github.com/github/linguist/"
+	>https://github.com/github/linguist/</a>.
       </footnote>,
-      in large part because it reports its count as
-      of lines in a very large dataset,
+      in large part because it reports its result as
+      the proportion of lines of code in a very large dataset,
       instead of web hits or searches.<footnote>
-        For example, see
+        As examples, see
         <a href="https://techcrunch.com/2018/09/30/what-the-heck-is-going-on-with-measures-of-programming-language-popularity/">
           Jon Evan's
           <cite>Techcruch</cite>
-          article</a>
+          article</a>;
+	  and <a href=
+	  "https://www.benfrederickson.com/ranking-programming-languages-by-github-users/"
+	  >Ben Fredickson's project</a>.
+	  The Github API's <a href=
+	  "https://developer.github.com/v3/repos/#list-languages"
+	  >command for listing languages</a> report its results in bytes,
+	  suggesting that it is the sum of blob sizes.
+	  And some Github-based measures of popularity seem to be even more crude that this --
+	  they count entire repos as being in the repo's primary language.
       </footnote>
       It is ironic, in this context,
       that
@@ -97,40 +108,32 @@ Measuring language popularity
         <a href="https://github.com/github/linguist/blob/8cd9d744caa7bd3920c0cb8f9ca494ce7d8dc206/README.md">
           permalink as of 30 September 2018</a>).
         The code percentages reported by
-        <tt>linquist</tt>
+        <tt>linguist</tt>
         are based on blob sizes --
         line counts are not reliable for whole repositories:
-        <a href="https://github.com/github/linguist/issues/3131">Github linquist issue #1331</a>,
+        <a href="https://github.com/github/linguist/issues/3131">Github linguist issue #1331</a>,
         accessed 1 October 2018.
       </footnote>
     </p>
-    <p>
-    </p><p>How accurate is this?
+    <p>How accurate is this?
       For files that are mostly in a single programming language,
       currently the majority of them,
-      <tt>linguist</tt>'s method are probably very accurate.<footnote>
-        TODO:
-        Human programmers can identify programming languages at a glance.
-        It seems highly unlikely that is ability is exceptionally human,
-        an unexplainable talent available only to Homo Sapiens.
-        (Of course, programmer can instantly identify only the languages they are familiar with,
-        and human programmers slow down if the languages are very similar.
-        But, both computers and chess champions memorize opening moves,
-        except that the computer can memorize a larger book
-        and recall it more quickly.
-        In the same way,
-        I expect that a computer should be able to know more languages
-        and to tell apart closely related ones more quickly than humans.)
-        Much more likely is that our current techniques under-exploit
-        the power of our electronic computers.
-      </footnote>.
+      <tt>linguist</tt>'s method are probably very accurate.
     </p>
     <p>But literate programming often requires mixing languages.
       It is perhaps an extreme example,
       but much of the code used in this blog post
       comes from a Markdown file, which contains both C and Lua.
       This code is "untangled" from the Lua by ad-hoc scripts<footnote>
-        TODO
+        This custom literate programming system is not documented or packaged,
+	but those who cannot resist taking a look can find the Markdown
+	file it processes <a href=
+	"https://github.com/jeffreykegler/Marpa--R3/blob/f16ef5798986da69fa8b437edc3930ce2cebd498/cpan/kollos/kollos.md"
+	>here</a>,
+	and its own code <a href=
+	"https://github.com/jeffreykegler/Marpa--R3/blob/f16ef5798986da69fa8b437edc3930ce2cebd498/cpan/kollos/miranda">
+	here</a>
+	(permalinks accessed 2 October 2018).
       </footnote>.
       In my codebase,
       <tt>linguist</tt>
@@ -176,7 +179,7 @@ Measuring language popularity
         <tt>linguist</tt>'s
         database.
         Worse, it won't solve the problem --
-        "liberal" recognition of even a single language
+        "liberal" recognition even of a single language
         requires more power than available from
         traditional parsers.
       </footnote>
@@ -236,7 +239,10 @@ Measuring language popularity
   L3c1-L5c31 [A CODE BLOCK]
   L6c1-L6c10 \end{code}
   L7c1-L7c5 LaTeX line: "*/ }"<footnote>
-  TODO
+  Adapted from
+  <a href=
+  "https://github.com/jeffreykegler/Marpa--R3/blob/08fa873687130fcfbe199a5f573375ad11322f3a/pub/varlex/idlit_ex2.t#L83"
+  >test code in Github repo</a>, permalink accessed 2 October 2018.
   </footnote>
 </tt></pre><p>
       Note that lines are respected perfectly:
@@ -252,14 +258,10 @@ Measuring language popularity
       a line and end in the middle of one.
       For example, the first comment starts at column 17
       of line 1 and ends at column 5 of line 3.<footnote>
-        TODO: Refer to test code
+      See <a href=
+      "https://github.com/jeffreykegler/Marpa--R3/blob/08fa873687130fcfbe199a5f573375ad11322f3a/pub/varlex/idlit_ex2.t#L44"
+      in the test code on Gihub.
       </footnote>
-    </p><!--
-        html_fmt: Next end tag is cruft
-      --></tt><!--
-        html_fmt: Next end tag is cruft
-      --></pre>
-    <!-- html_fmt: Next end tag is cruft -->
     </p>
     <h2>The method</h2>
     <p>The method I propose,
@@ -267,13 +269,30 @@ Measuring language popularity
       in a combination of Earley/Leo parsing
       and combinator parsing.
       Most of this (all except the variable-length tokens) is available
-      in Marpa::R2, which was Debian stable as of jessie.
+      in <a href=
+      "https://metacpan.org/pod/distribution/Marpa-R2/pod/Marpa_R2.pod"
+      >Marpa::R2</a>,
+      which was Debian stable as of jessie.
     </p>
     <p>
-      The final piece was the variable length tokens,
+      The final piece was the variable length tokens<footnote>
+      There is <a href=
+      "https://metacpan.org/pod/distribution/Marpa-R2/pod/Marpa_R2.pod"
+      >documentation of the interface</a>,
+      but if have not been following the Marpa::R3 project,
+      it is not a good starting point.
+      Once a user is familiar with Marpa::R3 standard DSL-based
+      interface,
+      they can start to learn about its alternatives <a href=
+      "https://metacpan.org/pod/release/JKEGL/Marpa-R3-4.001_053/pod/External/Basic.pod"
+      >here</a>.
+      </footnote>,
       which I have just added to Marpa::R3,
       Marpa::R2's successor.
-      Releases of Marpa::R3 pass a full test suite,
+      Releases of <a href=
+      "https://metacpan.org/pod/release/JKEGL/Marpa-R3-4.001_053/pod/Marpa_R3.pod"
+      >Marpa::R3</a>
+      pass a full test suite,
       and the documentation is kept up to date,
       but R3 is alpha, and the usual cautions<footnote>
         Specifically, the cautions are that Marpa::R3 features are subject
@@ -286,7 +305,9 @@ Measuring language popularity
       </footnote>
       apply.
     </p><h2>The example</h2>
-    <p>The code that ran this example is available on Github.
+    <p>The code that ran this example is <a href=
+    "https://github.com/jeffreykegler/Marpa--R3/tree/08fa873687130fcfbe199a5f573375ad11322f3a/pub/varlex"
+    >available on Github</a>.
       Most of the tools and techniques have been proven scalable,
       and I believe that all of them are,
       but the actual grammars used are minimal.
