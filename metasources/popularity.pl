@@ -95,8 +95,10 @@ Measuring language popularity
 	Github's <tt>linguist</tt> does give a line count but
 	Github does not vouch for their accuracy:
 "if you really need to know the lines of code of an entire repo, there are much better tools for this than Linguist."
-        <a href="https://github.com/github/linguist/issues/3131">Quoted from the resolution of
-	Github linguist issue #1331</a>.
+        Quoted from
+        (<a href="https://github.com/github/linguist/issues/3131">
+	the resolution of
+	Github linguist issue #1331</a>.)
 	The Github API's <tt>list-languages</tt> command reports language sizes
 	in bytes.
 	The <a href=
@@ -112,11 +114,11 @@ Measuring language popularity
 	For more, see
         <a href="https://techcrunch.com/2018/09/30/what-the-heck-is-going-on-with-measures-of-programming-language-popularity/">
           Jon Evan's
-          <cite>Techcruch</cite>
+          <cite>Techcrunch</cite>
           article</a>;
 	  and <a href=
 	  "https://www.benfrederickson.com/ranking-programming-languages-by-github-users/"
-	  >Ben Fredickson's project</a>.
+	  >Ben Frederickson's project</a>.
       </footnote>
       It is ironic, in this context,
       that
@@ -315,7 +317,7 @@ Measuring language popularity
     </p>
     <p>
       The final piece, added in this post, is the
-      ability to use variable length tokens<footnote>
+      ability to use variable length subparsing<footnote>
       There is <a href=
       "https://metacpan.org/pod/distribution/Marpa-R2/pod/Marpa_R2.pod"
       >documentation of the interface</a>,
@@ -362,7 +364,16 @@ Measuring language popularity
     When the power of Earley/Leo gives out,
     Marpa allows combinators (subparsers)
     to be invoked<footnote>
-    TODO
+    See my previous posts:
+    <a href=
+    "http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2018/05/csg.html"
+    >Marpa and procedural parsing</a>;
+    <a href=
+    "http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2018/05/combinator.html"
+    >Marpa and combinator parsing</a>;
+    and <a href=
+    "http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2018/05/combinator2.html"
+    >Marpa and combinator parsing 2></a>
     </footnote>.
     The subparsers can be anything, including
     other Earley/Leo parsers,
@@ -376,11 +387,18 @@ Measuring language popularity
     >available on Github</a>.
       In previous posts,
       we gave larger example,
-      and our tools and techniques have proved scalable.
-      There is no reason to think that the variable-length tokens
-      feature will not also scale -- while it was not available in
-      Marpa::R2, it has been available in other Marpa interfaces for
-      years and was part of Marpa's theory paper.
+      and our tools and techniques have found to scale.
+      We expect that the variable-length subparsing
+      feature will also scale -- while it was not available in
+      Marpa::R2, they are not in themselves new.
+      Variable-length tokens has been available in other Marpa interfaces for
+      years and they were part of Marpa's theory paper.<footnote>
+ Kegler, Jeffrey. <cite>Marpa, A Practical General Parser: The Recognizer</cite>.
+ <a href=
+ "http://dinhe.net/~aredridel/.notmine/PDFs/Parsing/KEGLER,%20Jeffrey%20-%20Marpa,%20a%20practical%20general%20parser:%20the%20recognizer.pdf"
+>Online version accessed of 24 April 2018</a>.
+The link is to the 19 June 2013 revision of the 2012 original.
+      </footnote>
       The grammars used in the example of this post are minimal.
       Only enough LaTex is implemented
       to recognize code blocks; and
