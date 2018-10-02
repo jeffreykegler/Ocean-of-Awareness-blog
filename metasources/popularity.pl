@@ -82,13 +82,34 @@ Measuring language popularity
       in large part because it reports its result as
       the proportion of lines of code in a very large dataset,
       instead of web hits or searches.<footnote>
-        The code percentages reported by
-        <tt>linguist</tt>
-        are based on blob sizes --
-        line counts are not reliable for whole repositories:
-        <a href="https://github.com/github/linguist/issues/3131">Github linguist issue #1331</a>,
-        accessed 1 October 2018.
-        As examples, see
+	Their methodology is often left vague,
+	but it seems safe to say the careful line-by-line counting
+	discussed in this post
+	goes well beyond the techniques used in
+	the widely-publicized lists of "most popular programming
+	languages". 
+	<br><br>
+	In fact, it seems likely these measures do not use line
+	counts at all,
+	but instead report the sum of blob sizes.
+	Github's <tt>linguist</tt> does give a line count but
+	Github does not vouch for their accuracy:
+"if you really need to know the lines of code of an entire repo, there are much better tools for this than Linguist."
+        <a href="https://github.com/github/linguist/issues/3131">Quoted from the resolution of
+	Github linguist issue #1331</a>.
+	The Github API's <tt>list-languages</tt> command reports language sizes
+	in bytes.
+	The <a href=
+	  "https://developer.github.com/v3/repos/#list-languages"
+	>API documentation</a>
+	is vague, but it seems the counts are the
+	sum of blob sizes,
+	with each blob classed as one and only one language.
+	<br><br>
+	Some tallies seem even cruder than this --
+	they are not even blob-by-blob,
+	but assign entire repos to the "primary language".
+	For more, see
         <a href="https://techcrunch.com/2018/09/30/what-the-heck-is-going-on-with-measures-of-programming-language-popularity/">
           Jon Evan's
           <cite>Techcruch</cite>
@@ -96,12 +117,6 @@ Measuring language popularity
 	  and <a href=
 	  "https://www.benfrederickson.com/ranking-programming-languages-by-github-users/"
 	  >Ben Fredickson's project</a>.
-	  The Github API's <a href=
-	  "https://developer.github.com/v3/repos/#list-languages"
-	  >command for listing languages</a> report its results in bytes,
-	  suggesting that it is the sum of blob sizes.
-	  And some Github-based measures of popularity seem to be even more crude that this --
-	  they count entire repos as being in the repo's primary language.
       </footnote>
       It is ironic, in this context,
       that
@@ -341,7 +356,7 @@ Measuring language popularity
     deterministically using a regular set as its lookahead.
     A "regular set" is a set of regular expressions.
     The regular set itself must be finite,
-    but the regular expression it contains
+    but the regular expressions it contains
     can match lookaheads of arbitrary length.
     </footnote>
     When the power of Earley/Leo gives out,
