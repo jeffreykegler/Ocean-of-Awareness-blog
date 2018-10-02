@@ -270,19 +270,37 @@ Measuring language popularity
       on Gihub.
       </footnote>
     </p>
-    <h2>The method</h2>
-    <p>The method I propose,
-      and which I used in the example above,
-      in a combination of Earley/Leo parsing
-      and combinator parsing.
-      Most of this (all except the variable-length tokens) is available
+    <p>What language is our example in?
+    Our example is long enough to justify classification,
+    and it compiles as C code.<footnote>
+    Some might think the two LaTex lines should be counted as LaTex,
+    and, using subparsing of comments, that heuristic can be implemented.
+    </footnote>
+    Our parses give us enough data for a heuristic
+    to make a decision capturing this intuition.<footnote>
+    To be sure, a useful tool would want to include considerably more of
+    C's syntax.
+    It is perhaps not necessary to be sure that a file compiles
+    before concluding it is C.
+    And we might not want to unclass a file as C because of a
+    fleeting failure to compile.
+    But we do want to lower the probably of a false positive.
+    </footnote>
+    </p>
+    <h2>Earley/Leo parsing and combinators</h2>
+    <p>In a series of previous posts,
+      I have been developing a parsing method that
+      integrates
+      Earley/Leo parsing and combinator parsing.
+      Everything in my previous posts is available
       in <a href=
       "https://metacpan.org/pod/distribution/Marpa-R2/pod/Marpa_R2.pod"
       >Marpa::R2</a>,
       which was Debian stable as of jessie.
     </p>
     <p>
-      The final piece was the variable length tokens<footnote>
+      The final piece, added in this post, is the
+      ability to use variable length tokens<footnote>
       There is <a href=
       "https://metacpan.org/pod/distribution/Marpa-R2/pod/Marpa_R2.pod"
       >documentation of the interface</a>,
@@ -314,13 +332,41 @@ Measuring language popularity
         some time.
       </footnote>
       apply.
-    </p><h2>The example</h2>
+    </p>
+    <p>Earley/Leo parsing in linear for a superset
+    of the LR-regular grammars,
+    which includes all other grammar classes in practical use,
+    and Earley/Leo allows the equivalent of infinite lookahead.<footnote>
+    Technically, a grammar is LR-regular if it can be parsed
+    deterministically using a regular set as its lookahead.
+    A "regular set" is a set of regular expressions.
+    The regular set itself must be finite,
+    but the regular expression it contains
+    can match lookaheads of arbitrary length.
+    </footnote>
+    When the power of Earley/Leo gives out,
+    Marpa allows combinators (subparsers)
+    to be invoked<footnote>
+    TODO
+    </footnote>.
+    The subparsers can be anything, including
+    other Earley/Leo parsers,
+    and they can be called recursively.
+    Rare will be the grammar of practical interest that
+    cannot be parsed with this combination of methods.
+    </p>
+    <h2>The example</h2>
     <p>The code that ran this example is <a href=
     "https://github.com/jeffreykegler/Marpa--R3/tree/08fa873687130fcfbe199a5f573375ad11322f3a/pub/varlex"
     >available on Github</a>.
-      Most of the tools and techniques have been proven scalable,
-      and I believe that all of them are,
-      but the grammars used in our example are minimal.
+      In previous posts,
+      we gave larger example,
+      and our tools and techniques have proved scalable.
+      There is no reason to think that the variable-length tokens
+      feature will not also scale -- while it was not available in
+      Marpa::R2, it has been available in other Marpa interfaces for
+      years and was part of Marpa's theory paper.
+      The grammars used in the example of this post are minimal.
       Only enough LaTex is implemented
       to recognize code blocks; and
       only enough C syntax is implemented to recognize comments.
