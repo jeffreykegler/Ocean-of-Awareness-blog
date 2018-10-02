@@ -72,12 +72,17 @@ Measuring language popularity
     <h2>How to measure popularity</h2>
     <p>
       <a href="https://github.com/github/linguist">Github's
-      linquist</a> is being see as the most trustworihy tool
+      linquist</a> is being seen as the most trustworthy tool
       for estimating language popularity<footnote>
       TODO
       </footnote>,
-      in large part because its counts are reported in terms
-      of lines in a very large dataset.
+      in large part because it reports its count as
+      of lines in a very large dataset,
+      instead of web hits or searches.<footnote>
+      For example, see
+<a href="https://techcrunch.com/2018/09/30/what-the-heck-is-going-on-with-measures-of-programming-language-popularity/">
+Jon Evan's <cite>Techcruch</cite> article</a>
+      </footnote>
       It is ironic, in this context,
       that <tt>linguist</tt>
       avoids looking at the code,
@@ -87,7 +92,12 @@ Measuring language popularity
         <tt>linguist</tt>'s methodology is described in its README.md (
         <a href="https://github.com/github/linguist/blob/8cd9d744caa7bd3920c0cb8f9ca494ce7d8dc206/README.md">
           permalink as of 30 September 2018</a>).
-      </footnote></p>
+	  The code percentages reported by <tt>linquist</tt> are based on blob sizes --
+	  line counts are not reliable for whole repositories:
+	  <a href="https://github.com/github/linguist/issues/3131">Github linquist issue #1331</a>,
+	  accessed 1 October 2018.
+      </footnote>
+    </p>
     <p>
     <p>How accurate is this?
     For files that are mostly in a single programming language,
@@ -109,15 +119,22 @@ Measuring language popularity
       the power of our electronic computers.
       </footnote>.
     </p>
-    <p>But literate programming requires mixing languages.
-    The source for
-    much of the code used for the exammple in this blog post
-    is a Markdown file, which contains both C and Lua.
-    This code is "untangled" from the Lua by some ad-hoc scripts<footnote>
+    <p>But literate programming often requires mixing languages.
+    It is perhaps an extreme example,
+    but much of the code used in this blog post
+    comes from a Markdown file, which contains both C and Lua.
+    This code is "untangled" from the Lua by ad-hoc scripts<footnote>
     TODO
     </footnote>.
     In my codebase, <tt>linguist</tt> indentifies this code simply
-    as Markdown.
+    as Markdown.<footnote>
+    For those who care about getting <tt>linguist</tt> as
+    accurate as possible.
+    there is a workaround:
+    the <tt>linguist-language</tt> git attribute.
+    This still requires that a blob be considered
+    as containing lines of a single language.
+    </footnote>
     <tt>linguist</tt> then ignores it,
     as it does all documentation files.<footnote>
         For the treatment of Markdown, see
@@ -126,58 +143,136 @@ Measuring language popularity
         (permalink accessed as of 30 September 2018).
         </footnote>.
 	</p>
-	<p>Do mistakes like this have much of an effect on
-	<tt>linguist</tt>'s accuracy.
-	My impression is that this sort of
-	"guerrilla literate programming" is rare,
-	so probably not.
-	But if literate programming is becoming more popular,
-	it may be slipping under <tt>linguist</tt>'s radar.
+	<p>Currently, this kind of homegrown
+	literate programming may be so rare
+	that it is not worth taking into account.
+	But if literate programming becomes more popular,
+	that trend might well slip under <tt>linguist</tt>'s radar.
 	And even those with a lot of faith in 
 	<tt>linguist</tt>'s numbers should be happy to
-	see them confirmed by more careful methods.
+	know they could be confirmed by more careful methods.
 	</p>
     <h2>Token-by-token versus line-by-line</h2>
-    <p>The problem with more careful counting,
-    is that it cannot be done in a single pass
-    with traditional parsing methods.<footnote>
-    Another possibility is to do one scan
-    pass per language, but that would be expensive --
-    at least count there were 381 langauges in <tt>linguist</tt>'s
+    <p>Careful line counting for multiple languages
+    cannot be done with traditional parsing methods.<footnote>
+    Another possibility is a multi-scan approach -- one
+    pass per language.
+    But that is likely to be expensive --
+    at last count there were 381 langauges in <tt>linguist</tt>'s
     database.
-    Worse, it wouldn't solve the problem --
-    "liberal" recognition of a single language will
-    require a parser with most of the power required for a one-pass
-    solution.
+    Worse, it won't solve the problem --
+    "liberal" recognition of even a single language
+    requires more power than available from
+    traditional parsers.
     </footnote>
-    These cannot handle
-    a parser must be able to handle ambiguity 
-    <p>The method I propose combines Earley/Leo parsing and combinator parsing.
-      The Earley/Leo portion of it is a general context-free parser,
-      which is capable of parsing LR-regular
-      grammars<footnote>
-        In fact, the Earley/Leo implementation is linear
-        for a superset of the LR-regular (LRR) grammars,
-        which includes many ambiguous grammars.
-        LRR is the set of all grammars which can be parsed deterministically
-        using a finite regular set for lookahead.
-        A "finite regular set" is some non-infinite set of regular expressions.
-        Regular expressions, of course, can match arbitrarily long strings,
-        and this means that LRR allows infinite lookahead.
-      </footnote>
-      in linear time.<footnote>
-      </footnote>.
-      When even this level of power fails,
-      combinator parsing allows a subparser to be invoked.
+    To do this, a parser must be able to handle ambiguity in several forms --
+    ambiguous parses, ambiguous tokens, and overlapping variable-length tokens.
+    </p>
+    <p>
+    Dealing with
+    "overlapping variable-length tokens" may sound like a bizarre requirement,
+    but it is not.
+    Line-by-line languages (BASIC, FORTRAN, JSON, .ini files, Markdown)
+    and token-by-token languages (C, Java, Javascript, HTML)
+    are both common,
+    and even today commonly occur in the same file (POD vs. Perl,
+    Haskell's Bird notation, Knuth's CWeb).
+    Deterministic parsing can switch back and forth,
+    though at the cost of some very hack-ish code.
+    </p>
+    <p>
+    For careful line counting, however,
+    you need to parse line-by-line and token-by-token
+    <b>at the same</b>.
+    <p>
+    Consider this example:
+    </p>
+    <pre><tt>
+    int fn () { /* for later
+\begin{code}
+   */ int fn2(); int a = fn2();
+   int b = 42;
+   return  a + b; /* for later
+\end{code}
+*/ }
+    </tt></pre>
+    <p>Those unwilling to simply accept an artifical example
+    can imagine it's part of a test case built from code
+    pulled from a LaTeX file --
+    and that the programmer thought the best way
+    to indicate the pasted code was to keep its original
+    LaTeX delimiters.
+    GCC compiles this code without warnings.
+    </p>
+    <p>It is not really the case that LaTeX is a line-by-line language.
+    But in literate programming systems,
+    it is usually required that the <tt>\begin{code}</tt>
+    and <tt>\end{code}</tt> delimiters begin at column 0,
+    and that the code block between them be a set of whole lines,
+    so, for our purposes in this post,
+    we can treat LaTeX as line-by-line.
+    For LaTeX, our parser finds.
+<pre><tt>
+  L1c1-L1c29 LaTeX line: "    int fn () { /* for later"
+  L2c1-L2c13 \begin{code}
+  L3c1-L5c31 [A CODE BLOCK]
+  L6c1-L6c10 \end{code}
+  L7c1-L7c5 LaTeX line: "*/ }"<footnote>
+  TODO
+  </footnote>
+</tt></pre>
+Note that lines are respected perfectly:
+The first and last are ordinary LaTeX lines,
+the 2nd and 6th are commands bounding the code,
+and lines 3 through 5 are a code block.
+</p>
+<p>
+The C tokenization, on the other hand,
+shows no respect for lines.
+Most tokens take only part of a line,
+but the two comments start in the middle of
+a line and end in the middle of one.
+For example, the first comment starts at column 17
+of line 1 and ends at column 5 of line 3.<footnote>
+TODO: Refer to test code
+</footnote>
+</tt></pre>
+    </p>
+    <h2>The method</h2>
+    <p>The method I propose,
+    and which I used in the example above,
+    in a combination of Earley/Leo parsing
+    and combinator parsing.
+    Most of this (all except the variable-length tokens) is available
+    in Marpa::R2, which was Debian stable as of jessie.
+    </p>
+    <p>
+    The final piece was the variable length tokens,
+    which I have just added to Marpa::R3,
+    Marpa::R2's successor.
+    Releases of Marpa::R3 pass a full test suite,
+    and the documentation is kept up to date,
+    but R3 is alpha, and the usual cautions<footnote>
+    Specifically, the cautions are that Marpa::R3 features are subject
+    to change without notice, even between micro releases,
+    and there is no concern for backward compatibility.
+    This makes R3 unsuitable for a production application.
+    Add to this, while R3 is tested, it has seen much less
+    usage and testing than R2, which has been very stable for
+    some time.
+    </footnote>
+    apply.
+    <h2>The example</h2>
+    <p>The code that ran this example is available on Github.
+    Most of the tools and techniques have been proven scalable,
+    and I believe that all of them are,
+    but the actual grammars used are minimal.
+    Only enough LaTex is implemented
+    to recognize code blocks; and
+    only enough C syntax is implemented to recognize comments.
     </p>
     <h2>The code, comments, etc.</h2>
-    <p>A permalink to the
-      full code and a test suite for this prototype,
-      as described in this blog post,
-      is
-      <a href="https://github.com/jeffreykegler/Ocean-of-Awareness-blog/tree/0df0aef7d6cb8590d3a33f857619e75f84786dd7/code/haskell">
-        on Github</a>.
-      To learn more about Marpa,
+    <p>To learn more about Marpa,
       a good first stop is the
       <a href="http://savage.net.au/Marpa.html">semi-official web site, maintained by Ron Savage</a>.
       The official, but more limited, Marpa website
