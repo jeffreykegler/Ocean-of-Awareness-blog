@@ -1,0 +1,455 @@
+<html>
+<head>
+<link rel="alternate" title="Ocean of Awareness RSS" type="application/rss+xml" title="RSS" href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/index.rss" />
+<title>Measuring language popularity</title>
+<style type="text/css">
+   strong {font-weight: 700;}
+</style>
+</head>
+<body>
+<div
+  style="color:white;background-color:#38B0C0;padding:1em;clear:left;text-align:center;">
+<h1>Ocean of Awareness</h1>
+</div>
+  <div style="margin:0;padding:10px 30px 10px 10px;width:150px;float:left;border-right:2px solid #38B0C0">
+  <p>
+  <strong>Jeffrey Kegler's blog</strong>
+  about Marpa, his new parsing algorithm,
+    and other topics of interest</p>
+  <p><a href="http://www.jeffreykegler.com/">Jeffrey's personal website</a></p>
+      <p>
+	<a href="https://twitter.com/jeffreykegler" class="twitter-follow-button" data-show-count="false">Follow @jeffreykegler</a>
+      </p>
+      <p style="text-align:center">
+	<!-- Place this code where you want the badge to render. -->
+	<a href="//plus.google.com/101567692867247957860?prsrc=3" rel="publisher" style="text-decoration:none;">
+	<img src="//ssl.gstatic.com/images/icons/gplus-32.png" alt="Google+" style="border:0;width:32px;height:32px;"/></a>
+      </p>
+  <h3>Marpa resources</h3>
+  <p><a href="http://jeffreykegler.github.com/Marpa-web-site/">The Marpa website</a></p>
+  <p>The Ocean of Awareness blog: <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog">home page</a>,
+  <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/metapages/chronological.html">chronological index</a>,
+  and
+  <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/metapages/annotated.html">annotated index</a>.
+  </p>
+  </div>
+  <div style="margin-left:190px;border-left:2px solid #38B0C0;padding:25px;">
+<h3>Tue, 02 Oct 2018</h3>
+<br />
+<center><a name="popularity"> <h2>Measuring language popularity</h2> </a>
+</center>
+<html>
+  <head>
+  </head>
+  <body style="max-width:850px">
+    <!--
+      marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
+      -->
+    <h2>Language popularity</h2>
+    <p>
+      <a href="https://github.com/github/linguist">Github's
+        linguist</a>
+      is seen as the most trustworthy tool
+      for estimating language popularity<a id="footnote-1-ref" href="#footnote-1">[1]</a>,
+      in large part because it reports its result as
+      the proportion of code in a very large dataset,
+      instead of web hits or searches.<a id="footnote-2-ref" href="#footnote-2">[2]</a>
+      It is ironic, in this context,
+      that
+      <tt>linguist</tt>
+      avoids looking at the code,
+      preferring to use
+      metadata -- file name and the vim and shebang lines.
+      Scanning the actual code is <tt>linguist</tt>'s last resort.<a id="footnote-3-ref" href="#footnote-3">[3]</a>
+    </p>
+    <p>How accurate is this?
+      For files that are mostly in a single programming language,
+      currently the majority of them,
+      <tt>linguist</tt>'s method are probably very accurate.
+    </p>
+    <p>But literate programming often requires mixing languages.
+      It is perhaps an extreme example,
+      but much of the code used in this blog post
+      comes from a Markdown file, which contains both C and Lua.
+      This code is "untangled" from the Lua by ad-hoc scripts<a id="footnote-4-ref" href="#footnote-4">[4]</a>.
+      In my codebase,
+      <tt>linguist</tt>
+      indentifies this code simply
+      as Markdown.<a id="footnote-5-ref" href="#footnote-5">[5]</a>
+      <tt>linguist</tt>
+      then ignores it,
+      as it does all documentation files.<a id="footnote-6-ref" href="#footnote-6">[6]</a>.
+    </p>
+    <p>Currently, this kind of homegrown
+      literate programming may be so rare
+      that it is not worth taking into account.
+      But if literate programming becomes more popular,
+      that trend might well slip under
+      <tt>linguist</tt>'s radar.
+      And even those with a lot of faith in
+      <tt>linguist</tt>'s numbers should be happy to
+      know they could be confirmed by more careful methods.
+    </p>
+    <h2>Token-by-token versus line-by-line</h2>
+    <p><tt>linguist</tt> avoids reporting results based on looking at the code,
+    because careful line counting for multiple languages
+      cannot be done with traditional parsing methods.<a id="footnote-7-ref" href="#footnote-7">[7]</a>
+      To do careful line counting,
+      a parser must be able to handle ambiguity in several forms --
+      ambiguous parses, ambiguous tokens, and overlapping variable-length tokens.
+    </p>
+    <p>
+      The ability to deal with
+      "overlapping variable-length tokens" may sound like a bizarre requirement,
+      but it is not.
+      Line-by-line languages (BASIC, FORTRAN, JSON, .ini files, Markdown)
+      and token-by-token languages (C, Java, Javascript, HTML)
+      are both common,
+      and even today commonly occur in the same file (POD and Perl,
+      Haskell's Bird notation, Knuth's CWeb).
+    </p>
+    <p>
+      Deterministic parsing can switch back and forth,
+      though at the cost of some very hack-ish code.
+      But for careful line counting,
+      you need to parse line-by-line and token-by-token
+      simultaneously.
+      Consider this example:
+    </p>
+    <pre><tt>
+    int fn () { /* for later
+\begin{code}
+   */ int fn2(); int a = fn2();
+   int b = 42;
+   return  a + b; /* for later
+\end{code}
+*/ }
+    </tt></pre>
+    <p>A reader can imagine that this code is part of a test case using code
+      pulled from a LaTeX file.
+      The programmer wanted to indicate the copied portion of code,
+      and did so by commenting out its original LaTeX delimiters.
+      GCC compiles this code without warnings.
+    </p>
+    <p>It is not really the case that LaTeX is a line-by-line language.
+      But in literate programming systems<a id="footnote-8-ref" href="#footnote-8">[8]</a>,
+      it is usually required that the
+      <tt>\begin{code}</tt>
+      and
+      <tt>\end{code}</tt>
+      delimiters begin at column 0,
+      and that the code block between them be a set of whole lines so,
+      for our purposes in this post,
+      we can treat LaTeX as line-by-line.
+      For LaTeX, our parser finds
+    </p><pre><tt>
+  L1c1-L1c29 LaTeX line: "    int fn () { /* for later"
+  L2c1-L2c13 \begin{code}
+  L3c1-L5c31 [A CODE BLOCK]
+  L6c1-L6c10 \end{code}
+  L7c1-L7c5 LaTeX line: "*/ }"<a id="footnote-9-ref" href="#footnote-9">[9]</a>
+</tt></pre><p>
+      Note that in the LaTeX parse, line alignment is respected perfectly:
+      The first and last are ordinary LaTeX lines,
+      the 2nd and 6th are commands bounding the code,
+      and lines 3 through 5 are a code block.
+    </p>
+    <p>
+      The C tokenization, on the other hand,
+      shows no respect for lines.
+      Most tokens are a small part of their line,
+      and the two comments start in the middle of
+      a line and end in the middle of one.
+      For example, the first comment starts at column 17
+      of line 1 and ends at column 5 of line 3.<a id="footnote-10-ref" href="#footnote-10">[10]</a>
+    </p>
+    <p>What language is our example in?
+    Our example is long enough to justify classification,
+    and it compiles as C code.
+    So it seems best to classify this example as C code<a id="footnote-11-ref" href="#footnote-11">[11]</a>.
+    Our parses give us enough data for a heuristic
+    to make a decision capturing this intuition.<a id="footnote-12-ref" href="#footnote-12">[12]</a>
+    </p>
+    <h2>Earley/Leo parsing and combinators</h2>
+    <p>In a series of previous posts<a id="footnote-13-ref" href="#footnote-13">[13]</a>,
+      I have been developing a parsing method that
+      integrates
+      Earley/Leo parsing and combinator parsing.
+      Everything in my previous posts is available
+      in <a href=
+      "https://metacpan.org/pod/distribution/Marpa-R2/pod/Marpa_R2.pod"
+      >Marpa::R2</a>,
+      which was Debian stable as of jessie.
+    </p>
+    <p>
+      The final piece, added in this post, is the
+      ability to use variable length subparsing<a id="footnote-14-ref" href="#footnote-14">[14]</a>,
+      which I have just added to Marpa::R3,
+      Marpa::R2's successor.
+      Releases of <a href=
+      "https://metacpan.org/pod/release/JKEGL/Marpa-R3-4.001_053/pod/Marpa_R3.pod"
+      >Marpa::R3</a>
+      pass a full test suite,
+      and the documentation is kept up to date,
+      but R3 is alpha, and the usual cautions<a id="footnote-15-ref" href="#footnote-15">[15]</a>
+      apply.
+    </p>
+    <p>Earley/Leo parsing is linear for a superset
+    of the LR-regular grammars,
+    which includes all other grammar classes in practical use,
+    and Earley/Leo allows the equivalent of infinite lookahead.<a id="footnote-16-ref" href="#footnote-16">[16]</a>
+    When the power of Earley/Leo gives out,
+    Marpa allows combinators (subparsers)
+    to be invoked.
+    The subparsers can be anything, including
+    other Earley/Leo parsers,
+    and they can be called recursively<a id="footnote-17-ref" href="#footnote-17">[17]</a>.
+    Rare will be the grammar of practical interest that
+    cannot be parsed with this combination of methods.
+    </p>
+    <h2>The example</h2>
+    <p>The code that ran this example is <a href=
+    "https://github.com/jeffreykegler/Marpa--R3/tree/08fa873687130fcfbe199a5f573375ad11322f3a/pub/varlex"
+    >available on Github</a>.
+      In previous posts,
+      we gave larger examples<a id="footnote-18-ref" href="#footnote-18">[18]</a>,
+      and our tools and techniques have scaled.
+      We expect that the variable-length subparsing
+      feature will also scale -- while it was not available in
+      Marpa::R2, it is not in itself new.
+      Variable-length tokens have been available in other Marpa interfaces for
+      years and they were described in Marpa's theory paper.<a id="footnote-19-ref" href="#footnote-19">[19]</a>.
+    </p>
+    <p>
+      The grammars used in the example of this post are minimal.
+      Only enough LaTex is implemented
+      to recognize code blocks; and
+      only enough C syntax is implemented to recognize comments.
+    </p>
+    <h2>The code, comments, etc.</h2>
+    <p>To learn more about Marpa,
+      a good first stop is the
+      <a href="http://savage.net.au/Marpa.html">semi-official web site, maintained by Ron Savage</a>.
+      The official, but more limited, Marpa website
+      <a href="http://jeffreykegler.github.io/Marpa-web-site/">is my personal one</a>.
+      Comments on this post can be made in
+      <a href="http://groups.google.com/group/marpa-parser">
+        Marpa's Google group</a>,
+      or on our IRC channel: #marpa at freenode.net.
+    </p>
+    <h2>Footnotes</h2>
+<p id="footnote-1"><b>1.</b>
+	This github repo for <tt>linguist</tt> is <a href=
+	"https://github.com/github/linguist/"
+	>https://github.com/github/linguist/</a>.
+ <a href="#footnote-1-ref">&#8617;</a></p>
+<p id="footnote-2"><b>2.</b>
+	Their methodology is often left vague,
+	but it seems safe to say the careful line-by-line counting
+	discussed in this post
+	goes well beyond the techniques used in
+	the widely-publicized lists of "most popular programming
+	languages". 
+	<br><br>
+	In fact, it seems likely these measures do not use line
+	counts at all,
+	but instead report the sum of blob sizes.
+	Github's <tt>linguist</tt> does give a line count but
+	Github does not vouch for its accuracy:
+"if you really need to know the lines of code of an entire repo, there are much better tools for this than Linguist."
+        (Quoted from
+        <a href=
+	"https://github.com/github/linguist/issues/3131"
+	>the resolution of
+	Github linguist issue #1331</a>.)
+	The Github API's <tt>list-languages</tt> command reports language sizes
+	in bytes.
+	The <a href=
+	  "https://developer.github.com/v3/repos/#list-languages"
+	>API documentation</a>
+	is vague, but it seems the counts are the
+	sum of blob sizes,
+	with each blob classed as one and only one language.
+	<br><br>
+	Some tallies seem even more coarsely grained than this --
+	they are not even blob-by-blob,
+	but assign entire repos to the "primary language".
+	For more, see
+        <a href="https://techcrunch.com/2018/09/30/what-the-heck-is-going-on-with-measures-of-programming-language-popularity/">
+          Jon Evan's
+          <cite>Techcrunch</cite>
+          article</a>;
+	  and <a href=
+	  "https://www.benfrederickson.com/ranking-programming-languages-by-github-users/"
+	  >Ben Frederickson's project</a>.
+ <a href="#footnote-2-ref">&#8617;</a></p>
+<p id="footnote-3"><b>3.</b>
+        <tt>linguist</tt>'s methodology is described in its README.md
+	(<a href=
+	"https://github.com/github/linguist/blob/8cd9d744caa7bd3920c0cb8f9ca494ce7d8dc206/README.md"
+	>permalink as of 30 September 2018</a>).
+ <a href="#footnote-3-ref">&#8617;</a></p>
+<p id="footnote-4"><b>4.</b>
+        This custom literate programming system is not documented or packaged,
+	but those who cannot resist taking a look can find the Markdown
+	file it processes <a href=
+	"https://github.com/jeffreykegler/Marpa--R3/blob/f16ef5798986da69fa8b437edc3930ce2cebd498/cpan/kollos/kollos.md"
+	>here</a>,
+	and its own code <a href=
+	"https://github.com/jeffreykegler/Marpa--R3/blob/f16ef5798986da69fa8b437edc3930ce2cebd498/cpan/kollos/miranda">
+	here</a>
+	(permalinks accessed 2 October 2018).
+ <a href="#footnote-4-ref">&#8617;</a></p>
+<p id="footnote-5"><b>5.</b>
+        For those who care about getting
+        <tt>linguist</tt>
+        as
+        accurate as possible.
+        there is a workaround:
+        the
+        <tt>linguist-language</tt>
+        git attribute.
+        This still requires that each blob be 
+	reported as containing lines of only one language.
+ <a href="#footnote-5-ref">&#8617;</a></p>
+<p id="footnote-6"><b>6.</b>
+        For the treatment of Markdown, see
+        <tt>linguist</tt>
+        <a href="https://github.com/github/linguist/blob/8cd9d744caa7bd3920c0cb8f9ca494ce7d8dc206/README.md#my-repository-isnt-showing-my-language">README.md</a>
+        (permalink accessed as of 30 September 2018).
+ <a href="#footnote-6-ref">&#8617;</a></p>
+<p id="footnote-7"><b>7.</b>
+        Another possibility is a multi-scan approach -- one
+        pass per language.
+        But that is likely to be expensive.
+        At last count there were 381 langauges in
+        <tt>linguist</tt>'s
+        database.
+        Worse, it won't solve the problem:
+        "liberal" recognition even of a single language
+        requires more power than available from
+        traditional parsers.
+ <a href="#footnote-7-ref">&#8617;</a></p>
+<p id="footnote-8"><b>8.</b>
+      For example, these line-alignment requirements match 
+      those in
+      <a href=
+      "https://www.haskell.org/onlinereport/haskell2010/haskellch10.html"
+      >Section 10.4</a> of the 2010 Haskell Language Report.
+ <a href="#footnote-8-ref">&#8617;</a></p>
+<p id="footnote-9"><b>9.</b>
+  Adapted from
+  <a href=
+  "https://github.com/jeffreykegler/Marpa--R3/blob/08fa873687130fcfbe199a5f573375ad11322f3a/pub/varlex/idlit_ex2.t#L83"
+  >test code in Github repo</a>, permalink accessed 2 October 2018.
+ <a href="#footnote-9-ref">&#8617;</a></p>
+<p id="footnote-10"><b>10.</b>
+      See the <a href=
+      "https://github.com/jeffreykegler/Marpa--R3/blob/08fa873687130fcfbe199a5f573375ad11322f3a/pub/varlex/idlit_ex2.t#L44"
+      >test file</a>
+      on Gihub.
+ <a href="#footnote-10-ref">&#8617;</a></p>
+<p id="footnote-11"><b>11.</b>
+    Some might think the two LaTex lines should be counted as LaTex and,
+    using subparsing of comments, that heuristic can be implemented.
+ <a href="#footnote-11-ref">&#8617;</a></p>
+<p id="footnote-12"><b>12.</b>
+    To be sure, a useful tool would want to include considerably more of
+    C's syntax.
+    It is perhaps not necessary to be sure that a file compiles
+    before concluding it is C.
+    And we might want to class a file as C in spite of a
+    fleeting failure to compile.
+    But we do want to lower the probably of a false positive.
+ <a href="#footnote-12-ref">&#8617;</a></p>
+<p id="footnote-13"><b>13.</b>
+    <a href=
+    "http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2018/05/csg.html"
+    >Marpa and procedural parsing</a>;
+    <a href=
+    "http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2018/05/combinator.html"
+    >Marpa and combinator parsing</a>;
+    and <a href=
+    "http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2018/05/combinator2.html"
+    >Marpa and combinator parsing 2</a>
+ <a href="#footnote-13-ref">&#8617;</a></p>
+<p id="footnote-14"><b>14.</b>
+      There is <a href=
+      "https://metacpan.org/pod/distribution/Marpa-R2/pod/Marpa_R2.pod"
+      >documentation of the interface</a>,
+      but it is not a good starting point
+      for a reader who has just started to look at the Marpa::R3 project.
+      Once a user is familiar with Marpa::R3 standard DSL-based
+      interface,
+      they can start to learn about its alternatives <a href=
+      "https://metacpan.org/pod/release/JKEGL/Marpa-R3-4.001_053/pod/External/Basic.pod"
+      >here</a>.
+ <a href="#footnote-14-ref">&#8617;</a></p>
+<p id="footnote-15"><b>15.</b>
+        Specifically,
+	since Marpa::R3 is alpha,
+	its features are subject
+        to change without notice, even between micro releases,
+        and changes are made without concern for backward compatibility.
+        This makes R3 unsuitable for a production application.
+        Add to this that,
+	while R3 is tested, it has seen much less
+        usage and testing than R2, which has been very stable for
+        some time.
+ <a href="#footnote-15-ref">&#8617;</a></p>
+<p id="footnote-16"><b>16.</b>
+    Technically, a grammar is LR-regular if it can be parsed
+    deterministically using a regular set as its lookahead.
+    A "regular set" is a set of regular expressions.
+    The regular set itself must be finite,
+    but the regular expressions it contains
+    can match lookaheads of arbitrary length.
+ <a href="#footnote-16-ref">&#8617;</a></p>
+<p id="footnote-17"><b>17.</b>
+    See <a href=
+    "http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2018/05/combinator2.html"
+    >Marpa and combinator parsing 2</a>
+ <a href="#footnote-17-ref">&#8617;</a></p>
+<p id="footnote-18"><b>18.</b>
+    The largest example is in <a href=
+    "http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2018/05/combinator2.html"
+    >Marpa and combinator parsing 2</a>
+ <a href="#footnote-18-ref">&#8617;</a></p>
+<p id="footnote-19"><b>19.</b>
+ Kegler, Jeffrey. <cite>Marpa, A Practical General Parser: The Recognizer</cite>.
+ <a href=
+ "http://dinhe.net/~aredridel/.notmine/PDFs/Parsing/KEGLER,%20Jeffrey%20-%20Marpa,%20a%20practical%20general%20parser:%20the%20recognizer.pdf"
+>Online version accessed of 24 April 2018</a>.
+The link is to the 19 June 2013 revision of the 2012 original.
+ <a href="#footnote-19-ref">&#8617;</a></p>
+  </body>
+</html>
+<br />
+<p>posted at: 20:16 |
+<a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2018/10/popularity.html">direct link to this entry</a>
+</p>
+<div style="color:#38B0C0;padding:1px;text-align:center;">
+&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&sect;
+</div>
+</div>
+</div>
+<div id="footer" style="border-top:thick solid #38B0C0;clear:left;padding:1em;">
+<p>This is Ocean of Awareness's
+  new home.  This blog has been hosted at
+  <a href="http://blogs.perl.org/users/jeffrey_kegler/">blogs.perl.org</a>
+  but I have succumbed to the lure of static blogging.
+</div>
+	<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+              <script type="text/javascript">
+            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+          </script>
+          <script type="text/javascript">
+            try {
+              var pageTracker = _gat._getTracker("UA-33430331-1");
+            pageTracker._trackPageview();
+            } catch(err) {}
+          </script>
+</body></html>

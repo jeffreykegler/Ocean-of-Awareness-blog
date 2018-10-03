@@ -69,7 +69,7 @@ Measuring language popularity
     <!--
       marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
       -->
-    <h2>How to measure popularity</h2>
+    <h2>Language popularity</h2>
     <p>
       <a href="https://github.com/github/linguist">Github's
         linguist</a>
@@ -80,7 +80,7 @@ Measuring language popularity
 	>https://github.com/github/linguist/</a>.
       </footnote>,
       in large part because it reports its result as
-      the proportion of lines of code in a very large dataset,
+      the proportion of code in a very large dataset,
       instead of web hits or searches.<footnote>
 	Their methodology is often left vague,
 	but it seems safe to say the careful line-by-line counting
@@ -203,7 +203,8 @@ Measuring language popularity
         requires more power than available from
         traditional parsers.
       </footnote>
-      To do this, a parser must be able to handle ambiguity in several forms --
+      To do careful line counting,
+      a parser must be able to handle ambiguity in several forms --
       ambiguous parses, ambiguous tokens, and overlapping variable-length tokens.
     </p>
     <p>
@@ -219,7 +220,7 @@ Measuring language popularity
     <p>
       Deterministic parsing can switch back and forth,
       though at the cost of some very hack-ish code.
-      For careful line counting,
+      But for careful line counting,
       you need to parse line-by-line and token-by-token
       simultaneously.
       Consider this example:
@@ -233,8 +234,7 @@ Measuring language popularity
 \end{code}
 */ }
     </tt></pre>
-    <p>An artificial example would suffice,
-      but a reader can imagine that this code is part of a test case using code
+    <p>A reader can imagine that this code is part of a test case using code
       pulled from a LaTeX file.
       The programmer wanted to indicate the copied portion of code,
       and did so by commenting out its original LaTeX delimiters.
@@ -290,10 +290,11 @@ Measuring language popularity
     </p>
     <p>What language is our example in?
     Our example is long enough to justify classification,
-    and it compiles as C code.<footnote>
+    and it compiles as C code.
+    So it seems best to classify this example as C code<footnote>
     Some might think the two LaTex lines should be counted as LaTex and,
     using subparsing of comments, that heuristic can be implemented.
-    </footnote>
+    </footnote>.
     Our parses give us enough data for a heuristic
     to make a decision capturing this intuition.<footnote>
     To be sure, a useful tool would want to include considerably more of
@@ -332,8 +333,8 @@ Measuring language popularity
       There is <a href=
       "https://metacpan.org/pod/distribution/Marpa-R2/pod/Marpa_R2.pod"
       >documentation of the interface</a>,
-      but for a reader who has just started to look at the Marpa::R3 project,
-      it is not a good starting point.
+      but it is not a good starting point
+      for a reader who has just started to look at the Marpa::R3 project.
       Once a user is familiar with Marpa::R3 standard DSL-based
       interface,
       they can start to learn about its alternatives <a href=
@@ -398,9 +399,9 @@ Measuring language popularity
       and our tools and techniques have scaled.
       We expect that the variable-length subparsing
       feature will also scale -- while it was not available in
-      Marpa::R2, they are not in themselves new.
-      Variable-length tokens has been available in other Marpa interfaces for
-      years and they were part of Marpa's theory paper.<footnote>
+      Marpa::R2, it is not in itself new.
+      Variable-length tokens have been available in other Marpa interfaces for
+      years and they were described in Marpa's theory paper.<footnote>
  Kegler, Jeffrey. <cite>Marpa, A Practical General Parser: The Recognizer</cite>.
  <a href=
  "http://dinhe.net/~aredridel/.notmine/PDFs/Parsing/KEGLER,%20Jeffrey%20-%20Marpa,%20a%20practical%20general%20parser:%20the%20recognizer.pdf"

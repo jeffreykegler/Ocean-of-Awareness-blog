@@ -10,6 +10,396 @@
     <language>en</language>
 
   <item>
+    <title>Measuring language popularity</title>
+    <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2018/10/popularity.html</link>
+    <description>&lt;html&gt;
+  &lt;head&gt;
+  &lt;/head&gt;
+  &lt;body style=&quot;max-width:850px&quot;&gt;
+    &lt;!--
+      marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
+      --&gt;
+    &lt;h2&gt;Language popularity&lt;/h2&gt;
+    &lt;p&gt;
+      &lt;a href=&quot;https://github.com/github/linguist&quot;&gt;Github's
+        linguist&lt;/a&gt;
+      is seen as the most trustworthy tool
+      for estimating language popularity&lt;a id=&quot;footnote-1-ref&quot; href=&quot;#footnote-1&quot;&gt;[1]&lt;/a&gt;,
+      in large part because it reports its result as
+      the proportion of code in a very large dataset,
+      instead of web hits or searches.&lt;a id=&quot;footnote-2-ref&quot; href=&quot;#footnote-2&quot;&gt;[2]&lt;/a&gt;
+      It is ironic, in this context,
+      that
+      &lt;tt&gt;linguist&lt;/tt&gt;
+      avoids looking at the code,
+      preferring to use
+      metadata -- file name and the vim and shebang lines.
+      Scanning the actual code is &lt;tt&gt;linguist&lt;/tt&gt;'s last resort.&lt;a id=&quot;footnote-3-ref&quot; href=&quot;#footnote-3&quot;&gt;[3]&lt;/a&gt;
+    &lt;/p&gt;
+    &lt;p&gt;How accurate is this?
+      For files that are mostly in a single programming language,
+      currently the majority of them,
+      &lt;tt&gt;linguist&lt;/tt&gt;'s method are probably very accurate.
+    &lt;/p&gt;
+    &lt;p&gt;But literate programming often requires mixing languages.
+      It is perhaps an extreme example,
+      but much of the code used in this blog post
+      comes from a Markdown file, which contains both C and Lua.
+      This code is &quot;untangled&quot; from the Lua by ad-hoc scripts&lt;a id=&quot;footnote-4-ref&quot; href=&quot;#footnote-4&quot;&gt;[4]&lt;/a&gt;.
+      In my codebase,
+      &lt;tt&gt;linguist&lt;/tt&gt;
+      indentifies this code simply
+      as Markdown.&lt;a id=&quot;footnote-5-ref&quot; href=&quot;#footnote-5&quot;&gt;[5]&lt;/a&gt;
+      &lt;tt&gt;linguist&lt;/tt&gt;
+      then ignores it,
+      as it does all documentation files.&lt;a id=&quot;footnote-6-ref&quot; href=&quot;#footnote-6&quot;&gt;[6]&lt;/a&gt;.
+    &lt;/p&gt;
+    &lt;p&gt;Currently, this kind of homegrown
+      literate programming may be so rare
+      that it is not worth taking into account.
+      But if literate programming becomes more popular,
+      that trend might well slip under
+      &lt;tt&gt;linguist&lt;/tt&gt;'s radar.
+      And even those with a lot of faith in
+      &lt;tt&gt;linguist&lt;/tt&gt;'s numbers should be happy to
+      know they could be confirmed by more careful methods.
+    &lt;/p&gt;
+    &lt;h2&gt;Token-by-token versus line-by-line&lt;/h2&gt;
+    &lt;p&gt;&lt;tt&gt;linguist&lt;/tt&gt; avoids reporting results based on looking at the code,
+    because careful line counting for multiple languages
+      cannot be done with traditional parsing methods.&lt;a id=&quot;footnote-7-ref&quot; href=&quot;#footnote-7&quot;&gt;[7]&lt;/a&gt;
+      To do careful line counting,
+      a parser must be able to handle ambiguity in several forms --
+      ambiguous parses, ambiguous tokens, and overlapping variable-length tokens.
+    &lt;/p&gt;
+    &lt;p&gt;
+      The ability to deal with
+      &quot;overlapping variable-length tokens&quot; may sound like a bizarre requirement,
+      but it is not.
+      Line-by-line languages (BASIC, FORTRAN, JSON, .ini files, Markdown)
+      and token-by-token languages (C, Java, Javascript, HTML)
+      are both common,
+      and even today commonly occur in the same file (POD and Perl,
+      Haskell's Bird notation, Knuth's CWeb).
+    &lt;/p&gt;
+    &lt;p&gt;
+      Deterministic parsing can switch back and forth,
+      though at the cost of some very hack-ish code.
+      But for careful line counting,
+      you need to parse line-by-line and token-by-token
+      simultaneously.
+      Consider this example:
+    &lt;/p&gt;
+    &lt;pre&gt;&lt;tt&gt;
+    int fn () { /* for later
+\begin{code}
+   */ int fn2(); int a = fn2();
+   int b = 42;
+   return  a + b; /* for later
+\end{code}
+*/ }
+    &lt;/tt&gt;&lt;/pre&gt;
+    &lt;p&gt;A reader can imagine that this code is part of a test case using code
+      pulled from a LaTeX file.
+      The programmer wanted to indicate the copied portion of code,
+      and did so by commenting out its original LaTeX delimiters.
+      GCC compiles this code without warnings.
+    &lt;/p&gt;
+    &lt;p&gt;It is not really the case that LaTeX is a line-by-line language.
+      But in literate programming systems&lt;a id=&quot;footnote-8-ref&quot; href=&quot;#footnote-8&quot;&gt;[8]&lt;/a&gt;,
+      it is usually required that the
+      &lt;tt&gt;\begin{code}&lt;/tt&gt;
+      and
+      &lt;tt&gt;\end{code}&lt;/tt&gt;
+      delimiters begin at column 0,
+      and that the code block between them be a set of whole lines so,
+      for our purposes in this post,
+      we can treat LaTeX as line-by-line.
+      For LaTeX, our parser finds
+    &lt;/p&gt;&lt;pre&gt;&lt;tt&gt;
+  L1c1-L1c29 LaTeX line: &quot;    int fn () { /* for later&quot;
+  L2c1-L2c13 \begin{code}
+  L3c1-L5c31 [A CODE BLOCK]
+  L6c1-L6c10 \end{code}
+  L7c1-L7c5 LaTeX line: &quot;*/ }&quot;&lt;a id=&quot;footnote-9-ref&quot; href=&quot;#footnote-9&quot;&gt;[9]&lt;/a&gt;
+&lt;/tt&gt;&lt;/pre&gt;&lt;p&gt;
+      Note that in the LaTeX parse, line alignment is respected perfectly:
+      The first and last are ordinary LaTeX lines,
+      the 2nd and 6th are commands bounding the code,
+      and lines 3 through 5 are a code block.
+    &lt;/p&gt;
+    &lt;p&gt;
+      The C tokenization, on the other hand,
+      shows no respect for lines.
+      Most tokens are a small part of their line,
+      and the two comments start in the middle of
+      a line and end in the middle of one.
+      For example, the first comment starts at column 17
+      of line 1 and ends at column 5 of line 3.&lt;a id=&quot;footnote-10-ref&quot; href=&quot;#footnote-10&quot;&gt;[10]&lt;/a&gt;
+    &lt;/p&gt;
+    &lt;p&gt;What language is our example in?
+    Our example is long enough to justify classification,
+    and it compiles as C code.
+    So it seems best to classify this example as C code&lt;a id=&quot;footnote-11-ref&quot; href=&quot;#footnote-11&quot;&gt;[11]&lt;/a&gt;.
+    Our parses give us enough data for a heuristic
+    to make a decision capturing this intuition.&lt;a id=&quot;footnote-12-ref&quot; href=&quot;#footnote-12&quot;&gt;[12]&lt;/a&gt;
+    &lt;/p&gt;
+    &lt;h2&gt;Earley/Leo parsing and combinators&lt;/h2&gt;
+    &lt;p&gt;In a series of previous posts&lt;a id=&quot;footnote-13-ref&quot; href=&quot;#footnote-13&quot;&gt;[13]&lt;/a&gt;,
+      I have been developing a parsing method that
+      integrates
+      Earley/Leo parsing and combinator parsing.
+      Everything in my previous posts is available
+      in &lt;a href=
+      &quot;https://metacpan.org/pod/distribution/Marpa-R2/pod/Marpa_R2.pod&quot;
+      &gt;Marpa::R2&lt;/a&gt;,
+      which was Debian stable as of jessie.
+    &lt;/p&gt;
+    &lt;p&gt;
+      The final piece, added in this post, is the
+      ability to use variable length subparsing&lt;a id=&quot;footnote-14-ref&quot; href=&quot;#footnote-14&quot;&gt;[14]&lt;/a&gt;,
+      which I have just added to Marpa::R3,
+      Marpa::R2's successor.
+      Releases of &lt;a href=
+      &quot;https://metacpan.org/pod/release/JKEGL/Marpa-R3-4.001_053/pod/Marpa_R3.pod&quot;
+      &gt;Marpa::R3&lt;/a&gt;
+      pass a full test suite,
+      and the documentation is kept up to date,
+      but R3 is alpha, and the usual cautions&lt;a id=&quot;footnote-15-ref&quot; href=&quot;#footnote-15&quot;&gt;[15]&lt;/a&gt;
+      apply.
+    &lt;/p&gt;
+    &lt;p&gt;Earley/Leo parsing is linear for a superset
+    of the LR-regular grammars,
+    which includes all other grammar classes in practical use,
+    and Earley/Leo allows the equivalent of infinite lookahead.&lt;a id=&quot;footnote-16-ref&quot; href=&quot;#footnote-16&quot;&gt;[16]&lt;/a&gt;
+    When the power of Earley/Leo gives out,
+    Marpa allows combinators (subparsers)
+    to be invoked.
+    The subparsers can be anything, including
+    other Earley/Leo parsers,
+    and they can be called recursively&lt;a id=&quot;footnote-17-ref&quot; href=&quot;#footnote-17&quot;&gt;[17]&lt;/a&gt;.
+    Rare will be the grammar of practical interest that
+    cannot be parsed with this combination of methods.
+    &lt;/p&gt;
+    &lt;h2&gt;The example&lt;/h2&gt;
+    &lt;p&gt;The code that ran this example is &lt;a href=
+    &quot;https://github.com/jeffreykegler/Marpa--R3/tree/08fa873687130fcfbe199a5f573375ad11322f3a/pub/varlex&quot;
+    &gt;available on Github&lt;/a&gt;.
+      In previous posts,
+      we gave larger examples&lt;a id=&quot;footnote-18-ref&quot; href=&quot;#footnote-18&quot;&gt;[18]&lt;/a&gt;,
+      and our tools and techniques have scaled.
+      We expect that the variable-length subparsing
+      feature will also scale -- while it was not available in
+      Marpa::R2, it is not in itself new.
+      Variable-length tokens have been available in other Marpa interfaces for
+      years and they were described in Marpa's theory paper.&lt;a id=&quot;footnote-19-ref&quot; href=&quot;#footnote-19&quot;&gt;[19]&lt;/a&gt;.
+    &lt;/p&gt;
+    &lt;p&gt;
+      The grammars used in the example of this post are minimal.
+      Only enough LaTex is implemented
+      to recognize code blocks; and
+      only enough C syntax is implemented to recognize comments.
+    &lt;/p&gt;
+    &lt;h2&gt;The code, comments, etc.&lt;/h2&gt;
+    &lt;p&gt;To learn more about Marpa,
+      a good first stop is the
+      &lt;a href=&quot;http://savage.net.au/Marpa.html&quot;&gt;semi-official web site, maintained by Ron Savage&lt;/a&gt;.
+      The official, but more limited, Marpa website
+      &lt;a href=&quot;http://jeffreykegler.github.io/Marpa-web-site/&quot;&gt;is my personal one&lt;/a&gt;.
+      Comments on this post can be made in
+      &lt;a href=&quot;http://groups.google.com/group/marpa-parser&quot;&gt;
+        Marpa's Google group&lt;/a&gt;,
+      or on our IRC channel: #marpa at freenode.net.
+    &lt;/p&gt;
+    &lt;h2&gt;Footnotes&lt;/h2&gt;
+&lt;p id=&quot;footnote-1&quot;&gt;&lt;b&gt;1.&lt;/b&gt;
+	This github repo for &lt;tt&gt;linguist&lt;/tt&gt; is &lt;a href=
+	&quot;https://github.com/github/linguist/&quot;
+	&gt;https://github.com/github/linguist/&lt;/a&gt;.
+ &lt;a href=&quot;#footnote-1-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;p id=&quot;footnote-2&quot;&gt;&lt;b&gt;2.&lt;/b&gt;
+	Their methodology is often left vague,
+	but it seems safe to say the careful line-by-line counting
+	discussed in this post
+	goes well beyond the techniques used in
+	the widely-publicized lists of &quot;most popular programming
+	languages&quot;. 
+	&lt;br&gt;&lt;br&gt;
+	In fact, it seems likely these measures do not use line
+	counts at all,
+	but instead report the sum of blob sizes.
+	Github's &lt;tt&gt;linguist&lt;/tt&gt; does give a line count but
+	Github does not vouch for its accuracy:
+&quot;if you really need to know the lines of code of an entire repo, there are much better tools for this than Linguist.&quot;
+        (Quoted from
+        &lt;a href=
+	&quot;https://github.com/github/linguist/issues/3131&quot;
+	&gt;the resolution of
+	Github linguist issue #1331&lt;/a&gt;.)
+	The Github API's &lt;tt&gt;list-languages&lt;/tt&gt; command reports language sizes
+	in bytes.
+	The &lt;a href=
+	  &quot;https://developer.github.com/v3/repos/#list-languages&quot;
+	&gt;API documentation&lt;/a&gt;
+	is vague, but it seems the counts are the
+	sum of blob sizes,
+	with each blob classed as one and only one language.
+	&lt;br&gt;&lt;br&gt;
+	Some tallies seem even more coarsely grained than this --
+	they are not even blob-by-blob,
+	but assign entire repos to the &quot;primary language&quot;.
+	For more, see
+        &lt;a href=&quot;https://techcrunch.com/2018/09/30/what-the-heck-is-going-on-with-measures-of-programming-language-popularity/&quot;&gt;
+          Jon Evan's
+          &lt;cite&gt;Techcrunch&lt;/cite&gt;
+          article&lt;/a&gt;;
+	  and &lt;a href=
+	  &quot;https://www.benfrederickson.com/ranking-programming-languages-by-github-users/&quot;
+	  &gt;Ben Frederickson's project&lt;/a&gt;.
+ &lt;a href=&quot;#footnote-2-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;p id=&quot;footnote-3&quot;&gt;&lt;b&gt;3.&lt;/b&gt;
+        &lt;tt&gt;linguist&lt;/tt&gt;'s methodology is described in its README.md
+	(&lt;a href=
+	&quot;https://github.com/github/linguist/blob/8cd9d744caa7bd3920c0cb8f9ca494ce7d8dc206/README.md&quot;
+	&gt;permalink as of 30 September 2018&lt;/a&gt;).
+ &lt;a href=&quot;#footnote-3-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;p id=&quot;footnote-4&quot;&gt;&lt;b&gt;4.&lt;/b&gt;
+        This custom literate programming system is not documented or packaged,
+	but those who cannot resist taking a look can find the Markdown
+	file it processes &lt;a href=
+	&quot;https://github.com/jeffreykegler/Marpa--R3/blob/f16ef5798986da69fa8b437edc3930ce2cebd498/cpan/kollos/kollos.md&quot;
+	&gt;here&lt;/a&gt;,
+	and its own code &lt;a href=
+	&quot;https://github.com/jeffreykegler/Marpa--R3/blob/f16ef5798986da69fa8b437edc3930ce2cebd498/cpan/kollos/miranda&quot;&gt;
+	here&lt;/a&gt;
+	(permalinks accessed 2 October 2018).
+ &lt;a href=&quot;#footnote-4-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;p id=&quot;footnote-5&quot;&gt;&lt;b&gt;5.&lt;/b&gt;
+        For those who care about getting
+        &lt;tt&gt;linguist&lt;/tt&gt;
+        as
+        accurate as possible.
+        there is a workaround:
+        the
+        &lt;tt&gt;linguist-language&lt;/tt&gt;
+        git attribute.
+        This still requires that each blob be 
+	reported as containing lines of only one language.
+ &lt;a href=&quot;#footnote-5-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;p id=&quot;footnote-6&quot;&gt;&lt;b&gt;6.&lt;/b&gt;
+        For the treatment of Markdown, see
+        &lt;tt&gt;linguist&lt;/tt&gt;
+        &lt;a href=&quot;https://github.com/github/linguist/blob/8cd9d744caa7bd3920c0cb8f9ca494ce7d8dc206/README.md#my-repository-isnt-showing-my-language&quot;&gt;README.md&lt;/a&gt;
+        (permalink accessed as of 30 September 2018).
+ &lt;a href=&quot;#footnote-6-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;p id=&quot;footnote-7&quot;&gt;&lt;b&gt;7.&lt;/b&gt;
+        Another possibility is a multi-scan approach -- one
+        pass per language.
+        But that is likely to be expensive.
+        At last count there were 381 langauges in
+        &lt;tt&gt;linguist&lt;/tt&gt;'s
+        database.
+        Worse, it won't solve the problem:
+        &quot;liberal&quot; recognition even of a single language
+        requires more power than available from
+        traditional parsers.
+ &lt;a href=&quot;#footnote-7-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;p id=&quot;footnote-8&quot;&gt;&lt;b&gt;8.&lt;/b&gt;
+      For example, these line-alignment requirements match 
+      those in
+      &lt;a href=
+      &quot;https://www.haskell.org/onlinereport/haskell2010/haskellch10.html&quot;
+      &gt;Section 10.4&lt;/a&gt; of the 2010 Haskell Language Report.
+ &lt;a href=&quot;#footnote-8-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;p id=&quot;footnote-9&quot;&gt;&lt;b&gt;9.&lt;/b&gt;
+  Adapted from
+  &lt;a href=
+  &quot;https://github.com/jeffreykegler/Marpa--R3/blob/08fa873687130fcfbe199a5f573375ad11322f3a/pub/varlex/idlit_ex2.t#L83&quot;
+  &gt;test code in Github repo&lt;/a&gt;, permalink accessed 2 October 2018.
+ &lt;a href=&quot;#footnote-9-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;p id=&quot;footnote-10&quot;&gt;&lt;b&gt;10.&lt;/b&gt;
+      See the &lt;a href=
+      &quot;https://github.com/jeffreykegler/Marpa--R3/blob/08fa873687130fcfbe199a5f573375ad11322f3a/pub/varlex/idlit_ex2.t#L44&quot;
+      &gt;test file&lt;/a&gt;
+      on Gihub.
+ &lt;a href=&quot;#footnote-10-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;p id=&quot;footnote-11&quot;&gt;&lt;b&gt;11.&lt;/b&gt;
+    Some might think the two LaTex lines should be counted as LaTex and,
+    using subparsing of comments, that heuristic can be implemented.
+ &lt;a href=&quot;#footnote-11-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;p id=&quot;footnote-12&quot;&gt;&lt;b&gt;12.&lt;/b&gt;
+    To be sure, a useful tool would want to include considerably more of
+    C's syntax.
+    It is perhaps not necessary to be sure that a file compiles
+    before concluding it is C.
+    And we might want to class a file as C in spite of a
+    fleeting failure to compile.
+    But we do want to lower the probably of a false positive.
+ &lt;a href=&quot;#footnote-12-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;p id=&quot;footnote-13&quot;&gt;&lt;b&gt;13.&lt;/b&gt;
+    &lt;a href=
+    &quot;http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2018/05/csg.html&quot;
+    &gt;Marpa and procedural parsing&lt;/a&gt;;
+    &lt;a href=
+    &quot;http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2018/05/combinator.html&quot;
+    &gt;Marpa and combinator parsing&lt;/a&gt;;
+    and &lt;a href=
+    &quot;http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2018/05/combinator2.html&quot;
+    &gt;Marpa and combinator parsing 2&lt;/a&gt;
+ &lt;a href=&quot;#footnote-13-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;p id=&quot;footnote-14&quot;&gt;&lt;b&gt;14.&lt;/b&gt;
+      There is &lt;a href=
+      &quot;https://metacpan.org/pod/distribution/Marpa-R2/pod/Marpa_R2.pod&quot;
+      &gt;documentation of the interface&lt;/a&gt;,
+      but it is not a good starting point
+      for a reader who has just started to look at the Marpa::R3 project.
+      Once a user is familiar with Marpa::R3 standard DSL-based
+      interface,
+      they can start to learn about its alternatives &lt;a href=
+      &quot;https://metacpan.org/pod/release/JKEGL/Marpa-R3-4.001_053/pod/External/Basic.pod&quot;
+      &gt;here&lt;/a&gt;.
+ &lt;a href=&quot;#footnote-14-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;p id=&quot;footnote-15&quot;&gt;&lt;b&gt;15.&lt;/b&gt;
+        Specifically,
+	since Marpa::R3 is alpha,
+	its features are subject
+        to change without notice, even between micro releases,
+        and changes are made without concern for backward compatibility.
+        This makes R3 unsuitable for a production application.
+        Add to this that,
+	while R3 is tested, it has seen much less
+        usage and testing than R2, which has been very stable for
+        some time.
+ &lt;a href=&quot;#footnote-15-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;p id=&quot;footnote-16&quot;&gt;&lt;b&gt;16.&lt;/b&gt;
+    Technically, a grammar is LR-regular if it can be parsed
+    deterministically using a regular set as its lookahead.
+    A &quot;regular set&quot; is a set of regular expressions.
+    The regular set itself must be finite,
+    but the regular expressions it contains
+    can match lookaheads of arbitrary length.
+ &lt;a href=&quot;#footnote-16-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;p id=&quot;footnote-17&quot;&gt;&lt;b&gt;17.&lt;/b&gt;
+    See &lt;a href=
+    &quot;http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2018/05/combinator2.html&quot;
+    &gt;Marpa and combinator parsing 2&lt;/a&gt;
+ &lt;a href=&quot;#footnote-17-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;p id=&quot;footnote-18&quot;&gt;&lt;b&gt;18.&lt;/b&gt;
+    The largest example is in &lt;a href=
+    &quot;http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2018/05/combinator2.html&quot;
+    &gt;Marpa and combinator parsing 2&lt;/a&gt;
+ &lt;a href=&quot;#footnote-18-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;p id=&quot;footnote-19&quot;&gt;&lt;b&gt;19.&lt;/b&gt;
+ Kegler, Jeffrey. &lt;cite&gt;Marpa, A Practical General Parser: The Recognizer&lt;/cite&gt;.
+ &lt;a href=
+ &quot;http://dinhe.net/~aredridel/.notmine/PDFs/Parsing/KEGLER,%20Jeffrey%20-%20Marpa,%20a%20practical%20general%20parser:%20the%20recognizer.pdf&quot;
+&gt;Online version accessed of 24 April 2018&lt;/a&gt;.
+The link is to the 19 June 2013 revision of the 2012 original.
+ &lt;a href=&quot;#footnote-19-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+  &lt;/body&gt;
+&lt;/html&gt;</description>
+  </item>
+  <item>
     <title>A Haskell challenge</title>
     <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2018/08/rntz.html</link>
     <description>&lt;html&gt;
@@ -2031,216 +2421,6 @@
         &quot;Marpa, A Practical General Parser: The Recognizer.&quot;, 2013.
         &lt;a href=&quot;http://dinhe.net/~aredridel/.notmine/PDFs/Parsing/KEGLER,%20Jeffrey%20-%20Marpa,%20a%20practical%20general%20parser:%20the%20recognizer.pdf&quot;&gt;
           PDF accessed 24 April 2018&lt;/a&gt;.
- &lt;a href=&quot;#footnote-7-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
-  &lt;/body&gt;
-&lt;/html&gt;</description>
-  </item>
-  <item>
-    <title>Marpa and combinator parsing</title>
-    <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2018/05/combinator.html</link>
-    <description>&lt;html&gt;
-  &lt;head&gt;
-  &lt;/head&gt;
-  &lt;body style=&quot;max-width:850px&quot;&gt;
-    &lt;!--
-      marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
-      --&gt;
-    &lt;h2&gt;The missing part&lt;/h2&gt;
-    &lt;p&gt;
-    &lt;a href=&quot;http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2018/05/csg.html&quot;&gt;
-    A previous post&lt;/a&gt;
-    described how to use the current stable Marpa
-    implementation as a better procedural parser.
-    This post describes how the Marpa algorithm can be used as the basis
-    of better combinator parsers.
-    &lt;/p&gt;
-    &lt;p&gt;In the post on procedural parsing,
-    the subparsers&lt;a id=&quot;footnote-1-ref&quot; href=&quot;#footnote-1&quot;&gt;[1]&lt;/a&gt;
-    were like combinators,
-    in that they could be called recursively,
-    so that a parse could be built up from components.
-    Like combinators,
-    each child could return,
-    not just a parse,
-    but a set of parses.
-    And, as in combinators, once a child combinator
-    returned its value,
-    the parent parser could resume parsing
-    at a location specified by the child combinator.
-    So what was missing?
-    &lt;p&gt;A combinator,
-    in order to handle ambiguity,
-    returns not a subparse, but a set of subparses.
-    In the full combinator model,
-    each subparse can have its own &quot;resume location&quot;.&lt;a id=&quot;footnote-2-ref&quot; href=&quot;#footnote-2&quot;&gt;[2]&lt;/a&gt;
-    The procedural parsing post did not provide for multiple
-    resume locations.
-    We will now proceed to make up for that.
-    &lt;/p&gt;
-    &lt;h2&gt;How it works&lt;/h2&gt;
-    &lt;p&gt;The Marpa parser has the ability to accept
-    multiple subparses,
-    each with its own length.
-    This allows child subparses to overlap in any fashion,
-    forming a mosaic as complex as the application needs.
-    &lt;/p&gt;
-    &lt;/p&gt;An Earley parser is table-driven --
-    its parse tables consists of Earley sets,
-    with an initial Earley set
-    and one Earley set per token.
-    This makes for a very simple idea of location.
-    Location 0 is the location of the initial Earley set.
-    Location &lt;tt&gt;N&lt;/tt&gt; is the location of the Earley set after the &lt;tt&gt;N&lt;/tt&gt;'th
-    token has been consumed.
-    &lt;/p&gt;
-    &lt;p&gt;Simplicity is great, but unfortunately
-    this won't work for variable-length
-    tokens.
-    To handle those, Marpa introduces another idea of location:
-    the &lt;b&gt;earleme&lt;/b&gt;.
-    Like Earley set locations,
-    the earlemes begin at 0,
-    and advance in integer sequence.
-    Earley set 0 is always at earleme 0.
-    Every Earley set has an earleme location.
-    On the other hand,
-    not every earleme has a corresponding Earley set --
-    there can be &quot;empty&quot; earlemes.
-    &lt;/p&gt;
-    &lt;p&gt;The lower-level interface for Marpa is Libmarpa.
-    Every time Libmarpa adds a token,
-    a length in earlemes must be specified.
-    In the most-used higher level Marpa interfaces,
-    this &quot;earleme length&quot; is always 1,
-    which makes the Libmarpa location model collapse into the traditional one.
-    &lt;/p&gt;
-    &lt;p&gt;
-    The Libmarpa recognizer advances earleme-by-earleme.
-    In the most-used higher level Marpa interfaces,
-    a token ends at every earleme
-    (unless of course that earleme is after end-of-input).
-    This means that the most-used Marpa interfaces
-    create a new Earley set every time they advance one earleme.
-    Again, in this case, the Libmarpa model collapses into
-    the traditional one.
-    &lt;/p&gt;
-    &lt;p&gt;In Libmarpa and other lower-level interfaces,
-    there may be cases where
-    &lt;ul&gt;
-    &lt;li&gt;one or more tokens
-    end after the current earleme, but&lt;/li&gt;
-    &lt;li&gt;no tokens end &lt;b&gt;at&lt;/b&gt; the current earleme.&lt;/li&gt;
-    &lt;/ul&gt;
-    In such cases the current earleme will be empty.
-    &lt;/p&gt;
-    &lt;p&gt;This is only an outline of the basic concepts behind the
-    Marpa input model.
-    The formalisms are in the Marpa theory paper.&lt;a id=&quot;footnote-3-ref&quot; href=&quot;#footnote-3&quot;&gt;[3]&lt;/a&gt;
-    The documentation for Libmarpa and Marpa's other low-level interfaces contains
-    more accessible,
-    but detailed, descriptions.&lt;a id=&quot;footnote-4-ref&quot; href=&quot;#footnote-4&quot;&gt;[4]&lt;/a&gt;
-    &lt;/p&gt;
-    &lt;h2&gt;Value added&lt;/h2&gt;
-    &lt;h3&gt;Left-eidetic information&lt;/h3&gt;
-    &lt;p&gt;As readers of my previous posts&lt;a id=&quot;footnote-5-ref&quot; href=&quot;#footnote-5&quot;&gt;[5]&lt;/a&gt;
-    will know,
-    Marpa is &quot;left-eidetic&quot; -- the application has access to everything to its left.
-    This is an advantage over the traditional implementation of combinator parsing,
-    where parse information about the left context may be difficult
-    or impossible to access.&lt;a id=&quot;footnote-6-ref&quot; href=&quot;#footnote-6&quot;&gt;[6]&lt;/a&gt;
-    &lt;/p&gt;
-    &lt;h3&gt;More powerful linear-time combinators&lt;/h3&gt;
-    &lt;p&gt;Marpa parses a superset of LR-regular grammars in linear time,
-    which makes it a more powerful &quot;building block&quot;
-    than traditionally available for combinator parsing.
-    This gives the programmer of a combinator parser more options.
-    &lt;/p&gt;
-    &lt;h3&gt;State of the art worse-than-linear combinators&lt;/h3&gt;
-    &lt;p&gt;In special circumstances, programmers may want to use subparsers 
-    which are worse than linear -- for example, they may know that
-    the string is very short.
-    Marpa parses context-free grammars in state of the art time.&lt;a id=&quot;footnote-7-ref&quot; href=&quot;#footnote-7&quot;&gt;[7]&lt;/a&gt;
-    &lt;/p&gt;
-    &lt;h2&gt;The code, comments, etc.&lt;/h2&gt;
-      To learn more about Marpa,
-      a good first stop is the
-      &lt;a href=&quot;http://savage.net.au/Marpa.html&quot;&gt;semi-official web site, maintained by Ron Savage&lt;/a&gt;.
-      The official, but more limited, Marpa website
-      &lt;a href=&quot;http://jeffreykegler.github.io/Marpa-web-site/&quot;&gt;is my personal one&lt;/a&gt;.
-      Comments on this post can be made in
-      &lt;a href=&quot;http://groups.google.com/group/marpa-parser&quot;&gt;
-        Marpa's Google group&lt;/a&gt;,
-      or on our IRC channel: #marpa at freenode.net.
-    &lt;/p&gt;
-    &lt;h2&gt;Footnotes&lt;/h2&gt;
-&lt;p id=&quot;footnote-1&quot;&gt;&lt;b&gt;1.&lt;/b&gt;
-    In some of the descriptions of Marpa's procedural
-    parsing, these subparsers are called &quot;lexers&quot;.
-    This emphasizes the usual case in current practice,
-    where the subparsers are the bottom layer of the
-    parsing application,
-    and do not invoke their own child subparsers.
- &lt;a href=&quot;#footnote-1-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
-&lt;p id=&quot;footnote-2&quot;&gt;&lt;b&gt;2.&lt;/b&gt;
-    In notational terms, a full combinator is a function of the form
-    &lt;br&gt;
-    &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;
-    &lt;tt&gt;A* &amp;#8594; &amp;#8473;( P &amp;#215; A* )&lt;/tt&gt;,
-    &lt;br&gt;
-    where &lt;tt&gt;A&lt;/tt&gt; is the alphabet of the grammar;
-    &lt;tt&gt;P&lt;/tt&gt; is a representation of a single parser
-    (for example, a parse tree);
-    &lt;tt&gt;&amp;#8473;(X)&lt;/tt&gt; is the power set of a set &lt;tt&gt;X&lt;/tt&gt;:
-    and
-    &lt;tt&gt;X &amp;#215; Y&lt;/tt&gt; is the Cartesian product
-    of sets &lt;tt&gt;X&lt;/tt&gt; and &lt;tt&gt;Y&lt;/tt&gt;.
-    The subparsers
-    of the procedural parsing post
-    were of the form
-    &lt;br&gt;
-    &amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;
-    &lt;tt&gt;A* &amp;#8594; &amp;#8473;( P ) &amp;#215; A*&lt;/tt&gt;.
-    &lt;br&gt;
- &lt;a href=&quot;#footnote-2-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
-&lt;p id=&quot;footnote-3&quot;&gt;&lt;b&gt;3.&lt;/b&gt;
-    Kegler, Jeffrey.&lt;a
-    href=&quot;http://dinhe.net/~aredridel/.notmine/PDFs/Parsing/KEGLER,%20Jeffrey%20-%20Marpa,%20a%20practical%20general%20parser:%20the%20recognizer.pdf&quot;&gt;
-    &quot;Marpa, a Practical General Parser: The Recognizer&quot;.&lt;/a&gt;
-    2013.
-    Section 12, &quot;The Marpa input model&quot;, pp. 39-40.
- &lt;a href=&quot;#footnote-3-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
-&lt;p id=&quot;footnote-4&quot;&gt;&lt;b&gt;4.&lt;/b&gt;
-    Libmarpa API document,
-    &lt;a href=&quot;http://jeffreykegler.github.io/Marpa-web-site/libmarpa_api/stable/api_one_page.html#Input&quot;&gt;
-    the &quot;Input&quot; section&lt;/a&gt;.
-    Marpa::R2's NAIF interface allows
-    access to the full Libmarpa input model
-    and its documentation contains
-    &lt;a href=&quot;https://metacpan.org/pod/distribution/Marpa-R2/pod/Advanced/Models.pod&quot;&gt;
-    a higher-level description of Marpa's alternative input models.&lt;/a&gt;
-    There is also a thin Perl interface to Libmarpa,
-    &lt;a href=&quot;http://jeffreykegler.github.io/Marpa-web-site/libmarpa_api/stable/api_one_page.html#Input&quot;&gt;the THIF interface&lt;/a&gt;,
-    which allows full access to the alternative input models.
- &lt;a href=&quot;#footnote-4-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
-&lt;p id=&quot;footnote-5&quot;&gt;&lt;b&gt;5.&lt;/b&gt;
-    For example, the
-    &lt;a href=&quot;http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2018/05/csg.html&quot;&gt;
-    post on procedural parsing&lt;/a&gt; contains a good,
-    simple, example of the use of Marpa's left-eideticism.
- &lt;a href=&quot;#footnote-5-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
-&lt;p id=&quot;footnote-6&quot;&gt;&lt;b&gt;6.&lt;/b&gt;
-    For best effect,
-    left-eidetism and functional purity
-    probably should be used in combination.
-    For the moment at least,
-    I am focusing on explaining the capabilities,
-    and leaving it to others to find the monadic
-    or other solutions that will allow programmers to leverage
-    this power in functionally pure ways.
- &lt;a href=&quot;#footnote-6-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
-&lt;p id=&quot;footnote-7&quot;&gt;&lt;b&gt;7.&lt;/b&gt;
-    Specifically O(n^2) for unambiguous grammars,
-    and O(n^3) for ambiguous grammars.
  &lt;a href=&quot;#footnote-7-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
   &lt;/body&gt;
 &lt;/html&gt;</description>
