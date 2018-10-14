@@ -76,7 +76,7 @@ Parsing Timeline 3.1
     which previously has been scattered across
     one of the most
     forbidding literatures in computer science.
-    Previous version of the timeline have been, by far,
+    Previous versions of the timeline have been, by far,
     the most popular of my writings.
     </p>
     <p>A third of Timeline 3.1 is new,
