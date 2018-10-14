@@ -71,12 +71,17 @@ Parsing Timeline 3.1
       -->
     <p>
     <h2>Announcing Parsing Timeline 3.1</h2>
-    <p>I have just released version 3.1 of my Parsing Timeline.
-    It makes accessible a fascinating and important story
-    which previously has been scattered across
+    <p>I have just released
+    <a href=
+    "https://jeffreykegler.github.io/personal/timeline_v3">
+    version 3.1 of my Parsing Timeline</a>.
+    It is a painless introduction to
+    a fascinating and important story
+    which is scattered among
     one of the most
     forbidding literatures in computer science.
-    Previous versions of the timeline have been, by far,
+    Previous versions of this timeline have been,
+    by far,
     the most popular of my writings.
     </p>
     <p>A third of Timeline 3.1 is new,
@@ -89,7 +94,10 @@ Parsing Timeline 3.1
     heavily revised.
     </p>
     <h2>Comments, etc.</h2>
-    <p>To learn more about Marpa,
+    <p>My interest in parsing stems from my 
+    own approach to it -- a parser in the Earley/Leo
+    lineage named Marpa.
+    To learn more about Marpa,
       a good first stop is the
       <a href="http://savage.net.au/Marpa.html">semi-official web site, maintained by Ron Savage</a>.
       The official, but more limited, Marpa website
@@ -99,6 +107,9 @@ Parsing Timeline 3.1
         Marpa's Google group</a>,
       or on our IRC channel: #marpa at freenode.net.
     </p>
+    <!--
+    No footnotes in this one !!!
     <comment>FOOTNOTES HERE</comment>
+    -->
   </body>
 </html>
