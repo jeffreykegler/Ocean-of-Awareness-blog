@@ -14,6 +14,7 @@ all: \
   ../source/individual/2018/05/combinator2.txt \
   ../source/individual/2018/08/rntz.txt \
   ../source/individual/2018/10/popularity.txt \
+  ../source/individual/2018/10/timeline_3_1.txt \
 
 ../source/individual/2018/05/fast_power.txt: fast_power.pl
 	perl fast_power.pl > ../source/individual/2018/05/fast_power.txt
@@ -45,6 +46,8 @@ all: \
 ../source/individual/2018/08/rntz.txt: rntz.pl
 	perl rntz.pl > ../source/individual/2018/08/rntz.txt
 
-
 ../source/individual/2018/10/popularity.txt: popularity.pl
 	perl popularity.pl > ../source/individual/2018/10/popularity.txt
+
+../source/individual/2018/10/timeline_3_1.txt: timeline_3_1.pl
+	perl timeline_3_1.pl > ../source/individual/2018/10/timeline_3_1.txt

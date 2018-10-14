@@ -1,0 +1,52 @@
+Parsing Timeline 3.1
+<html>
+  <head>
+  </head>
+  <body style="max-width:850px">
+    <!--
+      marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
+      -->
+    <p>
+    <h2>Announcing Parsing Timeline 3.1</h2>
+    <p>I have just released
+    <a href=
+    "https://jeffreykegler.github.io/personal/timeline_v3">
+    version 3.1 of my Parsing Timeline</a>.
+    It is a painless introduction to
+    a fascinating and important story
+    which is scattered among
+    one of the most
+    forbidding literatures in computer science.
+    Previous versions of this timeline have been,
+    by far,
+    the most popular of my writings.
+    </p>
+    <p>A third of Timeline 3.1 is new,
+    added since the 3.0 version.
+    Much of the new material is adapted from previous
+    blog posts, both old and recent.
+    Other material is completely new.
+    The sections that are not new with 3.1
+    has been carefully reviewed and
+    heavily revised.
+    </p>
+    <h2>Comments, etc.</h2>
+    <p>My interest in parsing stems from my 
+    own approach to it -- a parser in the Earley/Leo
+    lineage named Marpa.
+    To learn more about Marpa,
+      a good first stop is the
+      <a href="http://savage.net.au/Marpa.html">semi-official web site, maintained by Ron Savage</a>.
+      The official, but more limited, Marpa website
+      <a href="http://jeffreykegler.github.io/Marpa-web-site/">is my personal one</a>.
+      Comments on this post can be made in
+      <a href="http://groups.google.com/group/marpa-parser">
+        Marpa's Google group</a>,
+      or on our IRC channel: #marpa at freenode.net.
+    </p>
+    <!--
+    No footnotes in this one !!!
+    <h2>Footnotes</h2>
+    -->
+  </body>
+</html>
