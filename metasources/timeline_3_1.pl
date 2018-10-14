@@ -71,7 +71,18 @@ Parsing Timeline 3.1
       -->
     <p>
     <h2>Announcing Parsing Timeline 3.1</h2>
-    <p>
+    <p>The most popular of my writings by far continues to be my
+    my Timeline of Parsing.
+    It makes accessible a fascinating and important story
+    which has been available only in one of the most
+    forbidding literatures in computer science.
+    </p>
+    <p>A third of Timeline 3.1 is new,
+    added since the 3.0 version.
+    Much of the new material is incorporated from previous
+    blog posts, both old and recent.
+    Other material is totally new.
+    The rest contains many changes.
     </p>
     <h2>Comments, etc.</h2>
     <p>To learn more about Marpa,
