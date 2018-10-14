@@ -71,18 +71,20 @@ Parsing Timeline 3.1
       -->
     <p>
     <h2>Announcing Parsing Timeline 3.1</h2>
-    <p>The most popular of my writings by far continues to be my
-    my Timeline of Parsing.
+    <p>I have just released version 3.1 of my Parsing Timeline.
     It makes accessible a fascinating and important story
-    which has been available only in one of the most
+    which previously has been scattered across
+    one of the most
     forbidding literatures in computer science.
+    Previous version of the timeline have been, by far,
+    the most popular of my writings.
     </p>
     <p>A third of Timeline 3.1 is new,
     added since the 3.0 version.
-    Much of the new material is incorporated from previous
+    Much of the new material is adapted from previous
     blog posts, both old and recent.
-    Other material is totally new.
-    The material that is not new with 3.1
+    Other material is completely new.
+    The sections that are not new with 3.1
     has been carefully reviewed and
     heavily revised.
     </p>
