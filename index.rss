@@ -20,7 +20,7 @@
       marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
       --&gt;
     &lt;p&gt;
-    &lt;h2&gt;Announcing Parsing Timeline 3.1&lt;/h2&gt;
+    &lt;h2&gt;Announcing Timeline 3.1&lt;/h2&gt;
     &lt;p&gt;I have just released
     &lt;a href=
     &quot;https://jeffreykegler.github.io/personal/timeline_v3&quot;&gt;
