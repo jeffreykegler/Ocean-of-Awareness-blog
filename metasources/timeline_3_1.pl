@@ -82,7 +82,9 @@ Parsing Timeline 3.1
     Much of the new material is incorporated from previous
     blog posts, both old and recent.
     Other material is totally new.
-    The rest contains many changes.
+    The material that is not new with 3.1
+    has been carefully reviewed and
+    heavily revised.
     </p>
     <h2>Comments, etc.</h2>
     <p>To learn more about Marpa,
