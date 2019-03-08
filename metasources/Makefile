@@ -16,7 +16,9 @@ all: \
   ../source/individual/2018/10/popularity.txt \
   ../source/individual/2018/10/timeline_3_1.txt \
   # ../source/individual/2018/10/popper.txt \
-  popper.txt
+
+dev: popper.txt
+	perl popper.pl > popper.html
 
 ../source/individual/2018/05/fast_power.txt: fast_power.pl
 	perl fast_power.pl > ../source/individual/2018/05/fast_power.txt
@@ -56,4 +58,3 @@ all: \
 
 popper.txt: popper.pl
 	# perl popper.pl > ../source/individual/2019/03/popper.txt
-	perl popper.pl > popper.txt

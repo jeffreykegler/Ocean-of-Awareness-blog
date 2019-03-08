@@ -61,11 +61,14 @@ sub do_footnote {
 }
 
 __DATA__
-Karl Popper and Parsing
+Popper, Parsing and Objectivity
 <html>
   <head>
   </head>
   <body>
+      <!--
+      marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
+      -->
     <blockquote>
 	Let me repeat this important point.
 	Scientific theories are not just the
@@ -85,11 +88,51 @@ Karl Popper and Parsing
 	p. 172.
 	</footnote>
     </blockquote>
-    <h2>Karl Popper and parsing</h2>
-    <p>
-      <!--
-      marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
-      -->
+    <h2>The open timeline and its enemies</h2>
+    <p>I've written a timeline history of parsing theory
+    which is, despite it being very technical,
+    is by far my most popular writing.
+    But it is not without its critics --
+    in fact it is often criticized by those praise it
+    in other respects.
+    </p>
+    <p>The timeline have been accused of lack of objectivity and
+    bias.
+    In this post, I will take a careful look at methodology,
+    and claim that I am innocent of the first charge
+    because I am guilty of the second.
+    That is, my timeline is objective because it precisely because
+    it comes from a strong point of view.
+    </p>
+    <p>It may sound as if I am "reaching", and being "cute"
+    or "trolling",
+    but, as you will see,
+    my stance on these matters is not at all original.
+    It fact, it follows Karl Popper, who is perhaps the philosopher of science
+    taken most seriously by scientists.
+    </p>
+    <p>Popper is hailed, correctly, as a champion of objectivity
+    in science.
+    But as you may have seen from the epigraph of this post,
+    Popper's idea of objectivity is quite different in some respects from naive "folk objectivity"
+    or the objectivity of "common sense".
+    </p>
+    <p>"Folk objectivity" is, by its nature, not one thing to all folks.
+    But one version of it goes something like:
+    First, you recording "objective facts" or "observations".
+    You examine these facts for any "bias", and remove it.
+    What is left, it is alleged, with be the truth,
+    and this truth becomes the basis of your theory.
+    </p>
+    <h2>The "common sense" approach</h2>
+<blockquote>"Always approach a case with an absolutely blank mind. It is always an advantage. Form no theories, just simply observe and draw inferences from your observations."<footnote>
+The Adventure of the Cardboard Box</footnote></blockquote>
+<blockquote>"I make a point of never having any prejudices, and of following docilely wherever fact may lead me."<footnote>
+The Reigate Puzzle</footnote></blockquote>
+<blockquote>"It is a capital mistake to theorize before one has data."<footnote>
+A Scandal in Bohemia</footnote></blockquote>
+<blockquote>"When you have eliminated the impossible, whatever remains, no matter how improbable, must be the truth."<footnote>
+The Sign of Four</footnote></blockquote>
     <h2>Comments, etc.</h2>
     <p>
       The background material for this post is in my
