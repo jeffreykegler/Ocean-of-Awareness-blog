@@ -61,7 +61,7 @@ sub do_footnote {
 }
 
 __DATA__
-Popper, Parsing and Objectivity
+The open Timeline and its critics
 <html>
   <head>
   </head>
@@ -90,39 +90,30 @@ Popper, Parsing and Objectivity
     </blockquote>
     <h2>The open timeline and its enemies</h2>
     <p>I've written a timeline history of parsing theory
-    which is, despite it being very technical,
+    which is, despite being very technical,
     is by far my most popular writing.
-    But it is not without its critics --
-    in fact it is often criticized by those praise it
-    in other respects.
+    Despite, or because, of this,
+    it is not without its critics.
+    Many who praise it highly also have severe criticisms.
     </p>
     <p>The timeline have been accused of lack of objectivity and
     bias.
     In this post, I will take a careful look at methodology,
     and claim that I am innocent of the first charge
-    because I am guilty of the second.
+    because I am guilty, in one sense at least, of the second charge.
     That is, my timeline is objective because it precisely because
     it comes from a strong point of view.
     </p>
-    <p>It may sound as if I am "reaching", and being "cute"
-    or "trolling",
-    but, as you will see,
-    my stance on these matters is not at all original.
-    It fact, it follows Karl Popper, who is perhaps the philosopher of science
-    taken most seriously by scientists.
-    </p>
-    <p>Popper is hailed, correctly, as a champion of objectivity
+    <p>Novel as it might seem to some,
+    my methodology is very much mainstream.
+    In this piece, I will refer repeated to Karl Popper's writings
+    on the traditions of science.
+    Popper, in his turn, was much influenced by Einstein.
+    Popper is hailed, correctly, as a champion of objectivity
     in science.
     But as you may have seen from the epigraph of this post,
-    Popper's idea of objectivity is quite different in some respects from naive "folk objectivity"
-    or the objectivity of "common sense".
-    </p>
-    <p>"Folk objectivity" is, by its nature, not one thing to all folks.
-    But one version of it goes something like:
-    First, you recording "objective facts" or "observations".
-    You examine these facts for any "bias", and remove it.
-    What is left, it is alleged, with be the truth,
-    and this truth becomes the basis of your theory.
+    Popper's idea of objectivity is quite different in some respects from naive
+    or "common sense" objectivity.
     </p>
     <h2>The "common sense" approach</h2>
 <blockquote>"Always approach a case with an absolutely blank mind. It is always an advantage. Form no theories, just simply observe and draw inferences from your observations."<footnote>
@@ -133,6 +124,29 @@ The Reigate Puzzle</footnote></blockquote>
 A Scandal in Bohemia</footnote></blockquote>
 <blockquote>"When you have eliminated the impossible, whatever remains, no matter how improbable, must be the truth."<footnote>
 The Sign of Four</footnote></blockquote>
+    <p>Most of those who accuse the timeline of lack of objectivity or of bias,
+    do not state what they mean by those terms,
+    which suggests they are thinking of an approach they expect to be
+    shared as a matter of "common sense".
+    But perhaps they have something in mind like Sherlock Holmes' approach.
+    </p>
+    <p>Many will regard Holmes' methods as just a disciplined version of
+    "common sense", but in fact Holmes is completely wrong.
+    A "blank mind" can observe nothing.
+    There is no "data" without theory, just white noise.
+    And you cannot characterize anything as "impossible",
+    without theorizing in advance of it what kind of fact is possible,
+    and what kind of fact is not.
+    </p>
+    <p>
+    Using Holmes' methods as stated, he could not find a coconut on Coconut Island.
+    If you read the deduction recorded in the Holmes' canon,
+    you see that each of them requires <b>a lot</b>
+    of theorizing, and not infrequently plain old speculation.
+    For Holmes or anyone else to so much as find the door to
+    Baker Street, they need a theory, explicit or implied,
+    in advance.
+    </p>
     <h2>Comments, etc.</h2>
     <p>
       The background material for this post is in my
