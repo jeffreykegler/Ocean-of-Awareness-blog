@@ -146,6 +146,37 @@ The Sign of Four</footnote></blockquote>
     For Holmes or anyone else to so much as find the door to
     Baker Street, they need a theory, explicit or implied,
     in advance.
+    <h2>Einstein</h3>
+    <blockquote>
+    In the first pages
+of our book we compared the role
+of an investigator
+to that of a detective who, after
+gathering the requisite facts, finds the right solution
+by pure thinking. In one essential this comparison must
+be regarded as highly superficial. Both in life and in
+detective novels the crime is given. The detective must
+look for letters, fingerprints, bullets, guns, but at least
+he knows that a murder has been committed. This is
+not so for a scientist. It should not be difficult to
+imagine someone who knows absolutely nothing about
+electricity, since all the ancients lived happily enough
+without any knowledge of it. Let this man be given
+metal, gold foil, bottles, hard-rubber rod, flannel, in
+short, all the material required for performing our
+three experiments. He may be a very
+cultured person,
+but he will probably put wine into the bottles, use the
+flannel for cleaning, and never once entertain the idea
+of doing the things we have described. For the detective
+the crime is given, the problem formulated: who
+killed Cock Robin? The scientist must, at least in part,
+commit his own crime, as well as carry out the investigation.
+Moreover, his task is not to explain just one
+case, but all phenomena which have happened
+or may
+still happen.
+    </blockquote>
     </p>
     <h2>Comments, etc.</h2>
     <p>
