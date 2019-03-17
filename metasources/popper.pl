@@ -127,44 +127,33 @@ My "Timeline of Parsing", and its crime
         "The Evolution of Physics", p. 78.
       </footnote>
     </blockquote>
-    <h2>The timeline and its critics</h2>
+    <h2>The Sherlock Holmes approach</h2>
     <p>I've written a timeline history of parsing theory
-      which, even thought it is very technical,
+      which, even though it is very technical,
       is by far my most popular writing.
       Despite, or because, of this,
       it is not without its critics.
-      The most central criticisms are lack of objectivity,
-      and bias.
-      In this post, I will take a careful look at methodology,
-      and will claim that I am innocent of the first charge
-      because I am guilty, in one sense at least, of the second charge.
-      That is, my timeline is objective because it precisely because
-      it comes from a strong point of view.
-    </p>
-    <h2>The Sherlock Holmes approach</h2>
-    <p>Most of those who accuse the timeline of lack of objectivity or of bias,
-      do not state what they mean by those terms,
-      which suggests they are thinking of an approach they expect to be
-      shared as a matter of "common sense".
+      Most of those who accuse the timeline of lack of objectivity or of bias,
+      do not state what they mean by those terms.
       But Einstein assumed his readers idea of discovery
       would come from Conan Doyle's Sherlock Holmes,
       and we will follow his lead in starting there.
     </p>
     <p>
-      In fact Holmes's methods, as stated, are incapable of solving anything
+      Holmes's methods, at least as stated in the Conan Doyle stories,
+      are incapable of solving anything
       but the fictional and artificial problems he encounters.
       In real life, a "blank mind" can observe nothing.
       There is no "data" without theory, just white noise.
-      Every "fact" gathered contains a prejudgement about what is
+      Every "fact" gathered relies on many prejudgements about what is
       relevant and what is not.
-      And you cannot characterize anything as "impossible",
-      without theorizing in advance of it what kind of fact is possible,
-      and what kind of fact is not.
+      And you certainly cannot characterize anything as "impossible",
+      unless you have, in advance, a theory about what is possible.
     </p>
     <p>
       If you look at the deduction recorded in the Holmes' canon,
       you see often involve <b>a lot</b>
-      of theorizing, and sometimes outright speculation.
+      of theorizing, and more than a little outright speculation.
       To make it a matter of significance what the dogs in "Silver Blaze" did in the night,
       Holmes requires a theory of canine behavior,
       and this theory sometimes outpaces the facts by a considerable distance.
@@ -177,8 +166,9 @@ My "Timeline of Parsing", and its crime
       </footnote>
     </p>
     <h2>The Einstein approach</h2>
-    <p>Einstein begins his description of a method 
-    useful outside the pages of a novel at the start
+    <p>Einstein wants a method 
+    useful outside the pages of a novel;
+    and he begins his description of it at the start
     of his Chapter II.
     Many of his less determined readers must have given up
     the book when they encountered its first paragraph:
@@ -193,7 +183,16 @@ purpose is to furnish a striking example of the role of
 theory in physics.<footnote>
     Einstein and Infeld, p. 71.</footnote>
     </blockquote>
-    <p>
+    <p>Einstein follows with a series of the kind of experiments
+    that are performed in high school physics classes.
+    One could imagine these experiments allowing an observer
+    to deduce the basics of electromagnetism
+    using materials and techniques available for centuries.
+    </p>
+    <p>But, and this is Einstein's point,
+    this is not how it happened.
+    The theory came <b>first</b>,
+    and the experiments weere devised afterwards.
     </p>
     <blockquote>
       In the first pages
@@ -245,6 +244,11 @@ theory in physics.<footnote>
         Page 78 of Einstein and Infeld.
       </footnote>
     </blockquote>
+    <p>Like Einstein's book, however,
+    a timeline is history of science,
+    not science.
+    How does one "test" history of science?
+    </p>
     <blockquote>
       Let me repeat this important point.
       Scientific theories are not just the
