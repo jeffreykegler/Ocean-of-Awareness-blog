@@ -269,6 +269,31 @@ theory in physics.<footnote>
         p. 172.
       </footnote>
     </blockquote>
+    <h2>Questions</h2>
+    <p>
+    Is the PEG algorithm being proposed a future,
+    or does it have an implementation?
+    Certainly, if necessary, alternatives may be proposed,
+    but is it clear which features belong to which
+    implementation or proposal?
+    </p>
+    <p>What claims of speed and time complexity are made?
+    Is there a way of determining in advance of runtime how fast
+    your algorithm will run?
+    Or is the expectation of practical speed
+    on an "implement and pray" basis?
+    </p>
+    <p>Does the proposed PEG algorithm match human parsing
+    capabilities?
+    If not, it is a claim for human exceptionalism,
+    of a kind not usually accepted in modern computer science.
+    How is it justified in this case.
+    </p>
+    </p>If a combination of PEG algorithms is advanced as the
+    alternative to human parsing capabilities,
+    can the alternatives be unified in the way that humans
+    apparently are unifying the algorithms?
+    <p>
     <h2>The end of the journey?</h2>
     <blockquote>
     This great mystery story
