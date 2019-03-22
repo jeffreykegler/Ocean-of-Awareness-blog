@@ -121,25 +121,15 @@ Parsing, Holmes, Einstein and Popper
     <h2>The Sherlock Holmes approach</h2>
     <p>I've written a timeline history of parsing theory
       which, even though it is very technical,
-      is by far my most popular writing.
+      is my most popular writing.
       Despite, or because, of this,
       it is not without its critics.
       Most of those who accuse the timeline of lack of objectivity or of bias,
       do not state what they mean by those terms.
-      Einstein assumed his reader's idea of methods of scientific investigation
+      Einstein assumed his reader's idea of methods of proper investigation,
+      in science as elsewhere,
       would be similar to those Conan Doyle's Sherlock Holmes,
       and I will follow Einstein's lead in starting there.
-    </p>
-    <p>
-      Holmes's methods, at least as stated in the Conan Doyle stories,
-      are incapable of solving anything
-      but the fictional and artificial problems he encounters.
-      In real life, a "blank mind" can observe nothing.
-      There is no "data" without theory, just white noise.
-      Every "fact" gathered relies on many prejudgements about what is
-      relevant and what is not.
-      And you certainly cannot characterize anything as "impossible",
-      unless you have, in advance, a theory about what is possible.
     </p>
     <p>
       If you look at the deduction recorded in the Holmes' canon,
@@ -156,10 +146,21 @@ Parsing, Holmes, Einstein and Popper
       From "The Adventure of the Creeping Man".
       </footnote>
     </p>
+    <p>
+      Holmes's methods, at least as stated in the Conan Doyle stories,
+      are incapable of solving anything
+      but the fictional and artificial problems he encounters.
+      In real life, a "blank mind" can observe nothing.
+      There is no "data" without theory, just white noise.
+      Every "fact" gathered relies on many prejudgements about what is
+      relevant and what is not.
+      And you certainly cannot characterize anything as "impossible",
+      unless you have, in advance, a theory about what is possible.
+    </p>
     <h2>The Einstein approach</h2>
-    <p>Einstein wants a method 
-    useful outside the pages of a novel;
-    and he begins his description of it at the start
+    <p>Einstein, in his popular history of physics,
+    describes a method useful outside the pages of a novel.
+    He begins his description of it at the start
     of his Chapter II:
     <blockquote>
     The following pages contain a dull report of
@@ -234,6 +235,93 @@ Parsing, Holmes, Einstein and Popper
     or legitimate areas
     of investigation.
     As we will see, that is not the case.)
+    </p>
+    <p>
+    For the hard scienes, Popper's answer to his question of
+    "demarcation" was that a scientific theory for which,
+    at least in principle, there was an empirical test
+    that would "falsify" it.
+    This is as opposed to the method of "looking for evidence".
+    In Popper's view, finding evidence to corroborate a theory
+    was easy and useless.
+    If, during this search for evidence,
+    the theory was never at risk,
+    no amount of "confirming" evidence means anything.
+    The more doctrinaire followers of Freud found
+    vast amounts of evidence to confirm his theories,
+    but in none of these tests was Freud's theory at risk.
+    The kind of evidence they found confirmed Freud,
+    but could not have refuted him,
+    and therefore, from Popper's point of view,
+    its corroborative value was zero.
+    </p>
+    <p>Einstein, on the other hand, put his theory at very serious risk
+    in this prediction of the deflection of light in a 1919 eclipse.
+    Einstein's theory was *falsifiable*,
+    and falsifiability was the criterion of a hard science.
+    <h2>What about the soft sciences?</p>
+    <p>What about the "soft" fields of study -- politics,
+    economics, philosophy, etc.
+    Einstein's theory of relativity was falsifiable, and therefore
+    hard science.
+    But what about Einstein's view on scientific methods?
+    No experiment could prove Holmes wrong or Einstein right,
+    but surely whether or not these views are true is a useful
+    and even necessary question.
+    </p>
+    <p>
+    Some have tried maintained that,
+    outside the hard sciences, there is no truth --
+    that a question either lends itself to empirical testing,
+    or it is "not even wrong".
+    But Popper was never one of them.
+    </p>
+    <p>
+    To understand how Popper adapted Einstein's methods to
+    social science and philosophy, it is useful to kind in
+    mind three things.
+    First, even hardest of sciences has its soft edges.
+    Every empirical test requires theory to interpret,
+    and every empirical test can be wrong.
+    </p>
+    <p>
+    Second, even if proponents of a theory decide to accept an empirical
+    refutation,
+    they can do so by modifying the theory,
+    rather than abandoning it.
+    If fact, Popper asserts,
+    no theory should ever be completely abandoned,
+    whatever the evidence against it.<footnote>
+    TODO: Find a reference for this, or delete it.
+    </footnote>
+    </p>
+    <p>
+    Third, and most significant,
+    some of the most necessary theories,
+    are, by the nature "irrefutable" --
+    There is no logical argument against them,
+    and no empirical evidence can prove them wrong.
+    </p>
+    <p>
+    How do you decide the truth of an irrefutable theory?
+    Popper's answer is that this can only be done with reference
+    to the problems you want the theory to solve.
+    A theory which produces useful answers is more true,
+    than one which does not.
+    The economic theory of the physiocrats was that "all wealth comes from the land".
+    Ignoring fishing, it is irrefutable -- it is possible to trace all wealth back
+    to agriculture.
+    The physiocrats theory seemed very helpful in the 18th century,
+    when the "tracing" was not very hard
+    -- most wealth came directly from agriculture.
+    And the physiocrat's motto remains true in a pedantic and abstract sense.
+    But it is not helpful for studying the economy,
+    now that less than 2% of the population is employed in agriculture,
+    and work in farming is so heavily mechanized that you could equally
+    claim that all wealth comes from the manufacturing of machines,
+    or from the consumption of energy,
+    and all three claims would be irrefutable.
+    </p>
     <h2>Choosing a "highway"</h2>
     <blockquote>
       Through the maze of
