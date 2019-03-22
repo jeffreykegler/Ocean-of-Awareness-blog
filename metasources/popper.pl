@@ -61,7 +61,7 @@ sub do_footnote {
 }
 
 __DATA__
-My "Timeline of Parsing", and its crime
+Parsing, Holmes, Einstein and Popper
 <html>
   <head>
   </head>
@@ -101,8 +101,8 @@ My "Timeline of Parsing", and its crime
       all
       solution for ourselves just before the author's disclosure
       at the end of the book. The solution itself, contrary to
-      those of inferior mysteries, does not disappoint us; more-
-      over, it appears at the very moment we expect it.
+      those of inferior mysteries, does not disappoint us;
+      moreover, it appears at the very moment we expect it.
       Can we liken the reader of such a book to the scientists,
       who throughout successive generations continue to seek
       solutions of the mysteries in the book of nature? The
@@ -118,15 +118,6 @@ My "Timeline of Parsing", and its crime
         <cite>The Evolution of Physics</cite>,
         Scientific Book Club, London, 1938?</footnote>
     </blockquote>
-    <blockquote>
-      The scientist must, at least in part,
-      commit his own crime, as well as carry out the investigation.
-      &mdash;
-      <cite>Einstein and Infeld</cite>.
-      <footnote>
-        "The Evolution of Physics", p. 78.
-      </footnote>
-    </blockquote>
     <h2>The Sherlock Holmes approach</h2>
     <p>I've written a timeline history of parsing theory
       which, even though it is very technical,
@@ -135,9 +126,9 @@ My "Timeline of Parsing", and its crime
       it is not without its critics.
       Most of those who accuse the timeline of lack of objectivity or of bias,
       do not state what they mean by those terms.
-      But Einstein assumed his readers idea of discovery
-      would come from Conan Doyle's Sherlock Holmes,
-      and we will follow his lead in starting there.
+      Einstein assumed his reader's idea of methods of scientific investigation
+      would be similar to those Conan Doyle's Sherlock Holmes,
+      and I will follow Einstein's lead in starting there.
     </p>
     <p>
       Holmes's methods, at least as stated in the Conan Doyle stories,
@@ -169,30 +160,28 @@ My "Timeline of Parsing", and its crime
     <p>Einstein wants a method 
     useful outside the pages of a novel;
     and he begins his description of it at the start
-    of his Chapter II.
-    Many of his less determined readers must have given up
-    the book when they encountered its first paragraph:
+    of his Chapter II:
     <blockquote>
     The following pages contain a dull report of
-The account some be boring very simple experiments.
-not only because the description of experiments is un-
-interesting in comparison with their actual performance,
-but also because the meaning of the experiments does
-not become apparent until theory makes it so. Our
-purpose is to furnish a striking example of the role of
-theory in physics.<footnote>
+    The account some be boring very simple experiments.
+    not only because the description of experiments is uninteresting
+    in comparison with their actual performance,
+    but also because the meaning of the experiments does
+    not become apparent until theory makes it so. Our
+    purpose is to furnish a striking example of the role of
+    theory in physics.<footnote>
     Einstein and Infeld, p. 71.</footnote>
     </blockquote>
     <p>Einstein follows with a series of the kind of experiments
     that are performed in high school physics classes.
-    One could imagine these experiments allowing an observer
+    One might imagine these experiments allowing an observer
     to deduce the basics of electromagnetism
     using materials and techniques available for centuries.
     </p>
     <p>But, and this is Einstein's point,
     this is not how it happened.
     The theory came <b>first</b>,
-    and the experiments weere devised afterwards.
+    and the experiments were devised afterwards.
     </p>
     <blockquote>
       In the first pages
@@ -228,6 +217,23 @@ theory in physics.<footnote>
         Page 78 of Einstein and Infeld.
       </footnote>
     </blockquote>
+    <h2>Theory, then observation</h2>
+    <p>Einstein results impressed many people,
+    and led the philosophy Karl Popper
+    to give careful attention to his methods.
+    [ TODO: More on Popper ]
+    Popper undertook a systematic formulation
+    of Einstein's approach.
+    <p>
+    </p>
+    Popper first focused on what he called "demarcation" --
+    what is it that distinguishes a science from non-science.
+    (By "science", Popper meant a "hard science.
+    Popper is frequently mistaken to be saying that soft sciences,
+    social sciences and philosophy are not worthwhile
+    or legitimate areas
+    of investigation.
+    As we will see, that is not the case.)
     <h2>Choosing a "highway"</h2>
     <blockquote>
       Through the maze of
