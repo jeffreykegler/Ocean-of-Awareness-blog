@@ -229,12 +229,16 @@ Parsing, Holmes, Einstein and Popper
     </p>
     Popper first focused on what he called "demarcation" --
     what is it that distinguishes a science from non-science.
-    (By "science", Popper meant a "hard science.
-    Popper is frequently mistaken to be saying that soft sciences,
-    social sciences and philosophy are not worthwhile
+    It is important to note that
+    where Popper says "science", he means what others frequently term "hard science".
+    Popper is frequently mistaken to be saying that politics
+    and philosophy are not worthwhile
     or legitimate areas
     of investigation.
-    As we will see, that is not the case.)
+    If this were Popper's view, it would show a lot a lack of self-awareness
+    since his life's work was in these "soft" endeavors.
+    But as we will see, Popper has a lot to say about how to seek
+    truth in the "soft" fields as well.
     </p>
     <p>
     For the hard scienes, Popper's answer to his question of
@@ -259,7 +263,7 @@ Parsing, Holmes, Einstein and Popper
     in this prediction of the deflection of light in a 1919 eclipse.
     Einstein's theory was *falsifiable*,
     and falsifiability was the criterion of a hard science.
-    <h2>What about the soft sciences?</p>
+    <h2>What about the soft sciences?</h2>
     <p>What about the "soft" fields of study -- politics,
     economics, philosophy, etc.
     Einstein's theory of relativity was falsifiable, and therefore
@@ -322,6 +326,7 @@ Parsing, Holmes, Einstein and Popper
     or from the consumption of energy,
     and all three claims would be irrefutable.
     </p>
+    <h2>Objectivity requires a strong point of view</h2>
     <h2>Choosing a "highway"</h2>
     <blockquote>
       Through the maze of
@@ -335,9 +340,190 @@ Parsing, Holmes, Einstein and Popper
       left out, not because they seemed to us unimportant,
       but because they do not lie along the road we have
       chosen.<footnote>
-        Page 78 of Einstein and Infeld.
+        Einstein and Infeld, p. 78.
       </footnote>
     </blockquote>
+    <blockquote>
+    A false theory may be as great an achievement as a true one.
+    And many false theories have been more helpful in our search
+    for truth than some less interesting theories which
+    are still accepted.<footnote>
+    Popper, p. 190.
+    </footnote>
+    </blockquote>
+    <p>
+    The historiography of my <cite>Timeline</cite> certainly takes a
+    definite point of view.
+    In its original version it was, in fact, essentially a history of
+    the inspirations for my work in Earley/Leo parsing,
+    and many events important in mainstream parsing
+    received little mention.
+    That a history with such a non-traditional focus was so popular
+    was, I hope, in part due to the merits of that focus,
+    but I know it was also a product of desperation for
+    anything approaching a coherent accounts of this very important
+    area of computer science.
+    </p>
+    <p>In response to the larger audience the <cite>Timeline</cite>
+    attracted, later versions broadened the focus considerably.
+    Many algorithms
+    received had received only glancing mention in the <cite>Timeline</cite>,
+    because they had not been important in my work.
+    <cite>Timeline 3.1</cite> tries to include 
+    all algorithms that have been important in mainstream parsing practice,
+    including some which had little or no influence on my work.
+    The parsing of arithmetic expressions,
+    for example,
+    is trivial in the Earley/Leo context,
+    and so receives little mention in the original <cite>Timeline</cite>.
+    But arithmetic expressions are at the borderline of power
+    for traditional approaches,
+    and their parsing is a crucial motivation for the authors of these algorithms.
+    So <cite>Timeline 3.1</cite> they became a recurring theme,
+    coming back for detailed examination time and time again.
+    </p>
+    <p>
+    But the basic point of view taken by my <cite>Timeline</cite>
+    has not wavered.
+    Emphases
+    include Chomskyan over non-Chomskyan parsing, 
+    more general approaches over less general approaches,
+    linear and quasi-linear approaches over slower approaches,
+    non-statistical approaches over statistical approaches,
+    and programming applications over NLP applications.
+    For each and every one of these emphases,
+    there is serious work,
+    not just of historical interest,
+    but current,
+    that takes the opposite approach.
+    In emphasizing Earley parsing over its competitors,
+    my approach was and remains unusual.
+    In emphasizing the Leo lineage within Earley parsing,
+    my approach was for many years literally unique.
+    </p>
+    <h2>Objectivity requires a strong viewpoint</h2>
+    <p>[Popper quote?]</p>
+    <p>It is a myth, as we have seen,
+    that objectivity means taking the "view from nowhere".
+    "Objectivity" means that something is not just dependent on my 
+    own viewpoint, but that it can be criticized from a shared
+    perspective.<footnote>
+    Readers concerned with these matters may note that I use
+    "objective" to mean "intersubjective".
+    This follows Popper and,
+    for the reader not concerned with technical philosophical points,
+    I think this is best.
+    For others, I, with Popper, regard the intersubjective is as close
+    to the objective as we are going to get, certainly in the "soft"
+    fields of study.
+    Whether this means that intersubjective and objective are in fact
+    the same thing takes us far away from computer science and
+    deep into metaphysics.
+    </footnote>
+    </p>
+    <p>
+    The "view from nowhere" is <b>not</b> objective,
+    because it is not free of a viewpoint --
+    it hides its viewpoint.
+    To the extent a viewpoint remains concealed, the reader
+    is hindered from critique the viewpoint or its results.
+    To the extent a reader is not free to accurately critique
+    something, it cannot be a shared "object" between author
+    and reader.
+    Objectivity requires viewpoint.
+    </p>
+    <h2>Let's get practical</h2>
+    <p>Let's see what the "objectivity" that I claim for my timeline means in
+    practice.
+    How would you effectively "critique" <cite>Timeline</cite>?
+    </p>
+    <p>I maintain that you certainly can effectively critique it,
+    otherwise my claim of objectivity is false.
+    But some of the obvious approaches will not work.
+    If you simply "packrat" in new, unabsorbed, material,
+    you make the <cite>Timeline</cite> less effective for any purpose.<footnote>
+    As an aside,
+    while on the whole <cite>Timeline 3.1</cite> is superior to the original
+    version, something was lost by adding all the new material.
+    Timeline 1.0 was shorter, and its single-minded focus gave it (in its author's
+    modest opinion) a narrative power lost in the more broadly informed
+    Timeline 3.1.
+    </footnote>
+    If it happens to gore a favorite ox,
+    this may produce a sense of justice, or at least relief,
+    but it is hard to muddying the water in this way advances the cause of historiographic truth.
+    </p>
+    <p>To counter an effective use of viewpoint,
+    you must make a more effective use of viewpoint.
+    In the context of parsing history, you could vary any of the emphases in <cite>Timeline</cite>,
+    but I will focus on the choice of an algorithm to emphasize.
+    </p>
+    <h2>The Forever Five</h2>
+    <p>Recall<footnote>
+    TODO</footnote>
+    that the goal is problem-solving.
+    A historiography is better if it solves more problems than another.
+    What problems need solving,
+    and what weight to give them,
+    varies from programmer to programmer,
+    and from time to time.
+    This emphasis on "problems" is what makes computer science,
+    one of the "soft sciences",
+    albeit one which depends heavily on the hard sciences.
+    </p>
+    <p>My studies have left me to conclude that believe that five algorithms
+    are of permanent significance,
+    in that there is a set of practical problems which each one solves in
+    a way that none of the other four can match.
+    The "Forever Five" are regular expressions, recursive descent, PEG, Earley/Leo and Sakai's
+    algorithm.<footnote>
+    Three quibbles:
+    Regular expressions do not find structure,
+    so pedantically they are recognizers,
+    not parsers.
+    Recursive descent is technique for creating a family of algorithms,
+    not an algorithm.
+    The algorithm first described by Sakai is more commonly
+    called CYK, from the initials of three other researchers who re-discovered
+    it over the years.
+    </footnote>
+    Earley/Leo is the focus of my <cite>Timeline</cite>, so that an effective
+    critique could be a parsing historiography centering on any other of the other four.
+    </p>
+    <p>For example, of the five, regular expressions are the most limited in parsing power.
+    On the other hand, of the next five parsing problems you encounter,
+    four are probably handled quite nicely by regular expressions.
+    Good implementations of regular expressions are widely available.
+    Almost everything you want to know about a regular
+    expression is decidable in reasonable time.
+    And, for speed, they are literally unbeatable -- if a parsing problem is a
+    regular expression, no other algorithm will beat a dedicated regular expression
+    engine for parsing it.
+    </p>
+    <p>Could a <cite>Timeline</cite> competitor be written which
+    centered on regular expressions?
+    Certainly.
+    And if immediate usefulness to the average programmer is the criteria
+    (and it's a very good one),
+    then the <cite>Regular Expressions Timeline</cite> would certainly give
+    my timeline a run for the money.
+    </p>
+    <h2>What about a PEG Timeline?</h2>
+    <p>
+    The immediate impetus for this article was a very collegial inquiry
+    from someone whose main interest was PEG.
+    Could a <cite>PEG Timeline</cite> challenge mine?
+    Again, very certainly.
+    </p>
+    <p>Because there are at least some
+    problems for which PEG is superior to everything else,
+    my own Earley/Leo approach not excepted.
+    As one example, PEG,
+    sheared of the overpromising in its
+    writeups,
+    could be an more powerful alternative to regular expressions.
+    </p>
+    <h2>TO HERE</h2>
     <p>Like Einstein's book, however,
     a timeline is history of science,
     not science.
