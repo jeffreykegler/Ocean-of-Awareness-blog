@@ -122,22 +122,22 @@ Parsing, Holmes, Einstein and Popper
     <p>I've written a timeline history of parsing theory
       which, even though it is very technical,
       is my most popular writing.
-      Despite, or because, of this,
-      it is not without its critics.
-      Most of those who accuse the timeline of lack of objectivity or of bias,
-      do not state what they mean by those terms.
+      It is not without its critics.
+      Many of them accuse the timeline of lack of objectivity or of bias.
+      </p>
+      <p>
       Einstein assumed his reader's idea of methods of proper investigation,
       in science as elsewhere,
-      would be similar to those Conan Doyle's Sherlock Holmes,
-      and I will follow Einstein's lead in starting there.
+      would be similar to those Conan Doyle's Sherlock Holmes.
+      I will follow Einstein's lead in starting there.
     </p>
     <p>
       If you look at the deduction recorded in the Holmes' canon,
       you see often involve <b>a lot</b>
       of theorizing, and more than a little outright speculation.
       To make it a matter of significance what the dogs in "Silver Blaze" did in the night,
-      Holmes requires a theory of canine behavior,
-      and this theory sometimes outpaces the facts by a considerable distance.
+      Holmes needs a theory of canine behavior,
+      and Holmes' theory sometimes outpaces its pack of facts by a considerable distance.
       Is it really true that only dangerous people own
       dangerous dogs?<footnote>
       "A dog reflects the family life.
@@ -164,7 +164,8 @@ Parsing, Holmes, Einstein and Popper
     of his Chapter II:
     <blockquote>
     The following pages contain a dull report of
-    The account some be boring very simple experiments.
+    some very simple experiments.
+    The account will be boring
     not only because the description of experiments is uninteresting
     in comparison with their actual performance,
     but also because the meaning of the experiments does
@@ -218,115 +219,56 @@ Parsing, Holmes, Einstein and Popper
         Page 78 of Einstein and Infeld.
       </footnote>
     </blockquote>
-    <h2>Theory, then observation</h2>
-    <p>Einstein results impressed many people,
-    and led the philosophy Karl Popper
-    to give careful attention to his methods.
-    [ TODO: More on Popper ]
-    Popper undertook a systematic formulation
-    of Einstein's approach.
-    <p>
+    <h2>Commiting one's own crime</h2>
+    <p>If then,
+    we must commit the crime of theorizing before the facts,
+    where does out theory come from?
     </p>
-    Popper first focused on what he called "demarcation" --
-    what is it that distinguishes a science from non-science.
-    It is important to note that
-    where Popper says "science", he means what others frequently term "hard science".
-    Popper is frequently mistaken to be saying that politics
-    and philosophy are not worthwhile
-    or legitimate areas
-    of investigation.
-    If this were Popper's view, it would show a lot a lack of self-awareness
-    since his life's work was in these "soft" endeavors.
-    But as we will see, Popper has a lot to say about how to seek
-    truth in the "soft" fields as well.
-    </p>
-    <p>
-    For the hard scienes, Popper's answer to his question of
-    "demarcation" was that a scientific theory for which,
-    at least in principle, there was an empirical test
-    that would "falsify" it.
-    This is as opposed to the method of "looking for evidence".
-    In Popper's view, finding evidence to corroborate a theory
-    was easy and useless.
-    If, during this search for evidence,
-    the theory was never at risk,
-    no amount of "confirming" evidence means anything.
-    The more doctrinaire followers of Freud found
-    vast amounts of evidence to confirm his theories,
-    but in none of these tests was Freud's theory at risk.
-    The kind of evidence they found confirmed Freud,
-    but could not have refuted him,
-    and therefore, from Popper's point of view,
-    its corroborative value was zero.
-    </p>
-    <p>Einstein, on the other hand, put his theory at very serious risk
-    in this prediction of the deflection of light in a 1919 eclipse.
-    Einstein's theory was *falsifiable*,
-    and falsifiability was the criterion of a hard science.
-    <h2>What about the soft sciences?</h2>
-    <p>What about the "soft" fields of study -- politics,
-    economics, philosophy, etc.
-    Einstein's theory of relativity was falsifiable, and therefore
-    hard science.
-    But what about Einstein's view on scientific methods?
-    No experiment could prove Holmes wrong or Einstein right,
-    but surely whether or not these views are true is a useful
-    and even necessary question.
-    </p>
-    <p>
-    Some have tried maintained that,
-    outside the hard sciences, there is no truth --
-    that a question either lends itself to empirical testing,
-    or it is "not even wrong".
-    But Popper was never one of them.
-    </p>
-    <p>
-    To understand how Popper adapted Einstein's methods to
-    social science and philosophy, it is useful to kind in
-    mind three things.
-    First, even hardest of sciences has its soft edges.
-    Every empirical test requires theory to interpret,
-    and every empirical test can be wrong.
-    </p>
-    <p>
-    Second, even if proponents of a theory decide to accept an empirical
-    refutation,
-    they can do so by modifying the theory,
-    rather than abandoning it.
-    If fact, Popper asserts,
-    no theory should ever be completely abandoned,
-    whatever the evidence against it.<footnote>
-    TODO: Find a reference for this, or delete it.
+    <blockquote>
+    In the case of planets moving around the sun
+    it is found that the system of mechanics works
+    splendidly.
+    Nevertheless we can well imagine that another system,
+    based on different assumptions,
+    might work just as well.
+    <br><br>
+    Physical concepts are free creations
+    of the human mind, and are not,
+    however, it may seem,
+    uniquely determined by the external world.
+    In our endeavor to understand reality
+    we are somewhat like a man trying
+    to understand the mechanism of a closed watch.
+    He sees the face and the moving hands,
+    even hears its ticking,
+    but he has no way of opening the case.
+    If he is ingenious
+    he may form some picture of a mechanism
+    which could be responsible
+    for all the things he observes,
+    but he may never be quite sure
+    his picture is the only one
+    which could explain his observations.
+    He will never be able
+    to compare his picture with the real mechanism
+    and he cannot even imagine the possibility
+    or the meaning of such a comparison.
+    But he certainly believes that,
+    as his knowledge increases,
+    his picture of reality will become
+    simpler and simpler
+    and will explain a wider and wider range
+    of his sensuous impressions.
+    He may also be believe in the existence
+    of the ideal limit of knowledge
+    and that it is approached
+    by the human mind.
+    He may call this ideal limit
+    the objective truth. -- Einstein and Infeld<footnote>
+    P. 31.
+    See also Einstein, <cite>Ideas and Opinions</cite>, p. 272.
     </footnote>
-    </p>
-    <p>
-    Third, and most significant,
-    some of the most necessary theories,
-    are, by the nature "irrefutable" --
-    There is no logical argument against them,
-    and no empirical evidence can prove them wrong.
-    </p>
-    <p>
-    How do you decide the truth of an irrefutable theory?
-    Popper's answer is that this can only be done with reference
-    to the problems you want the theory to solve.
-    A theory which produces useful answers is more true,
-    than one which does not.
-    The economic theory of the physiocrats was that "all wealth comes from the land".
-    Ignoring fishing, it is irrefutable -- it is possible to trace all wealth back
-    to agriculture.
-    The physiocrats theory seemed very helpful in the 18th century,
-    when the "tracing" was not very hard
-    -- most wealth came directly from agriculture.
-    And the physiocrat's motto remains true in a pedantic and abstract sense.
-    But it is not helpful for studying the economy,
-    now that less than 2% of the population is employed in agriculture,
-    and work in farming is so heavily mechanized that you could equally
-    claim that all wealth comes from the manufacturing of machines,
-    or from the consumption of energy,
-    and all three claims would be irrefutable.
-    </p>
-    <h2>Objectivity requires a strong point of view</h2>
+    </blockquote>
     <h2>Choosing a "highway"</h2>
     <blockquote>
       Through the maze of
@@ -351,7 +293,33 @@ Parsing, Holmes, Einstein and Popper
     Popper, p. 190.
     </footnote>
     </blockquote>
-    <p>
+    <p>True, everyday thinking and the softer sciences often
+    trade in concepts too "soft" to be proven by experiment.
+    But even theories in the hard sciences are "underdetermined" --
+    multiple theories will fit the same evidence.
+    <blockquote>
+    [ Insert some E quote about underdetermination. ]
+    </blockquote>
+    In fact, if the science is "hard",
+    a theory in it is eventually going to be proven to be false --
+    the best that can happen is that,
+    like Newton's physics, it will be shown to be an important
+    subcase of a larger theory.
+    <blockquote>
+    [ Insert some E quote about all theories being false.
+    "Highway" quote here?
+    Popper "False theory" quote here?
+    ]
+    </blockquote>
+    </p>
+    <p>So, given multiple theories which explain similar evidence,
+    how do we choose among them?
+    <blockquote>
+    [ E on "simple" versus "wide in application".
+    Popper on usefulness. ]
+    </blockquote>
+    </p>
+    <h2>The method of the "Timeline"</h2>
     The historiography of my <cite>Timeline</cite> certainly takes a
     definite point of view.
     In its original version it was, in fact, essentially a history of
@@ -400,37 +368,6 @@ Parsing, Holmes, Einstein and Popper
     my approach was and remains unusual.
     In emphasizing the Leo lineage within Earley parsing,
     my approach was for many years literally unique.
-    </p>
-    <h2>Objectivity requires a strong viewpoint</h2>
-    <p>[Popper quote?]</p>
-    <p>It is a myth, as we have seen,
-    that objectivity means taking the "view from nowhere".
-    "Objectivity" means that something is not just dependent on my 
-    own viewpoint, but that it can be criticized from a shared
-    perspective.<footnote>
-    Readers concerned with these matters may note that I use
-    "objective" to mean "intersubjective".
-    This follows Popper and,
-    for the reader not concerned with technical philosophical points,
-    I think this is best.
-    For others, I, with Popper, regard the intersubjective is as close
-    to the objective as we are going to get, certainly in the "soft"
-    fields of study.
-    Whether this means that intersubjective and objective are in fact
-    the same thing takes us far away from computer science and
-    deep into metaphysics.
-    </footnote>
-    </p>
-    <p>
-    The "view from nowhere" is <b>not</b> objective,
-    because it is not free of a viewpoint --
-    it hides its viewpoint.
-    To the extent a viewpoint remains concealed, the reader
-    is hindered from critique the viewpoint or its results.
-    To the extent a reader is not free to accurately critique
-    something, it cannot be a shared "object" between author
-    and reader.
-    Objectivity requires viewpoint.
     </p>
     <h2>Let's get practical</h2>
     <p>Let's see what the "objectivity" that I claim for my timeline means in
@@ -523,32 +460,6 @@ Parsing, Holmes, Einstein and Popper
     writeups,
     could be an more powerful alternative to regular expressions.
     </p>
-    <h2>TO HERE</h2>
-    <p>Like Einstein's book, however,
-    a timeline is history of science,
-    not science.
-    How does one "test" history of science?
-    </p>
-    <blockquote>
-      Let me repeat this important point.
-      Scientific theories are not just the
-      results of observation.
-      They are, in the main, the products
-      of myth-making and of tests.
-      Tests proceed partly by way of observation,
-      and observation is thus very important;
-      but its function is not that of producing theories.
-      It plays its role in
-      rejecting, eliminating, and criticizing theories;
-      and it challenges us to produce new myths,
-      new theories which may stand up to these
-      observational tests.<footnote>
-        Karl Popper,
-        <cite>Conjectures and Refutations</cite>,
-        Routledge and Kegan Paul, 2002,
-        p. 172.
-      </footnote>
-    </blockquote>
     <h2>Questions</h2>
     <p>
     Is the PEG algorithm being proposed a future,
@@ -602,6 +513,77 @@ Pp. 7-8</footnote>
       <a href="http://groups.google.com/group/marpa-parser">
         Marpa's Google group</a>,
       or on our IRC channel: #marpa at freenode.net.
+    </p>
+    <h2>[ QUARRY ]</h2>
+    <blockquote>
+    The whole of science is nothing
+    more than a refinement of everyday thinking.
+    It is for this reason that the critical thinking
+    of the physicist cannot possibly be restricted to
+    the examination of the concepts of his own
+    specific field.
+    He cannot proceed without considering critically
+    a much more difficult problem,
+    the problem of analyzing the nature of everday
+    thinking.
+    <footnote>
+    E:I&0, p 290.
+    </footnote>
+    </blockquote>
+    <p>Like Einstein's book, however,
+    a timeline is history of science,
+    not science.
+    How does one "test" history of science?
+    </p>
+    <blockquote>
+      Let me repeat this important point.
+      Scientific theories are not just the
+      results of observation.
+      They are, in the main, the products
+      of myth-making and of tests.
+      Tests proceed partly by way of observation,
+      and observation is thus very important;
+      but its function is not that of producing theories.
+      It plays its role in
+      rejecting, eliminating, and criticizing theories;
+      and it challenges us to produce new myths,
+      new theories which may stand up to these
+      observational tests.<footnote>
+        Karl Popper,
+        <cite>Conjectures and Refutations</cite>,
+        Routledge and Kegan Paul, 2002,
+        p. 172.
+      </footnote>
+    </blockquote>
+    <p>[Popper quote?]</p>
+    <p>It is a myth, as we have seen,
+    that objectivity means taking the "view from nowhere".
+    "Objectivity" means that something is not just dependent on my 
+    own viewpoint, but that it can be criticized from a shared
+    perspective.<footnote>
+    Readers concerned with these matters may note that I use
+    "objective" to mean "intersubjective".
+    This follows Popper and,
+    for the reader not concerned with technical philosophical points,
+    I think this is best.
+    For others, I, with Popper, regard the intersubjective is as close
+    to the objective as we are going to get, certainly in the "soft"
+    fields of study.
+    Whether this means that intersubjective and objective are in fact
+    the same thing takes us far away from computer science and
+    deep into metaphysics.
+    </footnote>
+    </p>
+    <p>
+    The "view from nowhere" is <b>not</b> objective,
+    because it is not free of a viewpoint --
+    it hides its viewpoint.
+    To the extent a viewpoint remains concealed, the reader
+    is hindered from critique the viewpoint or its results.
+    To the extent a reader is not free to accurately critique
+    something, it cannot be a shared "object" between author
+    and reader.
+    Objectivity requires viewpoint.
     </p>
     <comment>FOOTNOTES HERE</comment>
   </body>
