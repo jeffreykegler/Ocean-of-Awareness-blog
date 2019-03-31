@@ -61,7 +61,7 @@ sub do_footnote {
 }
 
 __DATA__
-Holmes, Einstein and the Case of the Parsing Puzzle
+Sherlock Holmes and the Case of the Missing Parsing Solution
 <html>
   <head>
   </head>
@@ -83,11 +83,11 @@ Holmes, Einstein and the Case of the Parsing Puzzle
     </blockquote>
     <blockquote>I make a point of never having any prejudices, and of following docilely wherever fact may lead me.
       &mdash;
-      <cite>"The Reigate Puzzle"</cite>.
+      Holmes, in <cite>"The Reigate Puzzle"</cite>.
     </blockquote>
     <blockquote>When you have eliminated the impossible, whatever remains, no matter how improbable, must be the truth.
       &mdash;
-      <cite>"The Sign of Four"</cite>.
+      Holmes, in <cite>"The Sign of Four"</cite>.
     </blockquote>
     <blockquote>
       In imagination there
@@ -98,7 +98,6 @@ Holmes, Einstein and the Case of the Parsing Puzzle
       theory of the case.
       If we
       follow the plot carefully, we arrive at the complete
-      all
       solution for ourselves just before the author's disclosure
       at the end of the book. The solution itself, contrary to
       those of inferior mysteries, does not disappoint us;
@@ -114,9 +113,9 @@ Holmes, Einstein and the Case of the Parsing Puzzle
       &mdash;
       <cite>Albert Einstein
         and Leopold Infeld</cite>.<footnote>
-        Page 3,
+      Einstein, Albert and Infeld, Leopold,
         <cite>The Evolution of Physics</cite>,
-        Scientific Book Club, London, 1938?</footnote>
+        Simon and Schuster, 2007, p. 3</footnote>
     </blockquote>
     <h2>The Sherlock Holmes approach</h2>
     <p>I've written a timeline history of parsing theory
@@ -150,7 +149,7 @@ Holmes, Einstein and the Case of the Parsing Puzzle
     <p>
       Holmes's methods, at least as stated in the Conan Doyle stories,
       are incapable of solving anything
-      but the fictional and artificial problems he encounters.
+      but the fictional problems he encounters.
       In real life, a "blank mind" can observe nothing.
       There is no "data" without theory, just white noise.
       Every "fact" gathered relies on many prejudgements about what is
@@ -159,7 +158,8 @@ Holmes, Einstein and the Case of the Parsing Puzzle
       unless you have, in advance, a theory about what is possible.
     </p>
     <h2>The Einstein approach</h2>
-    <p>Einstein, in his popular history of physics,
+    <p>Einstein, in his popular account
+    of the evolution of physics,
       finds the Doyle stories "admirable"<footnote>
       Einstein and Infeld, p. 4.
       </footnote>.
@@ -175,8 +175,9 @@ Holmes, Einstein and the Case of the Parsing Puzzle
       but also because the meaning of the experiments does
       not become apparent until theory makes it so. Our
       purpose is to furnish a striking example of the role of
-      theory in physics.<footnote>
-        Einstein and Infeld, p. 71.</footnote>
+      theory in physics.
+      <footnote>
+      Einstein and Infeld, p. 71.</footnote>
     </blockquote>
     <p>Einstein follows with a series of the kind of experiments
       that are performed in high school physics classes.
@@ -220,8 +221,8 @@ Holmes, Einstein and the Case of the Parsing Puzzle
       Moreover, his task is not to explain just one
       case, but all phenomena which have happened
       or may
-      still happen.<footnote>
-        Page 78 of Einstein and Infeld.
+      still happen. &mdash; Einstein and Infeld <footnote>
+        Einstein and Infeld, p 78.
       </footnote>
     </blockquote>
     <h2>Commiting our own crime</h2>
@@ -239,8 +240,8 @@ Holmes, Einstein and the Case of the Parsing Puzzle
     with the wide world of sense impressions.
     Thus the only justification for our method structures
     is whether and in what way our theories form such
-    a link. &mdash; Einstein and Infeld<footnote>
-    P. 294.
+    a link. &mdash; Einstein and Infeld <footnote>
+    Einstein and Infeld, p. 294.
     </footnote>
     </blockquote>
     <blockquote>
@@ -283,10 +284,13 @@ Holmes, Einstein and the Case of the Parsing Puzzle
       and that it is approached
       by the human mind.
       He may call this ideal limit
-      the objective truth. -- Einstein and Infeld<footnote>
-        P. 31.
+      the objective truth. -- Einstein and Infeld <footnote>
+      Einstein and Infeld, p. 31.
         See also Einstein,
-        <cite>Ideas and Opinions</cite>, p. 272.
+	"On the Method of Theoretical Physics",
+        <cite>Ideas and Opinions</cite>,
+	Wings Books, New York,
+	no publication date, p. 272.
       </footnote>
     </blockquote>
     <p>It may sound as if Einstein believed that the soundness of
@@ -301,8 +305,11 @@ Holmes, Einstein and the Case of the Parsing Puzzle
     in Nature also rests on a sort of faith.
     All the same this faith has been largely
     justified so far by the success of
-    scientific research. &mdash; Einstein<footnote>
-    Albert Einstein: the Human Side, pp 32-33.
+    scientific research. &mdash; Einstein <footnote>
+    Dukas and Hoffman,
+    <cite>Albert Einstein: The Human Side</cite>,
+    Princeton University Press, 2013,
+    pp 32-33.
     </footnote>
     </blockquote>
     <blockquote>
@@ -322,7 +329,8 @@ Holmes, Einstein and the Case of the Parsing Puzzle
     The skeptic will say this is a "miracle creed."
     Admittedly so, but it is a miracle creed
     which has been borne out to an amazing extent by
-    the development of science. &mdash; Einstein<footnote>
+    the development of science. &mdash; Einstein <footnote>
+    "On the Generalized Theory of Gravitation", in
     <cite>Ideas and Opinions</cite>, p 342.
     </footnote>
     </blockquote>
@@ -348,7 +356,8 @@ Holmes, Einstein and the Case of the Parsing Puzzle
     by science do,
     it is true,
     give a certain encouragement for this faith. --
-    Einstein<footnote>
+    Einstein <footnote>
+    "Physics and Reality", in
     <cite>Ideas and Opinions</cite>, pp. 294-295.
     </footnote>
     </blockquote>
@@ -373,7 +382,8 @@ Holmes, Einstein and the Case of the Parsing Puzzle
     but which we shall never understand.
     One may say that
     "the eternal mystery of the world
-    is its comprehensibility". &mdash; Einstein<footnote>
+    is its comprehensibility". &mdash; Einstein <footnote>
+    "Physics and Reality", in
     <cite>Ideas and Opinions</cite>,
     p. 292.
     </footnote>
@@ -397,7 +407,8 @@ Holmes, Einstein and the Case of the Parsing Puzzle
     makes the game possible.
     However, the fixation will never be final.
     It will have validity only for a special field
-    of application. &mdash; Einstein<footnote>
+    of application. &mdash; Einstein <footnote>
+    "Physics and Reality", in
     <cite>Ideas and Opinions</cite>,
     p. 292.
     </footnote>
@@ -410,15 +421,17 @@ Holmes, Einstein and the Case of the Parsing Puzzle
     Every theory has its period of
     gradual development and triumph,
     after which it may experience a
-    rapid decline. &mdash; Einstein and Infeld<footnote>
-    P. 75.
+    rapid decline. &mdash; Einstein and Infeld
+    <footnote>
+    Einstein and Infeld, p. 75.
     </footnote>
     </blockquote>
     </p>
     <blockquote>
     In our great mystery story there are no problems
-    wholly solved and settled for all time. &mdash; Einstein and Infeld<footnote>
-    p. 35.
+    wholly solved and settled for all time. &mdash; Einstein and Infeld
+    <footnote>
+    Einstein and Infeld, p. 35.
     </footnote>
     </blockquote>
     <blockquote>
@@ -428,8 +441,8 @@ Holmes, Einstein and the Case of the Parsing Puzzle
       We
       cannot
       even be sure that it has a final solution. &mdash;
-      Einstein and Infeld<footnote>
-        Pp. 7-8</footnote>
+      Einstein and Infeld <footnote>
+      Einstein and Infeld, pp. 7-8</footnote>
     </blockquote>
     <h2>Choosing a "highway"</h2>
     In most of the above,
@@ -448,7 +461,8 @@ Holmes, Einstein and the Case of the Parsing Puzzle
       the problem of analyzing the nature of everday
       thinking. &mdash; Einstein
       <footnote>
-        I&0, p 290.
+	"Physics and Reality",
+        <cite>Ideas and Opinions</cite>, p 290.
       </footnote>
     </blockquote>
     And, in our particular case, a methodology for describing
@@ -456,7 +470,7 @@ Holmes, Einstein and the Case of the Parsing Puzzle
     we are in luck.
     Einstein's collaboration with Infeld in exactly that &mdash;
     a description of the evolution of ideas,
-    and they describe their approach:
+    and in it they describe their approach:
     <blockquote>
       Through the maze of
       facts and concepts we had to choose some highway
@@ -468,43 +482,59 @@ Holmes, Einstein and the Case of the Parsing Puzzle
       devoted to it. Some essential lines of thought have been
       left out, not because they seemed to us unimportant,
       but because they do not lie along the road we have
-      chosen.<footnote>
+      chosen. &mdash; Einstein and Infeld <footnote>
         Einstein and Infeld, p. 78.
       </footnote>
     </blockquote>
-    <h2>The method of the "Timeline"</h2><p>
-    <p>We have been taking as our example Einstein's
-    work.
-    At this point we switch over to discussing my <cite>Timeline</cite>.
+    <h2>Truth and success</h2>
+    <p>Einstein says that objective truth, while
+    it exists, is not to be attained in the hard sciences,
+    so it is not likely he thought that a historical
+    account could outdo physics in this respect.
+    For Einstein,
+    "success alone is the determining factor".
     </p>
-    <p>This change of subject matter is likely to be experienced
-    by even the most charitable reader as a let-down.
-    But the purpose of this post had been to show that
-    my <cite>Timeline</cite> does have a methodology,
-    and hopefully the forgoing has explained it,
-    and where it came from.
+    <p>Success, of course, varies with what the audience
+    for a theory wants.
+    In a very real sense,
+    I consider a theory that can predict the
+    stock market more successful than
+    one which can predict perturbations of planetary orbits
+    invisible to the naked eye.
+    But this is not a reasonable expectation when applied
+    to the theory of general relativity.
     </p>
-      Einstein above said he planned to choose a "highway",
-      and was willing to leave out even "essential lines of thought".
-      The original version of my <cite>Timeline</cite>, also
-      chose a "highway".
-      It was, in fact, essentially a history of
-      the inspirations for my work in Earley/Leo parsing,
-      and many events important in mainstream parsing
-      received little or no mention.
-      That, even with such a non-traditional focus,
-      my timeline was so popular
-      was, I hope, to certain degree due to the merits of the 
-      "highway" that I choose.
-      But I must admit the large audience it drew
-      was largely a sign of desperate need
+    Among the expectations reasonable for a timeline of parsing
+    might be these:
+    <ul>
+    <li>It helps choose the right parsing algoithm for practical
+    applications.
+    <li>It helps a reader to understand articles in the
+    the literature of parsing.
+    <li>It helps guide future research.
+    <li>It predicts the outcome of future research.
+    </ul>
+    </p>When I wrote the first version of <cite>Timeline</cite>,
+    its goal was none of these.
+    Instead I intended it to explain the sources behind my own
+    research in the Earley/Leo lineage.
+    </p>
+    <p>
+    With such a criteria of "success",
+    I wondered if <cite>Timeline</cite> would have an audience
+    much larger than one,
+    and was quite surprised when it started getting thousands of
+    web hits a day.
+      The large audience <cite>Timeline 1.0</cite> drew
+      was a sign that there is an large appetite
       out there for
-      anything resembling a coherent account of parsing theory.
-    </p>
-    <p>The <cite>Timeline</cite> has never changed the center of
-    its focus.
-    But, in response to the larger audience it drew,
-      later versions of it broadened that focus considerably.
+      accounts of parsing theory,
+      an appetite so strong that anything resembling
+      a coherent account
+      was quickly devoured.
+    <p>In response to the unexpectedly large audience,
+    later versions of the <cite>Timeline</cite> widened
+    their focus.
       <cite>Timeline 3.1</cite>
       was broadened to give good coverage
       of mainstream parsing practice,
@@ -515,8 +545,9 @@ Holmes, Einstein and the Case of the Parsing Puzzle
       for example,
       is trivial in the Earley/Leo context,
       and before my research for <cite>Timeline 3.0</cite>
-      I had devoted little attention to what I felt were
-      obviously inferior approaches.
+      I had devoted little attention to
+      approaches that I felt amounted to
+      needlessly doing things the hard way.
       But arithmetic expressions are at the borderline of power
       for traditional approaches
       and parsing arithmetic expressions was a central motivation
@@ -527,89 +558,45 @@ Holmes, Einstein and the Case of the Parsing Puzzle
       they became a recurring theme,
       coming back for detailed examination time and time again.
     </p>
+    <h2>Is the "Timeline" false?</h2>
     <p>
-      But the basic point of view taken by my
-      <cite>Timeline</cite>
-      has not wavered.
-      This is responsible for many choices of emphasis.
-      Chomskyan parsing is emphasized over non-Chomskyan parsing;
-      general approaches over less general approaches;
-      linear and quasi-linear approaches over slower approaches;
-      non-statistical approaches over statistical approaches;
-      programming applications over NLP applications;
-      etc., etc.. etc.
-      For each and every one of these choices of emphasis,
-      alternative choices have been the object of
-      serious work,
-      and usually this work is not just of historical interest,
-      but a currently active field of research.
+      Is the "Timeline" false?
+      The answer is yes, in three increasingly practical senses.
     </p>
-    <p>
-      Other of my choices are more than arguable.
-      In emphasizing Earley parsing over its competitors,
-      <cite>Timeline</cite> took an approach that was
-      and is highly unusual.
-      And, by emphasizing the Leo lineage within Earley parsing,
-      <cite>Timeline</cite> was taking a point of view that
-      was for many years literally unique.
+    <p>As Einstein makes clear,
+    every theory that is about reality,
+    will eventually proved be false.
+    The best a theory can hope for is the fate of
+    Newton's physics &mdash;
+    to be shown to be a subcase of a larger theory.
     </p>
-    <h2>Let's get practical</h2>
-    <p>Let's see what the "objectivity" that I claim for my timeline means in
-      practice.
-      How would you effectively "critique"
-      <cite>Timeline</cite>?
-    </p>
-    <p>I maintain that you certainly can effectively critique it,
-      otherwise my claim of objectivity is false.
-      But some of the obvious approaches will not work.
-      If you simply "packrat" in new, unabsorbed, material,
-      you make the
-      <cite>Timeline</cite>
-      less effective for any purpose.<footnote>
-        As an aside,
-        while on the whole
-        <cite>Timeline 3.1</cite>
-        is superior to the original
-        version, something was lost by adding all the new material.
-        Timeline 1.0 was shorter, and its single-minded focus gave it (in its author's
-        modest opinion) a narrative power lost in the more broadly informed
-        Timeline 3.1.
-      </footnote>
-      If it happens to gore a favorite ox,
-      this may produce a sense of justice, or at least relief,
-      but it is hard to muddying the water in this way advances the cause of historiographic truth.
-    </p>
-    <p>To counter an effective use of viewpoint,
-      you must make a more effective use of viewpoint.
-      In the context of parsing history, you could vary any of the emphases in
-      <cite>Timeline</cite>,
-      but I will focus on the choice of an algorithm to emphasize.
+    <p>In a more specific sense,
+    the truth of any theory of parsing history depends
+    on its degree of success in explaining the facts.
+    This means that the truth of the "Timeline" depends on which facts
+    you require it to explain.
+    If arbitrary choices of facts to be covered are allowed,
+    the "Timeline" will certainly be seen to be false.
+    </p>But can the the "Timeline" be shown to be false
+    for criteria of success which are non-arbitrary?
+    In the next section, I will describe four non-arbitrary
+    criteria of success,
+    all of which are of practical interest,
+    and for all of which the "Timeline" is false.
     </p>
     <h2>The Forever Five</h2>
-    <p>
-    Above, Einstein told us that,
-    for a theory,
-    "success alone is the determining factor".
-      A historiography is better if it solves more problems than another.
-    </p>
-    <p>
-      But how do you measure success?
-      What problems need solving,
-      and what weight to give them,
-      varies from programmer to programmer,
-      and from time to time.
-    </p>
-    <p>This relies a lot on judgement,
+    <p>"Success" depends a lot on judgement,
     but my studies have led me to conclude that all but five algorithms
     are "unsuccessful" in the sense that,
-    for everything they do,
-    at least one other algorithm does it better.
-    This means there are five algorithms which do solve some problem
+    for everything that they do,
+    at least one other algorithm does it better in practice.
+    This means there are five algorithms which do solve
+    some practical problems
     better than any other algorithm,
-    including the other four.
+    including each of the other four.
     I call these the "forever five" because,
     if I am correct,
-    these algorithms will stay of practical interest forever.
+    these algorithms will be of permanent interest.
     </p>
     <p>
       My "Forever Five" are regular expressions, recursive descent, PEG, Earley/Leo and Sakai's
@@ -626,14 +613,18 @@ Holmes, Einstein and the Case of the Parsing Puzzle
       </footnote>
       Earley/Leo is the focus of my
       <cite>Timeline</cite>, so that an effective
-      critique could be a parsing historiography centering on any other of the other four.
+      critique of my "Timeline"
+      could be a parsing historiography centering on any other of the other four.
     </p>
     <p>For example, of the five, regular expressions are the most limited in parsing power.
-      On the other hand, of the next five parsing problems you encounter,
-      four are probably handled quite nicely by regular expressions.
+      On the other hand, most of the parsing problems you encounter in practice,
+      are handled quite nicely by regular expressions.<footnote>
+      A lot of this is because programmers learn to formulate problems in
+      ways which avoid complex parsing so that the alternatives are
+      using regular expressions or rationalizing away the
+      need for parsing.
+      </footnote>
       Good implementations of regular expressions are widely available.
-      Almost everything you want to know about a regular
-      expression is decidable in reasonable time.
       And, for speed, they are literally unbeatable -- if a parsing problem is a
       regular expression, no other algorithm will beat a dedicated regular expression
       engine for parsing it.
@@ -643,8 +634,8 @@ Holmes, Einstein and the Case of the Parsing Puzzle
       competitor be written which
       centered on regular expressions?
       Certainly.
-      And if immediate usefulness to the average programmer is the criteria
-      (and it's a very good one),
+      And if immediate usefulness to the average programmer is the criterion
+      (and it is a very good criterion),
       then the
       <cite>Regular Expressions Timeline</cite>
       would certainly give
@@ -661,40 +652,36 @@ Holmes, Einstein and the Case of the Parsing Puzzle
     </p>
     <p>Because there are at least some
       problems for which PEG is superior to everything else,
-      my own Earley/Leo approach not excepted.
+      my own Earley/Leo approach included.
       As one example, PEG,
-      sheared of the overpromising in its
-      writeups,
+      if its documentation and writeups were sheared of overpromises,
       could be an more powerful alternative to regular expressions.
     </p>
-    <h2>Questions</h2>
-    <p>
+    <p>That does not mean that I might not come back with
+    a counter-critique.
+    Among the questions that I might ask:
+    <ul>
+    <li>
       Is the PEG algorithm being proposed a future,
       or does it have an implementation?
-      Certainly, if necessary, alternatives may be proposed,
-      but is it clear which features belong to which
-      implementation or proposal?
-    </p>
-    <p>What claims of speed and time complexity are made?
+    </li>
+    <li>What claims of speed and time complexity are made?
       Is there a way of determining in advance of runtime how fast
       your algorithm will run?
       Or is the expectation of practical speed
       on an "implement and pray" basis?
-    </p>
-    <p>Does the proposed PEG algorithm match human parsing
+    </li>
+    <li>Does the proposed PEG algorithm match human parsing
       capabilities?
       If not, it is a claim for human exceptionalism,
       of a kind not usually accepted in modern computer science.
-      How is it justified in this case.
-    </p>
-    <p>If a combination of PEG algorithms is advanced as the
-      alternative to human parsing capabilities,
-      can the alternatives be unified in the way that humans
-      apparently are unifying the algorithms?
-    </p>
+      How is exceptionalism justified in this case?
+    </li>
+    </ul>
     <blockquote>
     The search for truth is more precious
     than its possession. -- Einstein, quoting Lessing<footnote>
+    "The Fundaments of Theoretical Physics", in
     <cite>Ideas and Opinions</cite>, p. 335.
     </footnote>
     </blockquote>
@@ -714,43 +701,6 @@ Holmes, Einstein and the Case of the Parsing Puzzle
       <a href="http://groups.google.com/group/marpa-parser">
         Marpa's Google group</a>,
       or on our IRC channel: #marpa at freenode.net.
-    </p>
-    <h2>[ QUARRY ]</h2>
-    <p>Like Einstein's book, however,
-      a timeline is history of science,
-      not science.
-      How does one "test" history of science?
-    </p>
-    <p>It is a myth, as we have seen,
-      that objectivity means taking the "view from nowhere".
-      "Objectivity" means that something is not just dependent on my
-      own viewpoint, but that it can be criticized from a shared
-      perspective.<footnote>
-        Readers concerned with these matters may note that I use
-        "objective" to mean "intersubjective".
-        This follows Popper and,
-        for the reader not concerned with technical philosophical points,
-        I think this is best.
-        For others, I, with Popper, regard the intersubjective is as close
-        to the objective as we are going to get, certainly in the "soft"
-        fields of study.
-        Whether this means that intersubjective and objective are in fact
-        the same thing takes us far away from computer science and
-        deep into metaphysics.
-      </footnote>
-    </p>
-    <p>
-      The "view from nowhere" is
-      <b>not</b>
-      objective,
-      because it is not free of a viewpoint --
-      it hides its viewpoint.
-      To the extent a viewpoint remains concealed, the reader
-      is hindered from critique the viewpoint or its results.
-      To the extent a reader is not free to accurately critique
-      something, it cannot be a shared "object" between author
-      and reader.
-      Objectivity requires viewpoint.
     </p>
     <comment>FOOTNOTES HERE</comment>
   </body>
