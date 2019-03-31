@@ -586,23 +586,33 @@ Holmes, Einstein and the Case of the Parsing Puzzle
       but I will focus on the choice of an algorithm to emphasize.
     </p>
     <h2>The Forever Five</h2>
-    <p>Recall<footnote>
-        Rejustify</footnote>
-      that the goal is problem-solving.
+    <p>
+    Above, Einstein told us that,
+    for a theory,
+    "success alone is the determining factor".
       A historiography is better if it solves more problems than another.
+    </p>
+    <p>
+      But how do you measure success?
       What problems need solving,
       and what weight to give them,
       varies from programmer to programmer,
       and from time to time.
-      This emphasis on "problems" is what makes computer science,
-      one of the "soft sciences",
-      albeit one which depends heavily on the hard sciences.
     </p>
-    <p>My studies have left me to conclude that believe that five algorithms
-      are of permanent significance,
-      in that there is a set of practical problems which each one solves in
-      a way that none of the other four can match.
-      The "Forever Five" are regular expressions, recursive descent, PEG, Earley/Leo and Sakai's
+    <p>This relies a lot on judgement,
+    but my studies have led me to conclude that all but five algorithms
+    are "unsuccessful" in the sense that,
+    for everything they do,
+    at least one other algorithm does it better.
+    This means there are five algorithms which do solve some problem
+    better than any other algorithm,
+    including the other four.
+    I call these the "forever five" because,
+    if I am correct,
+    these algorithms will stay of practical interest forever.
+    </p>
+    <p>
+      My "Forever Five" are regular expressions, recursive descent, PEG, Earley/Leo and Sakai's
       algorithm.<footnote>
         Three quibbles:
         Regular expressions do not find structure,
