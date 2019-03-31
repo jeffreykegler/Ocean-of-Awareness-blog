@@ -491,7 +491,7 @@ Holmes, Einstein and the Case of the Parsing Puzzle
       It was, in fact, essentially a history of
       the inspirations for my work in Earley/Leo parsing,
       and many events important in mainstream parsing
-      received little mention.
+      received little or no mention.
       That, even with such a non-traditional focus,
       my timeline was so popular
       was, I hope, to certain degree due to the merits of the 
@@ -501,26 +501,27 @@ Holmes, Einstein and the Case of the Parsing Puzzle
       out there for
       anything resembling a coherent account of parsing theory.
     </p>
-    <p>In response to the larger audience the
-      <cite>Timeline</cite>
-      attracted,
-      later versions broadened the focus considerably.
-      Many algorithms
-      received had received only glancing mention in the
-      <cite>Timeline</cite>,
-      because they had not been important in my work.
+    <p>The <cite>Timeline</cite> has never changed the center of
+    its focus.
+    But, in response to the larger audience it drew,
+      later versions of it broadened that focus considerably.
       <cite>Timeline 3.1</cite>
-      tries to include
-      all algorithms that have been important in mainstream parsing practice,
-      including some which had little or no influence on my work.
+      was broadened to give good coverage
+      of mainstream parsing practice,
+      including a lot of new material and original analysis.
+      This brought in lot of material on topics
+      which had little or no influence on my Earley/Leo work.
       The parsing of arithmetic expressions,
       for example,
       is trivial in the Earley/Leo context,
-      and so receives little mention in the original
-      <cite>Timeline</cite>.
+      and before my research for <cite>Timeline 3.0</cite>
+      I had devoted little attention to what I felt were
+      obviously inferior approaches.
       But arithmetic expressions are at the borderline of power
-      for traditional approaches,
-      and their parsing is a crucial motivation for the authors of these algorithms.
+      for traditional approaches
+      and parsing arithmetic expressions was a central motivation
+      for the authors of the algorithms that have so far
+      been most influential on mainstream parsing.
       So
       <cite>Timeline 3.1</cite>
       they became a recurring theme,
@@ -530,21 +531,27 @@ Holmes, Einstein and the Case of the Parsing Puzzle
       But the basic point of view taken by my
       <cite>Timeline</cite>
       has not wavered.
-      Emphases
-      include Chomskyan over non-Chomskyan parsing,
-      more general approaches over less general approaches,
-      linear and quasi-linear approaches over slower approaches,
-      non-statistical approaches over statistical approaches,
-      and programming applications over NLP applications.
-      For each and every one of these emphases,
-      there is serious work,
-      not just of historical interest,
-      but current,
-      that takes the opposite approach.
+      This is responsible for many choices of emphasis.
+      Chomskyan parsing is emphasized over non-Chomskyan parsing;
+      general approaches over less general approaches;
+      linear and quasi-linear approaches over slower approaches;
+      non-statistical approaches over statistical approaches;
+      programming applications over NLP applications;
+      etc., etc.. etc.
+      For each and every one of these choices of emphasis,
+      alternative choices have been the object of
+      serious work,
+      and usually this work is not just of historical interest,
+      but a currently active field of research.
+    </p>
+    <p>
+      Other of my choices are more than arguable.
       In emphasizing Earley parsing over its competitors,
-      my approach was and remains unusual.
-      In emphasizing the Leo lineage within Earley parsing,
-      my approach was for many years literally unique.
+      <cite>Timeline</cite> took an approach that was
+      and is highly unusual.
+      And, by emphasizing the Leo lineage within Earley parsing,
+      <cite>Timeline</cite> was taking a point of view that
+      was for many years literally unique.
     </p>
     <h2>Let's get practical</h2>
     <p>Let's see what the "objectivity" that I claim for my timeline means in
