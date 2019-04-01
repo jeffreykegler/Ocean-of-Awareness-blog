@@ -118,10 +118,11 @@ Sherlock Holmes and the Case of the Missing Parsing Solution
         Simon and Schuster, 2007, p. 3</footnote>
     </blockquote>
     <h2>The Sherlock Holmes approach</h2>
-    <p>I've written a timeline history of parsing theory
-      which, even though it is very technical,
-      is my most popular writing.
-      It is not without its critics.
+    <p>I have written
+    <a href="https://jeffreykegler.github.io/personal/timeline_v3">
+    timeline history of parsing theory</a>.
+      It is my most popular writing, but
+      it is not without its critics.
       Many of them accuse the timeline of lack of objectivity or of bias.
     </p>
     <p>
@@ -131,10 +132,10 @@ Sherlock Holmes and the Case of the Missing Parsing Solution
       I will follow Einstein's lead in starting there.
     </p>
     <p>
-      If you look at the deduction recorded in the Holmes' canon,
-      you see often involve
+      The deductions recorded in the Holmes' canon
+      often involve
       <b>a lot</b>
-      of theorizing, and more than a little outright speculation.
+      of theorizing.
       To make it a matter of significance what the dogs in "Silver Blaze" did in the night,
       Holmes needs a theory of canine behavior,
       and Holmes' theory sometimes outpaces its pack of facts by a considerable distance.
@@ -238,7 +239,7 @@ Sherlock Holmes and the Case of the Missing Parsing Solution
     Physical theories try to form a picture of reality
     and to establish its connection
     with the wide world of sense impressions.
-    Thus the only justification for our method structures
+    Thus the only justification for our mental structures
     is whether and in what way our theories form such
     a link. &mdash; Einstein and Infeld <footnote>
     Einstein and Infeld, p. 294.
@@ -447,7 +448,7 @@ Sherlock Holmes and the Case of the Missing Parsing Solution
     <h2>Choosing a "highway"</h2>
     In most of the above,
     Einstein is focusing on his work in a "hard" science: physics.
-    Are his methods relevant to "softer" fields of study.
+    Are his methods relevant to "softer" fields of study?
     Einstein thinks so:
     <blockquote>
       The whole of science is nothing
@@ -458,19 +459,16 @@ Sherlock Holmes and the Case of the Missing Parsing Solution
       specific field.
       He cannot proceed without considering critically
       a much more difficult problem,
-      the problem of analyzing the nature of everday
+      the problem of analyzing the nature of everyday
       thinking. &mdash; Einstein
       <footnote>
 	"Physics and Reality",
         <cite>Ideas and Opinions</cite>, p 290.
       </footnote>
     </blockquote>
-    And, in our particular case, a methodology for describing
-    the evolution of a field,
-    we are in luck.
-    Einstein's collaboration with Infeld in exactly that &mdash;
+    Einstein's collaboration with Infeld was, like the "Timeline",
     a description of the evolution of ideas,
-    and in it they describe their approach:
+    and in the Einstein&ndash;Infeld book they describe their approach:
     <blockquote>
       Through the maze of
       facts and concepts we had to choose some highway
@@ -491,7 +489,7 @@ Sherlock Holmes and the Case of the Missing Parsing Solution
     it exists, is not to be attained in the hard sciences,
     so it is not likely he thought that a historical
     account could outdo physics in this respect.
-    For Einstein,
+    For Einstein, as quoted above,
     "success alone is the determining factor".
     </p>
     <p>Success, of course, varies with what the audience
@@ -553,10 +551,10 @@ Sherlock Holmes and the Case of the Missing Parsing Solution
       and parsing arithmetic expressions was a central motivation
       for the authors of the algorithms that have so far
       been most influential on mainstream parsing.
-      So
+      So in
       <cite>Timeline 3.1</cite>
-      they became a recurring theme,
-      coming back for detailed examination time and time again.
+      arithmetic expresssions became a recurring theme,
+      being brought back for detailed examination time and time again.
     </p>
     <h2>Is the "Timeline" false?</h2>
     <p>
@@ -575,9 +573,9 @@ Sherlock Holmes and the Case of the Missing Parsing Solution
     on its degree of success in explaining the facts.
     This means that the truth of the "Timeline" depends on which facts
     you require it to explain.
-    If arbitrary choices of facts to be covered are allowed,
+    If arbitrary choices of facts to be explained are allowed,
     the "Timeline" will certainly be seen to be false.
-    </p>But can the the "Timeline" be shown to be false
+    </p>But can the "Timeline" be shown to be false
     for criteria of success which are non-arbitrary?
     In the next section, I will describe four non-arbitrary
     criteria of success,
@@ -590,7 +588,7 @@ Sherlock Holmes and the Case of the Missing Parsing Solution
     are "unsuccessful" in the sense that,
     for everything that they do,
     at least one other algorithm does it better in practice.
-    This means there are five algorithms which do solve
+    But this means there are five algorithms which <b>do</b> solve
     some practical problems
     better than any other algorithm,
     including each of the other four.
@@ -643,8 +641,9 @@ Sherlock Holmes and the Case of the Missing Parsing Solution
     </p>
     <h2>What about a PEG Timeline?</h2>
     <p>
-      The immediate impetus for this article was a very collegial inquiry
-      from someone whose main interest was PEG.
+      The immediate impetus for this article was
+      <a href="https://groups.google.com/d/msg/marpa-parser/8EEq92TjR4E/dIzCnsITBQAJ">a very collegial inquiry</a>
+      from Nicolas Laurent, a researcher whose main interest is PEG.
       Could a
       <cite>PEG Timeline</cite>
       challenge mine?
@@ -654,7 +653,6 @@ Sherlock Holmes and the Case of the Missing Parsing Solution
       problems for which PEG is superior to everything else,
       my own Earley/Leo approach included.
       As one example, PEG,
-      if its documentation and writeups were sheared of overpromises,
       could be an more powerful alternative to regular expressions.
     </p>
     <p>That does not mean that I might not come back with
