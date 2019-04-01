@@ -73,21 +73,19 @@ Sherlock Holmes and the Case of the Missing Parsing Solution
       It is always an advantage.
       Form no theories, just simply observe and draw inferences from your observations.
       &mdash;
-      <cite>
-        Sherlock Holmes, quoted in "The Adventure of the Cardboard Box"<cite>.
-        </cite></cite></blockquote>
+        Sherlock Holmes, quoted in "The Adventure of the Cardboard Box".
+        </blockquote>
     <blockquote>It is a capital mistake to theorize before one has data.
       &mdash;
-      <cite>
-        Holmes, in "A Scandal in Bohemia"</cite>.
+        Holmes, in "A Scandal in Bohemia".
     </blockquote>
     <blockquote>I make a point of never having any prejudices, and of following docilely wherever fact may lead me.
       &mdash;
-      Holmes, in <cite>"The Reigate Puzzle"</cite>.
+      Holmes, in "The Reigate Puzzle".
     </blockquote>
     <blockquote>When you have eliminated the impossible, whatever remains, no matter how improbable, must be the truth.
       &mdash;
-      Holmes, in <cite>"The Sign of Four"</cite>.
+      Holmes, in "The Sign of Four".
     </blockquote>
     <blockquote>
       In imagination there
@@ -111,17 +109,17 @@ Sherlock Holmes and the Case of the Missing Parsing Solution
       the endeavour of science to solve the mystery of the
       universe.
       &mdash;
-      <cite>Albert Einstein
-        and Leopold Infeld</cite>.<footnote>
+      Albert Einstein
+        and Leopold Infeld. <footnote>
       Einstein, Albert and Infeld, Leopold,
         <cite>The Evolution of Physics</cite>,
         Simon and Schuster, 2007, p. 3</footnote>
     </blockquote>
     <h2>The Sherlock Holmes approach</h2>
-    <p>I have written
+    <p>My
     <a href="https://jeffreykegler.github.io/personal/timeline_v3">
-    timeline history of parsing theory</a>.
-      It is my most popular writing, but
+    timeline history of parsing theory</a>
+      is my most popular writing, but
       it is not without its critics.
       Many of them accuse the timeline of lack of objectivity or of bias.
     </p>
@@ -535,7 +533,7 @@ Sherlock Holmes and the Case of the Missing Parsing Solution
     their focus.
       <cite>Timeline 3.1</cite>
       was broadened to give good coverage
-      of mainstream parsing practice,
+      of mainstream parsing practice
       including a lot of new material and original analysis.
       This brought in lot of material on topics
       which had little or no influence on my Earley/Leo work.
