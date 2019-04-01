@@ -34,6 +34,683 @@
   </p>
   </div>
   <div style="margin-left:190px;border-left:2px solid #38B0C0;padding:25px;">
+<h3>Sun, 31 Mar 2019</h3>
+<br />
+<center><a name="methodology"> <h2>Sherlock Holmes and the Case of the Missing Parsing Solution</h2> </a>
+</center>
+<html>
+  <head>
+  </head>
+  <body>
+    <!--
+      marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
+      -->
+    <blockquote>Always approach a case with an absolutely blank mind.
+      It is always an advantage.
+      Form no theories, just simply observe and draw inferences from your observations.
+      &mdash;
+      <cite>
+        Sherlock Holmes, quoted in "The Adventure of the Cardboard Box"<cite>.
+        </cite></cite></blockquote>
+    <blockquote>It is a capital mistake to theorize before one has data.
+      &mdash;
+      <cite>
+        Holmes, in "A Scandal in Bohemia"</cite>.
+    </blockquote>
+    <blockquote>I make a point of never having any prejudices, and of following docilely wherever fact may lead me.
+      &mdash;
+      Holmes, in <cite>"The Reigate Puzzle"</cite>.
+    </blockquote>
+    <blockquote>When you have eliminated the impossible, whatever remains, no matter how improbable, must be the truth.
+      &mdash;
+      Holmes, in <cite>"The Sign of Four"</cite>.
+    </blockquote>
+    <blockquote>
+      In imagination there
+      exists the perfect
+      mystery story.
+      Such a story presents
+      the essential clues, and compels us to form our own
+      theory of the case.
+      If we
+      follow the plot carefully, we arrive at the complete
+      solution for ourselves just before the author's disclosure
+      at the end of the book. The solution itself, contrary to
+      those of inferior mysteries, does not disappoint us;
+      moreover, it appears at the very moment we expect it.
+      Can we liken the reader of such a book to the scientists,
+      who throughout successive generations continue to seek
+      solutions of the mysteries in the book of nature? The
+      comparison is false and will have to be abandoned later,
+      but it has a modicum of justification which may be
+      extended and modified to make it more appropriate to
+      the endeavour of science to solve the mystery of the
+      universe.
+      &mdash;
+      <cite>Albert Einstein
+        and Leopold Infeld</cite>.<a id="footnote-1-ref" href="#footnote-1">[1]</a>
+    </blockquote>
+    <h2>The Sherlock Holmes approach</h2>
+    <p>I have written
+    <a href="https://jeffreykegler.github.io/personal/timeline_v3">
+    timeline history of parsing theory</a>.
+      It is my most popular writing, but
+      it is not without its critics.
+      Many of them accuse the timeline of lack of objectivity or of bias.
+    </p>
+    <p>
+      Einstein assumed his reader's idea of methods of proper investigation,
+      in science as elsewhere,
+      would be similar to those Conan Doyle's Sherlock Holmes.
+      I will follow Einstein's lead in starting there.
+    </p>
+    <p>
+      The deductions recorded in the Holmes' canon
+      often involve
+      <b>a lot</b>
+      of theorizing.
+      To make it a matter of significance what the dogs in "Silver Blaze" did in the night,
+      Holmes needs a theory of canine behavior,
+      and Holmes' theory sometimes outpaces its pack of facts by a considerable distance.
+      Is it really true that only dangerous people own
+      dangerous dogs?<a id="footnote-2-ref" href="#footnote-2">[2]</a>
+    </p>
+    <p>
+      Holmes's methods, at least as stated in the Conan Doyle stories,
+      are incapable of solving anything
+      but the fictional problems he encounters.
+      In real life, a "blank mind" can observe nothing.
+      There is no "data" without theory, just white noise.
+      Every "fact" gathered relies on many prejudgements about what is
+      relevant and what is not.
+      And you certainly cannot characterize anything as "impossible",
+      unless you have, in advance, a theory about what is possible.
+    </p>
+    <h2>The Einstein approach</h2>
+    <p>Einstein, in his popular account
+    of the evolution of physics,
+      finds the Doyle stories "admirable"<a id="footnote-3-ref" href="#footnote-3">[3]</a>.
+      But to solve real-life mysteries, more is needed.
+      Einstein begins his description of his methods at the start
+      of his Chapter II:
+    </p><blockquote>
+      The following pages contain a dull report of
+      some very simple experiments.
+      The account will be boring
+      not only because the description of experiments is uninteresting
+      in comparison with their actual performance,
+      but also because the meaning of the experiments does
+      not become apparent until theory makes it so. Our
+      purpose is to furnish a striking example of the role of
+      theory in physics.
+      <a id="footnote-4-ref" href="#footnote-4">[4]</a>
+    </blockquote>
+    <p>Einstein follows with a series of the kind of experiments
+      that are performed in high school physics classes.
+      One might imagine these experiments allowing an observer
+      to deduce the basics of electromagnetism
+      using materials and techniques available for centuries.
+    </p>
+    <p>But, and this is Einstein's point,
+      this is not how it happened.
+      The theory came
+      <b>first</b>,
+      and the experiments were devised afterwards.
+    </p>
+    <blockquote>
+      In the first pages
+      of our book we compared the role
+      of an investigator
+      to that of a detective who, after
+      gathering the requisite facts, finds the right solution
+      by pure thinking. In one essential this comparison must
+      be regarded as highly superficial. Both in life and in
+      detective novels the crime is given. The detective must
+      look for letters, fingerprints, bullets, guns, but at least
+      he knows that a murder has been committed. This is
+      not so for a scientist. It should not be difficult to
+      imagine someone who knows absolutely nothing about
+      electricity, since all the ancients lived happily enough
+      without any knowledge of it. Let this man be given
+      metal, gold foil, bottles, hard-rubber rod, flannel, in
+      short, all the material required for performing our
+      three experiments. He may be a very
+      cultured person,
+      but he will probably put wine into the bottles, use the
+      flannel for cleaning, and never once entertain the idea
+      of doing the things we have described.
+      For the detective
+      the crime is given, the problem formulated: who
+      killed Cock Robin?
+      The scientist must, at least in part,
+      commit his own crime, as well as carry out the investigation.
+      Moreover, his task is not to explain just one
+      case, but all phenomena which have happened
+      or may
+      still happen. &mdash; Einstein and Infeld <a id="footnote-5-ref" href="#footnote-5">[5]</a>
+    </blockquote>
+    <h2>Commiting our own crime</h2>
+    <p>If then,
+      we must commit the crime of theorizing before the facts,
+      where does out theory come from?
+    </p>
+    <blockquote>
+    Science is not just a collection of laws,
+    a catalogue of unrelated facts.
+    It is a creation of the human mind,
+    with its freely invented ideas and concepts.
+    Physical theories try to form a picture of reality
+    and to establish its connection
+    with the wide world of sense impressions.
+    Thus the only justification for our mental structures
+    is whether and in what way our theories form such
+    a link. &mdash; Einstein and Infeld <a id="footnote-6-ref" href="#footnote-6">[6]</a>
+    </blockquote>
+    <blockquote>
+      In the case of planets moving around the sun
+      it is found that the system of mechanics works
+      splendidly.
+      Nevertheless we can well imagine that another system,
+      based on different assumptions,
+      might work just as well.
+      <br>
+      Physical concepts are free creations
+      of the human mind, and are not,
+      however, it may seem,
+      uniquely determined by the external world.
+      In our endeavor to understand reality
+      we are somewhat like a man trying
+      to understand the mechanism of a closed watch.
+      He sees the face and the moving hands,
+      even hears its ticking,
+      but he has no way of opening the case.
+      If he is ingenious
+      he may form some picture of a mechanism
+      which could be responsible
+      for all the things he observes,
+      but he may never be quite sure
+      his picture is the only one
+      which could explain his observations.
+      He will never be able
+      to compare his picture with the real mechanism
+      and he cannot even imagine the possibility
+      or the meaning of such a comparison.
+      But he certainly believes that,
+      as his knowledge increases,
+      his picture of reality will become
+      simpler and simpler
+      and will explain a wider and wider range
+      of his sensuous impressions.
+      He may also be believe in the existence
+      of the ideal limit of knowledge
+      and that it is approached
+      by the human mind.
+      He may call this ideal limit
+      the objective truth. -- Einstein and Infeld <a id="footnote-7-ref" href="#footnote-7">[7]</a>
+    </blockquote>
+    <p>It may sound as if Einstein believed that the soundness of
+    our theories is a matter of faith.
+    In fact, Einstein was quite comfortable with putting it
+    exactly that way:
+    <blockquote>However, it must be admitted
+    that our knowledge of these laws is only imperfect
+    and fragmentary, so that,
+    actually the belief
+    in the existence of basic all-embracing laws
+    in Nature also rests on a sort of faith.
+    All the same this faith has been largely
+    justified so far by the success of
+    scientific research. &mdash; Einstein <a id="footnote-8-ref" href="#footnote-8">[8]</a>
+    </blockquote>
+    <blockquote>
+    I believe that every true theorist
+    is a kind of tamed metaphysicist,
+    no matter how pure a "positivist" he may
+    fancy himself.
+    The metaphysicist believes that the logically
+    simple is also the real.
+    The tamed metaphysicist believes
+    that not all that is logically simple
+    is embodied in experienced reality,
+    but that the totality of all sensory experience
+    can be "comprehended" on the basis of a
+    conceptual system built on premises of great
+    simplicity.
+    The skeptic will say this is a "miracle creed."
+    Admittedly so, but it is a miracle creed
+    which has been borne out to an amazing extent by
+    the development of science. &mdash; Einstein <a id="footnote-9-ref" href="#footnote-9">[9]</a>
+    </blockquote>
+    <blockquote>
+    The liberty of choice, however,
+    is of a special kind;
+    it is not in any way similar to the liberty of a
+    writer of fiction.
+    Rather, it is similar to that of a man engaged
+    in solving a well-designed puzzle.
+    He may, it is true, propose
+    any word as the solution;
+    but, there is only <i>one</i>
+    word which really solves the puzzle in all its
+    parts.
+    It is a matter of faith that nature
+    &mdash;
+    as she is perceptible to our five senses
+    &mdash;
+    takes the character of such a
+    well-formulated puzzle.
+    The successes reaped up to now
+    by science do,
+    it is true,
+    give a certain encouragement for this faith. --
+    Einstein <a id="footnote-10-ref" href="#footnote-10">[10]</a>
+    </blockquote>
+    <p>The puzzle metaphor of the last quote is revealing.
+    Einstein believes there is a single truth,
+    but that we will never know what it is &mdash;
+    even its existence can only be taken as a matter of faith.
+    Existence is a crossword puzzle whose answer we will never
+    know.
+    Even the existence of an answer must be taken as
+    a matter of faith.
+    </p>
+    <blockquote>
+    The very fact that the totality of our sense experience
+    is such that by means of thinking
+    (operations with concepts,
+    and the creation and use of definite functional relations
+    between them,
+    and the coordination of sense experiences to these concepts)
+    it can be put in order,
+    this fact is one which leaves us in awe,
+    but which we shall never understand.
+    One may say that
+    "the eternal mystery of the world
+    is its comprehensibility". &mdash; Einstein <a id="footnote-11-ref" href="#footnote-11">[11]</a>
+    </blockquote>
+    <blockquote>
+    In my opinion,
+    nothing can be said <i>a priori</i>
+    concerning the manner in which the concepts
+    are to be formed and connected,
+    and how we are to coordinate them to sense experiences.
+    In guiding us in the creation of such an order
+    of sense experiences,
+    success alone is the determining factor.
+    All that is necessary is to fix a set of rules,
+    since without such rules the acquisition
+    of knowledge in the desired sense would be impossible.
+    One may compare these rules with the rules of a game
+    in which,
+    while the rules themselves are arbitrary,
+    it is their rigidity alone which
+    makes the game possible.
+    However, the fixation will never be final.
+    It will have validity only for a special field
+    of application. &mdash; Einstein <a id="footnote-12-ref" href="#footnote-12">[12]</a>
+    </blockquote>
+    <blockquote>
+    There are no eternal theories in science.
+    It always happens that some of the facts
+    predicted by a theory
+    are disproved by experiment.
+    Every theory has its period of
+    gradual development and triumph,
+    after which it may experience a
+    rapid decline. &mdash; Einstein and Infeld
+    <a id="footnote-13-ref" href="#footnote-13">[13]</a>
+    </blockquote>
+    </p>
+    <blockquote>
+    In our great mystery story there are no problems
+    wholly solved and settled for all time. &mdash; Einstein and Infeld
+    <a id="footnote-14-ref" href="#footnote-14">[14]</a>
+    </blockquote>
+    <blockquote>
+      This great mystery story
+      is still
+      unsolved.
+      We
+      cannot
+      even be sure that it has a final solution. &mdash;
+      Einstein and Infeld <a id="footnote-15-ref" href="#footnote-15">[15]</a>
+    </blockquote>
+    <h2>Choosing a "highway"</h2>
+    In most of the above,
+    Einstein is focusing on his work in a "hard" science: physics.
+    Are his methods relevant to "softer" fields of study?
+    Einstein thinks so:
+    <blockquote>
+      The whole of science is nothing
+      more than a refinement of everyday thinking.
+      It is for this reason that the critical thinking
+      of the physicist cannot possibly be restricted to
+      the examination of the concepts of his own
+      specific field.
+      He cannot proceed without considering critically
+      a much more difficult problem,
+      the problem of analyzing the nature of everyday
+      thinking. &mdash; Einstein
+      <a id="footnote-16-ref" href="#footnote-16">[16]</a>
+    </blockquote>
+    Einstein's collaboration with Infeld was, like the "Timeline",
+    a description of the evolution of ideas,
+    and in the Einstein&ndash;Infeld book they describe their approach:
+    <blockquote>
+      Through the maze of
+      facts and concepts we had to choose some highway
+      which seemed to us most characteristic and significant.
+      Facts and theories not reached by this road had to be
+      omitted. We were forced, by our general aim, to make
+      a definite choice of facts and ideas. The importance of a
+      problem should not be judged by the number of pages
+      devoted to it. Some essential lines of thought have been
+      left out, not because they seemed to us unimportant,
+      but because they do not lie along the road we have
+      chosen. &mdash; Einstein and Infeld <a id="footnote-17-ref" href="#footnote-17">[17]</a>
+    </blockquote>
+    <h2>Truth and success</h2>
+    <p>Einstein says that objective truth, while
+    it exists, is not to be attained in the hard sciences,
+    so it is not likely he thought that a historical
+    account could outdo physics in this respect.
+    For Einstein, as quoted above,
+    "success alone is the determining factor".
+    </p>
+    <p>Success, of course, varies with what the audience
+    for a theory wants.
+    In a very real sense,
+    I consider a theory that can predict the
+    stock market more successful than
+    one which can predict perturbations of planetary orbits
+    invisible to the naked eye.
+    But this is not a reasonable expectation when applied
+    to the theory of general relativity.
+    </p>
+    Among the expectations reasonable for a timeline of parsing
+    might be these:
+    <ul>
+    <li>It helps choose the right parsing algoithm for practical
+    applications.
+    <li>It helps a reader to understand articles in the
+    the literature of parsing.
+    <li>It helps guide future research.
+    <li>It predicts the outcome of future research.
+    </ul>
+    </p>When I wrote the first version of <cite>Timeline</cite>,
+    its goal was none of these.
+    Instead I intended it to explain the sources behind my own
+    research in the Earley/Leo lineage.
+    </p>
+    <p>
+    With such a criteria of "success",
+    I wondered if <cite>Timeline</cite> would have an audience
+    much larger than one,
+    and was quite surprised when it started getting thousands of
+    web hits a day.
+      The large audience <cite>Timeline 1.0</cite> drew
+      was a sign that there is an large appetite
+      out there for
+      accounts of parsing theory,
+      an appetite so strong that anything resembling
+      a coherent account
+      was quickly devoured.
+    <p>In response to the unexpectedly large audience,
+    later versions of the <cite>Timeline</cite> widened
+    their focus.
+      <cite>Timeline 3.1</cite>
+      was broadened to give good coverage
+      of mainstream parsing practice,
+      including a lot of new material and original analysis.
+      This brought in lot of material on topics
+      which had little or no influence on my Earley/Leo work.
+      The parsing of arithmetic expressions,
+      for example,
+      is trivial in the Earley/Leo context,
+      and before my research for <cite>Timeline 3.0</cite>
+      I had devoted little attention to
+      approaches that I felt amounted to
+      needlessly doing things the hard way.
+      But arithmetic expressions are at the borderline of power
+      for traditional approaches
+      and parsing arithmetic expressions was a central motivation
+      for the authors of the algorithms that have so far
+      been most influential on mainstream parsing.
+      So in
+      <cite>Timeline 3.1</cite>
+      arithmetic expresssions became a recurring theme,
+      being brought back for detailed examination time and time again.
+    </p>
+    <h2>Is the "Timeline" false?</h2>
+    <p>
+      Is the "Timeline" false?
+      The answer is yes, in three increasingly practical senses.
+    </p>
+    <p>As Einstein makes clear,
+    every theory that is about reality,
+    will eventually proved be false.
+    The best a theory can hope for is the fate of
+    Newton's physics &mdash;
+    to be shown to be a subcase of a larger theory.
+    </p>
+    <p>In a more specific sense,
+    the truth of any theory of parsing history depends
+    on its degree of success in explaining the facts.
+    This means that the truth of the "Timeline" depends on which facts
+    you require it to explain.
+    If arbitrary choices of facts to be explained are allowed,
+    the "Timeline" will certainly be seen to be false.
+    </p>But can the "Timeline" be shown to be false
+    for criteria of success which are non-arbitrary?
+    In the next section, I will describe four non-arbitrary
+    criteria of success,
+    all of which are of practical interest,
+    and for all of which the "Timeline" is false.
+    </p>
+    <h2>The Forever Five</h2>
+    <p>"Success" depends a lot on judgement,
+    but my studies have led me to conclude that all but five algorithms
+    are "unsuccessful" in the sense that,
+    for everything that they do,
+    at least one other algorithm does it better in practice.
+    But this means there are five algorithms which <b>do</b> solve
+    some practical problems
+    better than any other algorithm,
+    including each of the other four.
+    I call these the "forever five" because,
+    if I am correct,
+    these algorithms will be of permanent interest.
+    </p>
+    <p>
+      My "Forever Five" are regular expressions, recursive descent, PEG, Earley/Leo and Sakai's
+      algorithm.<a id="footnote-18-ref" href="#footnote-18">[18]</a>
+      Earley/Leo is the focus of my
+      <cite>Timeline</cite>, so that an effective
+      critique of my "Timeline"
+      could be a parsing historiography centering on any other of the other four.
+    </p>
+    <p>For example, of the five, regular expressions are the most limited in parsing power.
+      On the other hand, most of the parsing problems you encounter in practice,
+      are handled quite nicely by regular expressions.<a id="footnote-19-ref" href="#footnote-19">[19]</a>
+      Good implementations of regular expressions are widely available.
+      And, for speed, they are literally unbeatable -- if a parsing problem is a
+      regular expression, no other algorithm will beat a dedicated regular expression
+      engine for parsing it.
+    </p>
+    <p>Could a
+      <cite>Timeline</cite>
+      competitor be written which
+      centered on regular expressions?
+      Certainly.
+      And if immediate usefulness to the average programmer is the criterion
+      (and it is a very good criterion),
+      then the
+      <cite>Regular Expressions Timeline</cite>
+      would certainly give
+      my timeline a run for the money.
+    </p>
+    <h2>What about a PEG Timeline?</h2>
+    <p>
+      The immediate impetus for this article was
+      <a href="https://groups.google.com/d/msg/marpa-parser/8EEq92TjR4E/dIzCnsITBQAJ">a very collegial inquiry</a>
+      from Nicolas Laurent, a researcher whose main interest is PEG.
+      Could a
+      <cite>PEG Timeline</cite>
+      challenge mine?
+      Again, very certainly.
+    </p>
+    <p>Because there are at least some
+      problems for which PEG is superior to everything else,
+      my own Earley/Leo approach included.
+      As one example, PEG,
+      could be an more powerful alternative to regular expressions.
+    </p>
+    <p>That does not mean that I might not come back with
+    a counter-critique.
+    Among the questions that I might ask:
+    <ul>
+    <li>
+      Is the PEG algorithm being proposed a future,
+      or does it have an implementation?
+    </li>
+    <li>What claims of speed and time complexity are made?
+      Is there a way of determining in advance of runtime how fast
+      your algorithm will run?
+      Or is the expectation of practical speed
+      on an "implement and pray" basis?
+    </li>
+    <li>Does the proposed PEG algorithm match human parsing
+      capabilities?
+      If not, it is a claim for human exceptionalism,
+      of a kind not usually accepted in modern computer science.
+      How is exceptionalism justified in this case?
+    </li>
+    </ul>
+    <blockquote>
+    The search for truth is more precious
+    than its possession. -- Einstein, quoting Lessing<a id="footnote-20-ref" href="#footnote-20">[20]</a>
+    </blockquote>
+    <h2>Comments, etc.</h2>
+    <p>
+      The background material for this post is in my
+      <a href="https://jeffreykegler.github.io/personal/timeline_v3">
+        Parsing: a timeline 3.0</a>,
+      and this post may be considered a supplement to "Timelime".
+      To learn about Marpa,
+      my Earley/Leo-based parsing project,
+      there is the
+      <a href="http://savage.net.au/Marpa.html">semi-official web site, maintained by Ron Savage</a>.
+      The official, but more limited, Marpa website
+      <a href="http://jeffreykegler.github.io/Marpa-web-site/">is my personal one</a>.
+      Comments on this post can be made in
+      <a href="http://groups.google.com/group/marpa-parser">
+        Marpa's Google group</a>,
+      or on our IRC channel: #marpa at freenode.net.
+    </p>
+    <h2>Footnotes</h2>
+<p id="footnote-1"><b>1.</b>
+      Einstein, Albert and Infeld, Leopold,
+        <cite>The Evolution of Physics</cite>,
+        Simon and Schuster, 2007, p. 3
+ <a href="#footnote-1-ref">&#8617;</a></p>
+<p id="footnote-2"><b>2.</b>
+        "A dog reflects the family life.
+        Whoever saw a frisky dog in a gloomy family, or a sad dog in a happy one?
+        Snarling people have snarling dogs, dangerous people have dangerous ones."
+        From "The Adventure of the Creeping Man".
+ <a href="#footnote-2-ref">&#8617;</a></p>
+<p id="footnote-3"><b>3.</b>
+      Einstein and Infeld, p. 4.
+ <a href="#footnote-3-ref">&#8617;</a></p>
+<p id="footnote-4"><b>4.</b>
+      Einstein and Infeld, p. 71.
+ <a href="#footnote-4-ref">&#8617;</a></p>
+<p id="footnote-5"><b>5.</b>
+        Einstein and Infeld, p 78.
+ <a href="#footnote-5-ref">&#8617;</a></p>
+<p id="footnote-6"><b>6.</b>
+    Einstein and Infeld, p. 294.
+ <a href="#footnote-6-ref">&#8617;</a></p>
+<p id="footnote-7"><b>7.</b>
+      Einstein and Infeld, p. 31.
+        See also Einstein,
+	"On the Method of Theoretical Physics",
+        <cite>Ideas and Opinions</cite>,
+	Wings Books, New York,
+	no publication date, p. 272.
+ <a href="#footnote-7-ref">&#8617;</a></p>
+<p id="footnote-8"><b>8.</b>
+    Dukas and Hoffman,
+    <cite>Albert Einstein: The Human Side</cite>,
+    Princeton University Press, 2013,
+    pp 32-33.
+ <a href="#footnote-8-ref">&#8617;</a></p>
+<p id="footnote-9"><b>9.</b>
+    "On the Generalized Theory of Gravitation", in
+    <cite>Ideas and Opinions</cite>, p 342.
+ <a href="#footnote-9-ref">&#8617;</a></p>
+<p id="footnote-10"><b>10.</b>
+    "Physics and Reality", in
+    <cite>Ideas and Opinions</cite>, pp. 294-295.
+ <a href="#footnote-10-ref">&#8617;</a></p>
+<p id="footnote-11"><b>11.</b>
+    "Physics and Reality", in
+    <cite>Ideas and Opinions</cite>,
+    p. 292.
+ <a href="#footnote-11-ref">&#8617;</a></p>
+<p id="footnote-12"><b>12.</b>
+    "Physics and Reality", in
+    <cite>Ideas and Opinions</cite>,
+    p. 292.
+ <a href="#footnote-12-ref">&#8617;</a></p>
+<p id="footnote-13"><b>13.</b>
+    Einstein and Infeld, p. 75.
+ <a href="#footnote-13-ref">&#8617;</a></p>
+<p id="footnote-14"><b>14.</b>
+    Einstein and Infeld, p. 35.
+ <a href="#footnote-14-ref">&#8617;</a></p>
+<p id="footnote-15"><b>15.</b>
+      Einstein and Infeld, pp. 7-8
+ <a href="#footnote-15-ref">&#8617;</a></p>
+<p id="footnote-16"><b>16.</b>
+	"Physics and Reality",
+        <cite>Ideas and Opinions</cite>, p 290.
+ <a href="#footnote-16-ref">&#8617;</a></p>
+<p id="footnote-17"><b>17.</b>
+        Einstein and Infeld, p. 78.
+ <a href="#footnote-17-ref">&#8617;</a></p>
+<p id="footnote-18"><b>18.</b>
+        Three quibbles:
+        Regular expressions do not find structure,
+        so pedantically they are recognizers,
+        not parsers.
+        Recursive descent is technique for creating a family of algorithms,
+        not an algorithm.
+        The algorithm first described by Sakai is more commonly
+        called CYK, from the initials of three other researchers who re-discovered
+        it over the years.
+ <a href="#footnote-18-ref">&#8617;</a></p>
+<p id="footnote-19"><b>19.</b>
+      A lot of this is because programmers learn to formulate problems in
+      ways which avoid complex parsing so that the alternatives are
+      using regular expressions or rationalizing away the
+      need for parsing.
+ <a href="#footnote-19-ref">&#8617;</a></p>
+<p id="footnote-20"><b>20.</b>
+    "The Fundaments of Theoretical Physics", in
+    <cite>Ideas and Opinions</cite>, p. 335.
+ <a href="#footnote-20-ref">&#8617;</a></p>
+  </body>
+</html>
+<br />
+<p>posted at: 21:31 |
+<a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2019/03/methodology.html">direct link to this entry</a>
+</p>
+<div style="color:#38B0C0;padding:1px;text-align:center;">
+&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&sect;
+</div>
 <h3>Sun, 14 Oct 2018</h3>
 <br />
 <center><a name="timeline_3_1"> <h2>Parsing Timeline 3.1</h2> </a>
@@ -1540,675 +2217,6 @@ The link is to the 19 June 2013 revision of the 2012 original.
 <br />
 <p>posted at: 10:24 |
 <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2018/05/combinator2.html">direct link to this entry</a>
-</p>
-<div style="color:#38B0C0;padding:1px;text-align:center;">
-&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-&sect;
-</div>
-<h3>Sun, 08 Jul 2018</h3>
-<br />
-<center><a name="knuth_1965_2"> <h2>Undershoot: Parsing theory in 1965</h2> </a>
-</center>
-<html>
-  <head>
-  </head>
-  <body style="max-width:850px">
-    <!--
-      marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
-      -->
-    <blockquote>The difference between theory and practice is
-      that in theory there is no difference between
-      theory and practice,
-      but in practice, there is.<a id="footnote-1-ref" href="#footnote-1">[1]</a>
-    </blockquote>
-    <p>
-      Once it was taken seriously that humans might have the power to, for
-      example, "read" a chessboard in a way that computers could not beat.
-      This kind of "computational mysticism" has taken a beating.
-      But it survives in one last stronghold -- parsing theory.
-    </p><p>
-      In
-      <a href="http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2018/05/knuth_1965.html">
-        a previous post</a>,
-      I asked "Why is parsing considered solved?"
-      If the state of the art of computer parsing is taken as anything close to its ultimate solution,
-      then it is a case of "human exceptionalism" --
-      the human brain has some
-      power that makes it much better at parsing than computers can be.
-      It is very unlikely resorting to human exceptionalism as an explanation
-      would be accepted
-      for any other problem in computer science.
-      Why is it accepted for parsing theory?<a id="footnote-2-ref" href="#footnote-2">[2]</a>
-    </p>
-    <p>
-      The question really requires two separate answers:
-    </p><ul>
-      <li>"Why do practitioners accept the current state of the art as the solution?" and
-      </li><li>"Why do the theoreticians accept the current state of the art as the solution?"
-      </li></ul>
-    <p>
-    </p><p>In one sense, the answer to both questions is the same --
-      because of the consensus created by Knuth's 1965 paper
-      "On the translation of languages from left to right".
-      In
-      <a href="http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2018/05/knuth_1965.html">a previous post</a>,
-      I looked at Knuth 1965
-      and I answered the practitioner question in detail.
-      But, for the sake of brevity,
-      I answered the question about the theoreticians in outline.
-      This post expands on that outline.
-    </p>
-    <h2>The Practitioners</h2>
-    <p>
-      To summarize, in 1965,
-      <b>practitioners</b>
-      accepted the parsing problem as solved
-      for the following reasons.
-    </p>
-    <ul>
-      <li>In 1965, every practical parser was stack-driven.</li>
-      <li>As of 1965, stacks themselves were quite leading edge.
-        As recently as 1961,
-        a leading edge article<a id="footnote-3-ref" href="#footnote-3">[3]</a>
-        could not assume that its readers knew what "pop" and "push" operations
-        were.
-      </li>
-      <li>An algorithm that combined state transitions and stack operations was
-        already a challenge to existing machines.
-        In 1965, any more complicated algorithm was likely to be unuseable
-        in practice.
-      </li>
-      <li>Last, but not least, the theoreticians assured the
-        practitioners that
-        <tt>LR</tt>-parsing was either state-of-the-art
-        or beyond,
-        so making more agressive use of hardware
-        would be futile.
-      </li>
-    </ul>
-    <h2>What about the theorists?</h2>
-    <p>The practitioners of 1965, then,
-      were quite reasonable in feeling that
-      <tt>LR</tt>-parsing was as good as anything they were likely to be able
-      to implement any time soon.
-      And they were being told by the theorists that,
-      in fact,
-      it never would get any better --
-      there were theoretical limits on parsers that faster
-      hardware could not overcome.
-    </p>
-    <p>We now know that the theorists were wrong --
-      there are non-<tt>LR</tt>
-      parsers which are better than the
-      <tt>LR</tt>
-      parsers are at
-      <tt>LR</tt>
-      grammars.
-      What made the theorists go astray?
-    </p>
-    <h2>How theorists work</h2>
-    <p>As the epigraph for this post reminds us,
-      theorists who hope to guide practitioners have to confront a big problem --
-      theory is practice only in theory.
-      Theoreticians
-      (or at least the better ones, like Knuth)
-      know this,
-      but they try to make theory as reliable a guide to
-      practice as possible.
-    </p>
-    <p>One of the most important examples of the theoretician's successes
-      is asymptotic notation, which we owe to Knuth<a id="footnote-4-ref" href="#footnote-4">[4]</a>.
-      Asymptotic notation is
-      more commonly referred to as big-O notation.
-      The term "asymptotic notation"
-      emphasizes its most dangerous aspect
-      from a practical point of view:
-      Asymptotic notation assumes
-      that the behavior of most interest
-      is the behavior for arbitrarily large inputs.
-    </p>
-    <p>
-      Practical inputs can be very large but,
-      by definition,
-      they are never arbitrarily large.
-      Results in asymptotic terms
-      might be what is called "galactic" --
-      they might have
-      relevance only in situations which cannot possibly occur in practice.
-    </p>
-    <p>
-      Fortunately for computer science,
-      asymptotic results usually are
-      not "galactic".
-      Most often asymptotic results are not only
-      relevant to practice --
-      they are extremely relevant.
-      Wikipedia pages for algorithms put
-      the asymptotic complexities in special displays,
-      and these displays are one of the first
-      things that some practitioners look at.
-    </p>
-    <h2>Bracketing</h2>
-    <p>Since coming up with a theoretical model that is equivalent
-      to "practical" is impossible,
-      theoreticians often work like artillerists.
-      Artillerists often deliberately overshoot and undershoot,
-      before they "fire for effect".
-      "Bracketing" their target in this way has disadvantages --
-      it reduces the element of surprise,
-      and can even allow the enemy to get their counter-fire in first.
-      But, nasty as these consequences could be,
-      the advantage in accuracy is usually held to outweigh them.
-    </p>
-    <p>The practice of theoretical computer science is
-      less risky,
-      which makes "bracketing" a very attractive approach to
-      tricky problems.
-      Theoreticians often
-      try to "bracket" practice between an "undershoot"
-      and an "overshoot".
-      The undershoots are models simple and efficient enough to be practical,
-      but too weak to capture all the needs of practice.
-      The overshoots are models which capture everything
-      a practitioner needs,
-      but which are too complicated and/or too resource-intensive
-      for practice.
-    </p><p>The P vs. NP problem is an active example of a bracketing technique.
-      You will sometimes read that
-      the P/NP boundary is expected to be
-      that between practical and impractical,
-      but this is an extreme simplification.
-      P includes complexities like
-      <tt>O(n^1000000)</tt>,
-      where the complexity for even
-      <tt>n == 2</tt>
-      is
-      a nunber which, in decimal form,
-      fills many pages.
-      Modulo bold advances in quantum computing,
-      I cannot imagine that
-      <tt>O(n^1000000)</tt>
-      will ever be
-      practical.
-      And you can make the complexities much harder
-      than
-      <tt>O(n^1000000)</tt>
-      without ever reaching P-hard.
-    </p>
-    <p>
-      So P-hard is beyond any reasonable definition of "practical" --
-      it is an "overshoot".
-      But the P vs. NP question is almost certainly very relevant to what is "practical".
-      Resolving the P vs. NP question is likely
-      to be an important or even necessary step.
-      It is a mystery that such a seemingly obvious
-      question has resisted the best efforts of the theoreticians
-      for so long,
-      and the solution of P vs. NP is likely
-      to bring
-      new insights
-      into asymptotic complexity.
-    </p>
-    <h2>Bracketing practical parsing</h2>
-    <p>When Knuth published his 1965,
-      "practical parsing" was already bracketed.
-      On the overshoot side, Irons had already published a parser for
-      context-free grammars.
-      Worst case, this ran in exponential time,
-      and it was, and remains, expected that general context-free parsing
-      was not going to be practical.<a id="footnote-5-ref" href="#footnote-5">[5]</a>
-    </p>
-    <p>On the undershoot side,
-      there were regular expressions and recursive descent.
-      Regular expressions are fast and very practical,
-      but parse a very limited set of grammars.
-      Recursive descent is also fast and,
-      since it parses a larger set of grammars,
-      was the closest undershoot.
-    </p>
-    <h2>Mistake 1: The misdefinition of "language"</h2>
-    <p>To curry respect from the behaviourists,
-      American linguistics for many years banned any reference
-      to meaning.
-      Behaviorists looked down on
-      hypothesized mental states as not worthy of "science",
-      and it's hard to have a theory of meaning
-      without conjectures about mental states.
-      Without mental states,
-      language was just a set of utterances.
-      So in 1926 the linguist Leonard Bloomfield
-      dutifully
-      defined a "language" as a set of "utterances"
-      (for our purposes, "strings"),
-      and through the 30s and 40s most American
-      linguists followed him.
-    </p>
-    <p>After a brief nod to this tradition,
-      Noam Chomsky restored sanity to linguistics.
-      But it was too late for computer science.
-      Automata theory adopted the semantics-free definition.
-      In 1965, Knuth inherited a lot of prior work,
-      almost all of which ignored,
-      not just meaning or semantics,
-      but even syntax and structure.<a id="footnote-6-ref" href="#footnote-6">[6]</a>
-    </p>
-    <h2>Language extension versus language intension</h2>
-    <p>Knuth, of course, wanted to make contact with prior art.
-      The definition he had inherited seemed to work well enough
-      and Knuth's 1965 defines a language as a set of strings.
-      Most subsequent work has refused to breach this tradition.
-    </p>
-    <p>In most people's idea of what a language is,
-      the utterances/strings mean something --
-      you cannot take just
-      any set of meaningless strings and call it a language.
-      So the parsing theorists and everybody else had
-      two different definitions of language.
-    </p>
-    <p>But parsing theory also hoped to produce results relevant
-      to practice,
-      and few people are interested in recognizing meaningless strings --
-      almost everybody who parses is interested in (at a minimum)
-      finding some kind of structure in what they parse,
-      in order to do something with the result of the parse.
-      Parsing theorists ended up using the word "language" in one
-      sense, but implying that results they found worked
-      for the word "language" in the usual sense.
-    </p>
-    <p>
-      At this point both senses of the word "language"
-      have gotten entrenched in parsing theory.
-      Instead of making up a new terminology for this blog post,
-      I will borrow a distinction from linguistics
-      and speak of
-      <b>the extension of a language</b>
-      and
-      <b>the intension of a language</b>.
-      The extension of a language is the Bloomfieldian defintion --
-      the set of utterances/strings in the language.
-      The intension of a language, for our purposes here,
-      can be regarded as its BNF grammar.
-      Each language intension will have (if it is well-defined)
-      exactly one extension.
-      But multiple language intensions can have the same extension.
-    </p>
-    <h2>Red Herring 1: The stack machine model as a natural boundary</h2>
-    <p>The temptation to use language extensions as
-      a proxy for
-      <tt>LR</tt>-grammars must have been overwhelming.
-      It turns out that the language extension of
-      deterministic stack machines
-      is
-      <b>exactly</b>
-      that of the
-      <tt>LR</tt>
-      grammars.
-      Further,
-      the language extension of the context-free grammars is
-      exactly that of the non-deterministic stack machines.
-      (Non-deterministic stack machines are
-      stack machines which can "fork" new instances of themselves on the fly.)
-    </p>
-    <p>
-      If you take language extensions as the proxy for grammars,
-      things fall into place very neatly:
-      the
-      <tt>LR</tt>-parsers are the deterministic subset of the
-      context-free parsers.
-      And "deterministic" seemed like a very good approximation
-      of practical.
-      Certainly non-deterministic parsing is probably not practical.
-      And the best practical parsers in 1965 were
-      deterministic stack parsers.
-    </p><p>
-      Viewed this way,
-      <tt>LR</tt>-parsing looked like the equivalent
-      of practical parsing.
-      It was a "direct hit",
-      or as close to a exact equivalent of practical parsing
-      as theory was going to get.
-    </p>
-    <p>As we shall see,
-      with this red herring,
-      the reasoning went astray.
-      But disaster was not inevitable.
-      The whole point of bracketing, after all,
-      is that it allows you to correct errors.
-      Another red herring, however, resulted in
-      parsing theory going on a decades-long
-      wrong turn.
-    </p>
-    <h2>Red Herring 2:
-      <tt>LR</tt>
-      parsers are not good at
-      <tt>LR</tt>
-      grammars</h2>
-    <p>The second red herring led to the mis-bracketing of practical
-      parsing.
-      Having seemingly established that
-      <tt>LR</tt>-parsing is a natural boundary
-      in the hierarchy of languages,
-      Knuth discovered that general
-      <tt>LR</tt>-parsers were very far from practical.
-      <tt>LR</tt>
-      parsing goes out to
-      <tt>LR(k)</tt>
-      for arbitrary
-      <tt>k</tt>,
-      but even
-      <tt>LR(1)</tt>
-      parsing was impractical in 1965 --
-      in fact, it is rare in practical use today.
-      As the
-      <tt>k</tt>
-      in
-      <tt>LR(k)</tt>
-      grows, the size of the tables grows exponentially,
-      while the value of the additional lookahead rapidly diminishes.
-      It is not likely that
-      <tt>LR(2)</tt>
-      parsing will ever see much practical use,
-      never mind
-      <tt>LR(k)</tt> for any <tt>k</tt>
-      greater than 2.
-    </p>
-    <p>
-      From this it was concluded that
-      <tt>LR</tt>-parsing is an overshoot.
-      In reality,
-      as Joop Leo was to show,
-      it is an
-      <b>undershoot</b>,
-      and in practical terms a very large one.
-      If you mistake an undershoot for an overshoot,
-      bracketing no longer works,
-      and you are not likely to hit your target.
-    </p>
-    <h2>The Wrong Turn</h2>
-    <p>
-      Summing up,
-      parsing theorists concluded,
-      based on the results of Knuth 1965,
-      that
-    </p><ul>
-      <li>LR-parsing is a good approximation to practical parsing -- it brackets
-        it closely.</li>
-      <li>LR-parsing is an overshoot.</li>
-      <li>A subset of
-        <tt>LR</tt>-parsing will be the solution to the parsing problem.</li>
-    </ul>
-    <h2>Signs of trouble ignored</h2>
-    <p>There were, in hindsight, clear signs
-      that
-      <tt>LR</tt>
-      language extensions were not a good proxy for
-      <tt>LR</tt>
-      grammars.
-      <tt>LR</tt>
-      grammars form a hierarchy --
-      for every
-      <tt>k&#8805;0</tt>,
-      there is an
-      <tt>LR</tt>
-      grammar which
-      is
-      <tt>LR(k+1)</tt>, but which is not
-      <tt>LR(k)</tt>.
-    </p>
-    <p>
-      But if you look at extensions
-      instead of grammars,
-      the hierarchy immediately
-      collapses --
-      every
-      <tt>LR(k)</tt>
-      language extension is also
-      an
-      <tt>LR(1)</tt>
-      language extension,
-      as long as
-      <tt>k&#8805;1</tt>.
-      Only
-      <tt>LR(0)</tt>
-      remains distinct.
-    </p>
-    <p>It gets worse.
-      In most practical applications,
-      you can add an end-of-input marker to a grammar.
-      If you do this the
-      <tt>LR</tt>
-      extension hierarchy collapses totally --
-      every
-      <tt>LR(k)</tt>
-      language extension is also an
-      <tt>LR(0)</tt>
-      language extension.
-    </p>
-    <p>In short, it seems that,
-      as a proxy for
-      <tt>LR</tt>
-      grammars,
-      <tt>LR</tt>
-      language extensions are likely to be completely worthless.
-    </p>
-    <h2>Why didn't Knuth see the problem?</h2>
-    <p>Why didn't Knuth see the problem?
-      Knuth certainly noted the strange behavior of the
-      <tt>LR</tt>
-      hierarchy
-      in extensional terms -- he discovered it,
-      and devoted several dense pages of his 1965 to laying
-      out the complicated mathematics involved.
-    </p>
-    <p>
-      So why did
-      Knuth expect to get away with punning
-      intension and extension,
-      even in the face of some very unsettling results?
-      Here, the answer is very simple --
-      "punning" had always worked before.
-    </p>
-    <p>
-      Regular expressions are easily turned into parsers<a id="footnote-7-ref" href="#footnote-7">[7]</a>,
-      so the language extension of a regular grammar is an adequate approximation
-      to its intension.
-      Context-free recognition has the same complexity,
-      and in practice uses the same algorithms,
-      as context-free parsing,
-      so here again,
-      language extension is a good approximation
-      of language intension.
-    </p>
-    <p>
-      And the
-      <tt>LL</tt>
-      language extensions follow a strict hierarchy --
-      for every
-      <tt>k&#8805;0</tt>,
-      <tt>LL(k+1)</tt>
-      is a proper superset of
-      <tt>LL(k)</tt>.
-      This fact forces
-      <tt>LL</tt>
-      grammars to follow the same
-      hierarchy<a id="footnote-8-ref" href="#footnote-8">[8]</a>.
-      So, when studying complexity,
-      <tt>LL</tt>
-      language extensions are an excellent proxy for
-      <tt>LL</tt>
-      grammars.
-    </p>
-    <p>
-      Based on past experience,
-      Knuth had reason to believe
-      he could use language extensions as a proxy
-      for grammars,
-      and that the result would be
-      a theory that was a reliable
-      guide to practice.
-    </p>
-    <h2>Aftermath</h2>
-    <p>In
-      <a href="https://jeffreykegler.github.io/personal/timeline_v3">
-        my timeline of parsing</a>,
-      I describe what happened next.
-      Briefly,
-      theory focused on finding a useful subset of
-      <tt>LR(1)</tt>.
-      One,
-      <tt>LALR</tt>, became the favorite and
-      the basis of the
-      <tt>yacc</tt>
-      and
-      <tt>bison</tt>
-      tools.
-    </p>
-    <p>
-      Research into parsing of supersets of
-      <tt>LR</tt>
-      became rare.
-      The theorists were convinced the
-      <tt>LR</tt>
-      parsing
-      was the solution.
-      These were so convinced that when,
-      in 1991, Joop Leo discovered a practical way to
-      parse an
-      <tt>LR</tt> superset,
-      the result went unimplemented for decades.
-    </p>
-    <p>In 1965, the theoreticians gave a lot of weight
-      to the evidence from the world of practice,
-      but probably not undue weight.
-      Going forward, it was a different story.
-    </p>
-    <p>
-      Leo had,
-      in essence,
-      disproved the implied conjecture of Knuth 1965.
-      But the question is
-      not an explicit mathematical question,
-      like that of P vs. NP.
-      It is a slipprier one -- capturing practice.
-      Practitioners left it to the theoreticians to keep up with
-      the literature.
-      But theoreticians, as long as
-      <tt>LR</tt>-superset methods did not
-      come into use in the world of practice,
-      felt no need to revisit their conclusions.
-    </p>
-    <h2>Comments, etc.</h2>
-    <p>
-      I encourage
-      those who want to know more about the story of Parsing Theory
-      to look at my
-      <a href="https://jeffreykegler.github.io/personal/timeline_v3">
-        Parsing: a timeline 3.0</a>.
-      To learn about Marpa,
-      my Earley/Leo-based parsing project,
-      there is the
-      <a href="http://savage.net.au/Marpa.html">semi-official web site, maintained by Ron Savage</a>.
-      The official, but more limited, Marpa website
-      <a href="http://jeffreykegler.github.io/Marpa-web-site/">is my personal one</a>.
-      Comments on this post can be made in
-      <a href="http://groups.google.com/group/marpa-parser">
-        Marpa's Google group</a>,
-      or on our IRC channel:
-      <tt>#marpa</tt> at <tt>freenode.net</tt>.
-    </p>
-    <h2>Footnotes</h2>
-<p id="footnote-1">1.
-        Attributed to Jan L. A. van de Snepscheut and Yogi Berra.
-        See
-        <a href="https://en.wikiquote.org/wiki/Jan_L._A._van_de_Snepscheut">
-          https://en.wikiquote.org/wiki/Jan_L._A._van_de_Snepscheut</a>,
-        accessed 1 July 2018.
-        I quote my preferred form  of this --
-        the one it takes in
-        Doug Rosenberg and Matt Stephens,
-        <cite>Use Case Driven Object Modeling with UML: Theory and Practice</cite>,
-        2007,
-        p. xxvii.
-        Rosenberg and Stephens is also the accepted authority for its attribution.
- <a href="#footnote-1-ref">&#8617;</a></p>
-<p id="footnote-2">2.
-        As an aside, I am open to the idea that
-        the human mind has abilities that Turing machines cannot improve on
-        or even duplicate.
-        When it comes to
-        survival heuristics tied to the needs of human bodies, for example,
-        it seems very reasonable to at least entertain the conjecture
-        that the human mind might be near-optimal,
-        particularly in big-O terms.
-        But when it comes to ability to solve problems which can be formalized
-        as "puzzles" -- and syntactic analysis is one of these --
-        I think that resort to human exceptionalism
-        is a sign of desperation.
- <a href="#footnote-2-ref">&#8617;</a></p>
-<p id="footnote-3">3.
-          Oettinger, Anthony. "Automatic Syntactic Analysis and the Pushdown
-          Store",
-          <cite>Proceedings of Symposia in Applied Mathematics</cite>,
-          Volume 12,
-          American Mathematical Society, 1961.
-          Oettinger describes "push" and "pop"
-          stack operations in "Iversion notation" -- what
-          later became APL.
-          See the discussion of Oettinger in
-          my
-    <a href="http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2018/05/knuth_1965.html">
-            "Why is parsing considered solved?" post</a>.
- <a href="#footnote-3-ref">&#8617;</a></p>
-<p id="footnote-4">4.
-        Knuth did not invent asymptotic notation --
-        it comes from calculus --
-        but he introduced it to computer science
-        and motivated its use.
- <a href="#footnote-4-ref">&#8617;</a></p>
-<p id="footnote-5">5.
-        The best lower bound for context-free parsing is still
-        <tt>O(n)</tt>.
-        So it is even possible that there is a practical
-        linear-time general context-free
-        parser.
-        But its discovery would be a big surprise.
- <a href="#footnote-5-ref">&#8617;</a></p>
-<p id="footnote-6">6.
-        In
-        <a href="http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2018/05/chomsky_1956.html">
-          another blog post</a>,
-        I talk about the use of the word
-        "language" in parsing theory
-        in much more detail.
- <a href="#footnote-6-ref">&#8617;</a></p>
-<p id="footnote-7">7.
-        For example,
-        regular expressions can be extended with "captures".
-        Captures cannot handle recursion, but neither can regular expressions,
-        so captures are usually sufficient to provide all the structure
-        an application wants.
- <a href="#footnote-7-ref">&#8617;</a></p>
-<p id="footnote-8">8.
-        The discussion of the
-        <tt>LL(k)</tt>
-        hierarchy is in a sense anachronistic --
-        the
-        <tt>LL(k)</tt>
-        hierachy was not studied until after 1965.
-        But Knuth certainly was aware of recursive descent,
-        and it seems reasonable to suppose that,
-        even in 1965,
-        he had a sense of what
-        the
-        <tt>LL</tt>
-        hierarchy would look like.
- <a href="#footnote-8-ref">&#8617;</a></p>
-  </body>
-</html>
-<br />
-<p>posted at: 21:02 |
-<a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2018/07/knuth_1965_2.html">direct link to this entry</a>
 </p>
 <div style="color:#38B0C0;padding:1px;text-align:center;">
 &sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
