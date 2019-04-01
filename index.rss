@@ -188,7 +188,7 @@
       &lt;br&gt;
       Physical concepts are free creations
       of the human mind, and are not,
-      however, it may seem,
+      however it may seem,
       uniquely determined by the external world.
       In our endeavor to understand reality
       we are somewhat like a man trying
@@ -405,7 +405,7 @@
     &lt;li&gt;It helps choose the right parsing algoithm for practical
     applications.
     &lt;li&gt;It helps a reader to understand articles in the
-    the literature of parsing.
+    literature of parsing.
     &lt;li&gt;It helps guide future research.
     &lt;li&gt;It predicts the outcome of future research.
     &lt;/ul&gt;
@@ -502,7 +502,7 @@
       could be a parsing historiography centering on any other of the other four.
     &lt;/p&gt;
     &lt;p&gt;For example, of the five, regular expressions are the most limited in parsing power.
-      On the other hand, most of the parsing problems you encounter in practice,
+      On the other hand, most of the parsing problems you encounter in practice
       are handled quite nicely by regular expressions.&lt;a id=&quot;footnote-19-ref&quot; href=&quot;#footnote-19&quot;&gt;[19]&lt;/a&gt;
       Good implementations of regular expressions are widely available.
       And, for speed, they are literally unbeatable -- if a parsing problem is a
@@ -534,7 +534,7 @@
     &lt;p&gt;Because there are at least some
       problems for which PEG is superior to everything else,
       my own Earley/Leo approach included.
-      As one example, PEG,
+      As one example, PEG
       could be an more powerful alternative to regular expressions.
     &lt;/p&gt;
     &lt;p&gt;That does not mean that I might not come back with
@@ -658,13 +658,15 @@
         not parsers.
         Recursive descent is technique for creating a family of algorithms,
         not an algorithm.
-        The algorithm first described by Sakai is more commonly
+        And the algorithm first described by Sakai is more commonly
         called CYK, from the initials of three other researchers who re-discovered
         it over the years.
  &lt;a href=&quot;#footnote-18-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
 &lt;p id=&quot;footnote-19&quot;&gt;&lt;b&gt;19.&lt;/b&gt;
       A lot of this is because programmers learn to formulate problems in
-      ways which avoid complex parsing so that the alternatives are
+      ways which avoid complex parsing so that,
+      in practice,
+      the alternatives are
       using regular expressions or rationalizing away the
       need for parsing.
  &lt;a href=&quot;#footnote-19-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;

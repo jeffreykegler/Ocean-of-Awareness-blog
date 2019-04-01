@@ -253,7 +253,7 @@ Sherlock Holmes and the Case of the Missing Parsing Solution
       <br>
       Physical concepts are free creations
       of the human mind, and are not,
-      however, it may seem,
+      however it may seem,
       uniquely determined by the external world.
       In our endeavor to understand reality
       we are somewhat like a man trying
@@ -506,7 +506,7 @@ Sherlock Holmes and the Case of the Missing Parsing Solution
     <li>It helps choose the right parsing algoithm for practical
     applications.
     <li>It helps a reader to understand articles in the
-    the literature of parsing.
+    literature of parsing.
     <li>It helps guide future research.
     <li>It predicts the outcome of future research.
     </ul>
@@ -603,7 +603,7 @@ Sherlock Holmes and the Case of the Missing Parsing Solution
         not parsers.
         Recursive descent is technique for creating a family of algorithms,
         not an algorithm.
-        The algorithm first described by Sakai is more commonly
+        And the algorithm first described by Sakai is more commonly
         called CYK, from the initials of three other researchers who re-discovered
         it over the years.
       </footnote>
@@ -613,10 +613,12 @@ Sherlock Holmes and the Case of the Missing Parsing Solution
       could be a parsing historiography centering on any other of the other four.
     </p>
     <p>For example, of the five, regular expressions are the most limited in parsing power.
-      On the other hand, most of the parsing problems you encounter in practice,
+      On the other hand, most of the parsing problems you encounter in practice
       are handled quite nicely by regular expressions.<footnote>
       A lot of this is because programmers learn to formulate problems in
-      ways which avoid complex parsing so that the alternatives are
+      ways which avoid complex parsing so that,
+      in practice,
+      the alternatives are
       using regular expressions or rationalizing away the
       need for parsing.
       </footnote>
@@ -650,7 +652,7 @@ Sherlock Holmes and the Case of the Missing Parsing Solution
     <p>Because there are at least some
       problems for which PEG is superior to everything else,
       my own Earley/Leo approach included.
-      As one example, PEG,
+      As one example, PEG
       could be an more powerful alternative to regular expressions.
     </p>
     <p>That does not mean that I might not come back with
