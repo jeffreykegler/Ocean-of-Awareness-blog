@@ -85,6 +85,53 @@ A Practical use of infinite Lookahead
     Urbit is an effort to return control of the Internet
     experience to the individual user.
     </p>
+    <p>
+    The original Internet and it's predecessors were cosy places.
+    Users controlled their experience and authority was so light you
+    could forget it was there , but so adequate you could forget why it
+    was necessary.   What you did remember was the feeling of entering
+    into a "brave new world".
+    </p>
+    <p>
+The access to information afforded by the modern Internet makes our
+early pure wonder seems laughable, but the cost of it has been a transfer
+of power which should be frightening. We have handed authority over to
+servers run by entities which have their own interests, interests they
+pursue with increasing single-mindedness.  And while in the early days,
+we relied on the Internet for a portion of our intellectual lives, we
+now depend on it for our financial and social lives as well.  Currently,
+the server-sphere can be a hostile  place.  Going forward it could become
+a theater of war.
+    </p>
+    We could try to solve this problem by running our own servers.
+    But this is a lot of work, and only leaves us in touch with those
+    willing and able to do that.  In practice, nobody seems to find
+    this worthwhile.
+    </p>
+    <p>
+Urbit seeks to solve these problems with hassle-free personal
+servers.  These are incorruptable because they are also journaling
+databases. Typically these servers will be run as in the cloud.  In their
+present form, they run on top of Unix and UDP.
+    </p>
+    <p>
+    To implement its personal servers, Urbit chose to deal the code
+    bloat and other issues of the current Internet by rewriting
+    from scratch.   They start with a new machine language for a
+    VM, called Nock.
+    Machine languages have evolved -- originally the
+    programmer was expected to write their own memory caching logic.
+    In keeping with the times, Nock does garbage collection as well, and
+    its integers are arbitrary precision.
+    Nock treats all data and code
+    as integers or trees, and has a distinct LISP flavor.
+    Like traditional
+    machine language, Nock cannot be written directly.
+    Traditionally, you had to toggle machine language in physically
+    or, more commonly, write it indirectly in assembler or in
+    solme higher-level language.
+    In Nock's case, you have to write it using Hoon.
+    </p>
     <h2>Comments, etc.</h2>
     <p>
       The background material for this post is in my
