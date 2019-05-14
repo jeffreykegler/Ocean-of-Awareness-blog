@@ -17,9 +17,9 @@ all: \
   ../source/individual/2018/10/timeline_3_1.txt \
   ../source/individual/2019/03/methodology.txt \
 
-dev:
-# dev: popper.txt
-	# perl popper.pl > popper.html
+# dev:
+dev: vgap.html
+	perl vgap.pl > vgap.html
 
 ../source/individual/2018/05/fast_power.txt: fast_power.pl
 	perl fast_power.pl > ../source/individual/2018/05/fast_power.txt
