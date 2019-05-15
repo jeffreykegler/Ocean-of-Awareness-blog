@@ -69,7 +69,7 @@ A Practical use of infinite Lookahead
     <!--
       marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
       -->
-    <h2>A Practical use of infinite Lookahead</h2>
+    <h2>About this post</h2>
     <p>Infinite lookahead, despite how it may sound,
     is called for by many grammars of practical interest --
     the original research into it was motivated by practical interest.<footnote>
@@ -79,6 +79,7 @@ A Practical use of infinite Lookahead
     But a very compact example that does not seem artificial can be hard to find.
     In my work on the Hoon language, I have just stumbled on a very nice one.
     </p>
+    <h2>About Urbit</h2>
     <p>Recently, the Urbit community has been generously supporting
     my work on Marpa parsing,
     and the Hoon language is part of the Urbit project.
@@ -114,6 +115,7 @@ servers.  These are incorruptable because they are also journaling
 databases. Typically these servers will be run as in the cloud.  In their
 present form, they run on top of Unix and UDP.
     </p>
+    <h2>About Hoon</h2>
     <p>
     To implement its personal servers, Urbit chose to deal the code
     bloat and other issues of the current Internet by rewriting
@@ -131,6 +133,58 @@ present form, they run on top of Unix and UDP.
     or, more commonly, write it indirectly in assembler or in
     solme higher-level language.
     In Nock's case, you have to write it using Hoon.
+    </p>
+    <p>Hoon is Urbit's equivalent of C -- its "close to the metal"
+    higher level language.
+    Not that Hoon looks much like C,
+    or for that matter anything else you've ever seen.
+    This is "fizzbuzz" in Hoon:
+    <pre><tt>
+    |=  end=@
+    =/  count=@  1
+    |-
+    ^-  (list tape)
+    ?:  =(end count)
+      ~
+    :-
+      ?:  =(0 (mod count 15))
+	"FizzBuzz"
+      ?:  =(0 (mod count 3))
+	"Fizz"
+      ?:  =(0 (mod count 5))
+	"Buzz"
+      <count>
+    $(count (add 1 count))
+    </tt></pre>
+    </p>
+    <p>
+    The digraphs of special ASCII symbols, for example, <tt>|=</tt>
+    are important, and are called runes.
+    We won't be learning a lot of Hoon in this post --
+    for those who want to know more,
+    <a href="https://urbit.org/docs/learn/hoon/">there is a tutorial</a>.
+    </p>
+    <h2>About Hoon comments</h2>
+    <p>For our example, we are interested only in multi-line Hoon comments.
+    Hoon allows comments, usually preceded by a <tt>::</tt>.
+    For example,
+    <pre><tt>
+    ::                                                      ::
+    ::::  3e: AES encryption  (XX removed)                  ::
+      ::                                                    ::
+      ::
+    ::                                                      ::
+    ::::  3f: scrambling                                    ::
+      ::                                                    ::
+      ::    ob                                              ::
+      ::
+    </tt> </pre>
+    </p>
+    <p>The native compiler allows Hoon comments to be free-form
+    but, as the above suggests, in practice Hoon comments are
+    expected to follow certain conventions.
+    My current work is on a Marpa-powered tool to enforce Hoon's whitespace
+    conventions.
     </p>
     <h2>Comments, etc.</h2>
     <p>
