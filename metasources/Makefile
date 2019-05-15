@@ -18,7 +18,7 @@ all: \
   ../source/individual/2019/03/methodology.txt \
 
 # dev:
-dev: vgap.html
+dev: vgap.pl
 	perl vgap.pl > vgap.html
 
 ../source/individual/2018/05/fast_power.txt: fast_power.pl
