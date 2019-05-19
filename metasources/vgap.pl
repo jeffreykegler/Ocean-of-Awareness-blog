@@ -70,44 +70,55 @@ A Practical use of infinite Lookahead
       marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
       -->
     <h2>About this post</h2>
-    <p>Infinite lookahead, despite how it may sound,
-    is called for by many grammars of practical interest --
-    the original research into it was motivated by practical interest.<footnote>
+    <p>Infinite lookahead may not sound like a practical requirement, but it is.
+    The original research into it was motivated by practical interest.<footnote>
     TODO.  Reference LRR paper, my blog post on it,
     and my blog post on LRR and Haskell.
     </footnote>
-    But a very compact example that does not seem artificial can be hard to find.
-    In my work on the Hoon language, I have just stumbled on a very nice one.
+    And, despite the fact that language writers have trained themselves to work
+    around it, the need keeps popping up.<footnote>
+    Ref to Haskell post.
+    </footnote>
+    I have just stumbled on a very nice compact example of this.
     </p>
     <h2>About Urbit</h2>
     <p>Recently, the Urbit community has been generously supporting
-    my work on Marpa parsing,
-    and the Hoon language is part of the Urbit project.
+    my work on Marpa parsing.
     Urbit is an effort to return control of the Internet
     experience to the individual user.
     </p>
     <p>
     The original Internet and it's predecessors were cosy places.
-    Users controlled their experience and authority was so light you
-    could forget it was there , but so adequate you could forget why it
-    was necessary.   What you did remember was the feeling of entering
+    Users controlled their experience.
+    There was authority, but it was so light you
+    could forget it was there,
+    and so adequate to its task that you could forget why it
+    was necessary.
+    What we old timers do remember of the early Internet was the feeling of entering
     into a "brave new world".
     </p>
     <p>
-The access to information afforded by the modern Internet makes our
-early pure wonder seems laughable, but the cost of it has been a transfer
-of power which should be frightening. We have handed authority over to
-servers run by entities which have their own interests, interests they
-pursue with increasing single-mindedness.  And while in the early days,
-we relied on the Internet for a portion of our intellectual lives, we
-now depend on it for our financial and social lives as well.  Currently,
-the server-sphere can be a hostile  place.  Going forward it could become
-a theater of war.
+The modern Internet offers an access to information that
+makes the pure wonder of decades ago seems ridiculous.
+The cost of it has been a transfer
+of power which should be no laughing matter.
+Control of our Internet experience now resides in
+servers,
+run by entities which make no secret of having their own interests.
+Less open, but increasingly obvious, is the single-mindedness with which they pursue
+those interests.
+</p>
+<p>
+And the stakes have risen.
+In the early days,
+we used on the Internet as a supplement in our intellectual lives.
+Today depend on it for our financial and social lives.
+Today, the server-sphere can be a hostile  place.
+Going forward it may well become a theater of war.
     </p>
     We could try to solve this problem by running our own servers.
     But this is a lot of work, and only leaves us in touch with those
-    willing and able to do that.  In practice, nobody seems to find
-    this worthwhile.
+    willing and able to do that.  In practice, this seems to mean nobody.
     </p>
     <p>
 Urbit seeks to solve these problems with hassle-free personal
