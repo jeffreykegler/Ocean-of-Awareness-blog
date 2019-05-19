@@ -121,63 +121,68 @@ Going forward it may well become a theater of war.
     willing and able to do that.  In practice, this seems to mean nobody.
     </p>
     <p>
-Urbit seeks to solve these problems with hassle-free personal
-servers.  These are incorruptable because they are also journaling
-databases. Typically these servers will be run as in the cloud.  In their
-present form, they run on top of Unix and UDP.
+Urbit seeks to solve these problems with urbits:
+hassle-free personal servers.
+Urbits are journaling databases, so they are incorruptable.
+To make sure they can be run anywhere in the cloud,
+they are based on a tiny virtual machine.
+To keep urbits compact and secure,
+Urbit takes on code bloat directly,
+it is a totally original design from a clean slate --
+new protocols,
+and a new stack.
     </p>
     <h2>About Hoon</h2>
     <p>
-    To implement its personal servers, Urbit chose to deal the code
-    bloat and other issues of the current Internet by rewriting
-    from scratch.   They start with a new machine language for a
-    VM, called Nock.
-    Machine languages have evolved -- originally the
-    programmer was expected to write their own memory caching logic.
-    In keeping with the times, Nock does garbage collection as well, and
-    its integers are arbitrary precision.
-    Nock treats all data and code
-    as integers or trees, and has a distinct LISP flavor.
+    In their present form, urbits run on top of Unix and UDP.
+    Urbit's new VM is called Nock.
+    Its "machine language" is called Nock.
+    Machine languages have evolved -- modern machine languages
+    incorporate memory caching,
+    something the first programmers had to do on their own.
+    Time marches on, and Nock also has garbage collection
+    and arbitrary precision integers.
+    In Nock, all data and code is a "noun",
+    and a noun is either an integer or a tree.
+    This gives Nock a distinct LISP flavor.
+    </p>
+    <p>
     Like traditional
     machine language, Nock cannot be written directly.
     Traditionally, you had to toggle machine language in physically
-    or, more commonly, write it indirectly in assembler or in
-    solme higher-level language.
-    In Nock's case, you have to write it using Hoon.
-    </p>
-    <p>Hoon is Urbit's equivalent of C -- its "close to the metal"
-    higher level language.
+    or, more commonly, write it indirectly,
+    in assembler or using some higher-level language, like C.
+    <p>Hoon is Urbit's equivalent of C -- it is Urbit's
+    "close to the metal" higher level language.
     Not that Hoon looks much like C,
     or for that matter anything else you've ever seen.
-    This is "fizzbuzz" in Hoon:
+    This is a Hoon program that takes an integer argument,
+    call it <tt>n</tt>
+    and returns the first <tt>n</tt> counting numbers:
     <pre><tt>
-    |=  end=@
-    =/  count=@  1
-    |-
-    ^-  (list tape)
-    ?:  =(end count)
-      ~
-    :-
-      ?:  =(0 (mod count 15))
-	"FizzBuzz"
-      ?:  =(0 (mod count 3))
-	"Fizz"
-      ?:  =(0 (mod count 5))
-	"Buzz"
-      <count>
-    $(count (add 1 count))
+    |=  end=@                                               ::  1
+    =/  count=@  1                                          ::  2
+    |-                                                      ::  3
+    ^-  (list @)                                            ::  4
+    ?:  =(end count)                                        ::  5
+      ~                                                     ::  6
+    :-  count                                               ::  7
+    $(count (add 1 count))                                  ::  8
     </tt></pre>
     </p>
     <p>
-    The digraphs of special ASCII symbols, for example, <tt>|=</tt>
-    are important, and are called runes.
-    We won't be learning a lot of Hoon in this post --
-    for those who want to know more,
-    <a href="https://urbit.org/docs/learn/hoon/">there is a tutorial</a>.
+    We will not learn much Hoon in this post.
+    All we are interesting in, in fact, are Hoon's comments.
+    Hoon comments begin with a "<tt>::</tt>" and run until the next
+    newline.
+    The above Hoon sample uses comments to show line numbers.
+    (For those who want to know more about Hoon,
+    <a href="https://urbit.org/docs/learn/hoon/">there is a tutorial</a>.)
+    </p>
+    <p>
     </p>
     <h2>About Hoon comments</h2>
-    <p>For our example, we are interested only in multi-line Hoon comments.
-    Hoon allows comments, usually preceded by a <tt>::</tt>.
+    <p>For our example, we are interested in Hoon's multi-line Hoon comments.
     For example,
     <pre><tt>
     ::                                                      ::
@@ -191,9 +196,12 @@ present form, they run on top of Unix and UDP.
       ::
     </tt> </pre>
     </p>
-    <p>The native compiler allows Hoon comments to be free-form
+    <p>
+    The native compiler allows Hoon comments to be free-form
     but, as the above suggests, in practice Hoon comments are
     expected to follow certain conventions.
+    </p>
+    <p>
     My current work is on a Marpa-powered tool to enforce Hoon's whitespace
     conventions.
     </p>
