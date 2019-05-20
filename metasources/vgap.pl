@@ -195,7 +195,28 @@ and a new stack.
       ::    ob                                              ::
       ::
     </tt> </pre>
+    <p>
+    Various types of comments:
     </p>
+    <pre><tt>
+      :~  [3 7]
+      ::
+	  :: pre-comment 1
+	  [20 (mug bod)]
+      ::
+	  :: pre-comment 2
+	  [2 yax]
+      ::
+	  :: pre-comment 3
+	  [2 qax]
+    ::::
+    ::    :: pre-comment 3
+    ::    [4 qax]
+      ::
+	  :: pre-comment 4
+	  [5 tay]
+      ==
+    </tt></pre>
     <p>
     The native compiler allows Hoon comments to be free-form
     but, as the above suggests, in practice Hoon comments are
