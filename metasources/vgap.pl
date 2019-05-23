@@ -583,9 +583,25 @@ In their present form, urbits run on top of Unix and UDP.
     but is looked at as pure BNF,
     then it <b>is</b> ambiguous.
     </p>
-    <h2>Code, comments on this blog post, etc.</h2>
+    <h2>Code</h2>
+    <p>Rather than walk through the code in this post,
+    I have set forth the BNF,
+    and described the strategy.
+    The code is available on Github in unit test form.
+    </p>
     <p>
+    For those who want to see context,
+    it is also on Github embedded in its application, <tt>hoonlint</tt>.
+    The embedded version is a snapshot.
+    The application is under development,
+    and probably will change considerably.
+    Probably, its only real use is for those
+    who take a glance at an example
+    of the comment linter set in a context.
+    </p>
       [ TODO: ref to test & full code. ]
+    <h2>Comments on this blog post, etc.</h2>
+    <p>
       To learn about Marpa,
       my Earley/Leo-based parsing project,
       there is the
