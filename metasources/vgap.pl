@@ -83,7 +83,7 @@ Infinite Lookahead and Ruby Slippers
     In isolation, this sentence may not seem unnatural,
     a contrived "garden path".
     But if you imagine it in answer to the question, "Which horse fell?",
-    the construct becomes quite natural.
+    expectations are set so that the sentence seems very natural.
     When the expectations are balanced,
     humans parse these in the same way that Marpa does -- by keeping track
     of both possibilities until the end,
@@ -94,11 +94,11 @@ Infinite Lookahead and Ruby Slippers
     in desirable syntaxes.<footnote>
     Ref to Haskell post.
     </footnote>
-    I have just stumbled on a very nice compact example of this.
+    [ TODO: Add stuff re Ruby Slippers ]
     </p>
     <h2>About Urbit</h2>
-    <p>The example of this post arises in the context of a language called Hoon,
-    which is part of the Urbit project.
+    <p>The example described in this post concerns the parsing of a language called Hoon.
+    Hoon is part of the Urbit project.
     (The Urbit community has, generously, been supporting my work on Hoon.)
     Urbit is an effort to return control of the Internet
     experience to the individual user.
@@ -114,8 +114,8 @@ Infinite Lookahead and Ruby Slippers
     into a "brave new world".
     </p>
     <p>
-The Internet has grown in extent beyond previous imaginings,
-and the pure wonder of decades ago seems ridiculous.
+The Internet grew beyond our imaginings,
+and our pure wonder of decades ago now seems ridiculous.
 But the price has been a shift
 of power which should be no laughing matter.
 Control of our Internet experience now resides in
@@ -151,10 +151,11 @@ In their present form, urbits run on top of Unix and UDP.
     </p>
     <h2>About Hoon</h2>
     <p>
-    The "machine language" is trees of arbitrary precision integers.
+    Nock "machine language" consists is trees of arbitrary precision integers.
     The integers can be interpreted as strings, floats, etc.,
     as desired.
-    And the trees can be interpreted as lists, giving Nock a distinct LISP flavor.
+    And the trees can be interpreted as lists,
+    giving Nock a resemblance to a LISP VM.
     Nock also does its own garbage collection.
     <footnote>
     Garbage collection and arbitrary precision may not too high-level
@@ -178,7 +179,7 @@ In their present form, urbits run on top of Unix and UDP.
     </p>
     <p>
     Not that Hoon looks much like C,
-    or for that matter anything else you've ever seen.
+    or anything else you've ever seen.
     This is a Hoon program that takes an integer argument,
     call it <tt>n</tt>,
     and returns the first <tt>n</tt> counting numbers:
@@ -198,14 +199,14 @@ In their present form, urbits run on top of Unix and UDP.
     newline.
     The above Hoon sample uses comments to show line numbers.
     For the sake of our example, comments are the only Hoon syntax we will talk about.
-    (For those who want to learn more about Hoon,
+    (For those who want to know more about Hoon,
     <a href="https://urbit.org/docs/learn/hoon/">there is a tutorial</a>.)
     </p>
     <p>
     </p>
     <h2>About Hoon comments</h2>
     <p>
-    In the basic Hoon syntax, multi-line comments are free-form.
+    In basic Hoon syntax, comments are free-form.
     In practice, there are strict, if complex, conventions.
     In the simplest case, a comment must precede the code it
     describes, and be at the same indent.
@@ -222,7 +223,8 @@ In their present form, urbits run on top of Unix and UDP.
 	  [20 (mug bod)]
     </tt></pre>
     <p>
-    But some code falls into sequences, and sequences are allowed
+    Some Hoon code takes the form of sequences,
+    and sequences are allowed
     "inter-comments".
     In sequences, the pre-comments are indented to match the elements
     of the sequence,
@@ -255,14 +257,14 @@ In their present form, urbits run on top of Unix and UDP.
     and give some air between, elements of a sequence.
     </p>
     <p>
-    Comments can occur at the far left margin -- column 1.
+    Comments can also occur at the far left margin -- column 1.
     These are called meta-comments, because they are allowed
     to be outside the syntax structure.
     One common use for meta-comments is "commenting out" code.
     Note in the above display, the <tt>[4 qax]</tt> and its
     associated comments are commented out using meta-comments.
     </p>
-    <p>Lastly, there are "staircase comments", which are used
+    <p>Finally, there are "staircase comments", which are used
     to indicate the larger structure of Hoon sequences and other
     code.
     For example,
@@ -278,48 +280,119 @@ In their present form, urbits run on top of Unix and UDP.
       ::
     </tt> </pre>
     <p>
-    Rules
-    <ul>
-    <li>Outside of a sequence, inter-comments and pre-comments
-    are the same thing, and are indented the same as the code
-    they precede.
-    </li>
-    <li>Inter-comments, when distinct from pre-comments,
-    must precede them.
-    </li>
-    <li>Staircases can only occur as inter-comments.
-    An inter-comment can contain more than one staircase,
-    but if any staircase occurs in an inter-comment,
-    the whole inter-comment is considered to be a set
-    of staircases.
-    </li>
-    <li>Meta-comments can occur anywhere,
-    but classifying a comment as a meta-comment is a last resort --
-    if a comment can be considered a pre-comment or an inter-comment,
-    then that is how it is classified.
-    </li>
-    </ul>
-    <p>Some of the rules are motivated by a future Hoon tool,
-    <tt>hoonfmt</tt>, which will reformat Hoon in much the same way
-    as <tt>perltidy</tt> reformats Perl, or <tt>indent</tt>
-    reformats C today.
+    Each staircase consists of three parts.
+    In lexical order, these parts are
+    an upper riser,
+    a tread, and a lower riser.
+    The upper riser is a sequence of comments at the same
+    alignment as an inter-comment.
+    The tread is also at the inter-comment alignment,
+    but must be 4 colons ("<tt>::::</tt>") followed
+    by whitespace.
+    The lower riser is a sequence of comments
+    indented two spaces more than the tread.
     </p>
     </p>
-    <p>
-    The native compiler allows Hoon comments to be free-form
-    but, as the above suggests, in practice Hoon comments are
-    expected to follow certain conventions.
     </p>
     <p>
     My current work is on a Marpa-powered tool to enforce Hoon's whitespace
     conventions.
     </p>
-    <h2>Comments, etc.</h2>
+    <h2>Hoon comment conventions</h2>
+    <p>Hoon's basic syntax allows comments to be free-form.
+    But, in practice, there are strict conventions for these comments,
+    conventions we would like to enforce with a <tt>lint</tt> for Hoon:
+    a <tt>hoonlint</tt>.<footnote>
+    Some of the ways in which the conventons are stated,
+    are motivated by a future Hoon tool,
+    <tt>hoonfmt</tt>.
+    <tt>hoonfmt</tt> will reformat Hoon in much the same way
+    as <tt>perltidy</tt> reformats Perl, or <tt>indent</tt>
+    reformats C today.
+    </footnote>
+    <ol>
+    <li>Comments before or after an element of a sequence can
+    contain an "inter-part" and a "pre-part".
+    Other comments contain only an "inter-part".
+    </li>
+    <li>If both an inter-part and a pre-part are present,
+    the inter-part must preceed the pre-part.
+    </li>The inter-part must either be a sequence of
+    one or more inter-comments;
+    or a sequence of one or more staircases.
+    </li>
+    <li>A pre-part is always a sequence of
+    one or more pre-comments.
+    </li>
+    <li>Meta-comments can occur anywhere in either the pre-part
+    or the inter-part.
+    </li>
+    <li>Upper risers, treads and inter-comments can also start at column 1,
+    and a comment is not regarded as a meta-comment,
+    if it can be parsed as something other than a meta-comment.
+    </li>
+    </ol>
+    <h2>Technique: Combinator</h2>
+    Our comment parser is implemented as a combinator.
+    Our main Hoon parser call this combinator when it encounters
+    a multi-line comment.<footnote>
+    Our test program is a unit test, so that in it,
+    the combinator stands alone.
+    </footnote>
+    Because of the main parser,
+    we do not have to worry about confusing comments with
+    Hoon various strings and in-line text syntaxes.
+    </p>
+    <p>Note that while combinator parsing is useful,
+    there is a literature that oversells the technique.
+    Combinators are simply another way of looking at recursive
+    descent with backtracking,
+    and the two techniques share the same power and
+    performance.
+    Because of this, GHC, the flagship functional programming
+    language parser,
+    does not use to parse itself --
+    it uses bison.<footnote>Reference this or delete it.
+    </footnote>
+    </p>
+    <p>Marpa is more powerful than either bison or combinators,
+    and so can save combinator parsing for those cases where
+    combinator parsing really is helpful.
+    One is these cases is lexer mismatch.
+    </p>
+    <p>The first programming languages, like BASIC and FORTRAN,
+    were line-structured -- designed to be parsed line-by-line.
+    Lines were parsed one at a time.<footnote>
+    This is simplified.
+    There were provisions for line continuation, etc.
+    But, nonetheless, the lexers for these languages worked in
+    terms of lines, and had no true concept of a "block".
+    </footnote>
+    After ALGOL, languages more often were block-structured.
+    Blocks could start or end in the middle of a line,
+    and could span multiple lines.
+    Also, blocks nested.
+    </p>
+    <p>A line-structured language requires its lexer to think in
+    terms of lines,
+    but this approach is completely useless for a block-structured
+    language.
+    Marpa does allow the lexer to ask the parent parser for context,
+    which simplifies things somewhat.
+    But basically,
+    combining both line-structured and block-structured loing in the same lexer turns its
+    code into a rats nest.
+    </p>
+    <p>Calling a combinator every time
+    a line-structured block is encountered eliminates the problem.
+    The main lexer can assume block-structured code,
+    and all the line-by-line logic can go into combinators.
+    </p>
+    <h2>Technique: Non-determinism</h2>
+    </p>
+    <h2>Code, comments on this blog post, etc.</h2>
     <p>
-      The background material for this post is in my
-      <a href="https://jeffreykegler.github.io/personal/timeline_v3">
-        Parsing: a timeline 3.0</a>,
-      and this post may be considered a supplement to "Timelime".
+      [ TODO: ref to test & full code. ]
       To learn about Marpa,
       my Earley/Leo-based parsing project,
       there is the
