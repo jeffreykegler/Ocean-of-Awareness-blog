@@ -327,11 +327,53 @@ In their present form, urbits run on top of Unix and UDP.
     <li>Meta-comments can occur anywhere in either the pre-part
     or the inter-part.
     </li>
+    <li>Comments which do not obey the above rules are
+    <b>bad comments</b>.
+    A <b>good comment</b> is any comment which is not a bad comment.
+    </li>
     <li>Upper risers, treads and inter-comments can also start at column 1,
     and a comment is not regarded as a meta-comment,
-    if it can be parsed as something other than a meta-comment.
+    if it can be parsed as ordinary comment.
+    An <b>ordinary comment</b> is any good comment which is
+    not a meta-comment.
     </li>
     </ol>
+    <h2>Grammar</h2>
+    <pre><tt>
+    gapComments ::= OptExceptions Body
+    gapComments ::= OptExceptions
+    Body ::= InterPart PrePart
+    Body ::= InterPart
+    Body ::= PrePart
+    InterPart ::= InterComponent
+    InterPart ::= InterruptedInterComponents
+    InterPart ::= InterruptedInterComponents InterComponent
+
+    InterruptedInterComponents ::= InterruptedInterComponent+
+    InterruptedInterComponent ::= InterComponent Exceptions
+    InterComponent ::= Staircases
+    InterComponent ::= Staircases InterComments
+    InterComponent ::= InterComments
+
+    InterComments ::= InterComment+
+
+    Staircases ::= Staircase+
+    Staircase ::= UpperRisers Tread LowerRisers
+    UpperRisers ::= UpperRiser+
+    LowerRisers ::= LowerRiser+
+
+    PrePart ::= ProperPreComponent OptPreComponents
+    ProperPreComponent ::= PreComment
+    OptPreComponents ::= PreComponent*
+    PreComponent ::= ProperPreComponent
+    PreComponent ::= Exception
+
+    OptExceptions ::= Exception*
+    Exceptions ::= Exception+
+    Exception ::= MetaComment
+    Exception ::= BadComment
+    Exception ::= BlankLine
+    </tt></pre>
     <h2>Technique: Combinator</h2>
     Our comment parser is implemented as a combinator.
     Our main Hoon parser call this combinator when it encounters
@@ -389,7 +431,68 @@ In their present form, urbits run on top of Unix and UDP.
     and all the line-by-line logic can go into combinators.
     </p>
     <h2>Technique: Non-determinism</h2>
+    <p>
+    Our grammar is non-deterministic,
+    but unambiguous.
+    It is unambiguous because,
+    for every input,
+    it will produce no more one parse.
+    It is non-deterministic because,
+    on the way to the end of parsing,
+    it may keep more than one possibility in mind.
     </p>
+    <h2>Technique: Infinite lookahead</h2>
+    <p>Above, I pointed out that the grammar is non-deterministic.
+    [ TODO: Did I point this out above? ]
+    The grammar cannot immediately distinguish the prefix of the upper riser of a staircase,
+    from the prefix of a sequence of inter-comments.
+    The two prefixes cannot be distinguished until a tread and lower riser is encountered,
+    and this may require reading an arbitrarily long sequence of tokens.
+    In other words, it requires infinitie lookahead.
+    Lookahead is a common technique in parsers,
+    but lookaheads are usually very short -- in fact, most common is lookahead
+    of exactly one token.
+    Longer lookaheads require exponentially longer tables,
+    while the value of each rapidly diminishes.<footnote>
+    This law of diminishing returns is savage,
+    and some strategies avoid the problem of large tables by dealing with lookaheads
+    on the fly.
+    But this often does not avoid the law of diminishing lookahead returns,
+    and it does raises its own problem --
+    even when the gain in power is real,
+    it is unpredictable.
+    </footnote>
+    </p>Humans deal with infinite lookaheads all the time --
+    natural languages are full of situations that need them.
+    Fortunately, in 19XX [ TODO ], Joop Leo discovered how
+    to give computer algorithms a lookahead power similar to human.
+    Marpa uses Joop's technique.
+    </p>
+    <p>
+    Joop's algorithm is complicated,
+    but essentially it allows the parser to track multiple potential parses
+    simultaneously,
+    much as humans can.
+    </p>
+    <h2>Technique: Meta-comment and the Ruby Slippers</h2>
+    <p>Recall that, according to our conventions,
+    our parser does not recognize a meta-comment unless
+    no ordinary comment can be recognized.
+    We could implement this in BNF,
+    but it is much more elegant to use the Ruby Slippers.<footnote>
+    Ruby Slippers reference</footnote>
+    </p>
+    <p>As those already familiar with Marpa may recall,
+    the Ruby Slippers is invoked when a Marpa parser finds itself
+    unable to proceed with its current set of input tokens.
+    At this point, the lexer can ask the Marpa parser what token it <b>does</b> want.
+    Once the lexer is told what the "wished-for" token is,
+    it can concoct one, out of nowhere if necessary, and pass it to the Marpa parser,
+    which then proceeds happily.
+    In effect, the lexer acts like Glenda the Good Witch of Oz,
+    while the Marpa parser plays the role of Dorothy.
+    </p>
+    <h2>Technique: Error Tokens</h2>
     <h2>Code, comments on this blog post, etc.</h2>
     <p>
       [ TODO: ref to test & full code. ]
