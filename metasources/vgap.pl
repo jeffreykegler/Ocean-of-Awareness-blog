@@ -394,7 +394,9 @@ In their present form, urbits run on top of Unix and UDP.
     Because of this, GHC, the flagship functional programming
     language parser,
     does not use to parse itself --
-    it uses bison.<footnote>Reference this or delete it.
+    instead it uses a parser in the yacc lineage.<footnote><a
+    href="https://github.com/ghc/ghc/blob/master/compiler/parser/Parser.y">This
+    is the LALR grammar from GHC's Github mirror.</a>
     </footnote>
     </p>
     <p>Marpa is more powerful than either bison or combinators,
@@ -492,7 +494,95 @@ In their present form, urbits run on top of Unix and UDP.
     In effect, the lexer acts like Glenda the Good Witch of Oz,
     while the Marpa parser plays the role of Dorothy.
     </p>
+    <p>One way to view the Ruby Slippers is as a kind of exception
+    mechanism for grammars.
+    In this application, we treat inability to read an ordinary
+    comment as an exception.
+    When the exception occurs,
+    if possible, we read a meta-comment.
+    </p>
     <h2>Technique: Error Tokens</h2>
+    <p><b>Error tokens</b> are a specialized use of the Ruby Slippers.
+    The application for this parser is "linting" --
+    checking that the comments follow conventions.
+    As such, the product of the parser is not really a parse --
+    it is a list of errors.
+    So stopping the parser at the first error does not make sense.
+    </p>
+    <p>
+    What is desirable is to treat all inputs as valid,
+    so that the parsing always runs to the end of input,
+    in the process producing a list of the errors.
+    To do this, we want to set up the parser so that it reads
+    special "error tokens" whenever it encounters a reportable error.
+    </p>
+    <p>This is perfect for the Ruby Slippers.
+    If an "exception" occurs,
+    as described for meta-comment,
+    but no meta-comment is available,
+    we treat it as a 2nd exception level of exceptions.
+    </p>
+    <p>When would no meta-comment be available?
+    There are two cases:
+    <ul><li>The line read is a comment,
+    but it does not start at column 1.
+    </li>
+    <li>The line read is a blank line (all whitespace).
+    </li>
+    </ul>
+    <p>On a second level of exception, the current line
+    is read as either a <tt>&lt;BlankLine&gt;</tt>,
+    or a <tt>&lt;BadComment&gt;</tt>.
+    [ TODO: Point out somewhere that one or other will always
+    be the case. ]
+    </p>
+    <h2>Technique: Ambiguity</h2>
+    <p>Marpa allows ambiguity,
+    and this can be exploited as a technique.
+    For example, in a simpler BNF than that we used above,
+    it might be ambiguous whether a meta-comment belongs to an <tt>&lt;Interpart&gt;</tt>
+    which immediately preceeds it;
+    or a <tt>&lt;Prepart&gt;</tt> which immediately follows it.
+    We could solve the dilemma by noting that it does not matter -- the
+    meta-comment will get reported either way,
+    so picking one of the parses at random will work fine.
+    </p>
+    <p>In fact, in this application, I decided to make the grammar
+    slightly more complicated,
+    in order to keep it unambiguous.
+    This makes the grammar less elegant,
+    but efficiency can be a problem with ambiguity.<footnote>
+    If <tt>n</tt> meta-comments occur between a
+    <tt>&lt;Interpart&gt;</tt>
+    and a <tt>&lt;Prepart&gt;</tt>, the dividing line is arbitrary,
+    so that there are <tt>n+1</tt> parses.
+    This will, in theory, make the processing time quadratic.
+    And, in fact, a long sequences of meta-comments might occur
+    between the inter- and pre-comments,
+    so the inefficiency might be real.
+    </footnote>
+    Also, requiring the grammar to be unambiguous allows
+    an additional check on our parsing logic.
+    In our code we test each parse for ambiguity,
+    and we treat it as a internal error in our linter
+    if it finds one.
+    </p>
+    <p>Note that some of the work in keeping 
+    this parser unambiguous is delegated to the lexer.
+    We used our Ruby Slippers "exception mechanism" to
+    guarantee that no line is, for example,
+    both a meta-comment and an inter-comment.<footnote>
+    Inter-comments may start on line 1,
+    so an ambiguity between an inter-comment and
+    a meta-comment is entirely
+    possible.
+    </footnote>
+    If the BNF above is
+    not regarded as part of an integrated system with
+    the lexer,
+    but is looked at as pure BNF,
+    then it <b>is</b> ambiguous.
+    </p>
     <h2>Code, comments on this blog post, etc.</h2>
     <p>
       [ TODO: ref to test & full code. ]
