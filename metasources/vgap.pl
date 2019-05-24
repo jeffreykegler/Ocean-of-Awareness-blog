@@ -617,10 +617,9 @@ with a new protocol stack.
     <h2>Code</h2>
     <p>This post did not walk the reader through the code.
     Instead, it talked mostly in terms of strategy.
-    <a href="https://github.com/jeffreykegler/Ocean-of-Awareness-blog/tree/draft/code/vgap">
+    <a href="https://github.com/jeffreykegler/Ocean-of-Awareness-blog/tree/gh-pages/code/vgap">
     The code is available on Github</a>
     in unit test form.
-    [ TODO: Change link to gh-pages branch ]
     For those who want to see the comment-linter combinator in a context,
     a version of the code embedded in <tt>hoonlint</tt>
     in also on Github.<footnote>
