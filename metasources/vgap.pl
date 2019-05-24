@@ -73,32 +73,19 @@ Infinite Lookahead and Ruby Slippers
     <p>This post presents a compact, practical example which
     nicely illustrates the need for both infinite lookahead
     and Ruby Slippers parsing.
-    Infinite lookahead 
-    is required by any syntax which might of arbitrary length,
-    but whose structure is not certain until the end.
-    Human language has a lot of examples of this<footnote>
-    One example is the sentence "The horse raced past the barn fell".
-    The subclause "raced past the barn" could be anything,
-    and therefore arbitrarily long.
-    In isolation, this sentence may not seem unnatural,
-    a contrived "garden path".
-    But if you imagine it in answer to the question, "Which horse fell?",
-    expectations are set so that the sentence seems very natural.
-    When the expectations are balanced,
-    humans parse these in the same way that Marpa does -- by keeping track
-    of both possibilities until the end,
-    and only then deciding.
-    </footnote>
-    and, labor as computer language designers might to avoid it,
-    the need for infinite lookahead keeps popping up 
-    in desirable syntaxes.<footnote>
-    Ref to Haskell post.
-    </footnote>
-    [ TODO: Add stuff re Ruby Slippers ]
+    While the example itself is very simple,
+    this post may not be a good first tutorial --
+    it focuses on Marpa implementation strategy,
+    instead of basics.
     </p>
     <h2>About Urbit</h2>
-    <p>The example described in this post concerns the parsing of a language called Hoon.
+    <p>The example described in this post is one part of
+    <tt>hoonlint</tt>.
+    <tt>hoonlint</tt>, currently under development,
+    will be a "lint" program for a language called Hoon.
     Hoon is part of the Urbit project.
+    </p>
+    <p>
     (The Urbit community has, generously, been supporting my work on Hoon.)
     Urbit is an effort to return control of the Internet
     experience to the individual user.
@@ -106,9 +93,9 @@ Infinite Lookahead and Ruby Slippers
     <p>
     The original Internet and its predecessors were cosy places.
     Users controlled their experience.
-    There was authority, but it was so light you
+    Authority was so light you
     could forget it was there,
-    and so adequate to its task that you could forget why it
+    but so adequate to its task that you could forget why it
     was necessary.
     What we old timers do remember of the early Internet was the feeling of entering
     into a "brave new world".
@@ -140,32 +127,34 @@ Going forward it may well become a theater of war.
 Urbit seeks to solve these problems with 
 hassle-free personal servers, called urbits.
 Urbits are journaling databases, so they are incorruptable.
-To make sure they can be run anywhere in the cloud,
+To make sure they can be run anywhere in the cloud,<footnote>
+In their present form, urbits run on top of Unix and UDP.
+</footnote>
 they are based on a tiny virtual machine.
 To keep urbits compact and secure,
 Urbit takes on code bloat directly:
-Urbit uses a totally original design from a clean slate --
-a new protocol stack, and a new VM called Nock.<footnote>
-In their present form, urbits run on top of Unix and UDP.
+Urbit is a totally original design from a clean slate,
+with a new protocol stack, and a new VM called Nock.
 </footnote>
     </p>
     <h2>About Hoon</h2>
     <p>
-    Nock "machine language" consists is trees of arbitrary precision integers.
+    Nock's "machine language" takes the form of trees of arbitrary precision integers.
     The integers can be interpreted as strings, floats, etc.,
     as desired.
     And the trees can be interpreted as lists,
     giving Nock a resemblance to a LISP VM.
-    Nock also does its own garbage collection.
+    Nock does its own memory management
+    and takes care of its own garbage collection.
     <footnote>
-    Garbage collection and arbitrary precision may not too high-level
+    Garbage collection and arbitrary precision may seem too high-level
     for something considered a "machine language",
     but our concepts evolve.
     The earliest machine languages required programmers to
     do their own memory caching and create their own floating
     point representations,
-    both things we now regard as much too low-level for software
-    to deal with directly.
+    both things we now regard as much too low-level
+    to deal with even at the lowest software level.
     </footnote>
     </p>
     <p>
@@ -198,7 +187,10 @@ In their present form, urbits run on top of Unix and UDP.
     Hoon comments begin with a "<tt>::</tt>" and run until the next
     newline.
     The above Hoon sample uses comments to show line numbers.
-    For the sake of our example, comments are the only Hoon syntax we will talk about.
+    </p>
+    <p>
+    Our <tt>hoonlint</tt> subset is a multi-line comment linter,
+    and multi-line comments are the only Hoon syntax we will talk about.
     (For those who want to know more about Hoon,
     <a href="https://urbit.org/docs/learn/hoon/">there is a tutorial</a>.)
     </p>
@@ -206,14 +198,17 @@ In their present form, urbits run on top of Unix and UDP.
     </p>
     <h2>About Hoon comments</h2>
     <p>
-    In basic Hoon syntax, comments are free-form.
-    In practice, there are strict, if complex, conventions.
+    In basic Hoon syntax, multi-line comments are free-form.
+    But in practice, Hoon authors tend to follow a set of conventions.
+    </p>
+    <h3>Pre-comments</h3>
+    <p>
     In the simplest case, a comment must precede the code it
     describes, and be at the same indent.
     These simple cases are called "pre-comments".<footnote>
     This post attempts to follow standard Hoon terminology, but
     for the details of Hoon's whitespace conventions,
-    there is settled terminology,
+    there is no settled terminology,
     and I have invented terms as necessary.
     The term "pre-comment" is one of those inventions.
     </footnote>
@@ -223,14 +218,14 @@ In their present form, urbits run on top of Unix and UDP.
 	  [20 (mug bod)]
     </tt></pre>
     <p>
-    Some Hoon code takes the form of sequences,
+    <h3>Inter-comments</h3>
+    Some Hoon code takes the form of a series or sequence of elements
+    within a larger structure.
     and sequences are allowed
     "inter-comments".
-    In sequences, the pre-comments are indented to match the elements
-    of the sequence,
-    but inter-comments are indented to match the "keyword" of the sequence.
-    The following code has both pre-commments and inter-comments.
-    The intercomments are indented to match the "keyword" digraph: <tt>:~</tt>.
+    The inter-comments are indented to match the "keyword" of the sequence.
+    The following code has both pre-comments and inter-comments.
+    The inter-comments are indented to match the "keyword" digraph: <tt>:~</tt>,
     (Hoon's keyword digraphs are called "runes".)
     </p>
     <pre><tt>
@@ -255,15 +250,19 @@ In their present form, urbits run on top of Unix and UDP.
     <p>Note that the inter-comments in the above, are empty.
     They are called "breathing comments", and serve to separate,
     and give some air between, elements of a sequence.
+    For clarity, all of the pre-comments
+    contain the text "<tt>pre-comment</tt>".
     </p>
+    <h3>Meta-comments</h3>
     <p>
-    Comments can also occur at the far left margin -- column 1.
+    The above code also contains a third kind of comment -- meta-comments.
+    Meta-comments must occur at the far left margin -- at column 1.
     These are called meta-comments, because they are allowed
     to be outside the syntax structure.
-    One common use for meta-comments is "commenting out" code.
-    Note in the above display, the <tt>[4 qax]</tt> and its
-    associated comments are commented out using meta-comments.
+    One common use for meta-comments is "commenting out" other code.
+    In the above display, the meta-comments comment out a pre-comment.
     </p>
+    <h3>Staircase comments</h3>
     <p>Finally, there are "staircase comments", which are used
     to indicate the larger structure of Hoon sequences and other
     code.
@@ -302,22 +301,17 @@ In their present form, urbits run on top of Unix and UDP.
     <p>Hoon's basic syntax allows comments to be free-form.
     But, in practice, there are strict conventions for these comments,
     conventions we would like to enforce with a <tt>lint</tt> for Hoon:
-    a <tt>hoonlint</tt>.<footnote>
-    Some of the ways in which the conventons are stated,
-    are motivated by a future Hoon tool,
-    <tt>hoonfmt</tt>.
-    <tt>hoonfmt</tt> will reformat Hoon in much the same way
-    as <tt>perltidy</tt> reformats Perl, or <tt>indent</tt>
-    reformats C today.
-    </footnote>
+    a <tt>hoonlint</tt>.
     <ol>
-    <li>Comments before or after an element of a sequence can
-    contain an "inter-part" and a "pre-part".
-    Other comments contain only an "inter-part".
+    <li>A multi-line comment,
+    may contain
+    an "inter-part", a "pre-part",
+    or both.
     </li>
     <li>If both an inter-part and a pre-part are present,
     the inter-part must preceed the pre-part.
-    </li>The inter-part must either be a sequence of
+    </li>
+    <li>The inter-part must either be a sequence of
     one or more inter-comments;
     or a sequence of one or more staircases.
     </li>
@@ -340,6 +334,7 @@ In their present form, urbits run on top of Unix and UDP.
     </ol>
     <h2>Grammar</h2>
     <pre><tt>
+    :start ::= gapComments
     gapComments ::= OptExceptions Body
     gapComments ::= OptExceptions
     Body ::= InterPart PrePart
@@ -375,25 +370,27 @@ In their present form, urbits run on top of Unix and UDP.
     Exception ::= BlankLine
     </tt></pre>
     <h2>Technique: Combinator</h2>
-    Our comment parser is implemented as a combinator.
-    Our main Hoon parser call this combinator when it encounters
-    a multi-line comment.<footnote>
-    Our test program is a unit test, so that in it,
-    the combinator stands alone.
-    </footnote>
+    Our comment linter is implemented as a combinator.
+    The main <tt>hoonlint</tt> parser invokes this combinator when it encounters
+    a multi-line comment.
     Because of the main parser,
     we do not have to worry about confusing comments with
     Hoon various strings and in-line text syntaxes.
     </p>
     <p>Note that while combinator parsing is useful,
-    there is a literature that oversells the technique.
+    it is a technique that can be oversold.
     Combinators are simply another way of looking at recursive
     descent with backtracking,
-    and the two techniques share the same power and
-    performance.
-    Because of this, GHC, the flagship functional programming
+    and the two techniques share the same power,
+    the performance,
+    and the same downsides.
+    Combinators have been much talked about in the functional programming
+    literature<footnote>
+    Refer to timeline.
+    </footnote>,
+    but, GHC, the flagship functional programming
     language parser,
-    does not use to parse itself --
+    does not use combinators to parse itself --
     instead it uses a parser in the yacc lineage.<footnote><a
     href="https://github.com/ghc/ghc/blob/master/compiler/parser/Parser.y">This
     is the LALR grammar from GHC's Github mirror.</a>
@@ -402,8 +399,9 @@ In their present form, urbits run on top of Unix and UDP.
     <p>Marpa is more powerful than either bison or combinators,
     and so can save combinator parsing for those cases where
     combinator parsing really is helpful.
-    One is these cases is lexer mismatch.
+    One such case is lexer mismatch.
     </p>
+    <h3>Lexer mismatch</h3>
     <p>The first programming languages, like BASIC and FORTRAN,
     were line-structured -- designed to be parsed line-by-line.
     Lines were parsed one at a time.<footnote>
@@ -438,45 +436,63 @@ In their present form, urbits run on top of Unix and UDP.
     but unambiguous.
     It is unambiguous because,
     for every input,
-    it will produce no more one parse.
-    It is non-deterministic because,
-    on the way to the end of parsing,
+    it will produce no more than one parse.
+    </p>
+    <p>
+    It is non-deterministic because there is a case
+    where it tracks two possible parses at once.
     it may keep more than one possibility in mind.
+    The comment linter cannot immediately distinguish between
+    the prefix of the upper riser of a staircase,
+    and the prefix of a sequence of inter-comments.
+    When a tread and lower riser is encountered,
+    the parser knows it has found a staircase,
+    but not until then.
+    And if the parse is of an inter-comment sequence,
+    the comment linter will not know until the end of the sequence.
     </p>
     <h2>Technique: Infinite lookahead</h2>
-    <p>Above, I pointed out that the grammar is non-deterministic.
-    [ TODO: Did I point this out above? ]
-    The grammar cannot immediately distinguish the prefix of the upper riser of a staircase,
-    from the prefix of a sequence of inter-comments.
-    The two prefixes cannot be distinguished until a tread and lower riser is encountered,
-    and this may require reading an arbitrarily long sequence of tokens.
-    In other words, it requires infinitie lookahead.
-    Lookahead is a common technique in parsers,
-    but lookaheads are usually very short -- in fact, most common is lookahead
-    of exactly one token.
-    Longer lookaheads require exponentially longer tables,
-    while the value of each rapidly diminishes.<footnote>
-    This law of diminishing returns is savage,
-    and some strategies avoid the problem of large tables by dealing with lookaheads
-    on the fly.
-    But this often does not avoid the law of diminishing lookahead returns,
-    and it does raises its own problem --
-    even when the gain in power is real,
-    it is unpredictable.
+    <p>
+    As just pointed out,
+    the comment linter does not know whether it is parsing a staircase or
+    and inter-comment sequence until either
+    <ul>
+    <li>it finds a tread and lower riser, in which case
+    it knows the correct parse will be a staircase; or
+    </li>
+    <li>it successfully reaches the end of the inter-comment sequence,
+    in which case it knows the correct parse is an inter-comment sequence.
+    </ul>
+    Determining which of these two choices is the correct parse,
+    may require reading an arbitrarily long sequence of tokens --
+    in other words, infinite lookahead.
+    </p>
+    <p>Humans deal with infinite lookaheads all the time --
+    natural languages are full of situations that need them.</footnote>
+    An example of a requirement for infinite lookahead
+    is the sentence "The horse raced past the barn fell".
+    Yes, this sentence is not, in fact, infinitely long,
+    but the subclause "raced past the barn" could be anything,
+    and therefore could be arbitrarily long.
+    In isolation, this example sentence may not seem unnatural,
+    a contrived "garden path".
+    But if you imagine the sentence as an answer to the question, "Which horse fell?",
+    expectations are set so that the sentence seems very natural.
+    And, when the two expectations are balanced,
+    humans parse these in the same way that Marpa does -- by keeping track
+    of both possibilities until the end,
+    and only deciding when the evidence comes in.
     </footnote>
-    </p>Humans deal with infinite lookaheads all the time --
-    natural languages are full of situations that need them.
-    Fortunately, in 19XX [ TODO ], Joop Leo discovered how
-    to give computer algorithms a lookahead power similar to human.
+    Fortunately, in 1991, Joop Leo published a method that
+    allowed computer algorithms to efficiently emulate human lookahead.
+    Joop's algorithm is complicated,
+    but essentially it keep track of more than one potential parse,
+    efficiently.
     Marpa uses Joop's technique.
     </p>
     <p>
-    Joop's algorithm is complicated,
-    but essentially it allows the parser to track multiple potential parses
-    simultaneously,
-    much as humans can.
     </p>
-    <h2>Technique: Meta-comment and the Ruby Slippers</h2>
+    <h2>Technique: the Ruby Slippers</h2>
     <p>Recall that, according to our conventions,
     our parser does not recognize a meta-comment unless
     no ordinary comment can be recognized.
@@ -485,7 +501,7 @@ In their present form, urbits run on top of Unix and UDP.
     Ruby Slippers reference</footnote>
     </p>
     <p>As those already familiar with Marpa may recall,
-    the Ruby Slippers is invoked when a Marpa parser finds itself
+    the Ruby Slippers are invoked when a Marpa parser finds itself
     unable to proceed with its current set of input tokens.
     At this point, the lexer can ask the Marpa parser what token it <b>does</b> want.
     Once the lexer is told what the "wished-for" token is,
@@ -494,7 +510,18 @@ In their present form, urbits run on top of Unix and UDP.
     In effect, the lexer acts like Glenda the Good Witch of Oz,
     while the Marpa parser plays the role of Dorothy.
     </p>
-    <p>One way to view the Ruby Slippers is as a kind of exception
+    <p>So, if the Marpa parser of our
+    comment linter finds that the current input line is not
+    one of those it is looking for, it halts
+    and tells the lexer its problem.
+    The lexer then asks Marpa what it is looking for,
+    which will always be a meta-comment.
+    The lexer checks to see if the current line is a comment
+    starting at column 1,
+    and if so, the lexer tells the Marpa parser its wish
+    has come true.
+    </p>
+    <p>Another way to view the Ruby Slippers is as a kind of exception
     mechanism for grammars.
     In this application, we treat inability to read an ordinary
     comment as an exception.
@@ -505,8 +532,8 @@ In their present form, urbits run on top of Unix and UDP.
     <p><b>Error tokens</b> are a specialized use of the Ruby Slippers.
     The application for this parser is "linting" --
     checking that the comments follow conventions.
-    As such, the product of the parser is not really a parse --
-    it is a list of errors.
+    As such, the main product of the parser is not the parse --
+    it is the list of errors gathered along the way.
     So stopping the parser at the first error does not make sense.
     </p>
     <p>
@@ -520,7 +547,7 @@ In their present form, urbits run on top of Unix and UDP.
     If an "exception" occurs,
     as described for meta-comment,
     but no meta-comment is available,
-    we treat it as a 2nd exception level of exceptions.
+    we treat it as a second level exception.
     </p>
     <p>When would no meta-comment be available?
     There are two cases:
@@ -547,11 +574,12 @@ In their present form, urbits run on top of Unix and UDP.
     meta-comment will get reported either way,
     so picking one of the parses at random will work fine.
     </p>
-    <p>In fact, in this application, I decided to make the grammar
+    <p>For our comment linter, we will make the grammar
     slightly more complicated,
     in order to keep it unambiguous.
     This makes the grammar less elegant,
-    but efficiency can be a problem with ambiguity.<footnote>
+    but but avoids the efficiency issues
+    that can be a problem with ambiguity.<footnote>
     If <tt>n</tt> meta-comments occur between a
     <tt>&lt;Interpart&gt;</tt>
     and a <tt>&lt;Prepart&gt;</tt>, the dividing line is arbitrary,
@@ -563,11 +591,10 @@ In their present form, urbits run on top of Unix and UDP.
     </footnote>
     Also, requiring the grammar to be unambiguous allows
     an additional check on our parsing logic.
-    In our code we test each parse for ambiguity,
-    and we treat it as a internal error in our linter
-    if it finds one.
+    In our code we test each parse for ambiguity.
+    If we find one, we know that <tt>hoonlint</tt> has a coding error.
     </p>
-    <p>Note that some of the work in keeping 
+    <p>Some of the work in keeping 
     this parser unambiguous is delegated to the lexer.
     We used our Ruby Slippers "exception mechanism" to
     guarantee that no line is, for example,
@@ -577,29 +604,34 @@ In their present form, urbits run on top of Unix and UDP.
     a meta-comment is entirely
     possible.
     </footnote>
-    If the BNF above is
-    not regarded as part of an integrated system with
-    the lexer,
-    but is looked at as pure BNF,
-    then it <b>is</b> ambiguous.
     </p>
     <h2>Code</h2>
-    <p>Rather than walk through the code in this post,
-    I have set forth the BNF,
-    and described the strategy.
-    The code is available on Github in unit test form.
-    </p>
-    <p>
-    For those who want to see context,
-    it is also on Github embedded in its application, <tt>hoonlint</tt>.
-    The embedded version is a snapshot.
+    <p>This post did not walk the reader through the code.
+    Instead, it talked mostly in terms of strategy.
+    <a href="https://github.com/jeffreykegler/Ocean-of-Awareness-blog/tree/draft/code/vgap">
+    The code is available on Github</a>
+    in unit test form.
+    [ TODO: Change link to gh-pages branch ]
+    For those who want to see comment-linter combinator in a context,
+    a version of the code,
+    embedded in its application, <tt>hoonlint</tt>,
+    in also on Github.<footnote>
+    For the <tt>hoonlint</tt>-embedded form,
+    the Marpa grammar is
+    <a href="https://github.com/jeffreykegler/yahc/blob/714157124b46492e13968c786e400276017a3b85/Lint/Policy/Test/Whitespace.pm#L19">
+    here</a>
+    and the code is
+    <a href="https://github.com/jeffreykegler/yahc/blob/714157124b46492e13968c786e400276017a3b85/Lint/Policy/Test/Whitespace.pm#L341">
+    here</a>.
+    These are permalinks.
     The application is under development,
     and probably will change considerably.
-    Probably, its only real use is for those
-    who take a glance at an example
-    of the comment linter set in a context.
-    </p>
-      [ TODO: ref to test & full code. ]
+    In this pre-alpha embedded form, documentation and unit testing are
+    lacking,
+    so that this pre-alpha embedded form will mainly be useful
+    for those who want to take a glance at the
+    comment linter in a context.
+    </footnote>
     <h2>Comments on this blog post, etc.</h2>
     <p>
       To learn about Marpa,
