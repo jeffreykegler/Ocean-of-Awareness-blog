@@ -71,7 +71,7 @@ Infinite Lookahead and Ruby Slippers
       -->
     <h2>About this post</h2>
     <p>This post presents a practical, compact example which
-    illustrates the need for both infinite lookahead
+    demonstrates a use case for both infinite lookahead
     and Ruby Slippers parsing.
     While the example itself is very simple,
     this post may not be a good first tutorial --
@@ -127,9 +127,9 @@ Going forward it may well become a theater of war.
 Urbit seeks to solve these problems with 
 hassle-free personal servers, called urbits.
 Urbits are journaling databases, so they are incorruptable.
-To make sure they can be run anywhere in the cloud<footnote>,
+To make sure they can be run anywhere in the cloud<footnote>
 In their present form, urbits run on top of Unix and UDP.
-</footnote>
+</footnote>,
 they are based on a tiny virtual machine, called Nock.
 To keep urbits compact and secure,
 Urbit takes on code bloat directly --
@@ -157,9 +157,18 @@ with a new protocol stack.
     </footnote>
     </p>
     <p>
-    Traditionally, you had to toggle machine language in physically
-    or, more commonly, write it indirectly,
-    in assembler or using some higher-level language, like C.
+    Traditionally, there are two ways to enter machine language,
+    <ul>
+    <li>Physically, for example,
+    by toggling it into a machine's front panel.
+    Originally, entering it physically was the only way.
+    </li>
+    <li>Indirectly, using
+    assembler or some higher-level language, like C.
+    Once these indirect methods existed, they
+    became the most common way to create machine language.
+    </li>
+    </ul>
     Like traditional
     machine language, Nock cannot be written directly.
     Hoon is Urbit's equivalent of C -- it is Urbit's
@@ -188,7 +197,7 @@ with a new protocol stack.
     The above Hoon sample uses comments to show line numbers.
     </p>
     <p>
-    The example for this post is
+    The example for this post will be
     a <tt>hoonlint</tt> subset: a multi-line comment linter.
     Multi-line comments are the only Hoon syntax we will talk about.
     (For those who want to know more about Hoon,
@@ -264,7 +273,7 @@ with a new protocol stack.
     These are called meta-comments, because they are allowed
     to be outside the syntax structure.
     One common use for meta-comments is "commenting out" other syntax.
-    In the above display, the meta-comments comment out a pre-comment.
+    In the above display, the meta-comments "comment out" a pre-comment.
     </p>
     <h3>Staircase comments</h3>
     <p>Finally, there are "staircase comments", which are used
@@ -301,8 +310,7 @@ with a new protocol stack.
     conventions we would like to enforce with a <tt>lint</tt> for Hoon:
     a <tt>hoonlint</tt>.
     <ol>
-    <li>A multi-line comment,
-    may contain
+    <li>A multi-line comment may contain
     an "inter-part", a "pre-part",
     or both.
     </li>
@@ -320,7 +328,7 @@ with a new protocol stack.
     <li>A pre-part is always a sequence of
     one or more pre-comments.
     </li>
-    <li>Meta-comments can occur anywhere in either the pre-part
+    <li>Meta-comments may be inserted anywhere in either the pre-part
     or the inter-part.
     </li>
     <li>Comments which do not obey the above rules are
@@ -457,7 +465,7 @@ with a new protocol stack.
     <p>
     As just pointed out,
     the comment linter does not know whether it is parsing a staircase or
-    and inter-comment sequence until either
+    an inter-comment sequence until either
     <ul>
     <li>it finds a tread and lower riser, in which case
     it knows the correct parse will be a staircase; or
@@ -511,10 +519,11 @@ with a new protocol stack.
     </p>
     <p>So, if the Marpa parser of our
     comment linter finds that the current input line is not
-    one of those it is looking for, it halts
-    and tells the lexer its problem.
-    The lexer then asks Marpa what it is looking for,
-    which will always be a meta-comment.
+    one of those it is looking for, the parser halts
+    and tells the lexer that there is a problem.
+    The lexer then asks the Marpa parser what it is looking for.
+    In this case, the answer will always be the same:
+    the Marpa parser will be looking for a meta-comment.
     The lexer checks to see if the current line is a comment
     starting at column 1,
     and if so, the lexer tells the Marpa parser its wish
