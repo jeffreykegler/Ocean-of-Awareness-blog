@@ -70,8 +70,8 @@ Infinite Lookahead and Ruby Slippers
       marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
       -->
     <h2>About this post</h2>
-    <p>This post presents a compact, practical example which
-    nicely illustrates the need for both infinite lookahead
+    <p>This post presents a practical, compact example which
+    illustrates the need for both infinite lookahead
     and Ruby Slippers parsing.
     While the example itself is very simple,
     this post may not be a good first tutorial --
@@ -83,12 +83,12 @@ Infinite Lookahead and Ruby Slippers
     <tt>hoonlint</tt>.
     <tt>hoonlint</tt>, currently under development,
     will be a "lint" program for a language called Hoon.
-    Hoon is part of the Urbit project.
     </p>
     <p>
-    (The Urbit community has, generously, been supporting my work on Hoon.)
+    Hoon is part of the Urbit project.
     Urbit is an effort to return control of the Internet
     experience to the individual user.
+    (The Urbit community has, generously, been supporting my work on Hoon.)
     </p>
     <p>
     The original Internet and its predecessors were cosy places.
@@ -114,8 +114,8 @@ those interests.
 <p>
 And the stakes have risen.
 In the early days,
-we used on the Internet as a supplement in our intellectual lives.
-Today, we depend on it for our financial and social lives.
+we used the Internet as a supplement in our intellectual lives.
+Today, we depend on it in our financial and social lives.
 Today, the server-sphere can be a hostile  place.
 Going forward it may well become a theater of war.
     </p>
@@ -127,15 +127,14 @@ Going forward it may well become a theater of war.
 Urbit seeks to solve these problems with 
 hassle-free personal servers, called urbits.
 Urbits are journaling databases, so they are incorruptable.
-To make sure they can be run anywhere in the cloud,<footnote>
+To make sure they can be run anywhere in the cloud<footnote>,
 In their present form, urbits run on top of Unix and UDP.
 </footnote>
-they are based on a tiny virtual machine.
+they are based on a tiny virtual machine, called Nock.
 To keep urbits compact and secure,
-Urbit takes on code bloat directly:
-Urbit is a totally original design from a clean slate,
-with a new protocol stack, and a new VM called Nock.
-</footnote>
+Urbit takes on code bloat directly --
+Urbit is a original design from a clean slate,
+with a new protocol stack.
     </p>
     <h2>About Hoon</h2>
     <p>
@@ -145,13 +144,13 @@ with a new protocol stack, and a new VM called Nock.
     And the trees can be interpreted as lists,
     giving Nock a resemblance to a LISP VM.
     Nock does its own memory management
-    and takes care of its own garbage collection.
-    <footnote>
+    and takes care of its own garbage collection.<footnote>
     Garbage collection and arbitrary precision may seem too high-level
     for something considered a "machine language",
     but our concepts evolve.
     The earliest machine languages required programmers to
-    do their own memory caching and create their own floating
+    write their own memory caching logic
+    and to create their own floating
     point representations,
     both things we now regard as much too low-level
     to deal with even at the lowest software level.
@@ -189,8 +188,9 @@ with a new protocol stack, and a new VM called Nock.
     The above Hoon sample uses comments to show line numbers.
     </p>
     <p>
-    Our <tt>hoonlint</tt> subset is a multi-line comment linter,
-    and multi-line comments are the only Hoon syntax we will talk about.
+    The example for this post is
+    a <tt>hoonlint</tt> subset: a multi-line comment linter.
+    Multi-line comments are the only Hoon syntax we will talk about.
     (For those who want to know more about Hoon,
     <a href="https://urbit.org/docs/learn/hoon/">there is a tutorial</a>.)
     </p>
@@ -199,7 +199,7 @@ with a new protocol stack, and a new VM called Nock.
     <h2>About Hoon comments</h2>
     <p>
     In basic Hoon syntax, multi-line comments are free-form.
-    But in practice, Hoon authors tend to follow a set of conventions.
+    In practice, Hoon authors tend to follow a set of conventions.
     </p>
     <h3>Pre-comments</h3>
     <p>
@@ -207,7 +207,7 @@ with a new protocol stack, and a new VM called Nock.
     describes, and be at the same indent.
     These simple cases are called "pre-comments".<footnote>
     This post attempts to follow standard Hoon terminology, but
-    for the details of Hoon's whitespace conventions,
+    for some details of Hoon's whitespace conventions,
     there is no settled terminology,
     and I have invented terms as necessary.
     The term "pre-comment" is one of those inventions.
@@ -219,14 +219,16 @@ with a new protocol stack, and a new VM called Nock.
     </tt></pre>
     <p>
     <h3>Inter-comments</h3>
-    Some Hoon code takes the form of a series or sequence of elements
-    within a larger structure.
-    and sequences are allowed
-    "inter-comments".
-    The inter-comments are indented to match the "keyword" of the sequence.
-    The following code has both pre-comments and inter-comments.
-    The inter-comments are indented to match the "keyword" digraph: <tt>:~</tt>,
-    (Hoon's keyword digraphs are called "runes".)
+    Hoon multi-lint comments may also
+    contain "inter-comments".
+    The inter-comments are aligned depending on the syntax.
+    In the above, they are aligned with the "rune" of the enclosing sequence.
+    A "rune" is Hoon's rough equivalent of a "keyword".
+    Runes are always digraphs of special ASCII characters.
+    The rune in the following code is
+    <tt>:~</tt>,
+    and the sequence it introduces
+    includes pre-comments, inter-comments and meta-comments.
     </p>
     <pre><tt>
       :~  [3 7]
@@ -247,11 +249,13 @@ with a new protocol stack, and a new VM called Nock.
 	  [5 tay]
       ==
     </tt></pre>
-    <p>Note that the inter-comments in the above, are empty.
-    They are called "breathing comments", and serve to separate,
-    and give some air between, elements of a sequence.
-    For clarity, all of the pre-comments
-    contain the text "<tt>pre-comment</tt>".
+    <p>
+    When inter-comments are empty, as they are in the above,
+    they are called "breathing comments", because they serve to separate,
+    or allow some "air" between, elements of a sequence.
+    For clarity,
+    the pre-comments in the above are further indicated:
+    all and only pre-comments contain the text "<tt>pre-comment</tt>".
     </p>
     <h3>Meta-comments</h3>
     <p>
@@ -259,7 +263,7 @@ with a new protocol stack, and a new VM called Nock.
     Meta-comments must occur at the far left margin -- at column 1.
     These are called meta-comments, because they are allowed
     to be outside the syntax structure.
-    One common use for meta-comments is "commenting out" other code.
+    One common use for meta-comments is "commenting out" other syntax.
     In the above display, the meta-comments comment out a pre-comment.
     </p>
     <h3>Staircase comments</h3>
@@ -291,15 +295,9 @@ with a new protocol stack, and a new VM called Nock.
     The lower riser is a sequence of comments
     indented two spaces more than the tread.
     </p>
-    </p>
-    </p>
-    <p>
-    My current work is on a Marpa-powered tool to enforce Hoon's whitespace
-    conventions.
-    </p>
     <h2>Hoon comment conventions</h2>
     <p>Hoon's basic syntax allows comments to be free-form.
-    But, in practice, there are strict conventions for these comments,
+    In practice, there are strict conventions for these comments,
     conventions we would like to enforce with a <tt>lint</tt> for Hoon:
     a <tt>hoonlint</tt>.
     <ol>
@@ -311,9 +309,13 @@ with a new protocol stack, and a new VM called Nock.
     <li>If both an inter-part and a pre-part are present,
     the inter-part must preceed the pre-part.
     </li>
-    <li>The inter-part must either be a sequence of
-    one or more inter-comments;
-    or a sequence of one or more staircases.
+    <li>The inter-part must be either
+       <ul>
+       <li>a sequence of one or more inter-comments; or
+       </li>
+       <li>a sequence of one or more staircases.
+       </li>
+       </ul>
     </li>
     <li>A pre-part is always a sequence of
     one or more pre-comments.
@@ -326,13 +328,16 @@ with a new protocol stack, and a new VM called Nock.
     A <b>good comment</b> is any comment which is not a bad comment.
     </li>
     <li>Upper risers, treads and inter-comments can also start at column 1,
-    and a comment is not regarded as a meta-comment,
+    and a comment is not regarded as a meta-comment
     if it can be parsed as ordinary comment.
     An <b>ordinary comment</b> is any good comment which is
     not a meta-comment.
     </li>
     </ol>
     <h2>Grammar</h2>
+    <p>We will implement these conventions using the BNF
+    of this section.
+    The sections to follow outline the strategy behind the BNF.
     <pre><tt>
     :start ::= gapComments
     gapComments ::= OptExceptions Body
@@ -375,15 +380,10 @@ with a new protocol stack, and a new VM called Nock.
     a multi-line comment.
     Because of the main parser,
     we do not have to worry about confusing comments with
-    Hoon various strings and in-line text syntaxes.
+    Hoon's various strings and in-line text syntaxes.
     </p>
     <p>Note that while combinator parsing is useful,
     it is a technique that can be oversold.
-    Combinators are simply another way of looking at recursive
-    descent with backtracking,
-    and the two techniques share the same power,
-    the performance,
-    and the same downsides.
     Combinators have been much talked about in the functional programming
     literature<footnote>
     Refer to timeline.
@@ -395,39 +395,41 @@ with a new protocol stack, and a new VM called Nock.
     href="https://github.com/ghc/ghc/blob/master/compiler/parser/Parser.y">This
     is the LALR grammar from GHC's Github mirror.</a>
     </footnote>
+    As a parsing technique on its own,
+    the use of combinators is simply another way of packaging recursive
+    descent with backtracking,
+    and the two techniques share the same power,
+    the same performance,
+    and the same downsides.
     </p>
-    <p>Marpa is more powerful than either bison or combinators,
-    and so can save combinator parsing for those cases where
+    <p>Marpa is much more powerful than either LALR (yacc-lineage) parsers or combinators,
+    so we can save combinator parsing for those cases where
     combinator parsing really is helpful.
     One such case is lexer mismatch.
     </p>
     <h3>Lexer mismatch</h3>
     <p>The first programming languages, like BASIC and FORTRAN,
-    were line-structured -- designed to be parsed line-by-line.
-    Lines were parsed one at a time.<footnote>
+    were line-structured -- designed to be parsed line-by-line.<footnote>
     This is simplified.
     There were provisions for line continuation, etc.
     But, nonetheless, the lexers for these languages worked in
     terms of lines, and had no true concept of a "block".
     </footnote>
-    After ALGOL, languages more often were block-structured.
-    Blocks could start or end in the middle of a line,
-    and could span multiple lines.
-    Also, blocks nested.
+    After ALGOL, new languages were usually block-structured.
+    Blocks can start or end in the middle of a line,
+    and can span multiple lines.
+    And, blocks are often nested.
     </p>
     <p>A line-structured language requires its lexer to think in
     terms of lines,
     but this approach is completely useless for a block-structured
     language.
-    Marpa does allow the lexer to ask the parent parser for context,
-    which simplifies things somewhat.
-    But basically,
-    combining both line-structured and block-structured loing in the same lexer turns its
-    code into a rats nest.
+    Combining both line-structured and block-structured logic in the same lexer
+    usually turns the lexer's code into a rats nest.
     </p>
     <p>Calling a combinator every time
     a line-structured block is encountered eliminates the problem.
-    The main lexer can assume block-structured code,
+    The main lexer can assume that the code is block-structured,
     and all the line-by-line logic can go into combinators.
     </p>
     <h2>Technique: Non-determinism</h2>
@@ -441,7 +443,6 @@ with a new protocol stack, and a new VM called Nock.
     <p>
     It is non-deterministic because there is a case
     where it tracks two possible parses at once.
-    it may keep more than one possibility in mind.
     The comment linter cannot immediately distinguish between
     the prefix of the upper riser of a staircase,
     and the prefix of a sequence of inter-comments.
@@ -449,7 +450,8 @@ with a new protocol stack, and a new VM called Nock.
     the parser knows it has found a staircase,
     but not until then.
     And if the parse is of an inter-comment sequence,
-    the comment linter will not know until the end of the sequence.
+    the comment linter will
+    not be sure of this until the end of the sequence.
     </p>
     <h2>Technique: Infinite lookahead</h2>
     <p>
@@ -468,7 +470,7 @@ with a new protocol stack, and a new VM called Nock.
     in other words, infinite lookahead.
     </p>
     <p>Humans deal with infinite lookaheads all the time --
-    natural languages are full of situations that need them.</footnote>
+    natural languages are full of situations that need them.<footnote>
     An example of a requirement for infinite lookahead
     is the sentence "The horse raced past the barn fell".
     Yes, this sentence is not, in fact, infinitely long,
@@ -484,10 +486,7 @@ with a new protocol stack, and a new VM called Nock.
     and only deciding when the evidence comes in.
     </footnote>
     Fortunately, in 1991, Joop Leo published a method that
-    allowed computer algorithms to efficiently emulate human lookahead.
-    Joop's algorithm is complicated,
-    but essentially it keep track of more than one potential parse,
-    efficiently.
+    allows computers to emulate infinite lookahead efficiently.
     Marpa uses Joop's technique.
     </p>
     <p>
@@ -498,7 +497,7 @@ with a new protocol stack, and a new VM called Nock.
     no ordinary comment can be recognized.
     We could implement this in BNF,
     but it is much more elegant to use the Ruby Slippers.<footnote>
-    Ruby Slippers reference</footnote>
+    TODO: Ruby Slippers reference</footnote>
     </p>
     <p>As those already familiar with Marpa may recall,
     the Ruby Slippers are invoked when a Marpa parser finds itself
@@ -560,44 +559,54 @@ with a new protocol stack, and a new VM called Nock.
     <p>On a second level of exception, the current line
     is read as either a <tt>&lt;BlankLine&gt;</tt>,
     or a <tt>&lt;BadComment&gt;</tt>.
-    [ TODO: Point out somewhere that one or other will always
-    be the case. ]
+    We know that every line lexes as either a
+    <tt>&lt;BlankLine&gt;</tt>,
+    or a <tt>&lt;BadComment&gt;</tt> because out comment linter
+    is called as a combinator,
+    and the parent Marpa parser guarantees this.
     </p>
     <h2>Technique: Ambiguity</h2>
     <p>Marpa allows ambiguity,
-    and this can be exploited as a technique.
+    which can be exploited as a technique.
     For example, in a simpler BNF than that we used above,
     it might be ambiguous whether a meta-comment belongs to an <tt>&lt;Interpart&gt;</tt>
     which immediately preceeds it;
     or a <tt>&lt;Prepart&gt;</tt> which immediately follows it.
     We could solve the dilemma by noting that it does not matter -- the
     meta-comment will get reported either way,
-    so picking one of the parses at random will work fine.
+    so picking one of two ambiguous parses at random will work fine.
     </p>
-    <p>For our comment linter, we will make the grammar
-    slightly more complicated,
-    in order to keep it unambiguous.
-    This makes the grammar less elegant,
-    but but avoids the efficiency issues
-    that can be a problem with ambiguity.<footnote>
+    <p>In the comment linter of this post,
+    we decided to keep our parser unambiguous.
+    This means the grammar given above is less elegant
+    than it could be.<footnote>
+    One example of an extra symbol introduced to make the parser
+    unambiguous is <tt>&lt;properPreComment&gt;</tt>,
+    which is used to ensure that a
+    <tt>&lt;prePart&gt;</tt>
+    never begins with a meta-comment.
+    </footnote>
+    But efficiency issues are sometimes a problem with ambiguity
+    and unambiguity often avoids them.<footnote>
     If <tt>n</tt> meta-comments occur between a
     <tt>&lt;Interpart&gt;</tt>
     and a <tt>&lt;Prepart&gt;</tt>, the dividing line is arbitrary,
     so that there are <tt>n+1</tt> parses.
     This will, in theory, make the processing time quadratic.
-    And, in fact, a long sequences of meta-comments might occur
+    And, in fact, long sequences of meta-comments might occur
     between the inter- and pre-comments,
     so the inefficiency might be real.
     </footnote>
     Also, requiring the grammar to be unambiguous allows
-    an additional check on our parsing logic.
+    an additional check that is useful in the development phase.
     In our code we test each parse for ambiguity.
     If we find one, we know that <tt>hoonlint</tt> has a coding error.
     </p>
     <p>Some of the work in keeping 
     this parser unambiguous is delegated to the lexer.
-    We used our Ruby Slippers "exception mechanism" to
-    guarantee that no line is, for example,
+    For example,
+    we used our Ruby Slippers "exception mechanism" to
+    guarantee that no line is
     both a meta-comment and an inter-comment.<footnote>
     Inter-comments may start on line 1,
     so an ambiguity between an inter-comment and
@@ -612,9 +621,8 @@ with a new protocol stack, and a new VM called Nock.
     The code is available on Github</a>
     in unit test form.
     [ TODO: Change link to gh-pages branch ]
-    For those who want to see comment-linter combinator in a context,
-    a version of the code,
-    embedded in its application, <tt>hoonlint</tt>,
+    For those who want to see the comment-linter combinator in a context,
+    a version of the code embedded in <tt>hoonlint</tt>
     in also on Github.<footnote>
     For the <tt>hoonlint</tt>-embedded form,
     the Marpa grammar is
@@ -629,7 +637,7 @@ with a new protocol stack, and a new VM called Nock.
     In this pre-alpha embedded form, documentation and unit testing are
     lacking,
     so that this pre-alpha embedded form will mainly be useful
-    for those who want to take a glance at the
+    for those who want to take a quick look at the
     comment linter in a context.
     </footnote>
     <h2>Comments on this blog post, etc.</h2>
