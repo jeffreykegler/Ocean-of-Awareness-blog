@@ -7,4 +7,5 @@ all:
 
 dev:
 	echo ':: hi' | perl vgap.pl --stdin --inter 1
+	prove vgap.pl
 
