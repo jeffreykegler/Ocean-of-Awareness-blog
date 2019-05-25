@@ -394,14 +394,14 @@ with a new protocol stack.
     it is a technique that can be oversold.
     Combinators have been much talked about in the functional programming
     literature<footnote>
-    Refer to timeline.
+    TODO: Refer to timeline.
     </footnote>,
     but, GHC, the flagship functional programming
     language parser,
     does not use combinators to parse itself --
     instead it uses a parser in the yacc lineage.<footnote><a
     href="https://github.com/ghc/ghc/blob/master/compiler/parser/Parser.y">This
-    is the LALR grammar from GHC's Github mirror.</a>
+    is the LALR grammar for GHC</a>, from GHC's Github mirror.
     </footnote>
     As a parsing technique on its own,
     the use of combinators is simply another way of packaging recursive
@@ -553,7 +553,7 @@ with a new protocol stack.
     </p>
     <p>This is perfect for the Ruby Slippers.
     If an "exception" occurs,
-    as described for meta-comment,
+    as above described for meta-comments,
     but no meta-comment is available,
     we treat it as a second level exception.
     </p>
@@ -565,18 +565,18 @@ with a new protocol stack.
     <li>The line read is a blank line (all whitespace).
     </li>
     </ul>
-    <p>On a second level of exception, the current line
-    is read as either a <tt>&lt;BlankLine&gt;</tt>,
+    <p>On the second exception level, the current line
+    will be read as either a <tt>&lt;BlankLine&gt;</tt>,
     or a <tt>&lt;BadComment&gt;</tt>.
-    We know that every line lexes as either a
-    <tt>&lt;BlankLine&gt;</tt>,
-    or a <tt>&lt;BadComment&gt;</tt> because out comment linter
+    We know that every line must lex as either a
+    <tt>&lt;BlankLine&gt;</tt>
+    or a <tt>&lt;BadComment&gt;</tt> because our comment linter
     is called as a combinator,
     and the parent Marpa parser guarantees this.
     </p>
     <h2>Technique: Ambiguity</h2>
     <p>Marpa allows ambiguity,
-    which can be exploited as a technique.
+    which could have been exploited as a technique.
     For example, in a simpler BNF than that we used above,
     it might be ambiguous whether a meta-comment belongs to an <tt>&lt;Interpart&gt;</tt>
     which immediately preceeds it;
@@ -590,9 +590,9 @@ with a new protocol stack.
     This means the grammar given above is less elegant
     than it could be.<footnote>
     One example of an extra symbol introduced to make the parser
-    unambiguous is <tt>&lt;properPreComment&gt;</tt>,
+    unambiguous is <tt>&lt;ProperPreComment&gt;</tt>,
     which is used to ensure that a
-    <tt>&lt;prePart&gt;</tt>
+    <tt>&lt;PrePart&gt;</tt>
     never begins with a meta-comment.
     </footnote>
     But efficiency issues are sometimes a problem with ambiguity
@@ -639,7 +639,7 @@ with a new protocol stack.
     and the code is
     <a href="https://github.com/jeffreykegler/yahc/blob/714157124b46492e13968c786e400276017a3b85/Lint/Policy/Test/Whitespace.pm#L341">
     here</a>.
-    These are permalinks.
+    These are snapshots -- permalinks.
     The application is under development,
     and probably will change considerably.
     In this pre-alpha embedded form, documentation and unit testing are

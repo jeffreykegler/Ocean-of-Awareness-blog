@@ -20,13 +20,14 @@ my $stdin_flag = 1;
 my $interOffset;
 my $preOffset;
 my $getopt_result = Getopt::Long::GetOptions(
-    'stdin!' => \$stdin_flag,
+    'stdin!'  => \$stdin_flag,
     'inter:i' => \$interOffset,
-    'pre:i' => \$preOffset,
+    'pre:i'   => \$preOffset,
 );
 
 usage() if not $getopt_result;
 die "interOffset required" if not defined $interOffset;
+
 # convert to 1-based
 $interOffset -= 1;
 $preOffset -= 1 if defined $preOffset;
@@ -36,36 +37,52 @@ if ($stdin_flag) {
     $input = do { local $INPUT_RECORD_SEPARATOR = undef; <> };
 }
 
-my @lineToPos = ( -1, 0 );
-{
-    my $lastPos = 0;
-  LINE: while (1) {
-        my $newPos = index $input, "\n", $lastPos;
-
-        # say $newPos;
-        last LINE if $newPos < 0;
-        $lastPos = $newPos + 1;
-        push @lineToPos, $lastPos;
-    }
-}
-# say STDERR join " ", __FILE__, __LINE__, Data::Dumper::Dumper(\@lineToPos);
-
-sub FakeInstance::literalLine {
-    my ( $instance, $lineNum ) = @_;
-    my $lineToPos     = $instance->{lineToPos};
-    my $startPos = $lineToPos->[$lineNum];
-    my $line =
-      $instance->literal( $startPos,
-        ( $lineToPos->[ $lineNum + 1 ] - $startPos ) );
-    return $line;
-}
-
-sub FakeInstance::literal {
-    my ( $instance, $start, $length ) = @_;
-    my $pSource = $instance->{pHoonSource};
-    return '' if $start >= length ${$pSource};
-    return substr ${$pSource}, $start, $length;
-}
+# Test format is input, output, inter-comment, pre-comment
+# indents are 0-based
+my @default_tests = (
+    [
+        <<'EOS'
+    :: pre-comment 1
+    [20 (mug bod)]
+EOS
+        , [], 4
+    ],
+    [
+        <<'EOS'
+  :~  [3 7]
+  ::
+      :: pre-comment 1
+      [20 (mug bod)]
+  ::
+      :: pre-comment 2
+      [2 yax]
+  ::
+      :: pre-comment 3
+      [2 qax]
+::::
+::    :: pre-comment 3
+::    [4 qax]
+  ::
+      :: pre-comment 4
+      [5 tay]
+EOS
+        , [], 2, 6
+    ],
+    [
+        <<'EOS'
+::                                                      ::
+::::  3e: AES encryption  (XX removed)                  ::
+  ::                                                    ::
+  ::
+::                                                      ::
+::::  3f: scrambling                                    ::
+  ::                                                    ::
+  ::    ob                                              ::
+  ::
+EOS
+        , [], 0
+    ],
+);
 
 my $gapCommentDSL = <<'END_OF_DSL';
 :start ::= gapComments
@@ -115,67 +132,37 @@ UpperRiser ~ unicorn
 
 END_OF_DSL
 
-my $gapGrammar = Marpa::R2::Scanless::G->new(
-    {   action_object  => 'My_Actions',
-        default_action => 'do_arg0',
-        source         => \$gapCommentDSL,
-    }
-);
-
-my $recce = Marpa::R2::Scanless::R->new( { grammar => $gapGrammar } );
-
-my $self = bless { grammar => $gapGrammar }, 'My_Actions';
-$self->{recce}        = $recce;
-$self->{symbol_table} = {};
-local $My_Actions::SELF = $self;
-
-if ( not defined eval { $recce->read( \$input, 0, 0 ); 1 } ) {
-
-    # Add last expression found, and rethrow
-    my $eval_error = $EVAL_ERROR;
-    chomp $eval_error;
-    die $eval_error, "\n";
-} ## end if ( not defined eval { $recce->read($p_string); 1 })
-
-my $fakedInstance = bless {
-       pHoonSource => \$input,
-       lineToPos => \@lineToPos,
-}, 'FakeInstance';
-
-my $fakedPolicy = bless {
-    lint => $fakedInstance,
-    gapGrammar => $gapGrammar,
-}, 'FakePolicy';
-
-my $mistakes = checkGapComments($fakedPolicy, 1, ($#lineToPos-1), $interOffset, $preOffset);
-say Data::Dumper::Dumper($mistakes);
+my $gapGrammar = Marpa::R2::Scanless::G->new( { source => \$gapCommentDSL } );
 
 sub checkGapComments {
     my ( $policy, $firstLine, $lastLine, $interOffset, $preOffset ) = @_;
-    # say STDERR join " ", __FILE__, __LINE__,  $policy, $firstLine, $lastLine, $interOffset, $preOffset;
+
+# say STDERR join " ", __FILE__, __LINE__,  $policy, $firstLine, $lastLine, $interOffset, $preOffset;
     return if $lastLine < $firstLine;
-    my $instance = $policy->{lint};
-    my $pSource = $instance->{pHoonSource};
+    my $instance  = $policy->{lint};
+    my $pSource   = $instance->{pHoonSource};
     my $lineToPos = $instance->{lineToPos};
-    if (defined $preOffset and $preOffset == $interOffset) {
-      $preOffset = undef; # Do not allow pre-offset to be equal to inter-offset
+    if ( defined $preOffset and $preOffset == $interOffset ) {
+        $preOffset =
+          undef;    # Do not allow pre-offset to be equal to inter-offset
     }
     my @mistakes = ();
 
-    my $grammar = $policy->{gapGrammar};
-    my $recce = Marpa::R2::Scanless::R->new( { grammar => $grammar } );
+    my $grammar  = $policy->{gapGrammar};
+    my $recce    = Marpa::R2::Scanless::R->new( { grammar => $grammar } );
     my $startPos = $lineToPos->[$firstLine];
-    my $input = $instance->literal( $startPos,
+    my $input    = $instance->literal( $startPos,
         ( $lineToPos->[ $lastLine + 1 ] - $startPos ) );
 
-        # say STDERR join ' ', __FILE__, __LINE__, "$firstLine-$lastLine", qq{"$input"};
+# say STDERR join ' ', __FILE__, __LINE__, "$firstLine-$lastLine", qq{"$input"};
 
     if ( not defined eval { $recce->read( $pSource, $startPos, 0 ); 1 } ) {
 
-    my $eval_error = $EVAL_ERROR;
-    chomp $eval_error;
-    say STDERR join ' ', __FILE__, __LINE__, "$firstLine-$lastLine", qq{"$input"};
-    die $eval_error, "\n";
+        my $eval_error = $EVAL_ERROR;
+        chomp $eval_error;
+        say STDERR join ' ', __FILE__, __LINE__, "$firstLine-$lastLine",
+          qq{"$input"};
+        die $eval_error, "\n";
     }
 
     my $lineNum = 0;
@@ -190,8 +177,8 @@ sub checkGapComments {
 
             # say Data::Dumper::Dumper($expected);
             my $tier1_ok;
-            my @tier2 = ();
-        my @failedOffsets = ();
+            my @tier2         = ();
+            my @failedOffsets = ();
           TIER1: for my $terminal ( @{$expected} ) {
 
                 # say STDERR join ' ', __FILE__, __LINE__, $terminal;
@@ -207,9 +194,9 @@ sub checkGapComments {
                         # say STDERR join ' ', __FILE__, __LINE__;
                         $recce->lexeme_alternative( $terminal, $line );
                         $tier1_ok = 1;
-            next TIER1;
+                        next TIER1;
                     }
-            push @failedOffsets, $interOffset;
+                    push @failedOffsets, $interOffset;
                     next TIER1;
                 }
                 if ( $terminal eq 'PreComment' ) {
@@ -224,10 +211,10 @@ sub checkGapComments {
                         # say STDERR join ' ', __FILE__, __LINE__;
                         $recce->lexeme_alternative( $terminal, $line );
                         $tier1_ok = 1;
-            next TIER1;
+                        next TIER1;
                     }
-            push @failedOffsets, $preOffset;
-            next TIER1;
+                    push @failedOffsets, $preOffset;
+                    next TIER1;
                 }
                 if ( $terminal eq 'Tread' ) {
                     $line =~ m/^ [ ]* ([:][:][:][:][ \n]) /x;
@@ -240,9 +227,9 @@ sub checkGapComments {
                         # say STDERR join ' ', __FILE__, __LINE__;
                         $recce->lexeme_alternative( $terminal, $line );
                         $tier1_ok = 1;
-            next TIER1;
+                        next TIER1;
                     }
-            push @failedOffsets, $interOffset;
+                    push @failedOffsets, $interOffset;
                     next TIER1;
                 }
                 if ( $terminal eq 'UpperRiser' ) {
@@ -256,9 +243,9 @@ sub checkGapComments {
                         # say STDERR join ' ', __FILE__, __LINE__;
                         $recce->lexeme_alternative( $terminal, $line );
                         $tier1_ok = 1;
-            next TIER1;
+                        next TIER1;
                     }
-            push @failedOffsets, $interOffset;
+                    push @failedOffsets, $interOffset;
                     next TIER1;
                 }
                 if ( $terminal eq 'LowerRiser' ) {
@@ -272,9 +259,9 @@ sub checkGapComments {
                         # say STDERR join ' ', __FILE__, __LINE__;
                         $recce->lexeme_alternative( $terminal, $line );
                         $tier1_ok = 1;
-            next TIER1;
+                        next TIER1;
                     }
-            push @failedOffsets, $interOffset;
+                    push @failedOffsets, $interOffset;
                     next TIER1;
                 }
                 push @tier2, $terminal;
@@ -296,14 +283,15 @@ sub checkGapComments {
                   # anything in this tier terminates the finding of alternatives
                         last FIND_ALTERNATIVES;
                     }
-            push @failedOffsets, $interOffset;
+                    push @failedOffsets, $interOffset;
                 }
                 push @tier3, $terminal;
             }
 
           TIER3: for my $terminal (@tier3) {
                 if ( $terminal eq 'BlankLine' ) {
-                    # say STDERR join ' ', __FILE__, __LINE__, $lineNum, qq{"$line"};
+
+               # say STDERR join ' ', __FILE__, __LINE__, $lineNum, qq{"$line"};
                     if ( $line =~ m/\A [\n ]* \z/xms ) {
                         $recce->lexeme_alternative( $terminal, $line );
 
@@ -317,25 +305,35 @@ sub checkGapComments {
                         $recce->lexeme_alternative( $terminal, $line );
                         my $commentOffset = $LAST_MATCH_START[1];
 
-            my $closestHiOffset;
-            my $closestLoOffset;
-            # say STDERR Data::Dumper::Dumper(\@failedOffsets);
-            for my $failedOffset (@failedOffsets) {
-                if ($failedOffset > $commentOffset) {
-                    if (not defined $closestHiOffset or $failedOffset < $closestHiOffset) {
-                    $closestHiOffset = $failedOffset;
-                }
-                }
-                if ($failedOffset < $commentOffset) {
-                    if (not defined $closestLoOffset or $failedOffset > $closestLoOffset) {
-                    $closestLoOffset = $failedOffset;
-                }
-                }
-            }
-            my $closestOffset = ($closestLoOffset // $closestHiOffset);
-            # say STDERR join ' ', __LINE__, 'vgap-bad-comment', $lineNum, $commentOffset, $closestOffset ;
+                        my $closestHiOffset;
+                        my $closestLoOffset;
+
+                        # say STDERR Data::Dumper::Dumper(\@failedOffsets);
+                        for my $failedOffset (@failedOffsets) {
+                            if ( $failedOffset > $commentOffset ) {
+                                if ( not defined $closestHiOffset
+                                    or $failedOffset < $closestHiOffset )
+                                {
+                                    $closestHiOffset = $failedOffset;
+                                }
+                            }
+                            if ( $failedOffset < $commentOffset ) {
+                                if ( not defined $closestLoOffset
+                                    or $failedOffset > $closestLoOffset )
+                                {
+                                    $closestLoOffset = $failedOffset;
+                                }
+                            }
+                        }
+                        my $closestOffset =
+                          ( $closestLoOffset // $closestHiOffset );
+
+# say STDERR join ' ', __LINE__, 'vgap-bad-comment', $lineNum, $commentOffset, $closestOffset ;
                         push @mistakes,
-                          [ 'vgap-bad-comment', $lineNum, $commentOffset, $closestOffset ];
+                          [
+                            'vgap-bad-comment', $lineNum,
+                            $commentOffset,     $closestOffset
+                          ];
 
                   # anything in this tier terminates the finding of alternatives
                         last FIND_ALTERNATIVES;
@@ -356,40 +354,83 @@ sub checkGapComments {
 
             my $eval_error = $EVAL_ERROR;
             chomp $eval_error;
+
             # say STDERR join ' ', __FILE__, __LINE__, "$firstLine-$lastLine",
-              # qq{"$input"};
+            # qq{"$input"};
             die $eval_error, "\n";
         }
     }
     my $metric = $recce->ambiguity_metric();
-    if ($metric != 1) {
-       my $issue = $metric ? "ambiguous" : "no parse";
-    say STDERR $recce->show_progress(0, -1);
-    say STDERR $input;
-    # say STDERR join " ", __FILE__, __LINE__,  $policy, $firstLine, $lastLine, $interOffset, $preOffset;
-    die "Bad gap combinator parse: $issue\n";
+    if ( $metric != 1 ) {
+        my $issue = $metric ? "ambiguous" : "no parse";
+        say STDERR $recce->show_progress( 0, -1 );
+        say STDERR $input;
+
+# say STDERR join " ", __FILE__, __LINE__,  $policy, $firstLine, $lastLine, $interOffset, $preOffset;
+        die "Bad gap combinator parse: $issue\n";
     }
     return \@mistakes;
 }
 
+{
+    my @lineToPos = ( -1, 0 );
+    {
+        my $lastPos = 0;
+      LINE: while (1) {
+            my $newPos = index $input, "\n", $lastPos;
 
-# my $value_ref = $recce->value();
-# if ( not defined $value_ref ) {
-# die $self->show_last_expression(), "\n",
-# "No parse was found, after reading the entire input\n";
-# }
-# return ${$value_ref}, $self->{symbol_table};
+            # say $newPos;
+            last LINE if $newPos < 0;
+            $lastPos = $newPos + 1;
+            push @lineToPos, $lastPos;
+        }
+    }
 
-package My_Actions;
-our $SELF;
-sub new { return $SELF }
+   # say STDERR join " ", __FILE__, __LINE__, Data::Dumper::Dumper(\@lineToPos);
 
-sub do_negate {
-    return -$_[2];
+    sub FakeInstance::literalLine {
+        my ( $instance, $lineNum ) = @_;
+        my $lineToPos = $instance->{lineToPos};
+        my $startPos  = $lineToPos->[$lineNum];
+        my $line =
+          $instance->literal( $startPos,
+            ( $lineToPos->[ $lineNum + 1 ] - $startPos ) );
+        return $line;
+    }
+
+    sub FakeInstance::literal {
+        my ( $instance, $start, $length ) = @_;
+        my $pSource = $instance->{pHoonSource};
+        return '' if $start >= length ${$pSource};
+        return substr ${$pSource}, $start, $length;
+    }
+
+    my $recce = Marpa::R2::Scanless::R->new( { grammar => $gapGrammar } );
+
+    if ( not defined eval { $recce->read( \$input, 0, 0 ); 1 } ) {
+
+        # Add last expression found, and rethrow
+        my $eval_error = $EVAL_ERROR;
+        chomp $eval_error;
+        die $eval_error, "\n";
+    } ## end if ( not defined eval { $recce->read($p_string); 1 })
+
+    my $fakedInstance = bless {
+        pHoonSource => \$input,
+        lineToPos   => \@lineToPos,
+      },
+      'FakeInstance';
+
+    my $fakedPolicy = bless {
+        lint       => $fakedInstance,
+        gapGrammar => $gapGrammar,
+      },
+      'FakePolicy';
+
+    my $mistakes = checkGapComments( $fakedPolicy, 1, ( $#lineToPos - 1 ),
+        $interOffset, $preOffset );
+    say Data::Dumper::Dumper($mistakes);
+
 }
-
-sub do_arg0 { return $_[1]; }
-sub do_arg1 { return $_[2]; }
-sub do_arg2 { return $_[3]; }
 
 # vim: expandtab shiftwidth=4:
