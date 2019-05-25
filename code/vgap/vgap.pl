@@ -36,28 +36,28 @@ my @default_tests = (
 # EOS
 #         , [], 4
 #     ],
-    [
-        <<'EOS'
-  :~  [3 7]
-  ::
-      :: pre-comment 1
-      [20 (mug bod)]
-  ::
-      :: pre-comment 2
-      [2 yax]
-  ::
-      :: pre-comment 3
-      [2 qax]
-::::
-::    :: pre-comment 3
-::    [4 qax]
-  ::
-      :: pre-comment 4
-      [5 tay]
-  ==
-EOS
-        , [], 2, 6
-    ],
+#     [
+#         <<'EOS'
+#   :~  [3 7]
+#   ::
+#       :: pre-comment 1
+#       [20 (mug bod)]
+#   ::
+#       :: pre-comment 2
+#       [2 yax]
+#   ::
+#       :: pre-comment 3
+#       [2 qax]
+# ::::
+# ::    :: pre-comment 3
+# ::    [4 qax]
+#   ::
+#       :: pre-comment 4
+#       [5 tay]
+#   ==
+# EOS
+#         , [], 2, 6
+#     ],
     [
         <<'EOS'
 ::                                                      ::
@@ -161,13 +161,13 @@ sub checkGapComments {
     my $input    = $instance->literal( $startPos,
         ( $lineToPos->[ $lastLine + 1 ] - $startPos ) );
 
-say STDERR join ' ', __FILE__, __LINE__, "$firstLine-$lastLine", qq{"$input"};
+# say STDERR join ' ', __FILE__, __LINE__, "$firstLine-$lastLine", qq{"$input"};
 
     if ( not defined eval { $recce->read( $pSource, $startPos, 0 ); 1 } ) {
 
         my $eval_error = $EVAL_ERROR;
         chomp $eval_error;
-        say STDERR join ' ', __FILE__, __LINE__, "$firstLine-$lastLine",
+        # say STDERR join ' ', __FILE__, __LINE__, "$firstLine-$lastLine",
           qq{"$input"};
         die $eval_error, "\n";
     }
@@ -175,14 +175,14 @@ say STDERR join ' ', __FILE__, __LINE__, "$firstLine-$lastLine", qq{"$input"};
     my $lineNum = 0;
   LINE:
     for ( my $lineNum = $firstLine ; $lineNum <= $lastLine ; $lineNum++ ) {
-say STDERR join ' ', __FILE__, __LINE__;
+# say STDERR join ' ', __FILE__, __LINE__;
         my $line = $instance->literalLine($lineNum);
 
-        say STDERR join ' ', __FILE__, __LINE__, $lineNum, qq{"$line"};
+        # say STDERR join ' ', __FILE__, __LINE__, $lineNum, qq{"$line"};
 
       FIND_ALTERNATIVES: {
             my $expected = $recce->terminals_expected();
-say STDERR join ' ', __FILE__, __LINE__;
+# say STDERR join ' ', __FILE__, __LINE__;
 
             # say Data::Dumper::Dumper($expected);
             my $tier1_ok;
@@ -359,7 +359,7 @@ say STDERR join ' ', __FILE__, __LINE__;
                 ( $lineToPos->[ $lineNum + 1 ] - $startPos ) );
             1;
         };
-say STDERR join ' ', __FILE__, __LINE__, Data::Dumper::Dumper($lineToPos);
+# say STDERR join ' ', __FILE__, __LINE__, Data::Dumper::Dumper($lineToPos);
         if ( not $eval_ok ) {
 
             my $eval_error = $EVAL_ERROR;
@@ -370,9 +370,9 @@ say STDERR join ' ', __FILE__, __LINE__, Data::Dumper::Dumper($lineToPos);
             die $eval_error, "\n";
         }
     }
-say STDERR join ' ', __FILE__, __LINE__;
+# say STDERR join ' ', __FILE__, __LINE__;
     my $metric = $recce->ambiguity_metric();
-say STDERR join ' ', __FILE__, __LINE__;
+# say STDERR join ' ', __FILE__, __LINE__;
     if ( $metric != 1 ) {
         my $issue = $metric ? "ambiguous" : "no parse";
         say STDERR $recce->show_progress( 0, -1 );
