@@ -16,27 +16,16 @@ By default, runs a test.
 END_OF_USAGE_MESSAGE
 } ## end sub usage
 
-my $stdin_flag = 1;
-my $interOffset;
-my $preOffset;
+my $stdin_flag = 0;
+my $argInterOffset;
+my $argPreOffset;
 my $getopt_result = Getopt::Long::GetOptions(
     'stdin!'  => \$stdin_flag,
-    'inter:i' => \$interOffset,
-    'pre:i'   => \$preOffset,
+    'inter:i' => \$argInterOffset,
+    'pre:i'   => \$argPreOffset,
 );
 
 usage() if not $getopt_result;
-die "interOffset required" if not defined $interOffset;
-
-# convert to 1-based
-$interOffset -= 1;
-$preOffset -= 1 if defined $preOffset;
-
-my $input;
-if ($stdin_flag) {
-    $input = do { local $INPUT_RECORD_SEPARATOR = undef; <> };
-}
-
 # Test format is input, output, inter-comment, pre-comment
 # indents are 0-based
 my @default_tests = (
@@ -83,6 +72,23 @@ EOS
         , [], 0
     ],
 );
+
+
+my @tests = ();;
+
+my $input;
+if ($stdin_flag) {
+    $input = do { local $INPUT_RECORD_SEPARATOR = undef; <> };
+    die "interOffset required" if not defined $argInterOffset;
+
+    # convert to 1-based
+    $argInterOffset -= 1;
+    $argPreOffset -= 1 if defined $argPreOffset;
+
+    push @tests, [$input, [], $argInterOffset, $argPreOffset];
+}
+
+@tests = @default_tests if not @tests;
 
 my $gapCommentDSL = <<'END_OF_DSL';
 :start ::= gapComments
@@ -372,7 +378,8 @@ sub checkGapComments {
     return \@mistakes;
 }
 
-{
+for my $test (@tests) {
+    my ($input, $output, $interOffset, $preOffset) = @{$test};
     my @lineToPos = ( -1, 0 );
     {
         my $lastPos = 0;

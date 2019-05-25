@@ -6,5 +6,5 @@ all:
 	echo NYI
 
 dev:
-	echo ':: hi' | perl vgap.pl --inter 1
+	echo ':: hi' | perl vgap.pl --stdin --inter 1
 
