@@ -29,13 +29,13 @@ usage() if not $getopt_result;
 # Test format is input, output, inter-comment, pre-comment
 # indents are 0-based
 my @default_tests = (
-    [
-        <<'EOS'
-    :: pre-comment 1
-    [20 (mug bod)]
-EOS
-        , [], 4
-    ],
+#     [
+#         <<'EOS'
+#     :: pre-comment 1
+#     [20 (mug bod)]
+# EOS
+#         , [], 4
+#     ],
     [
         <<'EOS'
   :~  [3 7]
@@ -54,6 +54,7 @@ EOS
   ::
       :: pre-comment 4
       [5 tay]
+  ==
 EOS
         , [], 2, 6
     ],
@@ -160,7 +161,7 @@ sub checkGapComments {
     my $input    = $instance->literal( $startPos,
         ( $lineToPos->[ $lastLine + 1 ] - $startPos ) );
 
-# say STDERR join ' ', __FILE__, __LINE__, "$firstLine-$lastLine", qq{"$input"};
+say STDERR join ' ', __FILE__, __LINE__, "$firstLine-$lastLine", qq{"$input"};
 
     if ( not defined eval { $recce->read( $pSource, $startPos, 0 ); 1 } ) {
 
@@ -174,12 +175,14 @@ sub checkGapComments {
     my $lineNum = 0;
   LINE:
     for ( my $lineNum = $firstLine ; $lineNum <= $lastLine ; $lineNum++ ) {
+say STDERR join ' ', __FILE__, __LINE__;
         my $line = $instance->literalLine($lineNum);
 
-        # say STDERR join ' ', __FILE__, __LINE__, $lineNum, qq{"$line"};
+        say STDERR join ' ', __FILE__, __LINE__, $lineNum, qq{"$line"};
 
       FIND_ALTERNATIVES: {
             my $expected = $recce->terminals_expected();
+say STDERR join ' ', __FILE__, __LINE__;
 
             # say Data::Dumper::Dumper($expected);
             my $tier1_ok;
@@ -356,6 +359,7 @@ sub checkGapComments {
                 ( $lineToPos->[ $lineNum + 1 ] - $startPos ) );
             1;
         };
+say STDERR join ' ', __FILE__, __LINE__, Data::Dumper::Dumper($lineToPos);
         if ( not $eval_ok ) {
 
             my $eval_error = $EVAL_ERROR;
@@ -366,7 +370,9 @@ sub checkGapComments {
             die $eval_error, "\n";
         }
     }
+say STDERR join ' ', __FILE__, __LINE__;
     my $metric = $recce->ambiguity_metric();
+say STDERR join ' ', __FILE__, __LINE__;
     if ( $metric != 1 ) {
         my $issue = $metric ? "ambiguous" : "no parse";
         say STDERR $recce->show_progress( 0, -1 );
@@ -380,6 +386,7 @@ sub checkGapComments {
 
 for my $test (@tests) {
     my ($input, $output, $interOffset, $preOffset) = @{$test};
+    say STDERR $input;
     my @lineToPos = ( -1, 0 );
     {
         my $lastPos = 0;
@@ -395,33 +402,6 @@ for my $test (@tests) {
 
    # say STDERR join " ", __FILE__, __LINE__, Data::Dumper::Dumper(\@lineToPos);
 
-    sub FakeInstance::literalLine {
-        my ( $instance, $lineNum ) = @_;
-        my $lineToPos = $instance->{lineToPos};
-        my $startPos  = $lineToPos->[$lineNum];
-        my $line =
-          $instance->literal( $startPos,
-            ( $lineToPos->[ $lineNum + 1 ] - $startPos ) );
-        return $line;
-    }
-
-    sub FakeInstance::literal {
-        my ( $instance, $start, $length ) = @_;
-        my $pSource = $instance->{pHoonSource};
-        return '' if $start >= length ${$pSource};
-        return substr ${$pSource}, $start, $length;
-    }
-
-    my $recce = Marpa::R2::Scanless::R->new( { grammar => $gapGrammar } );
-
-    if ( not defined eval { $recce->read( \$input, 0, 0 ); 1 } ) {
-
-        # Add last expression found, and rethrow
-        my $eval_error = $EVAL_ERROR;
-        chomp $eval_error;
-        die $eval_error, "\n";
-    } ## end if ( not defined eval { $recce->read($p_string); 1 })
-
     my $fakedInstance = bless {
         pHoonSource => \$input,
         lineToPos   => \@lineToPos,
@@ -433,6 +413,33 @@ for my $test (@tests) {
         gapGrammar => $gapGrammar,
       },
       'FakePolicy';
+
+    *FakeInstance::literalLine = sub {
+        my ( $instance, $lineNum ) = @_;
+        my $lineToPos = $instance->{lineToPos};
+        my $startPos  = $lineToPos->[$lineNum];
+        my $line =
+          $instance->literal( $startPos,
+            ( $lineToPos->[ $lineNum + 1 ] - $startPos ) );
+        return $line;
+    };
+
+    *FakeInstance::literal = sub {
+        my ( $instance, $start, $length ) = @_;
+        my $pSource = $instance->{pHoonSource};
+        return '' if $start >= length ${$pSource};
+        return substr ${$pSource}, $start, $length;
+    };
+
+    my $recce = Marpa::R2::Scanless::R->new( { grammar => $gapGrammar } );
+
+    if ( not defined eval { $recce->read( \$input, 0, 0 ); 1 } ) {
+
+        # Add last expression found, and rethrow
+        my $eval_error = $EVAL_ERROR;
+        chomp $eval_error;
+        die $eval_error, "\n";
+    } ## end if ( not defined eval { $recce->read($p_string); 1 })
 
     my $mistakes = checkGapComments( $fakedPolicy, 1, ( $#lineToPos - 1 ),
         $interOffset, $preOffset );
