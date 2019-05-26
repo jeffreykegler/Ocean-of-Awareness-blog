@@ -34,7 +34,20 @@ my $getopt_result = Getopt::Long::GetOptions(
 
 usage() if not $getopt_result;
 
-# Test format is input, output, inter-comment, pre-comment
+# Test format is input, output, inter-comment, pre-comment; where
+#   input is a string containing the comment
+#   output is an array, containing a (possibly zero-length) list of
+#       mistakes
+#   inter-comment is the 0-based inter-comment indent
+#   pre-comment (optional) is the 0-based pre-comment indent
+#
+# The mistakes in the output array are arrays in one of two formats
+#   [ 'vgap-bad-comment', line, column, closest-column ],
+#   [ 'vgap-blank-line', line ]
+# where line is the appropriate 1-based line; column the appropriate
+# 0-based column; and closest-column the closest 0-based column which
+# a "good comment" could have.
+
 # indents are 0-based
 my @default_tests = (
     [
@@ -96,7 +109,7 @@ EOS
 ::
   :: worse comment
 ::
-  :: worser comment
+   :: worser comment
 :: next line is blank
 
 ::::  meta-comment
@@ -109,7 +122,7 @@ EOS
         [
             [ 'vgap-bad-comment', 3, '1', 0 ],
             [ 'vgap-bad-comment', 5, '2', 0 ],
-            [ 'vgap-bad-comment', 7, '2', 0 ],
+            [ 'vgap-bad-comment', 7, '3', 0 ],
             [ 'vgap-blank-line',  9 ]
         ],
         0
