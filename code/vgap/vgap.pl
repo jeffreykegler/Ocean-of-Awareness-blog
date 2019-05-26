@@ -33,6 +33,7 @@ my $getopt_result = Getopt::Long::GetOptions(
 );
 
 usage() if not $getopt_result;
+
 # Test format is input, output, inter-comment, pre-comment
 # indents are 0-based
 my @default_tests = (
@@ -87,10 +88,35 @@ EOS
 EOS
         , [], 0
     ],
+    [
+        <<'EOS'
+::
+::
+ :: bad comment
+::
+  :: worse comment
+::
+  :: worser comment
+:: next line is blank
+
+::::  meta-comment
+::                                                      ::
+::::  tread
+  ::
+  ::
+EOS
+        ,
+        [
+            [ 'vgap-bad-comment', 3, '1', 0 ],
+            [ 'vgap-bad-comment', 5, '2', 0 ],
+            [ 'vgap-bad-comment', 7, '2', 0 ],
+            [ 'vgap-blank-line',  9 ]
+        ],
+        0
+    ],
 );
 
-
-my @tests = ();;
+my @tests = ();
 
 my $input;
 if ($stdinFlag) {
@@ -101,12 +127,12 @@ if ($stdinFlag) {
     $argInterOffset -= 1;
     $argPreOffset -= 1 if defined $argPreOffset;
 
-    push @tests, [$input, [], $argInterOffset, $argPreOffset];
+    push @tests, [ $input, [], $argInterOffset, $argPreOffset ];
 }
 
-if (not @tests) {
+if ( not @tests ) {
     @tests = @default_tests;
-    Test::More::plan tests => 6;
+    Test::More::plan tests => 7;
 }
 
 my $gapCommentDSL = <<'END_OF_DSL';
@@ -374,7 +400,7 @@ sub checkGapComments {
 }
 
 TEST: for my $test (@tests) {
-    my ($input, $output, $interOffset, $preOffset) = @{$test};
+    my ( $input, $output, $interOffset, $preOffset ) = @{$test};
     my @lineToPos = ( -1, 0 );
     {
         my $lastPos = 0;
@@ -435,9 +461,9 @@ TEST: for my $test (@tests) {
         last TEST;
     }
 
-    my $actual = Data::Dumper::Dumper($mistakes);
+    my $actual   = Data::Dumper::Dumper($mistakes);
     my $expected = Data::Dumper::Dumper($output);
-    Test::More::is($actual, $expected);
+    Test::More::is( $actual, $expected );
 
 }
 
