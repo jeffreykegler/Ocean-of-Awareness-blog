@@ -274,7 +274,7 @@ with a new protocol stack.
     to be outside the syntax structure.
     One common use for meta-comments is "commenting out" other syntax.
     In the above display, the meta-comments "comment out"
-    the comment labelled "<tt>pre-comment 4</tt>"
+    the comment labeled "<tt>pre-comment 4</tt>"
     and its associated code.
     </p>
     <h3>Staircase comments</h3>
@@ -492,7 +492,7 @@ with a new protocol stack.
     In isolation, this example sentence may seem unnatural,
     a contrived "garden path".
     But if you imagine the sentence as an answer to the question, "Which horse fell?",
-    expectations are set so that the sentence quite reasonable.
+    expectations are set so that the sentence is quite reasonable.
     And, when the two expectations are balanced,
     humans parse sentences like our "horse raced" example
     by keeping track
@@ -502,7 +502,7 @@ with a new protocol stack.
     Modern language designers labor to avoid the need
     for infinite lookahead,
     but even so
-    cases where it is desireable pop up.<footnote>
+    cases where it is desirable pop up.<footnote>
     See my blog post <a href="http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2018/08/rntz.html">
     "A Haskell challenge"</a>.
     </footnote>
