@@ -166,7 +166,7 @@ with a new protocol stack.
     <li>Indirectly, using
     assembler or some higher-level language, like C.
     Once these indirect methods existed, they
-    became the most common way to create machine language.
+    rapidly took over as the most common way to create machine language.
     </li>
     </ul>
     Like traditional
@@ -228,10 +228,10 @@ with a new protocol stack.
     </tt></pre>
     <p>
     <h3>Inter-comments</h3>
-    Hoon multi-lint comments may also
+    Hoon multi-line comments may also
     contain "inter-comments".
     The inter-comments are aligned depending on the syntax.
-    In the above, they are aligned with the "rune" of the enclosing sequence.
+    In the display below, the inter-comments are aligned with the "rune" of the enclosing sequence.
     A "rune" is Hoon's rough equivalent of a "keyword".
     Runes are always digraphs of special ASCII characters.
     The rune in the following code is
@@ -251,10 +251,10 @@ with a new protocol stack.
 	  :: pre-comment 3
 	  [2 qax]
     ::::
-    ::    :: pre-comment 3
+    ::    :: pre-comment 4
     ::    [4 qax]
       ::
-	  :: pre-comment 4
+	  :: pre-comment 5
 	  [5 tay]
       ==
     </tt></pre>
@@ -273,7 +273,9 @@ with a new protocol stack.
     These are called meta-comments, because they are allowed
     to be outside the syntax structure.
     One common use for meta-comments is "commenting out" other syntax.
-    In the above display, the meta-comments "comment out" a pre-comment.
+    In the above display, the meta-comments "comment out"
+    the comment labelled "<tt>pre-comment 4</tt>"
+    and its associated code.
     </p>
     <h3>Staircase comments</h3>
     <p>Finally, there are "staircase comments", which are used
@@ -335,8 +337,7 @@ with a new protocol stack.
     <b>bad comments</b>.
     A <b>good comment</b> is any comment which is not a bad comment.
     </li>
-    <li>Upper risers, treads and inter-comments can also start at column 1,
-    and a comment is not regarded as a meta-comment
+    <li>A comment is not regarded as a meta-comment
     if it can be parsed as ordinary comment.
     An <b>ordinary comment</b> is any good comment which is
     not a meta-comment.
@@ -388,13 +389,16 @@ with a new protocol stack.
     a multi-line comment.
     Because of the main parser,
     we do not have to worry about confusing comments with
-    Hoon's various strings and in-line text syntaxes.
+    Hoon's various string and in-line text syntaxes.
     </p>
     <p>Note that while combinator parsing is useful,
     it is a technique that can be oversold.
     Combinators have been much talked about in the functional programming
     literature<footnote>
-    TODO: Refer to timeline.
+    For a brief survey of this literature,
+    see the entries from 1990 to 1996
+    in my <a href="https://jeffreykegler.github.io/personal/timeline_v3">
+    "timeline" of parsing history</a>.
     </footnote>,
     but, GHC, the flagship functional programming
     language parser,
@@ -426,14 +430,14 @@ with a new protocol stack.
     After ALGOL, new languages were usually block-structured.
     Blocks can start or end in the middle of a line,
     and can span multiple lines.
-    And, blocks are often nested.
+    And blocks are often nested.
     </p>
     <p>A line-structured language requires its lexer to think in
     terms of lines,
     but this approach is completely useless for a block-structured
     language.
     Combining both line-structured and block-structured logic in the same lexer
-    usually turns the lexer's code into a rats nest.
+    usually turns the lexer's code into a rat's nest.
     </p>
     <p>Calling a combinator every time
     a line-structured block is encountered eliminates the problem.
@@ -473,9 +477,10 @@ with a new protocol stack.
     <li>it successfully reaches the end of the inter-comment sequence,
     in which case it knows the correct parse is an inter-comment sequence.
     </ul>
-    Determining which of these two choices is the correct parse,
-    may require reading an arbitrarily long sequence of tokens --
-    in other words, infinite lookahead.
+    To determine which of these two choices is the correct parse,
+    the linter needs to read
+    an arbitrarily long sequence of tokens --
+    in other words, the linter need to perform infinite lookahead.
     </p>
     <p>Humans deal with infinite lookaheads all the time --
     natural languages are full of situations that need them.<footnote>
@@ -484,18 +489,31 @@ with a new protocol stack.
     Yes, this sentence is not, in fact, infinitely long,
     but the subclause "raced past the barn" could be anything,
     and therefore could be arbitrarily long.
-    In isolation, this example sentence may not seem unnatural,
+    In isolation, this example sentence may seem unnatural,
     a contrived "garden path".
     But if you imagine the sentence as an answer to the question, "Which horse fell?",
-    expectations are set so that the sentence seems very natural.
+    expectations are set so that the sentence quite reasonable.
     And, when the two expectations are balanced,
-    humans parse these in the same way that Marpa does -- by keeping track
-    of both possibilities until the end,
-    and only deciding when the evidence comes in.
+    humans parse sentences like our "horse raced" example
+    by keeping track
+    of both possibilities until it becomes clear which one
+    is the right one.
     </footnote>
+    Modern language designers labor to avoid the need
+    for infinite lookahead,
+    but even so
+    cases where it is desireable pop up.<footnote>
+    See my blog post <a href="http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2018/08/rntz.html">
+    "A Haskell challenge"</a>.
+    </footnote>
+    </p>
+    <p>
     Fortunately, in 1991, Joop Leo published a method that
     allows computers to emulate infinite lookahead efficiently.
     Marpa uses Joop's technique.
+    Joop's algorithm is complex,
+    but the basic idea is to do what humans do in the same circumstance --
+    keep all the possibilities in mind until the evidence comes in.
     </p>
     <p>
     </p>
@@ -505,7 +523,23 @@ with a new protocol stack.
     no ordinary comment can be recognized.
     We could implement this in BNF,
     but it is much more elegant to use the Ruby Slippers.<footnote>
-    TODO: Ruby Slippers reference</footnote>
+        To find out more about Ruby Slippers parsing see the Marpa FAQ,
+        <a href="http://savage.net.au/Perl-modules/html/marpa.faq/faq.html#q122">
+          questions 122</a>
+        and
+        <a href="http://savage.net.au/Perl-modules/html/marpa.faq/faq.html#q123">
+          123</a>;
+        my
+        <a href="file:///mnt2/new/projects/Ocean-of-Awareness-blog/metapages/annotated.html#PARSE_HTML">
+          blog series on parsing HTML</a>;
+	  my recent blog post
+	  <a
+	  href="http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2018/05/combinator2.html">
+	  "Marpa and combinator parsing 2"</a>;
+	  and my much older blog post
+        <a href="http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2011/11/marpa-and-the-ruby-slippers.html">
+          "Marpa and the Ruby Slippers"</a>.
+      </footnote>
     </p>
     <p>As those already familiar with Marpa may recall,
     the Ruby Slippers are invoked when a Marpa parser finds itself
@@ -525,9 +559,10 @@ with a new protocol stack.
     In this case, the answer will always be the same:
     the Marpa parser will be looking for a meta-comment.
     The lexer checks to see if the current line is a comment
-    starting at column 1,
-    and if so, the lexer tells the Marpa parser its wish
-    has come true.
+    starting at column 1.
+    If there is a comment starting at column 1,
+    the lexer tells the Marpa parser its wish has come true --
+    there is a meta-comment.
     </p>
     <p>Another way to view the Ruby Slippers is as a kind of exception
     mechanism for grammars.
@@ -581,9 +616,8 @@ with a new protocol stack.
     it might be ambiguous whether a meta-comment belongs to an <tt>&lt;Interpart&gt;</tt>
     which immediately preceeds it;
     or a <tt>&lt;Prepart&gt;</tt> which immediately follows it.
-    We could solve the dilemma by noting that it does not matter -- the
-    meta-comment will get reported either way,
-    so picking one of two ambiguous parses at random will work fine.
+    We could solve the dilemma by noting that it does not matter,
+    so that picking one of two ambiguous parses at random will work fine.
     </p>
     <p>In the comment linter of this post,
     we decided to keep our parser unambiguous.
@@ -645,8 +679,8 @@ with a new protocol stack.
     In this pre-alpha embedded form, documentation and unit testing are
     lacking,
     so that this pre-alpha embedded form will mainly be useful
-    for those who want to take a quick look at the
-    comment linter in a context.
+    for those who want to take a quick glance at the
+    comment linter in context.
     </footnote>
     <h2>Comments on this blog post, etc.</h2>
     <p>
