@@ -257,8 +257,8 @@ with a new protocol stack.
     A <b>good comment</b> is any comment which is not a bad comment.
     </li>
     <li>A comment is not regarded as a meta-comment
-    if it can be parsed as ordinary comment.
-    An <b>ordinary comment</b> is any good comment which is
+    if it can be parsed as structural comment.
+    An <b>structural comment</b> is any good comment which is
     not a meta-comment.
     </li>
     </ol>
@@ -408,7 +408,7 @@ with a new protocol stack.
     <h2>Technique: the Ruby Slippers</h2>
     <p>Recall that, according to our conventions,
     our parser does not recognize a meta-comment unless
-    no ordinary comment can be recognized.
+    no structural comment can be recognized.
     We could implement this in BNF,
     but it is much more elegant to use the Ruby Slippers.<a id="footnote-9-ref" href="#footnote-9">[9]</a>
     </p>
@@ -437,7 +437,7 @@ with a new protocol stack.
     </p>
     <p>Another way to view the Ruby Slippers is as a kind of exception
     mechanism for grammars.
-    In this application, we treat inability to read an ordinary
+    In this application, we treat inability to read an structural
     comment as an exception.
     When the exception occurs,
     if possible, we read a meta-comment.
