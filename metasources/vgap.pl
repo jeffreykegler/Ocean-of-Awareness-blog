@@ -85,7 +85,8 @@ Infinite Lookahead and Ruby Slippers
     will be a "lint" program for a language called Hoon.
     </p>
     <p>
-    Hoon is part of the Urbit project.
+    Hoon is part of
+    <a href="https://urbit.org/">the Urbit project</a>.
     Urbit is an effort to return control of the Internet
     experience to the individual user.
     (The Urbit community has, generously, been supporting my work on Hoon.)
