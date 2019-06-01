@@ -655,9 +655,10 @@ with a new protocol stack.
     For example,
     we used our Ruby Slippers "exception mechanism" to
     guarantee that no line is
-    both a meta-comment and an inter-comment.<footnote>
-    Inter-comments may start on line 1,
-    so an ambiguity between an inter-comment and
+    both a meta-comment and a structural comment.<footnote>
+    Inter-comments and
+    comments that are part of upper risers may start on line 1,
+    so an ambiguity between a structural and
     a meta-comment is entirely
     possible.
     </footnote>

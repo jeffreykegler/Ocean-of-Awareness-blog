@@ -524,7 +524,7 @@ with a new protocol stack.
     For example,
     we used our Ruby Slippers &quot;exception mechanism&quot; to
     guarantee that no line is
-    both a meta-comment and an inter-comment.&lt;a id=&quot;footnote-12-ref&quot; href=&quot;#footnote-12&quot;&gt;[12]&lt;/a&gt;
+    both a meta-comment and a structural comment.&lt;a id=&quot;footnote-12-ref&quot; href=&quot;#footnote-12&quot;&gt;[12]&lt;/a&gt;
     &lt;/p&gt;
     &lt;h2&gt;Code&lt;/h2&gt;
     &lt;p&gt;This post did not walk the reader through the code.
@@ -643,8 +643,9 @@ In their present form, urbits run on top of Unix and UDP.
     so the inefficiency might be real.
  &lt;a href=&quot;#footnote-11-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
 &lt;p id=&quot;footnote-12&quot;&gt;&lt;b&gt;12.&lt;/b&gt;
-    Inter-comments may start on line 1,
-    so an ambiguity between an inter-comment and
+    Inter-comments and
+    comments that are part of upper risers may start on line 1,
+    so an ambiguity between a structural and
     a meta-comment is entirely
     possible.
  &lt;a href=&quot;#footnote-12-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
