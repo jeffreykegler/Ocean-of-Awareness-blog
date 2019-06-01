@@ -1,5 +1,6 @@
 
 dummy:
+	@echo The main target is '"all"'
 
 all:
 	(cd metasources; make all)

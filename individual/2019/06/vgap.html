@@ -1,67 +1,43 @@
-#!perl
-
-use 5.010;
-use strict;
-use warnings;
-use English qw( -no_match_vars );
-use autodie;
-
-sub usage {
-	my ($message) = @_;
-	die $message, "\nusage: $PROGRAM_NAME";
-}
-
-my $fn_number = 0;
-my @fn_lines = ();
-my @lines = ();
-
-LINE: while ( my $line = <DATA> ) {
-    chomp $line;
-    if ( $line =~ /<footnote>/ ) {
-        do_footnote($line);
-	next LINE;
-    }
-    push @lines, $line;
-}
-
-my $output = join "\n", @lines;
-my $footnotes = join "\n", '<h2>Footnotes</h2>', @fn_lines;
-$output =~ s[<comment>FOOTNOTES HERE</comment>][$footnotes];
-
-say $output;
-
-sub do_footnote {
-    my ($line) = @_;
-    $fn_number++;
-    my $fn_ref = join '-', 'footnote', $fn_number, 'ref';
-    my $fn_href = join '-', 'footnote', $fn_number;
-    my $footnoted_line = $line;
-    $footnoted_line =~ s/<footnote>.*$//;
-    $footnoted_line .= qq{<a id="$fn_ref" href="#$fn_href">[$fn_number]</a>};
-    push @fn_lines, qq{<p id="$fn_href"><b>$fn_number.</b>};
-    $line =~ s/^.*<footnote>//;
-    my $inside_footnote = $line;
-    $inside_footnote =~ s/^.*<footnote>//;
-    push @fn_lines, $inside_footnote if $inside_footnote =~ m/\S/;
-    my $post_footnote = '';
-  FN_LINE: while ( my $fn_line = <DATA> ) {
-        chomp $fn_line;
-        if ( $fn_line =~ m[<\/footnote>] ) {
-	    $post_footnote = $fn_line;
-	    $post_footnote =~ s[^.*<\/footnote>][];
-	    $fn_line =~ s[</footnote>.*$][];
-	    push @fn_lines, $fn_line if $fn_line =~ m/\S/;
-	    push @fn_lines, qq{ <a href="#$fn_ref">&#8617;</a></p>};
-	    last FN_LINE;
-        }
-	push @fn_lines, $fn_line;
-    }
-    $footnoted_line .= $post_footnote;
-    push @lines, $footnoted_line if $footnoted_line =~ m/\S/;
-}
-
-__DATA__
-Infinite Lookahead and Ruby Slippers
+<html>
+<head>
+<link rel="alternate" title="Ocean of Awareness RSS" type="application/rss+xml" title="RSS" href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/index.rss" />
+<title>Infinite Lookahead and Ruby Slippers</title>
+<style type="text/css">
+   strong {font-weight: 700;}
+</style>
+</head>
+<body>
+<div
+  style="color:white;background-color:#38B0C0;padding:1em;clear:left;text-align:center;">
+<h1>Ocean of Awareness</h1>
+</div>
+  <div style="margin:0;padding:10px 30px 10px 10px;width:150px;float:left;border-right:2px solid #38B0C0">
+  <p>
+  <strong>Jeffrey Kegler's blog</strong>
+  about Marpa, his new parsing algorithm,
+    and other topics of interest</p>
+  <p><a href="http://www.jeffreykegler.com/">Jeffrey's personal website</a></p>
+      <p>
+	<a href="https://twitter.com/jeffreykegler" class="twitter-follow-button" data-show-count="false">Follow @jeffreykegler</a>
+      </p>
+      <p style="text-align:center">
+	<!-- Place this code where you want the badge to render. -->
+	<a href="//plus.google.com/101567692867247957860?prsrc=3" rel="publisher" style="text-decoration:none;">
+	<img src="//ssl.gstatic.com/images/icons/gplus-32.png" alt="Google+" style="border:0;width:32px;height:32px;"/></a>
+      </p>
+  <h3>Marpa resources</h3>
+  <p><a href="http://jeffreykegler.github.com/Marpa-web-site/">The Marpa website</a></p>
+  <p>The Ocean of Awareness blog: <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog">home page</a>,
+  <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/metapages/chronological.html">chronological index</a>,
+  and
+  <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/metapages/annotated.html">annotated index</a>.
+  </p>
+  </div>
+  <div style="margin-left:190px;border-left:2px solid #38B0C0;padding:25px;">
+<h3>Sat, 01 Jun 2019</h3>
+<br />
+<center><a name="vgap"> <h2>Infinite Lookahead and Ruby Slippers</h2> </a>
+</center>
 <html>
   <head>
   </head>
@@ -127,9 +103,7 @@ Going forward it may well become a theater of war.
 Urbit seeks to solve these problems with
 hassle-free personal servers, called urbits.
 Urbits are journaling databases, so they are incorruptable.
-To make sure they can be run anywhere in the cloud<footnote>
-In their present form, urbits run on top of Unix and UDP.
-</footnote>,
+To make sure they can be run anywhere in the cloud<a id="footnote-1-ref" href="#footnote-1">[1]</a>,
 they are based on a tiny virtual machine, called Nock.
 To keep urbits compact and secure,
 Urbit takes on code bloat directly --
@@ -144,17 +118,7 @@ with a new protocol stack.
     And the trees can be interpreted as lists,
     giving Nock a resemblance to a LISP VM.
     Nock does its own memory management
-    and takes care of its own garbage collection.<footnote>
-    Garbage collection and arbitrary precision may seem too high-level
-    for something considered a "machine language",
-    but our concepts evolve.
-    The earliest machine languages required programmers to
-    write their own memory caching logic
-    and to create their own floating
-    point representations,
-    both things we now regard as much too low-level
-    to deal with even at the lowest software level.
-    </footnote>
+    and takes care of its own garbage collection.<a id="footnote-2-ref" href="#footnote-2">[2]</a>
     </p>
     <p>
     Traditionally, there are two ways to enter machine language,
@@ -214,13 +178,7 @@ with a new protocol stack.
     <p>
     In the simplest case, a comment must precede the code it
     describes, and be at the same indent.
-    These simple cases are called "pre-comments".<footnote>
-    This post attempts to follow standard Hoon terminology, but
-    for some details of Hoon's whitespace conventions,
-    there is no settled terminology,
-    and I have invented terms as necessary.
-    The term "pre-comment" is one of those inventions.
-    </footnote>
+    These simple cases are called "pre-comments".<a id="footnote-3-ref" href="#footnote-3">[3]</a>
     For example, this code contains a pre-comment:
     <pre><tt>
 	  :: pre-comment 1
@@ -394,19 +352,11 @@ with a new protocol stack.
     <p>Note that while combinator parsing is useful,
     it is a technique that can be oversold.
     Combinators have been much talked about in the functional programming
-    literature<footnote>
-    For a brief survey of this literature,
-    see the entries from 1990 to 1996
-    in my <a href="https://jeffreykegler.github.io/personal/timeline_v3">
-    "timeline" of parsing history</a>.
-    </footnote>,
+    literature<a id="footnote-4-ref" href="#footnote-4">[4]</a>,
     but, GHC, the flagship functional programming
     language parser,
     does not use combinators to parse itself --
-    instead it uses a parser in the yacc lineage.<footnote><a
-    href="https://github.com/ghc/ghc/blob/master/compiler/parser/Parser.y">This
-    is the LALR grammar for GHC</a>, from GHC's Github mirror.
-    </footnote>
+    instead it uses a parser in the yacc lineage.<a id="footnote-5-ref" href="#footnote-5">[5]</a>
     As a parsing technique on its own,
     the use of combinators is simply another way of packaging recursive
     descent with backtracking,
@@ -421,12 +371,7 @@ with a new protocol stack.
     </p>
     <h3>Lexer mismatch</h3>
     <p>The first programming languages, like BASIC and FORTRAN,
-    were line-structured -- designed to be parsed line-by-line.<footnote>
-    This is simplified.
-    There were provisions for line continuation, etc.
-    But, nonetheless, the lexers for these languages worked in
-    terms of lines, and had no true concept of a "block".
-    </footnote>
+    were line-structured -- designed to be parsed line-by-line.<a id="footnote-6-ref" href="#footnote-6">[6]</a>
     After ALGOL, new languages were usually block-structured.
     Blocks can start or end in the middle of a line,
     and can span multiple lines.
@@ -483,29 +428,11 @@ with a new protocol stack.
     in other words, the linter needs to perform infinite lookahead.
     </p>
     <p>Humans deal with infinite lookaheads all the time --
-    natural languages are full of situations that require them.<footnote>
-    An example of a requirement for infinite lookahead
-    is the sentence "The horse raced past the barn fell".
-    Yes, this sentence is not, in fact, infinitely long,
-    but the subclause "raced past the barn" could be anything,
-    and therefore could be arbitrarily long.
-    In isolation, this example sentence may seem unnatural,
-    a contrived "garden path".
-    But if you imagine the sentence as an answer to the question, "Which horse fell?",
-    expectations are set so that the sentence is quite reasonable.
-    And, when the two expectations are balanced,
-    humans parse sentences like our "horse raced" example
-    by keeping track
-    of both possibilities until it becomes clear which one
-    is the right one.
-    </footnote>
+    natural languages are full of situations that require them.<a id="footnote-7-ref" href="#footnote-7">[7]</a>
     Modern language designers labor to avoid the need
     for infinite lookahead,
     but even so
-    cases where it is desirable pop up.<footnote>
-    See my blog post <a href="http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2018/08/rntz.html">
-    "A Haskell challenge"</a>.
-    </footnote>
+    cases where it is desirable pop up.<a id="footnote-8-ref" href="#footnote-8">[8]</a>
     </p>
     <p>
     Fortunately, in 1991, Joop Leo published a method that
@@ -522,24 +449,7 @@ with a new protocol stack.
     our parser does not recognize a meta-comment unless
     no ordinary comment can be recognized.
     We could implement this in BNF,
-    but it is much more elegant to use the Ruby Slippers.<footnote>
-        To find out more about Ruby Slippers parsing see the Marpa FAQ,
-        <a href="http://savage.net.au/Perl-modules/html/marpa.faq/faq.html#q122">
-          questions 122</a>
-        and
-        <a href="http://savage.net.au/Perl-modules/html/marpa.faq/faq.html#q123">
-          123</a>;
-        my
-        <a href="file:///mnt2/new/projects/Ocean-of-Awareness-blog/metapages/annotated.html#PARSE_HTML">
-          blog series on parsing HTML</a>;
-	  my recent blog post
-	  <a
-	  href="http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2018/05/combinator2.html">
-	  "Marpa and combinator parsing 2"</a>;
-	  and my much older blog post
-        <a href="http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2011/11/marpa-and-the-ruby-slippers.html">
-          "Marpa and the Ruby Slippers"</a>.
-      </footnote>
+    but it is much more elegant to use the Ruby Slippers.<a id="footnote-9-ref" href="#footnote-9">[9]</a>
     </p>
     <p>As those already familiar with Marpa may recall,
     the Ruby Slippers are invoked when a Marpa parser finds itself
@@ -622,24 +532,9 @@ with a new protocol stack.
     <p>In the comment linter of this post,
     we decided to keep our parser unambiguous.
     This means the grammar given above is less elegant
-    than it could be.<footnote>
-    One example of an extra symbol introduced to make the parser
-    unambiguous is <tt>&lt;ProperPreComment&gt;</tt>,
-    which is used to ensure that a
-    <tt>&lt;PrePart&gt;</tt>
-    never begins with a meta-comment.
-    </footnote>
+    than it could be.<a id="footnote-10-ref" href="#footnote-10">[10]</a>
     But efficiency issues are sometimes a problem with ambiguity
-    and unambiguity often avoids them.<footnote>
-    If <tt>n</tt> meta-comments occur between a
-    <tt>&lt;Interpart&gt;</tt>
-    and a <tt>&lt;Prepart&gt;</tt>, the dividing line is arbitrary,
-    so that there are <tt>n+1</tt> parses.
-    This will, in theory, make the processing time quadratic.
-    And, in fact, long sequences of meta-comments might occur
-    between the inter- and pre-comments,
-    so the inefficiency might be real.
-    </footnote>
+    and unambiguity often avoids them.<a id="footnote-11-ref" href="#footnote-11">[11]</a>
     </p>
     <p>
     Also, requiring the grammar to be unambiguous allows
@@ -652,12 +547,7 @@ with a new protocol stack.
     For example,
     we used our Ruby Slippers "exception mechanism" to
     guarantee that no line is
-    both a meta-comment and an inter-comment.<footnote>
-    Inter-comments may start on line 1,
-    so an ambiguity between an inter-comment and
-    a meta-comment is entirely
-    possible.
-    </footnote>
+    both a meta-comment and an inter-comment.<a id="footnote-12-ref" href="#footnote-12">[12]</a>
     </p>
     <h2>Code</h2>
     <p>This post did not walk the reader through the code.
@@ -667,7 +557,121 @@ with a new protocol stack.
     in unit test form.
     For those who want to see the comment-linter combinator in a context,
     a version of the code embedded in <tt>hoonlint</tt>
-    in also on Github.<footnote>
+    in also on Github.<a id="footnote-13-ref" href="#footnote-13">[13]</a>
+    <h2>Comments on this blog post, etc.</h2>
+    <p>
+      To learn about Marpa,
+      my Earley/Leo-based parsing project,
+      there is the
+      <a href="http://savage.net.au/Marpa.html">semi-official web site, maintained by Ron Savage</a>.
+      The official, but more limited, Marpa website
+      <a href="http://jeffreykegler.github.io/Marpa-web-site/">is my personal one</a>.
+      Comments on this post can be made in
+      <a href="http://groups.google.com/group/marpa-parser">
+        Marpa's Google group</a>,
+      or on our IRC channel: #marpa at freenode.net.
+    </p>
+    <h2>Footnotes</h2>
+<p id="footnote-1"><b>1.</b>
+In their present form, urbits run on top of Unix and UDP.
+ <a href="#footnote-1-ref">&#8617;</a></p>
+<p id="footnote-2"><b>2.</b>
+    Garbage collection and arbitrary precision may seem too high-level
+    for something considered a "machine language",
+    but our concepts evolve.
+    The earliest machine languages required programmers to
+    write their own memory caching logic
+    and to create their own floating
+    point representations,
+    both things we now regard as much too low-level
+    to deal with even at the lowest software level.
+ <a href="#footnote-2-ref">&#8617;</a></p>
+<p id="footnote-3"><b>3.</b>
+    This post attempts to follow standard Hoon terminology, but
+    for some details of Hoon's whitespace conventions,
+    there is no settled terminology,
+    and I have invented terms as necessary.
+    The term "pre-comment" is one of those inventions.
+ <a href="#footnote-3-ref">&#8617;</a></p>
+<p id="footnote-4"><b>4.</b>
+    For a brief survey of this literature,
+    see the entries from 1990 to 1996
+    in my <a href="https://jeffreykegler.github.io/personal/timeline_v3">
+    "timeline" of parsing history</a>.
+ <a href="#footnote-4-ref">&#8617;</a></p>
+<p id="footnote-5"><b>5.</b>
+<a
+    href="https://github.com/ghc/ghc/blob/master/compiler/parser/Parser.y">This
+    is the LALR grammar for GHC</a>, from GHC's Github mirror.
+ <a href="#footnote-5-ref">&#8617;</a></p>
+<p id="footnote-6"><b>6.</b>
+    This is simplified.
+    There were provisions for line continuation, etc.
+    But, nonetheless, the lexers for these languages worked in
+    terms of lines, and had no true concept of a "block".
+ <a href="#footnote-6-ref">&#8617;</a></p>
+<p id="footnote-7"><b>7.</b>
+    An example of a requirement for infinite lookahead
+    is the sentence "The horse raced past the barn fell".
+    Yes, this sentence is not, in fact, infinitely long,
+    but the subclause "raced past the barn" could be anything,
+    and therefore could be arbitrarily long.
+    In isolation, this example sentence may seem unnatural,
+    a contrived "garden path".
+    But if you imagine the sentence as an answer to the question, "Which horse fell?",
+    expectations are set so that the sentence is quite reasonable.
+    And, when the two expectations are balanced,
+    humans parse sentences like our "horse raced" example
+    by keeping track
+    of both possibilities until it becomes clear which one
+    is the right one.
+ <a href="#footnote-7-ref">&#8617;</a></p>
+<p id="footnote-8"><b>8.</b>
+    See my blog post <a href="http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2018/08/rntz.html">
+    "A Haskell challenge"</a>.
+ <a href="#footnote-8-ref">&#8617;</a></p>
+<p id="footnote-9"><b>9.</b>
+        To find out more about Ruby Slippers parsing see the Marpa FAQ,
+        <a href="http://savage.net.au/Perl-modules/html/marpa.faq/faq.html#q122">
+          questions 122</a>
+        and
+        <a href="http://savage.net.au/Perl-modules/html/marpa.faq/faq.html#q123">
+          123</a>;
+        my
+        <a href="file:///mnt2/new/projects/Ocean-of-Awareness-blog/metapages/annotated.html#PARSE_HTML">
+          blog series on parsing HTML</a>;
+	  my recent blog post
+	  <a
+	  href="http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2018/05/combinator2.html">
+	  "Marpa and combinator parsing 2"</a>;
+	  and my much older blog post
+        <a href="http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2011/11/marpa-and-the-ruby-slippers.html">
+          "Marpa and the Ruby Slippers"</a>.
+ <a href="#footnote-9-ref">&#8617;</a></p>
+<p id="footnote-10"><b>10.</b>
+    One example of an extra symbol introduced to make the parser
+    unambiguous is <tt>&lt;ProperPreComment&gt;</tt>,
+    which is used to ensure that a
+    <tt>&lt;PrePart&gt;</tt>
+    never begins with a meta-comment.
+ <a href="#footnote-10-ref">&#8617;</a></p>
+<p id="footnote-11"><b>11.</b>
+    If <tt>n</tt> meta-comments occur between a
+    <tt>&lt;Interpart&gt;</tt>
+    and a <tt>&lt;Prepart&gt;</tt>, the dividing line is arbitrary,
+    so that there are <tt>n+1</tt> parses.
+    This will, in theory, make the processing time quadratic.
+    And, in fact, long sequences of meta-comments might occur
+    between the inter- and pre-comments,
+    so the inefficiency might be real.
+ <a href="#footnote-11-ref">&#8617;</a></p>
+<p id="footnote-12"><b>12.</b>
+    Inter-comments may start on line 1,
+    so an ambiguity between an inter-comment and
+    a meta-comment is entirely
+    possible.
+ <a href="#footnote-12-ref">&#8617;</a></p>
+<p id="footnote-13"><b>13.</b>
     For the <tt>hoonlint</tt>-embedded form,
     the Marpa grammar is
     <a href="https://github.com/jeffreykegler/yahc/blob/714157124b46492e13968c786e400276017a3b85/Lint/Policy/Test/Whitespace.pm#L19">
@@ -683,20 +687,35 @@ with a new protocol stack.
     so that this pre-alpha embedded form will mainly be useful
     for those who want to take a quick glance at the
     comment linter in context.
-    </footnote>
-    <h2>Comments on this blog post, etc.</h2>
-    <p>
-      To learn about Marpa,
-      my Earley/Leo-based parsing project,
-      there is the
-      <a href="http://savage.net.au/Marpa.html">semi-official web site, maintained by Ron Savage</a>.
-      The official, but more limited, Marpa website
-      <a href="http://jeffreykegler.github.io/Marpa-web-site/">is my personal one</a>.
-      Comments on this post can be made in
-      <a href="http://groups.google.com/group/marpa-parser">
-        Marpa's Google group</a>,
-      or on our IRC channel: #marpa at freenode.net.
-    </p>
-    <comment>FOOTNOTES HERE</comment>
+ <a href="#footnote-13-ref">&#8617;</a></p>
   </body>
 </html>
+<br />
+<p>posted at: 13:03 |
+<a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2019/06/vgap.html">direct link to this entry</a>
+</p>
+<div style="color:#38B0C0;padding:1px;text-align:center;">
+&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&sect;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&sect;
+</div>
+</div>
+</div>
+<div id="footer" style="border-top:thick solid #38B0C0;clear:left;padding:1em;">
+<p>This is Ocean of Awareness's
+  new home.  This blog has been hosted at
+  <a href="http://blogs.perl.org/users/jeffrey_kegler/">blogs.perl.org</a>
+  but I have succumbed to the lure of static blogging.
+</div>
+	<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+              <script type="text/javascript">
+            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+          </script>
+          <script type="text/javascript">
+            try {
+              var pageTracker = _gat._getTracker("UA-33430331-1");
+            pageTracker._trackPageview();
+            } catch(err) {}
+          </script>
+</body></html>

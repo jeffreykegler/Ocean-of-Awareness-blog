@@ -16,10 +16,11 @@ all: \
   ../source/individual/2018/10/popularity.txt \
   ../source/individual/2018/10/timeline_3_1.txt \
   ../source/individual/2019/03/methodology.txt \
+  ../source/individual/2019/06/vgap.txt \
 
 # dev:
 dev: vgap.pl
-	perl vgap.pl > vgap.html
+	# perl vgap.pl > vgap.html
 
 ../source/individual/2018/05/fast_power.txt: fast_power.pl
 	perl fast_power.pl > ../source/individual/2018/05/fast_power.txt
@@ -59,4 +60,8 @@ dev: vgap.pl
 
 ../source/individual/2019/03/methodology.txt: methodology.pl
 	perl methodology.pl > ../source/individual/2019/03/methodology.txt
+
+../source/individual/2019/06/vgap.txt: vgap.pl
+	perl vgap.pl > ../source/individual/2019/06/vgap.txt
+
 

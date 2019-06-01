@@ -10,6 +10,662 @@
     <language>en</language>
 
   <item>
+    <title>Infinite Lookahead and Ruby Slippers</title>
+    <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2019/06/vgap.html</link>
+    <description>&lt;html&gt;
+  &lt;head&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;!--
+      marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
+      --&gt;
+    &lt;h2&gt;About this post&lt;/h2&gt;
+    &lt;p&gt;This post presents a practical, compact example which
+    demonstrates a use case for both infinite lookahead
+    and Ruby Slippers parsing.
+    While the example itself is very simple,
+    this post may not be a good first tutorial --
+    it focuses on Marpa implementation strategy,
+    instead of basics.
+    &lt;/p&gt;
+    &lt;h2&gt;About Urbit&lt;/h2&gt;
+    &lt;p&gt;The example described in this post is one part of
+    &lt;tt&gt;hoonlint&lt;/tt&gt;.
+    &lt;tt&gt;hoonlint&lt;/tt&gt;, currently under development,
+    will be a &quot;lint&quot; program for a language called Hoon.
+    &lt;/p&gt;
+    &lt;p&gt;
+    Hoon is part of the Urbit project.
+    Urbit is an effort to return control of the Internet
+    experience to the individual user.
+    (The Urbit community has, generously, been supporting my work on Hoon.)
+    &lt;/p&gt;
+    &lt;p&gt;
+    The original Internet and its predecessors were cosy places.
+    Users controlled their experience.
+    Authority was so light you
+    could forget it was there,
+    but so adequate to its task that you could forget why it
+    was necessary.
+    What we old timers do remember of the early Internet was the feeling of entering
+    into a &quot;brave new world&quot;.
+    &lt;/p&gt;
+    &lt;p&gt;
+The Internet grew beyond our imaginings,
+and our pure wonder of decades ago now seems ridiculous.
+But the price has been a shift
+of power which should be no laughing matter.
+Control of our Internet experience now resides in
+servers,
+run by entities which make no secret of having their own interests.
+Less overt, but increasingly obvious, is the single-mindedness with which they pursue
+those interests.
+&lt;/p&gt;
+&lt;p&gt;
+And the stakes have risen.
+In the early days,
+we used the Internet as a supplement in our intellectual lives.
+Today, we depend on it in our financial and social lives.
+Today, the server-sphere can be a hostile  place.
+Going forward it may well become a theater of war.
+    &lt;/p&gt;
+    We could try to solve this problem by running our own servers.
+    But this is a lot of work, and only leaves us in touch with those
+    willing and able to do that.  In practice, this seems to be nobody.
+    &lt;/p&gt;
+    &lt;p&gt;
+Urbit seeks to solve these problems with
+hassle-free personal servers, called urbits.
+Urbits are journaling databases, so they are incorruptable.
+To make sure they can be run anywhere in the cloud&lt;a id=&quot;footnote-1-ref&quot; href=&quot;#footnote-1&quot;&gt;[1]&lt;/a&gt;,
+they are based on a tiny virtual machine, called Nock.
+To keep urbits compact and secure,
+Urbit takes on code bloat directly --
+Urbit is a original design from a clean slate,
+with a new protocol stack.
+    &lt;/p&gt;
+    &lt;h2&gt;About Hoon&lt;/h2&gt;
+    &lt;p&gt;
+    Nock's &quot;machine language&quot; takes the form of trees of arbitrary precision integers.
+    The integers can be interpreted as strings, floats, etc.,
+    as desired.
+    And the trees can be interpreted as lists,
+    giving Nock a resemblance to a LISP VM.
+    Nock does its own memory management
+    and takes care of its own garbage collection.&lt;a id=&quot;footnote-2-ref&quot; href=&quot;#footnote-2&quot;&gt;[2]&lt;/a&gt;
+    &lt;/p&gt;
+    &lt;p&gt;
+    Traditionally, there are two ways to enter machine language,
+    &lt;ul&gt;
+    &lt;li&gt;Physically, for example,
+    by toggling it into a machine's front panel.
+    Originally, entering it physically was the only way.
+    &lt;/li&gt;
+    &lt;li&gt;Indirectly, using
+    assembler or some higher-level language, like C.
+    Once these indirect methods existed, they
+    rapidly took over as the most common way to create machine language.
+    &lt;/li&gt;
+    &lt;/ul&gt;
+    Like traditional
+    machine language, Nock cannot be written directly.
+    Hoon is Urbit's equivalent of C -- it is Urbit's
+    &quot;close to the metal&quot; higher level language.
+    &lt;/p&gt;
+    &lt;p&gt;
+    Not that Hoon looks much like C,
+    or anything else you've ever seen.
+    This is a Hoon program that takes an integer argument,
+    call it &lt;tt&gt;n&lt;/tt&gt;,
+    and returns the first &lt;tt&gt;n&lt;/tt&gt; counting numbers:
+    &lt;pre&gt;&lt;tt&gt;
+    |=  end=@                                               ::  1
+    =/  count=@  1                                          ::  2
+    |-                                                      ::  3
+    ^-  (list @)                                            ::  4
+    ?:  =(end count)                                        ::  5
+      ~                                                     ::  6
+    :-  count                                               ::  7
+    $(count (add 1 count))                                  ::  8
+    &lt;/tt&gt;&lt;/pre&gt;
+    &lt;/p&gt;
+    &lt;p&gt;
+    Hoon comments begin with a &quot;&lt;tt&gt;::&lt;/tt&gt;&quot; and run until the next
+    newline.
+    The above Hoon sample uses comments to show line numbers.
+    &lt;/p&gt;
+    &lt;p&gt;
+    The example for this post will be
+    a &lt;tt&gt;hoonlint&lt;/tt&gt; subset: a multi-line comment linter.
+    Multi-line comments are the only Hoon syntax we will talk about.
+    (For those who want to know more about Hoon,
+    &lt;a href=&quot;https://urbit.org/docs/learn/hoon/&quot;&gt;there is a tutorial&lt;/a&gt;.)
+    &lt;/p&gt;
+    &lt;p&gt;
+    &lt;/p&gt;
+    &lt;h2&gt;About Hoon comments&lt;/h2&gt;
+    &lt;p&gt;
+    In basic Hoon syntax, multi-line comments are free-form.
+    In practice, Hoon authors tend to follow a set of conventions.
+    &lt;/p&gt;
+    &lt;h3&gt;Pre-comments&lt;/h3&gt;
+    &lt;p&gt;
+    In the simplest case, a comment must precede the code it
+    describes, and be at the same indent.
+    These simple cases are called &quot;pre-comments&quot;.&lt;a id=&quot;footnote-3-ref&quot; href=&quot;#footnote-3&quot;&gt;[3]&lt;/a&gt;
+    For example, this code contains a pre-comment:
+    &lt;pre&gt;&lt;tt&gt;
+	  :: pre-comment 1
+	  [20 (mug bod)]
+    &lt;/tt&gt;&lt;/pre&gt;
+    &lt;p&gt;
+    &lt;h3&gt;Inter-comments&lt;/h3&gt;
+    Hoon multi-line comments may also
+    contain &quot;inter-comments&quot;.
+    The inter-comments are aligned depending on the syntax.
+    In the display below, the inter-comments are aligned with the &quot;rune&quot; of the enclosing sequence.
+    A &quot;rune&quot; is Hoon's rough equivalent of a &quot;keyword&quot;.
+    Runes are always digraphs of special ASCII characters.
+    The rune in the following code is
+    &lt;tt&gt;:~&lt;/tt&gt;,
+    and the sequence it introduces
+    includes pre-comments, inter-comments and meta-comments.
+    &lt;/p&gt;
+    &lt;pre&gt;&lt;tt&gt;
+      :~  [3 7]
+      ::
+	  :: pre-comment 1
+	  [20 (mug bod)]
+      ::
+	  :: pre-comment 2
+	  [2 yax]
+      ::
+	  :: pre-comment 3
+	  [2 qax]
+    ::::
+    ::    :: pre-comment 4
+    ::    [4 qax]
+      ::
+	  :: pre-comment 5
+	  [5 tay]
+      ==
+    &lt;/tt&gt;&lt;/pre&gt;
+    &lt;p&gt;
+    When inter-comments are empty, as they are in the above,
+    they are called &quot;breathing comments&quot;, because they serve to separate,
+    or allow some &quot;air&quot; between, elements of a sequence.
+    For clarity,
+    the pre-comments in the above are further indicated:
+    all and only pre-comments contain the text &quot;&lt;tt&gt;pre-comment&lt;/tt&gt;&quot;.
+    &lt;/p&gt;
+    &lt;h3&gt;Meta-comments&lt;/h3&gt;
+    &lt;p&gt;
+    The above code also contains a third kind of comment -- meta-comments.
+    Meta-comments must occur at the far left margin -- at column 1.
+    These are called meta-comments, because they are allowed
+    to be outside the syntax structure.
+    One common use for meta-comments is &quot;commenting out&quot; other syntax.
+    In the above display, the meta-comments &quot;comment out&quot;
+    the comment labeled &quot;&lt;tt&gt;pre-comment 4&lt;/tt&gt;&quot;
+    and its associated code.
+    &lt;/p&gt;
+    &lt;h3&gt;Staircase comments&lt;/h3&gt;
+    &lt;p&gt;Finally, there are &quot;staircase comments&quot;, which are used
+    to indicate the larger structure of Hoon sequences and other
+    code.
+    For example,
+    &lt;pre&gt;&lt;tt&gt;
+    ::                                                      ::
+    ::::  3e: AES encryption  (XX removed)                  ::
+      ::                                                    ::
+      ::
+    ::                                                      ::
+    ::::  3f: scrambling                                    ::
+      ::                                                    ::
+      ::    ob                                              ::
+      ::
+    &lt;/tt&gt; &lt;/pre&gt;
+    &lt;p&gt;
+    Each staircase consists of three parts.
+    In lexical order, these parts are
+    an upper riser,
+    a tread, and a lower riser.
+    The upper riser is a sequence of comments at the same
+    alignment as an inter-comment.
+    The tread is also at the inter-comment alignment,
+    but must be 4 colons (&quot;&lt;tt&gt;::::&lt;/tt&gt;&quot;) followed
+    by whitespace.
+    The lower riser is a sequence of comments
+    indented two spaces more than the tread.
+    &lt;/p&gt;
+    &lt;h2&gt;Hoon comment conventions&lt;/h2&gt;
+    &lt;p&gt;Hoon's basic syntax allows comments to be free-form.
+    In practice, there are strict conventions for these comments,
+    conventions we would like to enforce with a &lt;tt&gt;lint&lt;/tt&gt; for Hoon:
+    a &lt;tt&gt;hoonlint&lt;/tt&gt;.
+    &lt;ol&gt;
+    &lt;li&gt;A multi-line comment may contain
+    an &quot;inter-part&quot;, a &quot;pre-part&quot;,
+    or both.
+    &lt;/li&gt;
+    &lt;li&gt;If both an inter-part and a pre-part are present,
+    the inter-part must preceed the pre-part.
+    &lt;/li&gt;
+    &lt;li&gt;The inter-part must be either
+       &lt;ul&gt;
+       &lt;li&gt;a sequence of one or more inter-comments; or
+       &lt;/li&gt;
+       &lt;li&gt;a sequence of one or more staircases.
+       &lt;/li&gt;
+       &lt;/ul&gt;
+    &lt;/li&gt;
+    &lt;li&gt;A pre-part is always a sequence of
+    one or more pre-comments.
+    &lt;/li&gt;
+    &lt;li&gt;Meta-comments may be inserted anywhere in either the pre-part
+    or the inter-part.
+    &lt;/li&gt;
+    &lt;li&gt;Comments which do not obey the above rules are
+    &lt;b&gt;bad comments&lt;/b&gt;.
+    A &lt;b&gt;good comment&lt;/b&gt; is any comment which is not a bad comment.
+    &lt;/li&gt;
+    &lt;li&gt;A comment is not regarded as a meta-comment
+    if it can be parsed as ordinary comment.
+    An &lt;b&gt;ordinary comment&lt;/b&gt; is any good comment which is
+    not a meta-comment.
+    &lt;/li&gt;
+    &lt;/ol&gt;
+    &lt;h2&gt;Grammar&lt;/h2&gt;
+    &lt;p&gt;We will implement these conventions using the BNF
+    of this section.
+    The sections to follow outline the strategy behind the BNF.
+    &lt;pre&gt;&lt;tt&gt;
+    :start ::= gapComments
+    gapComments ::= OptExceptions Body
+    gapComments ::= OptExceptions
+    Body ::= InterPart PrePart
+    Body ::= InterPart
+    Body ::= PrePart
+    InterPart ::= InterComponent
+    InterPart ::= InterruptedInterComponents
+    InterPart ::= InterruptedInterComponents InterComponent
+
+    InterruptedInterComponents ::= InterruptedInterComponent+
+    InterruptedInterComponent ::= InterComponent Exceptions
+    InterComponent ::= Staircases
+    InterComponent ::= Staircases InterComments
+    InterComponent ::= InterComments
+
+    InterComments ::= InterComment+
+
+    Staircases ::= Staircase+
+    Staircase ::= UpperRisers Tread LowerRisers
+    UpperRisers ::= UpperRiser+
+    LowerRisers ::= LowerRiser+
+
+    PrePart ::= ProperPreComponent OptPreComponents
+    ProperPreComponent ::= PreComment
+    OptPreComponents ::= PreComponent*
+    PreComponent ::= ProperPreComponent
+    PreComponent ::= Exception
+
+    OptExceptions ::= Exception*
+    Exceptions ::= Exception+
+    Exception ::= MetaComment
+    Exception ::= BadComment
+    Exception ::= BlankLine
+    &lt;/tt&gt;&lt;/pre&gt;
+    &lt;h2&gt;Technique: Combinator&lt;/h2&gt;
+    Our comment linter is implemented as a combinator.
+    The main &lt;tt&gt;hoonlint&lt;/tt&gt; parser invokes this combinator when it encounters
+    a multi-line comment.
+    Because of the main parser,
+    we do not have to worry about confusing comments with
+    Hoon's various string and in-line text syntaxes.
+    &lt;/p&gt;
+    &lt;p&gt;Note that while combinator parsing is useful,
+    it is a technique that can be oversold.
+    Combinators have been much talked about in the functional programming
+    literature&lt;a id=&quot;footnote-4-ref&quot; href=&quot;#footnote-4&quot;&gt;[4]&lt;/a&gt;,
+    but, GHC, the flagship functional programming
+    language parser,
+    does not use combinators to parse itself --
+    instead it uses a parser in the yacc lineage.&lt;a id=&quot;footnote-5-ref&quot; href=&quot;#footnote-5&quot;&gt;[5]&lt;/a&gt;
+    As a parsing technique on its own,
+    the use of combinators is simply another way of packaging recursive
+    descent with backtracking,
+    and the two techniques share the same power,
+    the same performance,
+    and the same downsides.
+    &lt;/p&gt;
+    &lt;p&gt;Marpa is much more powerful than either LALR (yacc-lineage) parsers or combinators,
+    so we can save combinator parsing for those cases where
+    combinator parsing really is helpful.
+    One such case is lexer mismatch.
+    &lt;/p&gt;
+    &lt;h3&gt;Lexer mismatch&lt;/h3&gt;
+    &lt;p&gt;The first programming languages, like BASIC and FORTRAN,
+    were line-structured -- designed to be parsed line-by-line.&lt;a id=&quot;footnote-6-ref&quot; href=&quot;#footnote-6&quot;&gt;[6]&lt;/a&gt;
+    After ALGOL, new languages were usually block-structured.
+    Blocks can start or end in the middle of a line,
+    and can span multiple lines.
+    And blocks are often nested.
+    &lt;/p&gt;
+    &lt;p&gt;A line-structured language requires its lexer to think in
+    terms of lines,
+    but this approach is completely useless for a block-structured
+    language.
+    Combining both line-structured and block-structured logic in the same lexer
+    usually turns the lexer's code into a rat's nest.
+    &lt;/p&gt;
+    &lt;p&gt;Calling a combinator every time
+    a line-structured block is encountered eliminates the problem.
+    The main lexer can assume that the code is block-structured,
+    and all the line-by-line logic can go into combinators.
+    &lt;/p&gt;
+    &lt;h2&gt;Technique: Non-determinism&lt;/h2&gt;
+    &lt;p&gt;
+    Our grammar is non-deterministic,
+    but unambiguous.
+    It is unambiguous because,
+    for every input,
+    it will produce no more than one parse.
+    &lt;/p&gt;
+    &lt;p&gt;
+    It is non-deterministic because there is a case
+    where it tracks two possible parses at once.
+    The comment linter cannot immediately distinguish between
+    the prefix of the upper riser of a staircase,
+    and the prefix of a sequence of inter-comments.
+    When a tread and lower riser is encountered,
+    the parser knows it has found a staircase,
+    but not until then.
+    And if the parse is of an inter-comment sequence,
+    the comment linter will
+    not be sure of this until the end of the sequence.
+    &lt;/p&gt;
+    &lt;h2&gt;Technique: Infinite lookahead&lt;/h2&gt;
+    &lt;p&gt;
+    As just pointed out,
+    the comment linter does not know whether it is parsing a staircase or
+    an inter-comment sequence until either
+    &lt;ul&gt;
+    &lt;li&gt;it finds a tread and lower riser, in which case
+    it knows the correct parse will be a staircase; or
+    &lt;/li&gt;
+    &lt;li&gt;it successfully reaches the end of the inter-comment sequence,
+    in which case it knows the correct parse is an inter-comment sequence.
+    &lt;/ul&gt;
+    To determine which of these two choices is the correct parse,
+    the linter needs to read
+    an arbitrarily long sequence of tokens --
+    in other words, the linter needs to perform infinite lookahead.
+    &lt;/p&gt;
+    &lt;p&gt;Humans deal with infinite lookaheads all the time --
+    natural languages are full of situations that require them.&lt;a id=&quot;footnote-7-ref&quot; href=&quot;#footnote-7&quot;&gt;[7]&lt;/a&gt;
+    Modern language designers labor to avoid the need
+    for infinite lookahead,
+    but even so
+    cases where it is desirable pop up.&lt;a id=&quot;footnote-8-ref&quot; href=&quot;#footnote-8&quot;&gt;[8]&lt;/a&gt;
+    &lt;/p&gt;
+    &lt;p&gt;
+    Fortunately, in 1991, Joop Leo published a method that
+    allows computers to emulate infinite lookahead efficiently.
+    Marpa uses Joop's technique.
+    Joop's algorithm is complex,
+    but the basic idea is to do what humans do in the same circumstance --
+    keep all the possibilities in mind until the evidence comes in.
+    &lt;/p&gt;
+    &lt;p&gt;
+    &lt;/p&gt;
+    &lt;h2&gt;Technique: the Ruby Slippers&lt;/h2&gt;
+    &lt;p&gt;Recall that, according to our conventions,
+    our parser does not recognize a meta-comment unless
+    no ordinary comment can be recognized.
+    We could implement this in BNF,
+    but it is much more elegant to use the Ruby Slippers.&lt;a id=&quot;footnote-9-ref&quot; href=&quot;#footnote-9&quot;&gt;[9]&lt;/a&gt;
+    &lt;/p&gt;
+    &lt;p&gt;As those already familiar with Marpa may recall,
+    the Ruby Slippers are invoked when a Marpa parser finds itself
+    unable to proceed with its current set of input tokens.
+    At this point, the lexer can ask the Marpa parser what token it &lt;b&gt;does&lt;/b&gt; want.
+    Once the lexer is told what the &quot;wished-for&quot; token is,
+    it can concoct one, out of nowhere if necessary, and pass it to the Marpa parser,
+    which then proceeds happily.
+    In effect, the lexer acts like Glenda the Good Witch of Oz,
+    while the Marpa parser plays the role of Dorothy.
+    &lt;/p&gt;
+    &lt;p&gt;So, if the Marpa parser of our
+    comment linter finds that the current input line is not
+    one of those it is looking for, the parser halts
+    and tells the lexer that there is a problem.
+    The lexer then asks the Marpa parser what it is looking for.
+    In this case, the answer will always be the same:
+    the Marpa parser will be looking for a meta-comment.
+    The lexer checks to see if the current line is a comment
+    starting at column 1.
+    If there is a comment starting at column 1,
+    the lexer tells the Marpa parser that its wish has come true --
+    there is a meta-comment.
+    &lt;/p&gt;
+    &lt;p&gt;Another way to view the Ruby Slippers is as a kind of exception
+    mechanism for grammars.
+    In this application, we treat inability to read an ordinary
+    comment as an exception.
+    When the exception occurs,
+    if possible, we read a meta-comment.
+    &lt;/p&gt;
+    &lt;h2&gt;Technique: Error Tokens&lt;/h2&gt;
+    &lt;p&gt;&lt;b&gt;Error tokens&lt;/b&gt; are a specialized use of the Ruby Slippers.
+    The application for this parser is &quot;linting&quot; --
+    checking that the comments follow conventions.
+    As such, the main product of the parser is not the parse --
+    it is the list of errors gathered along the way.
+    So stopping the parser at the first error does not make sense.
+    &lt;/p&gt;
+    &lt;p&gt;
+    What is desirable is to treat all inputs as valid,
+    so that the parsing always runs to the end of input,
+    in the process producing a list of the errors.
+    To do this, we want to set up the parser so that it reads
+    special &quot;error tokens&quot; whenever it encounters a reportable error.
+    &lt;/p&gt;
+    &lt;p&gt;This is perfect for the Ruby Slippers.
+    If an &quot;exception&quot; occurs,
+    as above described for meta-comments,
+    but no meta-comment is available,
+    we treat it as a second level exception.
+    &lt;/p&gt;
+    &lt;p&gt;When would no meta-comment be available?
+    There are two cases:
+    &lt;ul&gt;&lt;li&gt;The line read is a comment,
+    but it does not start at column 1.
+    &lt;/li&gt;
+    &lt;li&gt;The line read is a blank line (all whitespace).
+    &lt;/li&gt;
+    &lt;/ul&gt;
+    &lt;p&gt;On the second exception level, the current line
+    will be read as either a &lt;tt&gt;&amp;lt;BlankLine&amp;gt;&lt;/tt&gt;,
+    or a &lt;tt&gt;&amp;lt;BadComment&amp;gt;&lt;/tt&gt;.
+    We know that every line must lex as either a
+    &lt;tt&gt;&amp;lt;BlankLine&amp;gt;&lt;/tt&gt;
+    or a &lt;tt&gt;&amp;lt;BadComment&amp;gt;&lt;/tt&gt; because our comment linter
+    is called as a combinator,
+    and the parent Marpa parser guarantees this.
+    &lt;/p&gt;
+    &lt;h2&gt;Technique: Ambiguity&lt;/h2&gt;
+    &lt;p&gt;Marpa allows ambiguity,
+    which could have been exploited as a technique.
+    For example, in a simpler BNF than that we used above,
+    it might be ambiguous whether a meta-comment belongs to an &lt;tt&gt;&amp;lt;Interpart&amp;gt;&lt;/tt&gt;
+    which immediately preceeds it;
+    or a &lt;tt&gt;&amp;lt;Prepart&amp;gt;&lt;/tt&gt; which immediately follows it.
+    We could solve the dilemma by noting that it does not matter,
+    so that picking one of two ambiguous parses at random will work fine.
+    &lt;/p&gt;
+    &lt;p&gt;In the comment linter of this post,
+    we decided to keep our parser unambiguous.
+    This means the grammar given above is less elegant
+    than it could be.&lt;a id=&quot;footnote-10-ref&quot; href=&quot;#footnote-10&quot;&gt;[10]&lt;/a&gt;
+    But efficiency issues are sometimes a problem with ambiguity
+    and unambiguity often avoids them.&lt;a id=&quot;footnote-11-ref&quot; href=&quot;#footnote-11&quot;&gt;[11]&lt;/a&gt;
+    &lt;/p&gt;
+    &lt;p&gt;
+    Also, requiring the grammar to be unambiguous allows
+    an additional check that is useful in the development phase.
+    In our code we test each parse for ambiguity.
+    If we find one, we know that &lt;tt&gt;hoonlint&lt;/tt&gt; has a coding error.
+    &lt;/p&gt;
+    &lt;p&gt;Some of the work in keeping
+    this parser unambiguous is delegated to the lexer.
+    For example,
+    we used our Ruby Slippers &quot;exception mechanism&quot; to
+    guarantee that no line is
+    both a meta-comment and an inter-comment.&lt;a id=&quot;footnote-12-ref&quot; href=&quot;#footnote-12&quot;&gt;[12]&lt;/a&gt;
+    &lt;/p&gt;
+    &lt;h2&gt;Code&lt;/h2&gt;
+    &lt;p&gt;This post did not walk the reader through the code.
+    Instead, it talked mostly in terms of strategy.
+    &lt;a href=&quot;https://github.com/jeffreykegler/Ocean-of-Awareness-blog/tree/gh-pages/code/vgap&quot;&gt;
+    The code is available on Github&lt;/a&gt;
+    in unit test form.
+    For those who want to see the comment-linter combinator in a context,
+    a version of the code embedded in &lt;tt&gt;hoonlint&lt;/tt&gt;
+    in also on Github.&lt;a id=&quot;footnote-13-ref&quot; href=&quot;#footnote-13&quot;&gt;[13]&lt;/a&gt;
+    &lt;h2&gt;Comments on this blog post, etc.&lt;/h2&gt;
+    &lt;p&gt;
+      To learn about Marpa,
+      my Earley/Leo-based parsing project,
+      there is the
+      &lt;a href=&quot;http://savage.net.au/Marpa.html&quot;&gt;semi-official web site, maintained by Ron Savage&lt;/a&gt;.
+      The official, but more limited, Marpa website
+      &lt;a href=&quot;http://jeffreykegler.github.io/Marpa-web-site/&quot;&gt;is my personal one&lt;/a&gt;.
+      Comments on this post can be made in
+      &lt;a href=&quot;http://groups.google.com/group/marpa-parser&quot;&gt;
+        Marpa's Google group&lt;/a&gt;,
+      or on our IRC channel: #marpa at freenode.net.
+    &lt;/p&gt;
+    &lt;h2&gt;Footnotes&lt;/h2&gt;
+&lt;p id=&quot;footnote-1&quot;&gt;&lt;b&gt;1.&lt;/b&gt;
+In their present form, urbits run on top of Unix and UDP.
+ &lt;a href=&quot;#footnote-1-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;p id=&quot;footnote-2&quot;&gt;&lt;b&gt;2.&lt;/b&gt;
+    Garbage collection and arbitrary precision may seem too high-level
+    for something considered a &quot;machine language&quot;,
+    but our concepts evolve.
+    The earliest machine languages required programmers to
+    write their own memory caching logic
+    and to create their own floating
+    point representations,
+    both things we now regard as much too low-level
+    to deal with even at the lowest software level.
+ &lt;a href=&quot;#footnote-2-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;p id=&quot;footnote-3&quot;&gt;&lt;b&gt;3.&lt;/b&gt;
+    This post attempts to follow standard Hoon terminology, but
+    for some details of Hoon's whitespace conventions,
+    there is no settled terminology,
+    and I have invented terms as necessary.
+    The term &quot;pre-comment&quot; is one of those inventions.
+ &lt;a href=&quot;#footnote-3-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;p id=&quot;footnote-4&quot;&gt;&lt;b&gt;4.&lt;/b&gt;
+    For a brief survey of this literature,
+    see the entries from 1990 to 1996
+    in my &lt;a href=&quot;https://jeffreykegler.github.io/personal/timeline_v3&quot;&gt;
+    &quot;timeline&quot; of parsing history&lt;/a&gt;.
+ &lt;a href=&quot;#footnote-4-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;p id=&quot;footnote-5&quot;&gt;&lt;b&gt;5.&lt;/b&gt;
+&lt;a
+    href=&quot;https://github.com/ghc/ghc/blob/master/compiler/parser/Parser.y&quot;&gt;This
+    is the LALR grammar for GHC&lt;/a&gt;, from GHC's Github mirror.
+ &lt;a href=&quot;#footnote-5-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;p id=&quot;footnote-6&quot;&gt;&lt;b&gt;6.&lt;/b&gt;
+    This is simplified.
+    There were provisions for line continuation, etc.
+    But, nonetheless, the lexers for these languages worked in
+    terms of lines, and had no true concept of a &quot;block&quot;.
+ &lt;a href=&quot;#footnote-6-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;p id=&quot;footnote-7&quot;&gt;&lt;b&gt;7.&lt;/b&gt;
+    An example of a requirement for infinite lookahead
+    is the sentence &quot;The horse raced past the barn fell&quot;.
+    Yes, this sentence is not, in fact, infinitely long,
+    but the subclause &quot;raced past the barn&quot; could be anything,
+    and therefore could be arbitrarily long.
+    In isolation, this example sentence may seem unnatural,
+    a contrived &quot;garden path&quot;.
+    But if you imagine the sentence as an answer to the question, &quot;Which horse fell?&quot;,
+    expectations are set so that the sentence is quite reasonable.
+    And, when the two expectations are balanced,
+    humans parse sentences like our &quot;horse raced&quot; example
+    by keeping track
+    of both possibilities until it becomes clear which one
+    is the right one.
+ &lt;a href=&quot;#footnote-7-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;p id=&quot;footnote-8&quot;&gt;&lt;b&gt;8.&lt;/b&gt;
+    See my blog post &lt;a href=&quot;http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2018/08/rntz.html&quot;&gt;
+    &quot;A Haskell challenge&quot;&lt;/a&gt;.
+ &lt;a href=&quot;#footnote-8-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;p id=&quot;footnote-9&quot;&gt;&lt;b&gt;9.&lt;/b&gt;
+        To find out more about Ruby Slippers parsing see the Marpa FAQ,
+        &lt;a href=&quot;http://savage.net.au/Perl-modules/html/marpa.faq/faq.html#q122&quot;&gt;
+          questions 122&lt;/a&gt;
+        and
+        &lt;a href=&quot;http://savage.net.au/Perl-modules/html/marpa.faq/faq.html#q123&quot;&gt;
+          123&lt;/a&gt;;
+        my
+        &lt;a href=&quot;file:///mnt2/new/projects/Ocean-of-Awareness-blog/metapages/annotated.html#PARSE_HTML&quot;&gt;
+          blog series on parsing HTML&lt;/a&gt;;
+	  my recent blog post
+	  &lt;a
+	  href=&quot;http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2018/05/combinator2.html&quot;&gt;
+	  &quot;Marpa and combinator parsing 2&quot;&lt;/a&gt;;
+	  and my much older blog post
+        &lt;a href=&quot;http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2011/11/marpa-and-the-ruby-slippers.html&quot;&gt;
+          &quot;Marpa and the Ruby Slippers&quot;&lt;/a&gt;.
+ &lt;a href=&quot;#footnote-9-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;p id=&quot;footnote-10&quot;&gt;&lt;b&gt;10.&lt;/b&gt;
+    One example of an extra symbol introduced to make the parser
+    unambiguous is &lt;tt&gt;&amp;lt;ProperPreComment&amp;gt;&lt;/tt&gt;,
+    which is used to ensure that a
+    &lt;tt&gt;&amp;lt;PrePart&amp;gt;&lt;/tt&gt;
+    never begins with a meta-comment.
+ &lt;a href=&quot;#footnote-10-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;p id=&quot;footnote-11&quot;&gt;&lt;b&gt;11.&lt;/b&gt;
+    If &lt;tt&gt;n&lt;/tt&gt; meta-comments occur between a
+    &lt;tt&gt;&amp;lt;Interpart&amp;gt;&lt;/tt&gt;
+    and a &lt;tt&gt;&amp;lt;Prepart&amp;gt;&lt;/tt&gt;, the dividing line is arbitrary,
+    so that there are &lt;tt&gt;n+1&lt;/tt&gt; parses.
+    This will, in theory, make the processing time quadratic.
+    And, in fact, long sequences of meta-comments might occur
+    between the inter- and pre-comments,
+    so the inefficiency might be real.
+ &lt;a href=&quot;#footnote-11-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;p id=&quot;footnote-12&quot;&gt;&lt;b&gt;12.&lt;/b&gt;
+    Inter-comments may start on line 1,
+    so an ambiguity between an inter-comment and
+    a meta-comment is entirely
+    possible.
+ &lt;a href=&quot;#footnote-12-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+&lt;p id=&quot;footnote-13&quot;&gt;&lt;b&gt;13.&lt;/b&gt;
+    For the &lt;tt&gt;hoonlint&lt;/tt&gt;-embedded form,
+    the Marpa grammar is
+    &lt;a href=&quot;https://github.com/jeffreykegler/yahc/blob/714157124b46492e13968c786e400276017a3b85/Lint/Policy/Test/Whitespace.pm#L19&quot;&gt;
+    here&lt;/a&gt;
+    and the code is
+    &lt;a href=&quot;https://github.com/jeffreykegler/yahc/blob/714157124b46492e13968c786e400276017a3b85/Lint/Policy/Test/Whitespace.pm#L341&quot;&gt;
+    here&lt;/a&gt;.
+    These are snapshots -- permalinks.
+    The application is under development,
+    and probably will change considerably.
+    In this pre-alpha embedded form, documentation and unit testing are
+    lacking,
+    so that this pre-alpha embedded form will mainly be useful
+    for those who want to take a quick glance at the
+    comment linter in context.
+ &lt;a href=&quot;#footnote-13-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+  &lt;/body&gt;
+&lt;/html&gt;</description>
+  </item>
+  <item>
     <title>Sherlock Holmes and the Case of the Missing Parsing Solution</title>
     <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2019/03/methodology.html</link>
     <description>&lt;html&gt;
@@ -1556,600 +2212,6 @@ The link is to the 19 June 2013 revision of the 2012 original.
     my &lt;a href=&quot;http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2018/05/combinator2.html&quot;&gt;
     just previous blog post&lt;/a&gt;,
  &lt;a href=&quot;#footnote-13-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
-  &lt;/body&gt;
-&lt;/html&gt;</description>
-  </item>
-  <item>
-    <title>Marpa and combinator parsing 2</title>
-    <link>http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2018/05/combinator2.html</link>
-    <description>&lt;html&gt;
-  &lt;head&gt;
-  &lt;/head&gt;
-  &lt;body style=&quot;max-width:850px&quot;&gt;
-    &lt;!--
-      marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
-      --&gt;
-    &lt;p&gt;
-    In
-    &lt;a href=&quot;http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2018/05/combinator.html&quot;&gt;
-    a previous post&lt;/a&gt;,
-    I outlined a method for using the Marpa algorithm as the basis for
-    better combinator parsing.
-    This post follows up
-    with a trial implementation.
-    &lt;/p&gt;
-    &lt;p&gt;For this trial,
-    I choose the most complex example from the classic 1996 tutorial
-    on combinator parsing by 
-    Hutton and Meijer&lt;a id=&quot;footnote-1-ref&quot; href=&quot;#footnote-1&quot;&gt;[1]&lt;/a&gt;.
-    Their example implements the offside-rule parsing of a functional language --
-    parsing where whitespace is part of the syntax.&lt;a id=&quot;footnote-2-ref&quot; href=&quot;#footnote-2&quot;&gt;[2]&lt;/a&gt;
-    The Hutton and Meijer example is for Gofer,
-    a now obsolete implementation of Haskell.
-    To make the example more relevant,
-    I wrote a parser for Haskell layout
-    according to the Haskell 2010 Language Report&lt;a id=&quot;footnote-3-ref&quot; href=&quot;#footnote-3&quot;&gt;[3]&lt;/a&gt;.
-    &lt;/p&gt;
-    &lt;p&gt;For tests,
-    I used the five examples (2 long, 3 short) provided
-    in the 2010 Report&lt;a id=&quot;footnote-4-ref&quot; href=&quot;#footnote-4&quot;&gt;[4]&lt;/a&gt;,
-    and the four examples given in the &quot;Gentle Introduction&quot; to Haskell&lt;a id=&quot;footnote-5-ref&quot; href=&quot;#footnote-5&quot;&gt;[5]&lt;/a&gt;.
-    I implemented only enough of the Haskell syntax to run
-    these examples,
-    but this was enough to include a substantial subset of Haskell's
-    syntax.
-    &lt;/p&gt;
-    &lt;p&gt;This description of the implementation includes many extracts from
-    the code.
-    For those looking for more detail,
-    the full code and test suite for this example are
-    &lt;a href=&quot;https://github.com/jeffreykegler/Ocean-of-Awareness-blog/tree/gh-pages/code/haskell&quot;&gt;
-    on Github&lt;/a&gt;.
-    While the comments in the code do not amount to a tutorial, they are
-    extensive.
-    Readers who like to &quot;peek ahead&quot; are encouraged to do so.
-    &lt;/p&gt;
-    &lt;h2&gt;Layout parsing and the off-side rule&lt;/h2&gt;
-    &lt;p&gt;It won't be necessary to know Haskell to follow this post.
-    This section will describe Haskell's layout informally.
-    Briefly, these two code snippets should have the same effect:
-    &lt;pre&gt;&lt;tt&gt;
-       let y   = a*b
-	   f x = (x+y)/y
-       in f c + f d &lt;/tt&gt;&lt;a id=&quot;footnote-6-ref&quot; href=&quot;#footnote-6&quot;&gt;[6]&lt;/a&gt;
-     &lt;/pre&gt;
-    &lt;pre&gt;&lt;tt&gt;
-       let { y   = a*b
-	   ; f x = (x+y)/y
-	   } &lt;/tt&gt;&lt;a id=&quot;footnote-7-ref&quot; href=&quot;#footnote-7&quot;&gt;[7]&lt;/a&gt;
-    &lt;/pre&gt;
-    &lt;p&gt;
-    In my test suite, both code snippets produce the same AST.
-    The first code display uses Haskell's implicit layout parsing,
-    and the second code display uses explicit layout.
-    In each, the &quot;&lt;tt&gt;let&lt;/tt&gt;&quot; is followed by a block
-    of declarations
-    (symbol &lt;tt&gt;&amp;lt;decls&amp;gt;&lt;/tt&gt;).
-    Each decls contains one or more 
-    declarations
-    (symbol &lt;tt&gt;&amp;lt;decl&amp;gt;&lt;/tt&gt;).
-    For the purposes of determining layout,
-    Haskell regards
-    &lt;tt&gt;&amp;lt;decls&amp;gt;&lt;/tt&gt; as a &quot;block&quot;,
-    and each
-    &lt;tt&gt;&amp;lt;decl&amp;gt;&lt;/tt&gt; as a block &quot;item&quot;.
-    In both displays, there are two items in
-    the block.
-    The first item is
-    &lt;tt&gt;y = a*b&lt;/tt&gt;,
-    and the second
-    &lt;tt&gt;&amp;lt;decl&amp;gt;&lt;/tt&gt; item
-    is &lt;tt&gt;f x = (x+y)/y&lt;/tt&gt;.
-    &lt;/p&gt;
-    &lt;p&gt;
-    In explicit layout, curly braces surround the block,
-    and semicolons separate each
-    item.
-    Implicit layout follows the &quot;offside rule&quot;:
-    The first element of the laid out block
-    determines the &quot;block indent&quot;.
-    The first non-whitespace character of every subsequent non-empty line
-    determines the line indent.
-    The line indent is compared to the block indent.
-    &lt;ul&gt;
-    &lt;li&gt;If the line indent is deeper than the block indent,
-    then the line continues the current block item.
-    &lt;/li&gt;
-    &lt;li&gt;If the line indent is equal to the block indent,
-    then the line starts a new block item.
-    &lt;/li&gt;
-    &lt;li&gt;If the line indent is less than the block indent
-    (an &quot;outdent&quot;),
-    then the line ends the block.
-    An end of file also ends the block.
-    &lt;/li&gt;
-    &lt;/ul&gt;
-    Lines containing only whitespace are ignored.
-    Comments count as whitespace.
-    &lt;/p&gt;
-    &lt;p&gt;
-    Explicit semicolons can be used
-    in implicit layout:
-    If a semicolon occurs in implicit layout,
-    it separates block items.
-    In our test suite,
-    the example
-    &lt;pre&gt;&lt;tt&gt;
-       let y   = a*b;  z = a/b
-	   f x = (x+y)/z
-       in f c + f d &lt;/tt&gt;&lt;a id=&quot;footnote-8-ref&quot; href=&quot;#footnote-8&quot;&gt;[8]&lt;/a&gt;
-    &lt;/pre&gt;
-    contains three 
-    &lt;tt&gt;&amp;lt;decl&amp;gt;&lt;/tt&gt; items.
-    &lt;/p&gt;
-    &lt;p&gt;The examples in the displays above are simple.
-    The two long examples from the 2010 Report are
-    more complicated:
-    6 blocks of 4 different kinds,
-    with nesting twice reaching
-    a depth of 4.
-    The two long examples in the 2010 Report are the same,
-    except that one uses implicit layout and the other uses
-    explicit layout.
-    In the test of my Haskell subset parser,
-    both examples produce identical ASTs.
-    &lt;/p&gt;
-    &lt;p&gt;There are additional rules,
-    including for tabs, Unicode characters and
-    multi-line comments.
-    These rules are not relevant in the examples I took from the Haskell literature;
-    they present no theoretical challenge to this parsing method;
-    and they are not implemented in this prototype Haskell parser.
-    &lt;/p&gt;
-    &lt;h2&gt;The strategy&lt;/h2&gt;
-    &lt;p&gt;To tackle Haskell layout parsing, I use a separate
-    combinator for each layout block.
-    Every combinator, therefore, has its own block and item symbols,
-    and its own block indent;
-    and each combinator implements exactly one method of layout -- explicit or implicit.
-    &lt;/p&gt;
-    &lt;p&gt;From the point of view of its parent combinator,
-    a child combinator is a lexeme,
-    and the parse tree it produces is the
-    value of the lexeme.
-    Marpa can automatically produce an AST,
-    and it adds lexeme values to the AST as leaves.
-    The effect is that Marpa automatically assembles
-    a parse tree for us from the tree segments returned by the
-    combinators.
-    &lt;/p&gt;
-    &lt;h2&gt;Ruby Slippers semicolons&lt;/h2&gt;
-    &lt;p&gt;In outlining this algorithm, I will start by explaining
-    where the &quot;missing&quot; semicolons come from in the implicit layout.
-    Marpa allows various kinds of &quot;events&quot;,
-    including on discarded tokens.
-    (&quot;Discards&quot; are tokens thrown away, and not used in the parse.
-    The typical use of token discarding in Marpa is for the handling of whitespace
-    and comments.)
-    &lt;/p&gt;
-    The following code sets an event named 'indent', which
-    happens when Marpa finds a newline followed by zero or more
-    whitespace characters.&lt;a id=&quot;footnote-9-ref&quot; href=&quot;#footnote-9&quot;&gt;[9]&lt;/a&gt;
-    This does not capture the indent of the first line of a file,
-    but that is not an issue --
-    the 2010 Report requires that the first indent be treated as a
-    special case anyway.
-    &lt;pre&gt;&lt;tt&gt;
-      :discard ~ indent event =&gt; indent=off
-      indent ~ newline whitechars &lt;/tt&gt;&lt;a id=&quot;footnote-10-ref&quot; href=&quot;#footnote-10&quot;&gt;[10]&lt;/a&gt;
-      &lt;/pre&gt;
-    &lt;p&gt;
-    Indent events, like others, occur in the main read loop
-    of each combinator.  Outdents and EOFs are dealt with by terminating
-    the read loop.&lt;a id=&quot;footnote-11-ref&quot; href=&quot;#footnote-11&quot;&gt;[11]&lt;/a&gt;
-    Line indents deeper than the current block indent are dealt with by
-    resuming the read loop.  &lt;a id=&quot;footnote-12-ref&quot; href=&quot;#footnote-12&quot;&gt;[12]&lt;/a&gt;
-    Line indents equal to the block indent trigger the reading of a
-    Ruby Slippers semicolon as shown in the following:
-    &lt;pre&gt;&lt;tt&gt;
-	$recce-&gt;lexeme_read( 'ruby_semicolon', $indent_start,
-	    $indent_length, ';' ) &lt;/tt&gt;&lt;a id=&quot;footnote-13-ref&quot; href=&quot;#footnote-13&quot;&gt;[13]&lt;/a&gt;
-    &lt;/footnote&gt;
-    &lt;/pre&gt;
-    &lt;/p&gt;
-    &lt;h2&gt;Ruby Slippers&lt;/h2&gt;
-    &lt;p&gt;
-    In Marpa, a &quot;Ruby Slippers&quot; symbol is one which does not actually occur
-    in the input.
-    Ruby Slippers parsing is new with Marpa,
-    and made possible because Marpa is left-eidetic.
-    By left-eidetic, I mean that Marpa knows, in full
-    detail, about the parse to the left of its current position,
-    and can provide that information to the parsing app.
-    This implies that Marpa also knows which tokens are acceptable
-    to the parser at the current location,
-    and which are not.
-    &lt;/p&gt;
-    Ruby Slippers parsing enables a very important trick which
-    is useful in &quot;liberal&quot;
-    parsing -- parsing where certain elements might be in some sense
-    &quot;missing&quot;.
-    With the Ruby Slippers you can design a &quot;liberal&quot; parser with
-    a &quot;fascist&quot; grammar.
-    This is, in fact, how the Haskell 2010 Report's
-    context-free grammar is designed --
-    the official syntax requires explicit layout,
-    but Haskell programmers are encouraged to omit most of the explicit
-    layout symbols,
-    and Haskell implementations are required to &quot;dummy up&quot; those
-    symbols in some way.
-    Marpa's method for doing this is left-eideticism and Ruby Slippers
-    parsing.
-    &lt;p&gt;The term &quot;Ruby Slippers&quot; refers to a widely-known scene in the &quot;Wizard of Oz&quot; movie.
-    Dorothy is in the fantasy world of Oz, desperate to return to Kansas.
-    But, particularly after a shocking incident in which orthodox Oz wizardry
-    is exposed as an affable fakery,
-    she is completely at a loss as to how to escape.
-    The &quot;good witch&quot; Glenda appears and tells Dorothy that in fact she's always
-    had what she's been wishing for.
-    The Ruby Slippers, which she had been wearing all through the movie,
-    can return her to Kansas.
-    All Dorothy needs to do is wish.
-    &lt;/p&gt;
-    &lt;p&gt;In Ruby Slippers parsing,
-    the &quot;fascist&quot; grammar &quot;wishes&quot; for lots of things that may not be in
-    the actual input.
-    Procedural logic here plays the part of a &quot;good witch&quot; -- it tells
-    the &quot;fascist&quot; grammar that what it wants has been there all along,
-    and supplies it.
-    To do this,
-    the procedural logic has to have a reliable way of knowing what the parser
-    wants.
-    Marpa's left-eideticism provides this.
-    &lt;/p&gt;
-    &lt;h2&gt;Ruby Slippers combinators&lt;/h2&gt;
-    &lt;p&gt;This brings us to a question
-    I've postponed -- how do we know which combinator
-    to call when?
-    The answer is Ruby Slippers parsing.
-    First, here are some lexer rules for &quot;unicorn&quot; symbols.
-    We use unicorns when symbols need to appear in Marpa's lexer,
-    but must never be found in actual input.
-    &lt;/p&gt;
-    &lt;pre&gt;&lt;tt&gt;
-      :lexeme ~ L0_unicorn
-      L0_unicorn ~ unicorn
-      unicorn ~ [^\d\D]
-      ruby_i_decls ~ unicorn
-      ruby_x_decls ~ unicorn &lt;/tt&gt;&lt;a id=&quot;footnote-14-ref&quot; href=&quot;#footnote-14&quot;&gt;[14]&lt;/a&gt;
-    &lt;/footnote&gt;
-    &lt;/pre&gt;
-    &lt;p&gt;
-    &lt;tt&gt;&amp;lt;unicorn&amp;gt;&lt;/tt&gt; is defined to match 
-    &lt;tt&gt;[^\d\D]&lt;/tt&gt;.
-    This pattern is all the symbols which are not digits
-    and not non-digits -- in other words, it's impossible that this
-    pattern will ever match any character.
-    The rest of the statements declare other unicorn lexemes
-    that we will need.
-    &lt;tt&gt;&amp;lt;unicorn&amp;gt;&lt;/tt&gt; and
-    &lt;tt&gt;&amp;lt;L0_unicorn&amp;gt;&lt;/tt&gt; are separate,
-    because we need to use
-    &lt;tt&gt;&amp;lt;unicorn&amp;gt;&lt;/tt&gt; on the RHS of some lexer rules,
-    and a Marpa lexeme can never occur
-    on the RHS of a lexer rule.&lt;a id=&quot;footnote-15-ref&quot; href=&quot;#footnote-15&quot;&gt;[15]&lt;/a&gt;
-    &lt;/p&gt;
-    &lt;p&gt;In the above Marpa rule,
-    &lt;ul&gt;
-    &lt;li&gt;
-    &lt;tt&gt;&amp;lt;decls&amp;gt;&lt;/tt&gt; is the symbol from the 2010 Report;
-    &lt;/li&gt;
-    &lt;li&gt;
-    &lt;tt&gt;&amp;lt;ruby_i_decls&amp;gt;&lt;/tt&gt; is a Ruby Slippers symbol for
-    a block of declarations with implicit layout.
-    &lt;/li&gt;
-    &lt;li&gt;
-    &lt;tt&gt;&amp;lt;ruby_x_decls&amp;gt;&lt;/tt&gt; is a Ruby Slippers symbol for
-    a block of declarations with explicit layout.
-    &lt;/li&gt;
-    &lt;li&gt;
-    &lt;tt&gt;&amp;lt;laidout_decls&amp;gt;&lt;/tt&gt; is a symbol (not in the 2010 Report)
-    for a block of declarations covering all the possibilities for
-    a block of declarations.
-    &lt;/li&gt;
-    &lt;/ul&gt;
-    &lt;pre&gt;&lt;tt&gt;
-      laidout_decls ::= ('{') ruby_x_decls ('}')
-	       | ruby_i_decls
-	       | L0_unicorn decls L0_unicorn &lt;/tt&gt;&lt;a id=&quot;footnote-16-ref&quot; href=&quot;#footnote-16&quot;&gt;[16]&lt;/a&gt;
-    &lt;/pre&gt;
-    &lt;/p&gt;
-    &lt;p&gt;It is the expectation of a 
-    &lt;tt&gt;&amp;lt;laidout_decls&amp;gt;&lt;/tt&gt; symbol that causes child
-    combinators to be invoked.
-    Because &lt;tt&gt;&amp;lt;L0_unicorn&amp;gt;&lt;/tt&gt; will never be found
-    in the input,
-    the 
-    &lt;tt&gt;&amp;lt;decls&amp;gt;&lt;/tt&gt; alternative will never match --
-    it is there for documentation and debugging reasons.&lt;a id=&quot;footnote-17-ref&quot; href=&quot;#footnote-17&quot;&gt;[17]&lt;/a&gt;
-    Therefore Marpa, when it wants a
-    &lt;tt&gt;&amp;lt;laidout_decls&amp;gt;&lt;/tt&gt;,
-    will look for a
-    &lt;tt&gt;&amp;lt;ruby_x_decls&amp;gt;&lt;/tt&gt; 
-    if a open curly brace is read;
-    and a
-    &lt;tt&gt;&amp;lt;ruby_i_decls&amp;gt;&lt;/tt&gt; otherwise.
-    Neither &lt;tt&gt;&amp;lt;ruby_x_decls&amp;gt;&lt;/tt&gt; 
-    or
-    &lt;tt&gt;&amp;lt;ruby_i_decls&amp;gt;&lt;/tt&gt; will ever be found in the
-    input,
-    and Marpa will reject the input,
-    causing a &quot;rejected&quot; event.
-    &lt;h2&gt;Rejected events&lt;/h2&gt;
-    &lt;p&gt;In this code, as often,
-    the &quot;good witch&quot; of Ruby Slippers does her work through
-    &quot;rejected&quot; events.
-    These events can be set up to happen when, at some parse
-    location, none of the tokens that Marpa's internal lexer
-    finds are acceptable.
-    &lt;/p&gt;
-    &lt;p&gt;
-    In the &quot;rejected&quot; event handler,
-    we can use Marpa's left eideticism to find out what
-    lexemes Marpa &lt;b&gt;would&lt;/b&gt; consider acceptable.
-    Specifically, there is a &lt;tt&gt;terminals_expected()&lt;/tt&gt;
-    method which returns a list of the symbols acceptable
-    at the current location.
-    &lt;/p&gt;
-    &lt;pre&gt;&lt;tt&gt;
-            my @expected =
-              grep { /^ruby_/xms; } @{ $recce-&gt;terminals_expected() }; &lt;/tt&gt;&lt;a id=&quot;footnote-18-ref&quot; href=&quot;#footnote-18&quot;&gt;[18]&lt;/a&gt;
-    &lt;/footnote&gt;&lt;/pre&gt;
-    &lt;p&gt;Once we &quot;grep&quot; out all but the symbols with the &quot;&lt;tt&gt;ruby_&lt;/tt&gt;&quot; prefix,
-    there are only 4 non-overlapping possibilities:
-    &lt;/p&gt;
-    &lt;ul&gt;
-    &lt;li&gt;Marpa expects a 
-    &lt;tt&gt;&amp;lt;ruby_i_decls&amp;gt;&lt;/tt&gt;
-    lexeme;
-    &lt;/li&gt;
-    &lt;li&gt;Marpa expects a 
-    &lt;tt&gt;&amp;lt;ruby_x_decls&amp;gt;&lt;/tt&gt;
-    lexeme;
-    &lt;/li&gt;
-    &lt;li&gt;Marpa expects a 
-    &lt;tt&gt;&amp;lt;ruby_semicolon&amp;gt;&lt;/tt&gt;
-    lexeme;
-    &lt;/li&gt;
-    &lt;li&gt;Marpa does not expect
-    any of the Ruby Slippers lexemes;
-    &lt;/li&gt;
-    &lt;/ul&gt;
-    &lt;p&gt;If Marpa does not expect any of the Ruby Slippers
-    lexemes, there was a syntax error in the Haskell code.&lt;a id=&quot;footnote-19-ref&quot; href=&quot;#footnote-19&quot;&gt;[19]&lt;/a&gt;
-    &lt;p&gt;If a &lt;tt&gt;&amp;lt;ruby_i_decls&amp;gt;&lt;/tt&gt;
-    or a &lt;tt&gt;&amp;lt;ruby_x_decls&amp;gt;&lt;/tt&gt;
-    lexeme is expected, a child combinator is invoked.
-    The Ruby Slippers symbol determines
-    whether the child combinator looks for implicit
-    or explicit layout.
-    In the case of implicit layout, the location of
-    the rejection determines the block indent.&lt;a id=&quot;footnote-20-ref&quot; href=&quot;#footnote-20&quot;&gt;[20]&lt;/a&gt;
-    &lt;/footnote&gt;
-    &lt;/p&gt;
-    &lt;p&gt;If a 
-    &lt;tt&gt;&amp;lt;ruby_semicolon&amp;gt;&lt;/tt&gt;
-    is expected, then the parser is at the point where a
-    new block item could start,
-    but none was found.
-    Whether the block was implicit or explicit,
-    this indicates we have reached the end of the block,
-    and should return control to the parent combinator.&lt;a id=&quot;footnote-21-ref&quot; href=&quot;#footnote-21&quot;&gt;[21]&lt;/a&gt;
-    &lt;/footnote&gt;
-    &lt;/p&gt;
-    &lt;p&gt;
-    To explain why
-    &lt;tt&gt;&amp;lt;ruby_semicolon&amp;gt;&lt;/tt&gt;
-    indicates end-of-block,
-    we look at both cases.
-    In the case of an explicit layout combinator,
-    the rejection should have been caused by a closing
-    curly brace, and
-    we return to the parent combinator
-    and retry it.
-    In the parent combinator, the closing curly brace
-    will be acceptable.
-    &lt;/p&gt;
-    &lt;p&gt;If we experience a &quot;rejected&quot; event while
-    expecting a
-    &lt;tt&gt;&amp;lt;ruby_semicolon&amp;gt;&lt;/tt&gt; in an implicit layout
-    combinator,
-    it means we did not find an explicit semicolon;
-    and we also never found the right indent for creating a Ruby semicolon.
-    In other words, the indentation is telling us that we are at the end
-    of the block.
-    We therefore return control to the parent combinator.
-    &lt;/p&gt;
-    &lt;h2&gt;Conclusion&lt;/h2&gt;
-    &lt;p&gt;
-    With this, we've covered the major points of this Haskell prototype
-    parser.
-    It produces an AST whose structure and node names are those of
-    the 2010 Report.
-    (The Marpa grammar introduces non-standard node names and rules,
-    but these are pruned from the AST in post-processing.)
-    &lt;/p&gt;
-    &lt;p&gt;
-    In the code, the grammars from the 2010 Report are included for
-    comparison, so a reader can easily determine what syntax we left out.
-    It might be tedious to add the rest,
-    but I believe it would be unproblematic, with one interesting exception:
-    fixity.
-    To deal with fixity, we may haul out the Ruby Slippers again.
-    &lt;/p&gt;
-    &lt;h2&gt;The code, comments, etc.&lt;/h2&gt;
-    &lt;p&gt;A permalink to the
-    full code and a test suite for this prototype,
-    as described in this blog post,
-    is
-    &lt;a href=&quot;https://github.com/jeffreykegler/Ocean-of-Awareness-blog/tree/6c76ffc791d24f4515edea376ac31ad7264a420c/code/haskell&quot;&gt;
-    on Github&lt;/a&gt;.
-    I expect to update this code,
-    and the latest commit can be found
-    &lt;a href=&quot;https://github.com/jeffreykegler/Ocean-of-Awareness-blog/tree/gh-pages/code/haskell&quot;&gt;
-    here&lt;/a&gt;.
-    Links for specific lines of code in this post are usually
-    static permalinks to earlier commits.
-    &lt;/p&gt;
-    &lt;p&gt;
-      To learn more about Marpa,
-      a good first stop is the
-      &lt;a href=&quot;http://savage.net.au/Marpa.html&quot;&gt;semi-official web site, maintained by Ron Savage&lt;/a&gt;.
-      The official, but more limited, Marpa website
-      &lt;a href=&quot;http://jeffreykegler.github.io/Marpa-web-site/&quot;&gt;is my personal one&lt;/a&gt;.
-      Comments on this post can be made in
-      &lt;a href=&quot;http://groups.google.com/group/marpa-parser&quot;&gt;
-        Marpa's Google group&lt;/a&gt;,
-      or on our IRC channel: #marpa at freenode.net.
-    &lt;/p&gt;
-    &lt;h2&gt;Footnotes&lt;/h2&gt;
-&lt;p id=&quot;footnote-1&quot;&gt;&lt;b&gt;1.&lt;/b&gt;
-    Graham Hutton and Erik Meijer,
-    &lt;cite&gt;Monadic parser combinators&lt;/cite&gt;, Technical Report NOTTCS-TR-96-4.
-    Department of Computer Science, University of Nottingham, 1996,
-    pp 30-35.
-    &lt;a href=&quot;http://eprints.nottingham.ac.uk/237/1/monparsing.pdf&quot;&gt;
-    http://eprints.nottingham.ac.uk/237/1/monparsing.pdf&lt;/a&gt;.
-    Accessed 19 August 2018.
- &lt;a href=&quot;#footnote-1-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
-&lt;p id=&quot;footnote-2&quot;&gt;&lt;b&gt;2.&lt;/b&gt;
-    I use
-    whitespace-significant parsing as a convenient example
-    for this post,
-    for historical reasons and
-    for reasons of level of complexity.
-    This should not be taken to indicate that I recommend it
-    as a language feature.
- &lt;a href=&quot;#footnote-2-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
-&lt;p id=&quot;footnote-3&quot;&gt;&lt;b&gt;3.&lt;/b&gt;
-    Simon Marlow,
-    &lt;cite&gt;Haskell 2010 Language Report&lt;/cite&gt;,
-    2010.
-    &lt;a href=&quot;https://www.haskell.org/onlinereport/haskell2010/haskell.html#haskellpa1.html&quot;&gt;
-    Online version accessed
-    21 August 2018.&lt;/a&gt;
-    For layout, see in particular
-    section 2.7 (pp. 12-14)
-    and section 10.3 (pp. 131-134).
- &lt;a href=&quot;#footnote-3-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
-&lt;p id=&quot;footnote-4&quot;&gt;&lt;b&gt;4.&lt;/b&gt;
-    2010 Report.
-    The short examples are on p. 13 and p. 134.
-    The long examples are on p. 14.
- &lt;a href=&quot;#footnote-4-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
-&lt;p id=&quot;footnote-5&quot;&gt;&lt;b&gt;5.&lt;/b&gt;
-    Paul Hudak, John Peterson and Joseph Fasel
-    &lt;cite&gt;Gentle Introduction To Haskell&lt;/cite&gt;, version 98.
-    Revised June, 2000 by Reuben Thomas.
-    &lt;a href=&quot;https://www.haskell.org/tutorial/index.html&quot;&gt;
-    Online version accessed
-    21 August 2018.&lt;/a&gt;
-    The examples are in section 4.6,
-    which is on pp. 20-21 of
-    &lt;a href=&quot;https://www.haskell.org/tutorial/haskell-98-tutorial.pdf&quot;&gt;
-    the October 1999 PDF&lt;/a&gt;.
- &lt;a href=&quot;#footnote-5-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
-&lt;p id=&quot;footnote-6&quot;&gt;&lt;b&gt;6.&lt;/b&gt;
-      &lt;a href=&quot;https://github.com/jeffreykegler/Ocean-of-Awareness-blog/blob/6c76ffc791d24f4515edea376ac31ad7264a420c/code/haskell/short.t#L21&quot;&gt;
-      Github Permalink.&lt;/a&gt;
- &lt;a href=&quot;#footnote-6-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
-&lt;p id=&quot;footnote-7&quot;&gt;&lt;b&gt;7.&lt;/b&gt;
-      &lt;a href=&quot;https://github.com/jeffreykegler/Ocean-of-Awareness-blog/blob/6c76ffc791d24f4515edea376ac31ad7264a420c/code/haskell/short.t#L28&quot;&gt;
-      Github Permalink.&lt;/a&gt;
- &lt;a href=&quot;#footnote-7-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
-&lt;p id=&quot;footnote-8&quot;&gt;&lt;b&gt;8.&lt;/b&gt;
-      &lt;a href=&quot;https://github.com/jeffreykegler/Ocean-of-Awareness-blog/blob/6c76ffc791d24f4515edea376ac31ad7264a420c/code/haskell/short.t#L43&quot;&gt;
-      Github Permalink.&lt;/a&gt;
- &lt;a href=&quot;#footnote-8-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
-&lt;p id=&quot;footnote-9&quot;&gt;&lt;b&gt;9.&lt;/b&gt;
-    Single-line comments are dealt with properly by lexing them
-    as a different token and discarding them separately.
-    Handling multi-line comments is not yet implemented --
-    it is easy in principle but
-    tedious in practice and the examples drawn from the
-    Haskell literature did not provide any test cases.
- &lt;a href=&quot;#footnote-9-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
-&lt;p id=&quot;footnote-10&quot;&gt;&lt;b&gt;10.&lt;/b&gt;
-      &lt;a href=&quot;https://github.com/jeffreykegler/Ocean-of-Awareness-blog/blob/6c76ffc791d24f4515edea376ac31ad7264a420c/code/haskell/haskell.pm#L608&quot;&gt;
-      Github Permalink.&lt;/a&gt;
- &lt;a href=&quot;#footnote-10-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
-&lt;p id=&quot;footnote-11&quot;&gt;&lt;b&gt;11.&lt;/b&gt;
-    &lt;a href=&quot;https://github.com/jeffreykegler/Ocean-of-Awareness-blog/blob/6c76ffc791d24f4515edea376ac31ad7264a420c/code/haskell/haskell.pm#L1007&quot;&gt;
-    Github Permalink.&lt;/a&gt;
- &lt;a href=&quot;#footnote-11-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
-&lt;p id=&quot;footnote-12&quot;&gt;&lt;b&gt;12.&lt;/b&gt;
-    &lt;a href=&quot;https://github.com/jeffreykegler/Ocean-of-Awareness-blog/blob/6c76ffc791d24f4515edea376ac31ad7264a420c/code/haskell/haskell.pm#L1028&quot;&gt;
-    Github Permalink.&lt;/a&gt;
- &lt;a href=&quot;#footnote-12-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
-&lt;p id=&quot;footnote-13&quot;&gt;&lt;b&gt;13.&lt;/b&gt;
-      &lt;a href=&quot;https://github.com/jeffreykegler/Ocean-of-Awareness-blog/blob/6c76ffc791d24f4515edea376ac31ad7264a420c/code/haskell/haskell.pm#L1101&quot;&gt;
-      Github Permalink.&lt;/a&gt;
- &lt;a href=&quot;#footnote-13-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
-&lt;p id=&quot;footnote-14&quot;&gt;&lt;b&gt;14.&lt;/b&gt;
-      &lt;a href=&quot;https://github.com/jeffreykegler/Ocean-of-Awareness-blog/blob/6c76ffc791d24f4515edea376ac31ad7264a420c/code/haskell/haskell.pm#L550&quot;&gt;
-      Github Permalink.&lt;/a&gt;
- &lt;a href=&quot;#footnote-14-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
-&lt;p id=&quot;footnote-15&quot;&gt;&lt;b&gt;15.&lt;/b&gt;
-    The reason for this is that by default a Marpa grammar determines
-    which of its symbols are lexemes using the presence of those
-    symbol on the LHS and RHS
-    of the rules
-    in its lexical and context-free grammars.
-    A typical Marpa grammar
-    requires a minimum of explicit lexeme declarations.
-    (Lexeme declarations are statements with the &lt;tt&gt;:lexeme&lt;/tt&gt;
-    pseudo-symbol on their LHS.)
-    As an aside,
-    the Haskell 2010 Report is not always careful about the lexer/context-free
-    boundary,
-    and adopting its grammar
-    required more use of Marpa's explicit lexeme declarations
-    than usual.
- &lt;a href=&quot;#footnote-15-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
-&lt;p id=&quot;footnote-16&quot;&gt;&lt;b&gt;16.&lt;/b&gt;
-      &lt;a href=&quot;https://github.com/jeffreykegler/Ocean-of-Awareness-blog/blob/6c76ffc791d24f4515edea376ac31ad7264a420c/code/haskell/haskell.pm#L361&quot;&gt;
-      Github Permalink.&lt;/a&gt;
- &lt;a href=&quot;#footnote-16-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
-&lt;p id=&quot;footnote-17&quot;&gt;&lt;b&gt;17.&lt;/b&gt;
-    Specifically, the presense of a 
-    &lt;tt&gt;&amp;lt;decls&amp;gt;&lt;/tt&gt; alternative silences the usual warnings about
-    symbols inaccessible from the start symbol.
-    These warnings can be silenced in other ways,
-    but at the prototype stage it is convenient to check that
-    all symbols supposed to be accessible through
-    &lt;tt&gt;&amp;lt;decls&amp;gt;&lt;/tt&gt; are in fact accessible.
-    There is a small startup cost to allowing the extra symbols
-    in the grammars,
-    but the runtime cost is probably not measureable.
- &lt;a href=&quot;#footnote-17-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
-&lt;p id=&quot;footnote-18&quot;&gt;&lt;b&gt;18.&lt;/b&gt;
-      &lt;a href=&quot;https://github.com/jeffreykegler/Ocean-of-Awareness-blog/blob/6c76ffc791d24f4515edea376ac31ad7264a420c/code/haskell/haskell.pm#L1055&quot;&gt;
-      Github Permalink.&lt;/a&gt;
- &lt;a href=&quot;#footnote-18-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
-&lt;p id=&quot;footnote-19&quot;&gt;&lt;b&gt;19.&lt;/b&gt;
-    Currently the handling of these is simplistic.
-    A practical implementation of this method would want better reporting.
-    In fact, Marpa's left eideticism allows some interesting things
-    to be done in this respect.
- &lt;a href=&quot;#footnote-19-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
-&lt;p id=&quot;footnote-20&quot;&gt;&lt;b&gt;20.&lt;/b&gt;
-      &lt;a href=&quot;https://github.com/jeffreykegler/Ocean-of-Awareness-blog/blob/6c76ffc791d24f4515edea376ac31ad7264a420c/code/haskell/haskell.pm#L1081&quot;&gt;
-      Github Permalink.&lt;/a&gt;
- &lt;a href=&quot;#footnote-20-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
-&lt;p id=&quot;footnote-21&quot;&gt;&lt;b&gt;21.&lt;/b&gt;
-      &lt;a href=&quot;https://github.com/jeffreykegler/Ocean-of-Awareness-blog/blob/6c76ffc791d24f4515edea376ac31ad7264a420c/code/haskell/haskell.pm#L1072&quot;&gt;
-      Github Permalink.&lt;/a&gt;
- &lt;a href=&quot;#footnote-21-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
   &lt;/body&gt;
 &lt;/html&gt;</description>
   </item>
