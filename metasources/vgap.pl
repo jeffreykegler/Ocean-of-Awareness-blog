@@ -551,9 +551,12 @@ with a new protocol stack.
     In effect, the lexer acts like Glenda the Good Witch of Oz,
     while the Marpa parser plays the role of Dorothy.
     </p>
-    <p>So, if the Marpa parser of our
+    <p>In our implementation, the Marpa parser, by default,
+    looks only for structural comments.
+    If the Marpa parser of our
     comment linter finds that the current input line is not
-    one of those it is looking for, the parser halts
+    a structural comment,
+    the Marpa parser halts
     and tells the lexer that there is a problem.
     The lexer then asks the Marpa parser what it is looking for.
     In this case, the answer will always be the same:
