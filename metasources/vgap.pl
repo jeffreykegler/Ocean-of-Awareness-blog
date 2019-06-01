@@ -400,7 +400,7 @@ with a new protocol stack.
     in my <a href="https://jeffreykegler.github.io/personal/timeline_v3">
     "timeline" of parsing history</a>.
     </footnote>,
-    but, GHC, the flagship functional programming
+    but GHC, the flagship functional programming
     language parser,
     does not use combinators to parse itself --
     instead it uses a parser in the yacc lineage.<footnote><a

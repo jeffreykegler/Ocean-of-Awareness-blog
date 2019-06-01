@@ -314,7 +314,7 @@ with a new protocol stack.
     it is a technique that can be oversold.
     Combinators have been much talked about in the functional programming
     literature<a id="footnote-4-ref" href="#footnote-4">[4]</a>,
-    but, GHC, the flagship functional programming
+    but GHC, the flagship functional programming
     language parser,
     does not use combinators to parse itself --
     instead it uses a parser in the yacc lineage.<a id="footnote-5-ref" href="#footnote-5">[5]</a>
