@@ -239,11 +239,10 @@ with a new protocol stack.
     <li>If both an inter-part and a pre-part are present,
     the inter-part must preceed the pre-part.
     </li>
-    <li>The inter-part must be either a sequence of inter-comments
+    <li>The inter-part is a non-empty sequence of inter-comments
     and staircases.
     </li>
-    <li>A pre-part is always a sequence of
-    one or more pre-comments.
+    <li>A pre-part is a non-empty sequence of pre-comments.
     </li>
     <li>Meta-comments may be inserted anywhere in either the pre-part
     or the inter-part.
@@ -483,23 +482,24 @@ with a new protocol stack.
     <p>Marpa allows ambiguity,
     which could have been exploited as a technique.
     For example, in a simpler BNF than that we used above,
-    it might be ambiguous whether a meta-comment belongs to an <tt>&lt;Interpart&gt;</tt>
+    it might be ambiguous whether a meta-comment belongs to an <tt>&lt;InterPart&gt;</tt>
     which immediately preceeds it;
-    or a <tt>&lt;Prepart&gt;</tt> which immediately follows it.
-    We could solve the dilemma by noting that it does not matter,
+    or to a <tt>&lt;PrePart&gt;</tt> which immediately follows it.
+    We could solve the dilemma by noting that it does not matter:
+    All we care about is spotting bad comments and blank lines,
     so that picking one of two ambiguous parses at random will work fine.
     </p>
     <p>
     But efficiency issues are sometimes a problem with ambiguity
-    and unambiguity is a good way of avoiding them.<a id="footnote-10-ref" href="#footnote-10">[10]</a>
+    and unambiguity can be a good way of avoiding them.<a id="footnote-10-ref" href="#footnote-10">[10]</a>
     Also, requiring the grammar to be unambiguous allows
     an additional check that is useful in the development phase.
     In our code we test each parse for ambiguity.
     If we find one, we know that <tt>hoonlint</tt> has a coding error.
     </p>
     <p>
-    Keeping the parser unambiguous means that the grammar
-    is less elegant than it could be.
+    Keeping the parser unambiguous makes the BNF
+    less elegant than it could be.
     To avoid ambiguity,
     we introduced extra symbols;
     introduced extra rules;
@@ -509,7 +509,7 @@ with a new protocol stack.
     sense that it has in parsing theory, so that a parser is only ambiguous
     if it can produce two valid parses for one string.
     An unambiguous parser
-    can be non-deterministic and
+    can allow non-deterministism and
     can have ambiguous tokens.
     In fact, our example grammar does both of these things,
     but is nonetheless unambiguous.
@@ -539,6 +539,42 @@ with a new protocol stack.
     </p>
     </p>
     <h3>Extra rules</h3>
+    <p>In our informal explanation of the comment conventions,
+    we stated that an inter-part is a sequence, each element of
+    which is an inter-comment or a staircase.
+    While BNF that directly implemented this rule would be correct,
+    it would also be highly ambiguous:
+    If an inter-comment occurs before a tread or an upper riser line,
+    it could also be parsed as part of the upper riser.
+    </p>
+    <p>To eliminate the ambiguity,
+    we stipulate that if comment <b>can</b> be parsed as part of a staircase,
+    then it <b>must</b> be parsed as part of a staircase.
+    This stipulation still leaves the grammar non-deterministic --
+    we may not know if our comment could be part of a staircase until
+    many lines later.
+    </p>
+    <p>With our stipulation, we know that, if an
+    <tt>&lt;InterComponent&gt;</tt>
+    contains
+    a staircase, then that staircase must come before any of the inter-comments.
+    In an <tt>&lt;InterComponent&gt;</tt>
+    both staircases and inter-comments are optional, so the
+    unambiguous representation of
+    <tt>&lt;InterComponent&gt;</tt>
+    is
+    <pre><tt>
+    InterComponent ::= Staircases
+    InterComponent ::= Staircases InterComments
+    InterComponent ::= InterComments
+    </tt></pre>
+    Notice that, although
+    both staircases and inter-comments are optional,
+    we do not include the case where both are omitted.
+    This is because we insist that an
+    <tt>&lt;InterComponent&gt;</tt>
+    contain at least one line.
+    </p>
     <h3>Ambiguous tokens</h3>
     <p>Our parser is not ambiguous, but
     it <b>does</b> allow ambiguous tokens.
@@ -566,7 +602,7 @@ with a new protocol stack.
     this parser unambiguous, we restrict the
     ambiguity at the lexer level.
     For example,
-    our Ruby Slippers "exception mechanism" is set up so
+    our lexer is set up so
     that a meta-comment is never one of the alternatives
     in a lexical ambiguity.
     If a token set contains a
@@ -575,14 +611,13 @@ with a new protocol stack.
     The Ruby Slippers are used to enforce this.<a id="footnote-12-ref" href="#footnote-12">[12]</a>
     </p>
     <p>
-    Similarly, the Ruby Slippers are used to quarantee that
+    Similarly, the Ruby Slippers are used to guarantee that
     any set of tokens containing either
     a <tt>&lt;BadComment&gt;</tt>
     or a
     <tt>&lt;BlankLine&gt;</tt> is a singleton.
-    In this way, the lexer guarantees that,
-    while tokenization can be ambiguous,
-    the parse never is.
+    While our tokenizations can be ambiguous,
+    our parses never are.
     </p>
     <h2>Code</h2>
     <p>This post did not walk the reader through the code.
@@ -709,8 +744,8 @@ In their present form, urbits run on top of Unix and UDP.
     or to exclude,
     efficiency.
     If <tt>n</tt> meta-comments occur between a
-    <tt>&lt;Interpart&gt;</tt>
-    and a <tt>&lt;Prepart&gt;</tt>,
+    <tt>&lt;InterPart&gt;</tt>
+    and a <tt>&lt;PrePart&gt;</tt>,
     the dividing line is arbitrary,
     so that there are <tt>n+1</tt> parses.
     This will, in theory, make the processing time quadratic.
@@ -722,7 +757,8 @@ In their present form, urbits run on top of Unix and UDP.
     Inter-comments and
     comments that are part of upper risers may start on line 1,
     so, without special precautions in the lexer,
-    an ambiguity between a structural and a meta-comment is entirely
+    an ambiguity between a structural comment
+    and a meta-comment is entirely
     possible.
  <a href="#footnote-12-ref">&#8617;</a></p>
 <p id="footnote-13"><b>13.</b>

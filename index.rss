@@ -252,11 +252,10 @@ with a new protocol stack.
     &lt;li&gt;If both an inter-part and a pre-part are present,
     the inter-part must preceed the pre-part.
     &lt;/li&gt;
-    &lt;li&gt;The inter-part must be either a sequence of inter-comments
+    &lt;li&gt;The inter-part is a non-empty sequence of inter-comments
     and staircases.
     &lt;/li&gt;
-    &lt;li&gt;A pre-part is always a sequence of
-    one or more pre-comments.
+    &lt;li&gt;A pre-part is a non-empty sequence of pre-comments.
     &lt;/li&gt;
     &lt;li&gt;Meta-comments may be inserted anywhere in either the pre-part
     or the inter-part.
@@ -496,23 +495,24 @@ with a new protocol stack.
     &lt;p&gt;Marpa allows ambiguity,
     which could have been exploited as a technique.
     For example, in a simpler BNF than that we used above,
-    it might be ambiguous whether a meta-comment belongs to an &lt;tt&gt;&amp;lt;Interpart&amp;gt;&lt;/tt&gt;
+    it might be ambiguous whether a meta-comment belongs to an &lt;tt&gt;&amp;lt;InterPart&amp;gt;&lt;/tt&gt;
     which immediately preceeds it;
-    or a &lt;tt&gt;&amp;lt;Prepart&amp;gt;&lt;/tt&gt; which immediately follows it.
-    We could solve the dilemma by noting that it does not matter,
+    or to a &lt;tt&gt;&amp;lt;PrePart&amp;gt;&lt;/tt&gt; which immediately follows it.
+    We could solve the dilemma by noting that it does not matter:
+    All we care about is spotting bad comments and blank lines,
     so that picking one of two ambiguous parses at random will work fine.
     &lt;/p&gt;
     &lt;p&gt;
     But efficiency issues are sometimes a problem with ambiguity
-    and unambiguity is a good way of avoiding them.&lt;a id=&quot;footnote-10-ref&quot; href=&quot;#footnote-10&quot;&gt;[10]&lt;/a&gt;
+    and unambiguity can be a good way of avoiding them.&lt;a id=&quot;footnote-10-ref&quot; href=&quot;#footnote-10&quot;&gt;[10]&lt;/a&gt;
     Also, requiring the grammar to be unambiguous allows
     an additional check that is useful in the development phase.
     In our code we test each parse for ambiguity.
     If we find one, we know that &lt;tt&gt;hoonlint&lt;/tt&gt; has a coding error.
     &lt;/p&gt;
     &lt;p&gt;
-    Keeping the parser unambiguous means that the grammar
-    is less elegant than it could be.
+    Keeping the parser unambiguous makes the BNF
+    less elegant than it could be.
     To avoid ambiguity,
     we introduced extra symbols;
     introduced extra rules;
@@ -522,7 +522,7 @@ with a new protocol stack.
     sense that it has in parsing theory, so that a parser is only ambiguous
     if it can produce two valid parses for one string.
     An unambiguous parser
-    can be non-deterministic and
+    can allow non-deterministism and
     can have ambiguous tokens.
     In fact, our example grammar does both of these things,
     but is nonetheless unambiguous.
@@ -552,6 +552,42 @@ with a new protocol stack.
     &lt;/p&gt;
     &lt;/p&gt;
     &lt;h3&gt;Extra rules&lt;/h3&gt;
+    &lt;p&gt;In our informal explanation of the comment conventions,
+    we stated that an inter-part is a sequence, each element of
+    which is an inter-comment or a staircase.
+    While BNF that directly implemented this rule would be correct,
+    it would also be highly ambiguous:
+    If an inter-comment occurs before a tread or an upper riser line,
+    it could also be parsed as part of the upper riser.
+    &lt;/p&gt;
+    &lt;p&gt;To eliminate the ambiguity,
+    we stipulate that if comment &lt;b&gt;can&lt;/b&gt; be parsed as part of a staircase,
+    then it &lt;b&gt;must&lt;/b&gt; be parsed as part of a staircase.
+    This stipulation still leaves the grammar non-deterministic --
+    we may not know if our comment could be part of a staircase until
+    many lines later.
+    &lt;/p&gt;
+    &lt;p&gt;With our stipulation, we know that, if an
+    &lt;tt&gt;&amp;lt;InterComponent&amp;gt;&lt;/tt&gt;
+    contains
+    a staircase, then that staircase must come before any of the inter-comments.
+    In an &lt;tt&gt;&amp;lt;InterComponent&amp;gt;&lt;/tt&gt;
+    both staircases and inter-comments are optional, so the
+    unambiguous representation of
+    &lt;tt&gt;&amp;lt;InterComponent&amp;gt;&lt;/tt&gt;
+    is
+    &lt;pre&gt;&lt;tt&gt;
+    InterComponent ::= Staircases
+    InterComponent ::= Staircases InterComments
+    InterComponent ::= InterComments
+    &lt;/tt&gt;&lt;/pre&gt;
+    Notice that, although
+    both staircases and inter-comments are optional,
+    we do not include the case where both are omitted.
+    This is because we insist that an
+    &lt;tt&gt;&amp;lt;InterComponent&amp;gt;&lt;/tt&gt;
+    contain at least one line.
+    &lt;/p&gt;
     &lt;h3&gt;Ambiguous tokens&lt;/h3&gt;
     &lt;p&gt;Our parser is not ambiguous, but
     it &lt;b&gt;does&lt;/b&gt; allow ambiguous tokens.
@@ -579,7 +615,7 @@ with a new protocol stack.
     this parser unambiguous, we restrict the
     ambiguity at the lexer level.
     For example,
-    our Ruby Slippers &quot;exception mechanism&quot; is set up so
+    our lexer is set up so
     that a meta-comment is never one of the alternatives
     in a lexical ambiguity.
     If a token set contains a
@@ -588,14 +624,13 @@ with a new protocol stack.
     The Ruby Slippers are used to enforce this.&lt;a id=&quot;footnote-12-ref&quot; href=&quot;#footnote-12&quot;&gt;[12]&lt;/a&gt;
     &lt;/p&gt;
     &lt;p&gt;
-    Similarly, the Ruby Slippers are used to quarantee that
+    Similarly, the Ruby Slippers are used to guarantee that
     any set of tokens containing either
     a &lt;tt&gt;&amp;lt;BadComment&amp;gt;&lt;/tt&gt;
     or a
     &lt;tt&gt;&amp;lt;BlankLine&amp;gt;&lt;/tt&gt; is a singleton.
-    In this way, the lexer guarantees that,
-    while tokenization can be ambiguous,
-    the parse never is.
+    While our tokenizations can be ambiguous,
+    our parses never are.
     &lt;/p&gt;
     &lt;h2&gt;Code&lt;/h2&gt;
     &lt;p&gt;This post did not walk the reader through the code.
@@ -722,8 +757,8 @@ In their present form, urbits run on top of Unix and UDP.
     or to exclude,
     efficiency.
     If &lt;tt&gt;n&lt;/tt&gt; meta-comments occur between a
-    &lt;tt&gt;&amp;lt;Interpart&amp;gt;&lt;/tt&gt;
-    and a &lt;tt&gt;&amp;lt;Prepart&amp;gt;&lt;/tt&gt;,
+    &lt;tt&gt;&amp;lt;InterPart&amp;gt;&lt;/tt&gt;
+    and a &lt;tt&gt;&amp;lt;PrePart&amp;gt;&lt;/tt&gt;,
     the dividing line is arbitrary,
     so that there are &lt;tt&gt;n+1&lt;/tt&gt; parses.
     This will, in theory, make the processing time quadratic.
@@ -735,7 +770,8 @@ In their present form, urbits run on top of Unix and UDP.
     Inter-comments and
     comments that are part of upper risers may start on line 1,
     so, without special precautions in the lexer,
-    an ambiguity between a structural and a meta-comment is entirely
+    an ambiguity between a structural comment
+    and a meta-comment is entirely
     possible.
  &lt;a href=&quot;#footnote-12-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
 &lt;p id=&quot;footnote-13&quot;&gt;&lt;b&gt;13.&lt;/b&gt;
