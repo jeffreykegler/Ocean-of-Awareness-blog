@@ -278,13 +278,8 @@ with a new protocol stack.
     <li>If both an inter-part and a pre-part are present,
     the inter-part must preceed the pre-part.
     </li>
-    <li>The inter-part must be either
-       <ul>
-       <li>a sequence of one or more inter-comments; or
-       </li>
-       <li>a sequence of one or more staircases.
-       </li>
-       </ul>
+    <li>The inter-part must be either a sequence of inter-comments
+    and staircases.
     </li>
     <li>A pre-part is always a sequence of
     one or more pre-comments.
@@ -533,25 +528,100 @@ with a new protocol stack.
     We could solve the dilemma by noting that it does not matter,
     so that picking one of two ambiguous parses at random will work fine.
     </p>
-    <p>In the comment linter of this post,
-    we decided to keep our parser unambiguous.
-    This means the grammar given above is less elegant
-    than it could be.<a id="footnote-10-ref" href="#footnote-10">[10]</a>
-    But efficiency issues are sometimes a problem with ambiguity
-    and unambiguity often avoids them.<a id="footnote-11-ref" href="#footnote-11">[11]</a>
-    </p>
     <p>
+    But efficiency issues are sometimes a problem with ambiguity
+    and unambiguity is a good way of avoiding them.<a id="footnote-10-ref" href="#footnote-10">[10]</a>
     Also, requiring the grammar to be unambiguous allows
     an additional check that is useful in the development phase.
     In our code we test each parse for ambiguity.
     If we find one, we know that <tt>hoonlint</tt> has a coding error.
     </p>
-    <p>Some of the work in keeping
-    this parser unambiguous is delegated to the lexer.
+    <p>
+    Keeping the parser unambiguous means that the grammar
+    is less elegant than it could be.
+    To avoid ambiguity,
+    we introduced extra symbols;
+    introduced extra rules;
+    and restricted the use of ambiguous tokens.
+    </p>
+    <p>Recall that I am using the term "ambiguous" in the strict technical
+    sense that it has in parsing theory, so that a parser is only ambiguous
+    if it can produce two valid parses for one string.
+    An unambiguous parser
+    can be non-deterministic and
+    can have ambiguous tokens.
+    In fact, our example grammar does both of these things,
+    but is nonetheless unambiguous.
+    </p>
+    <h3>Extra symbols</h3>
+    One example of an extra symbol introduced to make this parser
+    unambiguous is <tt>&lt;ProperPreComment&gt;</tt>.
+    <tt>&lt;ProperPreComment&gt;</tt>
+    is used to ensure that a
+    <tt>&lt;PrePart&gt;</tt>
+    never begins with a meta-comment.<a id="footnote-11-ref" href="#footnote-11">[11]</a>
+    </p>
+    <p>The BNF requires that the first child of a
+    <tt>&lt;PrePart&gt;</tt>
+    must be a
+    <tt>&lt;ProperPreComment&gt;</tt>.
+    This means that, if a
+    <tt>&lt;MetaComment&gt;</tt> is found
+    at the boundary between an
+    <tt>&lt;InterPart&gt;</tt>
+    and a
+    <tt>&lt;PrePart&gt;</tt>,
+    it cannot be the first line of the
+    <tt>&lt;PrePart&gt;</tt>
+    and so must be the last line of the
+    <tt>&lt;InterPart&gt;</tt>.
+    </p>
+    </p>
+    <h3>Extra rules</h3>
+    <h3>Ambiguous tokens</h3>
+    <p>Our parser is not ambiguous, but
+    it <b>does</b> allow ambiguous tokens.
+    For example, a comment with inter-comment alignment
+    could be either an
+    <tt>&lt;InterComment&gt;</tt>
+    or an
+    <tt>&lt;UpperRiser&gt;</tt>;
+    and our lexer returns both.
+    The parser remains unambiguous, however, because
+    only one of these two tokens will wind up in the
+    final parse.
+    </p>
+    <p>Call the set of tokens returned
+    by our parser for a single line,
+    a "token set".
+    If the token set contains more than one token,
+    the tokenization is ambiguous for that line.
+    If the token set contains only one token,
+    the token set is called a "singleton",
+    and tokenization is unambiguous for that line.
+    </p>
+    <p>
+    To keep
+    this parser unambiguous, we restrict the
+    ambiguity at the lexer level.
     For example,
-    we used our Ruby Slippers "exception mechanism" to
-    guarantee that no line is
-    both a meta-comment and a structural comment.<a id="footnote-12-ref" href="#footnote-12">[12]</a>
+    our Ruby Slippers "exception mechanism" is set up so
+    that a meta-comment is never one of the alternatives
+    in a lexical ambiguity.
+    If a token set contains a
+    <tt>&lt;MetaComment&gt;</tt>,
+    that token set must be a singleton.
+    The Ruby Slippers are used to enforce this.<a id="footnote-12-ref" href="#footnote-12">[12]</a>
+    </p>
+    <p>
+    Similarly, the Ruby Slippers are used to quarantee that
+    any set of tokens containing either
+    a <tt>&lt;BadComment&gt;</tt>
+    or a
+    <tt>&lt;BlankLine&gt;</tt> is a singleton.
+    In this way, the lexer guarantees that,
+    while tokenization can be ambiguous,
+    the parse never is.
     </p>
     <h2>Code</h2>
     <p>This post did not walk the reader through the code.
@@ -653,16 +723,34 @@ In their present form, urbits run on top of Unix and UDP.
           "Marpa and the Ruby Slippers"</a>.
  <a href="#footnote-9-ref">&#8617;</a></p>
 <p id="footnote-10"><b>10.</b>
-    One example of an extra symbol introduced to make the parser
-    unambiguous is <tt>&lt;ProperPreComment&gt;</tt>,
-    which is used to ensure that a
-    <tt>&lt;PrePart&gt;</tt>
-    never begins with a meta-comment.
+    This, by the way,
+    is where I believe parsing theory went wrong,
+    beginning in the 1960's.
+    In an understandable search for efficiency,
+    mainstream parsing theory totally excluded not just ambiguity,
+    but non-determinism as well.
+    These draconian restrictions limited the
+    search for practical parsers to a subset of techniques
+    so weak that they cannot
+    even duplicate human parsing capabilities.
+    This had the bizarre effect of committing
+    parsing theory to a form of
+    "human exceptionalism" --
+    a belief that human beings have a special ability to
+    parse that computers cannot emulate.
+    For more on this story,
+    see my <a href="https://jeffreykegler.github.io/personal/timeline_v3">
+    "timeline" of parsing history</a>.
  <a href="#footnote-10-ref">&#8617;</a></p>
 <p id="footnote-11"><b>11.</b>
+    This example illustrates the efficiency considerations
+    involved in the decision to tolerate,
+    or to exclude,
+    efficiency.
     If <tt>n</tt> meta-comments occur between a
     <tt>&lt;Interpart&gt;</tt>
-    and a <tt>&lt;Prepart&gt;</tt>, the dividing line is arbitrary,
+    and a <tt>&lt;Prepart&gt;</tt>,
+    the dividing line is arbitrary,
     so that there are <tt>n+1</tt> parses.
     This will, in theory, make the processing time quadratic.
     And, in fact, long sequences of meta-comments might occur
@@ -672,8 +760,8 @@ In their present form, urbits run on top of Unix and UDP.
 <p id="footnote-12"><b>12.</b>
     Inter-comments and
     comments that are part of upper risers may start on line 1,
-    so an ambiguity between a structural and
-    a meta-comment is entirely
+    so, without special precautions in the lexer,
+    an ambiguity between a structural and a meta-comment is entirely
     possible.
  <a href="#footnote-12-ref">&#8617;</a></p>
 <p id="footnote-13"><b>13.</b>

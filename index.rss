@@ -252,13 +252,8 @@ with a new protocol stack.
     &lt;li&gt;If both an inter-part and a pre-part are present,
     the inter-part must preceed the pre-part.
     &lt;/li&gt;
-    &lt;li&gt;The inter-part must be either
-       &lt;ul&gt;
-       &lt;li&gt;a sequence of one or more inter-comments; or
-       &lt;/li&gt;
-       &lt;li&gt;a sequence of one or more staircases.
-       &lt;/li&gt;
-       &lt;/ul&gt;
+    &lt;li&gt;The inter-part must be either a sequence of inter-comments
+    and staircases.
     &lt;/li&gt;
     &lt;li&gt;A pre-part is always a sequence of
     one or more pre-comments.
@@ -507,25 +502,100 @@ with a new protocol stack.
     We could solve the dilemma by noting that it does not matter,
     so that picking one of two ambiguous parses at random will work fine.
     &lt;/p&gt;
-    &lt;p&gt;In the comment linter of this post,
-    we decided to keep our parser unambiguous.
-    This means the grammar given above is less elegant
-    than it could be.&lt;a id=&quot;footnote-10-ref&quot; href=&quot;#footnote-10&quot;&gt;[10]&lt;/a&gt;
-    But efficiency issues are sometimes a problem with ambiguity
-    and unambiguity often avoids them.&lt;a id=&quot;footnote-11-ref&quot; href=&quot;#footnote-11&quot;&gt;[11]&lt;/a&gt;
-    &lt;/p&gt;
     &lt;p&gt;
+    But efficiency issues are sometimes a problem with ambiguity
+    and unambiguity is a good way of avoiding them.&lt;a id=&quot;footnote-10-ref&quot; href=&quot;#footnote-10&quot;&gt;[10]&lt;/a&gt;
     Also, requiring the grammar to be unambiguous allows
     an additional check that is useful in the development phase.
     In our code we test each parse for ambiguity.
     If we find one, we know that &lt;tt&gt;hoonlint&lt;/tt&gt; has a coding error.
     &lt;/p&gt;
-    &lt;p&gt;Some of the work in keeping
-    this parser unambiguous is delegated to the lexer.
+    &lt;p&gt;
+    Keeping the parser unambiguous means that the grammar
+    is less elegant than it could be.
+    To avoid ambiguity,
+    we introduced extra symbols;
+    introduced extra rules;
+    and restricted the use of ambiguous tokens.
+    &lt;/p&gt;
+    &lt;p&gt;Recall that I am using the term &quot;ambiguous&quot; in the strict technical
+    sense that it has in parsing theory, so that a parser is only ambiguous
+    if it can produce two valid parses for one string.
+    An unambiguous parser
+    can be non-deterministic and
+    can have ambiguous tokens.
+    In fact, our example grammar does both of these things,
+    but is nonetheless unambiguous.
+    &lt;/p&gt;
+    &lt;h3&gt;Extra symbols&lt;/h3&gt;
+    One example of an extra symbol introduced to make this parser
+    unambiguous is &lt;tt&gt;&amp;lt;ProperPreComment&amp;gt;&lt;/tt&gt;.
+    &lt;tt&gt;&amp;lt;ProperPreComment&amp;gt;&lt;/tt&gt;
+    is used to ensure that a
+    &lt;tt&gt;&amp;lt;PrePart&amp;gt;&lt;/tt&gt;
+    never begins with a meta-comment.&lt;a id=&quot;footnote-11-ref&quot; href=&quot;#footnote-11&quot;&gt;[11]&lt;/a&gt;
+    &lt;/p&gt;
+    &lt;p&gt;The BNF requires that the first child of a
+    &lt;tt&gt;&amp;lt;PrePart&amp;gt;&lt;/tt&gt;
+    must be a
+    &lt;tt&gt;&amp;lt;ProperPreComment&amp;gt;&lt;/tt&gt;.
+    This means that, if a
+    &lt;tt&gt;&amp;lt;MetaComment&amp;gt;&lt;/tt&gt; is found
+    at the boundary between an
+    &lt;tt&gt;&amp;lt;InterPart&amp;gt;&lt;/tt&gt;
+    and a
+    &lt;tt&gt;&amp;lt;PrePart&amp;gt;&lt;/tt&gt;,
+    it cannot be the first line of the
+    &lt;tt&gt;&amp;lt;PrePart&amp;gt;&lt;/tt&gt;
+    and so must be the last line of the
+    &lt;tt&gt;&amp;lt;InterPart&amp;gt;&lt;/tt&gt;.
+    &lt;/p&gt;
+    &lt;/p&gt;
+    &lt;h3&gt;Extra rules&lt;/h3&gt;
+    &lt;h3&gt;Ambiguous tokens&lt;/h3&gt;
+    &lt;p&gt;Our parser is not ambiguous, but
+    it &lt;b&gt;does&lt;/b&gt; allow ambiguous tokens.
+    For example, a comment with inter-comment alignment
+    could be either an
+    &lt;tt&gt;&amp;lt;InterComment&amp;gt;&lt;/tt&gt;
+    or an
+    &lt;tt&gt;&amp;lt;UpperRiser&amp;gt;&lt;/tt&gt;;
+    and our lexer returns both.
+    The parser remains unambiguous, however, because
+    only one of these two tokens will wind up in the
+    final parse.
+    &lt;/p&gt;
+    &lt;p&gt;Call the set of tokens returned
+    by our parser for a single line,
+    a &quot;token set&quot;.
+    If the token set contains more than one token,
+    the tokenization is ambiguous for that line.
+    If the token set contains only one token,
+    the token set is called a &quot;singleton&quot;,
+    and tokenization is unambiguous for that line.
+    &lt;/p&gt;
+    &lt;p&gt;
+    To keep
+    this parser unambiguous, we restrict the
+    ambiguity at the lexer level.
     For example,
-    we used our Ruby Slippers &quot;exception mechanism&quot; to
-    guarantee that no line is
-    both a meta-comment and a structural comment.&lt;a id=&quot;footnote-12-ref&quot; href=&quot;#footnote-12&quot;&gt;[12]&lt;/a&gt;
+    our Ruby Slippers &quot;exception mechanism&quot; is set up so
+    that a meta-comment is never one of the alternatives
+    in a lexical ambiguity.
+    If a token set contains a
+    &lt;tt&gt;&amp;lt;MetaComment&amp;gt;&lt;/tt&gt;,
+    that token set must be a singleton.
+    The Ruby Slippers are used to enforce this.&lt;a id=&quot;footnote-12-ref&quot; href=&quot;#footnote-12&quot;&gt;[12]&lt;/a&gt;
+    &lt;/p&gt;
+    &lt;p&gt;
+    Similarly, the Ruby Slippers are used to quarantee that
+    any set of tokens containing either
+    a &lt;tt&gt;&amp;lt;BadComment&amp;gt;&lt;/tt&gt;
+    or a
+    &lt;tt&gt;&amp;lt;BlankLine&amp;gt;&lt;/tt&gt; is a singleton.
+    In this way, the lexer guarantees that,
+    while tokenization can be ambiguous,
+    the parse never is.
     &lt;/p&gt;
     &lt;h2&gt;Code&lt;/h2&gt;
     &lt;p&gt;This post did not walk the reader through the code.
@@ -627,16 +697,34 @@ In their present form, urbits run on top of Unix and UDP.
           &quot;Marpa and the Ruby Slippers&quot;&lt;/a&gt;.
  &lt;a href=&quot;#footnote-9-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
 &lt;p id=&quot;footnote-10&quot;&gt;&lt;b&gt;10.&lt;/b&gt;
-    One example of an extra symbol introduced to make the parser
-    unambiguous is &lt;tt&gt;&amp;lt;ProperPreComment&amp;gt;&lt;/tt&gt;,
-    which is used to ensure that a
-    &lt;tt&gt;&amp;lt;PrePart&amp;gt;&lt;/tt&gt;
-    never begins with a meta-comment.
+    This, by the way,
+    is where I believe parsing theory went wrong,
+    beginning in the 1960's.
+    In an understandable search for efficiency,
+    mainstream parsing theory totally excluded not just ambiguity,
+    but non-determinism as well.
+    These draconian restrictions limited the
+    search for practical parsers to a subset of techniques
+    so weak that they cannot
+    even duplicate human parsing capabilities.
+    This had the bizarre effect of committing
+    parsing theory to a form of
+    &quot;human exceptionalism&quot; --
+    a belief that human beings have a special ability to
+    parse that computers cannot emulate.
+    For more on this story,
+    see my &lt;a href=&quot;https://jeffreykegler.github.io/personal/timeline_v3&quot;&gt;
+    &quot;timeline&quot; of parsing history&lt;/a&gt;.
  &lt;a href=&quot;#footnote-10-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
 &lt;p id=&quot;footnote-11&quot;&gt;&lt;b&gt;11.&lt;/b&gt;
+    This example illustrates the efficiency considerations
+    involved in the decision to tolerate,
+    or to exclude,
+    efficiency.
     If &lt;tt&gt;n&lt;/tt&gt; meta-comments occur between a
     &lt;tt&gt;&amp;lt;Interpart&amp;gt;&lt;/tt&gt;
-    and a &lt;tt&gt;&amp;lt;Prepart&amp;gt;&lt;/tt&gt;, the dividing line is arbitrary,
+    and a &lt;tt&gt;&amp;lt;Prepart&amp;gt;&lt;/tt&gt;,
+    the dividing line is arbitrary,
     so that there are &lt;tt&gt;n+1&lt;/tt&gt; parses.
     This will, in theory, make the processing time quadratic.
     And, in fact, long sequences of meta-comments might occur
@@ -646,8 +734,8 @@ In their present form, urbits run on top of Unix and UDP.
 &lt;p id=&quot;footnote-12&quot;&gt;&lt;b&gt;12.&lt;/b&gt;
     Inter-comments and
     comments that are part of upper risers may start on line 1,
-    so an ambiguity between a structural and
-    a meta-comment is entirely
+    so, without special precautions in the lexer,
+    an ambiguity between a structural and a meta-comment is entirely
     possible.
  &lt;a href=&quot;#footnote-12-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
 &lt;p id=&quot;footnote-13&quot;&gt;&lt;b&gt;13.&lt;/b&gt;
