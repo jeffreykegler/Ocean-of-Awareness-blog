@@ -82,7 +82,7 @@ To make sure they can be run anywhere in the cloud&lt;a id=&quot;footnote-1-ref&
 they are based on a tiny virtual machine, called Nock.
 To keep urbits compact and secure,
 Urbit takes on code bloat directly --
-Urbit is a original design from a clean slate,
+Urbit is an original design from a clean slate,
 with a new protocol stack.
     &lt;/p&gt;
     &lt;h2&gt;About Hoon&lt;/h2&gt;
@@ -242,15 +242,14 @@ with a new protocol stack.
     &lt;h2&gt;Hoon comment conventions&lt;/h2&gt;
     &lt;p&gt;Hoon's basic syntax allows comments to be free-form.
     In practice, there are strict conventions for these comments,
-    conventions we would like to enforce with a &lt;tt&gt;lint&lt;/tt&gt; for Hoon:
-    a &lt;tt&gt;hoonlint&lt;/tt&gt;.
+    conventions we would like to enforce with &lt;tt&gt;hoonlint&lt;/tt&gt;.
     &lt;ol&gt;
     &lt;li&gt;A multi-line comment may contain
     an &quot;inter-part&quot;, a &quot;pre-part&quot;,
     or both.
     &lt;/li&gt;
     &lt;li&gt;If both an inter-part and a pre-part are present,
-    the inter-part must preceed the pre-part.
+    the inter-part must precede the pre-part.
     &lt;/li&gt;
     &lt;li&gt;The inter-part is a non-empty sequence of inter-comments
     and staircases.
@@ -322,9 +321,9 @@ with a new protocol stack.
     it is a technique that can be oversold.
     Combinators have been much talked about in the functional programming
     literature&lt;a id=&quot;footnote-4-ref&quot; href=&quot;#footnote-4&quot;&gt;[4]&lt;/a&gt;,
-    but GHC, the flagship functional programming
-    language parser,
-    does not use combinators to parse itself --
+    but the current flagship functional programming language compiler,
+    the Glasgow Haskell Compiler,
+    does not use combinators to parse its version of the Haskell --
     instead it uses a parser in the yacc lineage.&lt;a id=&quot;footnote-5-ref&quot; href=&quot;#footnote-5&quot;&gt;[5]&lt;/a&gt;
     As a parsing technique on its own,
     the use of combinators is simply another way of packaging recursive
@@ -370,8 +369,8 @@ with a new protocol stack.
     It is non-deterministic because there is a case
     where it tracks two possible parses at once.
     The comment linter cannot immediately distinguish between
-    the prefix of the upper riser of a staircase,
-    and the prefix of a sequence of inter-comments.
+    a prefix of the upper riser of a staircase,
+    and a prefix of a sequence of inter-comments.
     When a tread and lower riser is encountered,
     the parser knows it has found a staircase,
     but not until then.
@@ -496,7 +495,7 @@ with a new protocol stack.
     which could have been exploited as a technique.
     For example, in a simpler BNF than that we used above,
     it might be ambiguous whether a meta-comment belongs to an &lt;tt&gt;&amp;lt;InterPart&amp;gt;&lt;/tt&gt;
-    which immediately preceeds it;
+    which immediately precedes it;
     or to a &lt;tt&gt;&amp;lt;PrePart&amp;gt;&lt;/tt&gt; which immediately follows it.
     We could solve the dilemma by noting that it does not matter:
     All we care about is spotting bad comments and blank lines,
@@ -535,7 +534,7 @@ with a new protocol stack.
     &lt;tt&gt;&amp;lt;PrePart&amp;gt;&lt;/tt&gt;
     never begins with a meta-comment.&lt;a id=&quot;footnote-11-ref&quot; href=&quot;#footnote-11&quot;&gt;[11]&lt;/a&gt;
     &lt;/p&gt;
-    &lt;p&gt;The BNF requires that the first child of a
+    &lt;p&gt;The BNF requires that the first line of a
     &lt;tt&gt;&amp;lt;PrePart&amp;gt;&lt;/tt&gt;
     must be a
     &lt;tt&gt;&amp;lt;ProperPreComment&amp;gt;&lt;/tt&gt;.
@@ -567,7 +566,7 @@ with a new protocol stack.
     we may not know if our comment could be part of a staircase until
     many lines later.
     &lt;/p&gt;
-    &lt;p&gt;With our stipulation, we know that, if an
+    &lt;p&gt;With our stipulation we know that, if an
     &lt;tt&gt;&amp;lt;InterComponent&amp;gt;&lt;/tt&gt;
     contains
     a staircase, then that staircase must come before any of the inter-comments.
@@ -622,19 +621,15 @@ with a new protocol stack.
     &lt;tt&gt;&amp;lt;MetaComment&amp;gt;&lt;/tt&gt;,
     that token set must be a singleton.
     The Ruby Slippers are used to enforce this.&lt;a id=&quot;footnote-12-ref&quot; href=&quot;#footnote-12&quot;&gt;[12]&lt;/a&gt;
-    &lt;/p&gt;
-    &lt;p&gt;
     Similarly, the Ruby Slippers are used to guarantee that
     any set of tokens containing either
     a &lt;tt&gt;&amp;lt;BadComment&amp;gt;&lt;/tt&gt;
     or a
     &lt;tt&gt;&amp;lt;BlankLine&amp;gt;&lt;/tt&gt; is a singleton.
-    While our tokenizations can be ambiguous,
-    our parses never are.
     &lt;/p&gt;
     &lt;h2&gt;Code&lt;/h2&gt;
     &lt;p&gt;This post did not walk the reader through the code.
-    Instead, it talked mostly in terms of strategy.
+    Instead, we talked in terms of strategy.
     &lt;a href=&quot;https://github.com/jeffreykegler/Ocean-of-Awareness-blog/tree/gh-pages/code/vgap&quot;&gt;
     The code is available on Github&lt;/a&gt;
     in unit test form.
@@ -644,7 +639,7 @@ with a new protocol stack.
     &lt;h2&gt;Comments on this blog post, etc.&lt;/h2&gt;
     &lt;p&gt;
       To learn about Marpa,
-      my Earley/Leo-based parsing project,
+      my Earley/Leo-based parser,
       there is the
       &lt;a href=&quot;http://savage.net.au/Marpa.html&quot;&gt;semi-official web site, maintained by Ron Savage&lt;/a&gt;.
       The official, but more limited, Marpa website
@@ -703,11 +698,6 @@ In their present form, urbits run on top of Unix and UDP.
     a contrived &quot;garden path&quot;.
     But if you imagine the sentence as an answer to the question, &quot;Which horse fell?&quot;,
     expectations are set so that the sentence is quite reasonable.
-    And, when the two expectations are balanced,
-    humans parse sentences like our &quot;horse raced&quot; example
-    by keeping track
-    of both possibilities until it becomes clear which one
-    is the right one.
  &lt;a href=&quot;#footnote-7-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
 &lt;p id=&quot;footnote-8&quot;&gt;&lt;b&gt;8.&lt;/b&gt;
     See my blog post &lt;a href=&quot;http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2018/08/rntz.html&quot;&gt;
@@ -768,8 +758,8 @@ In their present form, urbits run on top of Unix and UDP.
  &lt;a href=&quot;#footnote-11-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
 &lt;p id=&quot;footnote-12&quot;&gt;&lt;b&gt;12.&lt;/b&gt;
     Inter-comments and
-    comments that are part of upper risers may start on line 1,
-    so, without special precautions in the lexer,
+    comments that are part of upper risers may start at column 1,
+    so that, without special precautions in the lexer,
     an ambiguity between a structural comment
     and a meta-comment is entirely
     possible.
@@ -785,9 +775,9 @@ In their present form, urbits run on top of Unix and UDP.
     These are snapshots -- permalinks.
     The application is under development,
     and probably will change considerably.
-    In this pre-alpha embedded form, documentation and unit testing are
-    lacking,
-    so that this pre-alpha embedded form will mainly be useful
+    Documentation is absent
+    and testing is minimal,
+    so that this pre-alpha embedded form of the code will mainly be useful
     for those who want to take a quick glance at the
     comment linter in context.
  &lt;a href=&quot;#footnote-13-ref&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;

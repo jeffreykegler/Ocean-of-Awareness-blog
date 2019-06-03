@@ -134,7 +134,7 @@ In their present form, urbits run on top of Unix and UDP.
 they are based on a tiny virtual machine, called Nock.
 To keep urbits compact and secure,
 Urbit takes on code bloat directly --
-Urbit is a original design from a clean slate,
+Urbit is an original design from a clean slate,
 with a new protocol stack.
     </p>
     <h2>About Hoon</h2>
@@ -310,15 +310,14 @@ with a new protocol stack.
     <h2>Hoon comment conventions</h2>
     <p>Hoon's basic syntax allows comments to be free-form.
     In practice, there are strict conventions for these comments,
-    conventions we would like to enforce with a <tt>lint</tt> for Hoon:
-    a <tt>hoonlint</tt>.
+    conventions we would like to enforce with <tt>hoonlint</tt>.
     <ol>
     <li>A multi-line comment may contain
     an "inter-part", a "pre-part",
     or both.
     </li>
     <li>If both an inter-part and a pre-part are present,
-    the inter-part must preceed the pre-part.
+    the inter-part must precede the pre-part.
     </li>
     <li>The inter-part is a non-empty sequence of inter-comments
     and staircases.
@@ -395,9 +394,9 @@ with a new protocol stack.
     in my <a href="https://jeffreykegler.github.io/personal/timeline_v3">
     "timeline" of parsing history</a>.
     </footnote>,
-    but GHC, the flagship functional programming
-    language parser,
-    does not use combinators to parse itself --
+    but the current flagship functional programming language compiler,
+    the Glasgow Haskell Compiler,
+    does not use combinators to parse its version of the Haskell --
     instead it uses a parser in the yacc lineage.<footnote><a
     href="https://github.com/ghc/ghc/blob/master/compiler/parser/Parser.y">This
     is the LALR grammar for GHC</a>, from GHC's Github mirror.
@@ -451,8 +450,8 @@ with a new protocol stack.
     It is non-deterministic because there is a case
     where it tracks two possible parses at once.
     The comment linter cannot immediately distinguish between
-    the prefix of the upper riser of a staircase,
-    and the prefix of a sequence of inter-comments.
+    a prefix of the upper riser of a staircase,
+    and a prefix of a sequence of inter-comments.
     When a tread and lower riser is encountered,
     the parser knows it has found a staircase,
     but not until then.
@@ -488,11 +487,6 @@ with a new protocol stack.
     a contrived "garden path".
     But if you imagine the sentence as an answer to the question, "Which horse fell?",
     expectations are set so that the sentence is quite reasonable.
-    And, when the two expectations are balanced,
-    humans parse sentences like our "horse raced" example
-    by keeping track
-    of both possibilities until it becomes clear which one
-    is the right one.
     </footnote>
     Modern language designers labor to avoid the need
     for infinite lookahead,
@@ -612,7 +606,7 @@ with a new protocol stack.
     which could have been exploited as a technique.
     For example, in a simpler BNF than that we used above,
     it might be ambiguous whether a meta-comment belongs to an <tt>&lt;InterPart&gt;</tt>
-    which immediately preceeds it;
+    which immediately precedes it;
     or to a <tt>&lt;PrePart&gt;</tt> which immediately follows it.
     We could solve the dilemma by noting that it does not matter:
     All we care about is spotting bad comments and blank lines,
@@ -684,7 +678,7 @@ with a new protocol stack.
     so the inefficiency might be real.
     </footnote>
     </p>
-    <p>The BNF requires that the first child of a
+    <p>The BNF requires that the first line of a
     <tt>&lt;PrePart&gt;</tt>
     must be a
     <tt>&lt;ProperPreComment&gt;</tt>.
@@ -716,7 +710,7 @@ with a new protocol stack.
     we may not know if our comment could be part of a staircase until
     many lines later.
     </p>
-    <p>With our stipulation, we know that, if an
+    <p>With our stipulation we know that, if an
     <tt>&lt;InterComponent&gt;</tt>
     contains
     a staircase, then that staircase must come before any of the inter-comments.
@@ -772,25 +766,21 @@ with a new protocol stack.
     that token set must be a singleton.
     The Ruby Slippers are used to enforce this.<footnote>
     Inter-comments and
-    comments that are part of upper risers may start on line 1,
-    so, without special precautions in the lexer,
+    comments that are part of upper risers may start at column 1,
+    so that, without special precautions in the lexer,
     an ambiguity between a structural comment
     and a meta-comment is entirely
     possible.
     </footnote>
-    </p>
-    <p>
     Similarly, the Ruby Slippers are used to guarantee that
     any set of tokens containing either
     a <tt>&lt;BadComment&gt;</tt>
     or a
     <tt>&lt;BlankLine&gt;</tt> is a singleton.
-    While our tokenizations can be ambiguous,
-    our parses never are.
     </p>
     <h2>Code</h2>
     <p>This post did not walk the reader through the code.
-    Instead, it talked mostly in terms of strategy.
+    Instead, we talked in terms of strategy.
     <a href="https://github.com/jeffreykegler/Ocean-of-Awareness-blog/tree/gh-pages/code/vgap">
     The code is available on Github</a>
     in unit test form.
@@ -807,16 +797,16 @@ with a new protocol stack.
     These are snapshots -- permalinks.
     The application is under development,
     and probably will change considerably.
-    In this pre-alpha embedded form, documentation and unit testing are
-    lacking,
-    so that this pre-alpha embedded form will mainly be useful
+    Documentation is absent
+    and testing is minimal,
+    so that this pre-alpha embedded form of the code will mainly be useful
     for those who want to take a quick glance at the
     comment linter in context.
     </footnote>
     <h2>Comments on this blog post, etc.</h2>
     <p>
       To learn about Marpa,
-      my Earley/Leo-based parsing project,
+      my Earley/Leo-based parser,
       there is the
       <a href="http://savage.net.au/Marpa.html">semi-official web site, maintained by Ron Savage</a>.
       The official, but more limited, Marpa website
