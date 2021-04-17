@@ -30,7 +30,7 @@ digits ~ [\d]+
       </pre>
     </blockquote>
     <p>Here the notation is that of
-      <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/11/iterative.html">
+      <a href="http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2012/11/iterative.html">
         my last post</a>,
       as
       <a href="https://metacpan.org/module/Marpa::R2::BNF">

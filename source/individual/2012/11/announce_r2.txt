@@ -11,7 +11,7 @@ Announcing a full release of Marpa::R2
       BNF parser, targeted at applications too complex for
       regular expressions.
       Marpa::R2 is based on
-      <a href="http://jeffreykegler.github.com/Marpa-web-site/">
+      <a href="http://jeffreykegler.github.io/Marpa-web-site/">
         the Marpa parsing algorithm</a>.
       New, but squarely based on the published literature,
       the Marpa algorithm

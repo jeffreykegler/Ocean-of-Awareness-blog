@@ -3,7 +3,7 @@ A self-parsing and self-lexing grammar
       <!--
       marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
       -->
-      <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/self_parse.html">In
+      <a href="http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2012/self_parse.html">In
         a previous post</a>, I showed a self-parsing grammar,
       written in Marpa's new BNF interface.
       That grammar was in a tradition going back to the 70's.

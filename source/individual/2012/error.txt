@@ -89,7 +89,7 @@ END_OF_RULES
 </tt></pre></blockquote>
     <p>The rules are specified in another DSL,
       of the kind I've used
-      <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/dsl.html">
+      <a href="http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2012/dsl.html">
         in previous posts</a>.
       This one is incorporated in Marpa::R2 itself,
       and is
@@ -150,7 +150,7 @@ sub My_Actions::do_arg1 { shift; return $_[1]; }
       capabilities, it is capable of serving a much more
       complex language.
       (I talked about lexing more
-      <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/dsl.html">
+      <a href="http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2012/dsl.html">
         in a previous example</a>.)
       Here is the lexing table:
     </p>

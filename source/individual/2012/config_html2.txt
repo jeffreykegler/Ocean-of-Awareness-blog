@@ -3,7 +3,7 @@ A configurable HTML parser, part 2
       <!--
       marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
       -->
-      <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/config_html.html">
+      <a href="http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2012/config_html.html">
         My last post</a>
       introduced Marpa::R2::HTML,
       a configurable HTML parser.

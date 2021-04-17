@@ -180,7 +180,7 @@ The Interpreter Design Pattern
       It's the easy, "drop-in" solution that the Go4 needed and did not have.
       A reworking of the Go4 example, with the missing parser added,
       is in
-      <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2013/03/bnf_to_ast.html">a
+      <a href="http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2013/03/bnf_to_ast.html">a
         previous blog post</a>, and the code for the reworking is in
       <a href="https://gist.github.com/jeffreykegler/5121769">
         a Github gist</a>.
@@ -194,15 +194,15 @@ The Interpreter Design Pattern
       <a href="https://metacpan.org/module/JKEGL/Marpa-R2-2.048000/pod/Scanless/DSL.pod">
         a new interface</a>,
       which has tutorials
-      <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2013/01/dsl_simpler2.html">here
+      <a href="http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2013/01/dsl_simpler2.html">here
       </a>
       and
-      <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2013/01/announce_scanless.html">
+      <a href="http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2013/01/announce_scanless.html">
         here</a>.
       Marpa has
-      <a href="http://jeffreykegler.github.com/Marpa-web-site/">a web page</a>,
+      <a href="http://jeffreykegler.github.io/Marpa-web-site/">a web page</a>,
       and of course it is the focus of
-      <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/">
+      <a href="http://jeffreykegler.github.io/Ocean-of-Awareness-blog/">
         my "Ocean of Awareness" blog</a>.
     </p>
     <p>

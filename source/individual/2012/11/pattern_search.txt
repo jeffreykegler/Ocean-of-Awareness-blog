@@ -14,9 +14,9 @@ A Marpa tutorial: pattern searches
       It is possible to simply dive into it,
       but it may be easier
       to start with two of my earlier posts,
-      <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/dsl.html">here</a>
+      <a href="http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2012/dsl.html">here</a>
       and
-      <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/error.html">here</a>.
+      <a href="http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2012/error.html">here</a>.
     </p>
     <h3>The grammar</h3>
     <p>
@@ -328,7 +328,7 @@ TOKEN: while ( pos $string &lt; $length ) {
       and print the "targets" found
       by the search.
       In
-      <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/error.html">
+      <a href="http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2012/error.html">
       a previous post</a>,
       I showed how, 
       given a symbol name,
@@ -340,7 +340,7 @@ TOKEN: while ( pos $string &lt; $length ) {
       gist</a>,
       and the ideas behind it were explained
       in
-      <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/error.html">
+      <a href="http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2012/error.html">
       the previous post</a>,
       so I won't repeat them here.
     </p>

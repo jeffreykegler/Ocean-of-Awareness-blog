@@ -8,7 +8,7 @@ Marpa and combinator parsing 2
       -->
     <p>
     In
-    <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2018/05/combinator.html">
+    <a href="http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2018/05/combinator.html">
     a previous post</a>,
     I outlined a method for using the Marpa algorithm as the basis for
     better combinator parsing.

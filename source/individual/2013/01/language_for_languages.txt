@@ -5,7 +5,7 @@ A language for writing languages
       -->
       <a href="https://metacpan.org/release/Marpa-R2">
       Marpa::R2</a>'s
-      <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2013/01/announce_scanless.html">
+      <a href="http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2013/01/announce_scanless.html">
       Scanless interface</a>
       is not yet two weeks old,
       but already there are completed applications.
@@ -67,7 +67,7 @@ A language for writing languages
       but he read the gist for a Scanless interface example,
       and apparently was able to teach himself quickly from there.
       (He doesn't say, but it might have been the one for
-      <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2013/01/dsl_simpler2.html">
+      <a href="http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2013/01/dsl_simpler2.html">
       this post</a>.)
       <p>Like Peter's escape sequence language,
       Paul's log query language program compiles to Perl.
@@ -91,11 +91,11 @@ A language for writing languages
     <h3>Where to start</h3>
     <p>If you're interested in learning more about Marpa's Scanless
     interface, there is
-      <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2013/01/dsl_simpler2.html">
+      <a href="http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2013/01/dsl_simpler2.html">
       a tutorial</a>.
       Additionally,
       the announcement of the Scanless interface contained
-      <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2013/01/announce_scanless.html">a
+      <a href="http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2013/01/announce_scanless.html">a
       mini-tutorial</a>.
     <h3>Comments</h3>
     <p>

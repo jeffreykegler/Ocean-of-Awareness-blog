@@ -315,7 +315,7 @@ Parsing with pictures
         <a href="file:///mnt2/new/projects/Ocean-of-Awareness-blog/metapages/annotated.html#PARSE_HTML">
           blog series on parsing html</a>; and
         my blog post
-        <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2011/11/marpa-and-the-ruby-slippers.html">
+        <a href="http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2011/11/marpa-and-the-ruby-slippers.html">
           "Marpa and the Ruby Slippers"</a>.
       </footnote>
     </p>

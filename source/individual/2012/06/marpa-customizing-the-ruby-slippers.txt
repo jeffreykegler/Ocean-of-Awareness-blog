@@ -1,6 +1,6 @@
 Marpa & customizing the Ruby Slippers
 <p>The
-<a href="http://jeffreykegler.github.com/Marpa-web-site/">
+<a href="http://jeffreykegler.github.io/Marpa-web-site/">
 Marpa parser</a>
 introduced
 <a href="http://blogs.perl.org/users/jeffrey_kegler/2011/11/marpa-and-the-ruby-slippers.html">
@@ -15,7 +15,7 @@ applications now have
 efficient access to the broader awareness</a>.
 
 <p>For those new to this blog
-<a href="http://jeffreykegler.github.com/Marpa-web-site/">
+<a href="http://jeffreykegler.github.io/Marpa-web-site/">
 Marpa is something new in parsing</a> --
 it parses anything you can write in BNF and,
 if your grammar is in one of the classes currently in practical use,

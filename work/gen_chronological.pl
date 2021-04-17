@@ -16,7 +16,7 @@ while (my $line = <$dates_fh>) {
 close $dates_fh;
 
 our $blog_title = 'Ocean of Awareness';
-our $url = 'http://jeffreykegler.github.com/Ocean-of-Awareness-blog/';
+our $url = 'http://jeffreykegler.github.io/Ocean-of-Awareness-blog/';
 
 sub interpolate {
 

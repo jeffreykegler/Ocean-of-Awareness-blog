@@ -242,13 +242,13 @@ Parsing Ada Lovelace
         new tutorials by
       <a href="http://marpa-guide.github.io/chapter1.html">Peter Stuifzand</a>
       and <a href="http://longanswers.blogspot.de/2013/06/transforming-syntax.html">amon</a>.
-      <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/">
+      <a href="http://jeffreykegler.github.io/Ocean-of-Awareness-blog/">
       The Ocean of Awareness blog</a>
       focuses on Marpa,
       and it has
       <a href="http://jeffreykegler.github.io/Ocean-of-Awareness-blog/metapages/annotated.html">an annotated guide</a>.
       Marpa also has
-      <a href="http://jeffreykegler.github.com/Marpa-web-site/">a web page</a>.
+      <a href="http://jeffreykegler.github.io/Marpa-web-site/">a web page</a>.
       For questions, support and discussion, there is
       <a href="http://groups.google.com/group/marpa-parser">
       the "marpa parser"

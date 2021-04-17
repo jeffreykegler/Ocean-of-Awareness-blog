@@ -42,7 +42,7 @@ Do not need to be handwritten.
 Marpa is available as a open-source library.
 It is written in C,
 and the C library can be used
-<a href="http://jeffreykegler.github.com/Marpa-web-site/libmarpa.html">
+<a href="http://jeffreykegler.github.io/Marpa-web-site/libmarpa.html">
 directly</a>
 or via
 <a href="https://metacpan.org/release/Marpa-R2">
@@ -70,7 +70,7 @@ Marpa::R2 now has no non-core CPAN dependencies.
 <li><p>Marpa::R2's internal symbols are now invisible
 to the user, even when tracing and debugging.
 <li><p>
-<a href="http://jeffreykegler.github.com/Marpa-web-site/libmarpa">
+<a href="http://jeffreykegler.github.io/Marpa-web-site/libmarpa">
 Libmarpa, the C library which is at the core of Marpa</a>,
 is now documented
 and separately installable.

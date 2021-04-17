@@ -72,10 +72,10 @@ whitespace ~ [\s]+
     </blockquote>
     <p>This syntax should be fairly transparent.
       In previous posts I've given
-      <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2013/01/dsl_simpler2.html">
+      <a href="http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2013/01/dsl_simpler2.html">
         a tutorial</a>,
       and a
-      <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2013/01/announce_scanless.html">a
+      <a href="http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2013/01/announce_scanless.html">a
         mini-tutorial</a>.
       And of course, the interface is
       <a href="https://metacpan.org/module/JKEGL/Marpa-R2-2.048000/pod/Scanless/DSL.pod">

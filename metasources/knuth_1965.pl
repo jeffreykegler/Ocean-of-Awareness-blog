@@ -105,7 +105,7 @@ Why is parsing considered solved?
         <a href="https://jeffreykegler.github.io/personal/timeline_v3">
           Parsing: a timeline</a>.
         The earlier entires in this post borrow heavily from
-        <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2018/05/chomsky_1956.html">
+        <a href="http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2018/05/chomsky_1956.html">
           a previous blog post</a>.
       </footnote>
       In fact, we'll have to start decades before computer Parsing Theory

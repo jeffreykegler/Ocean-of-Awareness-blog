@@ -11,7 +11,7 @@ A Marpa tutorial: iterative parser development
       through one development step.
       As the first iteration step,
       we will use the example parser from
-      <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/11/pattern_search.html">
+      <a href="http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2012/11/pattern_search.html">
         the previous tutorial in this series</a>,
       which parsed a Perl subset.
     </p>
@@ -33,11 +33,11 @@ A Marpa tutorial: iterative parser development
     <h3>What we need to do</h3>
     <p>
       This tutorial is the latest of
-      <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/metapages/annotated.html#TUTORIAL">
+      <a href="http://jeffreykegler.github.io/Ocean-of-Awareness-blog/metapages/annotated.html#TUTORIAL">
         a series</a>,
       each of which describes one self-contained example of a Marpa-based parser.
       In this tutorial we use the example from
-      <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/11/pattern_search.html">
+      <a href="http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2012/11/pattern_search.html">
         the previous tutorial</a>
       as the first iteration step
       in the iterative development of a Perl parser.
@@ -132,7 +132,7 @@ END_OF_RULES
       in this tutorial series.
       Those interested in
       an explanation of how the lexer works can
-      <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/dsl.html">
+      <a href="http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2012/dsl.html">
         find one in the first tutorial</a>.
       Having broken out the operators, I had to rewrite
       the lexing table,
@@ -180,7 +180,7 @@ sub do_target {
       <tt>$ORIGIN</tt>
       variable.
     </p><p>The next logic will be familiar from our
-      <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/11/pattern_search.html">
+      <a href="http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2012/11/pattern_search.html">
         pattern search tutorial</a>.
       It repeatedly looks for non-overlapping occurrences of
       <tt>target</tt>,

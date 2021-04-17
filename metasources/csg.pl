@@ -76,7 +76,7 @@ Marpa and procedural parsing
       which has been state-of-the-art in terms of
       its procedural programming capabilities --
       it was these capabilities which led to
-      <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2018/05/fast_power.html">
+      <a href="http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2018/05/fast_power.html">
       RD's
       triumph over the now-forgotten Irons algorithm.</a>
     </p>

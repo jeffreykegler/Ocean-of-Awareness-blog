@@ -165,13 +165,13 @@ Evolvable languages
       <a href="http://marpa-guide.github.io/chapter1.html">Peter Stuifzand</a>
       and
       <a href="http://longanswers.blogspot.de/2013/06/transforming-syntax.html">amon</a>.
-      <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/">
+      <a href="http://jeffreykegler.github.io/Ocean-of-Awareness-blog/">
         The Ocean of Awareness blog</a>
       focuses on Marpa,
       and it has
       <a href="http://jeffreykegler.github.io/Ocean-of-Awareness-blog/metapages/annotated.html">an annotated guide</a>.
       Marpa has
-      <a href="http://jeffreykegler.github.com/Marpa-web-site/">a web page that I maintain</a>
+      <a href="http://jeffreykegler.github.io/Marpa-web-site/">a web page that I maintain</a>
       and Ron Savage maintains
       <a href="http://savage.net.au/Perl-modules/html/marpa.papers/index.html">
         another</a>.

@@ -93,7 +93,7 @@ What if languages were free?
       impossibly hard when the Gang of Four wrote.
       Using Marpa, it is easy.
       The parser can be found in
-      <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2013/03/bnf_to_ast.html">this
+      <a href="http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2013/03/bnf_to_ast.html">this
         earlier blog post</a>.
     </p>
     <p>
@@ -104,15 +104,15 @@ What if languages were free?
       <a href="https://metacpan.org/module/JKEGL/Marpa-R2-2.048000/pod/Scanless/DSL.pod">
         a new interface</a>,
       which has tutorials
-      <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2013/01/dsl_simpler2.html">here
+      <a href="http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2013/01/dsl_simpler2.html">here
       </a>
       and
-      <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2013/01/announce_scanless.html">
+      <a href="http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2013/01/announce_scanless.html">
         here</a>.
       Marpa has
-      <a href="http://jeffreykegler.github.com/Marpa-web-site/">a web page</a>,
+      <a href="http://jeffreykegler.github.io/Marpa-web-site/">a web page</a>,
       and of course it is the focus of
-      <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/">
+      <a href="http://jeffreykegler.github.io/Ocean-of-Awareness-blog/">
         my "Ocean of Awareness" blog</a>.
     </p>
     <p>

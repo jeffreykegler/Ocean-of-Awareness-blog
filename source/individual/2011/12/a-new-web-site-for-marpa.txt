@@ -1,7 +1,7 @@
 A new web site for Marpa
 <p>
 I have created an
-<a href="http://jeffreykegler.github.com/Marpa-web-site/">official web site
+<a href="http://jeffreykegler.github.io/Marpa-web-site/">official web site
 for Marpa</a>.
 Marpa is attracting new users,
 to the point where I thought it might be useful to have a site to act as

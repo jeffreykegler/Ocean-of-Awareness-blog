@@ -100,13 +100,13 @@ A2(A2(S3(Hey)S13(Hello, World!))S5(Ciao!))
       There is
       <a href="http://marpa-guide.github.io/chapter1.html">
         a new tutorial by Peter Stuifzand</a>.
-      <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/">
+      <a href="http://jeffreykegler.github.io/Ocean-of-Awareness-blog/">
         The Ocean of Awareness blog</a>
       focuses on Marpa,
       and it has
       <a href="http://jeffreykegler.github.io/Ocean-of-Awareness-blog/metapages/annotated.html">an annotated guide</a>.
       Marpa also has
-      <a href="http://jeffreykegler.github.com/Marpa-web-site/">a web page</a>.
+      <a href="http://jeffreykegler.github.io/Marpa-web-site/">a web page</a>.
       For questions, support and discussion, there is a
       Google Group:
       <code>marpa-parser@googlegroups.com</code>.

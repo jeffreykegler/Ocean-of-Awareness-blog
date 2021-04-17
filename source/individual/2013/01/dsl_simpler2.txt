@@ -3,7 +3,7 @@ Making DSL's even simpler
       <!--
       marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
       -->
-      <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2012/dsl.html">
+      <a href="http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2012/dsl.html">
         In a previous post</a>, I described a method of writing
 	powerful domain-specific languages (DSLs),
 	one that was simpler and faster
@@ -302,7 +302,7 @@ sub do_arg2 { return $_[3]; }
       bring its total length to not quite 300 lines.
     It uses the latest indexed CPAN release
     of <a href="https://metacpan.org/module/Marpa::R2">Marpa::R2</a>.
-    Marpa also has <a href="http://jeffreykegler.github.com/Marpa-web-site/">
+    Marpa also has <a href="http://jeffreykegler.github.io/Marpa-web-site/">
     a web page</a>.
     <h3>Comments</h3>
     <p>

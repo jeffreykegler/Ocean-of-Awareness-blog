@@ -324,15 +324,15 @@ Is Earley parsing fast enough?
       which represents a major increase
       in Marpa's "whipitupitude".
       The SLIF has tutorials
-      <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2013/01/dsl_simpler2.html">here
+      <a href="http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2013/01/dsl_simpler2.html">here
       </a>
       and
-      <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/individual/2013/01/announce_scanless.html">
+      <a href="http://jeffreykegler.github.io/Ocean-of-Awareness-blog/individual/2013/01/announce_scanless.html">
         here</a>.
       Marpa has
-      <a href="http://jeffreykegler.github.com/Marpa-web-site/">a web page</a>,
+      <a href="http://jeffreykegler.github.io/Marpa-web-site/">a web page</a>,
       and of course it is the focus of
-      <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/">
+      <a href="http://jeffreykegler.github.io/Ocean-of-Awareness-blog/">
         my "Ocean of Awareness" blog</a>.
     </p>
     <p>

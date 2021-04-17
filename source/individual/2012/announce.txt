@@ -4,7 +4,7 @@ has provided
 my Ocean of Awareness blog
 a wonderful home for some time.
 But the call of static blogging is becoming impossible to resist.
-A <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/">
+A <a href="http://jeffreykegler.github.io/Ocean-of-Awareness-blog/">
 github based site</a>
 will, most likely, soon
 become the new home

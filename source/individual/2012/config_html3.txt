@@ -4,7 +4,7 @@ Configuring the Ruby Slippers for HTML
       perl ./marpa_r2_html_fmt --no-added-tag-comment --no-ws-ok-after-start-tag
       -->
       This post is part of
-      <a href="http://jeffreykegler.github.com/Ocean-of-Awareness-blog/metapages/annotated.html#PARSE_HTML">
+      <a href="http://jeffreykegler.github.io/Ocean-of-Awareness-blog/metapages/annotated.html#PARSE_HTML">
         a series</a>
       describing Marpa::R2::HTML,
       a configurable HTML parser.

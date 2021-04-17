@@ -176,7 +176,7 @@ Input: "payment on 1000 + 1000 over months/12 years at 5 + 1 %"
 <h2>How rule-based precedence works</h2>
 <p>
 Rule-based precedence parsing uses
-<a href="http://jeffreykegler.github.com/Marpa-web-site/">
+<a href="http://jeffreykegler.github.io/Marpa-web-site/">
 Marpa</a>,
 a new and efficient general BNF parsing algorithm.
 With Marpa,
@@ -201,7 +201,7 @@ Without (and often even with) programmer intervention,
 there would be little reason to hope that
 an LALR or LL parse engine would parse
 an arbitrary order-explicit BNF grammar.
-<a href="http://jeffreykegler.github.com/Marpa-web-site/">
+<a href="http://jeffreykegler.github.io/Marpa-web-site/">
 Marpa</a>,
 on the other hand, does "just parse" arbitrary BNF,
 and a successful parse is guaranteed.
