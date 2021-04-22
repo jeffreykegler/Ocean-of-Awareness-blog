@@ -15,7 +15,7 @@ Perl parsing may be undecidable.
 While in the planning stages for Marpa,
 I found Adam's conjecture
 and
-<a href="http://www.jeffreykegler.com/Home/perl-and-undecidability">
+<a href="http://jeffreykegler.github.io/personal/undecide.html">
 turned it into a formal proof</a>.
 </p>
 <p>

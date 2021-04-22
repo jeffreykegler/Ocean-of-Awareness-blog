@@ -5,7 +5,7 @@ according to Google Analytics,
 most of my web hits are for a side interest.
 A few years ago I discovered
 the
-<a href="http://morgenstern.jeffreykegler.com/">
+<a href="http://jeffreykegler.github.io/personal/morgenstern.html">
 Lost Morgenstern Document</a>,
 an account of 
 Kurt G&ouml;del's citizenship hearing which had
